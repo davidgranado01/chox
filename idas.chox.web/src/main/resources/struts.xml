@@ -1267,6 +1267,18 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
+        
+        <action name ="getRepairPenaltyAmount" class ="idas.chox.web.actions.ClaimAction" method="getRepairPenaltyAmount">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name ="getHirePenaltyAmount" class ="idas.chox.web.actions.ClaimAction" method="getHirePenaltyAmount">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
 
     </package>
 </struts>

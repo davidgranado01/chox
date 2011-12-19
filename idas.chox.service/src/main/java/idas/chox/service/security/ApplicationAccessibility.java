@@ -4,9 +4,7 @@ import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
@@ -228,19 +226,14 @@ public class ApplicationAccessibility {
                         } // Check the 'Adjust Penalty Charges' Panel is not already displayed
                         // 
                         else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
-                            // Check if age of invoice based upon liability date
-                            if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
-                                    && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
-                                if (claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30) {
-                                    LOG.debug("Invoice in penalty queue (age based upon liability date) - no access to More Action 'updatePenaltyCharges'");
-                                    accessRight = 0;
-                                }
-                            } // Take age of invoice from invoice creation date
-                            else {
-                                if (invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
-                                    LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
-                                    accessRight = 0;
-                                }
+                            // Take age of invoice from invoice creation date
+                            if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                        && (!claim.isAutoPenaltyChargeEnabled() 
+                                            || ((days-1) / 30) >= 3))) 
+                                    && invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
+                                accessRight = 0;
                             }
                         }
                     } else {
@@ -469,7 +462,7 @@ public class ApplicationAccessibility {
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
-            
+
             if (user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REOPEN_CLAIM) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
                 return Declined;

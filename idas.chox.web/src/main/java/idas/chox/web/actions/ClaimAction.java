@@ -29,6 +29,7 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
+import idas.chox.core.model.PenaltyPercentage;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
@@ -42,6 +43,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ApplicationAccessibility;
@@ -50,6 +52,7 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -83,9 +86,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
     private String totalAmountToPayAfterNewPenaltyChargeFormatted;
-    private String splitLiabilityToPayBeforePenaltyFormatted;
-    private String percentageLiabilityAcceptedForPenalty;
-    private String splitLiabilityToPayAfterPenaltyFormatted;
     private BigDecimal hirePenaltyChargeAmount;
     private BigDecimal repairPenaltyChargeAmount;
     private BigDecimal totalPenaltyChargeAmount;
@@ -144,6 +144,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
+    private boolean stopAutoPenaltyCharge;
+
+    public boolean isStopAutoPenaltyCharge() {
+        return !claim.isAutoPenaltyChargeEnabled();
+    }
+
+    public void setStopAutoPenaltyCharge(boolean stopAutoPenaltyCharge) {
+        claim.setAutoPenaltyChargeEnabled(!stopAutoPenaltyCharge);
+    }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
@@ -167,7 +176,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             if (claim.getPreviousStatus() != null && !claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
                 LOG.warn("The 'previous_status' of claim '{}' [{}] does not match the previous status from the auditTrail [{}]",
-                        new Object[] {claim.getChoReference(), claim.getPreviousStatus(), auditTrail.getOriginalStatus()});
+                        new Object[]{claim.getChoReference(), claim.getPreviousStatus(), auditTrail.getOriginalStatus()});
             }
             return true;
         } else {
@@ -468,21 +477,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
-        if (getIsBasedOnLiabilityAgreedDate()) {
-            setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
-        } else {
-            setInvoiceIntroducedDays(invoice.getInvoicedDays());
-        }
+        setInvoiceIntroducedDays(invoice.getInvoicedDays());
         setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge()).subtract(invoice.getRepairPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getFullTotalToPay());
-        if (getIsBasedOnLiabilityAgreedDate()) {
-            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getHirePenaltyCharge().subtract(invoice.getRepairPenaltyCharge()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP))));
-            setSplitLiabilityToPayAfterPenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay()));
-        }
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
-        percentageLiabilityAcceptedForPenalty = claim.getPercentageLiabilityAccepted().toString();
-        LOG.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
@@ -525,18 +524,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
             invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
-                long dateDiff;
-                if (getIsBasedOnLiabilityAgreedDate()) {
-                    dateDiff = DateHelper.daysBetween(claim.getLiabilityAgreedDate(), new Date());
-                } else {
-                    dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
-                }
-
-                int newpenaltyAlertQty = (int) (dateDiff / 30);
-                newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
-                invoice.setPenaltyAlertQty(newpenaltyAlertQty);
+                invoice.setPenaltyAlertQty(calculatePenaltyAlertQty() >= 3 ? -1 : calculatePenaltyAlertQty());
             }
-
             service.updateClaim(claim);
 
         } catch (Exception ex) {
@@ -559,50 +548,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setBreBand(choBand);
             if (claim.getBreBand() == null) {
                 LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
-            }
-            else if (!claim.getBreBand().isAllowPenaltyCharges()) {
+            } else if (!claim.getBreBand().isAllowPenaltyCharges()) {
                 allowPenaltyCharges = false;
             }
-            if (allowPenaltyCharges && invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) && invoice.getPenaltyAlertQty() > -1) {
-                
-                if (getIsBasedOnLiabilityAgreedDate()) {
-                    return claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30;
-                }
+            if (allowPenaltyCharges && invoice != null 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) 
+                    && invoice.getPenaltyAlertQty() > -1
+                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                            && (!claim.isAutoPenaltyChargeEnabled() 
+                                || calculatePenaltyAlertQty() >= 3)))) {
+
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
-        return result;
-    }
-
-    public boolean getIsBasedOnLiabilityAgreedDate() {
-        Invoice invoice = claim.getInvoice();
-        if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && claim.getInvoice() != null
-                && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
-                && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean getIsShowPenaltyChargePanel() {
-        boolean result = false;
-
-        if (getIsCHO()) {
-            Invoice invoice = claim.getInvoice();
-
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-                if (getIsBasedOnLiabilityAgreedDate()) {
-                    result = claim.getLiabilityAgreedDays() > 30;
-                } else {
-                    result = invoice.getInvoicedDays() > 30;
-                }
-            }
-        }
-
         return result;
     }
 
@@ -620,7 +583,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         LOG.debug("canRevertClaim: {}", getButtonAccessibility().getRevertClaimAccessibility());
         return getButtonAccessibility().getRevertClaimAccessibility();
     }
-    
+
     public boolean getShowPayNotReceivedButton() {
         LOG.debug("canShowPaymentNotReceivedButton: {}", getButtonAccessibility().getUpdatePaymentNotReceived());
         return getButtonAccessibility().getUpdatePaymentNotReceived();
@@ -939,19 +902,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 if (canMark) {
                     if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
-                    }
-                    else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+                    } else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
-                    }
-                    else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+                    } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
                     } else {
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
                     }
 
-                    
-  //                  claim.setSupplementaryInvoicedClaim(true);
-  //                  claim.setOriginalSupplementaryInvoicedClaim(true);
+
+                    //                  claim.setSupplementaryInvoicedClaim(true);
+                    //                  claim.setOriginalSupplementaryInvoicedClaim(true);
                     this.service.updateClaim(claim);
                 }
             } else {
@@ -1244,30 +1205,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setTotalAmountToPayAfterNewPenaltyChargeFormatted(String totalAmountToPayAfterNewPenaltyChargeFormatted) {
         this.totalAmountToPayAfterNewPenaltyChargeFormatted = totalAmountToPayAfterNewPenaltyChargeFormatted;
-    }
-
-    public String getSplitLiabilityToPayAfterPenaltyFormatted() {
-        return splitLiabilityToPayAfterPenaltyFormatted;
-    }
-
-    public void setSplitLiabilityToPayAfterPenaltyFormatted(String splitLiabilityToPayAfterPenaltyFormatted) {
-        this.splitLiabilityToPayAfterPenaltyFormatted = splitLiabilityToPayAfterPenaltyFormatted;
-    }
-
-    public String getSplitLiabilityToPayBeforePenaltyFormatted() {
-        return splitLiabilityToPayBeforePenaltyFormatted;
-    }
-
-    public void setSplitLiabilityToPayBeforePenaltyFormatted(String splitLiabilityToPayBeforePenaltyFormatted) {
-        this.splitLiabilityToPayBeforePenaltyFormatted = splitLiabilityToPayBeforePenaltyFormatted;
-    }
-
-    public String getPercentageLiabilityAcceptedForPenalty() {
-        return percentageLiabilityAcceptedForPenalty;
-    }
-
-    public void setPercentageLiabilityAcceptedForPenalty(String percentageLiabilityAcceptedForPenalty) {
-        this.percentageLiabilityAcceptedForPenalty = percentageLiabilityAcceptedForPenalty;
     }
 
     public long getInvoiceIntroducedDays() {
@@ -1916,6 +1853,125 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public String getRepairPenaltyPercentageJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getRepairPenaltyPercentage().size());
+        for (PenaltyPercentage repairPenaltyPercentageEnum : PenaltyPercentage.getRepairPenaltyPercentage()) {
+            luItems.add(new LookupItem(repairPenaltyPercentageEnum.getPercentage(), repairPenaltyPercentageEnum.getPercentage()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public String getHirePenaltyPercentageJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getHirePenaltyPercentage().size());
+        for (PenaltyPercentage hirePenaltyPercentageEnum : PenaltyPercentage.getHirePenaltyPercentage()) {
+            luItems.add(new LookupItem(hirePenaltyPercentageEnum.getPercentage(), hirePenaltyPercentageEnum.getPercentage()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public BigDecimal calculateHirePenaltyCharge(String hirePercentage) {
+
+        BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
+        BigDecimal hireNet = claim.getInvoice().getHireNet();
+
+        for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentage()) {
+            if (hirePenaltyPercentageValue.getPercentage().equals(hirePercentage)) {
+                BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
+                hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+            }
+        }
+        return hirePenaltyAmout;
+    }
+
+    public BigDecimal calculateRepairPenaltyCharge(String repairPercentage) {
+
+        BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
+        BigDecimal repairNet = claim.getInvoice().getRepairNet();
+
+        for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentage()) {
+            if (repairPenaltyPercentageValue.getPercentage().equals(repairPercentage)) {
+                BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
+                repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+            }
+        }
+        return repairPenaltyAmout;
+    }
+
+    public String getCalculatedHirePenaltyPercentage() {
+
+        if (claim.getInvoice().getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+
+            return calculatePenaltyAlertQty() == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS.getPercentage()
+                    : calculatePenaltyAlertQty() == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
+                    : calculatePenaltyAlertQty() >= 3 ? PenaltyPercentage.HIRE_COMMERCIAL.getPercentage()
+                    : PenaltyPercentage.NO_VALUE.getPercentage();
+        } else {
+            return "";
+        }
+
+    }
+
+    public String getCalculatedRepairPenaltyPercentage() {
+
+        if (claim.getInvoice().getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+
+            return calculatePenaltyAlertQty() == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
+                    : calculatePenaltyAlertQty() >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
+                    : PenaltyPercentage.NO_VALUE.getPercentage();
+        } else {
+            return "";
+        }
+
+    }
+
+    public BigDecimal getCalculatedHirePenaltyChargeAmount() {
+        return calculateHirePenaltyCharge(getCalculatedHirePenaltyPercentage());
+    }
+
+    public BigDecimal getCalculatedRepairPenaltyChargeAmount() {
+        return calculateRepairPenaltyCharge(getCalculatedRepairPenaltyPercentage());
+    }
+
+    public String getRepairPenaltyAmount() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("success", Boolean.TRUE);
+        jsonObject.put("repairPenaltyAmount", calculateRepairPenaltyCharge(repairPenaltyPercentage));
+        setJsonData(jsonObject.toString());
+        return SUCCESS;
+    }
+
+    public String getHirePenaltyAmount() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("success", Boolean.TRUE);
+        jsonObject.put("hirePenaltyAmount", calculateHirePenaltyCharge(hirePenaltyPercentage));
+        setJsonData(jsonObject.toString());
+        return SUCCESS;
+    }
+
+    public boolean getShowAutoPenaltyCheckbox() {
+
+        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() && calculatePenaltyAlertQty() < 3) ? true : false;
+    }
+
+    public boolean getShowRemoveFromQueueCheckbox() {
+
+        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty()) 
+                || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                    && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty() >= 3) 
+                    && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())) {
+            
+            return true;
+            
+        } else {
+            return false;
+        }
+    }
+
+    private int calculatePenaltyAlertQty() {
+        long dateDiff = DateHelper.daysBetween(claim.getInvoice().getCreatedDate(), new Date());
+        return (int) (dateDiff / 30);
     }
 
     @Override
