@@ -31,13 +31,21 @@ UPDATE claim SET claim_type = 5   -- INSURER_VS_INSURER_ORIGINAL_INVOICE
 where is_insurer_vs_insurer_claim=true
   and original_supp_inv = true;
 
-UPDATE claim SET claim_type = 8   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
+UPDATE claim SET claim_type = 6   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
 where is_insurer_vs_insurer_claim=true
   and supplementary_invoiced_claim=true
   and original_supp_inv = false;
 
 UPDATE claim SET claim_type = 10   -- INSURER_UPLOAD
 where insurer_upload = true;
+
+
+ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
+ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
+ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
+ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
+ALTER TABLE CLAIM DROP COLUMN insurer_upload;
+
 
 
 ---
@@ -1768,24 +1776,225 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
-
-ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
-ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
-ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
-ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
-ALTER TABLE CLAIM DROP COLUMN insurer_upload;
-
 --
 -- 6.7.2 Automated Penalty Charges
 --
 
 alter table chorganisation add column auto_penalty_charges boolean default false;
 
-alter table invoice add column auto_penalty_alert_qty int2 default 0;
-
 alter table claim add column auto_penalty_charges boolean default true;
 
-alter table claim add column penalty_charges_start timestamp;
 
+--
+--  Store procedure to apply penalty charges
+--
+
+
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer,vat float) RETURNS boolean AS $BODY$
+
+DECLARE
+userId int;
+vatRate float;
+vatRateVal float;
+hirepenalPer30D float;
+hirepenalPer30DVal float;
+hirepenalPer60D float;
+hirepenalPer60DVal float;
+repairpenalPer30D float;
+repairpenalPer30DVal float;
+repairpenalPer60D float;
+repairpenalPer60DVal float;
+
+BEGIN
+
+userId = userIdNumber;
+vatRate = vat;
+vatRateVal = vatRate/100;
+hirepenalPer30D = 7.5;
+hirepenalPer30DVal = hirepenalPer30D/100;
+hirepenalPer60D = 15;
+hirepenalPer60DVal = hirepenalPer60D/100;
+repairpenalPer30D = 2.5;
+repairpenalPer30DVal = repairpenalPer30D/100;
+repairpenalPer60D = 5;
+repairpenalPer60DVal = repairpenalPer60D/100;
+
+
+update invoice  
+set 
+penalty_alert_qty = 1,
+hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+full_total_to_pay = (full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal))+((repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal)),
+total_to_pay = (CASE WHEN(c.liability_status = 5 OR c.liability_status = 6) THEN (c.percentage_liability_accepted/100)* ((full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal))+((repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal)))
+                      ELSE (full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal))+((repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal)) END),
+hire_penalty_charge = (hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal),
+repair_penalty_charge = (repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal),
+hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer30D || '%' ELSE null END),
+repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer30D || '%' ELSE null END),
+total_penalty_charge = (hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal) + (repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal),
+last_modified_by = userId,
+last_modified_date = now()
+from
+claim c, 
+bre_band bre , 
+bre_band_organisation breorg , 
+insurer ins , 
+chorganisation cho 
+where 
+c.invoice_id = invoice.id 
+and c.claim_type not in (3,4,5,6,7,8,9,10)
+and c.insurer_id = ins.id 
+and c.chorganisation_id = cho.id
+and bre.insurer_id = ins.id
+and breorg.chorganisation_id = cho.id
+and bre.allow_penalty_charges = true
+and c.auto_penalty_charges = true
+and cho.auto_penalty_charges = true
+and invoice.penalty_alert_qty = 0
+and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+and extract(epoch from now() - invoice.created_date)/(3600*24.0) >= 30 
+and extract(epoch from now() - invoice.created_date)/(3600*24.0) < 60; 
+
+RAISE NOTICE 'userid : % , vat rate : %, vatRateVal: % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,vatRate, vatRateVal,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
+
+RAISE NOTICE 'Penalty charge for invoice older than 30 days applied '; 
+
+
+
+update invoice  
+set 
+penalty_alert_qty = 2,
+hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+full_total_to_pay = (full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer60DVal)+(hire_net * hirepenalPer60DVal * vatRateVal))+((repair_net * repairpenalPer60DVal)+(repair_net * repairpenalPer60DVal * vatRateVal)),
+total_to_pay = (CASE WHEN(c.liability_status = 5 OR c.liability_status = 6) THEN (c.percentage_liability_accepted/100)* ((full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal))+((repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal)))
+                      ELSE (full_total_to_pay-(hire_penalty_charge + repair_penalty_charge))+((hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal))+((repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal)) END),
+hire_penalty_charge = (hire_net * hirepenalPer60DVal)+(hire_net * hirepenalPer60DVal * vatRateVal),
+repair_penalty_charge = (repair_net * repairpenalPer60DVal)+(repair_net * repairpenalPer60DVal * vatRateVal),
+hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer60D || '%' ELSE null END),
+repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer60D || '%' ELSE null END),
+total_penalty_charge = (hire_net * hirepenalPer30DVal)+(hire_net * hirepenalPer30DVal * vatRateVal) + (repair_net * repairpenalPer30DVal)+(repair_net * repairpenalPer30DVal * vatRateVal),
+last_modified_by = userId,
+last_modified_date = now()
+from
+claim c, 
+bre_band bre , 
+bre_band_organisation breorg , 
+insurer ins , 
+chorganisation cho 
+where 
+c.invoice_id = invoice.id 
+and c.claim_type not in (3,4,5,6,7,8,9,10)
+and c.insurer_id = ins.id 
+and c.chorganisation_id = cho.id
+and bre.insurer_id = ins.id
+and breorg.chorganisation_id = cho.id
+and bre.allow_penalty_charges = true
+and c.auto_penalty_charges = true
+and cho.auto_penalty_charges = true
+and invoice.penalty_alert_qty <= 1 
+and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+and extract(epoch from now() - invoice.created_date)/(3600*24.0) >= 60 
+and extract(epoch from now() - invoice.created_date)/(3600*24.0) < 90; 
+
+RAISE NOTICE 'Penalty charge for invoice older than 60 days applied'; 
+
+update claim  
+set 
+auto_penalty_charges = false,
+last_modified_by = userId,
+last_modified_date = now()
+from
+invoice i, 
+bre_band bre , 
+bre_band_organisation breorg , 
+insurer ins , 
+chorganisation cho 
+where 
+claim.invoice_id = i.id 
+and claim.claim_type not in (3,4,5,6,7,8,9,10)
+and claim.insurer_id = ins.id 
+and claim.chorganisation_id = cho.id
+and bre.insurer_id = ins.id
+and breorg.chorganisation_id = cho.id
+and bre.allow_penalty_charges = true
+and claim.auto_penalty_charges = true
+and cho.auto_penalty_charges = true
+and i.penalty_alert_qty >= 0
+and i.penalty_alert_qty <= 2
+and claim.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+and extract(epoch from now() - i.created_date)/(3600*24.0) >= 90; 
+
+RAISE NOTICE 'Invoice older than 90 days moved to manual invoice queue'; 
+
+return true;
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
+
+
+--
+-- Store procedure to create automatic task
+--
+
+CREATE OR REPLACE FUNCTION addinvoicepenaltytask(integer)
+  RETURNS boolean AS
+$BODY$
+
+
+DECLARE
+userId int;
+
+BEGIN
+
+userId=$1;
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '15 days', 'Invoice Approaching 90 Days', 'The invoice was uploaded over 75 days ago and may be subject to penalties in 15 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty <= 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.created_date)/(3600*24.0) >= 75
+  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days');
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '5 days', 'Invoice Approaching ' || 30*(i.penalty_alert_qty+1) || ' Days', 'The invoice was uploaded over ' || 30*(i.penalty_alert_qty+1)-5 || ' days ago and may be subject to penalties in 5 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty >= 0 and i.penalty_alert_qty < 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.created_date)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
+  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days');
+
+
+update task set complete = true,
+                completed_by = 999,
+                completed_date = now()
+where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
+
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
 
 
