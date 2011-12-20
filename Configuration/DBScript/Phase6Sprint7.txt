@@ -1790,7 +1790,9 @@ alter table claim add column auto_penalty_charges boolean default true;
 --
 
 
-CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer,vat float) RETURNS boolean AS $BODY$
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer,vat float) 
+	RETURNS boolean AS 
+$BODY$
 
 DECLARE
 userId int;
