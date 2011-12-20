@@ -1907,6 +1907,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     : calculatePenaltyAlertQty() == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
                     : calculatePenaltyAlertQty() >= 3 ? PenaltyPercentage.HIRE_COMMERCIAL.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
+
         } else {
             return "";
         }
@@ -1920,6 +1921,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return calculatePenaltyAlertQty() == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
                     : calculatePenaltyAlertQty() >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
+
         } else {
             return "";
         }
