@@ -1,0 +1,5 @@
+--
+-- ToDo item 6.6.1 Postgres DB Upgrade to 9.1
+--
+-- Note that this command must be ran from the postgres user account!!
+ALTER ROLE chox_user SET bytea_output TO 'escape';
