@@ -208,6 +208,24 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal repairPenaltyChargePaid;
     private BigDecimal totalPaid;
     private boolean penaltyChargesPaid;
+    private Date autoPenaltyStart;
+    private Integer autoPenaltyAlertQty;
+
+    public Integer getAutoPenaltyAlertQty() {
+        return autoPenaltyAlertQty;
+    }
+
+    public void setAutoPenaltyAlertQty(Integer autoPenaltyAlertQty) {
+        this.autoPenaltyAlertQty = autoPenaltyAlertQty;
+    }
+
+    public Date getAutoPenaltyStart() {
+        return autoPenaltyStart;
+    }
+
+    public void setAutoPenaltyStart(Date autoPenaltyStart) {
+        this.autoPenaltyStart = autoPenaltyStart;
+    }
 
     public boolean isPenaltyChargesPaid() {
         return penaltyChargesPaid;
@@ -1206,7 +1224,7 @@ public class Invoice extends Entity implements Serializable {
 
     public long getInvoicedDays() {
         // long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date()) + 1;
-        long dateDiff = DateHelper.daysBetween(getCreatedDate(), new Date()) + 1;
+        long dateDiff = DateHelper.daysBetween(getAutoPenaltyStart(), new Date()) + 1;
         return dateDiff;
     }
 

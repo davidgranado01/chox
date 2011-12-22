@@ -143,6 +143,14 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
+        <action name="doAdjustAutoPenalty" class="idas.chox.web.actions.ClaimAction" method="adjustAutoPenaltyCharge">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
         <!-- MORE ACTION UPDATE - DROP DOWN -->
         <action name="updateClaimSupplier" class="idas.chox.web.actions.ClaimAction" method="updateClaimSupplierOwner">
             <interceptor-ref name="authenticatedNonce"/>
@@ -444,6 +452,10 @@
         </action>
         <action name="updatePenaltyCharges" class="idas.chox.web.actions.ClaimAction" method="getUpdatePenaltyCharges">
             <result name="success">/jsp/alertPanel/p_penalty_charge.jsp</result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="adjustAutomaticPenaltyCharges" class="idas.chox.web.actions.ClaimAction" method="getAdjustAutomaticPenaltyCharges">
+            <result name="success">/jsp/alertPanel/p_update_auto_penalty.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateInsurerClaimOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">

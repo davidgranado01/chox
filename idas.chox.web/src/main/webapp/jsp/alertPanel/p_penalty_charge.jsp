@@ -217,10 +217,10 @@
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
         $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
         
-//        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
-//        if (! isNaN(percentageAccepted)){
-//            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
-//        }
+        //        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
+        //        if (! isNaN(percentageAccepted)){
+        //            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
+        //        }
         
 
 
@@ -276,32 +276,20 @@
                 </s:else>
 
                 <tr>
-                    <td align="left"><label>Applied Hire Penalty Percentage &nbsp;</label></td>
-                    <td align="left"><s:if test="hirePenaltyPercentage==''">0%</s:if><s:else><s:property value="hirePenaltyPercentage" /></s:else></td>
-                    <td align="left"><label>Applied Repair Penalty Percentage &nbsp;</label></td>
-                    <td align="left"><s:if test="repairPenaltyPercentage==''">0%</s:if><s:else><s:property value="repairPenaltyPercentage" /></s:else></td>
-                </tr>
-                <tr>
-                    <td align="left"><label>Applied Hire Penalty Amount</label></td>
-                    <td align="left">£&nbsp;<s:property value="hirePenaltyChargeAmount" /></td>
-                    <td align="left"><label>Applied Repair Penalty Amount</label></td>
-                    <td align="left">£&nbsp;<s:property value="repairPenaltyChargeAmount" /></td>
-                </tr>
-                <tr>
-                    <td align="left"><label>Calculated Hire Penalty Percentage </label></td>
+                    <td align="left"><label>Hire Penalty Percentage </label></td>
                     <td align="left">
                         <div id="hirePenaltyPercentageDiv"></div>
                     </td>
-                    <td align="left"><label>Calculated Repair Penalty Percentage </label></td>
+                    <td align="left"><label>Repair Penalty Percentage </label></td>
                     <td align="left">
                         <div id="repairPenaltyPercentageDiv"></div>
                     </td>
                 </tr>
 
                 <tr>
-                    <td align="left"><label>Calculated Hire Penalty Amount</label></td>
+                    <td align="left"><label>Hire Penalty Amount</label></td>
                     <td align="left">£<input type="text" class="chox-ttxt" id="tHirePenaltyChargeAmount" name="hirePenaltyChargeAmount" value="<s:property value="calculatedHirePenaltyChargeAmount" />" onkeyup="extractNumber(this,2,false);"/></td>
-                    <td align="left"><label>Calculated Repair Penalty Amount</label></td>
+                    <td align="left"><label>Repair Penalty Amount</label></td>
                     <td align="left" nowrap >£<input type="text" class="chox-ttxt" id="tRepairPenaltyChargeAmount" name="repairPenaltyChargeAmount" value="<s:property value="calculatedRepairPenaltyChargeAmount" />" onkeyup="extractNumber(this,2,false);"/></td>
                 </tr>
 
@@ -318,14 +306,10 @@
                             <label>Remove From Queue</label>
                         </s:if>
                         <s:if test="showAutoPenaltyCheckbox ">
-                            <s:if test="autoPenaltyChargeEnabled">
-                                &nbsp;<s:checkbox name="stopAutoPenaltyCharge" id="PCStopAutoPenaltyChargeId"/>
-                                <label>Stop Automatic Penalty Charges &nbsp;</label>
-                            </s:if>
-                            <s:else>
+                            <s:if test="!autoPenaltyChargeEnabled">
                                 &nbsp;<s:checkbox name="autoPenaltyChargeEnabled" id="PCAutoPenaltyChargeEnabledId"/>
                                 <label>Enable Automatic Penalty Charges &nbsp;</label>
-                            </s:else>
+                            </s:if>
                         </s:if>
                     </td>
                 </tr>

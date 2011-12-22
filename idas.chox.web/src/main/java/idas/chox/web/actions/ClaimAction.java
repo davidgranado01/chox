@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -12,7 +13,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
 import idas.chox.web.ListUtils;
-import idas.chox.web.PanelAction;
+import idas.chox.service.security.ActionPanel;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -144,7 +145,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
-    private boolean stopAutoPenaltyCharge;
+    private Date autoPenaltyStart;
+
+    public Date getAutoPenaltyStart() {
+        return autoPenaltyStart;
+    }
+
+    public void setAutoPenaltyStart(Date autoPenaltyStart) {
+        this.autoPenaltyStart = autoPenaltyStart;
+    }
 
     public boolean isStopAutoPenaltyCharge() {
         return !claim.isAutoPenaltyChargeEnabled();
@@ -551,17 +560,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else if (!claim.getBreBand().isAllowPenaltyCharges()) {
                 allowPenaltyCharges = false;
             }
-            if (allowPenaltyCharges && invoice != null 
+            if (allowPenaltyCharges && invoice != null
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
                     && invoice.getPenaltyAlertQty() > -1
-                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                            && (!claim.isAutoPenaltyChargeEnabled() 
-                                || calculatePenaltyAlertQty() >= 3)))) {
+                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                    && (!claim.isAutoPenaltyChargeEnabled()
+                    || calculatePenaltyAlertQty() >= 3)))) {
 
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
@@ -1446,16 +1455,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getActionPanel() {
 
-        List<String> actions = PanelAction.getPanelActions();
+        List<String> actions = ActionPanel.getPanelActions();
 
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
-                if (action.equals("updatePenaltyCharges")) {
-                    LOG.debug("Setting properties for penalty charge panel....");
-                    getAlertPanel();
-                }
+                /*
+                 *  It's moved from ActionPanel list and called separately via claimdetail.jsp page.
+                 *  Not sure this is correct if so please delete in future (updated 21/12/2011).
+                 */
+//                if (action.equals("updatePenaltyCharges")) {
+//                    LOG.debug("Setting properties for penalty charge panel....");
+//                    getAlertPanel();
+//                }
                 return action;
             }
         }
@@ -1472,7 +1485,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List getExtraActionList() {
 
-        List<String> actions = AdditionalAction.getExtraActions();
+        List<String> actions = ExtraAction.getExtraActions();
         extraActionList = new ArrayList<LookupItem>();
         for (String action : actions) {
 
@@ -1480,7 +1493,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
             LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
             if (accessRight >= 2) {
-                String extraActionDescription = AdditionalAction.getExtraActionName(action);
+                String extraActionDescription = ExtraAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));
             }
         }
@@ -1959,21 +1972,46 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getShowRemoveFromQueueCheckbox() {
 
-        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty()) 
-                || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                    && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty() >= 3) 
-                    && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())) {
-            
+        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())
+                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty() >= 3)
+                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())) {
+
             return true;
-            
+
         } else {
             return false;
         }
     }
 
     private int calculatePenaltyAlertQty() {
-        long dateDiff = DateHelper.daysBetween(claim.getInvoice().getCreatedDate(), new Date());
+        long dateDiff = DateHelper.daysBetween(claim.getInvoice().getAutoPenaltyStart(), new Date());
         return (int) (dateDiff / 30);
+    }
+
+    public String adjustAutoPenaltyCharge() {
+
+        if (autoPenaltyStart != null && claim.getInvoice().getAutoPenaltyStart().compareTo(autoPenaltyStart) != 0) {
+            Invoice inv = claim.getInvoice();
+            inv.setAutoPenaltyStart(autoPenaltyStart);
+            inv.setHirePenaltyCharge(BigDecimal.ZERO);
+            inv.setRepairPenaltyCharge(BigDecimal.ZERO);
+            inv.setPenaltyAlertQty(0);
+            inv.setAutoPenaltyAlertQty(0);
+            inv.setHirePenaltyChargeAppliedDate(new Date());
+            inv.setRepairPenaltyChargeAppliedDate(new Date());
+            inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
+        }
+        service.updateClaim(claim);
+        return SUCCESS;
+    }
+
+    public Date getAutoPenaltyStartDate() {
+        return claim.getInvoice().getAutoPenaltyStart();
+    }
+
+    public String getAdjustAutomaticPenaltyCharges() {
+        return SUCCESS;
     }
 
     @Override

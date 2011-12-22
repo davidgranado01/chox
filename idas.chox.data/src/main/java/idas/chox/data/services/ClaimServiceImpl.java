@@ -645,7 +645,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.auto_penalty_start)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
             criteria.add(Restrictions.disjunction()
                         .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
                         .add(Restrictions.conjunction()
