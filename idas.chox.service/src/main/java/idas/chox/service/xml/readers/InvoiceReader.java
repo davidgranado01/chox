@@ -11,6 +11,7 @@ import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import java.math.RoundingMode;
 import java.util.Calendar;
+import java.util.Date;
 import org.w3c.dom.Element;
 
 public class InvoiceReader extends BaseEntityReader {
@@ -130,6 +131,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalLossFeeGross(BigDecimal.ZERO);
         invoice.setTotalLossFeeNet(BigDecimal.ZERO);
         invoice.setTotalLossFeeVat(BigDecimal.ZERO);
+        invoice.setAutoPenaltyStart(new Date());
 
         claimResult.getClaim().setInvoice(invoice);
         claimResult.getClaim().updateLiabilityPayment();

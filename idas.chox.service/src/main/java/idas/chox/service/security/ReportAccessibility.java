@@ -68,7 +68,7 @@ public class ReportAccessibility {
     }
 
     public boolean canAccess(String reportCode) {
-        short accessibility = ApplicationAccessibility.Declined;
+        short accessibility = ApplicationAccessibility.DECLINED;
 
         LOG.debug("Checking accessibbility for report '{}'", reportCode);
         if (reportCode.equals("RPT008"))
@@ -118,7 +118,7 @@ public class ReportAccessibility {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
         LOG.debug("Accessibbility for report '{}' is {}", reportCode, accessibility);
-        if (accessibility == ApplicationAccessibility.Declined)
+        if (accessibility == ApplicationAccessibility.DECLINED)
             return false;
 
         return true;

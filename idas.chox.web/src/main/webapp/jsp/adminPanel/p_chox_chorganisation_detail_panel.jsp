@@ -450,7 +450,12 @@
                                         <s:checkbox name="enableSubscriberClaims" value="enableSubscriberClaims" />
                                     </div>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Automatic Penalty Charges</label>
+                                        <s:checkbox name="autoPenaltyChargeEnabled" value="autoPenaltyChargeEnabled" />
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                         <div class="chox-form-button">

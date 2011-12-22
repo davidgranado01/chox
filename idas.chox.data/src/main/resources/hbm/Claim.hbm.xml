@@ -35,6 +35,7 @@
     <!--property column="original_supp_inv" name="originalSupplementaryInvoicedClaim"/-->
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
+    <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
     <property column="claim_type" name="claimType"
         type="idas.chox.data.hibernate.ClaimTypeMapping"  not-null="true"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>

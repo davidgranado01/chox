@@ -42,6 +42,8 @@
         <property column="miscellaneous_qty" name="miscellaneousQty"/>
         <property column="automatic_fee" name="automaticFee"/>
         <property column="automatic_qty" name="automaticQty"/>
+        <property column="auto_penalty_start" name="autoPenaltyStart"/>
+        <property column="auto_penalty_alert_qty" name="autoPenaltyAlertQty"/>
         <property column="additional_driver_fee" name="additionalDriverFee"/>
         <property column="additional_driver_qty" name="additionalDriverQty"/>
         <property column="sat_nav_fee" name="satNavFee"/>

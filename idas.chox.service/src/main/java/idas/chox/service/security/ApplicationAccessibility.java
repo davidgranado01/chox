@@ -4,15 +4,15 @@ import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.AccessibilityHelper;
+import idas.chox.core.util.DateHelper;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 public class ApplicationAccessibility {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
-    public static final Short Declined = 0;
-    public static final Short ReadOnly = 1;
-    public static final Short Editable = 2;
+    public static final Short DECLINED = 0;
+    public static final Short READ_ONLY = 1;
+    public static final Short EDITABLE = 2;
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     private ClaimService claimService;
@@ -151,11 +151,18 @@ public class ApplicationAccessibility {
             return accessRight;
         }
         LOG.debug("Access declined (no access rights defined).");
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - EXTRA ACTION">
+    
+        
+    private int calculatePenaltyAlertQty(Invoice inv) {
+        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date());
+        return (int) (dateDiff / 30);
+    }
+    
     private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
         return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
     }
@@ -189,7 +196,7 @@ public class ApplicationAccessibility {
                 accessRight = 0;
                 LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && actionName.equals("updateInsurerClaimOwner") && claim.getInsurer().isWorkgroupEnable()) {
+            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER) && claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
             }
             if (accessRight >= 2) {
@@ -197,12 +204,8 @@ public class ApplicationAccessibility {
                 LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
             }
 
-            if (actionName.equals("updatePenaltyCharges")) {
-                LOG.debug("************** updatePenaltyCharges access right: {}", accessRight);
-            }
-
             if (accessRight >= 2) {
-                if (actionName.equals("updateInterimPaymentFullAndFinal")) {
+                if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
                     boolean b = true;
                     try {
 
@@ -216,7 +219,7 @@ public class ApplicationAccessibility {
                         LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
                         accessRight = 0;
                     }
-                } else if (actionName.equals("updatePenaltyCharges")) {
+                } else if (actionName.equals(ExtraAction.UPDATE_PENALTY_CHARGES)) {
                     // Check invoice was uploaded at least 30 days ago
                     long days = 0;
                     Invoice invoice = claim.getInvoice();
@@ -229,19 +232,14 @@ public class ApplicationAccessibility {
                         } // Check the 'Adjust Penalty Charges' Panel is not already displayed
                         // 
                         else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
-                            // Check if age of invoice based upon liability date
-                            if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
-                                    && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
-                                if (claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30) {
-                                    LOG.debug("Invoice in penalty queue (age based upon liability date) - no access to More Action 'updatePenaltyCharges'");
-                                    accessRight = 0;
-                                }
-                            } // Take age of invoice from invoice creation date
-                            else {
-                                if (invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
-                                    LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
-                                    accessRight = 0;
-                                }
+                            // Take age of invoice from invoice creation date
+                            if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                        && (!claim.isAutoPenaltyChargeEnabled() 
+                                            || calculatePenaltyAlertQty(invoice) >= 3))) 
+                                    && invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
+                                accessRight = 0;
                             }
                         }
                     } else {
@@ -249,7 +247,22 @@ public class ApplicationAccessibility {
                         LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
                         accessRight = 0;
                     }
-                } else if (actionName.equals("markSupplementaryInvoicedClaim")) {
+                } else if (actionName.equals(ExtraAction.ADJUST_AUTOMATIC_PENALTY_CHARGES)) {
+                    Invoice invoice = claim.getInvoice();
+                    if (invoice != null) {
+
+                        if (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled() && calculatePenaltyAlertQty(claim.getInvoice()) < 3) {
+                            return accessRight;
+                        } else {
+                            LOG.debug("Declined access right for updateAutomaticPenaltyCharges ");
+                            return DECLINED;
+                        }
+                    } else {
+                        // No invoice!
+                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
+                        accessRight = 0;
+                    }
+                } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
 
                     String customerClaimRef = claim.getCustomer().getClaimReference();
 
@@ -273,7 +286,7 @@ public class ApplicationAccessibility {
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
-        return Declined;
+        return DECLINED;
     }
 
     // </editor-fold>
@@ -292,7 +305,7 @@ public class ApplicationAccessibility {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccessibility(roleMap, user);
         }
-        return Declined;
+        return DECLINED;
     }
 
     public short checkNotificationEditableCheck(String notificationName, WebUser user, Claim claim) {
@@ -309,7 +322,7 @@ public class ApplicationAccessibility {
             return accessRight;
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -339,7 +352,7 @@ public class ApplicationAccessibility {
 
             return accessRight;
         }
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -360,7 +373,7 @@ public class ApplicationAccessibility {
             return checkAccessibility(roleMap, user);
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -381,7 +394,7 @@ public class ApplicationAccessibility {
             return checkAccessibility(roleMap, user);
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -421,7 +434,7 @@ public class ApplicationAccessibility {
             return accessRight;
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -442,7 +455,7 @@ public class ApplicationAccessibility {
             return checkAccessibility(roleMap, user);
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -470,17 +483,17 @@ public class ApplicationAccessibility {
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
-            
+
             if (user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REOPEN_CLAIM) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
-                return Declined;
+                return DECLINED;
             }
             LOG.debug("Returning Button accessibility access right: {}", accessRight);
             return accessRight;
 
         }
 
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -497,7 +510,7 @@ public class ApplicationAccessibility {
 
             return checkAccessibility(roleMap, user);
         }
-        return Declined;
+        return DECLINED;
     }
     // </editor-fold>
 
@@ -541,7 +554,7 @@ public class ApplicationAccessibility {
             LOG.debug("Returning access rights for batchupdate '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
-        return Declined;
+        return DECLINED;
     }
 
     public List<String> checkBatchUpdateAccessibility(String actionName, WebUser user) {
@@ -619,7 +632,7 @@ public class ApplicationAccessibility {
 
         //1. if rolemap did't defined, decline as request
         if (roleMap == null) {
-            return Declined;
+            return DECLINED;
         }
 
         //2. return role accessibility if exist

@@ -1,9 +1,5 @@
 package idas.chox.web.actions;
 
-/**
- *
- * @author seeni
- */
 import idas.chox.service.bre.util.CalcHelper;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
@@ -34,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.LiabilityStatus;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -3007,8 +3004,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
             fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
         }
-
-        setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        LiabilityStatus l = claim.getLiabilityStatus();
+        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType()) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            setTotalToPay(fullTotalToPay.multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+        } else {
+            setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        }
 //        invoiceOriginalAction.model.setTotalToPay_original(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
     }

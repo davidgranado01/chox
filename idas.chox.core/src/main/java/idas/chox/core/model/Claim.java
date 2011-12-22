@@ -42,7 +42,8 @@ public class Claim extends Entity implements Serializable {
     private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
 //    private boolean supplementaryInvoicedClaim;
-//    private boolean insurerUpload;
+    private boolean autoPenaltyChargeEnabled;
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
@@ -71,6 +72,14 @@ public class Claim extends Entity implements Serializable {
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
+    }
+
+    public boolean isAutoPenaltyChargeEnabled() {
+        return autoPenaltyChargeEnabled;
+    }
+
+    public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
+        this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">

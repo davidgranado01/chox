@@ -643,7 +643,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.auto_penalty_start)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.disjunction()
+                        .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
+                        .add(Restrictions.conjunction()
+                            .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
+                            .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
@@ -659,13 +664,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
             }
-
-            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus")).add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
-
-            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30")).add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
-
-            criteria.add(Restrictions.disjunction().add(nonSplit).add(split));
-
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
