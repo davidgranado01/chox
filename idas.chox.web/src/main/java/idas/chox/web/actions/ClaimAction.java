@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
@@ -2002,9 +2003,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             try {
                 dateWithoutTime = sdf.parse(sdf.format(claim.getInvoice().getAutoPenaltyStart()));
             } catch (ParseException ex) {
+                LOG.error("Date Parse Exception", ex);
             }
             if (dateWithoutTime.compareTo(autoPenaltyStart) != 0) {
-                service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
+                try {
+                    service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
+                    Thread.currentThread().sleep(1000); // This delay ensures claim/invoice updated before store procedure executes.
+                } catch (InterruptedException ex) {
+                    LOG.error("Sleep call interupted");
+                }
             } else { // update claim to enable or disable auto penalty charge.
                 service.updateClaim(claim);
             }
