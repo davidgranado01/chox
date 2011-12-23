@@ -4,6 +4,7 @@ import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
@@ -54,6 +55,7 @@ import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -63,8 +65,6 @@ import java.util.Locale;
 import java.util.Map;
 import net.sf.json.JSONObject;
 import org.springframework.security.annotation.Secured;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -1991,16 +1991,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
     }
-
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
-        if (autoPenaltyStart != null && claim.getInvoice().getAutoPenaltyStart().compareTo(autoPenaltyStart) != 0) {
-            service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
-        } else { // update claim to enable or disable auto penalty charge.
-            service.updateClaim(claim);
+        if (autoPenaltyStart != null) {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date dateWithoutTime = null;
+            try {
+                dateWithoutTime = sdf.parse(sdf.format(claim.getInvoice().getAutoPenaltyStart()));
+            } catch (ParseException ex) {
+            }
+            if (dateWithoutTime.compareTo(autoPenaltyStart) != 0) {
+                service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
+            } else { // update claim to enable or disable auto penalty charge.
+                service.updateClaim(claim);
+            }
         }
         return SUCCESS;
     }
