@@ -160,11 +160,11 @@
         var totalAmountToPayBeforeNewPenaltyCharge
         var totalAmountToPayAfterNewPenaltyCharge;
 
-        if(<s:property value="showAutoPenaltyCheckbox"/>) {
-            if(!$("#PCStopAutoPenaltyChargeId").attr('checked')) {
-                $("#PCStopAutoPenaltyChargeId").attr('checked',true);
-            } 
-        }
+//        if(<s:property value="showAutoPenaltyCheckbox"/>) {
+//            if(!$("#PCStopAutoPenaltyChargeId").attr('checked')) {
+//                $("#PCStopAutoPenaltyChargeId").attr('checked',true);
+//            } 
+//        }
     
         if(!isNaN(repairAmount)){
             repairPenaltyCharge = parseFloat(repairAmount) == NaN ? 0 : parseFloat(repairAmount);
