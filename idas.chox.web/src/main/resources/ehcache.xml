@@ -4,13 +4,13 @@
     <diskStore path="java.io.tmpdir"/>
 
     <defaultCache
-        maxElementsInMemory="10000"
+        maxElementsInMemory="1"
         eternal="false"
-        timeToIdleSeconds="120"
-        timeToLiveSeconds="120"
-        overflowToDisk="true"
+        timeToIdleSeconds="5"
+        timeToLiveSeconds="5"
+        overflowToDisk="false"
         diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="120"
+        diskExpiryThreadIntervalSeconds="5"
         memoryStoreEvictionPolicy="LRU"
         />
      
@@ -405,19 +405,11 @@
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
-     
-    <cache name ="idas.chox.core.model.Claim"
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
         
-    <cache name ="idas.chox.core.model.Invoice"
+   <!--  Claim and invoice removed from 2nd level cache because store procedure updates the claim and invoice
+         every 15 mins and that's not updated in the application as it still uses the cache to retrive the claim  and invoice -->
+     
+<!--    <cache name ="idas.chox.core.model.Claim"
         maxElementsInMemory="1000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -426,7 +418,18 @@
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
-        />    
+        />-->
+        
+<!--    <cache name ="idas.chox.core.model.Invoice"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="true"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />    -->
      
     <cache name ="idas.chox.core.model.InvoiceOriginal"
         maxElementsInMemory="1000"

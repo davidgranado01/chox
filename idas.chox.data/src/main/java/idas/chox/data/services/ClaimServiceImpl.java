@@ -11,7 +11,6 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -29,17 +28,20 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
+import idas.chox.core.model.PenaltyPercentage;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 import org.apache.http.impl.cookie.DateUtils;
 import org.hibernate.criterion.Property;
 
@@ -937,11 +939,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public boolean isSubscriberClaimRejectedAndAgreed(int claimId) {
         Claim claim = getClaim(claimId);
-        
+
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             return auditTrailService.isSubscriberClaimRejectedAndAgreed(claimId);
         }
-        
+
         return false;
     }
 
@@ -958,5 +960,70 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Days until subscriber claim ({}) rejected: {}", claimId, claimAge);
 
         return claimAge;
+    }
+
+    @Override
+    public boolean updateAutomaticPenaltyCharge(Claim claim) {
+
+        if (claim.isAutoPenaltyChargeEnabled()
+                && claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                && claim.getInvoice() != null
+                && calculatePenaltyAlertQty(claim.getInvoice()) < 3
+                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
+
+            LOG.info("invoice penalty alert qty: {} , calculated penalty alert qty {}", claim.getInvoice().getPenaltyAlertQty(), calculatePenaltyAlertQty(claim.getInvoice()));
+            String query = "select * from applyAutoPenaltyCharge(:userId,:claimId)";
+
+            Map paramMap = new HashMap();
+            paramMap.put("userId", 999);
+            paramMap.put("claimId", claim.getId());
+
+            try {
+                List valList = externalQuery(query, paramMap);
+                if (valList.size() > 0) {
+                    LOG.info("Auto penalty charge applied to claim: {}", claim.getChoReference());
+//                    for (Object object : valList) { 
+//                             object is a hash map. In future if needed to access the result then can be implemented.                   
+//                    }
+                } else {
+                    LOG.error("Auto penalty charge apply failed for claim: {}", claim.getChoReference());
+                    return false;
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown while updating auto penalty charge store procedure ", ex);
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int calculatePenaltyAlertQty(Invoice inv) {
+        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date());
+        return (int) (dateDiff / 30);
+    }
+
+    @Override
+    public void adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
+
+        Invoice inv = claim.getInvoice();
+        inv.setAutoPenaltyStart(autoPenaltyStart);
+        inv.setHirePenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
+        inv.setRepairPenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
+        inv.setHirePenaltyCharge(BigDecimal.ZERO);
+        inv.setRepairPenaltyCharge(BigDecimal.ZERO);
+        inv.setPenaltyAlertQty(0);
+        inv.setAutoPenaltyAlertQty(0);
+        inv.setHirePenaltyChargeAppliedDate(new Date());
+        inv.setRepairPenaltyChargeAppliedDate(new Date());
+        inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
+        inv.setTotalPenaltyCharge(BigDecimal.ZERO);
+
+        Comment comment = Comment.New(0, "Automatic penalty charge have been removed as the date from which penalty charges are calculated has changed.");
+        claim.addComment(comment);
+
+        updateClaim(claim);
     }
 }

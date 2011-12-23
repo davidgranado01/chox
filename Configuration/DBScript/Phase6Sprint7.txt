@@ -1969,28 +1969,32 @@ auto_penalty_start = created_date;
 --
 
 
-CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer) 
-	RETURNS boolean AS 
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) 
+	RETURNS SETOF claim AS 
 $BODY$
 
 DECLARE
+
+claimRecord30D claim%rowtype;
+claimRecord60D claim%rowtype;
+claimRecord90D claim%rowtype;
 userId int;
-vatRate NUMERIC(8,2);
-vatRateVal NUMERIC(8,2);
-hirepenalPer30D NUMERIC(8,2);
-hirepenalPer30DVal NUMERIC(8,2);
-hirepenalPer60D NUMERIC(8,2);
-hirepenalPer60DVal NUMERIC(8,2);
-repairpenalPer30D NUMERIC(8,2);
-repairpenalPer30DVal NUMERIC(8,2);
-repairpenalPer60D NUMERIC(8,2);
-repairpenalPer60DVal NUMERIC(8,2);
+ClaimsId integer;
+invoiceCount30D int;
+invoiceCount60D int;
+invoiceCount90D int;
+hirepenalPer30D NUMERIC;
+hirepenalPer30DVal NUMERIC(8,3);
+hirepenalPer60D NUMERIC;
+hirepenalPer60DVal NUMERIC(8,3);
+repairpenalPer30D NUMERIC;
+repairpenalPer30DVal NUMERIC(8,3);
+repairpenalPer60D NUMERIC;
+repairpenalPer60DVal NUMERIC(8,3);
 
 BEGIN
-
+ClaimsId = claimId;
 userId = userIdNumber;
-vatRate = 20;
-vatRateVal = vatRate/100;
 hirepenalPer30D = 7.5;
 hirepenalPer30DVal = hirepenalPer30D/100;
 hirepenalPer60D = 15;
@@ -1999,310 +2003,249 @@ repairpenalPer30D = 2.5;
 repairpenalPer30DVal = repairpenalPer30D/100;
 repairpenalPer60D = 5;
 repairpenalPer60DVal = repairpenalPer60D/100;
+invoiceCount30D = 0;
+invoiceCount60D = 0;
+invoiceCount90D = 0;
 
-RAISE NOTICE 'userid : % , given vat rate : %, vatRateVal: % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,vatRate, vatRateVal,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
+RAISE NOTICE 'userid : % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
 
-INSERT INTO comment
-(claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
-SELECT 
- c.id,
- userId,
- now(),
- userId,
- now(),
- 0,
- 'Automatic penalty charge of £' ||  (params.hirePenaltyCal + params.repairPenaltyCal)::NUMERIC(10,2) 
-                                 || ' applied to the invoice as the age of the invoice exceeded ' 
-                                 || (extract(epoch from now() - i.auto_penalty_start)/(3600*24.0))::int 
-                                 || ' days.'
-from
+
+FOR claimRecord30D IN 
+SELECT * 
+FROM
  claim c,
  invoice i, 
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
- chorganisation cho,
- (
-  select 
-   (i2.hire_net * hirepenalPer30DVal) + (i2.hire_net * hirepenalPer30DVal * subParams.vatUsed) as hirePenaltyCal,
-   (i2.repair_net * repairpenalPer30DVal) + (i2.repair_net * repairpenalPer30DVal * subParams.vatUsed) as repairPenaltyCal,
-   i2.id as invId
-  from
-   (
-     select 
-      COALESCE((i1.hire_vat/i1.hire_net),vatRateVal)::NUMERIC(6,2) as vatUsed,
-      i1.id as iid 
-     from 
-      invoice i1
-   ) subParams,
-   invoice i2
-  where 
-   i2.id = subParams.iid
- ) params
-where 
- params.invId = i.id
- and c.invoice_id = i.id 
- and c.claim_type not in (3,4,5,6,7,8,9,10)
- and c.insurer_id = ins.id 
- and c.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and c.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and i.penalty_alert_qty = 0
- and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 30 
- and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 60;
-
-
-RAISE NOTICE 'Notes has been created for invoice older than 30 days '; 
-
-
-update invoice  
-set 
- auto_penalty_alert_qty = 1,
- penalty_alert_qty = 1,
- hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
- repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
- full_total_to_pay = full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + params.hirePenaltyCal + params.repairPenaltyCal,
- total_to_pay = (CASE WHEN (c.liability_status = 5 OR c.liability_status = 6) 
-                      THEN (c.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + params.hirePenaltyCal + params.repairPenaltyCal)
-                      ELSE full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + params.hirePenaltyCal + params.repairPenaltyCal 
-                      END ),
- hire_penalty_charge = params.hirePenaltyCal,
- repair_penalty_charge = params.repairPenaltyCal,
- hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer30D || '%' ELSE null END),
- repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer30D || '%' ELSE null END),
- total_penalty_charge =  params.hirePenaltyCal + params.repairPenaltyCal,
- last_modified_by = userId,
- last_modified_date = now()
-from
- claim c, 
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
- chorganisation cho,
- (
-  select 
-   (i2.hire_net * hirepenalPer30DVal) + (i2.hire_net * hirepenalPer30DVal * subParams.vatUsed) as hirePenaltyCal,
-   (i2.repair_net * repairpenalPer30DVal) + (i2.repair_net * repairpenalPer30DVal * subParams.vatUsed) as repairPenaltyCal,
-   i2.id as invId
-  from
-   (
-     select 
-      COALESCE((i1.hire_vat/i1.hire_net),vatRateVal)::NUMERIC(6,2) as vatUsed,
-      i1.id as iid 
-     from 
-      invoice i1
-   ) subParams,
-   invoice i2
-  where 
-   i2.id = subParams.iid
- ) params
-where 
- params.invId = invoice.id
- and c.invoice_id = invoice.id 
- and c.claim_type not in (3,4,5,6,7,8,9,10)
- and c.insurer_id = ins.id 
- and c.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and c.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and invoice.penalty_alert_qty = 0
- and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - invoice.auto_penalty_start)/(3600*24.0) >= 30 
- and extract(epoch from now() - invoice.auto_penalty_start)/(3600*24.0) < 60; 
-
-
-RAISE NOTICE 'Penalty charge for invoice older than 30 days applied '; 
-
-INSERT INTO comment
-(claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
-SELECT 
- c.id,
- userId,
- now(),
- userId,
- now(),
- 0,
- 'Automatic penalty charge of £' ||  (params.hirePenaltyCal + params.repairPenaltyCal)::NUMERIC(10,2) 
-                                 || ' applied to the invoice as the age of the invoice exceeded ' 
-                                 || (extract(epoch from now() - i.auto_penalty_start)/(3600*24.0))::int 
-                                 || ' days.'
-from
- claim c, 
- invoice i,
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
- chorganisation cho,
- (
-   select 
-    (i2.hire_net * hirepenalPer60DVal) + (i2.hire_net * hirepenalPer60DVal * subParams.vatUsed) as hirePenaltyCal,
-    (i2.repair_net * repairpenalPer60DVal) + (i2.repair_net * repairpenalPer60DVal * subParams.vatUsed) as repairPenaltyCal,
-    i2.id as invId
-   from 
-    (
-     select 
-       COALESCE((i1.hire_vat/i1.hire_net),vatRateVal)::NUMERIC(6,2) as vatUsed,
-       i1.id as iid 
-     from 
-       invoice i1
-    ) subParams,
-    invoice i2
-   where 
-    i2.id = subParams.iid
- ) params
-where 
- params.invId = i.id
- and c.invoice_id = i.id 
- and c.claim_type not in (3,4,5,6,7,8,9,10)
- and c.insurer_id = ins.id 
- and c.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and c.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and i.penalty_alert_qty <= 1 
- and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 60 
- and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90; 
- 
-RAISE NOTICE 'Notes has been created for invoice older than 60 days '; 
-
-
-update invoice  
-set 
- auto_penalty_alert_qty = 2,
- penalty_alert_qty = 2,
- hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
- repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
- full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge)) + params.hirePenaltyCal + params.repairPenaltyCal,
- total_to_pay = (CASE WHEN (c.liability_status = 5 OR c.liability_status = 6) 
-                      THEN (c.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + params.hirePenaltyCal + params.repairPenaltyCal)
-                      ELSE full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + params.hirePenaltyCal + params.repairPenaltyCal 
-                      END ),
- hire_penalty_charge = params.hirePenaltyCal,
- repair_penalty_charge = params.repairPenaltyCal,
- hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer60D || '%' ELSE null END),
- repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer60D || '%' ELSE null END),
- total_penalty_charge =  params.hirePenaltyCal + params.repairPenaltyCal,
- last_modified_by = userId,
- last_modified_date = now()
-from
- claim c, 
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
- chorganisation cho,
- (
-   select 
-    (i2.hire_net * hirepenalPer60DVal) + (i2.hire_net * hirepenalPer60DVal * subParams.vatUsed) as hirePenaltyCal,
-    (i2.repair_net * repairpenalPer60DVal) + (i2.repair_net * repairpenalPer60DVal * subParams.vatUsed) as repairPenaltyCal,
-    i2.id as invId
-   from 
-    (
-     select 
-       COALESCE((i1.hire_vat/i1.hire_net),vatRateVal)::NUMERIC(10,2) as vatUsed,
-       i1.id as iid 
-     from 
-       invoice i1
-    ) subParams,
-    invoice i2
-   where 
-    i2.id = subParams.iid
- ) params
-where 
- params.invId = invoice.id
- and c.invoice_id = invoice.id 
- and c.claim_type not in (3,4,5,6,7,8,9,10)
- and c.insurer_id = ins.id 
- and c.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and c.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and invoice.penalty_alert_qty <= 1 
- and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - invoice.auto_penalty_start)/(3600*24.0) >= 60 
- and extract(epoch from now() - invoice.auto_penalty_start)/(3600*24.0) < 90; 
-
-RAISE NOTICE 'Penalty charge for invoice older than 60 days applied'; 
-
-
-update invoice  
-set 
- auto_penalty_alert_qty = -1
-from
- claim c, 
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
  chorganisation cho
-where 
- c.invoice_id = invoice.id 
- and c.claim_type not in (3,4,5,6,7,8,9,10)
- and c.insurer_id = ins.id 
- and c.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and c.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and invoice.penalty_alert_qty >= 0
- and invoice.penalty_alert_qty <= 2
- and c.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - invoice.auto_penalty_start)/(3600*24.0) >= 90;
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty = 0
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 30 
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) < 60
 
-RAISE NOTICE 'For Invoice older than 90 days, auto_penalty_alert_qty set to -1';
+LOOP
 
-update claim  
-set 
- auto_penalty_charges = false,
- last_modified_by = userId,
- last_modified_date = now()
-from
+
+RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_reference;
+    
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = 1,
+      penalty_alert_qty = 1,
+      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord30D.liability_status = 5 OR claimRecord30D.liability_status = 6) 
+                           THEN ((claimRecord30D.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal)))::NUMERIC(8,2)
+                           ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2) 
+                           END ),
+      hire_penalty_charge = (hire_gross * hirepenalPer30DVal)::NUMERIC(8,2),
+      repair_penalty_charge = (repair_gross * repairpenalPer30DVal)::NUMERIC(8,2),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer30D || '%' ELSE null END),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer30D || '%' ELSE null END),
+      total_penalty_charge =  ((hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2),
+      last_modified_by = userId,
+      last_modified_date = now() 
+   WHERE
+      claimRecord30D.invoice_id = invoice.id;
+
+--RAISE NOTICE 'Invoice > 30 days hirepenalPer30DVal :% , repairpenalPer30DVal :% ', hirepenalPer30DVal , repairpenalPer30DVal;
+--RAISE NOTICE 'Invoice > 30 days hire gross :%  ', (select i.hire_gross   from invoice i where i.id = claimRecord30D.invoice_id);
+--RAISE NOTICE 'Invoice > 30 days repair gross :%  ', (select i.repair_gross from invoice i where i.id = claimRecord30D.invoice_id);
+--RAISE NOTICE 'Invoice > 30 hire penalty charge  :%  ', (select i.hire_gross from invoice i where i.id = claimRecord30D.invoice_id) * hirepenalPer30DVal;
+--RAISE NOTICE 'Invoice > 30 repair penalty charge  :%  ', (select i.repair_gross from invoice i where i.id = claimRecord30D.invoice_id) * hirepenalPer30DVal;
+
+
+--RAISE NOTICE 'Invoice > 30 days updated ';
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+   SELECT 
+      claimRecord30D.id,
+      userId,
+      now(),
+      userId,
+      now(),
+      0,
+      'Automatic penalty charge of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
+                                      || ' applied to the invoice as the age of the invoice exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+                                      || ' days.'
+   FROM 
+     invoice i
+   WHERE
+     i.id = claimRecord30D.invoice_id;
+     
+--RAISE NOTICE 'Notes added for invoice > 30 days  ';
+
+invoiceCount30D = invoiceCount30D + 1;
+RETURN NEXT claimRecord30D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 30 days : % ',invoiceCount30D;
+
+
+FOR claimRecord60D IN 
+SELECT * 
+FROM
+ claim c,
  invoice i, 
- bre_band bre , 
- bre_band_organisation breorg , 
- insurer ins , 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
  chorganisation cho
-where 
- claim.invoice_id = i.id 
- and claim.claim_type not in (3,4,5,6,7,8,9,10)
- and claim.insurer_id = ins.id 
- and claim.chorganisation_id = cho.id
- and bre.insurer_id = ins.id
- and breorg.chorganisation_id = cho.id
- and breorg.band_id = bre.id
- and bre.allow_penalty_charges = true
- and claim.auto_penalty_charges = true
- and cho.auto_penalty_charges = true
- and i.penalty_alert_qty >= 0
- and i.penalty_alert_qty <= 2
- and claim.status not in ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 90; 
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty <= 1 
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 60 
+ AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
 
-RAISE NOTICE 'Invoice older than 90 days moved to manual invoice queue'; 
+LOOP
 
-return true;
 
+RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
+
+
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = 2,
+      penalty_alert_qty = 2,
+      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord60D.liability_status = 5 OR claimRecord60D.liability_status = 6) 
+                           THEN ((claimRecord60D.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal)))::NUMERIC(8,2)
+                           ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2) 
+                           END ),
+      hire_penalty_charge = (hire_gross * hirepenalPer60DVal)::NUMERIC(8,2),
+      repair_penalty_charge = (repair_gross * repairpenalPer60DVal)::NUMERIC(8,2),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer60D || '%' ELSE null END),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer60D || '%' ELSE null END),
+      total_penalty_charge =  ((hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2),
+      last_modified_by = userId,
+      last_modified_date = now()
+    WHERE
+      claimRecord60D.invoice_id = invoice.id;
+
+--RAISE NOTICE 'Invoice > 60 days hirepenalPer30DVal :% , repairpenalPer60DVal :% ', hirepenalPer60DVal , repairpenalPer60DVal;
+--RAISE NOTICE 'Invoice > 60 days hire gross :%  ', (select i.hire_gross   from invoice i where i.id = claimRecord60D.invoice_id);
+--RAISE NOTICE 'Invoice > 60 days repair gross :%  ', (select i.repair_gross from invoice i where i.id = claimRecord60D.invoice_id);
+--RAISE NOTICE 'Invoice > 60 hire penalty charge  :%  ', (select i.hire_gross from invoice i where i.id = claimRecord60D.invoice_id) * hirepenalPer60DVal;
+--RAISE NOTICE 'Invoice > 60 repair penalty charge  :%  ', (select i.repair_gross from invoice i where i.id = claimRecord60D.invoice_id) * hirepenalPer60DVal;
+
+--RAISE NOTICE 'Invoice > 60 days updated ';
+
+    INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+    SELECT 
+      claimRecord60D.id,
+      userId,
+      now(),
+      userId,
+      now(),
+      0,
+      'Automatic penalty charge of £' ||  hirepenalPer60DVal 
+                                      || ' applied to the invoice as the age of the invoice exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+                                      || ' days.'
+    FROM 
+      invoice i
+    WHERE
+      i.id = claimRecord60D.invoice_id;
+  
+--RAISE NOTICE 'Notes added for invoice > 60 days ';
+
+invoiceCount60D = invoiceCount60D + 1;
+RETURN NEXT claimRecord60D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 60 days : % ',invoiceCount60D;
+
+
+FOR claimRecord90D IN 
+SELECT * 
+FROM
+ claim c,
+ invoice i, 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
+ chorganisation cho
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty >= 0
+ AND i.penalty_alert_qty <= 2
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 90
+
+LOOP
+
+RAISE NOTICE 'Cho Reference for invoice > 90 days : % ',claimRecord90D.cho_reference;
+
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = -1
+    WHERE
+      claimRecord90D.invoice_id = invoice.id;
+
+RAISE NOTICE 'Invoice > 90 days updated ';
+
+    UPDATE claim  
+    SET 
+      auto_penalty_charges = false,
+      last_modified_by = userId,
+      last_modified_date = now()
+    WHERE
+      claimRecord90D.id = claim.id; 
+
+--RAISE NOTICE 'claim updated for invoice > 90 days ';
+
+invoiceCount90D = invoiceCount90D + 1;
+RETURN NEXT claimRecord90D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 90 days : % ',invoiceCount90D;
+
+RETURN ;
 END;
 $BODY$
 LANGUAGE plpgsql;
-GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer) TO chox;
-GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer) TO chox_user;
-
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox;
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox_user;
 
 --
 -- Alter Store procedure to create automatic task
