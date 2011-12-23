@@ -1006,6 +1006,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
