@@ -2,6 +2,7 @@ package idas.chox.core.services;
 
 import idas.chox.core.search.*;
 import idas.chox.core.model.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -64,4 +65,10 @@ public interface ClaimService extends DataService {
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
     
     public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef);
+    
+    public boolean updateAutomaticPenaltyCharge(Claim claim);
+    
+    public int calculatePenaltyAlertQty(Invoice inv);
+    
+    public void adjustAutoPenaltyCharge(Claim claim , Date autoPenaltyStart);
 }

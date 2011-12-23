@@ -62,6 +62,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import net.sf.json.JSONObject;
+import org.springframework.security.annotation.Secured;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -351,7 +354,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             claim = service.getClaim(id);
             getSession().put("claimDetailPageClaimId", id);
-            LOG.debug("Claim from db " + claim.getChoReference());
+            LOG.debug("Claim from db {}", claim.getChoReference());
         }
     }
 
@@ -363,6 +366,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // this is never returned.
             return "ClaimNotFound";
         } else {
+            if (service.updateAutomaticPenaltyCharge(claim)){
+                LOG.debug("Auto Penalty charge updated for claim {}", claim.getChoReference());
+            }else {
+                LOG.debug("Auto Penalty charge not updated for claim {}", claim.getChoReference());
+            }
             return SUCCESS;
         }
     }
@@ -533,7 +541,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
             invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
-                invoice.setPenaltyAlertQty(calculatePenaltyAlertQty() >= 3 ? -1 : calculatePenaltyAlertQty());
+                invoice.setPenaltyAlertQty(service.calculatePenaltyAlertQty(invoice) >= 3 ? -1 : service.calculatePenaltyAlertQty(invoice));
             }
             service.updateClaim(claim);
 
@@ -570,7 +578,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     && (!claim.isAutoPenaltyChargeEnabled()
-                    || calculatePenaltyAlertQty() >= 3)))) {
+                    || service.calculatePenaltyAlertQty(invoice) >= 3)))) {
 
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
@@ -1916,9 +1924,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim.getInvoice().getHireNet().compareTo(BigDecimal.ZERO) == 1) {
 
-            return calculatePenaltyAlertQty() == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS.getPercentage()
-                    : calculatePenaltyAlertQty() == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
-                    : calculatePenaltyAlertQty() >= 3 ? PenaltyPercentage.HIRE_COMMERCIAL.getPercentage()
+            return service.calculatePenaltyAlertQty(claim.getInvoice()) == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS.getPercentage()
+                    : service.calculatePenaltyAlertQty(claim.getInvoice()) == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
+                    : service.calculatePenaltyAlertQty(claim.getInvoice()) >= 3 ? PenaltyPercentage.HIRE_COMMERCIAL.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
 
         } else {
@@ -1931,8 +1939,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim.getInvoice().getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
 
-            return calculatePenaltyAlertQty() == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
-                    : calculatePenaltyAlertQty() >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
+            return service.calculatePenaltyAlertQty(claim.getInvoice()) == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
+                    : service.calculatePenaltyAlertQty(claim.getInvoice()) >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
 
         } else {
@@ -1967,15 +1975,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getShowAutoPenaltyCheckbox() {
 
-        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() && calculatePenaltyAlertQty() < 3) ? true : false;
+        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() && service.calculatePenaltyAlertQty(claim.getInvoice()) < 3) ? true : false;
     }
 
     public boolean getShowRemoveFromQueueCheckbox() {
 
-        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())
+        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))
                 || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty() >= 3)
-                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty())) {
+                && (!claim.isAutoPenaltyChargeEnabled() || service.calculatePenaltyAlertQty(claim.getInvoice()) >= 3)
+                && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))) {
 
             return true;
 
@@ -1984,25 +1992,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    private int calculatePenaltyAlertQty() {
-        long dateDiff = DateHelper.daysBetween(claim.getInvoice().getAutoPenaltyStart(), new Date());
-        return (int) (dateDiff / 30);
-    }
-
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
         if (autoPenaltyStart != null && claim.getInvoice().getAutoPenaltyStart().compareTo(autoPenaltyStart) != 0) {
-            Invoice inv = claim.getInvoice();
-            inv.setAutoPenaltyStart(autoPenaltyStart);
-            inv.setHirePenaltyCharge(BigDecimal.ZERO);
-            inv.setRepairPenaltyCharge(BigDecimal.ZERO);
-            inv.setPenaltyAlertQty(0);
-            inv.setAutoPenaltyAlertQty(0);
-            inv.setHirePenaltyChargeAppliedDate(new Date());
-            inv.setRepairPenaltyChargeAppliedDate(new Date());
-            inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
+            service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
+        } else { // update claim to enable or disable auto penalty charge.
+            service.updateClaim(claim);
         }
-        service.updateClaim(claim);
         return SUCCESS;
     }
 
@@ -2012,6 +2011,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getAdjustAutomaticPenaltyCharges() {
         return SUCCESS;
+    }
+    
+    public BigDecimal getInvHireGross() {
+        return claim.getInvoice().getHireGross();
+    }
+
+    public BigDecimal getRepairGross() {
+        return claim.getInvoice().getRepairGross();
     }
 
     @Override

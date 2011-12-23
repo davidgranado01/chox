@@ -274,6 +274,12 @@
                         <td style="width:20%"></td>
                     </tr>
                 </s:else>
+                <tr>
+                    <td align="left"><label>Hire Gross</label></td>
+                    <td align="left">£&nbsp;<s:property value="invHireGross" /></td>
+                    <td align="left"><label>Repair Gross</label></td>
+                    <td align="left">£&nbsp;<s:property value="repairGross" /></td>
+                </tr>     
 
                 <tr>
                     <td align="left"><label>Hire Penalty Percentage </label></td>
