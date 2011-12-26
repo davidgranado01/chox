@@ -980,6 +980,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
+        inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
         inv.setAutoPenaltyStart(autoPenaltyStart);
         inv.setHirePenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
         inv.setRepairPenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
@@ -989,7 +990,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         inv.setAutoPenaltyAlertQty(0);
         inv.setHirePenaltyChargeAppliedDate(new Date());
         inv.setRepairPenaltyChargeAppliedDate(new Date());
-        inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
 
         Comment comment = Comment.New(0, "Automatic penalty charge have been removed as the date from which penalty charges are calculated has changed.");
