@@ -967,11 +967,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && claim.getInvoice() != null
                 && calculatePenaltyAlertQty(claim.getInvoice()) < 3
                 && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
-            LOG.info("invoice penalty alert qty: {} , calculated penalty alert qty {}", claim.getInvoice().getPenaltyAlertQty(), calculatePenaltyAlertQty(claim.getInvoice()));
+            LOG.debug("invoice penalty alert qty: {} , calculated penalty alert qty {}", claim.getInvoice().getPenaltyAlertQty(), calculatePenaltyAlertQty(claim.getInvoice()));
             String query = "select * from applyAutoPenaltyCharge(:userId,:claimId)";
 
             Map paramMap = new HashMap();
@@ -983,7 +984,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (valList.size() > 0) {
                     LOG.info("Auto penalty charge applied to claim: {}", claim.getChoReference());
 //                    for (Object object : valList) { 
-//                             object is a hash map. In future if needed to access the result then can be implemented.                   
+//                             object is a hash map. In future if needed to access the result then this can be implemented.                   
 //                    }
                 } else {
                     LOG.error("Auto penalty charge apply failed for claim: {}", claim.getChoReference());

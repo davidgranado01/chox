@@ -197,4 +197,24 @@ public class ClaimStatus {
                 + INVOICE_ESCALATED_TO_CH + "','" + CONTESTED_INVOICE_REF_TO_INS + "','"
                 + INVOICE_APPROVED_BY_BRE + "','" + AWAITING_INVOICE_PAYMENT + "'";
     }
+
+    public static List<String> getPenaltyChargeExclusionStatus() {
+        List<String> exclusionList = new ArrayList<String>();
+        exclusionList.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        exclusionList.add(ClaimStatus.CLAIM_CLOSED);
+        exclusionList.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
+        exclusionList.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
+        exclusionList.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        return exclusionList;
+    }
+
+    public static boolean isInPenaltyChargeExclusionStatus(String currentStatus) {
+        List<String> exclusionStatuses = getPenaltyChargeExclusionStatus();
+        for (String exclusionStatus : exclusionStatuses) {
+            if (currentStatus.equalsIgnoreCase(exclusionStatus)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
