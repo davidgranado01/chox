@@ -570,11 +570,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 allowPenaltyCharges = false;
             }
             if (allowPenaltyCharges && invoice != null
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
+                    && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                     && invoice.getPenaltyAlertQty() > -1
                     && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
