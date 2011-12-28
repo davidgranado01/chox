@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.test;
 
 import idas.chox.core.bre.RulesEngine;
@@ -39,7 +35,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author seeni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-XMLReader-test.xml"})
+@ContextConfiguration(locations = {
+    "classpath:applicationContext-Notification-test.xml", 
+    "classpath:applicationContext-IntelligentNote-test.xml",
+    "classpath:applicationContext-Filters-test.xml",
+    "classpath:applicationContext-workflow-test.xml",
+    "classpath:applicationContext-test.xml",
+    "classpath:applicationContext-services-test.xml",
+    "classpath:applicationContext-BRE-test.xml", 
+    "classpath:applicationContext-XMLReader-test.xml"})
 public abstract class BaseTest {
 
     @Autowired

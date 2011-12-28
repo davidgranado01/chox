@@ -263,8 +263,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
                 cal.setTime(trail.getUpdateDate());
                 int dayOutStatus = cal.get(Calendar.DAY_OF_YEAR);
-                if (lastDayCounted != dayInStatus) {
-                    days += dayOutStatus - dayInStatus + 1;
+                if (lastDayCounted != dayInStatus && dayInStatus == dayOutStatus) {
+                    // add a day, unless already counted
+                    days += 1;
                 } else {
                     days += dayOutStatus - dayInStatus;
                 }
