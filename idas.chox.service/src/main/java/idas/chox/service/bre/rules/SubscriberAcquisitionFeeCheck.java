@@ -25,7 +25,7 @@ public class SubscriberAcquisitionFeeCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(false);
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         
