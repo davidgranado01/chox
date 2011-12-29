@@ -2367,3 +2367,8 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
 
+
+---
+---  6.7.8 Restrictions on who can delete Attachments
+---
+ALTER TABLE attachment ADD COLUMN deleted boolean not null default false;

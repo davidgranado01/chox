@@ -749,7 +749,7 @@ public class Claim extends Entity implements Serializable {
 
     public Notification GetNotificationById(int id) {
         for (Notification notification : notifications) {
-            if (notification.getId() == id) {
+            if (notification.getId().intValue() == id) {
                 return notification;
             }
         }

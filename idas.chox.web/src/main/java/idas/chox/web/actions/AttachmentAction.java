@@ -157,12 +157,17 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public String deleteAttachment() {
-        LOG.debug("Deleting attachment...");
         try {
-
-            attachmentService.deleteAtatchment(model.getId());
-            LOG.debug("Attachment deleted.");
-            this.getActionResponse().AssignMessageResult("File has been deleted");
+            LOG.debug("Deleting attachment...");
+            if (attachmentService.deleteAtatchment(getAuthenticatedUser().getId(), model.getId())) {
+                LOG.debug("Attachment deleted.");
+                this.getActionResponse().AssignMessageResult("File has been deleted");
+            } else {
+                LOG.info("User {} cannot delete attchment {}", getAuthenticatedUser().getDisplayName(), model.getId());
+                this.getActionResponse().AssignMessageResult("You do not have the necessary permissions to delete this attachment.");
+                setActionError("You do not have the necessary permissions to delete this attachment");                
+                return ERROR;
+            }
 
         } catch (Exception ex) {
             LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());

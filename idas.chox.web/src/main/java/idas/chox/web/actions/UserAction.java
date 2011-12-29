@@ -142,8 +142,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 // Need to check that the web user (objectId) belongs to our organisation
                 // this is to prevent parameter hacking
                 WebUser user = adminUserService.getUser(Integer.parseInt(objectId));
-                if ((getUserOrganisationType() == 2 && getUserOrganisationId() != user.getInsurer().getId())
-                        || (getUserOrganisationType() == 3 && getUserOrganisationId() != user.getChorganisation().getId())) {
+                if ((getUserOrganisationType() == 2 && getUserOrganisationId() != user.getInsurer().getId().intValue())
+                        || (getUserOrganisationType() == 3 && getUserOrganisationId() != user.getChorganisation().getId().intValue())) {
                     throw new AccessDeniedException("Trying to view a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                 }
             }
