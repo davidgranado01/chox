@@ -98,7 +98,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         //       false otherwise
         boolean canComplete = false;
 
-        if (task.getCreatedBy().getId() == webUser.getId()) {
+        if (task.getCreatedBy().getId().intValue() == webUser.getId().intValue()) {
             canComplete = true;
         } else if ((task.getVisibilityRole() == null || task.getVisibilityRole().length() == 0) && task.getVisibility()!= 1) {
             canComplete = true;

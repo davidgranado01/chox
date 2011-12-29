@@ -1,0 +1,2374 @@
+---
+---  6.7.1 ERAC Subscriber Model
+---
+
+-- Add a ClaimType field to Claim:
+--   this replaces the following flags: is_tpi_claim, is_insurer_vs_insurer_claim, original_supp_inv, supplementary_invoiced_claim
+ALTER TABLE claim ADD COLUMN claim_type integer not null default 0;
+
+UPDATE claim SET claim_type = 1   -- GTA_ORIGINAL_INVOICE
+where is_tpi_claim = false
+  and is_insurer_vs_insurer_claim=false
+  and original_supp_inv = true;
+
+UPDATE claim SET claim_type = 2   -- GTA_SUPPLEMENTARY_INVOICE
+where is_tpi_claim = false
+  and is_insurer_vs_insurer_claim=false
+  and supplementary_invoiced_claim=true
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 3   -- TPI
+where is_tpi_claim = true
+  and supplementary_invoiced_claim=false
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 4   -- INSURER_VS_INSURER
+where is_insurer_vs_insurer_claim=true
+  and supplementary_invoiced_claim=false
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 5   -- INSURER_VS_INSURER_ORIGINAL_INVOICE
+where is_insurer_vs_insurer_claim=true
+  and original_supp_inv = true;
+
+UPDATE claim SET claim_type = 6   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
+where is_insurer_vs_insurer_claim=true
+  and supplementary_invoiced_claim=true
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 10   -- INSURER_UPLOAD
+where insurer_upload = true;
+
+ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
+ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
+ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
+ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
+ALTER TABLE CLAIM DROP COLUMN insurer_upload;
+
+
+---
+--- Update Views and Stored Procedures
+---
+--
+-- View: rpt_all_claim_with_invoice
+--
+DROP VIEW rpt_all_claim_with_invoice;
+
+CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
+ SELECT claim.id AS claim_id, claim.workgroup_id, claim.claim_owner_id AS owner, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, claim.created_date AS claim_created_date, claim.claim_type, invoice.id AS invoice_id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty AS cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date AS invoice_created_date, invoice.last_modified_by AS last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.full_total_to_pay AS total_to_pay, invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.hire_penalty_charge AS panalty_charge, invoice.penalty_alert_qty AS panalty_alert_qty, invoice.hire_penalty_charge_applied_date AS penalty_charge_applied_date
+   FROM claim claim
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+GRANT ALL ON TABLE rpt_all_claim_with_invoice TO chox;
+GRANT SELECT, UPDATE, INSERT ON TABLE rpt_all_claim_with_invoice TO chox_user;
+
+
+--
+-- View: rpt_claim_audit_trail
+--
+DROP VIEW rpt_claim_audit_trail;
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+ SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, claim.claim_type, invoice.full_total_to_pay AS total_to_pay, invoice.hire_penalty_charge AS penalty_charge, invoice.id AS invoice_id, 
+        CASE
+            WHEN audit_trail.claim_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.claim_reason_of_rejection
+        END AS claim_reason_of_rejection, 
+        CASE
+            WHEN audit_trail.invoice_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.invoice_reason_of_rejection
+        END AS invoice_reason_of_rejection
+   FROM audit_trail audit_trail
+   JOIN claim claim ON claim.id = audit_trail.claim_id
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+
+GRANT ALL ON TABLE rpt_claim_audit_trail TO chox;
+GRANT SELECT, UPDATE, INSERT ON TABLE rpt_claim_audit_trail TO chox_user;
+
+
+--
+-- Function: addinvoicepenaltytask(integer)
+--
+DROP FUNCTION addinvoicepenaltytask(integer);
+
+CREATE OR REPLACE FUNCTION addinvoicepenaltytask(integer)
+  RETURNS boolean AS
+$BODY$
+
+DECLARE
+userId int;
+
+BEGIN
+
+userId=$1;
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '15 days', 'Invoice Approaching 90 Days', 'The invoice was uploaded over 75 days ago and may be subject to penalties in 15 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty = 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.created_date)/(3600*24.0) >= 75
+  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days')
+  and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) >= 75));
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '5 days', 'Invoice Approaching ' || 30*(i.penalty_alert_qty+1) || ' Days', 'The invoice was uploaded over ' || 30*(i.penalty_alert_qty+1)-5 || ' days ago and may be subject to penalties in 5 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty >= 0 and i.penalty_alert_qty < 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.created_date)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
+  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days')
+  and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) > ((i.penalty_alert_qty+1)*30)-5));
+
+
+update task set complete = true,
+                completed_by = 999,
+                completed_date = now()
+where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
+
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO public;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
+
+
+-- Function: updatedashboard(integer)
+DROP FUNCTION updatedashboard(integer);
+
+CREATE OR REPLACE FUNCTION updatedashboard(integer)
+  RETURNS boolean AS
+$BODY$
+
+DECLARE
+currentDate timestamp;
+userId int;
+timeMarker timestamp;
+
+BEGIN
+
+currentDate=now();
+userId=$1;
+
+timeMarker=now();
+
+--RAISE NOTICE 'Starting insert: %1', timeofday();
+
+
+-- INSERT ALL RECORD PER INSURER / CHO / Workgroup / Claim Owner / CHO Claim Owner
+insert into dashboard(process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id)
+select distinct currentDate,  insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id from claim;
+
+analyze dashboard;
+
+--RAISE NOTICE 'Finished insert: %1', timeofday();
+--RAISE NOTICE 'Total Number of Claim Notifications Submitted: %1', timeofday();
+
+
+--
+-- UPDATE Total Number of Claim Notifications Submitted
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set num_claims_submitted_w = t1.claimSubNumWeek
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumWeek
+from claim c
+where created_date >= SqlGetDayOfWeek() and (claim_type not in (2,6,9,10))
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id ) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+update dashboard
+   set num_claims_submitted_m = t1.claimSubNumMon
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumMon
+from claim c 
+where created_date >= SqlGetDayOfMonth() and (claim_type not in (2,6,9,10))
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_claims_submitted_c = t1.claimSubNumCum
+from (
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(*) as claimSubNumCum
+from claim c
+where claim_type not in (2,6,9,10)
+group by  c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--RAISE NOTICE 'Total Number of Claim Notifications Accepted: %1', timeofday();
+--
+-- UPDATE Total Number of Claim Notifications Accepted
+--
+--  Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set num_claims_accepted_w = t1.numClmAcc
+from (
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as numClmAcc
+from claim c, audit_trail a
+where a.update_date >= SqlGetDayOfWeek()
+and c.id = a.claim_id and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
+and a.new_status='AwaitingCarHireInfo'
+group by  c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+  where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+update dashboard
+   set num_claims_accepted_m = t1.num
+from (
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where a.update_date >= SqlGetDayOfMonth()
+and c.id = a.claim_id and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
+and a.new_status='AwaitingCarHireInfo'
+  group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+update dashboard
+   set num_claims_accepted_c = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
+  and a.new_status = 'AwaitingCarHireInfo'
+  group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Total Number of Claim Rejections Accepted: %1', timeofday();
+--
+-- UPDATE Total Number of Claim Rejections Accepted
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set num_claimrejections_accepted_w = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where a.update_date >= SqlGetDayOfWeek()
+and c.id = a.claim_id and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  and a.new_status = 'ClaimRejectionAccepted'
+group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+update dashboard
+   set num_claimrejections_accepted_m = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where a.update_date >= SqlGetDayOfMonth()
+and c.id = a.claim_id and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  and a.new_status = 'ClaimRejectionAccepted'
+group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+update dashboard
+   set num_claimrejections_accepted_c = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(*) as num
+from claim c
+  where c.status = 'ClaimRejectionAccepted'
+group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Number of Claims Awaiting To Be Processed: %1', timeofday();
+--
+-- UPDATE Number of Claims Awaiting To Be Processed
+--           (the number of claims still in a pending state)
+-- Only valid for cumulative total
+--
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+update dashboard
+   set num_claims_pending_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+  where status in  ('ClaimPending', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimUpdatedByEngineer', 'ClaimRejected',
+    'ClaimRejectionContested', 'ClaimUnacknowledgedRouted', 'ClaimUnacknowledgedUnrouted',
+    'ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Number of Claims Closed: %1', timeofday();
+--
+-- UPDATE Number of Claims Closed
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set num_claims_closed_w = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false and claim_type != 10
+and a.update_date >= SqlGetDayOfWeek()
+and a.new_status = 'ClaimClosed' and c.invoice_id is null
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, a.new_status, c.invoice_id ) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--   Monthly
+
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_claims_closed_m = t1.num
+from(
+select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false and claim_type != 10
+and a.update_date >= SqlGetDayOfMonth()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+and a.new_status = 'ClaimClosed' and c.invoice_id is null
+group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_claims_closed_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.id) as num
+from claim c
+  where status = 'ClaimClosed' and invoice_id is null and claim_type != 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--RAISE NOTICE 'Number of Invoices Submitted: %1', timeofday();
+--
+-- UPDATE Number of Invoices Submitted
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set num_invoices_submitted_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and i.created_date >= SqlGetDayOfWeek() and c.claim_type not in (4,5,6)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_submitted_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id and c.claim_type not in (4,5,6)
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_submitted_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id and c.claim_type not in (4,5,6)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--RAISE NOTICE 'Value of Invoices Submitted: %1', timeofday();
+--
+-- UPDATE Value of Invoices Submitted
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_submitted_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id and c.claim_type not in (4,5,6)
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_submitted_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id and c.claim_type not in (4,5,6)
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_submitted_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id and c.claim_type not in (4,5,6)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--RAISE NOTICE 'Number of Invoices Accepted: %1', timeofday();
+--
+-- UPDATE Number of Invoices Accepted
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_accepted_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfWeek()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+  and a.new_status = 'AwaitingInvoicePayment'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_accepted_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfMonth()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+  and a.new_status = 'AwaitingInvoicePayment'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_accepted_c= t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'AwaitingInvoicePayment'
+ and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--RAISE NOTICE 'Value of Invoices Accepted: %1', timeofday();
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+--
+-- UPDATE Value of Invoices Accepted
+--
+--   Weekly
+
+update dashboard
+   set val_invoices_accepted_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfWeek()
+  and a.new_status = 'AwaitingInvoicePayment'
+ and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_accepted_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfMonth()
+  and a.new_status = 'AwaitingInvoicePayment'
+ and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_accepted_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+  and a.new_status = 'AwaitingInvoicePayment'
+and c.id = a.claim_id and a.reverted = false
+ and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingInvoicePayment' and a2.update_date > a.update_date)
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingInvoicePayment' and a2.new_status in ('InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE','InvoiceEscalated','InvoiceReferredToClaimsHandler','InvoiceReferredToEngineer') and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Number of Invoices Rejected: %1', timeofday();
+--
+-- UPDATE Number of Invoices Rejected
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set num_invoices_rejected_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'InvoiceRejectionAccepted'
+ and a.update_date >= SqlGetDayOfWeek()
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+--   Monthly
+
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_rejected_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfMonth()
+  and a.new_status = 'InvoiceRejectionAccepted'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_rejected_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.invoice_id) as num
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'InvoiceRejectionAccepted'
+ and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--RAISE NOTICE 'Value of Invoices Rejected: %1', timeofday();
+--
+-- UPDATE Value of Invoices Rejected
+--
+--   Weekly
+--RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_rejected_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfWeek()
+  and a.new_status = 'InvoiceRejectionAccepted'
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+--RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_rejected_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+ and a.update_date >= SqlGetDayOfMonth()
+  and a.new_status = 'InvoiceRejectionAccepted'
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_rejected_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.invoice_id=i.id
+and c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'InvoiceRejectionAccepted'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--RAISE NOTICE 'Number of Invoices Pending: %1', timeofday();
+--
+-- UPDATE Number of Invoices Pending
+--
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_pending_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+  where status in  ('ContestedInvoiceReferredToCHO',
+'ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated',
+ 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer', 'InvoiceUnassigned')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Value of Invoices Pending: %1', timeofday();
+--
+-- UPDATE Value of Invoices Pending
+--
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_pending_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c,invoice i
+where c.invoice_id = i.id
+    and c.status in  ('ContestedInvoiceReferredToCHO',
+'ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated',
+ 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer', 'InvoiceUnassigned')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+--RAISE NOTICE 'Total Number of Invoices Awaiting Liability Resolution: %1', timeofday();
+--
+-- UPDATE Number of Invoices Awaiting Liability Resolution
+--
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_awaiting_liability_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+where invoice_id is not null
+    and status = 'AwaitingLiabilityResolution'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--RAISE NOTICE 'Total Value of Invoices Awaiting Liability Resolution: %1', timeofday();
+--
+-- UPDATE Value of Invoices Awaiting Liability Resolution
+--
+--   Cumulative
+--RAISE NOTICE 'Cumulative Start: %1', timeofday();
+update dashboard
+   set val_invoices_awaiting_liability_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i 
+where c.invoice_id = i.id
+    and c.status = 'AwaitingLiabilityResolution'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+-- RAISE NOTICE 'Total Number of Invoices Closed: %1', timeofday();
+--
+-- UPDATE Number of Invoices Closed
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start';
+
+update dashboard
+   set num_invoices_closed_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and c.invoice_id is not null and claim_type != 10
+and c.status='ClaimClosed' and a.new_status = 'ClaimClosed'
+and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_closed_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and c.invoice_id is not null and claim_type != 10
+and a.update_date >= SqlGetDayOfMonth() and a.new_status = 'ClaimClosed'
+and c.status='ClaimClosed' and a.reverted = false
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_closed_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+  where c.status = 'ClaimClosed' and invoice_id is not null and claim_type != 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+-- RAISE NOTICE 'Total Value of Invoices Closed: %1', timeofday();
+--
+-- UPDATE Value of Invoices Closed
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_closed_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id and claim_type != 10
+and c.invoice_id = i.id and a.reverted = false
+and c.status='ClaimClosed' and a.new_status='ClaimClosed'
+and a.update_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_closed_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id
+and c.invoice_id = i.id
+  and c.status = 'ClaimClosed' and claim_type != 10
+  and a.new_status = 'ClaimClosed' and a.reverted = false
+and a.update_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_closed_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+  and c.status='ClaimClosed' and claim_type != 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+-- RAISE NOTICE 'Number of Invoices Payment Logged: %1', timeofday();
+--
+-- UPDATE Number of Invoices Payment Logged
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_logged_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id
+  and c.status in ('InvoicePaymentLogged','PaymentReceived')
+  and a.new_status = 'InvoicePaymentLogged'
+and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date and a2.new_status != 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_logged_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false
+  and c.status in ('InvoicePaymentLogged', 'PaymentReceived')
+and a.update_date >= SqlGetDayOfMonth()
+  and a.new_status = 'InvoicePaymentLogged'
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date and a2.new_status != 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_logged_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+  where c.status in ('InvoicePaymentLogged', 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+-- RAISE NOTICE 'Value of Invoices Payment Logged: %1', timeofday();
+--
+-- UPDATE Value of Invoices Payment Logged
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+update dashboard
+   set val_invoices_logged_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id
+  and c.invoice_id = i.id and a.reverted = false
+  and c.status in ('InvoicePaymentLogged', 'PaymentReceived')
+  and a.new_status = 'InvoicePaymentLogged'
+and a.update_date >= SqlGetDayOfWeek()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date and a2.new_status != 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+update dashboard
+   set val_invoices_logged_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id
+  and c.invoice_id = i.id and a.reverted = false
+  and a.new_status = 'InvoicePaymentLogged'
+  and c.status in ('InvoicePaymentLogged', 'PaymentReceived')
+and a.update_date >= SqlGetDayOfMonth()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date and a2.new_status != 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update dashboard
+   set val_invoices_logged_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+  and c.status in ('InvoicePaymentLogged', 'PaymentReceived')
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+-- RAISE NOTICE 'Total Number of Invoices Received by CHO: %1', timeofday();
+--
+-- UPDATE Total Number of Claim Notifications Submitted
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+
+update dashboard
+   set num_invoices_received_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'PaymentReceived'
+  and c.status = 'PaymentReceived'
+and a.update_date >= SqlGetDayOfWeek()
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+update dashboard
+   set num_invoices_received_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c, audit_trail a
+where c.id = a.claim_id and a.reverted = false
+  and a.new_status = 'PaymentReceived'
+  and c.status = 'PaymentReceived'
+and a.update_date >= SqlGetDayOfMonth()
+  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1  
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start';
+
+update dashboard
+   set num_invoices_received_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+  where status = 'PaymentReceived'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+-- RAISE NOTICE 'Value of Payments Received by CHO';
+--
+-- UPDATE Value of Payments Received by CHO
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start';
+update dashboard
+   set val_invoices_received_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id
+  and c.invoice_id = i.id and a.reverted = false
+  and a.new_status = 'PaymentReceived'
+  and c.status = 'PaymentReceived'
+and a.update_date >= SqlGetDayOfWeek()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start';
+
+update dashboard
+   set val_invoices_received_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, audit_trail a, invoice i
+where c.id = a.claim_id
+  and c.invoice_id = i.id and a.reverted = false
+  and a.new_status = 'PaymentReceived'
+  and c.status = 'PaymentReceived'
+and a.update_date >= SqlGetDayOfMonth()
+and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
+  group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start';
+
+update dashboard
+   set val_invoices_received_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+  and c.status = 'PaymentReceived'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+-- RAISE NOTICE 'Total Value of Penalty Charges Applied';
+--
+-- UPDATE Total Value of Penalty Charges Applied
+--
+--   Weekly
+-- RAISE NOTICE 'Weekly Start';
+
+update dashboard
+   set val_penalty_charges_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+and date(hire_penalty_charge_applied_date) >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set val_penalty_charges_w = val_penalty_charges_w  + t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+and date(repair_penalty_charge_applied_date) >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Start';
+
+update dashboard
+   set val_penalty_charges_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+and date(hire_penalty_charge_applied_date) >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set val_penalty_charges_m = val_penalty_charges_m  + t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+and date(repair_penalty_charge_applied_date) >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Start';
+
+update dashboard
+   set val_penalty_charges_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_penalty_charge) as val
+from claim c, invoice i
+where c.invoice_id = i.id
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Weekly
+-- RAISE NOTICE 'Weekly Avg Inv Payment Time Start';
+
+update dashboard
+set avg_inv_payment_time_w = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+         from claim c, audit_trail a1, invoice i  where  
+                    c.id = a1.claim_id 
+                    and c.invoice_id = i.id 
+                    and a1.reverted=false and a1.new_status ='InvoicePaymentLogged'
+                    and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id )
+                    and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) 
+                    and a1.update_date >= SqlGetDayOfWeek()
+                    group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+                    where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Monthly
+-- RAISE NOTICE 'Monthly Avg Inv Payment Time Start';
+
+
+update dashboard
+set avg_inv_payment_time_m = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+           from claim c, audit_trail a1, invoice i  where  
+                    c.id = a1.claim_id 
+                    and c.invoice_id = i.id 
+                    and a1.reverted=false and a1.new_status ='InvoicePaymentLogged'
+                    and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id )
+                    and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) 
+                    and a1.update_date >= SqlGetDayOfMonth()
+                    group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+                    where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+--   Cumulative
+-- RAISE NOTICE 'Cumulative Avg Inv Payment Time Start';
+
+
+update dashboard
+set avg_inv_payment_time_c = t1.total_day
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
+          from claim c, audit_trail a1, invoice i  where  
+                    c.id = a1.claim_id 
+                    and c.invoice_id = i.id 
+                    and a1.reverted=false and a1.new_status ='InvoicePaymentLogged'
+                    and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id )
+                    and not exists (select * from audit_trail a3 where a3.reverted=false and a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) 
+                    group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+                    where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set num_manual_invoices_submitted_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set num_manual_invoices_submitted_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set num_manual_invoices_submitted_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_submitted_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_submitted_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set val_manual_invoices_submitted_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set num_manual_invoices_paid_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ManualInvoicePaid'
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+update dashboard
+   set num_manual_invoices_paid_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ManualInvoicePaid'
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set num_manual_invoices_paid_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ManualInvoicePaid'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_paid_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ManualInvoicePaid'
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_paid_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ManualInvoicePaid'
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set val_manual_invoices_paid_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.status = 'ManualInvoicePaid'
+and c.claim_type = 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set num_manual_invoices_closed_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ClaimClosed'
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+update dashboard
+   set num_manual_invoices_closed_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ClaimClosed'
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set num_manual_invoices_closed_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ClaimClosed'
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_closed_w = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ClaimClosed'
+and i.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+
+update dashboard
+   set val_manual_invoices_closed_m = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.claim_type = 10
+and c.status = 'ClaimClosed'
+and i.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+update dashboard
+   set val_manual_invoices_closed_c = t1.val
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
+from claim c , invoice i
+where c.invoice_id=i.id
+and c.status = 'ClaimClosed'
+and c.claim_type = 10
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = dashboard.insurer_id
+  and t1.chorganisation_id = dashboard.chorganisation_id
+  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null))
+  and dashboard.complete = false;
+
+
+-- RAISE NOTICE 'Deleting Previous entries';
+
+--
+-- DELETE previous entries
+--
+delete from dashboard where process_date < currentDate;
+
+update dashboard set complete=true;
+
+-- RAISE NOTICE 'Finished';
+
+analyze dashboard;
+
+return true;
+
+END;
+
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+
+GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
+GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
+GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
+
+ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default true;
+ALTER TABLE chorganisation ADD COLUMN enable_subscriber_claims boolean not null default false;
+
+--
+-- Add accessibility for new queues for insurer CHO and CHOX Admin roles
+--
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+select 'filter.RejectedSubscriberClaims', false, false, false, false, false, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO', 1, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+--
+-- Add accessibility to tabs
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.AuditTrail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.ClaimDetail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.HireMonitoring.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.History.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.InvoiceDetail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Notes.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.PaymentPack.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Tasks.SubscriberClaimRejected',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'tab.History.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'tab.InvoiceDetail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Notes.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.SubscriberClaimRejected';
+
+--
+-- Add accessibility to action
+--
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+select 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected', false, false, false, false, false, false, false;
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL', 0, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+
+
+--
+-- Add revert for CHO at 'ClaimRejectionContested'
+--
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1,id from accessibility where name = 'button.RevertClaimStatus.ClaimRejectionContested';
+
+--
+-- 6.7.4 New Business Rules (For Subscriber Claims)
+--
+ALTER TABLE bre_band ADD COLUMN subscriber_check_rejected_claims boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN subscriber_acquisition_fee_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN subscriber_admin_fee_check boolean not null default true;
+
+--
+-- 6.7.8 Supplier Admin Fee For Managing Repair
+--
+ALTER TABLE bre_band ADD COLuMN max_admin_fee_managing_repair_value numeric(10,2);
+update bre_band set max_admin_fee_managing_repair_value = max_admin_fee_value;
+ALTER TABLE bre_band ALTER COLUMN max_admin_fee_managing_repair_value set NOT NULL;
+
+--
+-- 6.7.2 Automated Penalty Charges
+--
+
+alter table chorganisation add column auto_penalty_charges boolean default false;
+
+alter table claim add column auto_penalty_charges boolean default true;
+
+alter table invoice add column auto_penalty_alert_qty int2 default 0;
+
+alter table invoice add column auto_penalty_start timestamp;
+
+update invoice 
+set 
+auto_penalty_start = created_date;
+
+
+--
+--  Store procedure to apply penalty charges
+--
+
+
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) 
+	RETURNS SETOF claim AS 
+$BODY$
+
+DECLARE
+
+claimRecord30D claim%rowtype;
+claimRecord60D claim%rowtype;
+claimRecord90D claim%rowtype;
+userId int;
+ClaimsId integer;
+invoiceCount30D int;
+invoiceCount60D int;
+invoiceCount90D int;
+hirepenalPer30D NUMERIC;
+hirepenalPer30DVal NUMERIC(8,3);
+hirepenalPer60D NUMERIC;
+hirepenalPer60DVal NUMERIC(8,3);
+repairpenalPer30D NUMERIC;
+repairpenalPer30DVal NUMERIC(8,3);
+repairpenalPer60D NUMERIC;
+repairpenalPer60DVal NUMERIC(8,3);
+
+BEGIN
+ClaimsId = claimId;
+userId = userIdNumber;
+hirepenalPer30D = 7.5;
+hirepenalPer30DVal = hirepenalPer30D/100;
+hirepenalPer60D = 15;
+hirepenalPer60DVal = hirepenalPer60D/100;
+repairpenalPer30D = 2.5;
+repairpenalPer30DVal = repairpenalPer30D/100;
+repairpenalPer60D = 5;
+repairpenalPer60DVal = repairpenalPer60D/100;
+invoiceCount30D = 0;
+invoiceCount60D = 0;
+invoiceCount90D = 0;
+
+RAISE NOTICE 'userid : % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
+
+
+FOR claimRecord30D IN 
+SELECT * 
+FROM
+ claim c,
+ invoice i, 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
+ chorganisation cho
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty = 0
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 30 
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) < 60
+
+LOOP
+
+
+RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_reference;
+    
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = 1,
+      penalty_alert_qty = 1,
+      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord30D.liability_status = 5 OR claimRecord30D.liability_status = 6) 
+                           THEN ((claimRecord30D.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal)))::NUMERIC(8,2)
+                           ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2) 
+                           END ),
+      hire_penalty_charge = (hire_gross * hirepenalPer30DVal)::NUMERIC(8,2),
+      repair_penalty_charge = (repair_gross * repairpenalPer30DVal)::NUMERIC(8,2),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer30D || '%' ELSE null END),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer30D || '%' ELSE null END),
+      total_penalty_charge =  ((hire_gross * hirepenalPer30DVal) + (repair_gross * repairpenalPer30DVal))::NUMERIC(8,2),
+      last_modified_by = userId,
+      last_modified_date = now() 
+   WHERE
+      claimRecord30D.invoice_id = invoice.id;
+
+--RAISE NOTICE 'Invoice > 30 days hirepenalPer30DVal :% , repairpenalPer30DVal :% ', hirepenalPer30DVal , repairpenalPer30DVal;
+--RAISE NOTICE 'Invoice > 30 days hire gross :%  ', (select i.hire_gross   from invoice i where i.id = claimRecord30D.invoice_id);
+--RAISE NOTICE 'Invoice > 30 days repair gross :%  ', (select i.repair_gross from invoice i where i.id = claimRecord30D.invoice_id);
+--RAISE NOTICE 'Invoice > 30 hire penalty charge  :%  ', (select i.hire_gross from invoice i where i.id = claimRecord30D.invoice_id) * hirepenalPer30DVal;
+--RAISE NOTICE 'Invoice > 30 repair penalty charge  :%  ', (select i.repair_gross from invoice i where i.id = claimRecord30D.invoice_id) * hirepenalPer30DVal;
+
+
+--RAISE NOTICE 'Invoice > 30 days updated ';
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+   SELECT 
+      claimRecord30D.id,
+      userId,
+      now(),
+      userId,
+      now(),
+      0,
+      'Automatic penalty charge of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
+                                      || ' applied to the invoice as the age of the invoice exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+                                      || ' days.'
+   FROM 
+     invoice i
+   WHERE
+     i.id = claimRecord30D.invoice_id;
+     
+--RAISE NOTICE 'Notes added for invoice > 30 days  ';
+
+invoiceCount30D = invoiceCount30D + 1;
+RETURN NEXT claimRecord30D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 30 days : % ',invoiceCount30D;
+
+
+FOR claimRecord60D IN 
+SELECT * 
+FROM
+ claim c,
+ invoice i, 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
+ chorganisation cho
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty <= 1 
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 60 
+ AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+
+LOOP
+
+
+RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
+
+
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = 2,
+      penalty_alert_qty = 2,
+      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord60D.liability_status = 5 OR claimRecord60D.liability_status = 6) 
+                           THEN ((claimRecord60D.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal)))::NUMERIC(8,2)
+                           ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2) 
+                           END ),
+      hire_penalty_charge = (hire_gross * hirepenalPer60DVal)::NUMERIC(8,2),
+      repair_penalty_charge = (repair_gross * repairpenalPer60DVal)::NUMERIC(8,2),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer60D || '%' ELSE null END),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer60D || '%' ELSE null END),
+      total_penalty_charge =  ((hire_gross * hirepenalPer60DVal) + (repair_gross * repairpenalPer60DVal))::NUMERIC(8,2),
+      last_modified_by = userId,
+      last_modified_date = now()
+    WHERE
+      claimRecord60D.invoice_id = invoice.id;
+
+--RAISE NOTICE 'Invoice > 60 days hirepenalPer30DVal :% , repairpenalPer60DVal :% ', hirepenalPer60DVal , repairpenalPer60DVal;
+--RAISE NOTICE 'Invoice > 60 days hire gross :%  ', (select i.hire_gross   from invoice i where i.id = claimRecord60D.invoice_id);
+--RAISE NOTICE 'Invoice > 60 days repair gross :%  ', (select i.repair_gross from invoice i where i.id = claimRecord60D.invoice_id);
+--RAISE NOTICE 'Invoice > 60 hire penalty charge  :%  ', (select i.hire_gross from invoice i where i.id = claimRecord60D.invoice_id) * hirepenalPer60DVal;
+--RAISE NOTICE 'Invoice > 60 repair penalty charge  :%  ', (select i.repair_gross from invoice i where i.id = claimRecord60D.invoice_id) * hirepenalPer60DVal;
+
+--RAISE NOTICE 'Invoice > 60 days updated ';
+
+    INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+    SELECT 
+      claimRecord60D.id,
+      userId,
+      now(),
+      userId,
+      now(),
+      0,
+      'Automatic penalty charge of £' ||  hirepenalPer60DVal 
+                                      || ' applied to the invoice as the age of the invoice exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+                                      || ' days.'
+    FROM 
+      invoice i
+    WHERE
+      i.id = claimRecord60D.invoice_id;
+  
+--RAISE NOTICE 'Notes added for invoice > 60 days ';
+
+invoiceCount60D = invoiceCount60D + 1;
+RETURN NEXT claimRecord60D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 60 days : % ',invoiceCount60D;
+
+
+FOR claimRecord90D IN 
+SELECT * 
+FROM
+ claim c,
+ invoice i, 
+ bre_band bre, 
+ bre_band_organisation breorg, 
+ insurer ins, 
+ chorganisation cho
+WHERE 
+ c.invoice_id = i.id 
+ AND (c.id = ClaimsId or ClaimsId = -1)
+ AND c.claim_type NOT IN (3,4,5,6,7,8,9,10)
+ AND c.insurer_id = ins.id 
+ AND c.chorganisation_id = cho.id
+ AND bre.insurer_id = ins.id
+ AND breorg.chorganisation_id = cho.id
+ AND breorg.band_id = bre.id
+ AND bre.allow_penalty_charges = true
+ AND c.auto_penalty_charges = true
+ AND cho.auto_penalty_charges = true
+ AND i.penalty_alert_qty >= 0
+ AND i.penalty_alert_qty <= 2
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 90
+
+LOOP
+
+RAISE NOTICE 'Cho Reference for invoice > 90 days : % ',claimRecord90D.cho_reference;
+
+    UPDATE invoice  
+    SET 
+      auto_penalty_alert_qty = -1
+    WHERE
+      claimRecord90D.invoice_id = invoice.id;
+
+RAISE NOTICE 'Invoice > 90 days updated ';
+
+    UPDATE claim  
+    SET 
+      auto_penalty_charges = false,
+      last_modified_by = userId,
+      last_modified_date = now()
+    WHERE
+      claimRecord90D.id = claim.id; 
+
+--RAISE NOTICE 'claim updated for invoice > 90 days ';
+
+invoiceCount90D = invoiceCount90D + 1;
+RETURN NEXT claimRecord90D;
+END LOOP;
+
+RAISE NOTICE 'total no of claims updated for invoice > 90 days : % ',invoiceCount90D;
+
+RETURN ;
+END;
+$BODY$
+LANGUAGE plpgsql;
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox;
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox_user;
+
+--
+-- Alter Store procedure to create automatic task
+--
+
+CREATE OR REPLACE FUNCTION addinvoicepenaltytask(integer)
+  RETURNS boolean AS
+$BODY$
+
+
+DECLARE
+userId int;
+
+BEGIN
+
+userId=$1;
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '15 days', 'Invoice Approaching 90 Days', 'The invoice was uploaded over 75 days ago and may be subject to penalties in 15 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty <= 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 75
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days');
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '5 days', 'Invoice Approaching ' || 30*(i.penalty_alert_qty+1) || ' Days', 'The invoice was uploaded over ' || 30*(i.penalty_alert_qty+1)-5 || ' days ago and may be subject to penalties in 5 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty >= 0 and i.penalty_alert_qty < 2
+  and c.insurer_id = ins.id
+  and c.claim_type != 3
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days');
+
+
+update task set complete = true,
+                completed_by = 999,
+                completed_date = now()
+where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
+
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
+GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
+
+--
+-- Add 'adjust Automatic PenaltyCharges' extra action 
+--
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
+
+
+---
+---  6.7.8 Restrictions on who can delete Attachments
+---
+ALTER TABLE attachment ADD COLUMN deleted boolean not null default false;

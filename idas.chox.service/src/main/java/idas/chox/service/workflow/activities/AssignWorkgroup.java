@@ -30,7 +30,7 @@ public class AssignWorkgroup extends BaseActivity {
                     throw new Exception("An attempt to assign work group failed due to invalid workgroup provided");
                 }
                 // Check workgroup belongs to the Insurer
-                if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId()) {
+                if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
                     throw new AccessDeniedException("Workgroup does not belong to Insurer");
                 }
             }

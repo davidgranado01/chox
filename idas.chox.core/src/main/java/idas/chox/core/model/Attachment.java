@@ -12,6 +12,7 @@ public class Attachment extends Entity implements Serializable {
     private Claim claim;
     private String fileType;
     private byte[] fileBuffer;
+    private boolean deleted;
 
     public byte[] getFileBuffer() {
         return fileBuffer;
@@ -59,5 +60,13 @@ public class Attachment extends Entity implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = Jsoup.clean(remarks, Whitelist.none());
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
