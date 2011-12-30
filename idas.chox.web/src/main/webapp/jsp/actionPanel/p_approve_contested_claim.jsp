@@ -218,17 +218,19 @@
                                     <label>Reason for Rejection</label>
                                 </td>
                                 <td colspan="3">
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
-                                                  list="reasonOfClaimRejections"
-                                                  listKey="id"
-                                                  listValue="name"
-                                                  headerKey=""
-                                                  headerValue="N/A"
-                                                  emptyOption="false"></s:select>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <s:if test="rejectButtonEnabled">
+                                        <div id="ReasonOfRejectionDiv">
+                                            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                                      list="reasonOfClaimRejections"
+                                                      listKey="id"
+                                                      listValue="name"
+                                                      headerKey=""
+                                                      headerValue="N/A"
+                                                      emptyOption="false"></s:select>
+                                            </div>
+                                    </s:if>
+                                </td>
+                            </tr>
                                 <tr>
                                     <td colspan="4">
                                         <div class="no-format">
