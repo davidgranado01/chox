@@ -309,18 +309,20 @@
                                         <label >Reason for Rejection</label>
                                     </td>
                                     <td align="left" width="20%">
-                                        <div id="ReasonOfRejectionDiv">
-                                            <s:select
-                                                name="reasonOfRejectionId"
-                                                id="reasonOfRejectionId"
-                                                list="reasonOfClaimRejectionsRestricted"
-                                                listKey="id"
-                                                listValue="name"
-                                                headerKey=""
-                                                headerValue="N/A"
-                                                emptyOption="false">
-                                            </s:select>
-                                        </div>
+                                        <s:if test="rejectButtonEnabled">
+                                            <div id="ReasonOfRejectionDiv">
+                                                <s:select
+                                                    name="reasonOfRejectionId"
+                                                    id="reasonOfRejectionId"
+                                                    list="reasonOfClaimRejectionsRestricted"
+                                                    listKey="id"
+                                                    listValue="name"
+                                                    headerKey=""
+                                                    headerValue="N/A"
+                                                    emptyOption="false">
+                                                </s:select>
+                                            </div>
+                                        </s:if>
                                     </td>
                                     <td width="70%"></td>
                                 <tr>
