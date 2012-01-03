@@ -213,12 +213,12 @@
                                 </td>
 
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
                                                       list="reasonOfClaimRejections"
@@ -227,33 +227,33 @@
                                                       headerKey=""
                                                       headerValue="N/A"
                                                       emptyOption="false"></s:select>
-                                            </div>
-                                    </s:if>
-                                </td>
-                            </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="no-format">
-                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4" class="choice" nowrap="true">
-                                        <s:if test="rejectButtonEnabled">
-                                            <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
-                                        </s:if>
-                                        <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
-                                        <s:if test="insurerIsEngineersEnabled">
-                                            <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
-                                        </s:if>
-                                        <s:if test="insurerIsFnolEnabled">
-                                            <input type="button" id="ACCReferToFnolButtonId" value="Refer to FNOL" onclick="doProcessRejectedClaimFormSubmit('referFNOL');" />
-                                        </s:if>
-                                        <input type="button" id="ACCClaimPendingButtonId" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
-                                    </td>
-                                </tr>
-                            </table>
+                            </s:if>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="choice" nowrap="true">
+                                    <s:if test="rejectButtonEnabled">
+                                        <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
+                                    </s:if>
+                                    <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
+                                    <s:if test="insurerIsEngineersEnabled">
+                                        <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
+                                    </s:if>
+                                    <s:if test="insurerIsFnolEnabled">
+                                        <input type="button" id="ACCReferToFnolButtonId" value="Refer to FNOL" onclick="doProcessRejectedClaimFormSubmit('referFNOL');" />
+                                    </s:if>
+                                    <input type="button" id="ACCClaimPendingButtonId" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
+                                </td>
+                            </tr>
+                        </table>
                         <div id="formProcessRejectedClaimMessageBox" class="action-error-msg"></div>
                     </div>
                 </div>

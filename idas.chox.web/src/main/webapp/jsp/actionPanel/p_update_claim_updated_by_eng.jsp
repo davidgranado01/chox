@@ -193,12 +193,12 @@
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select
                                                 name="reasonOfRejectionId"
@@ -210,29 +210,29 @@
                                                 headerValue="N/A"
                                                 emptyOption="false"></s:select>
                                             </div>
-                                    </s:if>
+                                        </td>
+                                    </tr>
+                            </s:if>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
                                 </td>
                             </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="no-format">
-                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="choice" nowrap>
-                                        <s:if test="rejectButtonEnabled">
-                                            <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
-                                        </s:if>
-                                        <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
-                                        <s:if test="insurerIsEngineersEnabled">
-                                            <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
-                                        </s:if>
-                                        <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
-                                    </td>
-                                </tr>
-                            </table>
+                            <tr>
+                                <td colspan="4" class="choice" nowrap>
+                                    <s:if test="rejectButtonEnabled">
+                                        <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                    </s:if>
+                                    <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
+                                    <s:if test="insurerIsEngineersEnabled">
+                                        <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
+                                    </s:if>
+                                    <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
+                                </td>
+                            </tr>
+                        </table>
                         <div id="updateByEngMessageBox" class="action-error-msg"></div>
                     </div>
                 </div>
