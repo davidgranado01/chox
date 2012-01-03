@@ -304,12 +304,12 @@
                                     <td width="20%"><div id="claimOwnerComboDiv"></div></td>
                                     <td width="70%"></td>
                                 </tr>
+                                <s:if test="rejectButtonEnabled">
                                 <tr>
                                     <td align="right" width="10%">
                                         <label >Reason for Rejection</label>
                                     </td>
                                     <td align="left" width="20%">
-                                        <s:if test="rejectButtonEnabled">
                                             <div id="ReasonOfRejectionDiv">
                                                 <s:select
                                                     name="reasonOfRejectionId"
@@ -322,10 +322,10 @@
                                                     emptyOption="false">
                                                 </s:select>
                                             </div>
-                                        </s:if>
                                     </td>
                                     <td width="70%"></td>
                                 <tr>
+                                </s:if>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">

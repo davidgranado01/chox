@@ -139,12 +139,12 @@
                             </td>
                             <td width="70%"></td>
                         </tr>
-                        <tr>
-                            <td width="10%" align="right">
-                                <label >Reason for Rejection</label>
-                            </td>
-                            <td width="20%" align="left">
-                                <s:if test="rejectButtonEnabled">
+                        <s:if test="rejectButtonEnabled">
+                            <tr>
+                                <td width="10%" align="right">
+                                    <label >Reason for Rejection</label>
+                                </td>
+                                <td width="20%" align="left">
                                     <div id="ReasonOfRejectionDiv">
                                         <s:select
                                             name="reasonOfRejectionId"
@@ -157,12 +157,10 @@
                                             emptyOption="false">
                                         </s:select>
                                     </div>
-                                </s:if>
-                            </td>
-                            <td width="70%"></td>
-                        <tr>
-
+                                </td>
+                                <td width="70%"></td>
                         </tr>
+                            </s:if>
                         <tr>
                             <td colspan="3">
                                 <div class="no-format">

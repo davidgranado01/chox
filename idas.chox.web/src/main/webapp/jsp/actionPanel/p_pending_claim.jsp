@@ -200,12 +200,12 @@
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select
                                                 name="reasonOfRejectionId"
@@ -218,9 +218,9 @@
                                                 emptyOption="false">
                                             </s:select>
                                         </div>
-                                    </s:if>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">

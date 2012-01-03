@@ -123,12 +123,12 @@
                                     <textarea class="chox-canote" id="UCUBELengineerClaimReviewNotesId"cols="80" rows="3" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select
                                                 name="reasonOfRejectionId"
@@ -140,9 +140,9 @@
                                                 headerValue="N/A"
                                                 emptyOption="false"></s:select>
                                             </div>
-                                    </s:if>
-                                </td>
-                            </tr>
+                                        </td>
+                                    </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -174,7 +174,7 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>

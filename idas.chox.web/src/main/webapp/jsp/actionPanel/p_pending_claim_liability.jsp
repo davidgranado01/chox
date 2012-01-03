@@ -14,7 +14,7 @@
                 <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
-                   <div class="status-info">
+                    <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled">
                             Please enter details of the claim and decide whether to acknowledge, refer to an engineer or reject the claim. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
@@ -71,14 +71,14 @@
 
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
@@ -128,12 +128,12 @@
                                     <textarea class="chox-canote" cols="80" rows="3" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select
                                                 name="reasonOfRejectionId"
@@ -145,9 +145,9 @@
                                                 headerValue="N/A"
                                                 emptyOption="false"></s:select>
                                             </div>
-                                    </s:if>
-                                </td>
-                            </tr>
+                                        </td>
+                                    </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -173,8 +173,8 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>
-                             
+

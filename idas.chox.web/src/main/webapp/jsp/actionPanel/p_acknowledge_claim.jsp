@@ -132,12 +132,12 @@
                                     <textarea class="chox-canote" cols="80" rows="3" id="ACengineerClaimReviewNotesId" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <s:if test="rejectButtonEnabled">
+                            <s:if test="rejectButtonEnabled">
+                                <tr valign="top">
+                                    <td>
+                                        <label>Reason for Rejection</label>
+                                    </td>
+                                    <td colspan="3">
                                         <div id="ReasonOfRejectionDiv">
                                             <s:select
                                                 name="reasonOfRejectionId"
@@ -148,10 +148,10 @@
                                                 headerKey=""
                                                 headerValue="N/A"
                                                 emptyOption="false"></s:select>
-                                            </div>
-                                    </s:if>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -171,7 +171,7 @@
                                     <s:if test="insurerIsFnolEnabled">
                                         <input type="button" id="ACReferToFnolButtonId" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
                                     </s:if>
-                                        <input type="button" id="ACClaimPendingButtonId"value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                    <input type="button" id="ACClaimPendingButtonId"value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>
@@ -182,7 +182,7 @@
             </div>
         </fieldset>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>
 
