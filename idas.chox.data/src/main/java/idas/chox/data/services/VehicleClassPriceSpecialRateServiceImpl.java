@@ -21,11 +21,11 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
     private static final Logger LOG = LoggerFactory.getLogger(VehicleClassPriceSpecialRateServiceImpl.class);
 
     @Override
-    public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) {
+    public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) throws Exception {
 
         if (startDate == null) {
             startDate = new Date();
-            LOG.debug("No start date provided - using todays date");
+            LOG.warn("No start date provided to determine supplier rate vehicle price - using todays date");
         }
         LOG.debug(" generating query for  v.class name '{}' with start date '{}'", vehicleClass.getName(), startDate);
         LOG.debug(" and insurer id  '{}' with cho id '{}'", insId, choId);
@@ -49,16 +49,21 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
             }
         }
         if (vehicleClassPricesSpecialRate == null || vehicleClassPricesSpecialRate.isEmpty()) {
-            LOG.debug("No vehicle special prices found for class '{}' with start date '{}': returning 0.0", vehicleClass.getName(), startDate);
-            throw new IllegalArgumentException("No vehicle class special price found for class '" + vehicleClass.getName() + "' at age " + age.setScale(2, BigDecimal.ROUND_HALF_UP));
+            LOG.warn("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returning 0.0",
+                    new Object[] {vehicleClass.getName(), startDate, insId, choId});
+            throw new Exception("No supplier rate found for vehicle class '"
+                    + vehicleClass.getName() + "' at age " + age.setScale(2, BigDecimal.ROUND_HALF_UP));
         }
-        LOG.debug("Returning special price={} (from start date '{}' and age=" + age.setScale(2, BigDecimal.ROUND_HALF_UP).toString(), ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice(), ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getStartDate());
+        LOG.debug("Returning special price={} (from start date '{}' and age=[]",
+                new Object[] {((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice(),
+                              ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getStartDate(),
+                              age.setScale(2, BigDecimal.ROUND_HALF_UP).toString()});
         return ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice();
 
     }
 
     @Override
-    public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId) {
+    public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId) throws Exception {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPriceSpecialRate.class);
         criteria.add(Restrictions.eq("vehicleClass.id", vehicleClass.getId()));
@@ -78,8 +83,9 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
             }
         }
         if (vehicleClassPricesSpecialRate == null || vehicleClassPricesSpecialRate.isEmpty()) {
-            LOG.debug("No vehicle special prices found for class '{}' with start date '{}': returnin 0.0", vehicleClass.getName(), startDate);
-            throw new IllegalArgumentException("No vehicle class price found for class '" + vehicleClass.getName() + "'");
+            LOG.warn("No supplier rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}: returnin 0.0",
+                    new Object[] {vehicleClass.getName(), startDate, insId, choId});
+            throw new Exception("No vehicle class price found for class '" + vehicleClass.getName() + "'");
         }
         return ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice();
     }

@@ -155,7 +155,7 @@ public class WorkgroupRouting extends BaseActivity {
 
 
         try {
-            vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, hireStart, age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+            vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, hireStart, age, claim.getInsurer().getId(), claim.getChorganisation().getId());
         } catch (Exception ex) {
             LOG.warn("No vehicle class price found - using 0.00: {}", ex.getMessage());
             vehicleClassPrice = BigDecimal.ZERO;

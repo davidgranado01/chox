@@ -236,7 +236,7 @@ public class NewInvoice extends BaseActivity {
             BigDecimal allowedDailyRate = new BigDecimal(0.00);
             BigDecimal vehicleClassPrice = new BigDecimal(0.00);
             try {
-                vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception ex) {
                 LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
             }

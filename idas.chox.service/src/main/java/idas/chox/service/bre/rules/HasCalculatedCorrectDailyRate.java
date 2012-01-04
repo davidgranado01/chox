@@ -1,6 +1,8 @@
 package idas.chox.service.bre.rules;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
@@ -16,8 +18,6 @@ import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
-import java.math.RoundingMode;
-import java.util.Date;
 
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
@@ -67,15 +67,15 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         Date hireStart = claim.getVehicleHire().getHireStart();
                         if (firstRegistration != null && hireStart != null) {
                             age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
-                            vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+                            vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                             LOG.debug("Got vehicle class price {} for vehicle of {} years old", vehicleClassPrice, age);
                         } else {
-                            LOG.warn("Cannot deternine age of car for T vehicle class check: firstReg={}, hireStart={}", firstRegistration, hireStart);
+                            LOG.warn("Cannot determine age of car for T vehicle class check: firstReg={}, hireStart={}", firstRegistration, hireStart);
                             
                         }
                     }
                     if (vehicleClassPrice == null) {
-                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                        vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                        
                     }
                 } catch (Exception ex) {
@@ -86,14 +86,14 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 try {
                     allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
                 } catch (Exception ex) {
-                    LOG.info("Cannot determine allowed daily rate - using £0.00: {}", ex.getMessage());
+                    LOG.warn("Cannot determine allowed daily rate for claim '{}' - using £0.00: {}", claim.getChoReference(), ex.getMessage());
                     allowedDailyRate = BigDecimal.ZERO;
                 }
                 BigDecimal dailyHireRateCharged;
                 try {
                      dailyHireRateCharged  = cCalc.getDailyHireRateCharged();
                 } catch (Exception ex) {
-                    LOG.info("Cannot determine  daily rate charged - using £0.00: {}", ex.getMessage());
+                    LOG.warn("Cannot determine  daily rate charged for claim '{}' - using £0.00: {}", claim.getChoReference(), ex.getMessage());
                     dailyHireRateCharged = BigDecimal.ZERO;
                 }
                 LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
@@ -110,7 +110,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         narrative = "BRE Rule Failed Ð The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
                             }
                     else if (isTclass) {
-                        if (claim.getBreBand().isUseSupplierRates()) {
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
                             if (age == null)
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
                             else
@@ -122,7 +122,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
                         }
                     } else {
-                        if (claim.getBreBand().isUseSupplierRates()) {
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";

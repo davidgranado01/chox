@@ -2723,7 +2723,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             vehicleClass = (VehicleClass) itr.next();
             BigDecimal price = new BigDecimal(0.0);
             try {
-                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+                price = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception e) {
                 LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}' - price set to 0.0", new Object[] {vehicleClass.getName(), age, getHireStart()});
             }

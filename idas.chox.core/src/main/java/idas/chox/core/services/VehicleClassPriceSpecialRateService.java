@@ -10,7 +10,7 @@ import idas.chox.core.model.VehicleClass;
  */
 public interface VehicleClassPriceSpecialRateService {
 
-   public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId);
-   public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId);
+   public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) throws Exception;
+   public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId) throws Exception;
 }
 
