@@ -41,7 +41,7 @@
             reader:commentsJsonReader
         });
 
-        commentsDataStore.setDefaultSort('createdDate', 'desc');
+        commentsDataStore.setDefaultSort('id', 'desc');
         var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i:s');
 
         commentsGrid = new Ext.grid.GridPanel({

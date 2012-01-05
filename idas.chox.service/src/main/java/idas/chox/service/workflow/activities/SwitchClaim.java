@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
@@ -35,6 +36,13 @@ public class SwitchClaim extends BaseActivity {
         }
         if (claim.getInsurer().getRelatedInsurer() == null) {
             throw new AccessDeniedException("Cannot switch claim as no related insurer is defined.");
+        }
+        
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            // Make sure the new Insurer accepts subscriber claims
+            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
+            if (!newInsurer.isAllowSubscriberClaims())
+                throw new Exception("The selected Insurer does not allow Subscriber claims.");
         }
     }
 

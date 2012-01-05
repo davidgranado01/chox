@@ -42,8 +42,12 @@
             <legend>Rejected Subscriber Claim - Action Required</legend>
             <div>
                 <div class="status-info">
-                    Please review the Insurer's notes for the reason for the rejection. If more/clarity details are required then add the details to the claim and click on the 'Send Claim Back To Insurer' button.
-                    If the rejection is valid and is agreed then click on the 'Agree With Subscriber Challenge' button. If the rejection is not valid, clicking on the 'Send Claim Down GTA Route' button should be clicked. 
+                    Please review the Insurer's notes for the reason for the rejection.
+                    If more/clarity details are required then add the details to the claim and click on the 'Send Claim Back To Insurer' button.
+                    If the rejection is valid and is agreed then click on the 'Agree With Subscriber Challenge' button,
+                    this will move the status of the claim to 'AwaitingInvoiceData' so the invoice can be loaded.
+                    If the rejection is not valid, clicking on the 'Send Claim Down GTA Route' button should be clicked,
+                    this will submit the claim to the Insurer as a new GTA claim within CHOX.
                 </div>
                 <div class="status-control-set">
                     <table>

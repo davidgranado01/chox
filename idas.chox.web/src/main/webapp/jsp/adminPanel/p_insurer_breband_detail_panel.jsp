@@ -581,6 +581,8 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling Not Managing Repair (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
+                        </div>
+                        <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingManagingRepair" value="<s:property value="adminFeeCeilingManagingRepair" />"/>
                         </div>

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
@@ -86,6 +87,11 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         if (newInsurer == null) {
             LOG.error("user trying to Switching claim {} with invalid insurer id {}", claim.getChoReference(), insId);
             throw new AccessDeniedException("Cannot switch claim as provided insurer id is not valid.");
+        }
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            // Make sure the new Insurer accepts subscriber claims
+            if (!newInsurer.isAllowSubscriberClaims())
+                throw new Exception("The selected Insurer does not allow Subscriber claims.");
         }
     }
 

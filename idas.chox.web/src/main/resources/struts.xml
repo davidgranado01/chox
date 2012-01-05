@@ -455,8 +455,8 @@
             <result name="success">/jsp/alertPanel/p_penalty_charge.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-        <action name="adjustAutomaticPenaltyCharges" class="idas.chox.web.actions.ClaimAction" method="getAdjustAutomaticPenaltyCharges">
-            <result name="success">/jsp/alertPanel/p_update_auto_penalty.jsp</result>
+        <action name="penaltyChargeConfiguration" class="idas.chox.web.actions.ClaimAction" method="getPenaltyChargeConfiguration">
+            <result name="success">/jsp/alertPanel/p_penalty_charge_config.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateInsurerClaimOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">

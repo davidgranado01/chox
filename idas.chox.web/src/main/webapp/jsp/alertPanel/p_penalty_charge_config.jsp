@@ -11,6 +11,9 @@
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
+<s:if test="isCHO" >
+            minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
+</s:if>
             //            hideMode: 'offsets',
             value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
             showWeekNumber: true
@@ -21,17 +24,22 @@
     });
 
 </script>
-
+ 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
 
     <form action="<%= request.getContextPath()%>/prv/doAdjustAutoPenalty.action" method="post" id="doAdjustAutoPenalty" name="doAdjustAutoPenalty">
 
         <s:hidden name="id" />
 
-        <fieldset class="x-fieldset"><legend>Adjust Auto Penalty Charge</legend>
+        <fieldset class="x-fieldset"><legend>Penalty Charge Configuration</legend>
 
-            <div class="status-warning">
-                Adjust or Disable Auto Penalty Charge.
+            <div class="status-info">
+                <s:if test="showAutoPenaltyCheckbox ">
+                    Modify the date from which penalty charges will be calculated and/or enable/disable automatic penalty charges for this claim.
+                </s:if>
+                <s:else>
+                    Modify the date from which penalty charges will be calculated.
+                </s:else>
             </div>
 
             <table border="0" cellspacing="0" cellpadding="0" style="width:60%">
@@ -39,15 +47,14 @@
                 <tr>
                 </tr>
                 <tr>
-                    <td align="left"><label>Auto Penalty Start Date </label></td>
+                    <td align="left"><label>Penalty Charge Calculation Date</label></td>
                     <td align="left">
                         <div id="autoPenaltyStartDateDiv"></div>
                     </td>
                     <td></td>
-                    <td></td>
                 </tr>
                 <tr>
-                    <td colspan="4" align="left">
+                    <td colspan="3" align="left">
                         <input type="submit" id="PCApplyButtonId"value="Apply" />
 
                         <s:if test="showAutoPenaltyCheckbox ">

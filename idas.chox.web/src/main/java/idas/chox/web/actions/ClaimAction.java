@@ -4,8 +4,6 @@ import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
@@ -56,7 +54,6 @@ import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -364,14 +361,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String execute() throws Exception {
 
         if (claim == null) {
-            LOG.debug("claim is null");
-            // this is never returned.
-            return "ClaimNotFound";
+            LOG.error("claim is null");
+            throw new IllegalStateException("No Claim available.");
         } else {
             if (service.updateAutomaticPenaltyCharge(claim)){
-                LOG.debug("Auto Penalty charge updated for claim {}", claim.getChoReference());
-            }else {
-                LOG.debug("Auto Penalty charge not updated for claim {}", claim.getChoReference());
+                LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+                // Invoice details may have changed  so we need to reload the claim
+                claim = service.getClaim(claim.getId());
+            } else {
+                LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
             }
             return SUCCESS;
         }
@@ -1085,6 +1083,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return escalateWorkgroupId;
     }
 
+    public Date getInvoiceCreationDate() {
+        if (claim !=null && claim.getInvoice() != null) {
+            return claim.getInvoice().getCreatedDate();
+        }
+        return null;
+    }
+    
     public void setEscalateWorkgroupId(int escalateWorkgroupId) {
         this.escalateWorkgroupId = escalateWorkgroupId;
     }
@@ -2056,7 +2061,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getShowAutoPenaltyCheckbox() {
 
-        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() && service.calculatePenaltyAlertQty(claim.getInvoice()) < 3) ? true : false;
+        return (claim.getChorganisation().isAutoPenaltyChargeEnabled() && service.calculatePenaltyAlertQty(claim.getInvoice()) < 3
+                && ClaimType.isGTA(claim.getClaimType())) ? true : false;
     }
 
     public boolean getShowRemoveFromQueueCheckbox() {
@@ -2078,20 +2084,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (autoPenaltyStart != null) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            Date dateWithoutTime = null;
-            try {
-                dateWithoutTime = sdf.parse(sdf.format(claim.getInvoice().getAutoPenaltyStart()));
-            } catch (ParseException ex) {
-                LOG.error("Date Parse Exception", ex);
+            Date autoPenaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
+            Date invoiceCreationDate = claim.getInvoice().getCreatedDate();
+            // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
+            if (this.getIsCHO() && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
+                LOG.warn("Attempt (by CHO) to set penalty-start date ({})to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
+                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded");
+                return ERROR;
             }
-            if (dateWithoutTime.compareTo(autoPenaltyStart) != 0) {
-                try {
-                    service.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
-                    Thread.currentThread().sleep(1000); // This delay ensures claim/invoice updated before store procedure executes.
-                } catch (InterruptedException ex) {
-                    LOG.error("Sleep call interupted");
-                }
+            if (autoPenaltyStartDate.compareTo(autoPenaltyStart) != 0) {
+                // The date has been changed
+                service.updatePenaltyStartDate(claim, autoPenaltyStart);
+//                    Thread.currentThread().sleep(1000); // This delay ensures claim/invoice updated before store procedure executes.
             } else { // update claim to enable or disable auto penalty charge.
                 service.updateClaim(claim);
             }
@@ -2103,7 +2107,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getInvoice().getAutoPenaltyStart();
     }
 
-    public String getAdjustAutomaticPenaltyCharges() {
+    public String getPenaltyChargeConfiguration() {
         return SUCCESS;
     }
     

@@ -1,8 +1,7 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Entity;
-import idas.chox.core.services.DataService;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
@@ -11,13 +10,18 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import idas.chox.core.model.Entity;
+import idas.chox.core.services.DataService;
 
 /**
  *
  * @author Emmanuel
  */
 public class BaseDataService extends HibernateDaoSupport implements DataService {
+    private static final Logger LOG = LoggerFactory.getLogger(BaseDataService.class);
 
     public List query(final String query) {
 
@@ -64,6 +68,22 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         } else {
             return null;
         }
+    }
+
+    public void callApplyAutoPenaltyCharge(int userId, int claimId) throws SQLException {
+        LOG.debug("Calling stored procedure applyAutoPenaltyCharge({}, {})....", userId, claimId);
+        this.getCurrentSession().flush();
+        Statement s = this.getCurrentSession().connection().createStatement();
+        try {
+            int result = s.executeUpdate("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
+        }
+        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+        catch (SQLException ex) {
+            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+                throw ex;
+        }
+        this.getCurrentSession().flush();
+        s.close();
     }
 
     public void callUpdateUserService(int insurerId) throws SQLException {

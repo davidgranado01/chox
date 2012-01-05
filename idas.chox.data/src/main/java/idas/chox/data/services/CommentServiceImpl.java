@@ -39,6 +39,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         }
 
         criteria.addOrder(Order.asc("createdDate"));
+        criteria.addOrder(Order.asc("id"));
 
         return findByCriteria(criteria);
     }
@@ -48,7 +49,8 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
-        criteria.addOrder(Order.asc("claim.id"));
+        criteria.addOrder(Order.asc("createdDate"));
+        criteria.addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
 
