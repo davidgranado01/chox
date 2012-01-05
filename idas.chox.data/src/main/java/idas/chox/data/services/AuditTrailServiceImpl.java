@@ -260,9 +260,14 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(dateInStatus);
                 int dayInStatus = cal.get(Calendar.DAY_OF_YEAR);
+                int yearInStatus = cal.get(Calendar.YEAR);
 
                 cal.setTime(trail.getUpdateDate());
                 int dayOutStatus = cal.get(Calendar.DAY_OF_YEAR);
+                int yearOutStatus = cal.get(Calendar.DAY_OF_YEAR);
+                if (yearInStatus != yearOutStatus) {
+                    dayOutStatus += (yearOutStatus - yearInStatus)*365;
+                }
                 if (lastDayCounted != dayInStatus && dayInStatus == dayOutStatus) {
                     // add a day, unless already counted
                     days += 1;
@@ -288,8 +293,13 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateInStatus);
             int dayInStatus=cal.get(Calendar.DAY_OF_YEAR);
+            int yearInStatus = cal.get(Calendar.YEAR);
             cal.setTime(new Date());
             int dayOutStatus=cal.get(Calendar.DAY_OF_YEAR);
+            int yearOutStatus = cal.get(Calendar.DAY_OF_YEAR);
+            if (yearInStatus != yearOutStatus) {
+                dayOutStatus += (yearOutStatus - yearInStatus)*365;
+            }
             if (lastDayCounted != dayInStatus)
                 days += dayOutStatus - dayInStatus + 1;
             else

@@ -247,19 +247,11 @@ public class ApplicationAccessibility {
                         LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
                         accessRight = 0;
                     }
-                } else if (actionName.equals(ExtraAction.ADJUST_AUTOMATIC_PENALTY_CHARGES)) {
+                } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
                     Invoice invoice = claim.getInvoice();
-                    if (invoice != null) {
-
-                        if (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled() && calculatePenaltyAlertQty(claim.getInvoice()) < 3) {
-                            return accessRight;
-                        } else {
-                            LOG.debug("Declined access right for updateAutomaticPenaltyCharges ");
-                            return DECLINED;
-                        }
-                    } else {
-                        // No invoice!
-                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
+                    if (claim.getInvoice() != null && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                        return accessRight;
+                    } else { // No invoice!
                         accessRight = 0;
                     }
                 } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {

@@ -11,19 +11,17 @@ public class ExtraAction {
     public static final String UPDATE_LIABILITY = "updateLiability";
     public static final String UPDATE_CLAIM_SUPPLIER_OWNER = "updateClaimSupplierOwner";
     public static final String MAKE_INTERIM_PAYMENT = "makeInterimPayment";
-    //public static final String EXTRAACTION_updateInterimPayment = "updateInterimPayment";
     public static final String UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL = "updateInterimPaymentFullAndFinal";
     public static final String PAYMENT_RECEIVED = "updatePaymentReceived";
     public static final String UPDATE_INSURER_CLAIM_OWNER = "updateInsurerClaimOwner";
     public static final String UPDATE_PENALTY_CHARGES = "updatePenaltyCharges";
     public static final String MARK_SUPPLEMENTARY_INVOICED_CLAIM = "markSupplementaryInvoicedClaim";
-    public static final String ADJUST_AUTOMATIC_PENALTY_CHARGES = "adjustAutomaticPenaltyCharges";
+    public static final String PENALTY_CHARGE_CONFIGURATION = "penaltyChargeConfiguration";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
         action.add(MAKE_INTERIM_PAYMENT);
         action.add(ESCALATE_UNASSIGNED_CLAIM);
-//        action.add(EXTRAACTION_updateInterimPayment); - moved to action panel as is associated with a queue
         action.add(UPDATE_CLAIM_SUPPLIER_OWNER);
         action.add(UPDATE_INSURER_CLAIM_NUMBER);
         action.add(UPDATE_LIABILITY);
@@ -33,7 +31,7 @@ public class ExtraAction {
         action.add(UPDATE_INSURER_CLAIM_OWNER);
         action.add(UPDATE_PENALTY_CHARGES);
         action.add(MARK_SUPPLEMENTARY_INVOICED_CLAIM);
-        action.add(ADJUST_AUTOMATIC_PENALTY_CHARGES);
+        action.add(PENALTY_CHARGE_CONFIGURATION);
 
         return action;
     }
@@ -57,14 +55,14 @@ public class ExtraAction {
             returnStr = "Update To Interim Payment Received Full & Final";
         } else if (extraAction.equalsIgnoreCase(PAYMENT_RECEIVED)) {
             returnStr = "Update To Payment Received";
-        }else if (extraAction.equalsIgnoreCase(UPDATE_INSURER_CLAIM_OWNER)) {
+        } else if (extraAction.equalsIgnoreCase(UPDATE_INSURER_CLAIM_OWNER)) {
             returnStr = "Update Claim Owner";
-        }else if (extraAction.equalsIgnoreCase(UPDATE_PENALTY_CHARGES)) {
+        } else if (extraAction.equalsIgnoreCase(UPDATE_PENALTY_CHARGES)) {
             returnStr = "Adjust Penalty Charges";
-        }else if (extraAction.equalsIgnoreCase(MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
+        } else if (extraAction.equalsIgnoreCase(MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
             returnStr = "Mark Claim For Supplementary Invoice(s)";
-        }else if (extraAction.equalsIgnoreCase(ADJUST_AUTOMATIC_PENALTY_CHARGES)) {
-            returnStr = "Adjust Automatic Penalty Charge";
+        } else if (extraAction.equalsIgnoreCase(PENALTY_CHARGE_CONFIGURATION)) {
+            returnStr = "Penalty Charge Configuration";
         }
         return returnStr;
     }

@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.common.OrganisationType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +7,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.apache.http.impl.cookie.DateUtils;
+import org.hibernate.criterion.Property;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -37,13 +42,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import org.apache.http.impl.cookie.DateUtils;
-import org.hibernate.criterion.Property;
+import idas.chox.core.common.OrganisationType;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -963,7 +962,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean updateAutomaticPenaltyCharge(Claim claim) {
+        LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
+                + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}, "
+                + "calculatePenaltyAlertQty(claim.getInvoice())={}, claim.getInvoice().getPenaltyAlertQty()={}, "
+                + "calculatePenaltyAlertQty(claim.getInvoice())={}", 
+                    new Object[] {claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
+                                    !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
+                                    claim.getInvoice(), calculatePenaltyAlertQty(claim.getInvoice()),
+                                    claim.getInvoice().getPenaltyAlertQty(),
+                                    calculatePenaltyAlertQty(claim.getInvoice())});
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
@@ -972,33 +981,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && calculatePenaltyAlertQty(claim.getInvoice()) < 3
                 && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
-            LOG.debug("invoice penalty alert qty: {} , calculated penalty alert qty {}", claim.getInvoice().getPenaltyAlertQty(), calculatePenaltyAlertQty(claim.getInvoice()));
-            String query = "select * from applyAutoPenaltyCharge(:userId,:claimId)";
-
-            Map paramMap = new HashMap();
-            paramMap.put("userId", 999);
-            paramMap.put("claimId", claim.getId());
 
             try {
-                List valList = externalQuery(query, paramMap);
-                if (valList.size() > 0) {
-                    LOG.info("Auto penalty charge applied to claim: {}", claim.getChoReference());
-//                    for (Object object : valList) { 
-//                             object is a hash map. In future if needed to access the result then this can be implemented.                   
-//                    }
-                } else {
-                    LOG.error("Auto penalty charge apply failed for claim: {}", claim.getChoReference());
-                    return false;
-                }
+                LOG.debug("Calling stored procedure to update penalty charges...");
+                callApplyAutoPenaltyCharge(999, claim.getId());
+                // The Claim / Invoice may have been modified in the above call.
+                // We therefore need to clear these pbjects from the cache
+                // First clear the query/session cache
+                evict(claim.getInvoice()); evict(claim);
+                // Then the second-level cache (if activated)
+                getCurrentSession().getSessionFactory().evict(Claim.class, claim.getId());
+                getCurrentSession().getSessionFactory().evict(Invoice.class, claim.getInvoice().getId());
+                LOG.debug("Auto penalty charge applied to claim: {}", claim.getChoReference());
+                return true;
             } catch (Exception ex) {
-                LOG.error("Exception thrown while updating auto penalty charge store procedure ", ex);
+                LOG.error("Exception thrown while updating auto penalty charge store procedure for claim '{}'", claim.getChoReference(), ex);
                 return false;
             }
-            return true;
-        } else {
-            return false;
         }
+        return false;
     }
+
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
@@ -1008,7 +1011,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
+    public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
         inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
@@ -1023,7 +1026,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         inv.setRepairPenaltyChargeAppliedDate(new Date());
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
 
-        Comment comment = Comment.New(0, "Automatic penalty charge have been removed as the date from which penalty charges are calculated has changed.");
+        Comment comment = Comment.New(0, "Penalty charges have been removed as the date from which penalty charges are calculated has changed.");
         claim.addComment(comment);
 
         updateClaim(claim);

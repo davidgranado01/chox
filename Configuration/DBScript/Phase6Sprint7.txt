@@ -1877,7 +1877,7 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
-ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default true;
+ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default false;
 ALTER TABLE chorganisation ADD COLUMN enable_subscriber_claims boolean not null default false;
 
 --
@@ -1927,6 +1927,43 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
 
+--
+-- Enable claim revert when claim is in SubscriberClaimRejected status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.SubscriberClaimRejected',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.SubscriberClaimRejected';
+
+--
+-- Enable close claim when claim is in SubscriberClaimRejected status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.SubscriberClaimRejected',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.CloseClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.CloseClaim.SubscriberClaimRejected';
+
+--
+-- Enable switch claim when claim is in SubscriberClaimRejected status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.SwitchClaimToMultipleInsurer.SubscriberClaimRejected',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.SwitchClaim.SubscriberClaimRejected',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.SwitchClaimToMultipleInsurer.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.SwitchClaimToMultipleInsurer.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.SwitchClaimToMultipleInsurer.SubscriberClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.SwitchClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.SwitchClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.SwitchClaim.SubscriberClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.SwitchClaim.SubscriberClaimRejected';
 
 --
 -- Add revert for CHO at 'ClaimRejectionContested'
@@ -2076,13 +2113,13 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
    SELECT 
       claimRecord30D.id,
       userId,
-      now(),
+      now() + interval '0.1 sec',
       userId,
-      now(),
+      now() + interval '0.1 sec',
       0,
       'Automatic penalty charge of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
-                                      || ' applied to the invoice as the age of the invoice exceeded ' 
-                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+                                      || ' applied to the invoice as the age of the invoice has exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0)-0.5)::int 
                                       || ' days.'
    FROM 
      invoice i
@@ -2164,13 +2201,13 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
     SELECT 
       claimRecord60D.id,
       userId,
-      now(),
+      now() + interval '0.1 sec',
       userId,
-      now(),
+      now() + interval '0.1 sec',
       0,
-      'Automatic penalty charge of £' ||  hirepenalPer60DVal 
-                                      || ' applied to the invoice as the age of the invoice exceeded ' 
-                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0))::int 
+      'Automatic penalty charge of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
+                                      || ' applied to the invoice as the age of the invoice has exceeded ' 
+                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0)-0.5)::int 
                                       || ' days.'
     FROM 
       invoice i
@@ -2310,63 +2347,61 @@ GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
 --
 -- Add 'adjust Automatic PenaltyCharges' extra action 
 --
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceEscalated',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer',false,false);
 
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler',false,false);
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer',false,false);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToClaimsHandler';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.adjustAutomaticPenaltyCharges.InvoiceReferredToEngineer';
-
+--
+-- Update 'Reason of Rejection' menu options
+--
+update reason_of_rejection set restricted=true where name like 'Indemnity Issues%' or name like 'Other%' and type='Claim';
 
 ---
 ---  6.7.8 Restrictions on who can delete Attachments
