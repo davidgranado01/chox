@@ -311,12 +311,6 @@
                             &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId"label="Remove From Penalty Charge Queue"/>
                             <label>Remove From Queue</label>
                         </s:if>
-                        <s:if test="showAutoPenaltyCheckbox ">
-                            <s:if test="!autoPenaltyChargeEnabled">
-                                &nbsp;<s:checkbox name="autoPenaltyChargeEnabled" id="PCAutoPenaltyChargeEnabledId"/>
-                                <label>Enable Automatic Penalty Charges &nbsp;</label>
-                            </s:if>
-                        </s:if>
                     </td>
                 </tr>
             </table>
