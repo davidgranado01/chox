@@ -363,7 +363,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claim == null) {
             LOG.error("claim is null");
             throw new IllegalStateException("No Claim available.");
-        } else {
+        } else if (claim.getInvoice() != null) {
             if (service.updateAutomaticPenaltyCharge(claim)){
                 LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
                 // Invoice details may have changed  so we need to reload the claim
@@ -373,6 +373,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             return SUCCESS;
         }
+        
+        return SUCCESS;
     }
 
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
