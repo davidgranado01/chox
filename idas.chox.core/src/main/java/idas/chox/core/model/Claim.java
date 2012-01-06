@@ -72,6 +72,7 @@ public class Claim extends Entity implements Serializable {
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
+        this.autoPenaltyChargeEnabled = true;
     }
 
     public boolean isAutoPenaltyChargeEnabled() {
