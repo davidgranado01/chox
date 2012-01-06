@@ -2366,6 +2366,7 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES (
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
+<<<<<<< HEAD
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
@@ -2399,6 +2400,41 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
 
+=======
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
+
+>>>>>>> 7acaa292e47583d1bd45fc3f6ffa35d19d6397f7
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
