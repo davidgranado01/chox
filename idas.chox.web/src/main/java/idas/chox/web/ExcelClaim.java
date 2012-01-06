@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class ExcelClaim {
     private String claimStatus;
+    private String claimType;
     private String claimChoReference;
     private String claimChorganisationName;
     private String claimWorkgroupName;
@@ -168,6 +169,7 @@ public class ExcelClaim {
 
     public void setClaim(Claim claim) {
         this.claimStatus = claim.getStatus();
+        this.claimType = claim.getClaimType().toString();
         this.claimChoReference = claim.getChoReference();
         this.claimChorganisationName = claim.getChorganisation().getName();
         if (claim.getWorkgroup() != null)
@@ -568,6 +570,10 @@ public class ExcelClaim {
             this.claimHireMonitoringDetailNonProvisionReason = "";
             this.claimHireMonitoringDetailNextReviewDate = null;
         }
+    }
+
+    public String getClaimType() {
+        return claimType;
     }
 
     public String getClaimChoReference() {

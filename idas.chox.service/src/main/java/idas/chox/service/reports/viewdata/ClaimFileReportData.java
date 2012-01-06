@@ -1,8 +1,10 @@
 package idas.chox.service.reports.viewdata;
 
+import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
@@ -15,7 +17,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
-import java.math.BigDecimal;
 
 
 /**
@@ -203,6 +204,7 @@ public class ClaimFileReportData {
     private String invoiceDate;
     private String invoiceUploadedDate;
     private BigDecimal extrasMiscellaneousFee;
+    private String extrasMiscellaneousTitle;
     private Integer extrasMiscellaneousQuantity;
     private BigDecimal extrasAutomaticFee;
     private Integer extrasAutomaticQuantity;
@@ -259,9 +261,11 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsHirePenaltyPaid;
     private BigDecimal paymentDetailsRepairPenaltyPaid;
     private BigDecimal paymentDetailsTotalPaid;
+    private String claimType;
 
     public ClaimFileReportData(Claim claim) {
       try {
+        claimType = claim.getClaimType().toString();
         if (claim.getChorganisation() != null)
             choName = claim.getChorganisation().getName();
         createdBy = claim.getCreatedBy().getFullName();
@@ -497,6 +501,13 @@ public class ClaimFileReportData {
             hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
             hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
         }
+        
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            extrasMiscellaneousTitle = "Acquisition Fee";
+        }
+        else {
+            extrasMiscellaneousTitle = "Miscellaneous Fee";
+        }
 
         Invoice invoice = claim.getInvoice();
         if (invoice != null) {
@@ -610,6 +621,14 @@ public class ClaimFileReportData {
               LOG.error("    Caused by: {}", ex.getCause().getMessage());
           }
       }
+    }
+
+    public String getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(String claimType) {
+        this.claimType = claimType;
     }
 
     public String getLiabilityStatus() {
@@ -1074,6 +1093,14 @@ public class ClaimFileReportData {
 
     public void setExtrasMiscellaneousFee(BigDecimal extrasMiscellaneousFee) {
         this.extrasMiscellaneousFee = extrasMiscellaneousFee;
+    }
+
+    public String getExtrasMiscellaneousTitle() {
+        return extrasMiscellaneousTitle;
+    }
+
+    public void setExtrasMiscellaneousTitle(String extrasMiscellaneousTitle) {
+        this.extrasMiscellaneousTitle = extrasMiscellaneousTitle;
     }
 
     public Integer getExtrasMiscellaneousQuantity() {
