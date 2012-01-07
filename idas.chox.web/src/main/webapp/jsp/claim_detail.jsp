@@ -422,19 +422,10 @@
                             </td>
                         </tr>
                     </s:if>
-<!-- This is not necessary once we add a 'claim type' field to the details page
-                    <s:if test="isInsurerVsInsurerClaim">
-                        <tr>
-                            <td colspan="3">
-                                <div class="status-info">This is a <s:property value="thirdParty.insurer.name" /> vs. <s:property value="thirdParty.insurer.name" /> claim.</div>
-                            </td>
-                        </tr>
-                    </s:if>
--->
                     <s:if test="subscriberClaimUnder5Days">
                         <tr>
                             <td colspan="3">
-                                <div class="status-info"><s:property value="subscriberTimeLeft" /> remain before this claim will become a Subscriber claim by default.</div>
+                                <div class="status-info"><s:property value="subscriberTimeLeft" /> before this claim will become a Subscriber claim by default.</div>
                             </td>
                         </tr>
                     </s:if>

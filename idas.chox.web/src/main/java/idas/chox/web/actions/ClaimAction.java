@@ -1324,8 +1324,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         int days = service.getSubscriberClaimDays(claim.getId());
         
         if (days == 4)
-            return "One day";
-        return "" + (5 - days) + " days";
+            return "1 day remains";
+        return "" + (5 - days) + " days remain";
     }
 
     public BigDecimal getFormattedInsLiab() {
