@@ -14,11 +14,14 @@
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
                         <s:else>
-                            Please enter details of the claim and decide whether to acknowledge the claim, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:else>
+                    <s:if test="rejectButtonEnabled">
+                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                    </s:if>
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">

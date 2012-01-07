@@ -16,7 +16,7 @@
         // as, fue to the asynchronous nature of the widget, the store may
         // not be loaded. Below is a patch to fix this problem.
         Ext.override(Ext.form.ComboBox, {
-           setValue : function(v){
+            setValue : function(v){
                 //begin patch
                 // Store not loaded yet? Set value when it *is* loaded.
                 // Defer the setValue call until after the next load.
@@ -272,23 +272,22 @@
                                 FNOL team the claim is referred to is based on the Workgroup assigned to the claim).
                                 If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
                                 drop down menu below to re-assign the Workgroup before referring the claim to FNOL.<br>
-                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                             </s:if>
                             <s:elseif test="insurerIsFnolEnabled && !insurer.workgroupEnable">
                                 Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                                 If the claim needs registering by FNOL, please use the 'Refer To FNOL' button.<br>
-                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                             </s:elseif>
                             <s:elseif test="!insurerIsFnolEnabled && insurer.workgroupEnable">
                                 Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                                 If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
                                 drop down menu below to re-assign the Workgroup.<br>
-                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                             </s:elseif>
                             <s:else>
                                 Please assign the claim owner for this claim and click on the 'Assign Owner' button.<br>
-                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                             </s:else>
+                            <s:if test="rejectButtonEnabled">
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            </s:if>
                         </div>
                         <div class="status-control-set">
                             <table class="status-table" border="0" cellpadding="0" cellspacing="0">
@@ -305,11 +304,11 @@
                                     <td width="70%"></td>
                                 </tr>
                                 <s:if test="rejectButtonEnabled">
-                                <tr>
-                                    <td align="right" width="10%">
-                                        <label >Reason for Rejection</label>
-                                    </td>
-                                    <td align="left" width="20%">
+                                    <tr>
+                                        <td align="right" width="10%">
+                                            <label >Reason for Rejection</label>
+                                        </td>
+                                        <td align="left" width="20%">
                                             <div id="ReasonOfRejectionDiv">
                                                 <s:select
                                                     name="reasonOfRejectionId"
@@ -322,10 +321,10 @@
                                                     emptyOption="false">
                                                 </s:select>
                                             </div>
-                                    </td>
-                                    <td width="70%"></td>
-                                <tr>
-                                </s:if>
+                                        </td>
+                                        <td width="70%"></td>
+                                    <tr>
+                                    </s:if>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">

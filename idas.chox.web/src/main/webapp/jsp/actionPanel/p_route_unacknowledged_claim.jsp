@@ -123,7 +123,9 @@
             <div>
                 <div class="status-info">
                     Please select the 'Workgroup' in order to route the claim to the relevant handling team.<br>
-                    Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                    <s:if test="rejectButtonEnabled">
+                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                    </s:if>
                 </div>
                 <s:hidden name="id" id="claimId" />
                 <s:hidden name="name" id="name" />
@@ -159,8 +161,8 @@
                                     </div>
                                 </td>
                                 <td width="70%"></td>
-                        </tr>
-                            </s:if>
+                            </tr>
+                        </s:if>
                         <tr>
                             <td colspan="3">
                                 <div class="no-format">
