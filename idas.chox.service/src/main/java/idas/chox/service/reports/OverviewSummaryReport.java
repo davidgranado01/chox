@@ -191,7 +191,7 @@ public class OverviewSummaryReport implements Report {
             
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a ")
               .append( "where chorganisation_id=insurer_chorganisation.chorganisation_id ")
-              .append( "and insurer_id=insurer_chorganisation.insurer_id and status='ClaimRejectionAccepted' ");
+              .append( "and insurer_id=insurer_chorganisation.insurer_id and (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected'))");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
@@ -201,7 +201,7 @@ public class OverviewSummaryReport implements Report {
             
             
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a ")
-              .append( "where status='ClaimRejectionAccepted' and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+              .append( "where (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected')) and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
@@ -726,6 +726,7 @@ public class OverviewSummaryReport implements Report {
             }
 
             String query = sb.toString();
+
             LOG.debug(query);
             Map paramMap = new HashMap();
             paramMap.put("pUploadDateFrom", dataStart);

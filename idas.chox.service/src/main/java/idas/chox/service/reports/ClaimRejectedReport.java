@@ -114,25 +114,24 @@ public class ClaimRejectedReport implements Report {
     private ClaimRejection getReportLineResult(boolean isIns, Integer iOrgId, ClaimRejection claimRejection, Date dataStart, Date dataEnd) {
 
         claimRejection = getReportHeader(isIns, iOrgId, dataStart, dataEnd, claimRejection);
-
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
-        sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
+        sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
+        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
 
         for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
 
             if (cRejected.getId() != null) {
-                sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
                         .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
                         .append(cRejected.getId()).append(", ");
 
                 if (isIns) {
-                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                    sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
                             .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_")
                             .append(cRejected.getId()).append(", ");
                 } else {
-                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                    sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
                             .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
                             .append(cRejected.getId()).append(", ");
                 }
@@ -226,8 +225,8 @@ public class ClaimRejectedReport implements Report {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
+        sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
+        sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = claim.id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected'))) as iTotalRejected, ");
 
         if (isInsReport) {
 
@@ -248,6 +247,7 @@ public class ClaimRejectedReport implements Report {
         }
 
         String query = sb.toString();
+
         /* query = query.replaceAll(":pOrgId", iOrgId.toString());
         query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
         query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");*/
