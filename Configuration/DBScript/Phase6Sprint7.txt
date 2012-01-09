@@ -39,6 +39,9 @@ where is_insurer_vs_insurer_claim=true
 UPDATE claim SET claim_type = 10   -- INSURER_UPLOAD
 where insurer_upload = true;
 
+DROP VIEW rpt_all_claim_with_invoice;
+DROP VIEW rpt_claim_audit_trail;
+
 ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
 ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
 ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
@@ -52,8 +55,6 @@ ALTER TABLE CLAIM DROP COLUMN insurer_upload;
 --
 -- View: rpt_all_claim_with_invoice
 --
-DROP VIEW rpt_all_claim_with_invoice;
-
 CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
  SELECT claim.id AS claim_id, claim.workgroup_id, claim.claim_owner_id AS owner, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, claim.created_date AS claim_created_date, claim.claim_type, invoice.id AS invoice_id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty AS cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date AS invoice_created_date, invoice.last_modified_by AS last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.full_total_to_pay AS total_to_pay, invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.hire_penalty_charge AS panalty_charge, invoice.penalty_alert_qty AS panalty_alert_qty, invoice.hire_penalty_charge_applied_date AS penalty_charge_applied_date
    FROM claim claim
@@ -66,10 +67,8 @@ GRANT SELECT, UPDATE, INSERT ON TABLE rpt_all_claim_with_invoice TO chox_user;
 --
 -- View: rpt_claim_audit_trail
 --
-DROP VIEW rpt_claim_audit_trail;
-
 CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
- SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, claim.claim_type, invoice.full_total_to_pay AS total_to_pay, invoice.hire_penalty_charge AS penalty_charge, invoice.id AS invoice_id, 
+ SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.reverted, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, claim.claim_type, invoice.full_total_to_pay AS total_to_pay, invoice.hire_penalty_charge AS penalty_charge, invoice.id AS invoice_id, 
         CASE
             WHEN audit_trail.claim_reason_of_rejection = 0 THEN NULL::integer
             ELSE audit_trail.claim_reason_of_rejection
@@ -147,7 +146,6 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
-GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO public;
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
 
@@ -1875,7 +1873,6 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
 
-GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
@@ -2006,8 +2003,6 @@ auto_penalty_start = created_date;
 --
 --  Store procedure to apply penalty charges
 --
-
-
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) 
 	RETURNS SETOF claim AS 
 $BODY$
@@ -2294,7 +2289,6 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId i
 --
 -- Alter Store procedure to create automatic task
 --
-
 CREATE OR REPLACE FUNCTION addinvoicepenaltytask(integer)
   RETURNS boolean AS
 $BODY$
@@ -2368,7 +2362,6 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES (
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLiabilityResolution';
-<<<<<<< HEAD
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
@@ -2402,41 +2395,6 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
 
-=======
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceApprovedByBRE';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceDataCalculationIncorrect';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalated';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceEscalatedToHandler';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToInsurer';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.ContestedInvoiceReferredToCHO';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingInvoicePayment';
-
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToClaimsHandler';
-
->>>>>>> 7acaa292e47583d1bd45fc3f6ffa35d19d6397f7
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
