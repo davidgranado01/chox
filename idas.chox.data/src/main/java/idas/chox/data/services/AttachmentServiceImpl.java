@@ -56,19 +56,6 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         //     Manager can delete from organisation,
         //     CHOX Admin can delete all
         //     owners can delete
-        LOG.info("attachment.getCreatedBy().getId().intValue(): {}", attachment.getCreatedBy().getId().intValue());
-        LOG.info("webUserId: {}", webUserId);
-        LOG.info("userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN): {}", userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN));
-        LOG.info("userInRole(webUser, WebUserRole.ROLE_CH_MNG): {}", userInRole(webUser, WebUserRole.ROLE_CH_MNG));
-        LOG.info("userInRole(webUser, WebUserRole.ROLE_INS_MNG): {}", userInRole(webUser, WebUserRole.ROLE_INS_MNG));
-        if (attachment.getCreatedBy().getChorganisation() != null)
-            LOG.info("attachment.getCreatedBy().getChorganisation().getId().intValue(): ", attachment.getCreatedBy().getChorganisation().getId().intValue());
-        if (attachment.getCreatedBy().getInsurer() != null)
-            LOG.info("attachment.getCreatedBy().getInsurer().getId().intValue(): ", attachment.getCreatedBy().getInsurer().getId().intValue());
-        if (webUser.getInsurer() != null)
-            LOG.info("webUser.getInsurer().getId().intValue() : {}", webUser.getInsurer().getId().intValue());
-        if (webUser.getChorganisation() != null)
-            LOG.info("webUser.getInsurer().getId().intValue() : {}", webUser.getChorganisation().getId().intValue());
         if (attachment.getCreatedBy().getId().intValue() == webUserId || userInRole(webUser, WebUserRole.ROLE_CHOX_ADMIN)) {
             canDelete = true;
         }
@@ -81,7 +68,7 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
             canDelete = true;
         }
         
-        LOG.info("canDelete: {}", canDelete);
+        LOG.debug("canDelete: {}", canDelete);
         if (canDelete) {
             attachment.setDeleted(true);
             save(attachment);
