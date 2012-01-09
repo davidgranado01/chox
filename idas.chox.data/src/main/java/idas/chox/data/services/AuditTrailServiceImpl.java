@@ -277,12 +277,11 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                         dayOutStatus += 1;
                     LOG.debug("    days after = {}", dayOutStatus);
                 }
-                if (lastDayCounted != dayInStatus && dayInStatus == dayOutStatus) {
-                    // add a day, unless already counted
-                    days += 1;
-                } else {
-                    days += dayOutStatus - dayInStatus;
+                LOG.debug("dayInStatus={}, dayOutStatus={}, lastDayCounted={}", new Object[] {dayInStatus, dayOutStatus, lastDayCounted});
+                if (!(lastDayCounted == dayInStatus && dayInStatus == dayOutStatus)) {
+                    days += dayOutStatus - dayInStatus + 1;
                 }
+                
                 lastDayCounted = dayOutStatus;
                 if (trail.getReverted()) {
                     dateInStatus = trail.getLastModifiedDate();
