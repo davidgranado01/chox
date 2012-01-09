@@ -148,6 +148,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
     private Date autoPenaltyStart;
+    private Integer subscriberClaimDays;
 
     public Date getAutoPenaltyStart() {
         return autoPenaltyStart;
@@ -1252,12 +1253,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (!ClaimType.isSubscriber(claim.getClaimType()))
             return true;
 
-        int days = service.getSubscriberClaimDays(claim.getId());
+        if (subscriberClaimDays == null)
+            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
         
-        if (days < 5)
+        if (subscriberClaimDays < 5)
             return true;
         
-        if (days == 5) {
+        if (subscriberClaimDays == 5) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15)
@@ -1282,9 +1284,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        int days = service.getSubscriberClaimDays(claim.getId());
+        if (subscriberClaimDays == null)
+            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
         
-        if (days < 5)
+        if (subscriberClaimDays < 5)
             return true;
         
         return false;
@@ -1305,9 +1308,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        int days = service.getSubscriberClaimDays(claim.getId());
+        if (subscriberClaimDays == null)
+            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
         
-        if (days == 5) {
+        if (subscriberClaimDays == 5) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15)
@@ -1321,11 +1325,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (!ClaimType.isSubscriber(claim.getClaimType()))
             return null;
 
-        int days = service.getSubscriberClaimDays(claim.getId());
+        if (subscriberClaimDays == null)
+            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
         
-        if (days == 4)
+        if (subscriberClaimDays == 4)
             return "1 day remains";
-        return "" + (5 - days) + " days remain";
+        return "" + (5 - subscriberClaimDays) + " days remain";
     }
 
     public BigDecimal getFormattedInsLiab() {

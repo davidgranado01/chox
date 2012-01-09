@@ -43,11 +43,13 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.common.OrganisationType;
+import idas.chox.core.services.CommentService;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
     private AuditTrailService auditTrailService;
+    private CommentService commentService;
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
@@ -56,6 +58,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     public ClaimServiceImpl() {
@@ -644,7 +650,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.auto_penalty_start)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date - iv1_.auto_penalty_start)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
             criteria.add(Restrictions.disjunction()
                         .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
                         .add(Restrictions.conjunction()
@@ -932,6 +938,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
 
+        if (claimAge > 5) {
+            // Add note if not already done
+            boolean addComment = true;
+            List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
+            for (Comment comment : comments) {
+                if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
+                    addComment = false;
+                    break;
+                }
+            }
+            if (addComment) {
+                Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+            }
+        }
         return claimAge;
     }
 
