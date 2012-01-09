@@ -24,6 +24,9 @@
                         <s:if test="rejectButtonEnabled">
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                         </s:if>
+                        <s:else>
+                            This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                        </s:else>
                     </div>
                     <div class="status-info">
                         This claim has been pending for <s:property value="daysInStatus" /> day(s).

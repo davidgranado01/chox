@@ -150,9 +150,12 @@
                         <s:else>
                             Please review the Engineer's notes, if applicable enter details of the claim and decide whether to acknowledge the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:else>
-                    <s:if test="rejectButtonEnabled">
-                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
-                    </s:if>
+                        <s:if test="rejectButtonEnabled">
+                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                        </s:if>
+                        <s:else>
+                            This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                        </s:else>
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
