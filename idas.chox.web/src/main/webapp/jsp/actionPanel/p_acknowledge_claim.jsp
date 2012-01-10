@@ -15,7 +15,7 @@
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
                         <s:elseif test="!insurerIsEngineersEnabled && !insurerIsFnolEnabled">
                             Please enter details of the claim and decide whether to acknowledge the claim. You can enter public notes in the ‘Claim Review Notes’ box in order to communicate detailed comments you may have for the CHO.
@@ -30,7 +30,7 @@
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                         </s:if>
                         <s:else>
-                            This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                            This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                         </s:else>
                     </div>
                     <div class="status-control-set">
@@ -138,13 +138,13 @@
                                     <textarea class="chox-canote" cols="80" rows="3" id="ACengineerClaimReviewNotesId" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <s:if test="rejectButtonEnabled">
-                                <tr valign="top">
-                                    <td>
-                                        <label>Reason for Rejection</label>
-                                    </td>
-                                    <td colspan="3">
-                                        <div id="ReasonOfRejectionDiv">
+                            <tr valign="top">
+                                <td>
+                                    <label>Reason for Rejection</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:if test="rejectButtonEnabled">
                                             <s:select
                                                 name="reasonOfRejectionId"
                                                 id="reasonOfRejectionId"
@@ -153,11 +153,26 @@
                                                 listValue="name"
                                                 headerKey=""
                                                 headerValue="N/A"
-                                                emptyOption="false"></s:select>
-                                            </div>
-                                        </td>
-                                    </tr>
-                            </s:if>
+                                                emptyOption="false">
+                                            </s:select>
+                                        </s:if>
+                                        <s:else>
+                                            <s:select
+                                                name="reasonOfRejectionId"
+                                                id="reasonOfRejectionId"
+                                                list="reasonOfClaimRejections"
+                                                listKey="id"
+                                                listValue="name"
+                                                headerKey=""
+                                                headerValue="N/A"
+                                                disabled="true"
+                                                emptyOption="false">
+                                            </s:select>
+
+                                        </s:else>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -170,6 +185,9 @@
                                     <s:if test="rejectButtonEnabled">
                                         <input type="button" id="ACRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
                                     </s:if>
+                                    <s:else>
+                                        <input type="button" id="ACRejectButtonId"value="Reject" disabled="disabled" />
+                                    </s:else>
                                     <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />

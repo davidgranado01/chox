@@ -127,7 +127,7 @@
                         Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                     </s:if>
                     <s:else>
-                        This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                        This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                     </s:else>
                 </div>
                 <s:hidden name="id" id="claimId" />
@@ -144,13 +144,13 @@
                             </td>
                             <td width="70%"></td>
                         </tr>
-                        <s:if test="rejectButtonEnabled">
-                            <tr>
-                                <td width="10%" align="right">
-                                    <label >Reason for Rejection</label>
-                                </td>
-                                <td width="20%" align="left">
-                                    <div id="ReasonOfRejectionDiv">
+                        <tr>
+                            <td width="10%" align="right">
+                                <label >Reason for Rejection</label>
+                            </td>
+                            <td width="20%" align="left">
+                                <div id="ReasonOfRejectionDiv">
+                                    <s:if test="rejectButtonEnabled">
                                         <s:select
                                             name="reasonOfRejectionId"
                                             id="reasonOfRejectionId"
@@ -161,11 +161,25 @@
                                             headerValue="N/A"
                                             emptyOption="false">
                                         </s:select>
-                                    </div>
-                                </td>
-                                <td width="70%"></td>
-                            </tr>
-                        </s:if>
+                                    </s:if>
+                                    <s:else>
+                                        <s:select
+                                            name="reasonOfRejectionId"
+                                            id="reasonOfRejectionId"
+                                            list="reasonOfClaimRejectionsRestricted"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            disabled="true"
+                                            headerValue="N/A"
+                                            emptyOption="false">
+                                        </s:select>
+
+                                    </s:else>
+                                </div>
+                            </td>
+                            <td width="70%"></td>
+                        </tr>
                         <tr>
                             <td colspan="3">
                                 <div class="no-format">
@@ -179,6 +193,9 @@
                                 <s:if test="rejectButtonEnabled">
                                     <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                                 </s:if>
+                                <s:else>
+                                    <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim"  disabled="disabled" />
+                                </s:else>
                             </td>
                         </tr>
                     </table>

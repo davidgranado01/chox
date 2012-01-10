@@ -158,7 +158,7 @@
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                         </s:if>
                         <s:else>
-                            This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                            This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                         </s:else>
                     </div>
                     <div class="status-info">
@@ -206,13 +206,13 @@
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <s:if test="rejectButtonEnabled">
-                                <tr valign="top">
-                                    <td>
-                                        <label>Reason for Rejection</label>
-                                    </td>
-                                    <td colspan="3">
-                                        <div id="ReasonOfRejectionDiv">
+                            <tr valign="top">
+                                <td>
+                                    <label>Reason for Rejection</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:if test="rejectButtonEnabled">
                                             <s:select
                                                 name="reasonOfRejectionId"
                                                 id="reasonOfRejectionId"
@@ -223,10 +223,23 @@
                                                 headerValue="N/A"
                                                 emptyOption="false">
                                             </s:select>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </s:if>
+                                        </s:if>
+                                        <s:else>
+                                            <s:select
+                                                name="reasonOfRejectionId"
+                                                id="reasonOfRejectionId"
+                                                list="reasonOfClaimRejections"
+                                                listKey="id"
+                                                listValue="name"
+                                                headerKey=""
+                                                disabled="true"
+                                                headerValue="N/A"
+                                                emptyOption="false">
+                                            </s:select>
+                                        </s:else>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -239,6 +252,9 @@
                                     <s:if test="rejectButtonEnabled">
                                         <input type="button" id="PCRejectButtonId"value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
                                     </s:if>
+                                    <s:else>
+                                        <input type="button" id="PCRejectButtonId"value="Reject" disabled="disabled"/>
+                                    </s:else>
                                     <input type="button" id="PCAcknowledgeButtonId"value="Acknowledge" onclick="doClaimPendingFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="PCReferToEngineerButtonId"value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />

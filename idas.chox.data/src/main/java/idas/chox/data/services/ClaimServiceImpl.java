@@ -949,8 +949,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                LOG.debug("Adding comment...");
-                Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                claim.addComment(comment);
+                save(claim);
             }
         }
         

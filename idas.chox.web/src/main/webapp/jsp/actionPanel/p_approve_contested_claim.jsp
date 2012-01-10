@@ -174,7 +174,7 @@
                         Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                     </s:if>
                     <s:else>
-                        This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                        This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                     </s:else>
                 </div>
                 <div class="status-control-set">
@@ -219,13 +219,13 @@
                                 </td>
 
                             </tr>
-                            <s:if test="rejectButtonEnabled">
-                                <tr valign="top">
-                                    <td>
-                                        <label>Reason for Rejection</label>
-                                    </td>
-                                    <td colspan="3">
-                                        <div id="ReasonOfRejectionDiv">
+                            <tr valign="top">
+                                <td>
+                                    <label>Reason for Rejection</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:if test="rejectButtonEnabled">
                                             <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
                                                       list="reasonOfClaimRejections"
                                                       listKey="id"
@@ -233,10 +233,21 @@
                                                       headerKey=""
                                                       headerValue="N/A"
                                                       emptyOption="false"></s:select>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </s:if>
+                                        </s:if>
+                                        <s:else>
+                                            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                                      list="reasonOfClaimRejections"
+                                                      listKey="id"
+                                                      listValue="name"
+                                                      headerKey=""
+                                                      disabled="true"
+                                                      headerValue="N/A"
+                                                      emptyOption="false">
+                                            </s:select>
+                                        </s:else>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -249,6 +260,9 @@
                                     <s:if test="rejectButtonEnabled">
                                         <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
                                     </s:if>
+                                    <s:else>
+                                        <input type="button" id="ACCRejectButtonId" value="Reject" disabled="disabled" />
+                                    </s:else>
                                     <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />

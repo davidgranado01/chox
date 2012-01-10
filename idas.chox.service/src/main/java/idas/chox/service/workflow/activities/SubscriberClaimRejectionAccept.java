@@ -29,8 +29,9 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         // Subscriber claims move straight to AwaitingInvoiceData
-        logTransaction(claim, claim.getStatus(), ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, 0);
         setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
 

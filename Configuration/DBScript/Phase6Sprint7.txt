@@ -375,8 +375,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c
   where status in  ('ClaimPending', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimUpdatedByEngineer', 'ClaimRejected',
-    'ClaimRejectionContested', 'ClaimUnacknowledgedRouted', 'ClaimUnacknowledgedUnrouted', 'SubscriberClaimRejected'
-    'ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')
+    'ClaimRejectionContested', 'ClaimUnacknowledgedRouted', 'ClaimUnacknowledgedUnrouted', 'SubscriberClaimRejected', 'ClaimUnacknowledgedUnassigned')
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id

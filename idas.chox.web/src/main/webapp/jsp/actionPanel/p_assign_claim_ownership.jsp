@@ -289,7 +289,7 @@
                                 Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                             </s:if>
                             <s:else>
-                                This claim cannot be rejected as no response was received for the Subscriber notification within the 5 day SLA.
+                                This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                             </s:else>
                         </div>
                         <div class="status-control-set">
@@ -306,13 +306,13 @@
                                     <td width="20%"><div id="claimOwnerComboDiv"></div></td>
                                     <td width="70%"></td>
                                 </tr>
-                                <s:if test="rejectButtonEnabled">
-                                    <tr>
-                                        <td align="right" width="10%">
-                                            <label >Reason for Rejection</label>
-                                        </td>
-                                        <td align="left" width="20%">
-                                            <div id="ReasonOfRejectionDiv">
+                                <tr>
+                                    <td align="right" width="10%">
+                                        <label >Reason for Rejection</label>
+                                    </td>
+                                    <td align="left" width="20%">
+                                        <div id="ReasonOfRejectionDiv">
+                                            <s:if test="rejectButtonEnabled">
                                                 <s:select
                                                     name="reasonOfRejectionId"
                                                     id="reasonOfRejectionId"
@@ -323,11 +323,24 @@
                                                     headerValue="N/A"
                                                     emptyOption="false">
                                                 </s:select>
-                                            </div>
-                                        </td>
-                                        <td width="70%"></td>
-                                    <tr>
-                                    </s:if>
+                                            </s:if>
+                                            <s:else>
+                                                <s:select
+                                                    name="reasonOfRejectionId"
+                                                    id="reasonOfRejectionId"
+                                                    list="reasonOfClaimRejectionsRestricted"
+                                                    listKey="id"
+                                                    listValue="name"
+                                                    headerKey=""
+                                                    headerValue="N/A"
+                                                    disabled="true"
+                                                    emptyOption="false">
+                                                </s:select>
+                                            </s:else>
+                                        </div>
+                                    </td>
+                                    <td width="70%"></td>
+                                <tr>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">
@@ -344,6 +357,9 @@
                                         <s:if test="rejectButtonEnabled">
                                             <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
                                         </s:if>
+                                        <s:else>
+                                            <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" disabled="disabled" />
+                                        </s:else>
                                     </td>
                                 </tr>
                             </table>
