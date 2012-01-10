@@ -1256,16 +1256,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (subscriberClaimDays == null)
             subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
         
-        if (subscriberClaimDays < 5)
-            return true;
+        return (subscriberClaimDays < 5 || (subscriberClaimDays == 5 && DateHelper.isBefore3pm())) ? true : false;
         
-        if (subscriberClaimDays == 5) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
-                return true; 
-        }
-        return false;
     }
 
 

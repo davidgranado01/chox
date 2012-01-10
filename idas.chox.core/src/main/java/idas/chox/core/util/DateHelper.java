@@ -74,6 +74,16 @@ public class DateHelper {
         return sdf.format(cal.getTime());
     }
 
+    public static boolean isBefore3pm() {
+        return isBefore3pm(new Date());
+    }
+    public static boolean isBefore3pm(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        return cal.get(Calendar.HOUR_OF_DAY) < 15 ? true : false;
+    }
+    
     public static String getTwoDigitValueInString(int iValue) {
         String returnValue = String.valueOf(iValue);
         if (iValue < 10) {

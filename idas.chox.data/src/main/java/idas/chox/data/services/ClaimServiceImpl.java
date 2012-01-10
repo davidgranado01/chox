@@ -938,20 +938,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
 
-        if (claimAge > 5) {
-            // Add note if not already done
+        if (claimAge > 5 || (claimAge == 5 && !DateHelper.isBefore3pm())) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
                 if (comment.getComment().endsWith("claim taken down Subscriber route.")) {
                     addComment = false;
+                    LOG.debug("Comment already added - skipping");
                     break;
                 }
             }
             if (addComment) {
+                LOG.debug("Adding comment...");
                 Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
             }
         }
+        
+        LOG.debug("Returning claim age of {}", claimAge);
         return claimAge;
     }
 
