@@ -110,12 +110,23 @@ public class ClaimRejection extends BaseActivity {
                     && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to reject claim.");
         }
+        
+        if (getReasonOfRejection() == null) {
+            throw new Exception("No Reason of Rejection provided");
+        }
+
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            // Verify Rejected with the 5 day SLA
+            // TODO
+        }
+
     }
 
     @Override
     protected void beforeProcess(Claim claim) {
         LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
-        if (liabilityStatus != null && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ||! claim.getLiabilityStatus().equals(liabilityStatus)) ){
+        if (liabilityStatus != null && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL
+                || !claim.getLiabilityStatus().equals(liabilityStatus)) ){
 
                 String note;
                 if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){

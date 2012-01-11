@@ -10,7 +10,8 @@ import org.slf4j.LoggerFactory;
 
 /*
  * This activity is used to move any claim to invoice payment logged from any status by CHO
- * This is mainly used when claim is at any status and CHO click payment received from more action. This activity is called before claim move to paymentReceived status.
+ * This is mainly used when claim is at any status and CHO click payment received from more action.
+ * This activity is called before claim move to paymentReceived status.
  */
 public class MoveToInvoicePaymentLogged extends BaseActivity {
 
@@ -21,7 +22,10 @@ public class MoveToInvoicePaymentLogged extends BaseActivity {
         super.validate(claim);
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin()) || (securityInfoProvider.isInRoleOf("ROLE_CHO") && (claim.getChorganisation().getId().compareTo(securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
+        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin())
+                || (securityInfoProvider.isInRoleOf("ROLE_CHO")
+                && (claim.getChorganisation().getId().compareTo(securityInfoProvider.getCurrentUser().getChorganisation().getId()))
+                                            != 0)) {
             throw new AccessDeniedException("Not in correct role to update interim Payment full and final.");
         }
 
