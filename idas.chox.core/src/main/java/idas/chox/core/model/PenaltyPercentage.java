@@ -10,7 +10,7 @@ public enum PenaltyPercentage {
     ZERO_PERCENTAGE              ("0%",BigDecimal.ZERO),
     HIRE_MORE_THAN_30_DAYS       ("7.5%",new BigDecimal(7.5)),
     HIRE_MORE_THAN_60_DAYS       ("15%",new BigDecimal(15)),
-    HIRE_COMMERCIAL              ("Commercial",BigDecimal.ZERO),
+    COMMERCIAL                   ("Commercial",BigDecimal.ZERO),
     REPAIR_MORE_THAN_30_DAYS     ("2.5%",new BigDecimal(2.5)),
     REPAIR_MORE_THAN_60_DAYS     ("5%",new BigDecimal(5));
 
@@ -42,7 +42,7 @@ public enum PenaltyPercentage {
         List <PenaltyPercentage> hirePenaltyPercentage = new ArrayList<PenaltyPercentage>();
         hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS);
         hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS);
-        hirePenaltyPercentage.add(HIRE_COMMERCIAL);
+        hirePenaltyPercentage.add(COMMERCIAL);
         return hirePenaltyPercentage;
     }
     
@@ -50,6 +50,7 @@ public enum PenaltyPercentage {
         List <PenaltyPercentage> repairPenaltyPercentage = new ArrayList<PenaltyPercentage>();
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_30_DAYS);
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_60_DAYS);
+        repairPenaltyPercentage.add(COMMERCIAL);
         return repairPenaltyPercentage;
     }
 } 
