@@ -1,5 +1,8 @@
 package idas.chox.web.jobs.erac;
 
+import idas.chox.core.model.Claim;
+import idas.chox.core.services.ClaimService;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,17 +24,17 @@ public class ParseXlsFile {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ParseXlsFile.class);
+	
+	 private ClaimService claimService;
 
 	public List<List<Cell>> readExcelFile(InputStream inputStream) {
 
 		List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
 
-		InputStream myInput;
 		try {
-			myInput = inputStream;
-
+			
 			/** Create a POIFSFileSystem object **/
-			POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
+			POIFSFileSystem myFileSystem = new POIFSFileSystem(inputStream);
 
 			/** Create a workbook using the File System **/
 			HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
@@ -63,16 +67,42 @@ public class ParseXlsFile {
 	 * @param dataHolder
 	 */
 	public void iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
-
+		
+		Claim claim = null;
+		String stringCellValue = null;
+		try{
 		for (int i = 0; i < dataHolder.size(); i++) {
 			List<Cell> cellStoreList = (List<Cell>) dataHolder.get(i);
 			for (int j = 0; j < cellStoreList.size(); j++) {
 				HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-				String stringCellValue = myCell.toString();
+				stringCellValue = myCell.toString();
+				//we dont do update for header and we assume we will always have only two columns
+				if(i != 0){
+					if(j == 0){
+						claim = claimService.getClaimByCHOReferenceNumber(stringCellValue);
+					//we do update only second column
+					}else{
+						claim.setChoReference(stringCellValue);
+						claimService.updateClaim(claim);
+					}
+					
+				}
 				// XXX just for testing purposes
 				System.out.print(stringCellValue + "\t");
 			}
 			System.out.println();
 		}
+		}catch(HibernateException e){
+			LOG.error("Can't update claim with cho_reference number: " + stringCellValue + " " + e);
+		}
 	}
+	
+	public ClaimService getClaimService() {
+		return claimService;
+	}
+
+	public void setClaimService(ClaimService claimService) {
+		this.claimService = claimService;
+	}
+	
 }

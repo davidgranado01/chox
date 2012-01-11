@@ -1,5 +1,5 @@
 package idax.chox.web.scheduler;
-
+//XXX this class can be deleted - just for development and testing purposes
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;

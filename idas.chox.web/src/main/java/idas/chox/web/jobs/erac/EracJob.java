@@ -3,10 +3,8 @@ package idas.chox.web.jobs.erac;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -30,28 +28,31 @@ public class EracJob extends QuartzJobBean {
 		try {
 			props = System.getProperties();
 			props.setProperty("mail.store.protocol", "imaps");
-			
+
 			internetAddress = new InternetAddress();
 			internetAddress.setPersonal("erac.test123");
 			internetAddress.setAddress("erac.test@gmail.com");
-			
+
+			imapMailReceiver = new ImapMailReceiver();
 			imapMailReceiver.setProps(props);
 			imapMailReceiver.setFrom(internetAddress);
 			imapMailReceiver.setHost("imap.gmail.com");
 
-			Map<Message, List<InputStream>> mapOfAttachments = imapMailReceiver
+			// in case the mail has more than one attachment we put into map
+			// list of attachments
+			List<InputStream> listOfAttachments = imapMailReceiver
 					.receiveMailAttachments(true);
-			for (Message message : mapOfAttachments.keySet()) {
-				readAndUpdateTheXlsDate(message, mapOfAttachments.get(message));
-			}
+			if(listOfAttachments.size() != 0)
+				readAndUpdateTheXlsDate(listOfAttachments);
+			
+			imapMailReceiver.clean();
 
 		} catch (UnsupportedEncodingException e) {
 			LOG.error("Mail password cannot be encoded. " + e);
 		}
 	}
 
-	private void readAndUpdateTheXlsDate(Message message,
-			List<InputStream> attachmets) {
+	private void readAndUpdateTheXlsDate(List<InputStream> attachmets) {
 		for (InputStream attachemt : attachmets) {
 			List<List<Cell>> cells = parseXlsFile.readExcelFile(attachemt);
 			parseXlsFile.iterateThroughTheXlsFile(cells);

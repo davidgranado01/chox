@@ -34,10 +34,14 @@ public class ImapMailReceiver {
 
 	private InternetAddress from;
 
-	public Map<Message, List<InputStream>> receiveMailAttachments(
+	private Folder folder;
+
+	private Store store;
+
+	public List<InputStream> receiveMailAttachments(
 			boolean receiveOnlyUseenMails) {
 
-		Map<Message, List<InputStream>> mapOfAttachemnts = new HashMap<Message, List<InputStream>>();
+		List<InputStream> listOfAttachemnts = new ArrayList<InputStream>();
 
 		if (props == null) {
 			props = System.getProperties();
@@ -46,9 +50,9 @@ public class ImapMailReceiver {
 		}
 		try {
 			Session session = Session.getDefaultInstance(props, null);
-			Store store = session.getStore(); // .getStore("imaps");
+			store = session.getStore(); // .getStore("imaps");
 			store.connect(host, getFrom().getAddress(), getFrom().getPersonal());
-			Folder folder = store.getDefaultFolder();
+			folder = store.getFolder("INBOX");
 
 			if (folder == null || folder.getName() == null) {
 				folder = store.getFolder("INBOX");
@@ -65,23 +69,23 @@ public class ImapMailReceiver {
 				if (!message.isSet(Flags.Flag.SEEN)
 						&& message.getContentType().contains("MIXED")) {
 					// TODO Update the listOfAttachments
-					mapOfAttachemnts.put(message, fetchAtacchements(message));
-					message.setFlag(Flags.Flag.DELETED, true);
+					listOfAttachemnts = fetchAtacchements(message);
+					//TODO Uncoment for production
+					//message.setFlag(Flags.Flag.DELETED, true);
 				}
 			}
 			// TODO set the log for retrieved mails
 
-			folder.expunge();
-			folder.close(true);
+			
 
 		} catch (NoSuchProviderException e) {
-			LOG.error("Given properties are not corrent. " + e);
+			LOG.error("Given mail properties are not corrent. " + e);
 		} catch (MessagingException e) {
-			LOG.error("Cannot make connecection to for the given host. " + e);
+			LOG.error("Cannot make connecection to the given host. " + e);
 		} catch (IOException e) {
-			LOG.error("Cannot retrive the given attachemnts. " + e);
-		}
-		return mapOfAttachemnts;
+			LOG.error("Cannot retrive attachemnts. " + e);
+		} 
+		return listOfAttachemnts;
 	}
 
 	public List<InputStream> fetchAtacchements(Message message)
@@ -93,12 +97,10 @@ public class ImapMailReceiver {
 		for (int i = 0, n = mp.getCount(); i < n; i++) {
 			Part part = mp.getBodyPart(i);
 
-			String disposition = part.getDisposition();
+			String fileName = part.getFileName();
 
-			if (disposition != null
-					&& (disposition.equals(Part.ATTACHMENT) || disposition
-							.equals(Part.INLINE))) {
-				listOfAttachements.add(part.getInputStream());
+			if (fileName != null && fileName.endsWith(".xls")) {
+				listOfAttachements.add((InputStream)part.getInputStream());
 			}
 		}
 		return listOfAttachements;
@@ -118,6 +120,17 @@ public class ImapMailReceiver {
 
 	public void setHost(String host) {
 		this.host = host;
+	}
+
+	public void clean() {
+		try {
+			folder.close(true);
+			store.close();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
