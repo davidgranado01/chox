@@ -203,6 +203,7 @@ public class ClaimFileReportData {
     private BigDecimal invoiceVATAmountCollected;
     private String invoiceDate;
     private String invoiceUploadedDate;
+    private String penaltyStartDate;
     private BigDecimal extrasMiscellaneousFee;
     private String extrasMiscellaneousTitle;
     private Integer extrasMiscellaneousQuantity;
@@ -559,6 +560,8 @@ public class ClaimFileReportData {
                 invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
             if (invoice.getCreatedDate() != null)
                 invoiceUploadedDate = DateHelper.getLocalDateTimeFormat().format(invoice.getCreatedDate());
+            if (invoice.getAutoPenaltyStart() != null)
+                penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
@@ -1789,6 +1792,14 @@ public class ClaimFileReportData {
 
     public void setInvoiceUploadedDate(String invoiceUploadedDate) {
         this.invoiceUploadedDate = invoiceUploadedDate;
+    }
+
+    public String getPenaltyStartDate() {
+        return penaltyStartDate;
+    }
+
+    public void setPenaltyStartDate(String penaltyStartDate) {
+        this.penaltyStartDate = penaltyStartDate;
     }
 
     public BigDecimal getInvoiceVATAmountCollected() {

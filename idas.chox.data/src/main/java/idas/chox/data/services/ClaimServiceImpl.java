@@ -662,11 +662,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else {
                 LOG.debug("Supplier Id={}", getCurrentUser().getChorganisation().getId());
                 // Get the id's of the BRE Bands mapped to this CHO
-                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation").createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
+                        .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                        .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
                 bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
 
                 // Get the insurers from the BRE Band which don't allow penalty charges to be added
-                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband").add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE)).add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list())).setProjection(Projections.property("breband.insurer"));
+                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
+                        .add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE))
+                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list()))
+                        .setProjection(Projections.property("breband.insurer"));
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
@@ -1029,7 +1034,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date());
+        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date())+1;
         return (int) (dateDiff / 30);
     }
 
