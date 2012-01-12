@@ -78,7 +78,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private Boolean canAddInsurerDiscountComment = false;
     private UserService userService;
     private BigDecimal insurerDiscountPercentageApplied;
-
+    private boolean modelSaved = false;
+    
     public boolean getcanShowPaymentDetails() {
         if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
@@ -982,6 +983,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // <editor-fold defaultstate="collapsed" desc="Invoice">
     public java.util.Date getInvoiceCreatedDate() {
         return invoiceAction.model.getCreatedDate();
+    }
+
+    public java.util.Date getPenaltyChargeDate() {
+        return invoiceAction.model.getAutoPenaltyStart();
     }
 
     public java.util.Date getDateInvoiced() {
@@ -2599,7 +2604,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 engineerReportAction.updateSessionModel();
                                 vehicleHireAction.prepare();
                                 vehicleHireAction.updateSessionModel();
-
+                                modelSaved = true;
                                 this.setActionResult("Your Changes Have Been Saved");
                                 return SUCCESS;
                             } catch (Exception ex) {
@@ -2623,6 +2628,28 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     }
 
+    public boolean isPenaltyChargesAppled() {
+        if (modelSaved && claim.getInvoice().getTotalPenaltyCharge() != null
+                && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) != 0)
+            return true;
+        
+        return false;
+    }
+
+    public boolean isPenaltyChargeDateModified() {
+        if (claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
+                return true;
+        
+        return false;
+    }
+
+    public boolean getIsPenaltyChargeDateModified() {
+        if (modelSaved && claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
+                return true;
+        
+        return false;
+    }
+    
     public String updateInvoiceModel() {
         return invoiceAction.updateModel(claim);
     }

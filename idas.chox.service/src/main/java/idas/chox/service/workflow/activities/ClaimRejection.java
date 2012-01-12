@@ -14,6 +14,8 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
 public class ClaimRejection extends BaseActivity {
@@ -31,6 +33,7 @@ public class ClaimRejection extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private ClaimService claimService;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -87,6 +90,10 @@ public class ClaimRejection extends BaseActivity {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
     // </editor-fold>
 
     @Override
@@ -116,8 +123,10 @@ public class ClaimRejection extends BaseActivity {
         }
 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
-            // Verify Rejected with the 5 day SLA
-            // TODO
+            // Verify Rejected with the 5 day SLA with 5 minute leeway
+            int subscriberClaimDays = claimService.getSubscriberClaimDays(claim.getId());
+            if (subscriberClaimDays > 5 || (subscriberClaimDays == 5 && !DateHelper.isBefore3pm(5)))
+                throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
         }
 
     }

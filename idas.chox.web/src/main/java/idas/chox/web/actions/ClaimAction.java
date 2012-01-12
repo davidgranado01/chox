@@ -2008,10 +2008,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getCalculatedHirePenaltyPercentage() {
 
         if (claim.getInvoice().getHireNet().compareTo(BigDecimal.ZERO) == 1) {
+            int penaltyAlertQty = service.calculatePenaltyAlertQty(claim.getInvoice());
 
-            return service.calculatePenaltyAlertQty(claim.getInvoice()) == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS.getPercentage()
-                    : service.calculatePenaltyAlertQty(claim.getInvoice()) == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
-                    : service.calculatePenaltyAlertQty(claim.getInvoice()) >= 3 ? PenaltyPercentage.HIRE_COMMERCIAL.getPercentage()
+            return penaltyAlertQty == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS.getPercentage()
+                    : penaltyAlertQty == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS.getPercentage()
+                    : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
 
         } else {
@@ -2023,9 +2024,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getCalculatedRepairPenaltyPercentage() {
 
         if (claim.getInvoice().getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+            int penaltyAlertQty = service.calculatePenaltyAlertQty(claim.getInvoice());
 
-            return service.calculatePenaltyAlertQty(claim.getInvoice()) == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
-                    : service.calculatePenaltyAlertQty(claim.getInvoice()) >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
+            return penaltyAlertQty == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
+                    : penaltyAlertQty >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
+                    : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
 
         } else {

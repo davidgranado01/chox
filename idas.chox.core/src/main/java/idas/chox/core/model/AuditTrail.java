@@ -1,10 +1,17 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 public class AuditTrail extends Entity implements Serializable {
-
+    public static final Comparator<AuditTrail> UPDATECOMPARATOR =
+            new Comparator<AuditTrail>() {
+                @Override
+                public int compare(AuditTrail a1, AuditTrail a2) {
+                    return a1.getUpdateDate().compareTo(a2.getUpdateDate());
+                }
+    };
     private Date updateDate;
     private String originalStatus;
     private String newStatus;

@@ -75,12 +75,18 @@ public class DateHelper {
     }
 
     public static boolean isBefore3pm() {
-        return isBefore3pm(new Date());
+        return isBefore3pm(new Date(), 0);
     }
-    public static boolean isBefore3pm(Date date) {
+    
+    public static boolean isBefore3pm(int leeway) {
+        return isBefore3pm(new Date(), leeway);
+    }
+    
+    public static boolean isBefore3pm(Date date, int leeway) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        
+        if (leeway != 0)
+            cal.add(Calendar.MINUTE, -leeway);
         return cal.get(Calendar.HOUR_OF_DAY) < 15 ? true : false;
     }
     

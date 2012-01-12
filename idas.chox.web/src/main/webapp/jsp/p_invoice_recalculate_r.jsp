@@ -419,11 +419,25 @@
                                 <tr>
                                     <td><label class="std-label-ro">Invoice Uploaded Date</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:date name="invoiceCreatedDate" format="dd MMM yyyy" /></label>
+                                    <td>
+                                        <label class="std-data-ro"><s:date name="invoiceCreatedDate" format="dd MMM yyyy" /></label>
+                                        <s:if test="invoicedDays > 0 && !penaltyChargeDateModified">
+                                            <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                <s:if test="penaltyChargeDateModified">
+                                <tr>
+                                    <td><label class="std-label-ro">Penalty Charge Start Date</label></td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <label class="std-data-ro"><s:date name="penaltyChargeDate" format="dd MMM yyyy" /></label>
                                         <s:if test="invoicedDays > 0">
                                             <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
-                                        </s:if></td>
+                                        </s:if>
+                                    </td>
                                 </tr>
+                                </s:if>
                                 <tr>
                                     <td><label class="std-label-ro">Time Invoice Has Been<br/>With CHO For Review</label></td>
                                     <td>&nbsp;</td>

@@ -353,12 +353,12 @@
                 rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
                 vehicleClassId:{min: "You must select a Vehicle Class"},
                 days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
-
-                
-
             }
         });
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
+<s:if test="penaltyChargesAppled">
+    Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have already been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
+</s:if>
     });
 
     function changeHireRate(){
@@ -1089,7 +1089,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Invoice Uploaded Date</label>
                                                 <label class="std-data-ro"><s:date name="invoiceCreatedDate" format="dd MMM yyyy" /></label>
-                                                <s:if test="invoicedDays > 0">
+                                                <s:if test="invoicedDays > 0 && !penaltyChargeDateModified">
                                                     <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
                                                 </s:if>
                                             </div>
@@ -1098,7 +1098,18 @@
                                             <label></label>
                                         </td>
                                     </tr>
-
+                                <s:if test="penaltyChargeDateModified">
+                                <tr>
+                                    <td><label class="std-label-ro">Penalty Charge Start Date</label></td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <label class="std-data-ro"><s:date name="penaltyChargeDate" format="dd MMM yyyy" /></label>
+                                        <s:if test="invoicedDays > 0">
+                                            <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                </s:if>
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">

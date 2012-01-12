@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -196,7 +198,26 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
-
+    private List<AuditTrail> getReconstructedAuditTrailByClaim(int claimId) {
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+        List<AuditTrail> results = new ArrayList<AuditTrail>();
+        
+        for (AuditTrail trail : auditTrail) {
+            results.add(trail);
+            if (trail.getReverted()) {
+                AuditTrail newEntry = new AuditTrail();
+                newEntry.setOriginalStatus(trail.getNewStatus());
+                newEntry.setNewStatus(trail.getOriginalStatus());
+                newEntry.setUpdateDate(trail.getLastModifiedDate());
+                results.add(newEntry);
+            }
+        }
+        
+        Collections.sort(results, AuditTrail.UPDATECOMPARATOR);
+        
+        return results;
+    }
+    
     @Override
     public List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
@@ -246,20 +267,18 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         int days = 0;
         Collection daysCounted = new ArrayList<Integer>();
         
-        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+        List<AuditTrail> auditTrail = getReconstructedAuditTrailByClaim(claimId);
 
         Date dateInStatus = null;
         int lastDayCounted = 0;
-        boolean lastEntryReverted = false;
         for (AuditTrail trail : auditTrail) {
-            LOG.debug("Start: Processed entry {} -> {} @ {} [reverted={}; {}]: days so far={}",
+            LOG.debug("Start: Processed entry {} -> {} @ {} : days so far={}",
                     new Object[] {trail.getOriginalStatus(), trail.getNewStatus(),
-                                  trail.getUpdateDate(), trail.getReverted(),
-                                  trail.getLastModifiedDate(), days});
+                                  trail.getUpdateDate(), days});
             if (dateInStatus == null && statuses.contains(trail.getNewStatus())) {
                 dateInStatus = trail.getUpdateDate();
             }
-            else if (dateInStatus != null && !statuses.contains(trail.getNewStatus()) && !(lastEntryReverted && trail.getReverted())) {
+            else if (dateInStatus != null && !statuses.contains(trail.getNewStatus())) {
 
                 // Determine no days claim was in status
                 Calendar cal = Calendar.getInstance();
@@ -283,19 +302,11 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 }
                 
                 lastDayCounted = dayOutStatus;
-                if (trail.getReverted()) {
-                    dateInStatus = trail.getLastModifiedDate();
-                    lastEntryReverted = true;
-                } else {
-                    dateInStatus = null;
-                    lastEntryReverted = false;
-                }
-                    
+                dateInStatus = null;   
             }
-            LOG.debug("End: Processed entry {} -> {} @ {} [reverted={}; {}]: days so far={}",
+            LOG.debug("End: Processed entry {} -> {} @ {} : days so far={}",
                     new Object[] {trail.getOriginalStatus(), trail.getNewStatus(),
-                                  trail.getUpdateDate(), trail.getReverted(),
-                                  trail.getLastModifiedDate(), days});
+                                  trail.getUpdateDate(), days});
         }
         
         if (dateInStatus != null) {
