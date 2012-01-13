@@ -13,6 +13,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.security.Authentication;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 
 public class EracJob extends QuartzJobBean {
 
@@ -38,13 +40,11 @@ public class EracJob extends QuartzJobBean {
 			imapMailReceiver.setFrom(internetAddress);
 			imapMailReceiver.setHost("imap.gmail.com");
 
-			// in case the mail has more than one attachment we put into map
-			// list of attachments
 			List<InputStream> listOfAttachments = imapMailReceiver
 					.receiveMailAttachments(true);
-			if(listOfAttachments.size() != 0)
+			if (listOfAttachments.size() != 0)
 				readAndUpdateTheXlsDate(listOfAttachments);
-			
+
 			imapMailReceiver.clean();
 
 		} catch (UnsupportedEncodingException e) {

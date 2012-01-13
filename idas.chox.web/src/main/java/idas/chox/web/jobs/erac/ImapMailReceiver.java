@@ -1,13 +1,16 @@
 package idas.chox.web.jobs.erac;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import idas.chox.web.security.WebUserService;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -21,12 +24,22 @@ import javax.mail.internet.InternetAddress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.Authentication;
+import org.springframework.security.AuthenticationManager;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.util.Assert;
 
-//TODO commenting
 public class ImapMailReceiver {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ImapMailReceiver.class);
+
+	private WebUserService userDetailsService;
+
+	private AuthenticationManager authenticationManagerMod;
 
 	private Properties props;
 
@@ -68,15 +81,15 @@ public class ImapMailReceiver {
 
 				if (!message.isSet(Flags.Flag.SEEN)
 						&& message.getContentType().contains("MIXED")) {
-					// TODO Update the listOfAttachments
 					listOfAttachemnts = fetchAtacchements(message);
-					//TODO Uncoment for production
-					//message.setFlag(Flags.Flag.DELETED, true);
+
+					authenticateSender(message);
+
+					// TODO Uncoment this before git push
+					// message.setFlag(Flags.Flag.DELETED, true);
 				}
 			}
 			// TODO set the log for retrieved mails
-
-			
 
 		} catch (NoSuchProviderException e) {
 			LOG.error("Given mail properties are not corrent. " + e);
@@ -84,7 +97,7 @@ public class ImapMailReceiver {
 			LOG.error("Cannot make connecection to the given host. " + e);
 		} catch (IOException e) {
 			LOG.error("Cannot retrive attachemnts. " + e);
-		} 
+		}
 		return listOfAttachemnts;
 	}
 
@@ -100,10 +113,46 @@ public class ImapMailReceiver {
 			String fileName = part.getFileName();
 
 			if (fileName != null && fileName.endsWith(".xls")) {
-				listOfAttachements.add((InputStream)part.getInputStream());
+				listOfAttachements.add((InputStream) part.getInputStream());
 			}
 		}
 		return listOfAttachements;
+	}
+
+	private void authenticateSender(Message message) {
+		try {
+			Address[] senders = message.getFrom();
+
+			// XXX this is just mock data - which will later be extracted from
+			// address
+			String sender = "donna.r.jeffery@erac.com";
+
+			WebUser webuser = userDetailsService.getUserService().findByEmail(
+					sender);
+
+			Authentication authentication = new UsernamePasswordAuthenticationToken(
+					webuser.getEmail(), webuser.getPassword());
+			authentication = authenticationManagerMod
+					.authenticate(authentication);
+			if (!authentication.isAuthenticated()) {
+				LOG.error("This user is not authenticated.");
+			}
+			SecurityContextHolder.getContext()
+					.setAuthentication(authentication);
+
+		} catch (MessagingException e) {
+			LOG.error("This user is not authenticated." + e);
+		}
+	}
+
+	public void clean() {
+		try {
+			folder.close(true);
+			store.close();
+		} catch (MessagingException e) {
+			LOG.error("Cannot close the mail folder: " + e);
+		}
+
 	}
 
 	public void setProps(Properties props) {
@@ -122,15 +171,21 @@ public class ImapMailReceiver {
 		this.host = host;
 	}
 
-	public void clean() {
-		try {
-			folder.close(true);
-			store.close();
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public AuthenticationManager getAuthenticationManagerMod() {
+		return authenticationManagerMod;
+	}
+
+	public void setAuthenticationManagerMod(
+			AuthenticationManager authenticationManagerMod) {
+		this.authenticationManagerMod = authenticationManagerMod;
+	}
+
+	public WebUserService getUserDetailsService() {
+		return userDetailsService;
+	}
+
+	public void setUserDetailsService(WebUserService userDetailsService) {
+		this.userDetailsService = userDetailsService;
 	}
 
 }

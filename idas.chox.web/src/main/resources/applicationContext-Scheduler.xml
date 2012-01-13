@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
-	default-autowire="no">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 	<bean id="runMeTask" class="idax.chox.web.scheduler.RunMeTask" />
-	<bean id="imapMailReceiver" class="idas.chox.web.jobs.erac.ImapMailReceiver" />
-	<bean id="parseXlsFile" class="idas.chox.web.jobs.erac.ParseXlsFile"  scope="prototype">
-        <property name="claimService" ref="claimService" />
-    </bean>
+	<bean id="imapMailReceiver" class="idas.chox.web.jobs.erac.ImapMailReceiver" scope="singleton">
+		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="authenticationManagerMod" ref="authenticationManager" />
+	</bean>
+	<bean id="parseXlsFile" class="idas.chox.web.jobs.erac.ParseXlsFile" scope="singleton">
+		<property name="claimService" ref="claimService" />
+	</bean>
 
 	<bean name="runMeJob" class="org.springframework.scheduling.quartz.JobDetailBean">
 		<property name="jobClass" value="idax.chox.web.scheduler.RunMeJob" />
