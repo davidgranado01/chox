@@ -23,6 +23,7 @@ public class ClaimObjectService {
     /**
      * @return the dropDownList
      */
+
     public Map getLiabilityStatusMap() {
         if (dropDownMap == null) {
             dropDownMap = new HashMap();
@@ -37,6 +38,7 @@ public class ClaimObjectService {
     /**
      * @return the dropDownList
      */
+
     public Map getLiabilityStatusSearchMap() {
         if (dropDownMapSearch == null) {
             dropDownMapSearch = new HashMap();

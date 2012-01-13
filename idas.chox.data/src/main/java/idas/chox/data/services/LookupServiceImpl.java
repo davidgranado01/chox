@@ -4,6 +4,7 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
@@ -36,7 +37,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
             boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
             boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
-        List items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getAvailableStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
                 isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed, isSubscriberActivated)) {
             items.add(new LookupItem(s, s));
@@ -47,10 +48,23 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<LookupItem> getLiabilityStatuses() {
-        List items = new ArrayList<LookupItem>();
+        List<LookupItem> items = new ArrayList<LookupItem>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
             items.add(new LookupItem(s.toString(), Integer.toString(s.ordinal())));
         }
+        return items;
+    }
+
+    @Override
+    public List<LookupItem> getClaimTypes() {
+        List<LookupItem> items = new ArrayList<LookupItem>();
+        
+        items.add(new LookupItem(ClaimType.GTA.toString(), Integer.toString(ClaimType.GTA.ordinal())));
+        items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.ordinal())));
+        items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.ordinal())));
+        items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.ordinal())));
+        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.ordinal())));
+        
         return items;
     }
 

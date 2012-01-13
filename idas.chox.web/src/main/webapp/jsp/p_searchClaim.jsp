@@ -22,6 +22,7 @@
     Ext.onReady(function(){
         
         var  defaultDropdownValue={'value':'--- ALL ---','text':-1};
+        var  claimTypesdefaultDropdownValue={'value':'','text':'--- ALL ---'};
         var  liabilityStatusdefaultDropdownValue={'value':'','text':'--- ALL ---'};
         var  statusdefaultDropdownValue={'value':'--- ALL ---','text':''};
         var  claimOwnerdefaultDropdownValue={'name':'--- ALL ---','id':-1};
@@ -169,6 +170,21 @@
                 value:'<s:property value="isSupplementaryInvoiceOnly"/>',
                 renderTo:'searchScreenSupplementaryInvoiceDiv',
                 checked: <s:property value="isSupplementaryInvoiceOnly"/>,
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var penaltyChargesAppliedCheckBox = new Ext.form.Checkbox({
+                name:'penaltyChargesAppliedOnly',
+                id:'penaltyChargesAppliedOnlyCheckBoxId',
+                value:'<s:property value="penaltyChargesAppliedOnly"/>',
+                renderTo:'showPenaltyChargesAppliedFieldId',
+                checked: <s:property value="penaltyChargesAppliedOnly"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode == e.ENTER) {
@@ -711,7 +727,7 @@
             </s:if>
         
         
-        
+
             // Add statuses drop-down menu
             var statusesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -841,6 +857,63 @@
             liabilityStatusSearchScreenCombo.render('searchScreenLiabilityDropDownDiv');
 
         
+            // Add claim type drop-down menu
+            var claimTypesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var claimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+            var claimTypesStore = new Ext.data.Store({
+                data : claimTypes,
+                reader : claimTypesJsonReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(claimTypesdefaultDropdownValue));}}
+            });
+            if('<s:property value="claimType"/>'){
+                defaultValueText = '<s:property value="claimType"/>'
+            }else{
+                defaultValueText = '--- ALL ---';
+            }
+            claimTypesSearchScreenCombo = new Ext.form.ComboBox({
+                store : claimTypesStore,
+                width: 220,
+                valueField : 'value',
+                id : 'claimTypesSearchScreenComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                valueNotFoundText : defaultValueText,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                
+                    blur: function () {
+                        if(this.getRawValue() == "" ) {
+                            this.reset();
+                            statusChange();
+                        }
+                    },
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        this.setValue('<s:property value="claimType"/>');
+                    },
+                    select : function(){
+                        statusChange();
+                        searchClaim(true);
+                    }
+                }
+            });
+            claimTypesSearchScreenCombo.render('searchScreenClaimTypeDropDownDiv');
 
        
 
@@ -1060,21 +1133,21 @@
         <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
             <tr>
                 <td><label>Supplier Reference</label></td>
-                <td><div id="supplierReferenceFieldId"/><!--s:textfield name="supplierReference"/--></td>
+                <td><div id="supplierReferenceFieldId"></div></td>
                 <td><label>Claim Number</label></td>
-                <td><div id="claimNumberFieldId"/><!--s:textfield name="claimNumber"/--></td>
+                <td><div id="claimNumberFieldId"></div></td>
             </tr>
             <tr>
                 <td><label>Invoice Number</label></td>
-                <td><div id="invoiceNumberFieldId"/><!--s:textfield name="invoiceNumber"/--></td>
+                <td><div id="invoiceNumberFieldId"></div></td>
                 <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td>
-                <td><div id="showOpenClaimsFieldId"/><!--s:checkbox name="isOpenClaim" value="true" /--></td>
+                <td><div id="showOpenClaimsFieldId"></div></td>
             </tr>
             <tr>
                 <td><label>Supplier VRN</label></td>
-                <td><div id="customerVrnFieldId"/><!--s:textfield name="customerVrn"/--></td>
+                <td><div id="customerVrnFieldId"></div></td>
                 <td><label>Insurer VRN</label></td>
-                <td><div id="thirdPartyVrnFieldId"/><!--s:textfield name="thirdPartyVrn" /--></td>
+                <td><div id="thirdPartyVrnFieldId"></div></td>
             </tr>
             <tr>
                 <td nowrap><label>Claim Upload Date From</label></td>
@@ -1181,34 +1254,40 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
-                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
                 </tr>
             </s:if>
             <s:elseif test="isInsurer && (insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
-                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
                 </tr>
             </s:elseif>
             <s:elseif test="isInsurer && (!insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
-                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
                 </tr>
             </s:elseif>
             <s:else>
                 <tr>
-                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
-                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
             </s:else>
+                <tr>
+                    <td nowrap><label>Claim Type</label></td>
+                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
+                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                </tr>
         </table>
         <table>
             <tr>

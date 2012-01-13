@@ -1,16 +1,19 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
 import java.util.List;
 
 public interface LookupService {
 
-    public List getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
+    public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
                             boolean isFnolEnabled, boolean isEngineersEnabled,
                             boolean isTpiEnabled, boolean isManualInvoiceAllowed,
                             boolean isSubscriberActivated);
     
-    public List getLiabilityStatuses();
+    public List<LookupItem> getLiabilityStatuses();
+    
+    public List<LookupItem> getClaimTypes();
 
     public List getVehicleClasses();
 

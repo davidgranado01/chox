@@ -1,5 +1,6 @@
 package idas.chox.core.search;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 import java.io.Serializable;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Date reviewRequiredDateTo;
     private boolean isOpenClaim = true;
     private boolean isSupplementaryInvoiceOnly;
+    private boolean penaltyChargesAppliedOnly;
     private int claimOwnerId;
     private int supplierClaimOwnerId;
     private boolean isWorkgroupCheck;
@@ -54,6 +56,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean isSupplierOwnerShipCheck;
     private LiabilityStatus liabilityStatus;
     private boolean isLiabilityStatusUpdated;
+    private ClaimType claimType;
 
     @Override
     public String toString() {
@@ -76,7 +79,9 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("\n").append("claimOwnerId=").append(claimOwnerId).append("\n").append("supplierClaimOwnerId=").append(supplierClaimOwnerId)
                 .append("\n").append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n").append("isOwnerShipCheck=").append(isOwnerShipCheck)
                 .append("\n").append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n").append("liabilityStatus=").append(liabilityStatus)
-                .append("\n").append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n").append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n");
+                .append("\n").append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n").append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n")
+                .append("penaltyChargesAppliedOnly=").append(penaltyChargesAppliedOnly).append("\n")
+                .append("claimType=").append(claimType).append("\n");
         return sb.toString();
     }
 
@@ -88,12 +93,6 @@ public class ClaimSearchCriteria implements Serializable {
             LOG.debug("Claim Search Criteria is invalid.");
             return false;
         }
-        /*       if (!isAlphaNumeric(supplierReference)) supplierReference = "";
-        if (!isAlphaNumeric(claimNumber)) claimNumber="";
-        if (!isAlphaNumeric(status)) status="";
-        if (!isAlphaNumeric(thirdPartyVrn)) thirdPartyVrn = "";
-        if (!isAlphaNumeric(customerVrn)) customerVrn="";
-        if (!isAlphaNumeric(invoiceNumber)) invoiceNumber=""; */
         LOG.debug("Claim Search Criteria is valid.");
         return true;
     }
@@ -112,28 +111,14 @@ public class ClaimSearchCriteria implements Serializable {
         return true;
     }
 
-    private boolean isAlphaNumeric(final String s) {
-        if (s == null) {
-            return true;
-        }
-        final char[] chars = s.toCharArray();
-        for (int x = 0; x < chars.length; x++) {
-            final char c = chars[x];
-            if ((c >= 'a') && (c <= 'z')) {
-                continue; // lowercase
-            }
-            if ((c >= 'A') && (c <= 'Z')) {
-                continue; // uppercase
-            }
-            if ((c >= '0') && (c <= '9')) {
-                continue; // numeric
-            }
-            if (c == '%') {
-                continue; // allow '%' symbol
-            }
-            return false;
-        }
-        return true;
+
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+
+
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
     }
 
     public boolean isIsSupplementaryInvoiceOnly() {
@@ -142,6 +127,14 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setIsSupplementaryInvoiceOnly(boolean isSupplementaryInvoiceOnly) {
         this.isSupplementaryInvoiceOnly = isSupplementaryInvoiceOnly;
+    }
+
+    public boolean isPenaltyChargesAppliedOnly() {
+        return penaltyChargesAppliedOnly;
+    }
+
+    public void setPenaltyChargesAppliedOnly(boolean penaltyChargesAppliedOnly) {
+        this.penaltyChargesAppliedOnly = penaltyChargesAppliedOnly;
     }
 
     public boolean isLiabilityStatusUpdated() {

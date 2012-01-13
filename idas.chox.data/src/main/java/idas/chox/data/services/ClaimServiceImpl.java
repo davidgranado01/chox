@@ -640,6 +640,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Subqueries.propertyIn("id", noti));
         }
 
+        if (searchCriteria.isPenaltyChargesAppliedOnly()) {
+            criteria.add(Restrictions.gt("iv.totalPenaltyCharge", BigDecimal.ZERO));
+        }
+
         if (searchCriteria.getIsPenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
@@ -712,6 +716,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getIsOpenClaim()) {
             for (String status : ClaimStatus.getCompletedStatus(true)) {
                 criteria.add(Restrictions.ne("status", status));
+            }
+        }
+
+        if (searchCriteria.getClaimType() != null && searchCriteria.getClaimType().ordinal() >= 0) {
+            if (searchCriteria.getClaimType() == ClaimType.GTA) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
+                                                                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
+            }
+            else if (searchCriteria.getClaimType() == ClaimType.INSURER_UPLOAD) {
+                criteria.add(Restrictions.eq("claimType", ClaimType.INSURER_UPLOAD));
+            }
+            else if (searchCriteria.getClaimType() == ClaimType.INSURER_VS_INSURER) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.INSURER_VS_INSURER,
+                                                                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+                                                                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
+            }
+            else if (searchCriteria.getClaimType() == ClaimType.SUBSCRIBER) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.SUBSCRIBER,
+                                                                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                                                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
+            }
+            else if (searchCriteria.getClaimType() == ClaimType.TPI) {
+                criteria.add(Restrictions.eq("claimType", ClaimType.TPI));
             }
         }
 

@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.core.services.LookupService;
-import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.web.viewdata.ClaimGridViewData;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
@@ -28,8 +26,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
-    private ClaimObjectService claimObjectService;
+//    private ClaimObjectService claimObjectService;
     private List<LookupItem> statuses;
+    private List<LookupItem> claimTypes;
     private List<LookupItem> liabilityStatuses;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
@@ -49,7 +48,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         this.canLoadData = canLoadData;
     }
 
-    public List getStatuses() {
+    public List<LookupItem> getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
                                     getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
@@ -57,6 +56,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                                     getInsurerIsUploadEnabled(), getIsSubscriberEnabled());
         }
         return statuses;
+    }
+
+    public List<LookupItem> getClaimTypes() {
+        if (claimTypes == null) {
+            claimTypes = this.lookupService.getClaimTypes();
+        }
+        return claimTypes;
     }
 
     public List getLiabilityStatuses() {
@@ -69,6 +75,11 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public String getStatusesJsonString() {
         String statusesJson = JSONArray.fromObject(getStatuses()).toString();
         return "{totalCount:" + statuses.size() + ", results:" + statusesJson + "}";
+    }
+
+    public String getClaimTypesJsonString() {
+        String claimTypesJson = JSONArray.fromObject(getClaimTypes()).toString();
+        return "{totalCount:" + claimTypes.size() + ", results:" + claimTypesJson + "}";
     }
 
     public String getLiabilityStatusesJsonString() {
@@ -90,7 +101,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
@@ -106,14 +116,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             suppliers = this.lookupService.getAllSuppliers();
         }
         return suppliers;
-    }
-
-    public Map getLiabilityStatusDropDownMap() {
-        return claimObjectService.getLiabilityStatusMap();
-    }
-
-    public Map getLiabilityStatusDropDownSearchMap() {
-        return claimObjectService.getLiabilityStatusSearchMap();
     }
 
     public int getTotalCount() {
@@ -270,13 +272,5 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
-    }
-
-    public ClaimObjectService getClaimObjectService() {
-        return claimObjectService;
-    }
-
-    public void setClaimObjectService(ClaimObjectService claimObjectService) {
-        this.claimObjectService = claimObjectService;
     }
 }

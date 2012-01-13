@@ -277,7 +277,9 @@
                 var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
                 var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
                 var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
+                var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
                 var liabilityStatus = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue();
+                var claimType = Ext.getCmp('claimTypesSearchScreenComboId').getValue();
 
                 ds.baseParams = {
                     /*
@@ -308,7 +310,9 @@
                     supplierClaimOwnerId : supplierClaimOwnerId,
                     customerVrn : customerVrn,
                     isOpenClaim : isOpenClaim,
+                    penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                     liabilityStatus : liabilityStatus,
+                    claimType : claimType,
                     isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
                 }
                 if(canSearchForData){
