@@ -1614,7 +1614,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public long getInvoicedDays() {
-        // long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date()) + 1;
+        // long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getDateInvoiced(), new Date()) + 1;
         return invoiceAction.model.getInvoicedDays();
 
     }

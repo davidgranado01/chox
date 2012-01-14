@@ -47,9 +47,9 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
                 if (hireDays > numDays) {
                     success = false;
                     narrative = "The cumulative number of days prior to the claim rejection was " + numDays
-                            + " (considering rejections before 3pm) and the CHO are charging for " + hireDays + " hire days.";
+                            + " (considering rejections before 3pm), allowing the CHO to charge for " + numDays
+                            + " hire days, however the CHO are charging for " + hireDays + " hire days.";
                 }
-
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
             } else {
                 LOG.debug("Subscriber claim was not rejected and agreed - rule skipped");

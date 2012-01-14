@@ -402,7 +402,7 @@ public class Claim extends Entity implements Serializable {
         Date now = new Date();
         Date lastStatusModified = this.getStatusModifiedDate();
 
-        return DateHelper.daysBetween(lastStatusModified, now);
+        return DateHelper.getNumberOf24HourPeriodsBetween(lastStatusModified, now);
     }
 
     public void updateLiabilityPayment() {
@@ -428,7 +428,7 @@ public class Claim extends Entity implements Serializable {
 
     public long getLiabilityAgreedDays() {
 
-        long dateDiff = DateHelper.daysBetween(getLiabilityAgreedDate(), new Date()) + 1;
+        long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getLiabilityAgreedDate(), new Date()) + 1;
         return dateDiff;
     }
     // </editor-fold>

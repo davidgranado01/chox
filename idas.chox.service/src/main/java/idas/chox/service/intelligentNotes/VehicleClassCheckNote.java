@@ -37,7 +37,7 @@ public class VehicleClassCheckNote implements IntelligentNote {
         Date policyHolderContactDate = c.getPolicyHolderContactDate();
 
         if (latestEcdDate != null && policyHolderContactDate != null) {
-            long dayBetween = DateHelper.daysBetween(policyHolderContactDate, latestEcdDate);
+            long dayBetween = DateHelper.getNumberOf24HourPeriodsBetween(policyHolderContactDate, latestEcdDate);
             showing &= dayBetween < 5;
         } else {
             showing = false;

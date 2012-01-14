@@ -82,7 +82,7 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
             
             PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
             Date passwordLastModifiedDate = user.getUser().getPasswordLastModifiedDate();
-            long passwordNotChangedDays = DateHelper.daysBetween(passwordLastModifiedDate, new Date());
+            long passwordNotChangedDays = DateHelper.getNumberOf24HourPeriodsBetween(passwordLastModifiedDate, new Date());
 
             if (user.getIsCHO())
                 forcePasswordChangeDays = user.getUser().getChorganisation().getForcePasswordChange();

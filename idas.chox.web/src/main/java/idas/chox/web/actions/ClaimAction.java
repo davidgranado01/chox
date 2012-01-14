@@ -360,21 +360,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-
+        /**
         if (claim == null) {
-            LOG.error("claim is null");
-            throw new IllegalStateException("No Claim available.");
+        LOG.error("claim is null");
+        throw new IllegalStateException("No Claim available.");
         } else if (claim.getInvoice() != null) {
-            if (service.updateAutomaticPenaltyCharge(claim)){
-                LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
-                // Invoice details may have changed  so we need to reload the claim
-                claim = service.getClaim(claim.getId());
-            } else {
-                LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
-            }
-            return SUCCESS;
+        if (service.updateAutomaticPenaltyCharge(claim)){
+        LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+        // Invoice details may have changed  so we need to reload the claim
+        claim = service.getClaim(claim.getId());
+        } else {
+        LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
         }
-        
+        }
+         **/
         return SUCCESS;
     }
 
@@ -1087,12 +1086,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Date getInvoiceCreationDate() {
-        if (claim !=null && claim.getInvoice() != null) {
+        if (claim != null && claim.getInvoice() != null) {
             return claim.getInvoice().getCreatedDate();
         }
         return null;
     }
-    
+
     public void setEscalateWorkgroupId(int escalateWorkgroupId) {
         this.escalateWorkgroupId = escalateWorkgroupId;
     }
@@ -1153,10 +1152,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
-                                getInsurerIsClaimOwnershipEnabled(),
-                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(),
-                                getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled(),
-                                getIsSubscriberEnabled());
+                    getInsurerIsClaimOwnershipEnabled(),
+                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(),
+                    getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled(),
+                    getIsSubscriberEnabled());
         }
         return statuses;
     }
@@ -1250,20 +1249,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isRejectButtonEnabled() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()))
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return true;
+        }
 
-        if (subscriberClaimDays == null)
+        if (subscriberClaimDays == null) {
             subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
-        
+        }
+
         return (subscriberClaimDays < 5 || (subscriberClaimDays == 5 && DateHelper.isBefore3pm())) ? true : false;
-        
+
     }
 
-
     public boolean isSubscriberClaimUnder5Days() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()))
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
+        }
 
         if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
@@ -1276,18 +1277,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        if (subscriberClaimDays == null)
+        if (subscriberClaimDays == null) {
             subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
-        
-        if (subscriberClaimDays < 5)
+        }
+
+        if (subscriberClaimDays < 5) {
             return true;
-        
+        }
+
         return false;
     }
 
     public boolean isSubscriberClaimAt5Days() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()))
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
+        }
 
         if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
@@ -1300,28 +1304,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        if (subscriberClaimDays == null)
+        if (subscriberClaimDays == null) {
             subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
-        
+        }
+
         if (subscriberClaimDays == 5) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
-                return true; 
+            if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
+                return true;
+            }
         }
-        
+
         return false;
     }
 
     public String getSubscriberTimeLeft() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()))
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return null;
+        }
 
-        if (subscriberClaimDays == null)
+        if (subscriberClaimDays == null) {
             subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
-        
-        if (subscriberClaimDays == 4)
+        }
+
+        if (subscriberClaimDays == 4) {
             return "1 day remains";
+        }
         return "" + (5 - subscriberClaimDays) + " days remain";
     }
 
@@ -1911,7 +1920,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean isPaymentLoggedOverDays() {
         Date loggedDate = claim.getStatusModifiedDate();
 
-        long days = DateHelper.daysBetween(loggedDate, new Date());
+        long days = DateHelper.getNumberOf24HourPeriodsBetween(loggedDate, new Date());
         LOG.debug("Invoice Payment Logged {} days ago", days);
 
         if (days > 9) {
@@ -2028,7 +2037,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             return penaltyAlertQty == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
                     : penaltyAlertQty >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
-                    : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
                     : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
 
         } else {
@@ -2080,7 +2088,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
     }
-    
+
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
@@ -2097,9 +2105,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (autoPenaltyStartDate.compareTo(autoPenaltyStart) != 0) {
                 // The date has been changed
                 service.updatePenaltyStartDate(claim, autoPenaltyStart);
-//                    Thread.currentThread().sleep(1000); // This delay ensures claim/invoice updated before store procedure executes.
-            } else { // update claim to enable or disable auto penalty charge.
                 service.updateClaim(claim);
+                if (service.updateAutomaticPenaltyCharge(claim)) {
+                    LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+                    // Invoice details may have changed  so we need to reload the claim
+                    claim = service.getClaim(claim.getId());
+                } else {
+                    LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
+                }
             }
         }
         return SUCCESS;
@@ -2112,7 +2125,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getPenaltyChargeConfiguration() {
         return SUCCESS;
     }
-    
+
     public BigDecimal getInvHireGross() {
         return claim.getInvoice().getHireGross();
     }

@@ -14,9 +14,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -276,29 +274,22 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                     new Object[] {trail.getOriginalStatus(), trail.getNewStatus(),
                                   trail.getUpdateDate(), days});
             if (dateInStatus == null && statuses.contains(trail.getNewStatus())) {
+                LOG.debug("Starting timer for status: {}", trail.getNewStatus());
                 dateInStatus = trail.getUpdateDate();
             }
             else if (dateInStatus != null && !statuses.contains(trail.getNewStatus())) {
 
                 // Determine no days claim was in status
+                
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(dateInStatus);
                 int dayInStatus = cal.get(Calendar.DAY_OF_YEAR);
-                int yearInStatus = cal.get(Calendar.YEAR);
 
                 cal.setTime(trail.getUpdateDate());
                 int dayOutStatus = cal.get(Calendar.DAY_OF_YEAR);
-                int yearOutStatus = cal.get(Calendar.YEAR);
-                if (yearInStatus != yearOutStatus) {
-                    LOG.debug("Status change spans year: {} -> {}: days before=  {}", new Object[] {yearInStatus, yearOutStatus , dayOutStatus});
-                    dayOutStatus += (yearOutStatus - yearInStatus)*365;
-                    if ((new GregorianCalendar()).isLeapYear(yearInStatus))
-                        dayOutStatus += 1;
-                    LOG.debug("    days after = {}", dayOutStatus);
-                }
                 LOG.debug("dayInStatus={}, dayOutStatus={}, lastDayCounted={}", new Object[] {dayInStatus, dayOutStatus, lastDayCounted});
                 if (!(lastDayCounted == dayInStatus && dayInStatus == dayOutStatus)) {
-                    days += dayOutStatus - dayInStatus + 1;
+                    days += DateHelper.getNumberOfDaysBetween(dateInStatus, trail.getUpdateDate()) + 1;
                 }
                 
                 lastDayCounted = dayOutStatus;
@@ -311,22 +302,14 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         
         if (dateInStatus != null) {
             // We must currently be in the status, so count days until now()
+            LOG.debug("Adding days from last status change {} until now: {}", dateInStatus, DateHelper.getNumberOfDaysBetween(dateInStatus, new Date()));
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateInStatus);
             int dayInStatus=cal.get(Calendar.DAY_OF_YEAR);
-            int yearInStatus = cal.get(Calendar.YEAR);
-            cal.setTime(new Date());
-            int dayOutStatus=cal.get(Calendar.DAY_OF_YEAR);
-            int yearOutStatus = cal.get(Calendar.YEAR);
-            if (yearInStatus != yearOutStatus) {
-                dayOutStatus += (yearOutStatus - yearInStatus)*365;
-                if ((new GregorianCalendar()).isLeapYear(yearInStatus))
-                    dayOutStatus += 1;
-            }
             if (lastDayCounted != dayInStatus)
-                days += dayOutStatus - dayInStatus + 1;
+                days += DateHelper.getNumberOfDaysBetween(dateInStatus, new Date()) + 1;
             else
-                days += dayOutStatus - dayInStatus;
+                days += DateHelper.getNumberOfDaysBetween(dateInStatus, new Date());
         }
 
         LOG.debug("Claim {} in statuses for {} days", claimId, days);

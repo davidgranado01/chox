@@ -159,7 +159,7 @@ public class ApplicationAccessibility {
     
         
     private int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date());
+        long dateDiff = DateHelper.getNumberOfDaysBetween(inv.getAutoPenaltyStart(), new Date());
         return (int) (dateDiff / 30);
     }
     
@@ -221,23 +221,22 @@ public class ApplicationAccessibility {
                     }
                 } else if (actionName.equals(ExtraAction.UPDATE_PENALTY_CHARGES)) {
                     // Check invoice was uploaded at least 30 days ago
-                    long days = 0;
                     Invoice invoice = claim.getInvoice();
                     if (invoice != null) {
-                        days = claim.getInvoice().getInvoicedDays();
+                        long days = invoice.getInvoicedDays();
 
-                        if (days < 30) {
+                        if (days < 31) {
                             LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
-                        } // Check the 'Adjust Penalty Charges' Panel is not already displayed
-                        // 
+                        }
+                        // Check the 'Adjust Penalty Charges' Panel is not already displayed
                         else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
                             // Take age of invoice from invoice creation date
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() 
                                             || calculatePenaltyAlertQty(invoice) >= 3))) 
-                                    && invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                    && days > (invoice.getPenaltyAlertQty() + 1) * 30) {
                                 LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
                                 accessRight = 0;
                             }

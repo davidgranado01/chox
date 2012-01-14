@@ -35,7 +35,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
-import idas.chox.core.model.PenaltyPercentage;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -654,7 +653,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date - iv1_.auto_penalty_start)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_alert_qty+1)*30"));
             criteria.add(Restrictions.disjunction()
                         .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
                         .add(Restrictions.conjunction()
@@ -961,6 +960,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int getSubscriberClaimDays(int id) {
         int claimAge = -1;
         LOG.debug("Getting days of subscriber claim with id={}", id);
@@ -984,6 +984,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
                 claim.addComment(comment);
                 save(claim);
+                LOG.debug("Comment added and claim saved.");
             }
         }
         
@@ -1061,7 +1062,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.daysBetween(inv.getAutoPenaltyStart(), new Date())+1;
+        long dateDiff = DateHelper.getNumberOfDaysBetween(inv.getAutoPenaltyStart(), new Date());
         return (int) (dateDiff / 30);
     }
 
@@ -1072,14 +1073,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Invoice inv = claim.getInvoice();
         inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
         inv.setAutoPenaltyStart(autoPenaltyStart);
-        inv.setHirePenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
-        inv.setRepairPenaltyPercentage(PenaltyPercentage.ZERO_PERCENTAGE.getPercentage());
+        inv.setHirePenaltyPercentage(null);
+        inv.setRepairPenaltyPercentage(null);
         inv.setHirePenaltyCharge(BigDecimal.ZERO);
         inv.setRepairPenaltyCharge(BigDecimal.ZERO);
         inv.setPenaltyAlertQty(0);
         inv.setAutoPenaltyAlertQty(0);
-        inv.setHirePenaltyChargeAppliedDate(new Date());
-        inv.setRepairPenaltyChargeAppliedDate(new Date());
+        inv.setHirePenaltyChargeAppliedDate(null);
+        inv.setRepairPenaltyChargeAppliedDate(null);
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
 
         Comment comment = Comment.New(0, "Penalty charges have been removed as the date from which penalty charges are calculated has been changed");

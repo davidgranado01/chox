@@ -2066,8 +2066,8 @@ WHERE
  AND cho.auto_penalty_charges = true
  AND i.penalty_alert_qty = 0
  AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 30 
- AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) < 60
+ AND (current_date - i.auto_penalty_start::Date) >= 30
+ AND (current_date - i.auto_penalty_start::Date) < 60
 
 LOOP
 
@@ -2116,7 +2116,7 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0)-0.5)::int 
+                                      || (current_date - i.auto_penalty_start::Date) 
                                       || ' days'
    FROM 
      invoice i
@@ -2155,8 +2155,8 @@ WHERE
  AND cho.auto_penalty_charges = true
  AND i.penalty_alert_qty <= 1 
  AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 60 
- AND extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+ AND (current_date - i.auto_penalty_start::Date) >= 60
+ AND (current_date - i.auto_penalty_start::Date) < 90
 
 LOOP
 
@@ -2205,7 +2205,7 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0)-0.5)::int 
+                                      || (current_date - i.auto_penalty_start::Date)
                                       || ' days'
     FROM 
       invoice i
@@ -2245,7 +2245,7 @@ WHERE
  AND i.penalty_alert_qty >= 0
  AND i.penalty_alert_qty <= 2
  AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
- AND extract(epoch FROM now() - i.auto_penalty_start)/(3600*24.0) >= 90
+ AND (current_date - i.auto_penalty_start::Date) >= 90
 
 LOOP
 
@@ -2310,8 +2310,8 @@ where c.invoice_id = i.id
   and c.claim_type != 3
   and ins.is_task_management_enable = true
   and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
-  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 75
-  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+  and (current_date - i.auto_penalty_start::Date) >= 75
+  and (current_date - i.auto_penalty_start::Date) < 90
   and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days');
 
 insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
@@ -2324,15 +2324,15 @@ where c.invoice_id = i.id
   and c.claim_type != 3
   and ins.is_task_management_enable = true
   and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
-  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
-  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+  and (current_date - i.auto_penalty_start::Date) >= ((i.penalty_alert_qty+1)*30 - 5)
+  and (current_date - i.auto_penalty_start::Date) < 90
   and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days');
 
 
 update task set complete = true,
-                completed_by = 999,
+                completed_by = userId,
                 completed_date = now()
-where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
+where due_date::Date < current_date and task_type like 'Invoice Approaching%' and complete = false;
 
 
 return true;

@@ -43,8 +43,8 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
     private Boolean isClaimAnomalies(Date policyHolderDate, Date firstECD, Date lastECD) {
 
         if (policyHolderDate != null && lastECD != null && firstECD != null) {
-            Long iTotalDelayDays = DateHelper.daysBetween(firstECD, lastECD);
-            Long iMD = DateHelper.daysBetween(policyHolderDate, firstECD);
+            Long iTotalDelayDays = DateHelper.getNumberOf24HourPeriodsBetween(firstECD, lastECD);
+            Long iMD = DateHelper.getNumberOf24HourPeriodsBetween(policyHolderDate, firstECD);
 
             if (iMD > 0) {
                 int iMDRate = (int) java.lang.Math.round(iMD * ecdDurationAllowPercentage);

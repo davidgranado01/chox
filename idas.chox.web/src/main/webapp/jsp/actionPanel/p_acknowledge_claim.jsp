@@ -15,10 +15,10 @@
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
                         <s:elseif test="!insurerIsEngineersEnabled && !insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim. You can enter public notes in the ‘Claim Review Notes’ box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim or set the claim to pending. You can enter public notes in the ‘Claim Review Notes’ box in order to communicate detailed comments you may have for the CHO.
                         </s:elseif>
                         <s:elseif test="!insurerIsEngineersEnabled && insurerIsFnolEnabled">
                             Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.

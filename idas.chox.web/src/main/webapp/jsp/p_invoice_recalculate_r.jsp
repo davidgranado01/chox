@@ -26,7 +26,6 @@
                             <table class="chox-table-form">
                                 <tr>
                                         
-
                                     <!--  <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
                                       </div> -->
                                 </tr>

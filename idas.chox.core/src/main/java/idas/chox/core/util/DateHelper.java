@@ -6,11 +6,12 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
-    
+
     public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
         return cal.getTime();
@@ -77,19 +78,20 @@ public class DateHelper {
     public static boolean isBefore3pm() {
         return isBefore3pm(new Date(), 0);
     }
-    
+
     public static boolean isBefore3pm(int leeway) {
         return isBefore3pm(new Date(), leeway);
     }
-    
+
     public static boolean isBefore3pm(Date date, int leeway) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        if (leeway != 0)
+        if (leeway != 0) {
             cal.add(Calendar.MINUTE, -leeway);
+        }
         return cal.get(Calendar.HOUR_OF_DAY) < 15 ? true : false;
     }
-    
+
     public static String getTwoDigitValueInString(int iValue) {
         String returnValue = String.valueOf(iValue);
         if (iValue < 10) {
@@ -98,12 +100,33 @@ public class DateHelper {
         return returnValue;
     }
 
-    public static long daysBetween(Date startDate, Date endDate) {
+    public static long getNumberOf24HourPeriodsBetween(Date startDate, Date endDate) {
         long milliseconds1 = startDate.getTime();
         long milliseconds2 = endDate.getTime();
         long diff = milliseconds2 - milliseconds1;
         long diffDays = diff / (24 * 60 * 60 * 1000);
         return diffDays;
+    }
+
+    public static int getNumberOfDaysBetween(Date startDate, Date endDate) {
+        // Determine no days claim was in status
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(startDate);
+        cal1.set(Calendar.HOUR_OF_DAY, 0);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+        cal1.set(Calendar.MILLISECOND, 0);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(endDate);
+        cal2.set(Calendar.HOUR_OF_DAY, 0);
+        cal2.set(Calendar.MINUTE, 0);
+        cal2.set(Calendar.SECOND, 0);
+        cal2.set(Calendar.MILLISECOND, 0);
+
+        Long days = (cal2.getTimeInMillis() - cal1.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+
+        return days.intValue();
     }
 
     public static Date mergeTimeToDate(Date a, Date b) {
