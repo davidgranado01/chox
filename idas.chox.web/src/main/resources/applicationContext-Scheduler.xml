@@ -5,18 +5,18 @@
 
 	<bean id="imapMailReceiver" class="idas.chox.web.scheduler.ImapMailReceiver" scope="singleton">
 		<property name="userDetailsService" ref="userDetailsService" />
-		<property name="authenticationManagerMod" ref="authenticationManager" />
+		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
-	<bean id="parseXlsFile" class="idas.chox.web.scheduler.ParseXlsFile" scope="singleton">
+	<bean id="xlsFileParser" class="idas.chox.web.scheduler.XlsFileParser" scope="singleton">
 		<property name="claimService" ref="claimService" />
 	</bean>
 
-	<bean name="eracJob" class="org.springframework.scheduling.quartz.JobDetailBean" autowire="autodetect">
-		<property name="jobClass" value="idas.chox.web.scheduler.EracJob" />
+	<bean name="referenceUpdateJob" class="org.springframework.scheduling.quartz.JobDetailBean" autowire="autodetect">
+		<property name="jobClass" value="idas.chox.web.scheduler.ReferenceUpdateJob" />
 		<property name="jobDataAsMap">
 			<map>
 				<entry key="imapMailReceiver" value-ref="imapMailReceiver" />
-				<entry key="parseXlsFile" value-ref="parseXlsFile" />
+				<entry key="xlsFileParser" value-ref="xlsFileParser" />
 				<entry key="userDetailsService" value-ref="userDetailsService" />
 				<entry key="authenticationManager" value-ref="authenticationManager" />
     		</map>
@@ -25,14 +25,14 @@
 
 	<!-- Simple Trigger -->
 	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="eracJob" />
+		<property name="jobDetail" ref="referenceUpdateJob" />
 		<property name="repeatInterval" value="30000" />
 		<property name="startDelay" value="1000" />
 	</bean>
 
 	<!-- Cron Trigger -->
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="eracJob" />
+		<property name="jobDetail" ref="referenceUpdateJob" />
 		<property name="cronExpression" value="0/5 * * * * ?" />
 	</bean>
 
@@ -51,7 +51,7 @@
 
 		<property name="jobDetails">
 			<list>
-				<ref bean="eracJob" />
+				<ref bean="referenceUpdateJob" />
 			</list>
 		</property>
 

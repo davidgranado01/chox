@@ -1,4 +1,4 @@
-package idax.chox.web.scheduler;
+package idas.chox.web.scheduler;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
@@ -8,8 +8,10 @@ import idas.chox.web.security.WebUserService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,14 +24,14 @@ import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ParseXlsFile {
+public class XlsFileParser {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(ParseXlsFile.class);
+			.getLogger(XlsFileParser.class);
 
 	private ClaimService claimService;
 
-	public List<List<Cell>> readExcelFile(InputStream inputStream) {
+	public Map<String, String> readExcelFile(InputStream inputStream) {
 
 		List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
 
@@ -54,13 +56,15 @@ public class ParseXlsFile {
 				while (cellIter.hasNext()) {
 					HSSFCell myCell = (HSSFCell) cellIter.next();
 					cellStoreVector.add(myCell);
+					
 				}
 				cellListHolder.add(cellStoreVector);
 			}
 		} catch (IOException e) {
 			LOG.error("Can't parse xls from given input stream. " + e);
 		}
-		return cellListHolder;
+
+		return iterateThroughTheXlsFile(cellListHolder);
 	}
 
 	/**
@@ -69,10 +73,12 @@ public class ParseXlsFile {
 	 * @param dataHolder
 	 */
 	// @Secured("ROLE_CHO")
-	public void iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
-
+	public Map<String, String> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
+		Map<String, String> xlsDataMap = new HashMap<String, String>();
 		Claim claim = null;
 		String stringCellValue = null;
+		String cell2 = null;
+		String cell1 = null;
 		try {
 			for (int i = 0; i < dataHolder.size(); i++) {
 				List<Cell> cellStoreList = (List<Cell>) dataHolder.get(i);
@@ -86,10 +92,11 @@ public class ParseXlsFile {
 						if (j == 0) {
 							claim = claimService
 									.getClaimByCHOReferenceNumber(stringCellValue);
-
+							cell1 = stringCellValue;
 							// we do update only on second column
 						} else {
 							claim.setChoReference(stringCellValue);
+							cell1 = stringCellValue;
 							claimService.updateClaim(claim);
 						}
 
@@ -97,12 +104,15 @@ public class ParseXlsFile {
 					// XXX just for testing purposes
 					System.out.print(stringCellValue + "\t");
 				}
+			
+				xlsDataMap.put(cell1, cell2);
 				System.out.println();
 			}
 		} catch (HibernateException e) {
 			LOG.error("Can't update claim with cho_reference number: "
 					+ stringCellValue + " " + e);
 		}
+		return xlsDataMap;
 	}
 
 	public ClaimService getClaimService() {

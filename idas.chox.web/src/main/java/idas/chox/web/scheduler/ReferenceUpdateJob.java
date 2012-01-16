@@ -1,27 +1,30 @@
-package idax.chox.web.scheduler;
+package idas.chox.web.scheduler;
+
+import idas.chox.web.security.WebUserService;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.internet.InternetAddress;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.security.Authentication;
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.AuthenticationManager;
 
-public class EracJob extends QuartzJobBean {
+public class ReferenceUpdateJob extends QuartzJobBean {
 
-	private static final Logger LOG = LoggerFactory.getLogger(EracJob.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
 
 	private ImapMailReceiver imapMailReceiver;
-	private ParseXlsFile parseXlsFile;
+	private XlsFileParser xlsFileParser;
+	private WebUserService userDetailsService;
+	private AuthenticationManager authenticationManager;
 	private InternetAddress internetAddress;
 	private Properties props;
 
@@ -31,6 +34,7 @@ public class EracJob extends QuartzJobBean {
 			props = System.getProperties();
 			props.setProperty("mail.store.protocol", "imaps");
 
+			//XXX this will be removed once we will read this properties from web.xml
 			internetAddress = new InternetAddress();
 			internetAddress.setPersonal("erac.test123");
 			internetAddress.setAddress("erac.test@gmail.com");
@@ -39,6 +43,8 @@ public class EracJob extends QuartzJobBean {
 			imapMailReceiver.setProps(props);
 			imapMailReceiver.setFrom(internetAddress);
 			imapMailReceiver.setHost("imap.gmail.com");
+			imapMailReceiver.setAuthenticationManager(authenticationManager);
+			imapMailReceiver.setUserDetailsService(userDetailsService);
 
 			List<InputStream> listOfAttachments = imapMailReceiver
 					.receiveMailAttachments(true);
@@ -54,9 +60,8 @@ public class EracJob extends QuartzJobBean {
 
 	private void readAndUpdateTheXlsDate(List<InputStream> attachmets) {
 		for (InputStream attachemt : attachmets) {
-			List<List<Cell>> cells = parseXlsFile.readExcelFile(attachemt);
-			parseXlsFile.iterateThroughTheXlsFile(cells);
-
+			//XXX for now update is done inside of xlsFileParser bean
+			Map<String, String> xlsDataMap = xlsFileParser.readExcelFile(attachemt);
 		}
 	}
 
@@ -64,7 +69,27 @@ public class EracJob extends QuartzJobBean {
 		this.imapMailReceiver = imapMailReceiver;
 	}
 
-	public void setParseXlsFile(ParseXlsFile parseXlsFile) {
-		this.parseXlsFile = parseXlsFile;
+	public WebUserService getUserDetailsService() {
+		return userDetailsService;
+	}
+
+	public void setUserDetailsService(WebUserService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
+	public AuthenticationManager getAuthenticationManager() {
+		return authenticationManager;
+	}
+
+	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
+
+	public XlsFileParser getXlsFileParser() {
+		return xlsFileParser;
+	}
+
+	public void setXlsFileParser(XlsFileParser xlsFileParser) {
+		this.xlsFileParser = xlsFileParser;
 	}
 }

@@ -1,7 +1,6 @@
-package idax.chox.web.scheduler;
+package idas.chox.web.scheduler;
 
 import idas.chox.core.model.WebUser;
-import idas.chox.core.services.UserService;
 import idas.chox.web.security.WebUserService;
 
 import java.io.IOException;
@@ -24,13 +23,10 @@ import javax.mail.internet.InternetAddress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationManager;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
-import org.springframework.util.Assert;
 
 public class ImapMailReceiver {
 
@@ -38,17 +34,11 @@ public class ImapMailReceiver {
 			.getLogger(ImapMailReceiver.class);
 
 	private WebUserService userDetailsService;
-
-	private AuthenticationManager authenticationManagerMod;
-
+	private AuthenticationManager authenticationManager;
 	private Properties props;
-
 	private String host;
-
 	private InternetAddress from;
-
 	private Folder folder;
-
 	private Store store;
 
 	public List<InputStream> receiveMailAttachments(
@@ -132,7 +122,7 @@ public class ImapMailReceiver {
 
 			Authentication authentication = new UsernamePasswordAuthenticationToken(
 					webuser.getEmail(), webuser.getPassword());
-			authentication = authenticationManagerMod
+			authentication = authenticationManager
 					.authenticate(authentication);
 			if (!authentication.isAuthenticated()) {
 				LOG.error("This user is not authenticated.");
@@ -171,21 +161,20 @@ public class ImapMailReceiver {
 		this.host = host;
 	}
 
-	public AuthenticationManager getAuthenticationManagerMod() {
-		return authenticationManagerMod;
-	}
-
-	public void setAuthenticationManagerMod(
-			AuthenticationManager authenticationManagerMod) {
-		this.authenticationManagerMod = authenticationManagerMod;
-	}
-
 	public WebUserService getUserDetailsService() {
 		return userDetailsService;
 	}
 
 	public void setUserDetailsService(WebUserService userDetailsService) {
 		this.userDetailsService = userDetailsService;
+	}
+
+	public AuthenticationManager getAuthenticationManager() {
+		return authenticationManager;
+	}
+
+	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
 	}
 
 }
