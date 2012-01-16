@@ -2065,7 +2065,7 @@ WHERE
  AND c.auto_penalty_charges = true
  AND cho.auto_penalty_charges = true
  AND i.penalty_alert_qty = 0
- AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged')
  AND (current_date - i.auto_penalty_start::Date) >= 30
  AND (current_date - i.auto_penalty_start::Date) < 60
 
@@ -2154,7 +2154,7 @@ WHERE
  AND c.auto_penalty_charges = true
  AND cho.auto_penalty_charges = true
  AND i.penalty_alert_qty <= 1 
- AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged')
  AND (current_date - i.auto_penalty_start::Date) >= 60
  AND (current_date - i.auto_penalty_start::Date) < 90
 
@@ -2244,7 +2244,7 @@ WHERE
  AND cho.auto_penalty_charges = true
  AND i.penalty_alert_qty >= 0
  AND i.penalty_alert_qty <= 2
- AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged','InvoiceDataCalculationIncorrect')
+ AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived','InvoicePaymentLogged')
  AND (current_date - i.auto_penalty_start::Date) >= 90
 
 LOOP
@@ -2309,7 +2309,7 @@ where c.invoice_id = i.id
   and c.insurer_id = ins.id
   and c.claim_type != 3
   and ins.is_task_management_enable = true
-  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived')
   and (current_date - i.auto_penalty_start::Date) >= 75
   and (current_date - i.auto_penalty_start::Date) < 90
   and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days');
@@ -2323,7 +2323,7 @@ where c.invoice_id = i.id
   and c.insurer_id = ins.id
   and c.claim_type != 3
   and ins.is_task_management_enable = true
-  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived')
   and (current_date - i.auto_penalty_start::Date) >= ((i.penalty_alert_qty+1)*30 - 5)
   and (current_date - i.auto_penalty_start::Date) < 90
   and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days');
