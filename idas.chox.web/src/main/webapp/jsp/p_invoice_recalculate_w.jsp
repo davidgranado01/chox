@@ -1099,16 +1099,20 @@
                                         </td>
                                     </tr>
                                 <s:if test="penaltyChargeDateModified">
-                                <tr>
-                                    <td><label class="std-label-ro">Penalty Charge Start Date</label></td>
-                                    <td>&nbsp;</td>
-                                    <td>
-                                        <label class="std-data-ro"><s:date name="penaltyChargeDate" format="dd MMM yyyy" /></label>
-                                        <s:if test="invoicedDays > 0">
-                                            <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
-                                        </s:if>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">Penalty Charge Start Date</label>
+                                                <label class="std-data-ro"><s:date name="penaltyChargeDate" format="dd MMM yyyy" /></label>
+                                                <s:if test="invoicedDays > 0">
+                                                    <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
+                                                </s:if>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <label></label>
+                                        </td>
+                                    </tr>
                                 </s:if>
                                     <tr>
                                         <td>
