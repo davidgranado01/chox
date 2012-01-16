@@ -2,37 +2,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-	<bean id="runMeTask" class="idax.chox.web.scheduler.RunMeTask" />
-	<bean id="imapMailReceiver" class="idas.chox.web.jobs.erac.ImapMailReceiver" scope="singleton">
+
+	<bean id="imapMailReceiver" class="idas.chox.web.scheduler.ImapMailReceiver" scope="singleton">
 		<property name="userDetailsService" ref="userDetailsService" />
 		<property name="authenticationManagerMod" ref="authenticationManager" />
 	</bean>
-	<bean id="parseXlsFile" class="idas.chox.web.jobs.erac.ParseXlsFile" scope="singleton">
+	<bean id="parseXlsFile" class="idas.chox.web.scheduler.ParseXlsFile" scope="singleton">
 		<property name="claimService" ref="claimService" />
 	</bean>
 
-	<bean name="runMeJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="idax.chox.web.scheduler.RunMeJob" />
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="runMeTask" value-ref="runMeTask" />
-			</map>
-		</property>
-	</bean>
-
-	<bean name="eracJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="idas.chox.web.jobs.erac.EracJob" />
+	<bean name="eracJob" class="org.springframework.scheduling.quartz.JobDetailBean" autowire="autodetect">
+		<property name="jobClass" value="idas.chox.web.scheduler.EracJob" />
 		<property name="jobDataAsMap">
 			<map>
 				<entry key="imapMailReceiver" value-ref="imapMailReceiver" />
 				<entry key="parseXlsFile" value-ref="parseXlsFile" />
-			</map>
+				<entry key="userDetailsService" value-ref="userDetailsService" />
+				<entry key="authenticationManager" value-ref="authenticationManager" />
+    		</map>
 		</property>
 	</bean>
-
-	<!-- <bean id="runMeJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
-		<property name="targetObject" ref="runMeTask" /> <property name="targetMethod" 
-		value="printMe" /> </bean> -->
 
 	<!-- Simple Trigger -->
 	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
@@ -62,7 +51,6 @@
 
 		<property name="jobDetails">
 			<list>
-				<!-- <ref bean="runMeJob" /> -->
 				<ref bean="eracJob" />
 			</list>
 		</property>

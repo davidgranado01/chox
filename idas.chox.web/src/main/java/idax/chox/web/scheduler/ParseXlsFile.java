@@ -1,4 +1,4 @@
-package idas.chox.web.jobs.erac;
+package idax.chox.web.scheduler;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;

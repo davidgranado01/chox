@@ -1,4 +1,4 @@
-package idas.chox.web.jobs.erac;
+package idax.chox.web.scheduler;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
@@ -64,7 +64,7 @@ public class ImapMailReceiver {
 		try {
 			Session session = Session.getDefaultInstance(props, null);
 			store = session.getStore(); // .getStore("imaps");
-			store.connect(host, getFrom().getAddress(), getFrom().getPersonal());
+			store.connect(host, from.getAddress(), from.getPersonal());
 			folder = store.getFolder("INBOX");
 
 			if (folder == null || folder.getName() == null) {

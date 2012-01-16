@@ -1,4 +1,4 @@
-package idas.chox.web.jobs.erac;
+package idax.chox.web.scheduler;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
