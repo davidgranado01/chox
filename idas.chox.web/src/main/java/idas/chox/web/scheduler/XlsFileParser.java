@@ -34,7 +34,6 @@ public class XlsFileParser {
 	 * @return Map<Integer, List<String>> integer is the cell row number and
 	 *         List is the data returned in row.
 	 */
-	@Secured(value="ROLE_CHO")//XXX what shall we restrict?
 	public Map<Integer, List<String>> readExcelFile(InputStream inputStream) {
 
 		List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
@@ -80,7 +79,6 @@ public class XlsFileParser {
 	 * @return Map<Integer, List<String>> integer is the cell row number and
 	 *         List is the data returned in row.
 	 */
-	@Secured(value="ROLE_CHO")//XXX what shall we restrict?
 	private Map<Integer, List<String>> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
 		Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
 		String stringCellValue = null;

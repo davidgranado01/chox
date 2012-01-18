@@ -13,7 +13,6 @@
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
 	<bean id="xlsFileParser" class="idas.chox.web.scheduler.XlsFileParser" scope="singleton"/>
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<bean id="referenceUpdateJob" class="idas.chox.web.scheduler.ReferenceUpdateJob">
 		<property name="imapMailReceiver" ref="imapMailReceiver"/>
 		<property name="xlsFileParser" ref="xlsFileParser"/>

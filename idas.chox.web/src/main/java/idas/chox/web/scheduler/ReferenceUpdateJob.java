@@ -15,8 +15,7 @@ import org.hibernate.HibernateException;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.annotation.Secured;
 
 public class ReferenceUpdateJob {
 
@@ -52,8 +51,8 @@ public class ReferenceUpdateJob {
 			LOG.error("Mail password cannot be encoded. " + e);
 		}
 	}
-
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	
+	@Secured(value="ROLE_CHO")
 	private void readAndUpdateReferenceNumber(List<InputStream> attachmets) {
 		String referenceNumber = null;
 		try {
