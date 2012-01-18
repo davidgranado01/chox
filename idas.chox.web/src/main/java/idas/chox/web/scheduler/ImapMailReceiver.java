@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.model.WebUser;
 import idas.chox.web.security.WebUserService;
 
 import java.io.IOException;
@@ -25,8 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationManager;
+import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
+import org.springframework.security.userdetails.UserDetails;
 
 public class ImapMailReceiver {
 
@@ -73,7 +74,10 @@ public class ImapMailReceiver {
 						&& message.getContentType().contains("MIXED")) {
 					listOfAttachemnts = fetchAtacchements(message);
 
-					authenticateSender(message);
+					if(!isAuthenticateSender(message)){
+						message.setFlag(Flags.Flag.RECENT, true);
+						return null;
+					}
 
 					// TODO Uncoment this before git push
 					// message.setFlag(Flags.Flag.DELETED, true);
@@ -109,30 +113,43 @@ public class ImapMailReceiver {
 		return listOfAttachements;
 	}
 
-	private void authenticateSender(Message message) {
+	private boolean isAuthenticateSender(Message message) {
 		try {
 			Address[] senders = message.getFrom();
 
 			// XXX this is just mock data - which will later be extracted from
 			// address
-			String sender = "donna.r.jeffery@erac.com";
+			boolean isAuthorized = false;
+			String sender = "admin@driveassist.com";
+			String password = "C0mpliance";
 
-			WebUser webuser = userDetailsService.getUserService().findByEmail(
-					sender);
-
-			Authentication authentication = new UsernamePasswordAuthenticationToken(
-					webuser.getEmail(), webuser.getPassword());
-			authentication = authenticationManager
-					.authenticate(authentication);
-			if (!authentication.isAuthenticated()) {
+			//XXX only for development purposes
+			UserDetails webuser = userDetailsService.loadUserByUsername("vicky.sinclair3");
+			GrantedAuthority[] grantedAuthorities = webuser.getAuthorities(); 
+			for (GrantedAuthority ga : grantedAuthorities) {
+				if(ga.getAuthority().equals("ROLE_CHO")){
+					isAuthorized = true;
+				}
+	         }
+			if(isAuthorized){
+				
+				Authentication authentication = new UsernamePasswordAuthenticationToken(
+						sender, password);
+				authentication = authenticationManager
+						.authenticate(authentication);
+				if (!authentication.isAuthenticated()) {
+					LOG.error("This user is not authenticated.");
+					return false;
+				}
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			} else {
 				LOG.error("This user is not authenticated.");
+				return false;
 			}
-			SecurityContextHolder.getContext()
-					.setAuthentication(authentication);
-
 		} catch (MessagingException e) {
 			LOG.error("This user is not authenticated." + e);
 		}
+		return true;
 	}
 
 	public void clean() {

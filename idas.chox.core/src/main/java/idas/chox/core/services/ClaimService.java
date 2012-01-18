@@ -77,4 +77,6 @@ public interface ClaimService extends DataService {
     public int calculatePenaltyAlertQty(Invoice inv);
     
     public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
+    
+    public void updateChoReferenceNumber(String oldReference , String newReference);
 }

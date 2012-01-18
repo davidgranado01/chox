@@ -1,88 +1,98 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.web.security.WebUserService;
+import idas.chox.core.services.ClaimService;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.mail.internet.InternetAddress;
 
-import org.quartz.JobExecutionContext;
+import org.hibernate.HibernateException;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.security.AuthenticationManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class ReferenceUpdateJob extends QuartzJobBean {
+public class ReferenceUpdateJob {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
 
 	private ImapMailReceiver imapMailReceiver;
 	private XlsFileParser xlsFileParser;
-	private WebUserService userDetailsService;
-	private AuthenticationManager authenticationManager;
-	private InternetAddress internetAddress;
-	private Properties props;
+	private ClaimService claimService;
 
-	protected void executeInternal(JobExecutionContext context)
-			throws JobExecutionException {
+	protected void execute() throws JobExecutionException {
 		try {
-			props = System.getProperties();
+			Properties props = System.getProperties();
 			props.setProperty("mail.store.protocol", "imaps");
 
-			//XXX this will be removed once we will read this properties from web.xml
-			internetAddress = new InternetAddress();
+			// XXX this will be removed once we will read this properties from
+			// web.xml
+			InternetAddress internetAddress = new InternetAddress();
 			internetAddress.setPersonal("erac.test123");
 			internetAddress.setAddress("erac.test@gmail.com");
 
-			imapMailReceiver = new ImapMailReceiver();
 			imapMailReceiver.setProps(props);
 			imapMailReceiver.setFrom(internetAddress);
 			imapMailReceiver.setHost("imap.gmail.com");
-			imapMailReceiver.setAuthenticationManager(authenticationManager);
-			imapMailReceiver.setUserDetailsService(userDetailsService);
 
 			List<InputStream> listOfAttachments = imapMailReceiver
 					.receiveMailAttachments(true);
-			if (listOfAttachments.size() != 0)
-				readAndUpdateTheXlsDate(listOfAttachments);
-
-			imapMailReceiver.clean();
+			if (listOfAttachments != null && listOfAttachments.size() != 0) {
+				readAndUpdateReferenceNumber(listOfAttachments);
+				imapMailReceiver.clean();
+			}
 
 		} catch (UnsupportedEncodingException e) {
 			LOG.error("Mail password cannot be encoded. " + e);
 		}
 	}
 
-	private void readAndUpdateTheXlsDate(List<InputStream> attachmets) {
-		for (InputStream attachemt : attachmets) {
-			//XXX for now update is done inside of xlsFileParser bean
-			Map<String, String> xlsDataMap = xlsFileParser.readExcelFile(attachemt);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	private void readAndUpdateReferenceNumber(List<InputStream> attachmets) {
+		String referenceNumber = null;
+		try {
+			for (InputStream attachemt : attachmets) {
+				Map<Integer, List<String>> xlsDataMap = xlsFileParser.readExcelFile(attachemt);
+				Set<Integer> rowNumbers = xlsDataMap.keySet();
+				// This is specific for the excel file with two columns and
+				// first row is a header.
+				// We don't do update on first line and we assume we will always
+				// have only two columns.
+				for (Integer row : rowNumbers) {
+					// first row is header
+					if (row.intValue() != 0) {
+						List<String> cells = xlsDataMap.get(row);
+						// this excel file should have only two columns and we
+						// iterate only through those two
+						String oldReference = cells.get(0).trim().toUpperCase();
+						String newReferenve = cells.get(1).trim().toUpperCase();
+
+						if (oldReference != null && !oldReference.equals("")) {
+							referenceNumber = oldReference;
+							claimService.updateChoReferenceNumber(oldReference, newReferenve);
+
+						}
+					}
+				}
+			}
+		} catch (HibernateException e) {
+			LOG.error("Can't update claim with cho_reference number: "
+					+ referenceNumber + " " + e);
 		}
 	}
 
-	public void setImapMailReciever(ImapMailReceiver imapMailReceiver) {
+	public ImapMailReceiver getImapMailReceiver() {
+		return imapMailReceiver;
+	}
+
+	public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
 		this.imapMailReceiver = imapMailReceiver;
-	}
-
-	public WebUserService getUserDetailsService() {
-		return userDetailsService;
-	}
-
-	public void setUserDetailsService(WebUserService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
-
-	public AuthenticationManager getAuthenticationManager() {
-		return authenticationManager;
-	}
-
-	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-		this.authenticationManager = authenticationManager;
 	}
 
 	public XlsFileParser getXlsFileParser() {
@@ -92,4 +102,14 @@ public class ReferenceUpdateJob extends QuartzJobBean {
 	public void setXlsFileParser(XlsFileParser xlsFileParser) {
 		this.xlsFileParser = xlsFileParser;
 	}
+
+	public ClaimService getClaimService() {
+		return claimService;
+	}
+
+	public void setClaimService(ClaimService claimService) {
+		this.claimService = claimService;
+	}
+
+	
 }

@@ -1,10 +1,5 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.ClaimService;
-import idas.chox.web.security.WebUserService;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,15 +18,24 @@ import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.annotation.Secured;
+import org.springframework.security.context.SecurityContextHolder;
 
 public class XlsFileParser {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(XlsFileParser.class);
-
-	private ClaimService claimService;
-
-	public Map<String, String> readExcelFile(InputStream inputStream) {
+	
+	/**
+	 * Reads the excel file and populates the Map readable cell data.
+	 * 
+	 * @param InputStream
+	 *            - excelFile in byteFormat
+	 * @return Map<Integer, List<String>> integer is the cell row number and
+	 *         List is the data returned in row.
+	 */
+	@Secured(value="ROLE_CHO")//XXX what shall we restrict?
+	public Map<Integer, List<String>> readExcelFile(InputStream inputStream) {
 
 		List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
 
@@ -48,7 +52,7 @@ public class XlsFileParser {
 
 			/** We now need something to iterate through the cells. **/
 			Iterator<Row> rowIter = mySheet.rowIterator();
-
+			SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 			while (rowIter.hasNext()) {
 				HSSFRow myRow = (HSSFRow) rowIter.next();
 				Iterator<Cell> cellIter = myRow.cellIterator();
@@ -68,59 +72,33 @@ public class XlsFileParser {
 	}
 
 	/**
-	 * This is convenience method used for testing purposes.
+	 * Iterates through the dataHolder list of Cells, and pupulates the map with
+	 * readable cell data.
 	 * 
-	 * @param dataHolder
+	 * @param List
+	 *            <List<Cell>>
+	 * @return Map<Integer, List<String>> integer is the cell row number and
+	 *         List is the data returned in row.
 	 */
-	// @Secured("ROLE_CHO")
-	public Map<String, String> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
-		Map<String, String> xlsDataMap = new HashMap<String, String>();
-		Claim claim = null;
+	@Secured(value="ROLE_CHO")//XXX what shall we restrict?
+	private Map<Integer, List<String>> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
+		Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
 		String stringCellValue = null;
-		String cell2 = null;
-		String cell1 = null;
 		try {
 			for (int i = 0; i < dataHolder.size(); i++) {
 				List<Cell> cellStoreList = (List<Cell>) dataHolder.get(i);
+				List<String> cellStringList = new ArrayList<String>();
 				for (int j = 0; j < cellStoreList.size(); j++) {
 					HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-					stringCellValue = myCell.toString();
-					// we don't do update on first line and we assume we will
-					// always
-					// have only two columns
-					if (i != 0) {
-						if (j == 0) {
-							claim = claimService
-									.getClaimByCHOReferenceNumber(stringCellValue);
-							cell1 = stringCellValue;
-							// we do update only on second column
-						} else {
-							claim.setChoReference(stringCellValue);
-							cell1 = stringCellValue;
-							claimService.updateClaim(claim);
-						}
-
-					}
-					// XXX just for testing purposes
-					System.out.print(stringCellValue + "\t");
+					cellStringList.add(myCell.toString());
 				}
-			
-				xlsDataMap.put(cell1, cell2);
-				System.out.println();
+				xlsDataMap.put(i, cellStringList);
 			}
 		} catch (HibernateException e) {
 			LOG.error("Can't update claim with cho_reference number: "
 					+ stringCellValue + " " + e);
 		}
 		return xlsDataMap;
-	}
-
-	public ClaimService getClaimService() {
-		return claimService;
-	}
-
-	public void setClaimService(ClaimService claimService) {
-		this.claimService = claimService;
 	}
 
 }
