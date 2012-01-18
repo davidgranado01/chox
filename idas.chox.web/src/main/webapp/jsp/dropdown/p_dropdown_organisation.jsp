@@ -5,6 +5,7 @@
 <s:select
         id="selectedOrganisationId"
         name="selectedOrganisationId"
+        cssStyle="width:200px;"
         list="organisationList"
         listKey="id"
         listValue="name"
