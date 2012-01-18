@@ -373,7 +373,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void prepare() throws Exception {
         if (id < 0) { // No Claim provided so use session
             if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
-                LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
+                LOG.debug("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
                 claim = service.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
                 getSession().put("claimDetailPageClaimVersion", claim.getVersion());
             }
@@ -2142,7 +2142,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         }
-LOG.info("On exit: penalty start date={}", claim.getInvoice().getAutoPenaltyStart());
 
         return SUCCESS;
     }

@@ -85,7 +85,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
         if (getSession().containsKey("claimDetailPageClaimId")) {
             Integer claimId = (Integer) getSession().get("claimDetailPageClaimId");
-            LOG.info("Getting claim from session claimId={}", claimId);
+            LOG.debug("Getting claim from session claimId={}", claimId);
             claim = claimService.getClaim(claimId);
             setCurrentVersion((Integer) getSession().get("claimDetailPageClaimVersion"));
         } else {
