@@ -42,6 +42,7 @@
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
                                 $('#tHirePenaltyChargeAmount').val((obj.hirePenaltyAmount).toFixed(2));
+                                updateTotalToPay();
                             }
                         },
                         params: {
@@ -93,6 +94,7 @@
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
                                 $('#tRepairPenaltyChargeAmount').val((obj.repairPenaltyAmount).toFixed(2));
+                                updateTotalToPay();
                             }
                         },
                         params: {
