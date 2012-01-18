@@ -58,6 +58,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
                 LOG.info("claim id is not provided and got claim id from session claim id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
                 claim = claimService.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
             }
         } else {
             claim = claimService.getClaim(claimId);
@@ -88,6 +89,11 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             LOG.debug("Settingt model version in session: {}={}", model.getClass().getName(), model.getVersion());
             session = ActionContext.getContext().getSession();
             session.put(model.getClass().getName(), model.getVersion());
+            if (model instanceof Claim) {
+                getSession().put("claimDetailPageClaimVersion", model.getVersion());
+            } else {
+                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            }
         }
 
         return result;
@@ -104,6 +110,11 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             claim = this.claimService.getClaim(claimId);
             session = ActionContext.getContext().getSession();
             session.put(model.getClass().getName(), model.getVersion());
+            if (model instanceof Claim) {
+                getSession().put("claimDetailPageClaimVersion", model.getVersion());
+            } else {
+                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            }
             LOG.debug("Model Version added to session: {}={}", model.getClass().getName(), model.getVersion());
         } catch (Exception ex) {
             handleException(ex);

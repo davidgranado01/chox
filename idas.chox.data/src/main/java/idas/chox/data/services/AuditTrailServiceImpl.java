@@ -432,7 +432,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     private boolean isSubscriberClaimRejectedAfter3pm(int claimId) {
-        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         Date uploadDate = null;

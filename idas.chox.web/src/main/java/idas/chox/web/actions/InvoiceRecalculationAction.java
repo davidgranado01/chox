@@ -2605,6 +2605,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 vehicleHireAction.prepare();
                                 vehicleHireAction.updateSessionModel();
                                 modelSaved = true;
+                                getSession().put("claimDetailPageClaimId", claim.getId().intValue());
+                                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
                                 this.setActionResult("Your Changes Have Been Saved");
                                 return SUCCESS;
                             } catch (Exception ex) {

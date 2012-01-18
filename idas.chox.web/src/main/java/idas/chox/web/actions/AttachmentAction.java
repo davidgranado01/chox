@@ -395,6 +395,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         model.setFileBuffer(obj);
         claim.addAttachment(model);
         claimService.updateClaim(claim);
+        getSession().put("claimDetailPageClaimId", claim.getId().intValue());
+        getSession().put("claimDetailPageClaimVersion", claim.getVersion());
     }
     // </editor-fold>
 
