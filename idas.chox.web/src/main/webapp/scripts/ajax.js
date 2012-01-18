@@ -211,7 +211,6 @@ var ajax = function() {
             else if(checkResponse(textStatus) && checkJSONResponse(data)){
                 lastResponse = 1;
                 if(success){
-                    console.log("Calling success function with data=" + data);
                     success(data);
                 }
             }
