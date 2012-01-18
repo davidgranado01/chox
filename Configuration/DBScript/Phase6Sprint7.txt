@@ -1974,6 +1974,8 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 ALTER TABLE bre_band ADD COLUMN subscriber_check_rejected_claims boolean not null default true;
 ALTER TABLE bre_band ADD COLUMN subscriber_acquisition_fee_check boolean not null default true;
 ALTER TABLE bre_band ADD COLUMN subscriber_admin_fee_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN max_subscriber_admin_fee_value numeric(10,2) not null default 50.00;
+ALTER TABLE bre_band ADD COLUMN max_subscriber_admin_fee_managing_repair_value numeric(10,2) not null default 50.00;
 
 --
 -- 6.7.8 Supplier Admin Fee For Managing Repair

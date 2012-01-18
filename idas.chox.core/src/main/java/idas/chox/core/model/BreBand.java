@@ -99,6 +99,8 @@ public class BreBand extends Entity implements Serializable {
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
     private int numberOfDays = 4;
+    private BigDecimal adminFeeCeilingSubscriberManagingRepair = new BigDecimal("50.00");
+    private BigDecimal adminFeeCeilingSubscriber = new BigDecimal("50.00");
     private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
     private BigDecimal adminFeeCeilingManagingRepair = new BigDecimal("27.50");
     private BigDecimal standardInsurancePremium = new BigDecimal("3.00");
@@ -929,6 +931,22 @@ public class BreBand extends Entity implements Serializable {
      */
     public void setAdminFeeCeiling(BigDecimal adminFeeCeiling) {
         this.adminFeeCeiling = adminFeeCeiling;
+    }
+
+    public BigDecimal getAdminFeeCeilingSubscriber() {
+        return adminFeeCeilingSubscriber;
+    }
+
+    public void setAdminFeeCeilingSubscriber(BigDecimal adminFeeCeilingSubscriber) {
+        this.adminFeeCeilingSubscriber = adminFeeCeilingSubscriber;
+    }
+
+    public BigDecimal getAdminFeeCeilingSubscriberManagingRepair() {
+        return adminFeeCeilingSubscriberManagingRepair;
+    }
+
+    public void setAdminFeeCeilingSubscriberManagingRepair(BigDecimal adminFeeCeilingSubscriberManagingRepair) {
+        this.adminFeeCeilingSubscriberManagingRepair = adminFeeCeilingSubscriberManagingRepair;
     }
 
     public BigDecimal getAdminFeeCeilingManagingRepair() {

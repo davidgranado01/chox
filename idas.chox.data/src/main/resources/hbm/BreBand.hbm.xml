@@ -29,6 +29,8 @@
         <property column="hire_day_ceiling" name="hireDayCeiling" not-null="true"/>
         <property column="max_repair_value" name="repairNetCeiling" not-null="true"/>
         <property column="max_admin_fee_value" name="adminFeeCeiling" not-null="true"/>
+        <property column="max_subscriber_admin_fee_value" name="adminFeeCeilingSubscriber" not-null="true"/>
+        <property column="max_subscriber_admin_fee_managing_repair_value" name="adminFeeCeilingSubscriberManagingRepair" not-null="true"/>
         <property column="max_admin_fee_managing_repair_value" name="adminFeeCeilingManagingRepair" not-null="true"/>
         <property column="standard_insurance_premium" name="standardInsurancePremium" not-null="true"/>
         <property column="non_standard_insurance_premium" name="nonStandardInsurancePremium" not-null="true"/>
