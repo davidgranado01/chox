@@ -41,14 +41,14 @@ public class NonceInterceptor extends AbstractInterceptor {
                     return "invalid.token";
                 }
                 String requestNonce = request.getParameter("nonce");
-                LOG.debug("Request nonce value is: {}", requestNonce);
 
+                // + symbols in requestNonce will be spaces so we'll have to update
+                requestNonce = requestNonce.replace(' ', '+');
                 // verify nonce
                 if (!sessionNonce.equals(requestNonce)) {
                     LOG.error("Nonce values do not match: {} != {}", sessionNonce, requestNonce);
                     return "invalid.token";
                 }
-                LOG.debug("Session and request nonce values match - executing request: {}={}", sessionNonce, requestNonce);
             }
         }
 

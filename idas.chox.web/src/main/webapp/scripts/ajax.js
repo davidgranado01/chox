@@ -139,71 +139,8 @@ var ajax = function() {
         });
     }
 
+
     function loadHtml(url,param,success,error) {
-        $.post(url,param,function(data,textStatus){
-            // Hack to handle access denied returned in the ajax response
-            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                //                console.log("Access Denied detected");
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
-                    width:300,
-                    buttons: Ext.MessageBox.OK,
-                    icon : Ext.MessageBox.ERROR,
-                    closable : false,
-                    fn: function redirectToAccessDeniedPage(){
-                        window.location = REDIRECT_ON_ACCESS_DENIED; 
-                    }
-                });
-            }
-            else if(checkResponse(textStatus)){
-                lastResponse = 1;
-                if(success){
-
-                    success(data);
-
-                }
-            }
-            else{
-                if(error){
-
-                    error(data);
-                }
-            }
-        },'html');
-    }
-
-    function loadJson(url,param,success,error){
-        $.post(url,param,function(data,textStatus){
-            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
-                    width:300,
-                    closable : false,
-                    buttons: Ext.MessageBox.OK,
-                    icon : Ext.MessageBox.ERROR,
-                    fn: function redirectToAccessDeniedPage(){
-                        window.location = REDIRECT_ON_ACCESS_DENIED; 
-                    }
-                });
-            }
-            else if(checkResponse(textStatus) && checkJSONResponse(data)){
-                lastResponse = 1;
-                if(success){
-                    success(data);
-                }
-            }
-            else{
-                if(error){
-
-                    error(data);
-                }
-            }
-        },'json');
-    }
-
-    function loadHtml2(url,param,success,error) {
         // Add nonce value
         //        console.log('loadHtml: NonceId value is: ' + $('#nonceId').val());
         //        console.log('loadHtml: param is: ' + param);
@@ -241,14 +178,13 @@ var ajax = function() {
             }
             else{
                 if(error){
-
                     error(data);
                 }
             }
         },'html');
     }
 
-    function loadJson2(url,param,success,error){
+    function loadJson(url,param,success,error){
         // Add nonce value
         //        console.log('loadJson: NonceId value is: ' + $('#nonceId').val());
         if (typeof(param) == typeof('')) {
@@ -259,7 +195,6 @@ var ajax = function() {
             //            console.log('Adding nonce to existing params.');
             param['nonce'] = $('#nonceId').val();
         }
-        //        console.log('loadJson: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
                 Ext.MessageBox.show({
@@ -276,20 +211,51 @@ var ajax = function() {
             else if(checkResponse(textStatus) && checkJSONResponse(data)){
                 lastResponse = 1;
                 if(success){
+                    console.log("Calling success function with data=" + data);
                     success(data);
                 }
             }
             else{
                 if(error){
-
                     error(data);
                 }
             }
         },'json');
     }
 
-    function handleAjaxError(conn, response, options){
-        //        console.log("handleAjaxError: response status is:" + response.status);
+    function handleAjaxError(conn, response, options, thrownError){
+//console.log("*******handleAjaxError: conn is:" + conn);
+//var output = '';
+//for (property in conn) {
+//  output += property + ': ' + conn[property]+'; ';
+//}
+//console.log("handleAjaxError: conn properties are - " + output);
+
+//console.log("*******handleAjaxError: response is:" + response);
+//console.log("*******handleAjaxError: response.status is:" + response.status);
+//console.log("*******handleAjaxError: response.statusText is:" + response.statusText);
+//output = '';
+//for (property in response) {
+//  output += property + ': ' + response[property]+'; ';
+//}
+//console.log("handleAjaxError: response properties are - " + output);
+
+//console.log("*******handleAjaxError: options are:" + options);
+//output = '';
+//for (property in options) {
+//  output += property + ': ' + options[property]+'; ';
+//}
+//console.log("handleAjaxError: options properties are - " + output);
+
+//console.log("*******handleAjaxError: thrownError is:" + thrownError);
+//output = '';
+//for (property in thrownError) {
+//  output += property + ': ' + thrownError[property]+'; ';
+//}
+//console.log("handleAjaxError: thrownError properties are - " + output);
+
+
+
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
         /*
@@ -322,10 +288,8 @@ var ajax = function() {
     }
 
     return {
-        loadHtml : loadHtml,
-        loadJson : loadJson,
-        loadHtml2 : loadHtml2,
-        loadJson2 : loadJson2,
+        loadHtml2 : loadHtml,
+        loadJson2 : loadJson,
         handleAjaxError : handleAjaxError,
         setLastResponse : setLastResponse
     };

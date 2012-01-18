@@ -55,12 +55,19 @@ public class ClaimRevert extends BaseActivity {
                 || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
             reCloseTasks = true; // Indicates reverting to a closed state
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
+        String originalStatus = claim.getStatus();
         if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
+            if (claim.getInvoice() != null && claim.getInvoice().getInvoicedDays() > 30) {
+                setMessage("Claim reverted to status '" + claim.getStatus()
+                        + "' and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
+                        + " days ago, please confirm the correct penalty charges have been applied to the invoice");
+            }
+            setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'");
         }
         else
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());

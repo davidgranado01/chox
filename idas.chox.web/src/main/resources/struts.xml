@@ -73,6 +73,7 @@
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
+                <param name="statusMsg">${message}</param>
                 <param name="id">${id}</param>
             </result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
@@ -85,16 +86,6 @@
             </result>
         </action>
 
-        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimActivityAction">
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success">/jsp/claimSwitchSuccessful.jsp</result>
-
-            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <exception-mapping exception="java.lang.Exception" result="error"/>
-
-            <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
-        </action>
-        
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>

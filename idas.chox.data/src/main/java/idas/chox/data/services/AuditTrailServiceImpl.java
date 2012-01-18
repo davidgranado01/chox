@@ -423,7 +423,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                                            ClaimStatus.CLAIM_UPDATE_BY_ENG,
                                            ClaimStatus.CLAIM_REJECTION_CONTESTED}));
         
-        // Now if the claim was rejected AFTER 3pm, then we need to add another day
+        // Now if the claim was rejected AFTER 3pm and it
+        // was uploaded on a different day then we need to add another day
         if (isSubscriberClaimRejectedAfter3pm(claimId)) {
             days += 1;
         }
@@ -433,10 +434,20 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     private boolean isSubscriberClaimRejectedAfter3pm(int claimId) {
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
         Calendar cal = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        Date uploadDate = null;
         for (AuditTrail trail : auditTrail) {
             cal.setTime(trail.getUpdateDate());
+            if (trail.getOriginalStatus().isEmpty()) {
+                uploadDate = trail.getUpdateDate();
+                cal2.setTime(trail.getUpdateDate());
+            }
             if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getNewStatus())
                 && cal.get(Calendar.HOUR_OF_DAY) >= 15) {
+                if (DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
+                        && cal2.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    return false;
+                }
                 return true;
             }
         }

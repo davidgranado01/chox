@@ -90,8 +90,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         }
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
-            if (!newInsurer.isAllowSubscriberClaims())
+            if (!newInsurer.isAllowSubscriberClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
+            }
         }
     }
 

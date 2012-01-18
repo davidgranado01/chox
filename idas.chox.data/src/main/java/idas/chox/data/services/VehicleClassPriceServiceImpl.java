@@ -39,8 +39,6 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
         if (ClaimType.isSubscriber(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, insId, choId);
         } else {
-
-
             DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPrice.class);
             criteria.add(Restrictions.eq("vehicleClass.id", vehicleClass.getId()));
             criteria.add(Restrictions.le("startDate", startDate));
