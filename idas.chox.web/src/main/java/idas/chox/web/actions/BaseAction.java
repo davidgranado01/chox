@@ -348,6 +348,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
+//        throw ex;
     }
 
     protected String formErrorMessage(Exception ex) {
@@ -357,7 +358,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
         if (ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error class '{}'", ex.getClass());
-            return null;
+            return "";
         }
         return ex.getMessage();
     }

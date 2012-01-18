@@ -63,6 +63,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import net.sf.json.JSONObject;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.security.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
@@ -81,8 +82,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List statuses;
     private List workgroups;
     private List insurerWorkgroups;
-    private Claim claim = new Claim();
+    private Claim claim;
     private int id = -1;
+    private int claimVersion = -1;
     private int vehicleClassId = -1;
     private int insurerId = -1;
     private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
@@ -149,6 +151,32 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AuditTrailService auditTrailService;
     private Date autoPenaltyStart;
     private Integer subscriberClaimDays;
+    private String statusMsg = null;
+    private boolean showMessage = false;
+    private boolean showErrorMessage = false;
+
+    public boolean isShowMessage() {
+        return showMessage;
+    }
+
+    public boolean isShowErrorMessage() {
+        return showErrorMessage;
+    }
+
+    public String getStatusMsg() {
+        return statusMsg;
+    }
+
+    public void setStatusMsg(String statusMsg) {
+        if (statusMsg != null && !statusMsg.isEmpty()) {
+            this.statusMsg = statusMsg;
+            if (statusMsg.contains("Error"))
+                showErrorMessage = true;
+            else
+                showMessage = true;
+        }
+    }
+
 
     public Date getAutoPenaltyStart() {
         return autoPenaltyStart;
@@ -343,17 +371,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public void prepare() throws Exception {
-        if (id <= 0) {
+        if (id < 0) { // No Claim provided so use session
             if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
                 LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
                 claim = service.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
             }
-            // because creating new claim if id<=0 then the execute method will never return ClaimNotFound so it's useless having claim_not_found.jsp.
-//            claim = new Claim();
-//            LOG.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
             getSession().put("claimDetailPageClaimId", id);
+            getSession().put("claimDetailPageClaimVersion", claim.getVersion());
             LOG.debug("Claim from db {}", claim.getChoReference());
         }
     }
@@ -1057,19 +1084,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } else {
-
-
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
-
                 LOG.debug("Acknowledge All Notifications for Insurer ");
-
                 claim.AcknowledgeAllNotifications();
-
             }
 
             service.updateClaim(claim);
-
         }
 
         return SUCCESS;
@@ -2094,27 +2115,35 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (autoPenaltyStart != null) {
 
-            Date autoPenaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
             Date invoiceCreationDate = claim.getInvoice().getCreatedDate();
+            Date penaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
+            // Set both times to 00:00:00
+            if (invoiceCreationDate != null)
+                invoiceCreationDate = DateHelper.setStartOfDay(invoiceCreationDate);
+            if (penaltyStartDate != null)
+                penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
             if (this.getIsCHO() && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
-                LOG.warn("Attempt (by CHO) to set penalty-start date ({})to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
+                LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
                 setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded");
                 return ERROR;
             }
-            if (autoPenaltyStartDate.compareTo(autoPenaltyStart) != 0) {
+            service.updateClaim(claim);
+            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
                 // The date has been changed
                 service.updatePenaltyStartDate(claim, autoPenaltyStart);
-                service.updateClaim(claim);
-                if (service.updateAutomaticPenaltyCharge(claim)) {
-                    LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
-                    // Invoice details may have changed  so we need to reload the claim
-                    claim = service.getClaim(claim.getId());
-                } else {
-                    LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
-                }
             }
+            if (service.updateAutomaticPenaltyCharge(claim)) {
+                LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+                // Invoice details may have changed  so we need to reload the claim
+                claim = service.getClaim(claim.getId());
+            } else {
+                LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
+            }
+
         }
+LOG.info("On exit: penalty start date={}", claim.getInvoice().getAutoPenaltyStart());
+
         return SUCCESS;
     }
 
@@ -2132,6 +2161,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairGross() {
         return claim.getInvoice().getRepairGross();
+    }
+    
+    public Integer getVersion() {
+        LOG.debug("getVersion returning claimVersion={}", claimVersion);
+        return claimVersion;
     }
 
     @Override

@@ -30,6 +30,7 @@ public abstract class BaseActivity implements Activity {
     private Activity chainActivity;
     private String currentStatus;
     private List<String> expectingStatuses;
+    private String message;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
 
@@ -46,6 +47,15 @@ public abstract class BaseActivity implements Activity {
     @Override
     public void setXmlActivityProcessing(boolean xmlActivityProcessing) {
         this.xmlActivityProcessing = xmlActivityProcessing;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public BaseActivity() {

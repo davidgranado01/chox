@@ -41,8 +41,10 @@ public class SwitchClaim extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
             Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
-            if (!newInsurer.isAllowSubscriberClaims())
+            if (!newInsurer.isAllowSubscriberClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
+            }
         }
     }
 
@@ -81,8 +83,10 @@ public class SwitchClaim extends BaseActivity {
         thirdParty.setInsurerBrand(newInsurer.getName());
         LOG.debug("Switching Claim: ThirdParty has been updated");
 
-        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName());
+        String newComment = "Claim switched from '" + oldInsurer.getName() + "' to '" + newInsurer.getName() +"'";
+        Comment comment = Comment.New(0, newComment);
         claim.addComment(comment);
+        setMessage(newComment);
         LOG.debug("Switching Claim: Comment has been updated");
     }
 

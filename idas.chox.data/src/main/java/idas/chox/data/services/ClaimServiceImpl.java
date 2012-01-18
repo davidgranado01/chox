@@ -318,6 +318,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("claimNumber")) {
                 addSort(criteria, "claimNumber", dir);
                 addSort(criteria, "choReference", dir);
+            } else if (sort.equalsIgnoreCase("claimType")) {
+                addSort(criteria, "claimType", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("policyNumber")) {
                 addSort(criteria, "tp.policyNumber", dir);
                 addSort(criteria, "choReference", dir);

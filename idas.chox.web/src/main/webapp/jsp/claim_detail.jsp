@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
@@ -114,6 +115,13 @@
 
             loadEcds();
         }
+        
+        <s:if test="showMessage">
+            Ext.Msg.alert('Status', '<c:out value='${statusMsg}' />');
+        </s:if>
+        <s:elseif test="showErrorMessage">
+            Ext.Msg.alert('Error', '<c:out value='${statusMsg}' />');
+        </s:elseif>
     });
     
     function doLoadComments(){
@@ -181,10 +189,11 @@
         
       Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this claim?',function(btn){  
         if(btn=='yes'){
-            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-            var param = {"name":"closeClaim", "id":<s:property value="id" />};
-            ajax.loadHtml2(url, param, pageRefresh);
-            return true;
+            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=closeClaim&nonce=" + nonce;
+//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+//            var param = {"name":"closeClaim"};
+//            ajax.loadHtml2(url, param, pageRefresh);
+            return false;
          }
         });
         return false;
@@ -210,10 +219,11 @@
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
         if(btn=='yes'){
-            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-            var param = {"name":"revertClaim", "id":<s:property value="id" />};
-            ajax.loadHtml2(url, param, pageRefresh);
-            return true;
+            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=revertClaim&nonce=" + nonce;
+//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+//            var param = {"name":"revertClaim"};
+//            ajax.loadHtml2(url, param, pageRefresh);
+            return false;
         }
         });
         return false;
@@ -222,10 +232,11 @@
     function reopenClaimStatus(){
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to re-open this claim?',function(btn){
         if(btn=='yes'){
-            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-            var param = {"name":"reopenClaim", "id":<s:property value="id" />};
-            ajax.loadHtml2(url, param, pageRefresh);
-            return true;
+            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=reopenClaim&nonce=" + nonce;
+//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+//            var param = {"name":"reopenClaim"};
+//            ajax.loadHtml2(url, param, pageRefresh);
+            return false;
         }
         });
         return false;
@@ -243,7 +254,7 @@
     function removeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
-        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
+        var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#notificationNotesDiv").html(data);
         });
@@ -258,7 +269,7 @@
     function acknowledgeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
-        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
+        var param = {"notificationId" : notificationId};
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#notificationNotesDiv").html(data);
         });
@@ -272,29 +283,44 @@
 
     function claimChangeOver(){
 
-        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?',ChangeOver);
-        function ChangeOver(btn){
-            if(btn=='yes') {
-                var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
-                var param = {"name":"switchClaim", "id":<s:property value="id" />};
-                ajax.loadHtml2(url, param, loadPage);
-                return true; }
-        }
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?', 
+            function ChangeOver(btn){
+                if(btn=='yes') {
+                    document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=switchClaim&nonce=" + nonce;
+//                    Ext.Ajax.request({
+//                        url: '/prv/processClaim.action',
+//                        url: '/prv/switchClaimAction.action',
+//                        params: {"name":"switchClaim", "id":<s:property value="id" />, "currentVersion" : <s:property value="version" />, "nonce":$('#nonceId').val()},
+//                        success: loadPage,
+//                        failure: errorPage
+//                    });
+//                    var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+//                    var param = {"name":"switchClaim", "id":<s:property value="id" />, "currentVersion" : <s:property value="version" />};
+//                    ajax.loadJson2(url, param, function(data) {
+//                        console.log("Resulttype is " + data.resultType);
+//                        console.log("Result is " + data.result);
+//                        loadPage();
+//                    });
+                    return false;
+                }
+            }
+        );
         return false;
     }
 
-    function loadPage(){
-        <s:if test="isAdminChox" >
-
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
-        
-        </s:if>
-        <s:else >
-        
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
-        </s:else>
-        
-    }
+//    function loadPage(result, request){
+//        <s:if test="isAdminChox" >
+//
+//            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
+//        
+//        </s:if>
+//        <s:else >
+//        
+//            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
+//        </s:else>
+//        
+//    }
+    
     
     /***********************************************************************************
      * CLAIM DETAIL MORE ACTION PANEL

@@ -6,25 +6,31 @@
     Ext.onReady(function(){
         
         var autoPenaltyStartDate = new Ext.form.DateField({
+            id: 'autoPenaltyStartDateId',
             name: 'autoPenaltyStart',
             renderTo: 'autoPenaltyStartDateDiv',
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
-<s:if test="isCHO" >
-            minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
-</s:if>
-            //            hideMode: 'offsets',
-            value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
-            showWeekNumber: true
-        });
+    <s:if test="isCHO" >
+                minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
+    </s:if>
+                //            hideMode: 'offsets',
+                value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
+                showWeekNumber: true
+            });
      
 
 
-    });
+        });
 
+        function updatePenaltyChargeConfig() {
+            if (Ext.getCmp("autoPenaltyStartDateId").isValid())
+                return true;
+            return false;
+        }
 </script>
- 
+
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
 
     <form action="<%= request.getContextPath()%>/prv/doAdjustAutoPenalty.action" method="post" id="doAdjustAutoPenalty" name="doAdjustAutoPenalty">
@@ -35,19 +41,24 @@
 
             <div class="status-info">
                 <s:if test="showAutoPenaltyCheckbox ">
-                    Modify the date from which penalty charges will be calculated and/or enable/disable automatic penalty charges for this claim.
+                    Modify the date from which the penalty charges will be calculated.
+                    Adjusting this date will remove all penalty charges currently applied to the invoice.
+                    Once the date is adjusted, penalty charges may be automatically re-calculated.
+                    You may wish to check and/or adjust the penalty charges manually.
+                    You can also enable/disable automatic penalty charges for this claim.
                 </s:if>
                 <s:else>
-                    Modify the date from which penalty charges will be calculated.
+                    Modify the date from which the penalty charges will be calculated.
+                    Adjusting this date will remove all penalty charges currently applied to the invoice.
+                    Once the date is adjusted, if applicable, please apply the correct penalty charges.
                 </s:else>
             </div>
 
-            <table border="0" cellspacing="0" cellpadding="0" style="width:60%">
-
+            <table border="0" cellspacing="0" cellpadding="0" style="width:70%">
                 <tr>
                 </tr>
-                <tr>
-                    <td align="left"><label>Penalty Charge Calculation Date</label></td>
+                <tr >
+                    <td align="left"><label>Penalty Charge Start Date</label></td>
                     <td align="left">
                         <div id="autoPenaltyStartDateDiv"></div>
                     </td>
@@ -55,8 +66,8 @@
                 </tr>
                 <tr>
                     <td colspan="3" align="left">
-                        <input type="submit" id="PCApplyButtonId"value="Apply" />
-
+                        <input type="submit" id="PCApplyButtonId" value="Apply" onclick="return updatePenaltyChargeConfig();"/>
+                            
                         <s:if test="showAutoPenaltyCheckbox ">
                             <s:if test="autoPenaltyChargeEnabled">
                                 &nbsp;<s:checkbox name="stopAutoPenaltyCharge" id="APStopAutoPenaltyChargeId"/>

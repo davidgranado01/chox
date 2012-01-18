@@ -22,12 +22,13 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Activity activity;
     private Claim claim;
     private String name;
-    private int id;
-    private Integer currentVersion;
+    private int currentVersion;
     private List<Integer> selectedClaimIdList;
     private Boolean paymentLogged = false;
     private String jsonData;
-
+    private boolean showMessage = false;
+    private String message = null;
+    
     @Override
     public Activity getModel() {
         return activity;
@@ -36,6 +37,20 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public boolean getInsurerIsWorkgroupEnabled() {
         return claim.getInsurer().isWorkgroupEnable();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    private void setMessage(String message) {
+        this.message = message;
+        if (message != null && !message.isEmpty())
+            showMessage = true;
+    }
+
+    public boolean isShowMessage() {
+        return showMessage;
     }
 
     public void setPaymentLogged(Boolean paymentReceived) {
@@ -68,14 +83,15 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public void prepare() throws Exception {
 
-        if (id > 0) {
-            claim = claimService.getClaim(id);
-            this.setCurrentVersion(claim.getVersion());
-            checkVersion();
-        } else if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
-            LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
-            claim = claimService.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+        if (getSession().containsKey("claimDetailPageClaimId")) {
+            Integer claimId = (Integer) getSession().get("claimDetailPageClaimId");
+            LOG.info("Getting claim from session claimId={}", claimId);
+            claim = claimService.getClaim(claimId);
+            setCurrentVersion((Integer) getSession().get("claimDetailPageClaimVersion"));
+        } else {
+            LOG.error("No claimId in session");
         }
+        checkVersion();
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
@@ -88,8 +104,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 for (Integer selectedClaimId : selectedClaimIdList) {
 
                     claim = claimService.getClaim(selectedClaimId);
-//                    this.setCurrentVersion(claim.getVersion());
-                    checkVersion();
+
                     if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                             || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                         throw new AccessDeniedException("Attempt to access a claim that you do not own.");
@@ -117,7 +132,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
-                LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
+                LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", claim.getId(), currentVersion);
                 /*
                  * If moving to payment received from a status that is not 'PaymentLogged',
                  * then first move to payment logged status
@@ -128,14 +143,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                     LOG.debug("Moving claim to InvoicePaymentLogged (before setting to payment received).");
                     activityFactory.getActivity("moveToInvoicePaymentLogged").process(claim);
                 }
-//                checkVersion();
                 activity.process(claim);
+                setMessage(activity.getMessage());
             } catch(AccessDeniedException ex) {
                 throw(ex);
             } catch (Exception ex) {
-                LOG.warn("Error processing claim activity {}",ex.getMessage(), ex);
+                LOG.warn("Error processing claim activity: {}",ex.getMessage());
                 jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("errors", "An unexpected error occured while processing claim. Please report to CHOX support.");
+                jsonObject.put("errors", ex.getMessage());
                 setJsonData(jsonObject.toString());
                 handleException(ex);
                 return ERROR;
@@ -157,19 +172,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         return ERROR;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Parameters">
-    public void setId(int id) {
-        LOG.debug("claimId set: {} (currentVersion={})", id, currentVersion);
-        if (claim != null && claim.getVersion() != currentVersion) {
-            LOG.debug("currentVersion different from claim.version when setting id - updating to {}", claim.getVersion());
-            this.setCurrentVersion(claim.getVersion());
-        }
-        this.id = id;
-    }
-
-    public int getId() {
-        return this.id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -187,7 +189,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     // </editor-fold>
 
     private void checkVersion() {
-        if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
+        if (claim.getVersion() == null || claim.getVersion().intValue() != currentVersion) {
             LOG.warn("Claim version mismatch: currentVersion={}, claimVersion={}", currentVersion, claim.getVersion());
             StaleObjectStateException ex = new StaleObjectStateException(claim.getClass().getName(), claim.getId());
             this.handleException(ex);
@@ -195,13 +197,20 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         }
     }
 
+    public Integer getId() {
+        if (claim != null)
+            return claim.getId();
+        
+        return null;
+    }
+    
     public Integer getVersion() {
         LOG.debug("getVersion returning claimVersion={} (currentVersion={})", claim.getVersion(), currentVersion);
         return claim.getVersion();
     }
 
-    public void setCurrentVersion(Integer currentVersion) {
-        LOG.debug("currentVersion set: {} (claimId={})", currentVersion, id);
+    public void setCurrentVersion(int currentVersion) {
+        LOG.debug("currentVersion set: {} (claimId={})", currentVersion, claim.getId());
         this.currentVersion = currentVersion;
     }
 

@@ -8,14 +8,14 @@ public enum ClaimType {
     GTA                                         ("GTA"),
     GTA_ORIGINAL_INVOICE                        ("GTA (Orig. Invoice)"),
     GTA_SUPPLEMENTARY_INVOICE                   ("GTA (Supp. Invoice)"),
-    TPI                                         ("TPI"),
+    TPI                                         ("Third Party Intervention (TPI)"),
     INSURER_VS_INSURER                          ("Insurer vs. Insurer"),
     INSURER_VS_INSURER_ORIGINAL_INVOICE         ("Insurer vs. Insurer (Orig. Invoice)"),
     INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE    ("Insurer vs. Insurer (Supp. Invoice)"),
     SUBSCRIBER                                  ("Subscriber"),
     SUBSCRIBER_ORIGINAL_INVOICE                 ("Subscriber (Orig. Invoice)"),
     SUBSCRIBER_SUPPLEMENTARY_INVOICE            ("Subscriber (Supp. Invoice)"),
-    INSURER_UPLOAD                              ("Insurer Upload");
+    INSURER_UPLOAD                              ("Insurer Manual Invoice");
 
     private String description;
 

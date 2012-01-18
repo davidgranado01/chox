@@ -146,7 +146,7 @@
         $("#tRepairPenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay();
         });
-        
+        updateTotalToPay();
     });
 
     function updateTotalToPay(inputValue)

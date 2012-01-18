@@ -75,6 +75,7 @@ Ext.onReady(function(){
                     switchClaimToMulInsForm.getForm().submit({
                         method:'POST',
                         url : contextPath + "/prv/p/switchClaimToMulInsAction.action",
+//                        url : contextPath + "/prv/processClaim.action",
                         
                         success : function(f, a) {
                             

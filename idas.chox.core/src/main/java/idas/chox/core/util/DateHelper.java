@@ -221,6 +221,33 @@ public class DateHelper {
         return calendar.getTime();
     }
 
+    public static Date setStartOfDay(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The argument 'date' cannot be null.");
+        }
+        LOG.debug("Adding time to date: {}", date.toString());
+
+        // Get an instance of the Calendar.
+        Calendar calendar = Calendar.getInstance();
+
+        // Make sure the calendar will not perform automatic correction.
+        calendar.setLenient(false);
+
+        // Set the time of the calendar to the given date.
+        calendar.setTime(date);
+
+        // Remove the hours, minutes, seconds and milliseconds.
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        LOG.debug("Time from date: {} is {}", date.toString(), calendar.getTime().toString());
+
+        // Return the date again.
+        return calendar.getTime();
+    }
+
     public static Date removeTime(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The argument 'date' cannot be null.");
