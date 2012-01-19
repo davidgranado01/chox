@@ -62,7 +62,7 @@ public class ClaimRevert extends BaseActivity {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
-            if (claim.getInvoice() != null && claim.getInvoice().getInvoicedDays() > 30
+            if (claim.getInvoice() != null && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (
