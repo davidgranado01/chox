@@ -27,7 +27,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
 
             Customer cvdamage = claim.getCustomer();
             BreBand choBand = claim.getBreBand();

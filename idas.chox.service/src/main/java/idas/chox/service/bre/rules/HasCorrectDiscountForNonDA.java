@@ -24,7 +24,7 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if(claim.getBreBand().isHasCorrectDiscountForNonDA()){
+        if(!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHasCorrectDiscountForNonDA()){
 
             if(!claim.getChorganisation().isDelegatedAuthority()){
 

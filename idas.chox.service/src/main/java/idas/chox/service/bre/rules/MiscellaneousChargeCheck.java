@@ -20,7 +20,7 @@ public class MiscellaneousChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if(claim.getBreBand().isMiscellaneousChargeCheck()){
+        if(!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isMiscellaneousChargeCheck()){
 
             boolean success = true;
             

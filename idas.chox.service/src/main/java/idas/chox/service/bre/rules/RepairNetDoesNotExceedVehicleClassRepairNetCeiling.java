@@ -28,7 +28,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'RepairNetDoesNotExceedVehicleClassRepairNetCeiling' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling() && claim.getInvoice().getRepairNet() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling() && claim.getInvoice().getRepairNet() != null) {
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
             BigDecimal repairNetCeiling = claim.getBreBand().getMaxRepairNetCeiling();

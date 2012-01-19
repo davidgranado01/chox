@@ -24,7 +24,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()) {
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
 

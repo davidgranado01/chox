@@ -27,7 +27,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
         if (claim.getBreBand().isClaimHasZeroDiscountForDA()) {
 
-            if (claim.getChorganisation().isDelegatedAuthority()) {
+            if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getChorganisation().isDelegatedAuthority()) {
 
                 boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

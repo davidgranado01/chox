@@ -27,7 +27,7 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isDateRepairCommencedChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairCommencedChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is active");

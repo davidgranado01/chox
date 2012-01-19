@@ -20,7 +20,7 @@ public class RepairBookedInDateOnSaturday implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
             boolean success = true;
 
             if (claim.getHireMonitoringDetail().getRepairBookInDate() != null && claim.getCustomer().getIsUsable()) {

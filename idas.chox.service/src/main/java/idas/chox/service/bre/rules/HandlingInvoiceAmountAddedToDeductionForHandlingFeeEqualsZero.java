@@ -28,7 +28,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero()) {
 
             Invoice invoice = claim.getInvoice();
             BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());

@@ -22,7 +22,7 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()) {
 
             boolean success = claim.getInvoice().getHireNet().compareTo(claim.getBreBand().getHireNetCeiling()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
