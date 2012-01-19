@@ -57,7 +57,7 @@ public class ClaimRevert extends BaseActivity {
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
         if (claimService.revertClaim(claim.getId()) != null) {
-            LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+            LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}", new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
@@ -76,7 +76,8 @@ public class ClaimRevert extends BaseActivity {
                         + "' and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
                         + " days ago, please confirm the correct penalty charges have been applied to the invoice");
             }
-            setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'");
+            else
+                setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'");
         }
         else
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());

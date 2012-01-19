@@ -50,7 +50,6 @@ public enum PenaltyPercentage {
         List <PenaltyPercentage> repairPenaltyPercentage = new ArrayList<PenaltyPercentage>();
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_30_DAYS);
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_60_DAYS);
-        repairPenaltyPercentage.add(COMMERCIAL);
         return repairPenaltyPercentage;
     }
 } 
