@@ -938,10 +938,6 @@
                     searchClaim(false);
                 }
             });
-
-            setDefaultClaimOwner();
-            //        setDefaultSupplierClaimOwner();
-
         });
 
         function setSelectedInsurerId(){
