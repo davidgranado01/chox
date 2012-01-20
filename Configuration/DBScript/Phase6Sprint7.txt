@@ -2119,7 +2119,7 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
                                       || (current_date - i.auto_penalty_start::Date) 
-                                      || ' days'
+                                      || ' days.'
    FROM 
      invoice i
    WHERE
@@ -2208,7 +2208,7 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
                                       || (current_date - i.auto_penalty_start::Date)
-                                      || ' days'
+                                      || ' days.'
     FROM 
       invoice i
     WHERE

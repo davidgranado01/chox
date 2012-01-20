@@ -192,13 +192,15 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
 
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateVehicleClassCeiling() {
-        if (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
-            throw new AccessDeniedException("Illegal access detected.");
-        }
+//        if (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
+//            LOG.error("Illegal Access detected: InsurerId = {}, getUserOrganisationId={}", insurerId, getUserOrganisationId());
+//            throw new AccessDeniedException("Illegal access detected.");
+//        }
 
         try {
 
             if (!getIsChoxAdmin() && !canRemoveVehicleClassCeiling(this.vehicleClassCeilingId)) {
+                LOG.error("Trying to update a Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
                 throw new AccessDeniedException("Trying to update a Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             ActionResponse response;

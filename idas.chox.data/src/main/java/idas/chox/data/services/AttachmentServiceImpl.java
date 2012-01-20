@@ -34,13 +34,14 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     }
 
     @Override
-    public Attachment getAttachment(int AttachmentId) {
-        return (Attachment) get(Attachment.class, AttachmentId);
+    public Attachment getAttachment(int attachmentId) {
+        return (Attachment) get(Attachment.class, attachmentId);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
-    public boolean deleteAtatchment(int webUserId, int AttachmentId){
+    public boolean deleteAtatchment(int webUserId, int attachmentId){
+        LOG.debug("Deleting attachment with id={} for User with id={}", webUserId, attachmentId);
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -48,10 +49,17 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
                 LOG.error("No such user found with id={}", webUserId);
                 throw new IllegalArgumentException("No such user.");
             }
+        } else {
+                LOG.error("No such user found with id={}", webUserId);
+                throw new IllegalArgumentException("No such user.");
         }
         boolean canDelete = false;
-        Attachment attachment = getAttachment(AttachmentId);
-        
+        Attachment attachment = getAttachment(attachmentId);
+        if (attachment == null) {
+            LOG.error("No such attachment found with id={}", attachmentId);
+            throw new IllegalArgumentException("No such attachment");
+        }
+
         // Check Permission to delete attachment:
         //     Manager can delete from organisation,
         //     CHOX Admin can delete all

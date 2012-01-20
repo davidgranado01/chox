@@ -348,7 +348,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
-//        throw ex;
     }
 
     protected String formErrorMessage(Exception ex) {
@@ -356,8 +355,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return "Record was updated by another transaction/user, please try again.";
         }
 
-        if (ex.getMessage().length() <= 0) {
-            LOG.warn("No message to display for error class '{}'", ex.getClass());
+        if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
+            LOG.warn("No message to display for error: ", ex);
             return "";
         }
         return ex.getMessage();

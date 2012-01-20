@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.BreBand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
@@ -62,7 +63,8 @@ public class ClaimRevert extends BaseActivity {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
-            if (claim.getInvoice() != null && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (
@@ -74,10 +76,10 @@ public class ClaimRevert extends BaseActivity {
                     ))) {
                 setMessage("Claim reverted to status '" + claim.getStatus()
                         + "' and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
-                        + " days ago, please confirm the correct penalty charges have been applied to the invoice");
+                        + " days ago, please confirm the correct penalty charges have been applied to the invoice.");
             }
             else
-                setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'");
+                setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'.");
         }
         else
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());

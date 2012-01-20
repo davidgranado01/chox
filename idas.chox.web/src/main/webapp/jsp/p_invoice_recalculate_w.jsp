@@ -357,7 +357,7 @@
         });
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
 <s:if test="penaltyChargesAppled">
-    Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have already been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
+    Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have previously been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
 </s:if>
     });
 
@@ -900,15 +900,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Hire Penalty Percentage</label>
-                                                <s:select
-                                                    name="hirePenaltyPercentage"
-                                                    id="hirePenaltyPercentageId"
-                                                    list="#@java.util.LinkedHashMap@{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
-                                                    headerKey=""
-                                                    disabled="true"
-                                                    headerValue="Not Specified"
-                                                    emptyOption="false">
-                                                </s:select>
+                                                <input type="text" class="chox-ttnum"  name="hirePenaltyPercentage" disabled="true" value="<s:property value="hirePenaltyPercentage" />"  />
                                             </div>
                                         </td>
                                         <td>
@@ -934,16 +926,8 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Repair Penalty Percentage</label>
-                                                <s:select
-                                                    name="repairPenaltyPercentage"
-                                                    id="repairPenaltyPercentageId"
-                                                    list="#@java.util.LinkedHashMap@{'2.5%':'2.5%', '5.0%':'5.0%'}"
-                                                    headerKey=""
-                                                    disabled="true"
-                                                    headerValue="Not Specified"
-                                                    emptyOption="false">
-                                                </s:select>
-                                            </div>
+                                                <input type="text" class="chox-ttnum"  name="repairPenaltyPercentage" disabled="true" value="<s:property value="repairPenaltyPercentage" />"  />
+                                             </div>
                                         </td>
                                         <td>
                                             <label></label>
