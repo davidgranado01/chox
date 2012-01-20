@@ -571,13 +571,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
                 invoice.setPenaltyAlertQty(service.calculatePenaltyAlertQty(invoice) >= 3 ? -1 : service.calculatePenaltyAlertQty(invoice));
             }
+            LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
             service.updateClaim(claim);
 
         } catch (Exception ex) {
-
+            LOG.error("Exception thrown applying penalty charges: {}", ex.getMessage(), ex);
             result = ERROR;
             setActionResult("ERROR : " + ex.getMessage());
-
         }
 
         return result;
@@ -1581,6 +1581,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
+            LOG.debug("Access right for panel '{}' : {}", action, accessRight);
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
                 /*

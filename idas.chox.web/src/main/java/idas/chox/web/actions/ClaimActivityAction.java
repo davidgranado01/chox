@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
@@ -19,6 +21,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private static final Logger LOG = LoggerFactory.getLogger(ClaimActivityAction.class);
     private ActivityFactory activityFactory;
     private ClaimService claimService;
+    private BreBandService breBandService;
     private Activity activity;
     private Claim claim;
     private String name;
@@ -88,22 +91,38 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             LOG.debug("Getting claim from session claimId={}", claimId);
             claim = claimService.getClaim(claimId);
             setCurrentVersion((Integer) getSession().get("claimDetailPageClaimVersion"));
-        } else {
+        } else if (selectedClaimIdList == null || selectedClaimIdList.isEmpty()) {
             LOG.error("No claimId in session");
         }
-        checkVersion();
+
+        // Make sure we have a BRE Band (for non-batch requests)
+        if ((selectedClaimIdList == null ||  selectedClaimIdList.isEmpty())&& claim != null && claim.getBreBand() == null) {
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+        }
+
+        // Skip version checking if we are processing multiple claims
+        if (selectedClaimIdList == null || selectedClaimIdList.isEmpty())
+            checkVersion();
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
     }
 
+    
     public String processMultipleClaims() {
         LOG.debug("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
             try {
                 for (Integer selectedClaimId : selectedClaimIdList) {
-
+                    LOG.debug("Processing claim with id={} and activity={}", selectedClaimId, activity.getClass());
                     claim = claimService.getClaim(selectedClaimId);
+
+                    // Make sure we have a BRE Band
+                    if (claim.getBreBand() == null) {
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                    }
 
                     if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                             || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
@@ -186,6 +205,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
     // </editor-fold>
 
     private void checkVersion() {

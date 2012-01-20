@@ -42,6 +42,7 @@
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
                                 $('#tHirePenaltyChargeAmount').val((obj.hirePenaltyAmount).toFixed(2));
+//                                $('#hvHirePenaltyPercentage').val(opts.params.hirePenaltyPercentage);
                                 updateTotalToPay();
                             }
                         },
@@ -94,6 +95,7 @@
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
                                 $('#tRepairPenaltyChargeAmount').val((obj.repairPenaltyAmount).toFixed(2));
+//                                $('#hvRepairPenaltyPercentage').val(opts.params.repairPenaltyPercentage);
                                 updateTotalToPay();
                             }
                         },
@@ -151,9 +153,7 @@
         updateTotalToPay();
     });
 
-    function updateTotalToPay(inputValue)
-    {
-
+    function updateTotalToPay(inputValue) {
         var repairAmount = $("#tRepairPenaltyChargeAmount").val();
         var hireAmount = $("#tHirePenaltyChargeAmount").val();
         var repairPenaltyCharge;
@@ -161,32 +161,24 @@
         var totalPenaltyCharge;
         var totalAmountToPayBeforeNewPenaltyCharge
         var totalAmountToPayAfterNewPenaltyCharge;
-
-//        if(<s:property value="showAutoPenaltyCheckbox"/>) {
-//            if(!$("#PCStopAutoPenaltyChargeId").attr('checked')) {
-//                $("#PCStopAutoPenaltyChargeId").attr('checked',true);
-//            } 
-//        }
     
-        if(!isNaN(repairAmount)){
+        if (!isNaN(repairAmount)) {
             repairPenaltyCharge = parseFloat(repairAmount) == NaN ? 0 : parseFloat(repairAmount);
             if(isNaN(repairPenaltyCharge)){
                 repairPenaltyCharge = 0;
             }
         }
-        else
-        {
+        else {
             repairPenaltyCharge = 0;
         }
 
-        if(!isNaN(hireAmount)){
+        if (!isNaN(hireAmount)) {
             hirePenaltyCharge = parseFloat(hireAmount) == NaN ? 0 : parseFloat(hireAmount);
             if(isNaN(hirePenaltyCharge)){
                 hirePenaltyCharge = 0;
             }
         }
-        else
-        {
+        else {
             hirePenaltyCharge = 0;
         }
         totalPenaltyCharge = repairPenaltyCharge + hirePenaltyCharge;
@@ -195,8 +187,7 @@
         if (hirePenaltyCharge == 0) {
             $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("remove");
             //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
-            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
-            
+            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});  
         }
         else {
             $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
@@ -207,8 +198,6 @@
             $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("remove");
             // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
             // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
-           
-
         }
         else {
             $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Percentage'"}});
@@ -223,9 +212,6 @@
         //        if (! isNaN(percentageAccepted)){
         //            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
         //        }
-        
-
-
     }
 
 </script>
@@ -236,6 +222,8 @@
 
         <s:hidden name="id" />
         <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
+        <!-- s:hidden id="hvHirePenaltyPercentage" name="hirePenaltyPercentage" / -->
+        <!-- s:hidden id="hvRepairPenaltyPercentage" name="repairPenaltyPercentage" / -->
 
         <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
 
@@ -308,7 +296,7 @@
 
                 <tr>
                     <td colspan="4" align="left">
-                        <input type="submit" id="PCApplyButtonId"value="Apply" />
+                        <input type="submit" id="PCApplyButtonId"value="Apply"/>
                         <s:if test="showRemoveFromQueueCheckbox">
                             &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId"label="Remove From Penalty Charge Queue"/>
                             <label>Remove From Queue</label>
@@ -320,8 +308,6 @@
             <div id="PenaltyChargeBox" class="action-error-msg"></div>
         </fieldset>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-        <!--s:token/-->
-
     </form>
 </div>
 

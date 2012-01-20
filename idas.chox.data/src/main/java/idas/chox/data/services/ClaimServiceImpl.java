@@ -1084,10 +1084,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         inv.setAutoPenaltyAlertQty(0);
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
+        if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+            Comment comment = Comment.New(0, "Penalty charges have been removed from the invoice as the date from which penalty charges are calculated has been manually updated.");
+            claim.addComment(comment);
+        }
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
 
-        Comment comment = Comment.New(0, "Penalty charges have been removed as the date from which penalty charges are calculated has been changed");
-        claim.addComment(comment);
 
         updateClaim(claim);
     }

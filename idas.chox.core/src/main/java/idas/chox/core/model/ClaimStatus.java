@@ -204,7 +204,6 @@ public class ClaimStatus {
         exclusionList.add(ClaimStatus.CLAIM_CLOSED);
         exclusionList.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
         exclusionList.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
-        exclusionList.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         return exclusionList;
     }
 
