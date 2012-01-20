@@ -178,6 +178,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         } catch (Exception ex) {
             LOG.error("Exception thrown deleting attachment with userId={}, modelId={}", getAuthenticatedUser().getId(), model.getId());
+
             if (ex != null) {
                 LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
                 this.getActionResponse().AssignMessageResult(ex.getMessage());
