@@ -265,7 +265,7 @@ public class ApplicationAccessibility {
                     LOG.debug("Access right for Update Penalty Charges is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
                     Invoice invoice = claim.getInvoice();
-                    if (claim.getInvoice() != null && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                    if (claim.getInvoice() != null) {
                         if (claim.getBreBand() == null) {
                             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                             claim.setBreBand(choBand);
