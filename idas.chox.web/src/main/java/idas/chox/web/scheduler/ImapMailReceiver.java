@@ -16,6 +16,7 @@ import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import javax.mail.search.SearchTerm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,14 @@ public class ImapMailReceiver {
 		this.from = internetAddress;
 	}
 
-	public List<Message> receiveMailsWithAttacment() {
+	/**
+	 * Retrieves mail from given mail account. This function retrieves only
+	 * unseen mail with attachment and given email subject.
+	 * 
+	 * @param Strign emailSubject - used as a search criteria for emails. 
+	 * @return List<Message> - list of mails 
+	 */
+	public List<Message> receiveMailsWithAttacment(final String emailSubject) {
 
 		List<Message> listOfMails = new ArrayList<Message>();
 
@@ -64,15 +72,38 @@ public class ImapMailReceiver {
 			}
 
 			folder.open(Folder.READ_WRITE);
+			
+			SearchTerm searchTerm = new SearchTerm() {
 
-			Message[] messages = folder.getMessages();
+				private static final long serialVersionUID = -6675113729056193548L;
+
+				@Override
+				public boolean match(Message message) {
+					try {
+						//If email subject is given we search by it, otherwise we just pass it as true and retrieve all unseen messages
+						//with attachements.
+						boolean retrieveBySubject = emailSubject != null ? message.getSubject().trim().equalsIgnoreCase(emailSubject) : true;
+						if (!message.isSet(Flags.Flag.SEEN)
+								&& message.getContentType().contains("MIXED") 
+								&& retrieveBySubject) {
+							return true;
+						}
+					} catch (MessagingException e) {
+						LOG.error("Cannot retrieve mails with given search term. {} " , e.getMessage());
+					}
+					return false;
+				}
+			};
+			
+
+			Message[] messages = folder.search(searchTerm);
 
 			for (int j = messages.length - 1; j >= 0; j--) {
 				Message message = messages[j];
 				if (!message.isSet(Flags.Flag.SEEN)
 						&& message.getContentType().contains("MIXED")) {
 					listOfMails.add(message);
-					// TODO Uncoment this before releaseaing into testing
+					// TODO Uncomment before releasing into testing
 					// message.setFlag(Flags.Flag.DELETED, true);
 				}
 			}
@@ -87,6 +118,14 @@ public class ImapMailReceiver {
 		return listOfMails;
 	}
 
+	/**
+	 * Returns the attached attacments per given mail.
+	 * 
+	 * @param Message message
+	 * @param String fileFormat - if this is passed in the function will return
+	 *            only specific attachemts with given file format.
+	 * @return List<InputStream>
+	 */
 	public List<InputStream> fetchAtacchements(Message message,
 			String fileFormat) {
 

@@ -18,7 +18,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.context.SecurityContextHolder;
 
 public class XlsFileParser {
 
@@ -50,7 +49,7 @@ public class XlsFileParser {
 
 			/** We now need something to iterate through the cells. **/
 			Iterator<Row> rowIter = mySheet.rowIterator();
-			SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			
 			while (rowIter.hasNext()) {
 				HSSFRow myRow = (HSSFRow) rowIter.next();
 				Iterator<Cell> cellIter = myRow.cellIterator();

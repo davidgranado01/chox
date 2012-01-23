@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.mail.Message;
@@ -58,15 +57,16 @@ public class ReferenceUpdateJob {
 
 			imapMailReceiver.setFrom(internetAddress);
 
-			List<Message> listOfmails = imapMailReceiver.receiveMailsWithAttacment();
+			List<Message> listOfmails = imapMailReceiver.receiveMailsWithAttacment(emailSubject);
 			
 			if (listOfmails != null && listOfmails.size() != 0) {
 				for(Message message : listOfmails){
 					sender = mailUtil.getSender(message);
-					if(message.getSubject().trim().equalsIgnoreCase(emailSubject) && 
-							mailSecurityAthenticator.isPrivilegedSender(mailUtil.parseStringToList(privilegedUsers, ","), sender)){
+					if(mailSecurityAthenticator.isPrivilegedSender(mailUtil.parseStringToList(privilegedUsers, ","), sender)){
 						mailSecurityAthenticator.authenticateSender(updateUserName, updatePassword);
 						readAndUpdateReferenceNumber(imapMailReceiver.fetchAtacchements(message, "xls"));
+					} else {
+						sendMail(sender, "The user is not authorized to update cho_reference number", null);
 					}
 				}
 			}
@@ -74,10 +74,7 @@ public class ReferenceUpdateJob {
 		} catch (UnsupportedEncodingException e) {
 			LOG.error("Mail password cannot be decoded: {} " , e.getMessage());
 		} catch (AccessDeniedException e) {
-			sendMail(sender, "The user is nor authorized to update cho_reference number",null);
 			LOG.error("The user is nor authorized to update cho_reference number: {} " , e.getMessage());
-		} catch (MessagingException e) {
-			LOG.error("Cannot retrieve the mail subject: {} ", e.getMessage());
 		} finally {
 			imapMailReceiver.clean();
 		}
@@ -106,14 +103,17 @@ public class ReferenceUpdateJob {
 
 						if (oldReference != null && !oldReference.equals("")) {
 							referenceNumber = oldReference;
-							claimService.updateChoReferenceNumber(oldReference, newReferenve);
-
+							boolean isUpdateSuccessful = claimService.updateChoReferenceNumber(oldReference, newReferenve);
+							if(isUpdateSuccessful){
+								xlsDataMap.get(row).add("UPDATED SUCCESSFULLY");
+							} else {
+								xlsDataMap.get(row).add("UPDATE WAS NOT SUCCESSFULL.CLAIM WITH THIS REF. NR. WAS NOT FOUND");
+							}
+							
 						}
 					}
 				}
 			}
-			
-			
 		} catch (HibernateException e) {
 			LOG.error("Can't update claim with cho_reference number: {} , {} "
 					, referenceNumber, e.getMessage());
@@ -122,7 +122,7 @@ public class ReferenceUpdateJob {
 		}
 	}
 	
-	private String mailMessageConstructor(String email, String subject, Map<Integer, List<String>> xlsDataMap){
+	String mailMessageConstructor(String email, String subject, Map<Integer, List<String>> xlsDataMap){
 		StringBuffer emailMsg = new StringBuffer();
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By: " + email);
@@ -144,20 +144,24 @@ public class ReferenceUpdateJob {
 			for (Integer row : rowNumbers) {
 				if (row.intValue() != 0) {
 					List<String> cells = xlsDataMap.get(row);
-	
-					emailMsg.append(cells.get(0).trim());
+					if(cells.size() >= 1)
+						emailMsg.append(cells.get(0).trim());
 					emailMsg.append("\t");
-					emailMsg.append(cells.get(1).trim());
+					if(cells.size() >= 2)
+						emailMsg.append(cells.get(1).trim());
+					emailMsg.append("\t");
+					if(cells.size() >= 3)
+						emailMsg.append(cells.get(2).trim());
 					emailMsg.append("\n");
 				}
 			}
 	        emailMsg.append("======================================================================\n");
         }
-
+        LOG.debug(emailMsg.toString());
         return emailMsg.toString();
 	}
 	
-	private void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap){
+	public void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap){
 		try {
 			EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
 			String emailMessage = mailMessageConstructor(imapMailReceiver.getFrom().getAddress(), emailSubject, xlsDataMap);
@@ -237,6 +241,5 @@ public class ReferenceUpdateJob {
 	public void setReportSubject(String reportSubject) {
 		this.reportSubject = reportSubject;
 	}
-
 	
 }

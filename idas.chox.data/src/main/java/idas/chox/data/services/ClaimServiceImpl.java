@@ -1094,13 +1094,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updateChoReferenceNumber(String oldReference, String newReference) {
+	public boolean updateChoReferenceNumber(String oldReference, String newReference) {
 		Claim claim = getClaimByCHOReferenceNumber(oldReference);
 		if(claim != null){
 			claim.setChoReference(newReference);
 			updateClaim(claim);
 			LOG.debug("Claim with reference number " + oldReference +  
 					" updated with new Cho reference number: " + newReference);
+			return true;
 		}
+		return false;
 	}
 }

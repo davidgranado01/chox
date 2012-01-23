@@ -16,6 +16,12 @@ public class MailSecurityAthenticator {
 
 	private AuthenticationManager authenticationManager;
 
+	/**
+	 * Returns true if sender is in the list of privileged users.
+	 * @param List<String> listOfPrivilegedSenders
+	 * @param String sender 
+	 * @return
+	 */
 	public boolean isPrivilegedSender(List<String> listOfPrivilegedSenders,
 			String sender) {
 		for (String priviligedSender : listOfPrivilegedSenders) {
@@ -27,6 +33,11 @@ public class MailSecurityAthenticator {
 		return false;
 	}
 
+	/**
+	 * Authenticates given user with spring security authentication.
+	 * @param userName
+	 * @param password
+	 */
 	public void authenticateSender(String userName, String password) {
 		try {
 			Authentication authentication = new UsernamePasswordAuthenticationToken(userName, password);

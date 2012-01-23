@@ -15,11 +15,22 @@ public class MailUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
 
+	/**
+	 * Parses string to list by given delimiter.
+	 * @param String sendersAsString - String of names divided by given delimiter
+	 * @param String delimiter - delimiter which is used to divide names in given string 
+	 * @return List<String>
+	 */
 	public List<String> parseStringToList(String sendersAsString, String delimiter) {
 		String[] sendersArray = sendersAsString.split(delimiter);
 		return Arrays.asList(sendersArray);
 	}
 
+	/**
+	 * Returns the sender from given mail.
+	 * @param Message message
+	 * @return String sender
+	 */
 	public String getSender(Message message) {
 		String sender = null;
 		Address[] addresses;
