@@ -568,7 +568,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
             totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
             invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
-            if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
+            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
                 invoice.setPenaltyAlertQty(service.calculatePenaltyAlertQty(invoice) >= 3 ? -1 : service.calculatePenaltyAlertQty(invoice));
             }
             LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
