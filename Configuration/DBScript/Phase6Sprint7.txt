@@ -2401,6 +2401,12 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.InvoiceReferredToEngineer';
 
 --
+-- Add visibility of 'Adjust Penalty Charges' extra-action for claims in status 'InvoiceDataCalculationIncorrect'
+--
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO', 2, id from accessibility where name='extraAction.updatePenaltyCharges.InvoiceDataCalculationIncorrect';
+
+--
 -- Update 'Reason of Rejection' menu options
 --
 update reason_of_rejection set restricted=true where name like 'Indemnity Issues%' or name like 'Other%' and type='Claim';

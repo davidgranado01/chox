@@ -222,14 +222,21 @@
 
         <s:hidden name="id" />
         <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
-        <!-- s:hidden id="hvHirePenaltyPercentage" name="hirePenaltyPercentage" / -->
-        <!-- s:hidden id="hvRepairPenaltyPercentage" name="repairPenaltyPercentage" / -->
 
         <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
 
             <div class="status-warning">
-                Payment for this invoice is overdue. The number of days since the invoice was created
-                is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
+                <s:if test="showAutoPenaltyCheckbox && invoiceIntroducedDays > 30 && invoiceIntroducedDays < 61 && autoPenaltyChargeEnabled">
+                        Payment for this invoice is overdue. The number of days since the invoice was created
+                        is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice. <br />Please
+                        note that unless automatic penalty charges are switched off for this claim using the 'Penalty Charge Configuration' function in
+                        the 'More Actions' drop down menu then penalties will be automatically re-calculated and added to the invoice on day 61
+                        if the invoice remains overdue.
+                 </s:if>
+                <s:else>
+                    Payment for this invoice is overdue. The number of days since the invoice was created
+                    is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
+                </s:else>
             </div>
 
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%">
@@ -310,6 +317,3 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>
-
-
-
