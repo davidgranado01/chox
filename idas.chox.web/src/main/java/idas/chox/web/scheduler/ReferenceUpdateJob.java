@@ -1,6 +1,8 @@
 package idas.chox.web.scheduler;
 
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.EmailHelper;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -9,12 +11,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
 import org.hibernate.HibernateException;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 
 public class ReferenceUpdateJob {
@@ -24,40 +29,67 @@ public class ReferenceUpdateJob {
 	private ImapMailReceiver imapMailReceiver;
 	private XlsFileParser xlsFileParser;
 	private ClaimService claimService;
+	private String emailAccount;
+	private String emailAccountPassword;
+	private String updateUserName;
+	private String updatePassword;
+	private MailSecurityAthenticator mailSecurityAthenticator;
+	private MailUtil mailUtil;
+	private String privilegedUsers;
+	
+	private String bccReceivers;
+	private String emailSubject;
+	
+	private String smtpHostName;
+	private String smtpPort;
+	private String smtpEmailUser;
+	private String smtpEmailPassword;
+	
+	private static final String email_date_format = "dd MMMM yyyy";
+	
+	private String reportSubject="ERAC CHO Reference Update Report";
 
 	protected void execute() throws JobExecutionException {
+		String sender = null;
 		try {
-			Properties props = System.getProperties();
-			props.setProperty("mail.store.protocol", "imaps");
-
-			// XXX this will be removed once we will read this properties from
-			// web.xml
 			InternetAddress internetAddress = new InternetAddress();
-			internetAddress.setPersonal("erac.test123");
-			internetAddress.setAddress("erac.test@gmail.com");
+			internetAddress.setAddress(emailAccount);
+			internetAddress.setPersonal(emailAccountPassword);
 
-			imapMailReceiver.setProps(props);
 			imapMailReceiver.setFrom(internetAddress);
-			imapMailReceiver.setHost("imap.gmail.com");
 
-			List<InputStream> listOfAttachments = imapMailReceiver
-					.receiveMailAttachments(true);
-			if (listOfAttachments != null && listOfAttachments.size() != 0) {
-				readAndUpdateReferenceNumber(listOfAttachments);
-				imapMailReceiver.clean();
+			List<Message> listOfmails = imapMailReceiver.receiveMailsWithAttacment();
+			
+			if (listOfmails != null && listOfmails.size() != 0) {
+				for(Message message : listOfmails){
+					sender = mailUtil.getSender(message);
+					if(message.getSubject().trim().equalsIgnoreCase(emailSubject) && 
+							mailSecurityAthenticator.isPrivilegedSender(mailUtil.parseStringToList(privilegedUsers, ","), sender)){
+						mailSecurityAthenticator.authenticateSender(updateUserName, updatePassword);
+						readAndUpdateReferenceNumber(imapMailReceiver.fetchAtacchements(message, "xls"));
+					}
+				}
 			}
 
 		} catch (UnsupportedEncodingException e) {
-			LOG.error("Mail password cannot be encoded. " + e);
+			LOG.error("Mail password cannot be decoded: {} " , e.getMessage());
+		} catch (AccessDeniedException e) {
+			sendMail(sender, "The user is nor authorized to update cho_reference number",null);
+			LOG.error("The user is nor authorized to update cho_reference number: {} " , e.getMessage());
+		} catch (MessagingException e) {
+			LOG.error("Cannot retrieve the mail subject: {} ", e.getMessage());
+		} finally {
+			imapMailReceiver.clean();
 		}
 	}
 	
-	@Secured(value="ROLE_CHO")
+	@Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
 	private void readAndUpdateReferenceNumber(List<InputStream> attachmets) {
 		String referenceNumber = null;
+		Map<Integer, List<String>> xlsDataMap = null;
 		try {
 			for (InputStream attachemt : attachmets) {
-				Map<Integer, List<String>> xlsDataMap = xlsFileParser.readExcelFile(attachemt);
+				xlsDataMap = xlsFileParser.readExcelFile(attachemt);
 				Set<Integer> rowNumbers = xlsDataMap.keySet();
 				// This is specific for the excel file with two columns and
 				// first row is a header.
@@ -69,8 +101,8 @@ public class ReferenceUpdateJob {
 						List<String> cells = xlsDataMap.get(row);
 						// this excel file should have only two columns and we
 						// iterate only through those two
-						String oldReference = cells.get(0).trim().toUpperCase();
-						String newReferenve = cells.get(1).trim().toUpperCase();
+						String oldReference = cells.get(0).trim();
+						String newReferenve = cells.get(1).trim();
 
 						if (oldReference != null && !oldReference.equals("")) {
 							referenceNumber = oldReference;
@@ -80,34 +112,130 @@ public class ReferenceUpdateJob {
 					}
 				}
 			}
+			
+			
 		} catch (HibernateException e) {
-			LOG.error("Can't update claim with cho_reference number: "
-					+ referenceNumber + " " + e);
+			LOG.error("Can't update claim with cho_reference number: {} , {} "
+					, referenceNumber, e.getMessage());
+		} finally {
+			sendMail(imapMailReceiver.getFrom().getAddress(), emailSubject, xlsDataMap);
 		}
 	}
+	
+	private String mailMessageConstructor(String email, String subject, Map<Integer, List<String>> xlsDataMap){
+		StringBuffer emailMsg = new StringBuffer();
+        emailMsg.append("======================================================================\n");
+        emailMsg.append("Submitted By: " + email);
+        emailMsg.append("\n");
+        emailMsg.append("Email: " + email);
+        emailMsg.append("\n");
+        emailMsg.append("Date: " + DateHelper.getCurrentDateWithFormat(email_date_format));
+        emailMsg.append("\n");
+        emailMsg.append("======================================================================\n");
+        emailMsg.append("Subject: " + emailSubject);
+        emailMsg.append("\n");
+        emailMsg.append("======================================================================\n");
+        if(xlsDataMap != null){
+	        Set<Integer> rowNumbers = xlsDataMap.keySet();
+			// This is specific for the excel file with two columns and
+			// first row is a header.
+			// We don't do update on first line and we assume we will always
+			// have only two columns.
+			for (Integer row : rowNumbers) {
+				if (row.intValue() != 0) {
+					List<String> cells = xlsDataMap.get(row);
+	
+					emailMsg.append(cells.get(0).trim());
+					emailMsg.append("\t");
+					emailMsg.append(cells.get(1).trim());
+					emailMsg.append("\n");
+				}
+			}
+	        emailMsg.append("======================================================================\n");
+        }
 
-	public ImapMailReceiver getImapMailReceiver() {
-		return imapMailReceiver;
+        return emailMsg.toString();
+	}
+	
+	private void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap){
+		try {
+			EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
+			String emailMessage = mailMessageConstructor(imapMailReceiver.getFrom().getAddress(), emailSubject, xlsDataMap);
+			emailHelper.postMail(reportSubject, emailMessage, (String[]) mailUtil.parseStringToList(bccReceivers, ",").toArray());
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("Mail password cannot be decoded: {} " , e.getMessage());
+		} catch (MessagingException e) {
+			LOG.error("Cannot send the mail : {} ", e.getMessage());
+		}
 	}
 
 	public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
 		this.imapMailReceiver = imapMailReceiver;
 	}
 
-	public XlsFileParser getXlsFileParser() {
-		return xlsFileParser;
-	}
-
 	public void setXlsFileParser(XlsFileParser xlsFileParser) {
 		this.xlsFileParser = xlsFileParser;
 	}
 
-	public ClaimService getClaimService() {
-		return claimService;
-	}
-
 	public void setClaimService(ClaimService claimService) {
 		this.claimService = claimService;
+	}
+
+	public void setEmailAccount(String emailAccount) {
+		this.emailAccount = emailAccount;
+	}
+
+	public void setEmailAccountPassword(String emailAccountPassword) {
+		this.emailAccountPassword = emailAccountPassword;
+	}
+
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
+	}
+
+	public void setUpdatePassword(String updatePassword) {
+		this.updatePassword = updatePassword;
+	}
+
+	public void setMailSecurityAthenticator(
+			MailSecurityAthenticator mailSecurityAthenticator) {
+		this.mailSecurityAthenticator = mailSecurityAthenticator;
+	}
+
+	public void setMailUtil(MailUtil mailUtil) {
+		this.mailUtil = mailUtil;
+	}
+
+	public void setPrivilegedUsers(String privilegedUsers) {
+		this.privilegedUsers = privilegedUsers;
+	}
+
+	public void setBccReceivers(String bccReceivers) {
+		this.bccReceivers = bccReceivers;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
+	}
+
+	public void setSmtpHostName(String smtpHostName) {
+		this.smtpHostName = smtpHostName;
+	}
+
+	public void setSmtpPort(String smtpPort) {
+		this.smtpPort = smtpPort;
+	}
+
+	public void setSmtpEmailUser(String smtpEmailUser) {
+		this.smtpEmailUser = smtpEmailUser;
+	}
+
+	public void setSmtpEmailPassword(String smtpEmailPassword) {
+		this.smtpEmailPassword = smtpEmailPassword;
+	}
+
+	public void setReportSubject(String reportSubject) {
+		this.reportSubject = reportSubject;
 	}
 
 	

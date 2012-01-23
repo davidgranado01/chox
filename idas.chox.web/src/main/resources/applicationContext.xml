@@ -8,6 +8,10 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
     default-autowire="autodetect" >
+    
+    <bean id="placeHolderConfig" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="location" value="classpath:application.properties"/>
+	</bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>

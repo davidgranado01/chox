@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:s="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
-	>
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
 	
 	<bean id="imapMailReceiver" class="idas.chox.web.scheduler.ImapMailReceiver" scope="singleton">
-		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="mailHost" value="${mailHost}"/>
+		<property name="mailStoreProtocol" value="${mailStoreProtocol}"/>
+		<property name="mailPort" value="${mailPort}"/>
+		<property name="mailFolder" value="${mailFolder}"/>
+	</bean>
+	
+	<bean id="mailSecurityAthenticator" class="idas.chox.web.scheduler.MailSecurityAthenticator">
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
+	
 	<bean id="xlsFileParser" class="idas.chox.web.scheduler.XlsFileParser" scope="singleton"/>
+	
+	<bean id="mailUtil" class="idas.chox.web.scheduler.MailUtil" scope="singleton"/>
+	
 	<bean id="referenceUpdateJob" class="idas.chox.web.scheduler.ReferenceUpdateJob">
 		<property name="imapMailReceiver" ref="imapMailReceiver"/>
+		<property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
 		<property name="xlsFileParser" ref="xlsFileParser"/>
 		<property name="claimService" ref="claimService" />
+		<property name="mailUtil" ref="mailUtil" />
+		
+		<property name="emailAccount" value="${emailAccount}"/>
+		<property name="emailAccountPassword" value="${emailAccountPassword}"/>
+		
+		<property name="privilegedUsers" value="${privilegedUsers}"/>
+		<property name="bccReceivers" value="${bccReceivers}"/>
+		<property name="emailSubject" value="${emailSubject}"/>
+		<property name="updateUserName" value="${updateUserName}"/>
+		<property name="updatePassword" value="${updatePassword}"/>
+		
+		<property name="smtpHostName" value="${smtpHostName}"/>
+		<property name="smtpPort" value="${smtpPort}"/>
+		<property name="smtpEmailUser" value="${smtpEmailUser}"/>
+		<property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+		
 	</bean>
+	
 	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="referenceUpdateJob" />
   		<property name="targetMethod" value="execute" />
