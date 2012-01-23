@@ -12,6 +12,7 @@
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
+            invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
     <s:if test="isCHO" >
                 minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
     </s:if>
