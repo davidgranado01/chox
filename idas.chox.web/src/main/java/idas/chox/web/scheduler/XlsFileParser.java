@@ -21,79 +21,72 @@ import org.slf4j.LoggerFactory;
 
 public class XlsFileParser {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(XlsFileParser.class);
-	
-	/**
-	 * Reads the excel file and populates the Map readable cell data.
-	 * 
-	 * @param InputStream
-	 *            - excelFile in byteFormat
-	 * @return Map<Integer, List<String>> integer is the cell row number and
-	 *         List is the data returned in row.
-	 */
-	public Map<Integer, List<String>> readExcelFile(InputStream inputStream) {
+    private static final Logger LOG = LoggerFactory.getLogger(XlsFileParser.class);
 
-		List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
+    /**
+     * Reads the excel file and populates the Map readable cell data.
+     * 
+     * @param InputStream
+     *            - excelFile in byteFormat
+     * @return Map<Integer, List<String>> integer is the cell row number and
+     *         List is the data returned in row.
+     */
+    public Map<Integer, List<String>> readExcelFile(InputStream inputStream) {
 
-		try {
+        List<List<Cell>> cellListHolder = new ArrayList<List<Cell>>();
 
-			/** Create a POIFSFileSystem object **/
-			POIFSFileSystem myFileSystem = new POIFSFileSystem(inputStream);
+        try {
 
-			/** Create a workbook using the File System **/
-			HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
+            /** Create a POIFSFileSystem object **/
+            POIFSFileSystem myFileSystem = new POIFSFileSystem(inputStream);
 
-			/** Get the first sheet from workbook **/
-			HSSFSheet mySheet = myWorkBook.getSheetAt(0);
+            /** Create a workbook using the File System **/
+            HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
 
-			/** We now need something to iterate through the cells. **/
-			Iterator<Row> rowIter = mySheet.rowIterator();
-			
-			while (rowIter.hasNext()) {
-				HSSFRow myRow = (HSSFRow) rowIter.next();
-				Iterator<Cell> cellIter = myRow.cellIterator();
-				List<Cell> cellStoreVector = new ArrayList<Cell>();
-				while (cellIter.hasNext()) {
-					HSSFCell myCell = (HSSFCell) cellIter.next();
-					cellStoreVector.add(myCell);
-					
-				}
-				cellListHolder.add(cellStoreVector);
-			}
-		} catch (IOException e) {
-			LOG.error("Can't parse xls from given input stream. " + e);
-		}
+            /** Get the first sheet from workbook **/
+            HSSFSheet mySheet = myWorkBook.getSheetAt(0);
 
-		return iterateThroughTheXlsFile(cellListHolder);
-	}
+            /** We now need something to iterate through the cells. **/
+            Iterator<Row> rowIter = mySheet.rowIterator();
 
-	/**
-	 * Iterates through the dataHolder list of Cells, and populates the map with
-	 * readable cell data.
-	 * 
-	 * @param List<List<Cell>>
-	 * @return Map<Integer, List<String>> integer is the cell row number and
-	 *         List is the data returned in row.
-	 */
-	private Map<Integer, List<String>> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
-		Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
-		String stringCellValue = null;
-		try {
-			for (int i = 0; i < dataHolder.size(); i++) {
-				List<Cell> cellStoreList = (List<Cell>) dataHolder.get(i);
-				List<String> cellStringList = new ArrayList<String>();
-				for (int j = 0; j < cellStoreList.size(); j++) {
-					HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-					cellStringList.add(myCell.toString());
-				}
-				xlsDataMap.put(i, cellStringList);
-			}
-		} catch (HibernateException e) {
-			LOG.error("Can't update claim with cho_reference number: "
-					+ stringCellValue + " " + e);
-		}
-		return xlsDataMap;
-	}
+            while (rowIter.hasNext()) {
+                HSSFRow myRow = (HSSFRow) rowIter.next();
+                Iterator<Cell> cellIter = myRow.cellIterator();
+                List<Cell> cellStoreVector = new ArrayList<Cell>();
+                while (cellIter.hasNext()) {
+                    HSSFCell myCell = (HSSFCell) cellIter.next();
+                    cellStoreVector.add(myCell);
 
+                }
+                cellListHolder.add(cellStoreVector);
+            }
+        } catch (IOException e) {
+            LOG.error("Exception parsing xls file from given input stream: {}", e.getMessage(), e);
+        }
+
+        return iterateThroughTheXlsFile(cellListHolder);
+    }
+
+    /**
+     * Iterates through the dataHolder list of Cells, and populates the map with
+     * readable cell data.
+     * 
+     * @param List<List<Cell>>
+     * @return Map<Integer, List<String>> integer is the cell row number and
+     *         List is the data returned in row.
+     */
+    private Map<Integer, List<String>> iterateThroughTheXlsFile(List<List<Cell>> dataHolder) {
+        Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
+        String stringCellValue = null;
+        for (int i = 0; i < dataHolder.size(); i++) {
+            List<Cell> cellStoreList = (List<Cell>) dataHolder.get(i);
+            List<String> cellStringList = new ArrayList<String>();
+            for (int j = 0; j < cellStoreList.size(); j++) {
+                HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
+                cellStringList.add(myCell.toString());
+            }
+            xlsDataMap.put(i, cellStringList);
+        }
+        return xlsDataMap;
+    }
 }

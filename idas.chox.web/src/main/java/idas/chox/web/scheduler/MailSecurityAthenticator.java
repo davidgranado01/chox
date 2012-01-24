@@ -26,10 +26,11 @@ public class MailSecurityAthenticator {
 			String sender) {
 		for (String priviligedSender : listOfPrivilegedSenders) {
 			if (priviligedSender.trim().equalsIgnoreCase(sender.trim())) {
+                LOG.debug("Sender '{}' is authenticated.", sender);
 				return true;
 			}
 		}
-		LOG.info("User with email {} is not authenticated.");
+		LOG.debug("Email sender with address '{}' is not authenticated.", sender);
 		return false;
 	}
 
@@ -43,12 +44,12 @@ public class MailSecurityAthenticator {
 			Authentication authentication = new UsernamePasswordAuthenticationToken(userName, password);
 			authentication = authenticationManager.authenticate(authentication);
 			if (!authentication.isAuthenticated()) {
-				LOG.error("This user is not authenticated. ");
+				LOG.error("User '{}' with password '{}' is not authenticated. ", userName, password);
 			}
 			SecurityContextHolder.getContext()
 					.setAuthentication(authentication);
 		} catch (SecurityException se) {
-			LOG.info("User {} is not authenticated: {}", userName, se.getMessage());
+			LOG.error("Exception authenticating sender '{}': ", userName, se);
 		}
 	}
 	

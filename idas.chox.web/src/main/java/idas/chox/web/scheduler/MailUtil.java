@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class MailUtil {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MailUtil.class);
 
 	/**
 	 * Parses string to list by given delimiter.
@@ -41,7 +41,7 @@ public class MailUtil {
 				sender = address.getAddress();
 			}
 		} catch (MessagingException e) {
-			LOG.error("Cannot retrieve sender from given message. {}" ,e.getMessage());
+			LOG.error("Exception getting sender from message: {}" ,e.getMessage(), e);
 		}
 		return sender;
 	}

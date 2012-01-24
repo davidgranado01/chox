@@ -3,6 +3,7 @@ package idas.chox.web.scheduler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -52,13 +53,13 @@ public class ImapMailReceiver {
 	 */
 	public List<Message> receiveMailsWithAttacment(final String emailSubject) {
 
-		List<Message> listOfMails = new ArrayList<Message>();
+		List<Message> listOfMails = null;
 
 		if (props == null) {
 			props = System.getProperties();
 			props.setProperty("mail.imaps.port" , mailPort);
 			props.setProperty("mail.store.protocol", mailStoreProtocol);
-			LOG.info("Properties are not set. Properties will be set by default to: {}" , mailStoreProtocol);
+			LOG.debug("Properties are not set. Properties will be set by default to: {}" , mailStoreProtocol);
 		}
 		try {
 			Session session = Session.getDefaultInstance(props, null);
@@ -68,7 +69,7 @@ public class ImapMailReceiver {
 
 			if (folder == null || folder.getName() == null) {
 				folder = store.getFolder("INBOX");
-				LOG.info("Mail Folder is not set. Folder will be set to 'INBOX'.");
+				LOG.debug("Mail Folder is not set. Folder will be set to 'INBOX'.");
 			}
 
 			folder.open(Folder.READ_WRITE);
@@ -98,32 +99,26 @@ public class ImapMailReceiver {
 
 			Message[] messages = folder.search(searchTerm);
 
-			for (int j = messages.length - 1; j >= 0; j--) {
-				Message message = messages[j];
-				if (!message.isSet(Flags.Flag.SEEN)
-						&& message.getContentType().contains("MIXED")) {
-					listOfMails.add(message);
-					// TODO Uncomment before releasing into testing
-					// message.setFlag(Flags.Flag.DELETED, true);
-				}
-			}
+            listOfMails = Arrays.asList(messages);
+            
+            LOG.debug("Found {} unseen messages with an attachment with subject '{}'", listOfMails.size(), emailSubject);
 
 		} catch (NoSuchProviderException e) {
-			LOG.error("Given mail properties are not correct. {} " , e.getMessage());
+			LOG.error("Given mail properties are not correct. {} " , e.getMessage(), e);
 		} catch (MessagingException e) {
-			LOG.error("Cannot make connecection to the given host. {} " , e.getMessage());
+			LOG.error("Cannot make connecection to the given host. {} " , e.getMessage(), e);
 		} catch (Exception e) {
-			LOG.error("Cannot retrive attachemnts. {} " , e.getMessage());
+			LOG.error("Cannot retrive attachemnts. {} " , e.getMessage(), e);
 		}
-		return listOfMails;
+		return listOfMails == null ? new ArrayList<Message>() : listOfMails;
 	}
 
 	/**
-	 * Returns the attached attacments per given mail.
+	 * Returns the attached attachments per given mail.
 	 * 
 	 * @param Message message
 	 * @param String fileFormat - if this is passed in the function will return
-	 *            only specific attachemts with given file format.
+	 *            only specific attachments with given file format.
 	 * @return List<InputStream>
 	 */
 	public List<InputStream> fetchAtacchements(Message message,
@@ -142,10 +137,10 @@ public class ImapMailReceiver {
 				}
 			}
 		} catch (MessagingException e) {
-			LOG.error("Cannot make connecection to the given host. {} ",
-					e.getMessage());
+			LOG.error("Error fetching attachment - cannot make connecection to the given host: {} ",
+					e.getMessage(), e);
 		} catch (IOException e) {
-			LOG.error("Cannot retrive attachemnts. {} ", e.getMessage());
+			LOG.error("Error fetching attachment - cannot retrive attachemnt: {} ", e.getMessage(), e);
 		}
 		return listOfAttachements;
 	}
@@ -157,7 +152,7 @@ public class ImapMailReceiver {
 			if(store.isConnected())
 				store.close();
 		} catch (MessagingException e) {
-			LOG.error("Cannot close the mail folder: {} " , e.getMessage());
+			LOG.error("Cannot close the mail folder: {} " , e.getMessage(), e);
 		}
 
 	}
