@@ -2172,7 +2172,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isAddPenaltyChargeConfigValidation() {
-        if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(claim.getInvoice().getCreatedDate()) >= 0) {
+        if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(DateHelper.removeTime(claim.getInvoice().getCreatedDate())) >= 0) {
             return true;
         }
         

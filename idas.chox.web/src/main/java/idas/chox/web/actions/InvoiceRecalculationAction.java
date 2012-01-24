@@ -2639,19 +2639,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public boolean isPenaltyChargeDateModified() {
-        if (claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
+        if (DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0)
                 return true;
         
         return false;
     }
 
-    public boolean getIsPenaltyChargeDateModified() {
-        if (modelSaved && claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
-                return true;
-        
-        return false;
-    }
-    
     public String updateInvoiceModel() {
         return invoiceAction.updateModel(claim);
     }

@@ -117,7 +117,6 @@
                     width: 250,
                     valueNotFoundText : '--- ALL ---',
                     typeAhead: true,
-                    //                                autoWidth: true,
                     mode: 'local',
                     triggerAction : 'all',
                     forceSelection : true,
@@ -174,6 +173,10 @@
                     <s:if test="isCHO">
                         This report shows a high level summary of claims across all Insurers and per Insurer. Displaying information such as average invoice values, average hire durations and average cycle times.
                     </s:if>
+                    <s:elseif test="insurerIsUploadEnabled">
+                        This report shows a high level summary of claims across all CHOs and per CHO. Displaying information such as average invoice values, average hire durations and average cycle times.<br /><br />
+                        Please note that 'Insurer Manual Invoice' claims/CHOs are excluded from this report.
+                    </s:elseif>
                     <s:else>
                         This report shows a high level summary of claims across all CHOs and per CHO. Displaying information such as average invoice values, average hire durations and average cycle times.
                     </s:else>
@@ -197,10 +200,16 @@
                         </tr>
                     </s:if>
                     <tr>
-                        <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>                       
+                        <td nowrap width="30%">
+                            <label>Claim Uploaded Date From</label>
+                        </td>
+                        <td><div id="dateFromDiv"></div></td>
                     </tr>    
                     <tr>
-                        <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>                            
+                        <td nowrap>
+                            <label>Claim Uploaded Date To</label>
+                        </td>
+                        <td><div id="dateToDiv"></div></td>                            
                     </tr>                      
                 </table>
 
