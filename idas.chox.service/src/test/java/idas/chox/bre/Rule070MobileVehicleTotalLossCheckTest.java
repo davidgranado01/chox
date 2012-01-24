@@ -58,7 +58,7 @@ public class Rule070MobileVehicleTotalLossCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertTrue(rv.getIsVisibleToCHO());
+        assertFalse(rv.getIsVisibleToCHO());
     }
     
     
@@ -75,7 +75,7 @@ public class Rule070MobileVehicleTotalLossCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertTrue(rv.getIsVisibleToCHO());
+        assertFalse(rv.getIsVisibleToCHO());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class Rule070MobileVehicleTotalLossCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertTrue(rv.getIsVisibleToCHO());
+        assertFalse(rv.getIsVisibleToCHO());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class Rule070MobileVehicleTotalLossCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertTrue(rv.getIsVisibleToCHO());
+        assertFalse(rv.getIsVisibleToCHO());
     }
 
     
@@ -125,7 +125,7 @@ public class Rule070MobileVehicleTotalLossCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO's Customer's vehicle was deemed usable/driveable and the claim has been flagged as a Total Loss, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertTrue(rv.getIsVisibleToCHO());
+        assertFalse(rv.getIsVisibleToCHO());
     }
 
 }

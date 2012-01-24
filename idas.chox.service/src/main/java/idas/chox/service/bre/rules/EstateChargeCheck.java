@@ -20,7 +20,7 @@ public class EstateChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isEstateChargeCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isEstateChargeCheck()) {
 
             boolean success = true;
 

@@ -26,7 +26,7 @@ public class FixedRepairDaysCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isAutoRestoreOneDayRepairCheck() && claim.getCustomer().getIsUsable()
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isAutoRestoreOneDayRepairCheck() && claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("Auto restore One Day Repair Check  is active");

@@ -587,10 +587,22 @@
                             <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingManagingRepair" value="<s:property value="adminFeeCeilingManagingRepair" />"/>
                         </div>
                     </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Subscriber Admin Fee Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Subscriber Admin Fee Ceiling Not Managing Repair (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingSubscriber" value="<s:property value="adminFeeCeilingSubscriber" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Subscriber Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingSubscriberManagingRepair" value="<s:property value="adminFeeCeilingSubscriberManagingRepair" />"/>
+                        </div>
+                    </div>
 
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name"> Tax Check Tolerances</div>
+                        <div class="section-name">Tax Check Tolerances</div>
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Standard Risk Insurance Premium Tax Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
@@ -972,7 +984,14 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div>
                             <label class="chox-form-check-label">Correct Administration Fee Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
+                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only. Subscriber claims omitted.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="subscriberAdminFeeCheck" value="subscriberAdminFeeCheck" /></div>
+                            <label class="chox-form-check-label">Subscriber Administration Fee Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO are not billing an administration fee when the Subscriber rejection was accepted by the CHO. Also checks that the correct Admin Fee is being charged by the CHO for Subscriber claims (that have not been rejected) as per the 'Subscriber Admin Fee' tolerance detailed above.
+                            </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="supplierAdminstrationFee" value="supplierAdminstrationFee" /></div>
@@ -1009,13 +1028,6 @@
                             <label class="chox-form-check-label">Subscriber No Acquisition Fee Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
-                            </div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="subscriberAdminFeeCheck" value="subscriberAdminFeeCheck" /></div>
-                            <label class="chox-form-check-label">Subscriber No Admin Fee Check For Rejected Claims</label>
-                            <div class="chox-form-check-description">
-                                Check to ensure that the CHO are not billing an Admin Fee when the Subscriber rejection was accepted by the CHO.
                             </div>
                         </div>
 

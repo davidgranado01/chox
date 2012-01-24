@@ -19,7 +19,7 @@ public class MobileVehicleTotalLossCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isMobileVehicleTotalLossCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isMobileVehicleTotalLossCheck()) {
             /*
              * If the CHO's Customer's vehicle has been deemed driveable/usable/mobile
              * and the claim has been flagged as a Total Loss, the invoice will be

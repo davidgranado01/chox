@@ -1038,15 +1038,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && claim.getInvoice() != null
-                && calculatePenaltyAlertQty(claim.getInvoice()) < 3
-                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
-
+                && claim.getInvoice().getInvoicedDays() > 30) {
+//                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
             try {
                 LOG.debug("Calling stored procedure to update penalty charges...");
                 callApplyAutoPenaltyCharge(999, claim.getId());
                 // The Claim / Invoice may have been modified in the above call.
-                // We therefore need to clear these pbjects from the cache
+                // We therefore need to clear these objects from the cache
                 // First clear the query/session cache
                 evict(claim.getInvoice()); evict(claim);
                 // Then the second-level cache (if activated)
@@ -1084,10 +1083,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         inv.setAutoPenaltyAlertQty(0);
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
+        if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+            Comment comment = Comment.New(0, "Penalty charges have been removed from the invoice as the date from which penalty charges are calculated has been manually updated.");
+            claim.addComment(comment);
+        }
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);
 
-        Comment comment = Comment.New(0, "Penalty charges have been removed as the date from which penalty charges are calculated has been changed");
-        claim.addComment(comment);
 
         updateClaim(claim);
     }

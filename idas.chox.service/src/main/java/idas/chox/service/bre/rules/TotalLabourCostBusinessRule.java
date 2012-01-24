@@ -26,7 +26,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
 
 
             LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());

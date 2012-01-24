@@ -63,7 +63,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import net.sf.json.JSONObject;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.security.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
@@ -471,7 +470,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -491,7 +491,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Exception thrown making an interime payment on claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred while updating this claim. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -569,16 +570,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
             totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
             invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
-            if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
+            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
                 invoice.setPenaltyAlertQty(service.calculatePenaltyAlertQty(invoice) >= 3 ? -1 : service.calculatePenaltyAlertQty(invoice));
             }
+            LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
             service.updateClaim(claim);
 
         } catch (Exception ex) {
-
+            LOG.error("Exception thrown applying penalty charges to claim '{}': ", claim.getChoReference(), ex);
             result = ERROR;
-            setActionResult("ERROR : " + ex.getMessage());
-
+            setActionError("An internal error occurred applying penalty charges to this claim. Please contact CHOX support.");
         }
 
         return result;
@@ -899,8 +900,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            LOG.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Error updating liability status for claim {}: ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the liability status for this claim. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -1582,6 +1583,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
+            LOG.debug("Access right for panel '{}' : {}", action, accessRight);
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
                 /*
@@ -2123,9 +2125,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (penaltyStartDate != null)
                 penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
-            if (this.getIsCHO() && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
+            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[] {autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
+            if (this.getIsCHO() && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
                 LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
-                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded");
+                this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
+//                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded. Your changes have not been saved.");
                 return ERROR;
             }
             service.updateClaim(claim);
@@ -2167,6 +2171,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claimVersion;
     }
 
+    public boolean isAddPenaltyChargeConfigValidation() {
+        if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(DateHelper.removeTime(claim.getInvoice().getCreatedDate())) >= 0) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
     @Override
     public void validate() {
 

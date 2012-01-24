@@ -2,15 +2,18 @@ package idas.chox.service.security;
 
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.AccessibilityHelper;
 import idas.chox.core.util.DateHelper;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ public class ApplicationAccessibility {
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     private ClaimService claimService;
+    private BreBandService breBandService;
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // TAB
@@ -140,10 +144,12 @@ public class ApplicationAccessibility {
     public Short checkActionAccessibility(String actionName, WebUser user, Claim claim) {
         LOG.debug("Checking action accessibility for action {}, user {}", actionName, user.getFullName());
         String accessibilityKey = getActionAccessibilityKey(actionName, claim.getStatus());
+        LOG.debug("Claim='{}', accessibilityKey={}", claim.getChoReference(), accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
+            LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
@@ -231,28 +237,49 @@ public class ApplicationAccessibility {
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed
                         else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
-                            // Take age of invoice from invoice creation date
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                                        && (!claim.isAutoPenaltyChargeEnabled() 
-                                            || calculatePenaltyAlertQty(invoice) >= 3))) 
+                                        && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty(invoice) >= 3))) 
                                     && days > (invoice.getPenaltyAlertQty() + 1) * 30) {
                                 LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
                                 accessRight = 0;
                             }
                         }
+                        // Check Penalty Charges disallowed and no current charges
+                        if (accessRight != 0) {
+                            if (claim.getBreBand() == null) {
+                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                claim.setBreBand(choBand);
+                            }
+                            if (!claim.getBreBand().isAllowPenaltyCharges() && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0) ) {
+                                accessRight = 0;
+                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
+                            }
+                        }
+                        
                     } else {
                         // No invoice!
                         LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
                         accessRight = 0;
                     }
+                    LOG.debug("Access right for Update Penalty Charges is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
                     Invoice invoice = claim.getInvoice();
-                    if (claim.getInvoice() != null && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
-                        return accessRight;
-                    } else { // No invoice!
+                    if (claim.getInvoice() != null) {
+                        if (claim.getBreBand() == null) {
+                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                            claim.setBreBand(choBand);
+                        }
+
+                        if (!claim.getBreBand().isAllowPenaltyCharges()) {
+                            LOG.debug("BRE Band does not allow penalty charges");
+                            accessRight = 0;
+                        }
+                    } else { // No invoice! or wrong claim type
+                        LOG.debug("No invoice or wrong claim type - no access to Penalty Charge Config");
                         accessRight = 0;
                     }
+                    LOG.debug("Access right for Penalty Charges Configuration is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
 
                     String customerClaimRef = claim.getCustomer().getClaimReference();
@@ -605,6 +632,10 @@ public class ApplicationAccessibility {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    public void setBreBandService(BreBandService BreBandService) {
+        this.breBandService = BreBandService;
     }
 
     public AccessibilityService getAccessibilityService() {

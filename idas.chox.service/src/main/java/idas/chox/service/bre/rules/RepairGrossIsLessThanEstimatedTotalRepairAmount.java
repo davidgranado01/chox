@@ -28,7 +28,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isRepairGrossIsLessThanEstimatedTotalRepairAmount() && claim.getEngineerReport() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairGrossIsLessThanEstimatedTotalRepairAmount() && claim.getEngineerReport() != null) {
 
             EngineerReport eReport = claim.getEngineerReport();
             Invoice invoice = claim.getInvoice();

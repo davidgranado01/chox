@@ -157,21 +157,35 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public String deleteAttachment() {
+
         try {
-            LOG.debug("Deleting attachment...");
+            if (model == null) {
+                getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
+                LOG.error("Cannot delete attachment - no model");
+                return ERROR;
+            }
+
+            LOG.debug("Deleting attachment (model='{}')...", model.getClass());
             if (attachmentService.deleteAtatchment(getAuthenticatedUser().getId(), model.getId())) {
                 LOG.debug("Attachment deleted.");
                 this.getActionResponse().AssignMessageResult("File has been deleted");
             } else {
-                LOG.info("User {} cannot delete attchment {}", getAuthenticatedUser().getDisplayName(), model.getId());
+                LOG.info("User {} cannot delete attachment {}", getAuthenticatedUser().getDisplayName(), model.getId());
                 this.getActionResponse().AssignMessageResult("You do not have the necessary permissions to delete this attachment.");
                 setActionError("You do not have the necessary permissions to delete this attachment");                
                 return ERROR;
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
-            this.getActionResponse().AssignMessageResult(ex.getMessage());
+            LOG.error("Exception thrown deleting attachment with userId={}, modelId={}", getAuthenticatedUser().getId(), model.getId());
+
+            if (ex != null) {
+                LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
+                this.getActionResponse().AssignMessageResult(ex.getMessage());
+            } else {
+                LOG.error("Empty Exception thrown deleting attachment!");
+                this.getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
+            }
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -395,6 +409,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         model.setFileBuffer(obj);
         claim.addAttachment(model);
         claimService.updateClaim(claim);
+        getSession().put("claimDetailPageClaimId", claim.getId().intValue());
+        getSession().put("claimDetailPageClaimVersion", claim.getVersion());
     }
     // </editor-fold>
 

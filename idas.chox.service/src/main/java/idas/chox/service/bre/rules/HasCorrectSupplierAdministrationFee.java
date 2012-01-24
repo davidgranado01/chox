@@ -28,7 +28,7 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isSupplierAdminstrationFee()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isSupplierAdminstrationFee()) {
 
             LOG.debug("Has Correct Supplier Administration Fee check is active");
 

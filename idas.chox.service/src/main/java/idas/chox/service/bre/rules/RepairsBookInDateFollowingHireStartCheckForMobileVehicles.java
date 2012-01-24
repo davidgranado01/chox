@@ -28,7 +28,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles  is active");

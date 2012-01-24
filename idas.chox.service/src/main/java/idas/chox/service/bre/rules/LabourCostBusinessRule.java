@@ -25,7 +25,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
 
             boolean success = true;
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);

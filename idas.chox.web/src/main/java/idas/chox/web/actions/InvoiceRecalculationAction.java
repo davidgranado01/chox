@@ -2605,6 +2605,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 vehicleHireAction.prepare();
                                 vehicleHireAction.updateSessionModel();
                                 modelSaved = true;
+                                getSession().put("claimDetailPageClaimId", claim.getId().intValue());
+                                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
                                 this.setActionResult("Your Changes Have Been Saved");
                                 return SUCCESS;
                             } catch (Exception ex) {
@@ -2637,19 +2639,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public boolean isPenaltyChargeDateModified() {
-        if (claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
+        if (DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0)
                 return true;
         
         return false;
     }
 
-    public boolean getIsPenaltyChargeDateModified() {
-        if (modelSaved && claim.getInvoice().getCreatedDate().compareTo(claim.getInvoice().getAutoPenaltyStart()) != 0)
-                return true;
-        
-        return false;
-    }
-    
     public String updateInvoiceModel() {
         return invoiceAction.updateModel(claim);
     }

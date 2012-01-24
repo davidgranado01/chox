@@ -123,7 +123,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);
         // set-up audit trail
         //    Rejected after 2 days 3 hours, rejection accepted after 4 days
-        auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, null, claim);
+        auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, "", claim);
         auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim, 1000*60*60*24*2 + 1000*60*60*3);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim, 1000*60*60*24*4);
 
@@ -146,7 +146,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
 
         // set-up audit trail
         //    Rejected after 3 days 3 hours, rejection accepted after 4 days
-        auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, null, claim);
+        auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, "", claim);
         auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim, 1000*60*60*24*3 + 1000*60*60*3);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim, 1000*60*60*24*4);
 

@@ -25,7 +25,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isCorrentAdminFee() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isCorrentAdminFee() && claim.getVehicleHire() != null) {
           try {
             boolean success = true;
             BigDecimal adminFee = null;

@@ -42,6 +42,19 @@ public class ClaimReopen extends BaseActivity {
 //        claim.setStatus(claim.getPreviousStatus());
         // Close open tasks on claim
             taskService.autoUndoCompleteTasksForClaim(claim.getId());
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+                    && (
+                            claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
+                            || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO) || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS)
+                            || claim.getStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE) || claim.getStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
+                            || claim.getStatus().equals(ClaimStatus.INVOICE_ESCALATED) || claim.getStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)
+                            || claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_CH) || claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_ENG))
+                    ) {
+                setMessage("Claim has been re-opened and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
+                        + " days ago, please confirm the correct penalty charges have been applied to the invoice.");
+            }
+            else
+                setMessage("Claim successfully re-opened.");
         }
         else
             LOG.warn("Failed to re-open claim for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());

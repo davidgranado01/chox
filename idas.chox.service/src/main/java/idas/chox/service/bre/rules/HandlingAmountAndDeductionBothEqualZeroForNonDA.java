@@ -24,7 +24,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
         if (claim.getBreBand().isHandlingAmountAndDeductionBothEqualZeroForNonDA()) {
 
-            if (!claim.getChorganisation().isDelegatedAuthority()) {
+            if (!ClaimType.isSubscriber(claim.getClaimType()) && !claim.getChorganisation().isDelegatedAuthority()) {
 
                 Invoice invoice = claim.getInvoice();
                 boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
