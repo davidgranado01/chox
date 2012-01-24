@@ -74,8 +74,9 @@ public class UserAccountAction extends BaseAction {
             setActionResult((String) response.getResult());
             return SUCCESS;
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
-            getActionResponse().AddError("Error: " + ex.getMessage());
+            LOG.error("Exception thrown updating browser warning for user with id={}", getAuthenticatedUser().getId(), ex);
+            getActionResponse().AddError("An internal error occurred changing. Please contact CHOX Support.");
+            setActionError("An internal error occurred changing. Please contact CHOX Support.");
             return ERROR;
         }
     }
@@ -102,10 +103,11 @@ public class UserAccountAction extends BaseAction {
                 }
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
-            getActionResponse().AddError("Error: " + ex.getMessage());
-            setActionError("Error changing password: " + ex.getMessage());
-            setActionResult("Error changing password: " + ex.getMessage());
+            LOG.error("Exception thrown changing password: {}", ex.getMessage(), ex);
+            getActionResponse().AddError("An internal error occurred changing the password.");
+            setActionError("An internal error occurred changing the password. Please contact CHOX Support.");
+            setActionResult("An internal error occurred changing the password. Please contact CHOX Support.");
+//            return ERROR;
         }
 
         return SUCCESS;
@@ -129,10 +131,11 @@ public class UserAccountAction extends BaseAction {
                 getAuthenticatedUser().setTelephone(telephone);
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
-            getActionResponse().AddError("Error: " + ex.getMessage());
-            setActionError("Error changing contact telephone number: " + ex.getMessage());
-            setActionResult("Error changing contact telephone number: " + ex.getMessage());
+            LOG.error("Exception thrown changing contact telephone number for user with id={}: ", getAuthenticatedUser().getId(), ex);
+            getActionResponse().AddError("An internal error occurred updating the contact telephone number. Please contact CHOX Support.");
+            setActionError("An internal error occurred updating the contact telephone number. Please contact CHOX Support.");
+            setActionResult("An internal error occurred updating the contact telephone number. Please contact CHOX Support.");
+//            return ERROR;
         }
         webUser = this.getAuthenticatedUser();
         return SUCCESS;

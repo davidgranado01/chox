@@ -470,7 +470,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the claim number. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -490,7 +491,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Exception thrown making an interime payment on claim '{}': ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred while updating this claim. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -575,9 +577,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             service.updateClaim(claim);
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown applying penalty charges: {}", ex.getMessage(), ex);
+            LOG.error("Exception thrown applying penalty charges to claim '{}': ", claim.getChoReference(), ex);
             result = ERROR;
-            setActionResult("ERROR : " + ex.getMessage());
+            setActionError("An internal error occurred applying penalty charges to this claim. Please contact CHOX support.");
         }
 
         return result;
@@ -898,8 +900,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            LOG.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
-            setActionResult("ERROR : " + ex.getMessage());
+            LOG.error("Error updating liability status for claim {}: ", claim.getChoReference(), ex);
+            setActionError("An internal error occurred updating the liability status for this claim. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -2123,9 +2125,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (penaltyStartDate != null)
                 penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
-            if (this.getIsCHO() && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
+            if (this.getIsCHO() && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
                 LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
-                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded");
+                this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
+//                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded. Your changes have not been saved.");
                 return ERROR;
             }
             service.updateClaim(claim);

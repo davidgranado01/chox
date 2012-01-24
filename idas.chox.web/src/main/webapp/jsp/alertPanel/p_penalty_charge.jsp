@@ -228,7 +228,7 @@
             <div class="status-warning">
                 <s:if test="showAutoPenaltyCheckbox && invoiceIntroducedDays > 30 && invoiceIntroducedDays < 61 && autoPenaltyChargeEnabled">
                         Payment for this invoice is overdue. The number of days since the invoice was created
-                        is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice. <br />Please
+                        is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice. <br /> <br />Please
                         note that unless automatic penalty charges are switched off for this claim using the 'Penalty Charge Configuration' function in
                         the 'More Actions' drop down menu then penalties will be automatically re-calculated and added to the invoice on day 61
                         if the invoice remains overdue.
