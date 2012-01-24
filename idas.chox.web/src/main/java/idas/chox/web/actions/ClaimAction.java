@@ -2125,6 +2125,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (penaltyStartDate != null)
                 penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
+            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[] {autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
             if (this.getIsCHO() && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
                 LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
                 this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
@@ -2170,6 +2171,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claimVersion;
     }
 
+    public boolean isAddPenaltyChargeConfigValidation() {
+        if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(claim.getInvoice().getCreatedDate()) >= 0) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
     @Override
     public void validate() {
 

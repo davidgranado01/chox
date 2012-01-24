@@ -12,14 +12,14 @@
             width: 120,
             allowBlank: false,
             format: 'd/m/Y',
+    <s:if test="addPenaltyChargeConfigValidation" >
             invalidText: '{0} is not a valid date - it must be in the format dd/mm/yyyy',
-    <s:if test="isCHO && false" >
-                minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
+            minValue: '<s:date format="dd/MM/yyyy" name="invoiceCreationDate" />',
     </s:if>
                 //            hideMode: 'offsets',
-                value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
-                showWeekNumber: true
-            });
+            value: '<s:date format="dd/MM/yyyy" name="autoPenaltyStartDate" />',
+            showWeekNumber: true
+        });
      
 
 
