@@ -715,7 +715,7 @@ public class OverviewSummaryReport implements Report {
 
                 sb.append("from insurer_chorganisation insurer_chorganisation, chorganisation chorganisation ");
                 sb.append("where chorganisation.id=insurer_chorganisation.chorganisation_id  ");
-                sb.append("and insurer_chorganisation.insurer_id=:pUserOrgId ");
+                sb.append("and insurer_chorganisation.insurer_id=:pUserOrgId and chorganisation.insurer_upload_only=false ");
 
             } else {
 
