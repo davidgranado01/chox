@@ -406,7 +406,7 @@
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);
             }
-            
+            refreshPenaltyChargeForm();
         }
         function showNoteMessage(){
             if(!noteMessageDiv){
@@ -473,9 +473,74 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-//            return randomNumber;
+            
         }
 
+        function refreshPenaltyChargeForm(){
+			var form = $("form#applyPenaltyCharge");
+			if (form !== undefined){
+				$("#tRepairPenaltyChargeAmount").val($("#repairPenaltyCharge").val());
+                $("#tHirePenaltyChargeAmount").val($("#hirePenaltyCharge").val());
+                $("#pcTotalGross").text("£ " + $("#totalGross").val());
+                $("#pcInterimPayment").text($("#interimPayment").val());
+                $("#pcHireGross").text($("#hireGross").val());
+                $("#pcRepairGross").text($("#repairGross").val());
+                
+                updateTotalToPay();
+			}
+        }       
+        
+        function updateTotalToPay() {
+            var repairAmount = $("#tRepairPenaltyChargeAmount").val();
+            var hireAmount = $("#tHirePenaltyChargeAmount").val();
+            var repairPenaltyCharge;
+            var hirePenaltyCharge;
+            var totalPenaltyCharge;
+            var totalAmountToPayBeforeNewPenaltyCharge
+            var totalAmountToPayAfterNewPenaltyCharge;
+        
+            if (!isNaN(repairAmount)) {
+                repairPenaltyCharge = parseFloat(repairAmount) == NaN ? 0 : parseFloat(repairAmount);
+                if(isNaN(repairPenaltyCharge)){
+                    repairPenaltyCharge = 0;
+                }
+            }
+            else {
+                repairPenaltyCharge = 0;
+            }
+
+            if (!isNaN(hireAmount)) {
+                hirePenaltyCharge = parseFloat(hireAmount) == NaN ? 0 : parseFloat(hireAmount);
+                if(isNaN(hirePenaltyCharge)){
+                    hirePenaltyCharge = 0;
+                }
+            }
+            else {
+                hirePenaltyCharge = 0;
+            }
+            totalPenaltyCharge = repairPenaltyCharge + hirePenaltyCharge;
+
+            if (hirePenaltyCharge == 0) {
+                $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("remove");
+            }
+            else {
+                $("form#applyPenaltyCharge #hirePenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
+            }
+
+            if (repairPenaltyCharge == 0) {
+                $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("remove");
+            }
+            else {
+                $("form#applyPenaltyCharge #repairPenaltyPercentageComboId").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Percentage'"}});
+                
+            }
+
+            totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#fullTotalToPay").val());
+            totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
+            $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£ ' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
+            
+        }
+        
         function restrictTwoDecimalPlaces(obj){
             var temp=parseFloat(obj.value);
             obj.value = temp.toFixed(2);
@@ -996,20 +1061,20 @@
                                             <s:if test="interimPaymentReceivedFullAndFinal">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" id="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
                                                 </div>
                                             </s:if>
                                             <s:elseif test="interimPaymentReceived">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" id="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
                                             <s:elseif test="!interimPaymentReceived && interimPayment">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" id="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
