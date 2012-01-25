@@ -83,9 +83,10 @@ public class ImapMailReceiver {
 					try {
 						//If email subject is given we search by it, otherwise we just pass it as true and retrieve all unseen messages
 						//with attachements.
-						boolean retrieveBySubject = emailSubject != null ? message.getSubject().trim().equalsIgnoreCase(emailSubject) : true;
-						if (!message.isSet(Flags.Flag.SEEN)
-								&& message.getContentType().contains("MIXED") 
+						boolean retrieveBySubject = emailSubject != null ? message.getSubject().trim().replace(" ", "").equalsIgnoreCase(emailSubject.trim().replace(" ", "")) : true;
+                        LOG.debug("Found message with subject='{}', contentType='{}', seen={}", new Object[] {message.getSubject(), message.getContentType(), message.isSet(Flags.Flag.SEEN)});
+                        if (!message.isSet(Flags.Flag.SEEN)
+								&& message.getContentType().toUpperCase().contains("MIXED") 
 								&& retrieveBySubject) {
 							return true;
 						}

@@ -657,27 +657,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_alert_qty+1)*30"));
-            criteria.add(Restrictions.disjunction()
-                        .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
-                        .add(Restrictions.conjunction()
-                            .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
-                            .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
+            criteria.add(Restrictions.disjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE)).add(Restrictions.conjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE)).add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
             } else {
                 LOG.debug("Supplier Id={}", getCurrentUser().getChorganisation().getId());
                 // Get the id's of the BRE Bands mapped to this CHO
-                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
-                        .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                        .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation").createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
                 bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
 
                 // Get the insurers from the BRE Band which don't allow penalty charges to be added
-                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
-                        .add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE))
-                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list()))
-                        .setProjection(Projections.property("breband.insurer"));
+                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband").add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE)).add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list())).setProjection(Projections.property("breband.insurer"));
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
@@ -723,23 +714,19 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getClaimType() != null && searchCriteria.getClaimType().ordinal() >= 0) {
             if (searchCriteria.getClaimType() == ClaimType.GTA) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
-                                                                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
-            }
-            else if (searchCriteria.getClaimType() == ClaimType.INSURER_UPLOAD) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
+                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
+            } else if (searchCriteria.getClaimType() == ClaimType.INSURER_UPLOAD) {
                 criteria.add(Restrictions.eq("claimType", ClaimType.INSURER_UPLOAD));
-            }
-            else if (searchCriteria.getClaimType() == ClaimType.INSURER_VS_INSURER) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.INSURER_VS_INSURER,
-                                                                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                                                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
-            }
-            else if (searchCriteria.getClaimType() == ClaimType.SUBSCRIBER) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[] {ClaimType.SUBSCRIBER,
-                                                                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-                                                                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
-            }
-            else if (searchCriteria.getClaimType() == ClaimType.TPI) {
+            } else if (searchCriteria.getClaimType() == ClaimType.INSURER_VS_INSURER) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_VS_INSURER,
+                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
+            } else if (searchCriteria.getClaimType() == ClaimType.SUBSCRIBER) {
+                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.SUBSCRIBER,
+                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
+            } else if (searchCriteria.getClaimType() == ClaimType.TPI) {
                 criteria.add(Restrictions.eq("claimType", ClaimType.TPI));
             }
         }
@@ -990,7 +977,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 LOG.debug("Comment added and claim saved.");
             }
         }
-        
+
         LOG.debug("Returning claim age of {}", claimAge);
         return claimAge;
     }
@@ -1027,12 +1014,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
                 + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}, "
                 + "calculatePenaltyAlertQty(claim.getInvoice())={}, claim.getInvoice().getPenaltyAlertQty()={}, "
-                + "calculatePenaltyAlertQty(claim.getInvoice())={}", 
-                    new Object[] {claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
-                                    !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
-                                    claim.getInvoice(), calculatePenaltyAlertQty(claim.getInvoice()),
-                                    claim.getInvoice().getPenaltyAlertQty(),
-                                    calculatePenaltyAlertQty(claim.getInvoice())});
+                + "calculatePenaltyAlertQty(claim.getInvoice())={}",
+                new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
+                    !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
+                    claim.getInvoice(), calculatePenaltyAlertQty(claim.getInvoice()),
+                    claim.getInvoice().getPenaltyAlertQty(),
+                    calculatePenaltyAlertQty(claim.getInvoice())});
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
@@ -1047,7 +1034,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 // The Claim / Invoice may have been modified in the above call.
                 // We therefore need to clear these objects from the cache
                 // First clear the query/session cache
-                evict(claim.getInvoice()); evict(claim);
+                evict(claim.getInvoice());
+                evict(claim);
                 // Then the second-level cache (if activated)
                 getCurrentSession().getSessionFactory().evict(Claim.class, claim.getId());
                 getCurrentSession().getSessionFactory().evict(Invoice.class, claim.getInvoice().getId());
@@ -1060,7 +1048,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         return false;
     }
-
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
@@ -1095,15 +1082,44 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public boolean updateChoReferenceNumber(String oldReference, String newReference) {
-		Claim claim = getClaimByCHOReferenceNumber(oldReference);
-		if(claim != null){
-			claim.setChoReference(newReference);
-			updateClaim(claim);
-			LOG.debug("Claim with reference number " + oldReference +  
-					" updated with new Cho reference number: " + newReference);
-			return true;
-		}
-		return false;
-	}
+    public boolean setPenaltyStartToDateInvoiced(String choReference) {
+        Claim claim = getClaimByCHOReferenceNumber(choReference);
+        if (claim != null && claim.getInvoice() != null) {
+            updatePenaltyStartDate(claim, claim.getInvoice().getDateInvoiced());
+            updateAutomaticPenaltyCharge(claim);
+            return true;
+        }
+        
+        return false;
+    }
+    
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public boolean updateChoReferenceNumber(String oldReference, String newReference) {
+        Claim claim = getClaimByCHOReferenceNumber(oldReference);
+        if (claim != null) {
+            if (getSecurityInfoProvider().getIsCHO()) {
+                if (getSecurityInfoProvider().getCurrentUser().getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                    LOG.error("User {} of CHO {} attempted to update CHO Reference number of claim '{}' of CHO '{}'",
+                            new Object[]{getSecurityInfoProvider().getCurrentUser().getFullName(),
+                                getSecurityInfoProvider().getCurrentUser().getChorganisation().getName(),
+                                claim.getChoReference(), claim.getChorganisation().getName()});
+                    return false;
+                }
+            } else {
+                LOG.error("Non-CHO User {} attempted to update CHO Reference number of claim '{}' of CHO '{}'",
+                        new Object[]{getSecurityInfoProvider().getCurrentUser().getFullName(),
+                            claim.getChoReference(), claim.getChorganisation().getName()});
+                return false;
+            }
+            claim.setChoReference(newReference);
+            updateClaim(claim);
+            LOG.debug("Claim with reference number " + oldReference
+                    + " updated with new Cho reference number: " + newReference);
+            return true;
+
+        }
+        return false;
+    }
 }

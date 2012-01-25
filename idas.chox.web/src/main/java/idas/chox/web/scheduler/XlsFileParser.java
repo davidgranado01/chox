@@ -15,7 +15,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +82,9 @@ public class XlsFileParser {
             List<String> cellStringList = new ArrayList<String>();
             for (int j = 0; j < cellStoreList.size(); j++) {
                 HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-                cellStringList.add(myCell.toString());
+                // Force ALL cells to be strings
+                myCell.setCellType(Cell.CELL_TYPE_STRING);
+                cellStringList.add(myCell.getStringCellValue());
             }
             xlsDataMap.put(i, cellStringList);
         }

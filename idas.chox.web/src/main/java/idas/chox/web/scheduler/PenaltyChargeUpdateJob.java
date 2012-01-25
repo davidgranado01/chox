@@ -10,9 +10,9 @@ import org.springframework.security.annotation.Secured;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
-public class ReferenceUpdateJob extends BaseUpdateJob {
+public class PenaltyChargeUpdateJob extends BaseUpdateJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateJob.class);
     private static final String email_date_format = "dd MMMM yyyy";
     private ClaimService claimService;
 
@@ -20,7 +20,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         this.claimService = claimService;
     }
 
-    @Secured({"ROLE_CHO"})
+    @Secured({"ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap) {
         String referenceNumber = null;
@@ -35,30 +35,29 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
                 List<String> cells = xlsDataMap.get(row);
                 // this excel file should have at least two columns and we
                 // iterate only through those two
-                if (cells.size() < 2) {
+                if (cells.size() < 1) {
                     //ignore row
                     LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
                     continue;
                 }
-                String oldReference = cells.get(0).trim();
-                String newReference = cells.get(1).trim();
+                String choReference = cells.get(0).trim();
 
-                if (oldReference != null && !oldReference.equals("")) {
-                    referenceNumber = oldReference;
-                    boolean isUpdateSuccessful = claimService.updateChoReferenceNumber(oldReference, newReference);
+                if (choReference != null && !choReference.equals("")) {
+                    referenceNumber = choReference;
+                    boolean isUpdateSuccessful = claimService.setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
-                        LOG.debug("CHO reference updated: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
+                        LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
+                        if (xlsDataMap.get(row).size() < 2) {
                             xlsDataMap.get(row).add("Updated");
                         } else {
-                            xlsDataMap.get(row).set(2, "Updated");
+                            xlsDataMap.get(row).set(1, "Updated");
                         }
                     } else {
-                        LOG.debug("Error updating CHO reference: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
+                        LOG.debug("Error updating Penalty Start Date for claim: {} ", choReference);
+                        if (xlsDataMap.get(row).size() < 2) {
                             xlsDataMap.get(row).add("Failed");
                         } else {
-                            xlsDataMap.get(row).set(2, "Failed");
+                            xlsDataMap.get(row).set(1, "Failed");
                         }
                     }
 
@@ -78,8 +77,8 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
-            emailMsg.append("Original CHO Reference      New CHO Reference            Status\n");
-            emailMsg.append("----------------------------------------------------------------------\n");
+            emailMsg.append("CHO Reference               Status\n");
+            emailMsg.append("----------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
             // This is specific for the excel file with two columns and
             // first row is a header.
@@ -88,13 +87,12 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
             for (Integer row : rowNumbers) {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
-                    if (cells.size() >= 3) { // We expect at least three columns
+                    if (cells.size() >= 2) { // We expect at least two columns
                         emailMsg.append(cells.get(0).trim());
                         emailMsg.append("\t\t");
                         emailMsg.append(cells.get(1).trim());
                         emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(2).trim());
-                        emailMsg.append("\n");
+
                     }
                 }
             }

@@ -42,8 +42,12 @@ public class EmailHelper {
         };
         return authenticator;
     }
-
+    
     public void postMail(String subject, String message, String[] recipients) throws MessagingException, UnsupportedEncodingException {
+        postMail(subject, message, recipients, new String[]{});
+    }
+    
+    public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
 
         try {
 
@@ -76,14 +80,18 @@ public class EmailHelper {
             for (int i = 0; i < recipients.length; i++) {
                 addressTo[i] = new InternetAddress(recipients[i]);
             }
-
             msg.setRecipients(Message.RecipientType.TO, addressTo);
+            
+            for (int i = 0; i < bccRecipients.length; i++) {
+                msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(bccRecipients[i]));
+            }
+   
             msg.setSubject(emailSubjectPrefix + subject);
             msg.setContent(message, "text/plain");
             Transport.send(msg);
 
         } catch (Exception ex) {
-            LOG.error("Error posting email with subject '{}': {}", subject, ex.getMessage());
+            LOG.error("Error posting email with subject '{}': \n", subject, ex);
         }
     }
 

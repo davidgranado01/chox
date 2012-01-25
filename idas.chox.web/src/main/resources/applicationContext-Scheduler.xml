@@ -20,6 +20,7 @@
 	
 	<bean id="mailUtil" class="idas.chox.web.scheduler.MailUtil" scope="singleton"/>
 	
+    <!--  CHO Reference Update -->
 	<bean id="referenceUpdateJob" class="idas.chox.web.scheduler.ReferenceUpdateJob">
 		<property name="imapMailReceiver" ref="imapMailReceiver"/>
 		<property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -30,11 +31,11 @@
 		<property name="emailAccount" value="${emailAccount}"/>
 		<property name="emailAccountPassword" value="${emailAccountPassword}"/>
 		
-		<property name="privilegedUsers" value="${privilegedUsers}"/>
-		<property name="bccReceivers" value="${bccReceivers}"/>
-		<property name="emailSubject" value="${emailSubject}"/>
-		<property name="updateUserName" value="${updateUserName}"/>
-		<property name="updatePassword" value="${updatePassword}"/>
+		<property name="privilegedUsers" value="${refUpdate_privilegedUsers}"/>
+		<property name="bccReceivers" value="${refUpdate_bccReceivers}"/>
+		<property name="emailSubject" value="${refUpdate_emailSubject}"/>
+		<property name="updateUserName" value="${refUpdate_updateUserName}"/>
+		<property name="updatePassword" value="${refUpdate_updatePassword}"/>
 		
 		<property name="smtpHostName" value="${smtpHostName}"/>
 		<property name="smtpPort" value="${smtpPort}"/>
@@ -43,30 +44,17 @@
 		
 	</bean>
 	
-	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="referenceUpdateJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="referenceUpdateJob" />
   		<property name="targetMethod" value="execute" />
   		<property name="concurrent" value="false" />
 	</bean>
 
-<!-- 	<bean name="referenceUpdateJob" class="org.springframework.scheduling.quaertz.JobDetailBean" autowire="autodetect"> -->
-<!-- 		<property name="jobClass" value="idas.chox.web.scheduler.ReferenceUpdateJob" /> -->
-<!-- 		<property name="concurrent" value="false" /> -->
-<!-- 		<property name="jobDataAsMap"> -->
-<!-- 			<map> -->
-<!-- 				<entry key="imapMailReceiver" value-ref="imapMailReceiver" /> -->
-<!-- 				<entry key="xlsFileParser" value-ref="xlsFileParser" /> -->
-<!-- 				<entry key="userDetailsService" value-ref="userDetailsService" /> -->
-<!-- 				<entry key="authenticationManager" value-ref="authenticationManager" /> -->
-<!-- 				<entry key="sessionFactory" value-ref="sessionFactory" /> -->
-<!--     		</map> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
 
 	<!-- Simple Trigger -->
 	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="jobDetail" />
-		<property name="repeatInterval" value="30000" />
+		<property name="jobDetail" ref="referenceUpdateJobDetail" />
+		<property name="repeatInterval" value="120000" />
 		<property name="startDelay" value="1000" />
 	</bean>
 
@@ -76,6 +64,51 @@
 <!-- 		<property name="cronExpression" value="0/5 * * * * ?" /> -->
 <!-- 	</bean> -->
 
+
+
+    <!--  Penalty Charge Start Date Update -->
+	<bean id="penaltyStartDateUpdateJob" class="idas.chox.web.scheduler.PenaltyChargeUpdateJob">
+		<property name="imapMailReceiver" ref="imapMailReceiver"/>
+		<property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+		<property name="xlsFileParser" ref="xlsFileParser"/>
+		<property name="claimService" ref="claimService" />
+		<property name="mailUtil" ref="mailUtil" />
+		
+		<property name="emailAccount" value="${emailAccount}"/>
+		<property name="emailAccountPassword" value="${emailAccountPassword}"/>
+		
+		<property name="privilegedUsers" value="${penUpdate_privilegedUsers}"/>
+		<property name="bccReceivers" value="${penUpdate_bccReceivers}"/>
+		<property name="emailSubject" value="${penUpdate_emailSubject}"/>
+		<property name="updateUserName" value="${penUpdate_updateUserName}"/>
+		<property name="updatePassword" value="${penUpdate_updatePassword}"/>
+		
+		<property name="smtpHostName" value="${smtpHostName}"/>
+		<property name="smtpPort" value="${smtpPort}"/>
+		<property name="smtpEmailUser" value="${smtpEmailUser}"/>
+		<property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+		
+	</bean>
+	
+	<bean id="penaltyStartDateUpdateJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="penaltyStartDateUpdateJob" />
+  		<property name="targetMethod" value="execute" />
+  		<property name="concurrent" value="false" />
+	</bean>
+
+
+	<!-- Simple Trigger -->
+	<bean id="simplePenaltyUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" />
+		<property name="repeatInterval" value="120000" />
+		<property name="startDelay" value="60000" />
+	</bean>
+
+	<!-- Cron Trigger -->
+<!-- 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
+<!-- 		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" /> -->
+<!-- 		<property name="cronExpression" value="0/5 * * * * ?" /> -->
+<!-- 	</bean> -->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="autoStartup" value="true" />
 		<property name="quartzProperties">
@@ -86,12 +119,14 @@
 		</property>
 		<property name="jobDetails">
 			<list>
-				<ref bean="jobDetail" />
+				<ref bean="referenceUpdateJobDetail" />
+				<ref bean="penaltyStartDateUpdateJobDetail" />
 			</list>
 		</property>
 		<property name="triggers">
 			<list>
 				<ref bean="simpleTrigger" />
+				<ref bean="simplePenaltyUpdateTrigger" />
 			</list>
 		</property>
 	</bean>
