@@ -182,13 +182,11 @@
                                 Ext.state.Manager.set("search_grid_limit", options.params.limit);
                             }
                         }
-
                     },
                 	load:function(){
               			if(ds !== undefined)
-              			 	grid.setTitle("(the nr was updated)->"+ Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
+              			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
               		}
-       
                 }
             });
 
@@ -201,15 +199,15 @@
                 Ext.state.Manager.set("grid_isInboxShowHistory",true);
                 isInboxShowHistory = true;
                 Ext.state.Manager.set("grid_filterName",filterName);
-                Ext.state.Manager.set("grid_title","Queue (the nr needs to be updated): " + gridTitle);
+                Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
                 ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, searchHistory : true};
                 doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
 
             }
             
       		function refreshFilterPanelTitle(){
-      			if(ds !== undefined && Ext.state.Manager !== undefined  && mainGridTitle !== undefined)
-      			 	grid.setTitle("(the nr was updated)->"+ Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
+      			if(ds !== undefined)
+      			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
       		}
 
             function refreshFilterPanel() {

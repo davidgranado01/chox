@@ -15,7 +15,6 @@
         if (!selectedOrg)
             selectedOrg = -1;
         refreshFilterPanelByOrg(filterName, title, selectedOrg);
-        //XXX
     }
     
     function updateFilter(key, gridTitle) {
