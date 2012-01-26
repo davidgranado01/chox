@@ -64,9 +64,9 @@ public class EmailHelper {
 
             if (SMTP_authetication) {
                 Authenticator authenticator = getAuthenticator(SmtpEmailUser, SmtpEmailUserPassword);
-                session = Session.getDefaultInstance(props, authenticator);
+                session = Session.getInstance(props, authenticator);
             } else {
-                session = Session.getDefaultInstance(props);
+                session = Session.getInstance(props);
             }
 
             session.setDebug(true);
