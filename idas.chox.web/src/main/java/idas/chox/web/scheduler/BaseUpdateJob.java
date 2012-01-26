@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.EmailHelper;
 
 import java.io.InputStream;
@@ -59,22 +58,25 @@ public abstract class BaseUpdateJob {
                 sender = mailUtil.getSender(message);
                 if (mailSecurityAthenticator.isPrivilegedSender(mailUtil.parseStringToList(privilegedUsers, ","), sender)) {
                     mailSecurityAthenticator.authenticateSender(updateUserName, updatePassword);
-                    List<InputStream> attachmentStreams = imapMailReceiver.fetchAtacchements(message, "xls");
+                    List<InputStream> attachmentStreams = imapMailReceiver.fetchAttachements(message, "xls");
                     Map<Integer, List<String>> xlsDataMap = null;
                     try {
                         for (InputStream attachemt : attachmentStreams) {
                             xlsDataMap = xlsFileParser.readExcelFile(attachemt);
                             Map<Integer, List<String>> resultMap = doJob(xlsDataMap);
-                            sendMail(sender, "RE: " + emailSubject, resultMap);
+                            sendMail(sender, "RE: " + emailSubject, resultMap, true);
                         }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown processing scheduler job from sender {} with subject '{}'\n",
                                 new Object[]{sender, emailSubject, ex});
-                        sendMail((String)mailUtil.parseStringToList(bccReceivers, ",").toArray()[0], "RE: " + emailSubject, null);
+                        sendMail((String)mailUtil.parseStringToList(bccReceivers, ",").toArray()[0],
+                                "RE: " + emailSubject, null, false);
                         
                     }
                 } else {
-                    sendMail((String) mailUtil.parseStringToList(bccReceivers, ",").toArray()[0], "Supplier reference update request received from unauthorised user '" + sender + "'", null);
+                    sendMail((String) mailUtil.parseStringToList(bccReceivers, ",").toArray()[0],
+                            "Supplier reference update request received from unauthorised user '" + sender + "'",
+                            null, false);
                 }
             }
 
@@ -89,11 +91,14 @@ public abstract class BaseUpdateJob {
         }
     }
 
-    protected final void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap) {
+    protected final void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap, boolean bcc) {
         try {
             EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
             String emailMessage = buildMessage(sender, emailSubject, xlsDataMap);
-            emailHelper.postMail(subject, emailMessage, new String[]{sender}, (String[]) mailUtil.parseStringToList(bccReceivers, ",").toArray());
+            if (bcc)
+                emailHelper.postMail(subject, emailMessage, new String[]{sender}, (String[]) mailUtil.parseStringToList(bccReceivers, ",").toArray());
+            else
+                emailHelper.postMail(subject, emailMessage, new String[]{sender});
         } catch (UnsupportedEncodingException e) {
             LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
                     new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});

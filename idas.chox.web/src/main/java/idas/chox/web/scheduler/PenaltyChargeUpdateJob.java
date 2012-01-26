@@ -91,8 +91,7 @@ public class PenaltyChargeUpdateJob extends BaseUpdateJob {
                         emailMsg.append(cells.get(0).trim());
                         emailMsg.append("\t\t");
                         emailMsg.append(cells.get(1).trim());
-                        emailMsg.append("\t\t");
-
+                        emailMsg.append("\t\t\n");
                     }
                 }
             }

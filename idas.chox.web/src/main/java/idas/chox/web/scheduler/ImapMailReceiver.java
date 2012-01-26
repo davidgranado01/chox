@@ -122,23 +122,26 @@ public class ImapMailReceiver {
 	 *            only specific attachments with given file format.
 	 * @return List<InputStream>
 	 */
-	public List<InputStream> fetchAtacchements(Message message,
+	public List<InputStream> fetchAttachements(Message message,
 			String fileFormat) {
 
 		List<InputStream> listOfAttachements = new ArrayList<InputStream>();
 		try {
 			Multipart mp = (Multipart) message.getContent();
+            LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
+                    new Object[]{message.getFrom().toString(), mp.getContentType(), mp.getCount()});
 			for (int i = 0, n = mp.getCount(); i < n; i++) {
 				Part part = mp.getBodyPart(i);
 
-				String fileName = part.getFileName();
-
+				String fileName = part.getFileName(); 
+                LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
+                        new Object[] {fileName, mp.getContentType(), fileFormat});
 				if (fileName != null && fileName.endsWith(fileFormat)) {
 					listOfAttachements.add((InputStream) part.getInputStream());
 				}
 			}
 		} catch (MessagingException e) {
-			LOG.error("Error fetching attachment - cannot make connecection to the given host: {} ",
+			LOG.error("Error fetching attachment - cannot make connection to the given host: {} ",
 					e.getMessage(), e);
 		} catch (IOException e) {
 			LOG.error("Error fetching attachment - cannot retrive attachemnt: {} ", e.getMessage(), e);
