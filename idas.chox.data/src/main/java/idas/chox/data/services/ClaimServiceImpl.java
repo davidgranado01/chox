@@ -1114,6 +1114,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 return false;
             }
             claim.setChoReference(newReference);
+            claim.addComment(Comment.New(0, "Supplier Reference updated from '"
+                                        + oldReference + "' to '" + newReference + "'."));
             updateClaim(claim);
             LOG.debug("Claim with reference number " + oldReference
                     + " updated with new Cho reference number: " + newReference);
