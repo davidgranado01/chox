@@ -84,7 +84,7 @@ public class XlsFileParser {
                 HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
                 // Force ALL cells to be strings
                 myCell.setCellType(Cell.CELL_TYPE_STRING);
-                cellStringList.add(myCell.getStringCellValue());
+                cellStringList.add(myCell.getStringCellValue().trim());
             }
             xlsDataMap.put(i, cellStringList);
         }
