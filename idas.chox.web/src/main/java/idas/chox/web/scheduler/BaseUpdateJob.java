@@ -70,7 +70,7 @@ public abstract class BaseUpdateJob {
                         LOG.error("Exception thrown processing scheduler job from sender {} with subject '{}'\n",
                                 new Object[]{sender, emailSubject, ex});
                         sendMail((String)mailUtil.parseStringToList(bccReceivers, ",").toArray()[0],
-                                "RE: " + emailSubject, null, false);
+                                "Error parsing email '" + emailSubject + "' - please see logs for details", null, false);
                         
                     }
                 } else {
