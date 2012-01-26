@@ -19,11 +19,11 @@ public class ChoxExceptionInterceptor extends ExceptionMappingInterceptor {
         try {
             if (exceptionHolder.getException() instanceof javax.net.ssl.SSLException
                     || (exceptionHolder.getException() != null && exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException))
-                LOG.warn("Exception intercepted: {}", exceptionHolder.getExceptionStack());
+                LOG.warn("Exception intercepted from action '{}': {}", invocation.getAction().toString(), exceptionHolder.getExceptionStack());
             else
-                LOG.error("Exception intercepted: {}", exceptionHolder.getExceptionStack());
+                LOG.error("Exception intercepted from action '{}': {}",invocation.getAction().toString(), exceptionHolder.getExceptionStack());
         } catch (Exception e) {
-            LOG.error("Exception logging exception: {}", e.getMessage());
+            LOG.error("Exception logging exception: {}", e.getMessage(), e);
         }
 
 //        HibUtil.rollback();
