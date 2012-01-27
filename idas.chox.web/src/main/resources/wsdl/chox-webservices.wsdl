@@ -644,6 +644,7 @@
                     <xsd:enumeration value="ManualInvoiceBRERejected"/>
                     <xsd:enumeration value="ManualInvoicePaid"/>
                     <xsd:enumeration value="PaymentReceived"/>
+                    <xsd:enumeration value="SubscriberClaimRejected"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
