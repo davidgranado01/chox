@@ -16,6 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 	    "/applicationContext-BRE.xml", 
 	    "/applicationContext-Scheduler.xml", 
 	    "/applicationContext-XMLReader.xml"})
-public class BaseWebTest {
+public abstract class BaseWebTest {
 
 }
