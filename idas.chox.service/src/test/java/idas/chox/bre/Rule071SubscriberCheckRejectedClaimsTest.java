@@ -40,11 +40,12 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         claim.setBreBand(testClaim.getTestBreBand());
         claim.setVehicleHire(testClaim.getTestHireDetail());
         claim.getVehicleHire().setVehicleClass(null);
+        claim.setPreviousStatus("");
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setClaimNumber("0123456789");
-        claimService.updateClaim(claim);
-        claimService.flush();
+        claimService.save(claim);
+//        claimService.flush();
 
         return claim;
     }
@@ -120,6 +121,8 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     @Test
     public void testPassed_1() throws IOException {
         Claim claim = getTestClaim();
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        claim.setPreviousStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);
         // set-up audit trail
         //    Rejected after 2 days 3 hours, rejection accepted after 4 days
@@ -145,12 +148,12 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);
 
         // set-up audit trail
-        //    Rejected after 3 days 3 hours, rejection accepted after 4 days
+        //    Rejected after 2 days 3 hours, rejection accepted after 4 days
         auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, "", claim);
-        auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim, 1000*60*60*24*3 + 1000*60*60*3);
+        auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim, 1000*60*60*24*2 + 1000*60*60*3);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim, 1000*60*60*24*4);
 
-        // set-up vehicle hire of 5 days (note that could claim for 3 or 4 days, depending upon timee ran < or > 3pm
+        // set-up vehicle hire of 5 days (note that could claim for 3 or 4 days, depending upon time ran < or > 3pm
         claim.getVehicleHire().setDays(5);
 
         SubscriberCheckRejectedClaims rule = new SubscriberCheckRejectedClaims();

@@ -47,14 +47,14 @@ public class PenaltyChargeUpdateJob extends BaseUpdateJob {
                     boolean isUpdateSuccessful = claimService.setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
-                        if (xlsDataMap.get(row).size() < 2) {
+                        if (xlsDataMap.get(row).size() == 1) {
                             xlsDataMap.get(row).add("Updated");
                         } else {
                             xlsDataMap.get(row).set(1, "Updated");
                         }
                     } else {
                         LOG.debug("Error updating Penalty Start Date for claim: {} ", choReference);
-                        if (xlsDataMap.get(row).size() < 2) {
+                        if (xlsDataMap.get(row).size() == 1) {
                             xlsDataMap.get(row).add("Failed");
                         } else {
                             xlsDataMap.get(row).set(1, "Failed");
@@ -88,10 +88,8 @@ public class PenaltyChargeUpdateJob extends BaseUpdateJob {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 2) { // We expect at least two columns
-                        emailMsg.append(cells.get(0).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(1).trim());
-                        emailMsg.append("\t\t\n");
+                        emailMsg.append(cells.get(0).trim()).append("\t\t\t");
+                        emailMsg.append(cells.get(1).trim()).append("\n");
                     }
                 }
             }
