@@ -241,7 +241,7 @@
 
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%">
                 <tr>
-                    <td align="left" style="width:20%"><label>Full Total Requested &nbsp;</label></td>
+                    <td align="left" style="width:20%"><label>Total Gross &nbsp;</label></td>
                     <td align="left" style="width:20%" id="pcTotalGross"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
                     <td style="width:20%"></td>
                     <td style="width:20%"></td>
@@ -275,7 +275,7 @@
                 </s:else>
                 <tr>
                     <td align="left"><label>Hire Gross</label></td>
-                    <td align="left">£&nbsp;<labelid="pcHireGross"><s:property value="invHireGross" /></label></td>
+                    <td align="left">£&nbsp;<label id="pcHireGross"><s:property value="invHireGross" /></label></td>
                     <td align="left"><label>Repair Gross</label></td>
                     <td align="left">£&nbsp;<label id="pcRepairGross"><s:property value="repairGross" /></label></td>
                 </tr>     
@@ -299,7 +299,7 @@
                 </tr>
 
                 <tr>
-                    <td align="left"><label>Full Total Requested After Penalty Charge &nbsp;</label></td>
+                    <td align="left"><label>Full Total Requested (After Penalty Charge) &nbsp;</label></td>
                     <td colspan="3" align="left"><label id="totalAmountToPayAfterNewPenaltyChargeLabel" style="font-weight:bold"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
                 </tr>
 
