@@ -206,7 +206,7 @@
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£ ' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
         
         //        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
         //        if (! isNaN(percentageAccepted)){
