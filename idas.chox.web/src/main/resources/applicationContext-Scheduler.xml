@@ -52,17 +52,21 @@
 
 
 	<!-- Simple Trigger -->
-	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+<!--	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="referenceUpdateJobDetail" />
 		<property name="repeatInterval" value="120000" />
 		<property name="startDelay" value="1000" />
-	</bean>
+	</bean>-->
 
 	<!-- Cron Trigger -->
-<!-- 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
-<!-- 		<property name="jobDetail" ref="referenceUpdateJob" /> -->
-<!-- 		<property name="cronExpression" value="0/5 * * * * ?" /> -->
-<!-- 	</bean> -->
+ 	<bean id="cronRefUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+ 		<property name="jobDetail" ref="referenceUpdateJobDetail" /> 
+ 		<property name="cronExpression" value="0 0,30 7-19 ? * 2-6" /> 
+ 	</bean> 
+ 	<bean id="cronRefUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+ 		<property name="jobDetail" ref="referenceUpdateJobDetail" /> 
+ 		<property name="cronExpression" value="0 0,30 8-14 ? * 1,7" /> 
+ 	</bean> 
 
 
 
@@ -98,17 +102,23 @@
 
 
 	<!-- Simple Trigger -->
-	<bean id="simplePenaltyUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+<!--	<bean id="simplePenaltyUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" />
 		<property name="repeatInterval" value="120000" />
 		<property name="startDelay" value="60000" />
-	</bean>
+	</bean>-->
 
 	<!-- Cron Trigger -->
-<!-- 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
-<!-- 		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" /> -->
-<!-- 		<property name="cronExpression" value="0/5 * * * * ?" /> -->
-<!-- 	</bean> -->
+ 	<bean id="cronPenaltyUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+ 		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" /> 
+ 		<property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
+ 	</bean> 
+<!-- 	<bean id="cronPenaltyUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+ 		<property name="jobDetail" ref="penaltyStartDateUpdateJobDetail" /> 
+ 		<property name="cronExpression" value="0/5 * * * * ?" /> 
+ 	</bean>-->
+    
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="autoStartup" value="true" />
 		<property name="quartzProperties">
@@ -125,8 +135,11 @@
 		</property>
 		<property name="triggers">
 			<list>
-				<ref bean="simpleTrigger" />
-				<ref bean="simplePenaltyUpdateTrigger" />
+<!--				<ref bean="simpleTrigger" /> -->
+<!--				<ref bean="simplePenaltyUpdateTrigger" /> -->
+				<ref bean="cronRefUpdateTriggerWeek" />
+				<ref bean="cronRefUpdateTriggerWeekend" />
+				<ref bean="cronPenaltyUpdateTriggerWeek" />
 			</list>
 		</property>
 	</bean>
