@@ -184,7 +184,12 @@
                         }
                     },
                 	load:function(){
-              			if(ds !== undefined)
+                		//we check if  grid title is already set in that case we dont need to set it again
+                		//- this check only kicks in user preses on inbox list.
+              			if(ds !== undefined 
+              					&& (Ext.state.Manager.get("grid_main_title") == "")
+              					&& (Ext.state.Manager.get("grid_main_title") == Ext.state.Manager.get("grid_title")))
+              				
               			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
               		}
                 }
@@ -202,14 +207,8 @@
                 Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
                 ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, searchHistory : true};
                 doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
-
             }
-            
-      		function refreshFilterPanelTitle(){
-      			if(ds !== undefined)
-      			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
-      		}
-
+           
             function refreshFilterPanel() {
                 var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
                 var param = {"filterOrgId":currentOrg};
