@@ -269,6 +269,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public void setFilterOrgId(int filterOrgId) {
         this.filterOrgId = filterOrgId;
     }
+    
+    public void setFilterOrgId(String filterOrgId) {
+        this.filterOrgId = new Integer(filterOrgId).intValue();
+    }
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
