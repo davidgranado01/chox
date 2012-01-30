@@ -206,7 +206,7 @@
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£ ' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
         
         //        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
         //        if (! isNaN(percentageAccepted)){
@@ -242,7 +242,7 @@
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%">
                 <tr>
                     <td align="left" style="width:20%"><label>Total Gross &nbsp;</label></td>
-                    <td align="left" style="width:20%" id="pcTotalGross"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
+                    <td align="left" style="width:20%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
                     <td style="width:20%"></td>
                     <td style="width:20%"></td>
                 </tr>
@@ -250,8 +250,7 @@
                 <s:if test="interimPaymentReceived ">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">
-                        	£&nbsp;<label class="std-data-ro-red" id="pcInterimPayment"><s:property value="interimPayment" /></label> (Payment Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
@@ -259,8 +258,7 @@
                 <s:elseif test="!interimPaymentReceived && interimPayment">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">
-                        	£&nbsp;<label class="std-data-ro-red" id="pcInterimPayment"><s:property value="interimPayment" /></label> (Payment Not Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
@@ -275,9 +273,9 @@
                 </s:else>
                 <tr>
                     <td align="left"><label>Hire Gross</label></td>
-                    <td align="left">£&nbsp;<label id="pcHireGross"><s:property value="invHireGross" /></label></td>
+                    <td align="left">£&nbsp;<s:property value="invHireGross" /></td>
                     <td align="left"><label>Repair Gross</label></td>
-                    <td align="left">£&nbsp;<label id="pcRepairGross"><s:property value="repairGross" /></label></td>
+                    <td align="left">£&nbsp;<s:property value="repairGross" /></td>
                 </tr>     
 
                 <tr>

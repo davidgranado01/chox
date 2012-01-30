@@ -182,16 +182,8 @@
                                 Ext.state.Manager.set("search_grid_limit", options.params.limit);
                             }
                         }
-                    },
-                	load:function(){
-                		//we check if  grid title is already set in that case we dont need to set it again
-                		//- this check only kicks in user preses on inbox list.
-              			if(ds !== undefined 
-              					&& grid.title != undefined && grid.title != "" 
-              					&& grid.title.indexOf(ds.getTotalCount()) == -1)
-              			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
-              		}
-                }
+
+                    }}
             });
 
 
@@ -206,8 +198,9 @@
                 Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
                 ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, searchHistory : true};
                 doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
+
             }
-           
+
             function refreshFilterPanel() {
                 var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
                 var param = {"filterOrgId":currentOrg};
@@ -343,7 +336,6 @@
                 {
                     params:{start:start, limit:recordPerPage},
                     callback:function(){
-                    	Ext.state.Manager.set("grid_main_title", titleMessage);
                         grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
                     }
                 });
