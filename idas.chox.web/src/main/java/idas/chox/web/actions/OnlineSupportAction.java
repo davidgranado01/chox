@@ -2,7 +2,12 @@ package idas.chox.web.actions;
 
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.EmailHelper;
-import org.apache.struts2.ServletActionContext;
+
+import java.util.Properties;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 public class OnlineSupportAction extends BaseAction {
 
@@ -12,7 +17,9 @@ public class OnlineSupportAction extends BaseAction {
     private String iEmail;
     private String iPhone;
     private String actionResult;
+    private Properties props;
     private static final String email_date_format = "dd MMMM yyyy";
+    private static final String propertiesFile = "/application.properties";
 
     public String getiEmail() {
         return iEmail;
@@ -66,12 +73,14 @@ public class OnlineSupportAction extends BaseAction {
     public String saveMessage() {
 
         try {
+        	Resource resource = new ClassPathResource(propertiesFile);
+        	props = PropertiesLoaderUtils.loadProperties(resource);
 
-            String onlineSupportDefaultEmail = ServletActionContext.getServletContext().getInitParameter("onlineSupportDefaultEmail");
-            String smtpHostName = ServletActionContext.getServletContext().getInitParameter("smtpHostName");
-            String smtpPort = ServletActionContext.getServletContext().getInitParameter("smtpPort");
-            String smtpEmailUser = ServletActionContext.getServletContext().getInitParameter("smtpEmailUser");
-            String smtpEmailUserPassword = ServletActionContext.getServletContext().getInitParameter("smtpEmailPassword");
+            String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
+            String smtpHostName = props.getProperty("smtpHostName");
+            String smtpPort = props.getProperty("smtpPort");
+            String smtpEmailUser = props.getProperty("smtpEmailUser");
+            String smtpEmailUserPassword = props.getProperty("smtpEmailPassword");
 
             String[] recipients = {onlineSupportDefaultEmail};
 
