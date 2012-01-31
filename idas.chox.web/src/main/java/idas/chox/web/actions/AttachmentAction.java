@@ -77,6 +77,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public void setFileId(int fileId) {
         this.fileId = fileId;
+        LOG.debug("Set fileId={}", fileId);
     }
 
     public InputStream getFileStream() {
@@ -135,11 +136,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         try {
 
             List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
-            List result = attachmentService.getAttachmentsByClaim(claim.getId());
+            List<Attachment> result = attachmentService.getAttachmentsByClaim(claim.getId());
 
-            for (Object o : result) {
-                Map data = (Map) o;
-                viewDatas.add(new AttachmentViewData(data));
+            for (Attachment attachment : result) {
+                viewDatas.add(new AttachmentViewData(attachment));
             }
 
             this.jObject = JSONArray.fromObject(viewDatas);
@@ -161,7 +161,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         try {
             if (model == null) {
                 getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
-                LOG.error("Cannot delete attachment - no model");
+                LOG.error("Cannot delete attachment with fileId={} - no model", fileId);
                 return ERROR;
             }
 
@@ -428,8 +428,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     protected Attachment loadModel() {
 
         if (getFileId() > 0) {
+            LOG.debug("Loading Attachment model with fileId={}", getFileId());
             return (Attachment) baseDataService.get(Attachment.class, getFileId());
         } else {
+            LOG.debug("No fileId(={}), returning new Attachment", getFileId());
             return new Attachment();
         }
     }

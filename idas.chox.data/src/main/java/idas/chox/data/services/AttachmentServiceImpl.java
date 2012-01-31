@@ -7,8 +7,9 @@ import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.WebUserUserRoleService;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,14 +24,20 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     }
 
     @Override
-    public List getAttachmentsByClaim(int claimId) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("select id, version, file_name, remarks, category, file_type, last_modified_date, claim_id, created_date from attachment ");
-        sb.append("where claim_id=:pClaimId and deleted=false");
-        Map extParameters = new HashMap();
-        extParameters.put("pClaimId", claimId);
-        return externalQuery(sb.toString(), extParameters);
+    public List<Attachment> getAttachmentsByClaim(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Attachment.class);
+        criteria.add(Restrictions.eq("deleted", false));
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        criteria.addOrder(Order.desc("id"));
+        List<Attachment> attachmentList = findByCriteria(criteria);
+        return attachmentList;
+        
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("select id, version, file_name, remarks, category, file_type, last_modified_date, claim_id, created_date from attachment ");
+//        sb.append("where claim_id=:pClaimId and deleted=false");
+//        Map extParameters = new HashMap();
+//        extParameters.put("pClaimId", claimId);
+//        return externalQuery(sb.toString(), extParameters);
     }
 
     @Override
