@@ -1,6 +1,6 @@
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.6.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.7.1.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.blockUI.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.metadata.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
