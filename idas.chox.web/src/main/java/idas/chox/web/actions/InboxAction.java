@@ -195,7 +195,7 @@ public class InboxAction extends BaseAction {
     public String getSuppliersJsonString() {
         List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
         for (Chorganisation supplier : suppliers) {
-            luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            luItems.add(new LookupItem(supplier.getName(), supplier.getId().toString()));
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
@@ -203,7 +203,7 @@ public class InboxAction extends BaseAction {
     public String getInsurersJsonString() {
         List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
         for (Insurer insurer : insurers) {
-            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            luItems.add(new LookupItem(insurer.getName(), insurer.getId().toString()));
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
