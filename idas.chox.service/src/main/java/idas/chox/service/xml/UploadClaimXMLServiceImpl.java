@@ -420,7 +420,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
-            session.put("claimsDetails", null);
             setErrorMessage("An unexpected error has occured - please report to CHOX support.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
@@ -440,15 +439,22 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereau.setStatus("All Rejected");
             bordereau.setDescription("All " + totalRecord + " claims have been rejected");
         }
-
-        bordereau.setProcessed(true);
-        setSuccessMessage("The Bordereau has been processed successfully.");
-        uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
-        bordereauService.saveBordereau(bordereau);
-        bordereau.setBeingProcessed(false);
-        LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
-        return true;
-
+        try {
+            bordereau.setProcessed(true);
+            setSuccessMessage("The Bordereau has been processed successfully.");
+            uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
+            bordereauService.saveBordereau(bordereau);
+            bordereau.setBeingProcessed(false);
+            LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
+            return true;
+        } catch (Throwable ex) {
+            LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage(), ex);
+            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage());
+            }
+            return false;
+        }
     }
 
     @Override
