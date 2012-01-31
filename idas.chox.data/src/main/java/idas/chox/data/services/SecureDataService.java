@@ -90,6 +90,12 @@ public class SecureDataService extends BaseDataService {
 
         List<Insurer> results = new ArrayList<Insurer>();
 
+        if (choId == null) {
+            LOG.error("Cannot get insurers for null choId.");
+            return results;
+        }
+
+
         try {
 
             List result = new ArrayList();
@@ -125,9 +131,14 @@ public class SecureDataService extends BaseDataService {
 
         List<Chorganisation> results = new ArrayList<Chorganisation>();
 
+        if (insurerId == null) {
+            LOG.error("Cannot get suppliers for null insurerId.");
+            return results;
+        }
+
         try {
 
-            List result = new ArrayList();
+            List result;
 
             StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from chorganisation ");

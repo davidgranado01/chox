@@ -121,18 +121,12 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         Calendar cal = Calendar.getInstance();
 
-        final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
-        LOG.info("Generating report '{}' to file '{}'...", reportName, reportFileName);
-
+        File reportFile = null;
         try {
-            report.build().writeTo(new FileOutputStream(reportFileName));
-            if (isExportClaimOperationCancelled()) {
-                if (deleteReportFile(reportFileName)) {
-                    LOG.debug("Report file '{}' deleted.", reportFileName);
-                } else {
-                    LOG.debug("Failed to delete report file '{}'.", reportFileName);
-                }
-            }
+            reportFile = File.createTempFile("report_", ".xls");
+            reportFile.deleteOnExit();
+            LOG.info("Generating report '{}' to file '{}'...", reportName, reportFile.getAbsolutePath());
+            report.build().writeTo(new FileOutputStream(reportFile));
         } catch (IOException ex) {
             LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
@@ -141,7 +135,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         synchronized (getSession()) {
             if (!(Boolean) getSession().get("exceptionThrown")) {
-                getSession().put("reportFileLocation", reportFileName);
+                getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                 getSession().put("cancelExportOperation", false);
                 getSession().put("isExportFinished", true);
             }
@@ -169,7 +163,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
                 try {
                     reportStream = new FileInputStream((String) getSession().get("reportFileLocation"));
-                    deleteReportFile((String) getSession().get("reportFileLocation"));
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage());
                     createEmptyReport();
@@ -185,15 +178,17 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     private void createEmptyReport() {
         LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-        File emptyFile = new File("emptyFile");
         try {
+            File emptyFile = File.createTempFile("emptyReport_", ".xls");
+            emptyFile.deleteOnExit();
             PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occured, Please contact Chox support.");
+            printWriter.print("Unexpected error occured generating this report. Please contact CHOX support.");
             printWriter.close();
             reportStream = new FileInputStream(emptyFile);
-            deleteReportFile("emptyFile");
         } catch (FileNotFoundException ex) {
-            LOG.error("file not found exception thrown {}", ex.getMessage());
+            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown {}", ex.getMessage(), ex);
         }
     }
 
@@ -203,24 +198,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
         }
     }
 
-    private boolean deleteReportFile(String filename) {
-        LOG.debug("Request to delete  report file '{}'", filename);
-        File reportFile = new File(filename);
-        if (reportFile.exists()) {
-            LOG.debug("Report file '{}' exists - deleting... ", reportFile.getName());
-            return reportFile.delete();
-        } else {
-            LOG.debug("No such report file exists: '{}'", reportFile.getName());
-        }
-        return false;
-    }
-
     public String cancelExportOperation() {
+        LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
         synchronized (getSession()) {
-            LOG.debug("export operation cancellation called ...");
             getSession().put("cancelExportOperation", true);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                deleteReportFile((String) getSession().get("reportFileLocation"));
                 getSession().put("reportFileLocation", null);
             }
             setExportCanceled(true);
@@ -303,11 +285,9 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 if (getAuthenticatedUser().isAnInsurer()) {
 
                     if (parametersMap.containsKey("insurerId")) {
-
-//                        LOG.info("insurer logged in and insurer id is '{}' ",parametersMap.get("insurerId"));
+                        LOG.debug("insurer logged in and insurer id is '{}' ", parametersMap.get("insurerId"));
 
                         if (getAuthenticatedUser().getInsurer().getId() != TextHelper.getId(((String[]) parametersMap.get("insurerId"))[0])) {
-
                             // log out insurer user who tries to generate report for another insurer
                             LOG.error("Illegal attempt to access report for another insurer report name '{}' insurer name '{}'", reportName, getAuthenticatedUser().getInsurer().getName());
                             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
@@ -330,13 +310,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 }
 
             }
-// Allow CHOX Admin access to all reports
-// N.B. If we activate below code, CHOX Admin cannot export claim to Excel
-//            else {
-//                // log out chox admin user who does not have access to report
-//                LOG.error("Illegal attempt to access report '{}' ", reportName);
-//                throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
-//            }
         }
 
     }
