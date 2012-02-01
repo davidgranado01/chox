@@ -1250,40 +1250,59 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Only</label></td>
                     <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Claim Type</label></td>
+                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
+                    <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:if>
             <s:elseif test="isInsurer && (insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Only</label></td>
                     <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Claim Type</label></td>
+                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
+                    <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:elseif>
             <s:elseif test="isInsurer && (!insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Only</label></td>
                     <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Claim Type</label></td>
+                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
+                    <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:elseif>
             <s:else>
                 <tr>
-                    <td nowrap><label>Show Claims With Penalty Charges Applied Only</label></td>
+                    <td nowrap><label>Show Claims With Penalty Charges Only</label></td>
                     <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
-            </s:else>
                 <tr>
                     <td nowrap><label>Claim Type</label></td>
                     <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
-                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
+
+            </s:else>
         </table>
         <table>
             <tr>
