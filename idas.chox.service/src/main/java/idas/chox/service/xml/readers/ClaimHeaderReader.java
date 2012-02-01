@@ -578,14 +578,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             }
                         }
 
-                        if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                        if (duplicateCustomerRefSuppInvClaims.size() == 1) {
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Orig. Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
                             LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-number found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
-                        } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
+                        } else if (duplicateCustomerRefClaimsWithInv.size() == 1) {
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Orig. Supplementary Invoiced 'false' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
