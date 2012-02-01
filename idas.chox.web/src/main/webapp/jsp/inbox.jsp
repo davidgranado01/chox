@@ -8,7 +8,7 @@
     <script src="<%= request.getContextPath()%>/scripts/RowEditor.js" type="text/javascript"></script>
     <script type="text/javascript">
 
-        var defaultDropdownValue={'value':'--- ALL ---','text':-1};
+        var defaultDropdownValue={'value':-1,'text':'--- ALL ---'};
         var pagingBar;
         var currentTabIndex;
         var tabs;
@@ -62,8 +62,8 @@
                     autoWidth: false,
                     width: 180,
                     listWidth: 180,
-                    valueField : 'text',
-                    displayField :'value',
+                    valueField : 'value',
+                    displayField :'text',
                     typeAhead : true,
                     mode : 'local',
                     triggerAction : 'all',
@@ -81,7 +81,7 @@
                 });
                 
                 insurerFilterCombo.render('orgFilterDiv');
-                insurerFilterCombo.setValue('--- ALL ---');
+                insurerFilterCombo.setValue(-1);              
         </s:if>
 
         <s:elseif test="isInsurer" > 
@@ -110,8 +110,8 @@
                     id:'filterOrgId',
                     width: 180,
                     listWidth: 180,
-                    valueField : 'text',
-                    displayField :'value',
+                    valueField : 'value',
+                    displayField :'text',
                     typeAhead : true,
                     mode : 'local',
                     triggerAction : 'all',
@@ -128,7 +128,7 @@
                     }
                 });
                 supplierFilterCombo.render('orgFilterDiv');
-                supplierFilterCombo.setValue('--- ALL ---');
+                supplierFilterCombo.setValue(-1);    
         </s:elseif>
                 //        else
                 //            document.getElementById('queueOrgFilter').innerHTML  = '';
