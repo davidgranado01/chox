@@ -473,14 +473,28 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-//            return randomNumber;
+            
         }
 
+        function refreshPenaltyChargeForm(){
+			var form = $("form#applyPenaltyCharge");
+			if (form !== undefined && form.length){
+				$("#tRepairPenaltyChargeAmount").val($("#repairPenaltyCharge").val());
+                $("#tHirePenaltyChargeAmount").val($("#hirePenaltyCharge").val());
+                $("#pcTotalGross").text("£ " + $("#totalGross").val());
+                $("#pcInterimPayment").text($("#interimPayment").val());
+                $("#pcHireGross").text($("#hireGross").val());
+                $("#pcRepairGross").text($("#repairGross").val());
+                $("#hvTotalAmountToPayBeforeNewPenaltyCharge").val($("#fullTotalToPay").val())
+                
+                updateTotalToPay();
+			}
+        }       
+        
         function restrictTwoDecimalPlaces(obj){
             var temp=parseFloat(obj.value);
             obj.value = temp.toFixed(2);
         }
-
 
         function createVehicleClassPriceHelpNote(){
             var attachmentHtmlDesc = "";
