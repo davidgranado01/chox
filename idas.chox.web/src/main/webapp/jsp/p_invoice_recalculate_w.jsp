@@ -406,7 +406,6 @@
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);
             }
-            
         }
         function showNoteMessage(){
             if(!noteMessageDiv){
@@ -447,6 +446,7 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
+            refreshPenaltyChargeForm();
         }
 
         function recalculateForm(){
