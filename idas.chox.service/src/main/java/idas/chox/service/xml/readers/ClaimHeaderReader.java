@@ -622,7 +622,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             }
                             else if (oldClaim.getClaimType() == ClaimType.SUBSCRIBER) {
                                 oldClaim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
-                            } else {
+                            } else if (!ClaimType.isOriginalSupplementaryInvoice(oldClaim.getClaimType())) { // Not already marked as a supplimentary invoice
                                 LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber): {}", claim.getChoReference(), claim.getClaimType());
                                 claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                                 claimResult.setValid(false);
