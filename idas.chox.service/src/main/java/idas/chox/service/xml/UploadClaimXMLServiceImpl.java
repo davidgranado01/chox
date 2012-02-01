@@ -76,9 +76,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
-    /*
-     *  removed this Transactional annotation as this is no effect when processing claims in activity.
-     */
+
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
@@ -343,7 +341,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             claimResults = formClaimResults(document);
             totalRecord = claimResults.size();
         } catch (Exception ex) {
-            LOG.error("Error thrown while getting claims from brodereau with is={} : {}", bordereau.getId(), ex.getMessage());
+            LOG.error("Error thrown while getting claims from brodereau with id={} ", bordereau.getId(), ex);
             setErrorMessage("An unexpected error occurred while processing this Bordereau.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
