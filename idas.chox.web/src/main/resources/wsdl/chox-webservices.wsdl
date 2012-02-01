@@ -658,6 +658,7 @@
                     <xsd:enumeration value="newInvoice"/>
                     <xsd:enumeration value="existInvoice"/>
                     <xsd:enumeration value="invalidSchema"/>
+                    <xsd:enumeration value="invalidHireState"/>
                     <xsd:enumeration value="tpiNotRecognized"/>
                     <xsd:enumeration value="tpiIntervention"/>
                     <xsd:enumeration value="tpiNotAcceptedByInsurer"/>
@@ -682,6 +683,7 @@
                     <xsd:enumeration value="Claim Closed or Pending"/>
                     <xsd:enumeration value="Claim Already Exists"/>
                     <xsd:enumeration value="Invoice Already Exists"/>
+                    <xsd:enumeration value="Incorrect Hire State"/>
                     <xsd:enumeration value="Incorrect XML Structure"/>
                     <xsd:enumeration value="Incorrect Value Provided for Hire State"/>
                     <xsd:enumeration value="Insurer is not accepting TPI invoice"/>

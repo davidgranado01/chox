@@ -106,6 +106,8 @@ public class UploadServiceBean {
                 result.setUploadStatus(ClaimUploadStatus.INVOICE_ALREADY_EXISTS);
             else if (uploadResult.getRemark().equals("Incorrect XML Structure"))
                 result.setUploadStatus(ClaimUploadStatus.INCORRECT_XML_STRUCTURE);
+            else if (uploadResult.getRemark().equals("Incorrect Hire State"))
+                result.setUploadStatus(ClaimUploadStatus.INCORRECT_HIRE_STATE);
             else if (uploadResult.getRemark().equals("Invalid Claim Status"))
                 result.setUploadStatus(ClaimUploadStatus.INVALID_CLAIM_STATUS);
             else if (uploadResult.getRemark().equals("Incorrect Value Provided for Hire State"))

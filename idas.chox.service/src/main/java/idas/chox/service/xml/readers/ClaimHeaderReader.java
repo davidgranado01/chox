@@ -138,7 +138,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
          */
         if (securityInfoProvider.getIsINS() && !RentalStatus.isInsurerUploadRentalStatus(rentalStatus)) {
             LOG.warn("Invalid hire-state found for for Insurer Upload: {}", rentalStatus);
-            claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+            claimResult.setClaimParseStatus(ClaimParseStatus.invalidHireState);
             claimResult.setValid(false);
             claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid value is ‘InsurerUpload’.");
             claim.setChoReference(choReferenceNumber);
@@ -160,7 +160,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
             if (!RentalStatus.isValid(rentalStatus) || (securityInfoProvider.getIsCHO() && RentalStatus.isInsurerUploadRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
-                claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                claimResult.setClaimParseStatus(ClaimParseStatus.invalidHireState);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', Subscriber' or 'Insurer vs Insurer'.");
                 claim.setChoReference(choReferenceNumber);
@@ -204,7 +204,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     LOG.debug("PROCESSING Subscriber Claim");
                     processSubscriberClaim(claimResult, claim);
                 } else {
-                    claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                    claimResult.setClaimParseStatus(ClaimParseStatus.invalidHireState);
                     claimResult.setValid(false);
                     claimResult.getMessage().add("Subscriber claims have not been activated. Please contact CHOX support if you wish to upload subscriber claims.");
                     claim.setChoReference(choReferenceNumber);

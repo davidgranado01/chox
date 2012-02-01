@@ -10,6 +10,7 @@ public enum ClaimParseStatus {
     newInvoice,
     existInvoice,
     invalidSchema,
+    invalidHireState,
     tpiNotRecognized,
     tpiIntervention,
     tpiNotAcceptedByInsurer,
