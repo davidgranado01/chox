@@ -182,8 +182,16 @@
                                 Ext.state.Manager.set("search_grid_limit", options.params.limit);
                             }
                         }
-
-                    }}
+                    },
+                	load:function(){
+                		//we check if  grid title is already set in that case we dont need to set it again
+                		//- this check only kicks in user preses on inbox list.
+              			if(ds !== undefined 
+              					&& grid.title != undefined && grid.title != "" 
+              					&& grid.title.indexOf(ds.getTotalCount()) == -1)
+              			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
+              		}
+                }
             });
 
 
@@ -336,6 +344,7 @@
                 {
                     params:{start:start, limit:recordPerPage},
                     callback:function(){
+                    	Ext.state.Manager.set("grid_main_title", titleMessage);
                         grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
                     }
                 });
