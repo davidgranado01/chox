@@ -762,7 +762,9 @@
     </div>
 
     <s:if test="isShowPenaltyChargeAlert">
-        <s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
+    	<div id="penaltyAlertPanelId">
+        	<s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
+        </div>
     </s:if>
 
     <div id="tabContainer">

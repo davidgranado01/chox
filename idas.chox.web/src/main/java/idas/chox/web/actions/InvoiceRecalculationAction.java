@@ -3036,4 +3036,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
     }
     // </editor-fold>
+
+	public boolean isModelSaved() {
+		return modelSaved;
+	}
 }
