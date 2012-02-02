@@ -357,6 +357,7 @@
         });
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
 <s:if test="penaltyChargesAppled">
+	refreshPenaltyChargeForm();
     Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have previously been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
 </s:if>
     });
@@ -447,6 +448,7 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
+           
         }
 
         function recalculateForm(){
@@ -473,9 +475,20 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-//            return randomNumber;
+            
         }
 
+        function refreshPenaltyChargeForm(){
+			var form = $("form#applyPenaltyCharge");
+			if (form !== undefined && form.length){
+	            var url = "<%= request.getContextPath()%>/prv/p/updatePenaltyCharges.action";
+	            var param = {"id":'<s:property value="claimId" />'};
+	            ajax.loadHtml2(url,param,function(data){
+	                $("#moreActionPanel").html(data);
+	            });
+			}
+        }       
+        
         function restrictTwoDecimalPlaces(obj){
             var temp=parseFloat(obj.value);
             obj.value = temp.toFixed(2);
