@@ -1224,7 +1224,7 @@ public class Invoice extends Entity implements Serializable {
 
     public long getInvoicedDays() {
         // long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getDateInvoiced(), new Date()) + 1;
-        long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getAutoPenaltyStart(), new Date()) + 1;
+        long dateDiff = DateHelper.getNumberOfDaysBetween(getAutoPenaltyStart(), new Date()) + 1;
         return dateDiff;
     }
 
