@@ -357,6 +357,7 @@
         });
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
 <s:if test="penaltyChargesAppled">
+	refreshPenaltyChargeForm();
     Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have previously been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
 </s:if>
 <s:if test="modelSaved">
