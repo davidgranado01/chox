@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import net.sf.json.JSONArray;
 import org.springframework.security.AccessDeniedException;
 
@@ -126,6 +125,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getJsonArrayData() {
         if (jObject != null) {
+            LOG.debug("Returning attachments for grid:\n{}\n", jObject.toString());
             return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
         }
         return "";
@@ -143,7 +143,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
             this.jObject = JSONArray.fromObject(viewDatas);
-
             return SUCCESS;
         } catch (Exception ex) {
             LOG.error("Exception thrown getting attachments: {}", ex.getMessage());
@@ -160,9 +159,12 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
             if (model == null) {
-                getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
-                LOG.error("Cannot delete attachment with fileId={} - no model", fileId);
-                return ERROR;
+                model = loadModel();
+                if (model == null) {
+                    getActionResponse().AssignMessageResult("Unknown error occured trying to delete the attachment.");
+                    LOG.error("Cannot delete attachment with fileId={} - no model", fileId);
+                    return ERROR;
+                }
             }
 
             LOG.debug("Deleting attachment (model='{}')...", model.getClass());
@@ -372,16 +374,16 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             byte fileContent[];
             try {
                 fileContent = new byte[safeLongToInt(file.length())];
+                streamIn.read(fileContent);
+                streamIn.close();
+                LOG.debug("Saving attachment {} for claimId {}", newFileName, this.claimId);
+                saveAttachement(this.category, newFileName, this.remark, fileType, fileContent);
+                bFlag = true;
+                LOG.debug("Attachment saved.");
             } catch (Exception ex) {
-                LOG.error("Error creating byte array of size {}: ", file.length(), ex.getMessage());
+                LOG.error("Error processing file with length={}: ", file.length(), ex);
                 return bFlag;
             }
-            streamIn.read(fileContent);
-            LOG.debug("Saving attachment {} for claimId {}", newFileName, this.claimId);
-            saveAttachement(this.category, newFileName, this.remark, fileType, fileContent);
-            bFlag = true;
-            LOG.debug("Attachment saved.");
-            streamIn.close();
         }
 
         return bFlag;
