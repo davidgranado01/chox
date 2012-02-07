@@ -9,6 +9,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.web.viewdata.AuditTrailViewData;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
@@ -297,7 +298,9 @@ public class ExcelGeneratorAction extends BaseAction {
                     LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
                     OutputStream os = new FileOutputStream(reportFile);
                     workbook.write(os);
+                    os.flush();
                     LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                    os.close();
                 } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report: {}", ex.getMessage());
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
@@ -417,7 +420,7 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSession()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 try {
-                    excelStream = new FileInputStream((String) getSession().get("reportFileLocation"));
+                    excelStream = new DeleteOnCloseFileInputStream((String) getSession().get("reportFileLocation"));
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
                     createEmptyReport();
@@ -438,7 +441,7 @@ public class ExcelGeneratorAction extends BaseAction {
             PrintWriter printWriter = new PrintWriter(emptyFile);
             printWriter.print("Unexpected error occured, Please contact Chox support.");
             printWriter.close();
-            excelStream = new FileInputStream(emptyFile);
+            excelStream = new DeleteOnCloseFileInputStream(emptyFile);
 //            deleteReportFile("emptyFile");
         } catch (FileNotFoundException ex) {
             LOG.error("file not found exception thrown {}", ex.getMessage(), ex);

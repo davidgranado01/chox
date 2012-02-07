@@ -20,9 +20,9 @@ import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
 import net.sf.json.JSONArray;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.core.util.TextHelper;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
@@ -122,12 +122,23 @@ public class ReportAction extends BaseAction implements ParameterAware {
         Calendar cal = Calendar.getInstance();
 
         File reportFile = null;
+        FileOutputStream fos = null;
         try {
             reportFile = File.createTempFile("report_", ".xls");
             reportFile.deleteOnExit();
             LOG.info("Generating report '{}' to file '{}'...", reportName, reportFile.getAbsolutePath());
-            report.build().writeTo(new FileOutputStream(reportFile));
+            fos = new FileOutputStream(reportFile);
+            report.build().writeTo(fos);
+            fos.flush();
+            fos.close();
         } catch (IOException ex) {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (Exception ex2) {
+                    LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
+                }
+            }
             LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             getSession().put("exceptionThrown", true);
@@ -162,7 +173,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
                 try {
-                    reportStream = new FileInputStream((String) getSession().get("reportFileLocation"));
+                    reportStream = new DeleteOnCloseFileInputStream((String) getSession().get("reportFileLocation"));
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage());
                     createEmptyReport();
@@ -184,7 +195,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             PrintWriter printWriter = new PrintWriter(emptyFile);
             printWriter.print("Unexpected error occured generating this report. Please contact CHOX support.");
             printWriter.close();
-            reportStream = new FileInputStream(emptyFile);
+            reportStream = new DeleteOnCloseFileInputStream(emptyFile);
         } catch (FileNotFoundException ex) {
             LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
         } catch (Exception ex) {

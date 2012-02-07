@@ -25,6 +25,7 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import org.springframework.security.AccessDeniedException;
 
 
@@ -86,7 +87,16 @@ public class UploadServiceBean {
             webBordereau.setFileSize((long)byteArray.length);
             ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);                        
             UploadedXMLClaimsDetail uploadResult = uploadClaimXMLService.processWebServiceClaim(bais);
-
+            try {
+                bais.close();
+            } catch (IOException ex) {
+                LOG.error("Exception thrown closing web-service bordereau input stream: {}", ex.getMessage(), ex);
+            }
+            try {
+                st.close();
+            } catch (IOException ex) {
+                LOG.error("Exception thrown closing web-service bordereau stringbuilder output stream: {}", ex.getMessage(), ex);
+            }
             LOG.info("File uploaded status: {}", uploadResult.isValid());
             
             // Convert uploadResult
