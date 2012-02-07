@@ -71,7 +71,7 @@ public class StorageRecoveryVatLimitCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "058";
+        return "074";
     }
 
     @Override
