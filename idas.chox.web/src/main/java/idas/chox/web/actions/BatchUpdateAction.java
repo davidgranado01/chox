@@ -30,7 +30,7 @@ public class BatchUpdateAction extends BaseAction {
     public String doClaimOwnershipUpdateAction() {
 
         // WORKGROUP
-        Workgroup workgroupDBA = new Workgroup();
+        Workgroup workgroupDBA = null;
         if (this.workgroupId != null && this.workgroupId > 0) {
             workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
         }
@@ -48,7 +48,7 @@ public class BatchUpdateAction extends BaseAction {
             }
 
             // Check workgroup belongs to the Insurer
-            if (workgroupDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+            if (workgroupDBA != null &&  workgroupDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
                 throw new AccessDeniedException("Workgroup does not belong to Insurer");
             }
 
