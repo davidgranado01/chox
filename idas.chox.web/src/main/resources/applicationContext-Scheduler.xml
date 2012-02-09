@@ -27,6 +27,7 @@
 		<property name="xlsFileParser" ref="xlsFileParser"/>
 		<property name="claimService" ref="claimService" />
 		<property name="mailUtil" ref="mailUtil" />
+		<property name="securityInfoProvider" ref="securityInfoProvider" />
 		
 		<property name="emailAccount" value="${emailAccount}"/>
 		<property name="emailAccountPassword" value="${emailAccountPassword}"/>
