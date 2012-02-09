@@ -7,6 +7,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.annotation.Secured;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
@@ -15,6 +20,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
     private static final String email_date_format = "dd MMMM yyyy";
     private ClaimService claimService;
+    private SecurityInfoProvider securityInfoProvider;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -45,20 +51,20 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
 
                 if (oldReference != null && !oldReference.equals("")) {
                     referenceNumber = oldReference;
-                    boolean isUpdateSuccessful = claimService.updateChoReferenceNumber(oldReference, newReference);
-                    if (isUpdateSuccessful) {
+                    String updateReturnString = claimService.updateChoReferenceNumber(oldReference, newReference, securityInfoProvider.getCurrentUser().getId());
+                    if (updateReturnString.toLowerCase().contains("updated")) {
                         LOG.debug("CHO reference updated: {} -> {}", oldReference, newReference);
                         if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add("Updated");
+                            xlsDataMap.get(row).add(updateReturnString);
                         } else {
-                            xlsDataMap.get(row).set(2, "Updated");
+                            xlsDataMap.get(row).set(2, updateReturnString);
                         }
                     } else {
                         LOG.debug("Error updating CHO reference: {} -> {}", oldReference, newReference);
                         if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add("Failed");
+                            xlsDataMap.get(row).add(updateReturnString);
                         } else {
-                            xlsDataMap.get(row).set(2, "Failed");
+                            xlsDataMap.get(row).set(2, updateReturnString);
                         }
                     }
 
@@ -103,4 +109,9 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
     }
+
+	public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+		this.securityInfoProvider = securityInfoProvider;
+	}
+
 }

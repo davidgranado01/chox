@@ -253,6 +253,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim = (Claim) getByCriteria(criteria);
         return claim;
     }
+    
+    @Override
+    public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber) {
+        Claim claim = new Claim();
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        criteria.add(Restrictions.eq("chorganisation.id", choId));
+        claim = (Claim) getByCriteria(criteria);
+        return claim;
+    }
 
     @Override
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
@@ -1093,35 +1103,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return false;
     }
     
-
-    @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public boolean updateChoReferenceNumber(String oldReference, String newReference) {
-        Claim claim = getClaimByCHOReferenceNumber(oldReference);
-        if (claim != null) {
-            if (getSecurityInfoProvider().getIsCHO()) {
-                if (getSecurityInfoProvider().getCurrentUser().getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
-                    LOG.error("User {} of CHO {} attempted to update CHO Reference number of claim '{}' of CHO '{}'",
-                            new Object[]{getSecurityInfoProvider().getCurrentUser().getFullName(),
-                                getSecurityInfoProvider().getCurrentUser().getChorganisation().getName(),
-                                claim.getChoReference(), claim.getChorganisation().getName()});
-                    return false;
-                }
-            } else {
-                LOG.error("Non-CHO User {} attempted to update CHO Reference number of claim '{}' of CHO '{}'",
-                        new Object[]{getSecurityInfoProvider().getCurrentUser().getFullName(),
-                            claim.getChoReference(), claim.getChorganisation().getName()});
-                return false;
-            }
-            claim.setChoReference(newReference);
-            claim.addComment(Comment.New(0, "Supplier Reference updated from '"
-                                        + oldReference + "' to '" + newReference + "'."));
-            updateClaim(claim);
-            LOG.debug("Claim with reference number " + oldReference
-                    + " updated with new Cho reference number: " + newReference);
-            return true;
-
-        }
-        return false;
-    }
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public String updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
+		Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
+		if (claim != null) {
+			Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
+			if (newClaim == null) {
+				try {
+					claim.setChoReference(newReference);
+					claim.addComment(Comment.New(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
+					updateClaim(claim);
+					LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: "+ newReference);
+					return "Updated";
+				} catch (Exception ex) {
+					LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
+					return "Failed – internal error";
+				}
+			} else {
+				return "Failed – Ticket number already exists";
+			}
+		}
+		return "Failed – Reservation number doesn’t exist";
+	}
 }

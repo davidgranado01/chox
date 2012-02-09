@@ -2,6 +2,7 @@ package idas.chox.core.services;
 
 import idas.chox.core.search.*;
 import idas.chox.core.model.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +79,9 @@ public interface ClaimService extends DataService {
     
     public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
     
-    public boolean updateChoReferenceNumber(String oldReference, String newReference);
+    public String updateChoReferenceNumber(String oldReference, String newReference, Integer choId);
 
     public boolean setPenaltyStartToDateInvoiced(String choReference);
+
+	public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
 }
