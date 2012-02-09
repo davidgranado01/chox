@@ -188,7 +188,9 @@ public class ClaimResult {
             sReturn = "Invoice Already Exists";
         } else if (this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)) {
             sReturn = "Incorrect XML Structure";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)) {
+        } else if (this.claimParseStatus.equals(ClaimParseStatus.invalidHireState)) {
+            sReturn = "Incorrect Hire State";
+        }else if (this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)) {
             sReturn = "Incorrect Value Provided for Hire State";
         } else if (this.claimParseStatus.equals(ClaimParseStatus.tpiNotAcceptedByInsurer)) {
             sReturn = "Insurer is not accepting TPI invoice";

@@ -1,0 +1,6 @@
+-- Update for bug#1499 - claim details locked on rejected subscriber claims
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.SubscriberClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.InvoiceReferredToEngineer';

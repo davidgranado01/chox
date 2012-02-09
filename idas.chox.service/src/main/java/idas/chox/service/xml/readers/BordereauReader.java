@@ -44,6 +44,7 @@ public class BordereauReader {
                     catch (Exception ex) {
                         LOG.error("Exception thrown reading claim with reader {}", r.getClass(), ex);
                         claimResult.setValid(false);
+                        claimResult.getMessage().add("Internal error has occured - please report to CHOX support.");
                         if (ex.getCause() != null) {
                             LOG.error("    Caused by: {}", ex.getCause().getMessage());
                         }

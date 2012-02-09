@@ -76,9 +76,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
-    /*
-     *  removed this Transactional annotation as this is no effect when processing claims in activity.
-     */
+
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
@@ -343,7 +341,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             claimResults = formClaimResults(document);
             totalRecord = claimResults.size();
         } catch (Exception ex) {
-            LOG.error("Error thrown while getting claims from brodereau with is={} : {}", bordereau.getId(), ex.getMessage());
+            LOG.error("Error thrown while getting claims from brodereau with id={} ", bordereau.getId(), ex);
             setErrorMessage("An unexpected error occurred while processing this Bordereau.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
@@ -420,7 +418,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
-            session.put("claimsDetails", null);
             setErrorMessage("An unexpected error has occured - please report to CHOX support.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
@@ -440,15 +437,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereau.setStatus("All Rejected");
             bordereau.setDescription("All " + totalRecord + " claims have been rejected");
         }
-
-        bordereau.setProcessed(true);
-        setSuccessMessage("The Bordereau has been processed successfully.");
-        uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
-        bordereauService.saveBordereau(bordereau);
-        bordereau.setBeingProcessed(false);
-        LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
-        return true;
-
+        try {
+            bordereau.setProcessed(true);
+            setSuccessMessage("The Bordereau has been processed successfully.");
+            uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
+            bordereauService.saveBordereau(bordereau);
+            bordereau.setBeingProcessed(false);
+            LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
+            return true;
+        } catch (Throwable ex) {
+            LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);
+            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
+            return false;
+        }
     }
 
     @Override

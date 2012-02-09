@@ -254,8 +254,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             criteria.add(Restrictions.eq("status", true));
             return findByCriteria(criteria, true);
 
-        } else {
+        } else if (currentUser.isAnInsurer()) {
             return getSuppliers(currentUser.getInsurer().getId());
+        } else {
+            LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
+            return new ArrayList<Chorganisation>();
         }
     }
     
@@ -288,10 +291,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             criteria.addOrder(Order.asc("name"));
             return findByCriteria(criteria, true);
 
-        } else {
-
+        } else if (!currentUser.isAnInsurer()){
             return getInsurers(currentUser.getChorganisation().getId());
-
+        } else {
+            LOG.error("Trying to get insurers for an Insurer user ({})", currentUser.getDisplayName());
+            return new ArrayList<Insurer>();
         }
     }
 

@@ -188,14 +188,14 @@ public class NodeHelper {
 
     public static boolean isDataLengthCorrect(String dataValue, NodeRuleModel nodeRuleModel) {
         boolean returnValue = true;
-        if ((nodeRuleModel.getDataType() == null) || nodeRuleModel.getDataType().equals("")) {
+//        if ((nodeRuleModel.getDataType() != null) || !nodeRuleModel.getDataType().isEmpty()) {
             LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
             if (nodeRuleModel.getLength() > 0) {
                 if (dataValue.trim().length() > nodeRuleModel.getLength()) {
                     returnValue = false;
                 }
             }
-        }
+//        }
         return returnValue;
     }
 

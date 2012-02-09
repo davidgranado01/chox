@@ -1,7 +1,7 @@
 package idas.chox.web.viewdata;
 
+import idas.chox.core.model.Attachment;
 import idas.chox.core.util.DateHelper;
-import java.util.Map;
 
 public class AttachmentViewData {
 
@@ -12,14 +12,12 @@ public class AttachmentViewData {
     private String modifiedDate;
     private String delete = "Delete";
 
-    public AttachmentViewData(Map data) {
-        int dId = (Integer) data.get("id".toLowerCase());
-        String dModifiedDate = DateHelper.getLocalDateTimeFormat().format(data.get("last_modified_date".toLowerCase()));
-        this.id = dId;
-        this.fileName = (String) data.get("file_name".toLowerCase());
-        this.category = (String) data.get("category".toLowerCase());
-        this.remarks = (String) data.get("remarks".toLowerCase());
-        this.modifiedDate = dModifiedDate;
+    public AttachmentViewData(Attachment attachment) {
+        this.id = attachment.getId();
+        this.fileName = attachment.getFileName();
+        this.category = attachment.getCategory();
+        this.remarks = attachment.getRemarks();
+        this.modifiedDate = DateHelper.getLocalDateTimeFormat().format(attachment.getLastModifiedDate());
     }
 
     public String getCategory() {

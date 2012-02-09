@@ -9,6 +9,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.web.viewdata.AuditTrailViewData;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
@@ -16,8 +17,10 @@ import idas.chox.web.ExcelInvoice;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,7 +162,14 @@ public class ExcelGeneratorAction extends BaseAction {
                 if (claims.size() > 0 && claims.size() <= 10000) {
                     LOG.debug("Total No of Claims : '{}'", claims.size());
 
-                    generateXML(claims);
+                    try {
+                        if (!generateXML(claims))
+                            LOG.info("Report cancelled");
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
+                        setClaimSizeError("Error encountered generating report.");
+                        return rtnStr;
+                    }
                     rtnStr = SUCCESS;
 
                 } else if (claims.size() > 10000) {
@@ -177,7 +188,7 @@ public class ExcelGeneratorAction extends BaseAction {
         return reportDefinationFilePath;
     }
 
-    private boolean generateXML(List<Claim> claims) throws IOException {
+    private boolean generateXML(List<Claim> claims) throws Exception {
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
         int noClaims = claims.size();
@@ -268,8 +279,10 @@ public class ExcelGeneratorAction extends BaseAction {
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
-        final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
-        LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFileName);
+        final File reportFile = File.createTempFile("excel_", ".xls");
+        reportFile.deleteOnExit();
+ //       final String reportFileName = System.getProperty("java.io.tmpdir") + File.pathSeparator + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
+        LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
 
         Runnable r = new Runnable() {
@@ -278,9 +291,16 @@ public class ExcelGeneratorAction extends BaseAction {
             public void run() {
                 try {
                     final XLSTransformer transformer = new XLSTransformer();
-                    LOG.debug("file writing operation called with seperate thread {}", Thread.currentThread().getId());
-                    transformer.transformXLS(templateFilePath, excelMap, reportFileName);
+                    LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
+                    InputStream is = new FileInputStream(templateFilePath);
+                    HSSFWorkbook workbook = transformer.transformXLS(is, excelMap);
+                    is.close();
+                    LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
+                    OutputStream os = new FileOutputStream(reportFile);
+                    workbook.write(os);
+                    os.flush();
                     LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                    os.close();
                 } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report: {}", ex.getMessage());
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
@@ -299,7 +319,7 @@ public class ExcelGeneratorAction extends BaseAction {
 
         try {
             while (!isExportClaimOperationCancelled()) {
-                Thread.sleep(500);
+                Thread.sleep(200);
                 if (!t.isAlive()) {
                     LOG.debug("writing to file operation finished existing from the loop ");
                     break;
@@ -316,26 +336,23 @@ public class ExcelGeneratorAction extends BaseAction {
                 } else {
                     LOG.debug("writing to xls thread is still alive even after cancelling the operation... ");
                 }
-                if (deleteReportFile(reportFileName)) {
-                    LOG.debug("Report file '{}' deleted.", reportFileName);
-                } else {
-                    LOG.debug("Failed to delete report file '{}'.", reportFileName);
-                }
             }
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
             LOG.error("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             getSession().put("exceptionThrown", true);
         }
 
         synchronized (getSession()) {
-            if (!(Boolean) getSession().get("exceptionThrown")) {
+            if (getSession().get("exceptionThrown") != null) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("cancelExportOperation", false);
                 getSession().put("isExportFinished", true);
-                getSession().put("reportFileLocation", reportFileName);
+                getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                 getSession().put("writingToFile", false);
             }
+            else
+                throw new Exception("Error Generating Report.");
         }
 
 //        excelMap.clear();
@@ -349,13 +366,19 @@ public class ExcelGeneratorAction extends BaseAction {
                 setExportFinished((Boolean) getSession().get("isExportFinished"));
                 setWritingToFile((Boolean) getSession().get("writingToFile"));
                 setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                if (getSession().get("exceptionThrown") == null) {
+                    setExceptionOccured(Boolean.FALSE);
+                } else
+                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
             } else {
                 setExportedClaimCount(0);
                 setExportFinished((Boolean) getSession().get("isExportFinished"));
                 setWritingToFile((Boolean) getSession().get("writingToFile"));
                 setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
-                setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                if (getSession().get("exceptionThrown") == null) {
+                    setExceptionOccured(Boolean.FALSE);
+                } else
+                    setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
             }
         }
         return SUCCESS;
@@ -367,7 +390,6 @@ public class ExcelGeneratorAction extends BaseAction {
             LOG.debug("export operation cancellation called ...");
             getSession().put("cancelExportOperation", true);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
-                deleteReportFile((String) getSession().get("reportFileLocation"));
                 getSession().put("reportFileLocation", null);
             }
             setExportCanceled(true);
@@ -381,18 +403,6 @@ public class ExcelGeneratorAction extends BaseAction {
         }
     }
 
-    private boolean deleteReportFile(String filename) {
-        LOG.debug("Request to delete  report file '{}'", filename);
-        File reportFile = new File(filename);
-        if (reportFile.exists()) {
-            LOG.debug("Report file '{}' exists - deleting... ", reportFile.getName());
-            return reportFile.delete();
-        } else {
-            LOG.debug("No such report file exists: '{}'", reportFile.getName());
-        }
-        return false;
-    }
-
     @Override
     public String execute() {
 
@@ -400,8 +410,8 @@ public class ExcelGeneratorAction extends BaseAction {
             LOG.debug("Request to direct download report file ");
             try {
                 doExportExcel();
-            } catch (IOException ex) {
-                LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage());
+            } catch (Exception ex) {
+                LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                 getSession().put("exceptionThrown", true);
             }
@@ -410,10 +420,9 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSession()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 try {
-                    excelStream = new FileInputStream((String) getSession().get("reportFileLocation"));
-                    deleteReportFile((String) getSession().get("reportFileLocation"));
+                    excelStream = new DeleteOnCloseFileInputStream((String) getSession().get("reportFileLocation"));
                 } catch (Exception ex) {
-                    LOG.error("exception in generating report {}", ex.getMessage());
+                    LOG.error("exception in generating report {}", ex.getMessage(), ex);
                     createEmptyReport();
                 }
                 getSession().put("reportFileLocation", null);
@@ -426,15 +435,18 @@ public class ExcelGeneratorAction extends BaseAction {
 
     private void createEmptyReport() {
         LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-        File emptyFile = new File("emptyFile");
         try {
+            File emptyFile = File.createTempFile("emptyExcel_", ".xls");
+            emptyFile.deleteOnExit();
             PrintWriter printWriter = new PrintWriter(emptyFile);
             printWriter.print("Unexpected error occured, Please contact Chox support.");
             printWriter.close();
-            excelStream = new FileInputStream(emptyFile);
-            deleteReportFile("emptyFile");
+            excelStream = new DeleteOnCloseFileInputStream(emptyFile);
+//            deleteReportFile("emptyFile");
         } catch (FileNotFoundException ex) {
-            LOG.error("file not found exception thrown {}", ex.getMessage());
+            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown {}", ex.getMessage(), ex);
         }
     }
 
