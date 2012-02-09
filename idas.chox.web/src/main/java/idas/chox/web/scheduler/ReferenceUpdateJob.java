@@ -60,7 +60,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
                     else if (status == 2)
                         statusString = "Failed - Reservation number doesn't exist";
                     else if (status == 3)
-                        statusString = "Failed - Resrvation number doesn't exist (but Ticket number does)";
+                        statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
                     else 
                         statusString = "Failed - an internal error occurred";
                     
