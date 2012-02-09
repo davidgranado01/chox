@@ -51,21 +51,25 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
 
                 if (oldReference != null && !oldReference.equals("")) {
                     referenceNumber = oldReference;
-                    String updateReturnString = claimService.updateChoReferenceNumber(oldReference, newReference, securityInfoProvider.getCurrentUser().getId());
-                    if (updateReturnString.toLowerCase().contains("updated")) {
-                        LOG.debug("CHO reference updated: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add(updateReturnString);
-                        } else {
-                            xlsDataMap.get(row).set(2, updateReturnString);
-                        }
+                    int status = claimService.updateChoReferenceNumber(oldReference, newReference, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                    String statusString = null;
+                    if (status == 0)
+                        statusString = "Updated";
+                    else if (status == 1)
+                        statusString = "Failed - Ticket number already exists";
+                    else if (status == 2)
+                        statusString = "Failed - Reservation number doesn't exist";
+                    else if (status == 3)
+                        statusString = "Failed - Resrvation number doesn't exist (but Ticket number does)";
+                    else 
+                        statusString = "Failed - an internal error occurred";
+                    
+                
+                    LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{oldReference, newReference, statusString, securityInfoProvider.getCurrentUser().getChorganisation().getId()});
+                    if (xlsDataMap.get(row).size() < 3) {
+                        xlsDataMap.get(row).add(statusString);
                     } else {
-                        LOG.debug("Error updating CHO reference: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add(updateReturnString);
-                        } else {
-                            xlsDataMap.get(row).set(2, updateReturnString);
-                        }
+                        xlsDataMap.get(row).set(2, statusString);
                     }
 
                 }

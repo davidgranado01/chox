@@ -79,7 +79,7 @@ public interface ClaimService extends DataService {
     
     public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
     
-    public String updateChoReferenceNumber(String oldReference, String newReference, Integer choId);
+    public int updateChoReferenceNumber(String oldReference, String newReference, Integer choId);
 
     public boolean setPenaltyStartToDateInvoiced(String choReference);
 

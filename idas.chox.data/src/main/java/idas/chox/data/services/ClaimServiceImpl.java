@@ -1105,7 +1105,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public String updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
+	public int updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
 		Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
 		if (claim != null) {
 			Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
@@ -1115,15 +1115,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 					claim.addComment(Comment.New(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
 					updateClaim(claim);
 					LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: "+ newReference);
-					return "Updated";
+					return 0;
 				} catch (Exception ex) {
 					LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
-					return "Failed – internal error";
+					return 9;
 				}
 			} else {
-				return "Failed – Ticket number already exists";
+				return 1;
 			}
 		}
-		return "Failed – Reservation number doesn’t exist";
+        else {
+            Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
+            if (newClaim != null)
+                return 3;
+        }
+		return 2;
 	}
 }
