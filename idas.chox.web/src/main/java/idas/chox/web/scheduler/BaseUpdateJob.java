@@ -1,5 +1,6 @@
 package idas.chox.web.scheduler;
 
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.util.EmailHelper;
 
 import java.io.InputStream;
@@ -172,4 +173,5 @@ public abstract class BaseUpdateJob {
     public void setSmtpEmailPassword(String smtpEmailPassword) {
         this.smtpEmailPassword = smtpEmailPassword;
     }
+
 }

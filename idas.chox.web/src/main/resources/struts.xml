@@ -100,10 +100,10 @@
         </action>
         <action name="doExportExcel" method="execute" class="idas.chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
+                <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">excelStream</param>
                 <param name="contentDisposition">attachment;filename="excel_report.xls"</param>
-                <param name="bufferSize">99999</param>
+                <param name="bufferSize">65536</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
             <result name="error">/jsp/excel_generation_overlimit.jsp</result>
@@ -111,10 +111,10 @@
         
         <action name="generateExcelReportForProcessedClaimDetails" method="generateExcelReport" class="idas.chox.web.actions.XmlUploadAction">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
+                <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">excelStream</param>
                 <param name="contentDisposition">attachment;filename="processed_claims_excel_report.xls"</param>
-                <param name="bufferSize">99999</param>
+                <param name="bufferSize">65536</param>
             </result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -772,10 +772,10 @@
         </action>
         <action name="downloadExcelReport" class="idas.chox.web.actions.ReportAction" method="downloadReport">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
+                <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">reportStream</param>
                 <param name="contentDisposition">attachment;filename="report.xls"</param>
-                <param name="bufferSize">99999</param>
+                <param name="bufferSize">65536</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
         </action>
@@ -1184,7 +1184,7 @@
             <result name="success" type="stream">
                 <param name="inputName">fileStream</param>
                 <param name="contentDisposition">${contentDisposition}</param>
-                <param name="bufferSize">99999</param>
+                <param name="bufferSize">65536</param>
                 <param name="contentType">${contentType}</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>

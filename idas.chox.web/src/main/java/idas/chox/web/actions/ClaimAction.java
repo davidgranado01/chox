@@ -482,7 +482,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String makeInterimPayment() {
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
-            if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
+            if (interimPayment != null && interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
 
             } else {

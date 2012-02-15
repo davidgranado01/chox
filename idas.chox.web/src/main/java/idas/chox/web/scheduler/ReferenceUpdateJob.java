@@ -7,6 +7,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.annotation.Secured;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
@@ -15,6 +20,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
     private static final String email_date_format = "dd MMMM yyyy";
     private ClaimService claimService;
+    private SecurityInfoProvider securityInfoProvider;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -45,21 +51,25 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
 
                 if (oldReference != null && !oldReference.equals("")) {
                     referenceNumber = oldReference;
-                    boolean isUpdateSuccessful = claimService.updateChoReferenceNumber(oldReference, newReference);
-                    if (isUpdateSuccessful) {
-                        LOG.debug("CHO reference updated: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add("Updated");
-                        } else {
-                            xlsDataMap.get(row).set(2, "Updated");
-                        }
+                    int status = claimService.updateChoReferenceNumber(oldReference, newReference, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                    String statusString = null;
+                    if (status == 0)
+                        statusString = "Updated";
+                    else if (status == 1)
+                        statusString = "Failed - Ticket number already exists";
+                    else if (status == 2)
+                        statusString = "Failed - Reservation number doesn't exist";
+                    else if (status == 3)
+                        statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
+                    else 
+                        statusString = "Failed - an internal error occurred";
+                    
+                
+                    LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{oldReference, newReference, statusString, securityInfoProvider.getCurrentUser().getChorganisation().getId()});
+                    if (xlsDataMap.get(row).size() < 3) {
+                        xlsDataMap.get(row).add(statusString);
                     } else {
-                        LOG.debug("Error updating CHO reference: {} -> {}", oldReference, newReference);
-                        if (xlsDataMap.get(row).size() < 3) {
-                            xlsDataMap.get(row).add("Failed");
-                        } else {
-                            xlsDataMap.get(row).set(2, "Failed");
-                        }
+                        xlsDataMap.get(row).set(2, statusString);
                     }
 
                 }
@@ -103,4 +113,9 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
     }
+
+	public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+		this.securityInfoProvider = securityInfoProvider;
+	}
+
 }
