@@ -7,45 +7,68 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
-import idas.chox.web.security.CustomAuthenticationProcessingFilter.BrowserUtil.BrowserType;
+import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 import java.security.SecureRandom;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.postgresql.util.Base64;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 /**
  *
  * @author emmanuel
  */
-public class CustomAuthenticationProcessingFilter extends AuthenticationProcessingFilter {
+public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProcessingFilter.class);
-    protected static final String MEDIA_TYPE_PLAIN_TEXT = "text/plain";
-    protected String passwordExpiredUrl;
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
+    private String passwordExpiredUrl;
     private UserService userService;
-
-    /* A place to put authentication so it will be available to
-     * sendRedirect
-     */
+    private String browserWarningParam;
     private Authentication currentAuthentication;
+
+    public String getBrowserWarningParam() {
+        return browserWarningParam;
+    }
+
+    public void setBrowserWarningParam(String browserWarningParam) {
+        this.browserWarningParam = browserWarningParam;
+    }
+
+    public Authentication getCurrentAuthentication() {
+        return currentAuthentication;
+    }
+
+    public void setCurrentAuthentication(Authentication currentAuthentication) {
+        this.currentAuthentication = currentAuthentication;
+    }
+
+    public String getPasswordExpiredUrl() {
+        return passwordExpiredUrl;
+    }
+
+    public void setPasswordExpiredUrl(String passwordExpiredUrl) {
+        this.passwordExpiredUrl = passwordExpiredUrl;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    
     @Override
-    protected void onSuccessfulAuthentication(HttpServletRequest request,
-            HttpServletResponse response, Authentication authResult)
-            throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         LOG.debug("In onSuccessfulAuthentication...");
 
-        super.onSuccessfulAuthentication(request, response, authResult);
-        currentAuthentication = authResult;
+        currentAuthentication = authentication;
 
         // Add nonce
         HttpSession session = request.getSession();
@@ -69,67 +92,54 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
             WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
             LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
         }
+        checkPasswordExpiry(request, response);
+        checkBrowserWarning(request, response, getDefaultTargetUrl());
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 
-    @Override
-    protected void sendRedirect(HttpServletRequest request,
-            HttpServletResponse response,
-            String targetUrl) throws IOException {
-        LOG.debug("In sendRedirect...with request: {}", request);
+    private void checkPasswordExpiry(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        LOG.debug("checking password expiry...with request: {}", request);
 
         if (currentAuthentication != null) {
             int forcePasswordChangeDays = 0;
-            
+
             PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
             Date passwordLastModifiedDate = user.getUser().getPasswordLastModifiedDate();
             long passwordNotChangedDays = DateHelper.getNumberOf24HourPeriodsBetween(passwordLastModifiedDate, new Date());
 
-            if (user.getIsCHO())
+            if (user.getIsCHO()) {
                 forcePasswordChangeDays = user.getUser().getChorganisation().getForcePasswordChange();
-            else if (user.getIsINS())
+            } else if (user.getIsINS()) {
                 forcePasswordChangeDays = user.getUser().getInsurer().getForcePasswordChange();
+            }
             if (forcePasswordChangeDays > 0 && passwordNotChangedDays >= forcePasswordChangeDays) {
                 LOG.debug("Password is '{}' days old and password expirey is set to '{}' days - forcing password change.",
                         passwordNotChangedDays, forcePasswordChangeDays);
                 WebUser webUser = user.getUser();
                 webUser.setIsExpired(Boolean.TRUE);
                 userService.saveUser(webUser);
-            }
-            else
+            } else {
                 LOG.debug("No forced password change: password is '{}' days old, forced days set to '{}'", passwordNotChangedDays, forcePasswordChangeDays);
-            
+            }
+
             if (user.getUser().getIsExpired()) {
-                sendResponse(request, response, getRelativeUrl(request, getPasswordExpiredUrl()));
+                getRedirectStrategy().sendRedirect(request, response, passwordExpiredUrl);
                 return;
             }
         }
+    }
 
-        LOG.debug("In sendRedirect...with targetUrl: {}", targetUrl);
+    private void checkBrowserWarning(HttpServletRequest request,
+            HttpServletResponse response,
+            String targetUrl) throws IOException {
+
+        LOG.debug("checking Browser warning...with targetUrl: {}", targetUrl);
         if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
-            // display a warning 
-            targetUrl += "?showSplash=true";
+            getRedirectStrategy().sendRedirect(request, response, targetUrl.concat(browserWarningParam));
+            return;
         }
 
-//        Map<String, String[]> extraParams = new TreeMap<String, String[]>();
-//        extraParams.put("showSplash", new String[]{"true"});
-//        HttpServletRequest wrappedRequest = new WrappedRequest(request, extraParams);
-//        super.sendRedirect(wrappedRequest, response, targetUrl);
-        super.sendRedirect(request, response, targetUrl);
-    }
-
-    private void sendResponse(HttpServletRequest req,
-            HttpServletResponse resp, String redirectUrl) throws IOException {
-        LOG.debug("In sendResponse...");
-        resp.sendRedirect(redirectUrl);
-    }
-
-    private String getRelativeUrl(HttpServletRequest request, String path) {
-        LOG.debug("In getRelativeUrl...");
-        if (path != null) {
-            return request.getContextPath() + path;
-        } else {
-            return null;
-        }
     }
 
     private BrowserType checkBrowserType(HttpServletRequest req) {
@@ -156,22 +166,6 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
             }
         }
         return type;
-    }
-
-    /**
-     * @return the passwordExpiredUrl
-     */
-    public String getPasswordExpiredUrl() {
-        return passwordExpiredUrl;
-    }
-
-    /**
-     * @param passwordExpiredUrl the passwordExpiredUrl to set
-     */
-    public void setPasswordExpiredUrl(String passwordExpiredUrl) {
-        this.passwordExpiredUrl = passwordExpiredUrl;
-
-
     }
 
     public static class BrowserUtil {

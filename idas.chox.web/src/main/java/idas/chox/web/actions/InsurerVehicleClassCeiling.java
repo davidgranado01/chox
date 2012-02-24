@@ -3,7 +3,7 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.annotation.Secured;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;

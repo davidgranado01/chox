@@ -4,7 +4,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.VehicleClassCeilingService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class VehicleClassDropDownAction extends BaseAction {
 

@@ -10,7 +10,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import org.apache.ws.security.WSPasswordCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *

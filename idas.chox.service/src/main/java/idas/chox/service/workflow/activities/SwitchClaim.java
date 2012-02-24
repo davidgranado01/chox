@@ -14,7 +14,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class SwitchClaim extends BaseActivity {
 

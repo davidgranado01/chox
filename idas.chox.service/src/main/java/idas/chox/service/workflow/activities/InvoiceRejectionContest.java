@@ -1,7 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.RulesEngineResponse;

@@ -3,7 +3,7 @@ package idas.chox.web.actions;
 import idas.chox.core.services.LookupService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class OrganisationDropDownAction extends BaseAction {
 

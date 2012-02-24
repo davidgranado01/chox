@@ -1,56 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+  xmlns:p="http://www.springframework.org/schema/p"
+  default-autowire="byName">
 
-    <security:global-method-security secured-annotations="enabled" />
+    <global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
+    
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/images/**" security="none"/>
+    <http pattern="/scripts/**" security="none"/>
+<!--    <http pattern="/login.action" security="none"/>-->
+    
+    <http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
+        <intercept-url pattern="/login.action" access="hasAnyRole('ROLE_ANONYMOUS','ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
+        <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
+        <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
+        <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
+        <session-management session-authentication-strategy-ref="sessionAuthStrategy" invalid-session-url="/j_spring_security_logout"/>
+    </http>
+    
+    <authentication-manager alias="authenticationManager" erase-credentials="true">
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder hash="md5"/>
+        </authentication-provider>
+    </authentication-manager>
+    
+    <beans:bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+        <beans:property name="errorPage" value="/j_spring_security_logout"/>
+    </beans:bean>
+    
+    <!-- 
+         The AuthenticationEntryPoint will be called if the user requests a secure HTTP resource but they are not authenticated. 
+         User will be redirected to the said loginFormUrl.
+         When using a relative URL, you can set the forceHttps property to true, to force the protocol used for the login form to be HTTPS, 
+         even if the original intercepted request for a resource used the HTTP protocol
+    -->
+    
+    <beans:bean id="authenticationEntryPoint"  class="idas.chox.web.security.CustomAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/login.action"/>
+        <beans:property name="forceHttps" value="false" />
+    </beans:bean>
 
-    <security:http auto-config="false" entry-point-ref="authenticationProcessingFilterEntryPoint" session-fixation-protection="migrateSession">
-        <!--security:intercept-url pattern="/prv/p/updateUserDetail.action" access="ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_CHO_MNG" /-->
-        <!--security:intercept-url pattern="/prv/p/updateUserDetail.action" access="ROLE_CHOX_ADMIN" /-->
-        <security:intercept-url pattern="/prv/**"         access="ROLE_CHO,ROLE_INS,ROLE_CHOX" />
-        <security:intercept-url pattern="/**"              filters="none" />
-        <security:logout logout-success-url="/login.action"/>
-        <security:logout invalidate-session="true"/>
-    </security:http>
+    <beans:bean id="exceptionTranslationFilter"  class="org.springframework.security.web.access.ExceptionTranslationFilter">
+        <beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+        <beans:property name="accessDeniedHandler" ref="accessDeniedHandler"/>
+    </beans:bean>
 
-    <security:authentication-provider user-service-ref="userDetailsService">
-        <security:password-encoder hash="md5"/>
-    </security:authentication-provider>
+    
+    <beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <beans:property name="authenticationFailureHandler" ref="failureHandler" />
+        <beans:property name="authenticationSuccessHandler" ref="successHandler" />
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="sessionAuthenticationStrategy" ref="sessionAuthStrategy" />
+        <beans:property name="filterProcessesUrl" value="/j_spring_security_check"/>
+    </beans:bean>
+    
+    <beans:bean id="successHandler" class="idas.chox.web.security.CustomAuthenticationSuccessHandler" >
+        <beans:property name="defaultTargetUrl" value="/prv/inbox.action" /> 
+        <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
+        <beans:property name="passwordExpiredUrl"  value="/prv/openUserAccountRedirect.action"/>
+        <beans:property name="browserWarningParam"  value="?showSplash=true"/>
+    </beans:bean>
+    
+    <beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
+        <beans:property name="defaultFailureUrl" value="/login.action?error=true" />
+    </beans:bean>
+    
+    <beans:bean id="sessionAuthStrategy" class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+    
+</beans:beans>
 
-    <bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
-        <!--property name="authenticationEntryPoint" ref="authenticationEntryPoint" /-->
-        <property name="authenticationEntryPoint" ref="authenticationProcessingFilterEntryPoint" />
-        <property name="accessDeniedHandler" ref="accessDeniedHandler" />
-    </bean>
-    <bean id="accessDeniedHandler" class="org.springframework.security.ui.AccessDeniedHandlerImpl">
-        <!--property name="errorPage" value="/chox_copyright.html" /-->
-        <property name="errorPage" value="/j_spring_security_logout" />
-    </bean>
-
-    <security:authentication-manager alias="authenticationManager" />
-
-
-    <bean id="authenticationProcessingFilter" class="idas.chox.web.security.CustomAuthenticationProcessingFilter" autowire="byType">
-        <security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
-        <property name="defaultTargetUrl" value="/prv/inbox.action" />
-        <property name="alwaysUseDefaultTargetUrl"  value="true" />
-        <property name="authenticationManager" ref="authenticationManager" />
-        <property name="passwordExpiredUrl"  value="/prv/openUserAccountRedirect.action"/>
-        <!--property name="passwordExpiredUrl"  value="/prv/openUserAccount.action" /-->
-        <property name="authenticationFailureUrl" value="/login.action?error=true" />
-        <property name="allowSessionCreation" value="true" />
-        <property name="invalidateSessionOnSuccessfulAuthentication" value="true" />
-        <property name="migrateInvalidatedSessionAttributes" value="true" />
-    </bean>
-
-    <bean id="authenticationProcessingFilterEntryPoint" class="idas.chox.web.security.CustomAuthenticationProcessingFilterEntryPoint">
-        <property name="loginFormUrl" value="/login.action" />
-        <property name="forceHttps" value="false" />
-    </bean>
-</beans>

@@ -20,7 +20,7 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 
 

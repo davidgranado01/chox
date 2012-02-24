@@ -2,7 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.services.BreBandService;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 
 public class BreBandDropDownAction extends BaseAction {

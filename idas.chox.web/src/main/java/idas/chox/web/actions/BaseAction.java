@@ -13,7 +13,7 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 

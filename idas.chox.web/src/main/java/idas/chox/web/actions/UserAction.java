@@ -17,7 +17,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserViewData;
 import idas.chox.service.ActionResponse;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 

@@ -7,7 +7,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

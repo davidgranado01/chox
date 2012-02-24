@@ -9,7 +9,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);

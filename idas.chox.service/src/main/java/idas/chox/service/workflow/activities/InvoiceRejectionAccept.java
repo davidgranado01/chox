@@ -7,7 +7,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
 import java.util.List;
 import org.hibernate.util.StringHelper;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class InvoiceRejectionAccept extends BaseActivity {
 

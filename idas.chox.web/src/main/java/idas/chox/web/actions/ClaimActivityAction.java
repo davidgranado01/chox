@@ -13,7 +13,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import net.sf.json.JSONObject;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {

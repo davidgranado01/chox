@@ -16,7 +16,7 @@ import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ReportAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
 import net.sf.json.JSONArray;
 import idas.chox.core.model.Insurer;

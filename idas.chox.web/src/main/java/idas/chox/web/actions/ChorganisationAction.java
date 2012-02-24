@@ -13,7 +13,7 @@ import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ChorganisationAction extends BaseAction implements ModelDriven<Chorganisation>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAction.class);

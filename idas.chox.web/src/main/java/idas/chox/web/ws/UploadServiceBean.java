@@ -26,7 +26,7 @@ import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 
 public class UploadServiceBean {

@@ -10,7 +10,7 @@ import idas.chox.web.viewdata.InsurerChorganisationViewData;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 
 public class InsurerChorganisationAction extends BaseAction {

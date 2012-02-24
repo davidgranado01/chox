@@ -4,7 +4,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class InvoicePaymentLogged extends BaseActivity {
 

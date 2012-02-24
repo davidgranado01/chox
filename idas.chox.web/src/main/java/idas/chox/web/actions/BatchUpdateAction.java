@@ -9,7 +9,7 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class BatchUpdateAction extends BaseAction {
 

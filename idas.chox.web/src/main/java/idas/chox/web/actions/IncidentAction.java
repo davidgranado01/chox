@@ -5,7 +5,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  *

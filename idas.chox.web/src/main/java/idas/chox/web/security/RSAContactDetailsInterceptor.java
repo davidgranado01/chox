@@ -5,11 +5,11 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import idas.chox.core.model.WebUser;
 import idas.chox.service.security.PermissionedUser;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *

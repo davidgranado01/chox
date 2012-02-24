@@ -5,8 +5,7 @@ import idas.chox.core.model.Injury;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
-
+import org.springframework.security.access.AccessDeniedException;
 /**
  *
  * @author Emmanuel

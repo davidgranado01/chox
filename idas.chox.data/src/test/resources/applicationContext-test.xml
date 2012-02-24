@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
-    default-autowire="autodetect" >   
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.h2.Driver">
-        </property>
-        <property name="url" value="jdbc:h2:mem:test">
-        </property>
-        <property name="username" value="sa">
-        </property>
-        <property name="password" value="">
-        </property>
-    </bean>
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+       default-lazy-init="true"
+       default-autowire="byName">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="org.h2.Driver"
+        p:url="jdbc:h2:mem:test"
+        p:username="sa"
+        p:password=""/>
+        
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
@@ -34,7 +29,7 @@
         </property>
         <property name="mappingResources">
             <list>
-                 <value>hbm/History.hbm.xml</value>
+                <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
                 <value>hbm/WebUserRole.hbm.xml</value>
                 <value>hbm/BreBandOrganisation.hbm.xml</value>

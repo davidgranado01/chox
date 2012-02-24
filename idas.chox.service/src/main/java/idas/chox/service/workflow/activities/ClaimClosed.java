@@ -5,7 +5,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimClosed extends BaseActivity {
     private TaskService taskService;

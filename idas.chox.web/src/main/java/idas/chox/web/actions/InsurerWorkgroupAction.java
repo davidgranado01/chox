@@ -12,7 +12,7 @@ import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

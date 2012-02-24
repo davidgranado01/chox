@@ -2,16 +2,17 @@ package idas.chox.service.security;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
+import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Set;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public class PermissionedUser implements UserDetails {
 
     private WebUser user;
-    private String roles;
-    private GrantedAuthority[] authorities;
+    private ArrayList<SimpleGrantedAuthority> authorities;
 
     public PermissionedUser(WebUser user) {
         this.user = user;
@@ -26,20 +27,14 @@ public class PermissionedUser implements UserDetails {
         return user == null ? "" : user.getPassword();
     }
 
-    //we currently support single user single role only
     @Override
-    public GrantedAuthority[] getAuthorities() {
-
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) {
-
+            authorities = new ArrayList<SimpleGrantedAuthority>();
             Set roleSet = user.getRoles();
-            authorities = new GrantedAuthority[roleSet.size()];
-
-            int i = 0;
             for (Object o : roleSet) {
                 String roleName = ((WebUserRole) o).getName();
-                authorities[i] = new GrantedAuthorityImpl(roleName);
-                i++;
+                authorities.add(new SimpleGrantedAuthority(roleName));
             }
         }
         return authorities;

@@ -13,7 +13,7 @@ import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  *

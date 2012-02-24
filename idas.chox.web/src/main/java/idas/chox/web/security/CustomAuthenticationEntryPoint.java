@@ -2,30 +2,28 @@ package idas.chox.web.security;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AuthenticationException;
-import org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 /**
  *
  * @author emmanuel
  */
-public class CustomAuthenticationProcessingFilterEntryPoint extends AuthenticationProcessingFilterEntryPoint {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProcessingFilterEntryPoint.class);
+public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
 
     @Override
-    public void commence(ServletRequest request, ServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         LOG.debug("In CustomAuthenticationProcessingFilterEntryPoint...");
-        if (isAjaxRequest((HttpServletRequest) request)) {
+        if (isAjaxRequest(request)) {
             LOG.debug("Is AJAX request.");
-           HttpServletResponse httpResponse = (HttpServletResponse)response;
+           HttpServletResponse httpResponse = response;
            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-           ((HttpServletRequest) request).getSession().invalidate();
+           request.getSession().invalidate();
         } else {
             // no ajax request
             LOG.debug("Not an AJAX request.");

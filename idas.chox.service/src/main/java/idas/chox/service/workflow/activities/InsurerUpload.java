@@ -13,7 +13,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceService;
 import java.util.Date;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

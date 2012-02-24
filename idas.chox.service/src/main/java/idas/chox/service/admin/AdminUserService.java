@@ -2,8 +2,6 @@ package idas.chox.service.admin;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.providers.encoding.Md5PasswordEncoder;
-import org.springframework.security.providers.encoding.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.common.OrganisationType;
@@ -31,6 +29,8 @@ import idas.chox.service.ActionResponse;
 import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

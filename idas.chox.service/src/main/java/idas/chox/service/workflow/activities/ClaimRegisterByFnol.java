@@ -6,7 +6,7 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.hibernate.util.StringHelper;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRegisterByFnol extends BaseActivity {
 

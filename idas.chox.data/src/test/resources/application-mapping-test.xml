@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
-       default-autowire="autodetect">
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
-        <property name="username" value="chox_user"></property>
-        <property name="password" value="ch0xpa33"></property>
-    </bean>
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+       default-lazy-init="true"
+       default-autowire="byName">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="org.postgresql.Driver"
+        p:url="jdbc:postgresql://localhost:5432/chox"
+        p:username="chox_user"
+        p:password="ch0xpa33"/>
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
@@ -22,7 +26,7 @@
             </props>
         </property>
         <property name="mappingResources">
-           <list>
+            <list>
                 <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
                 <value>hbm/WebUserRole.hbm.xml</value>

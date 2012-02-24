@@ -13,7 +13,7 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
 

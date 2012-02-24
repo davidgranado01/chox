@@ -4,8 +4,9 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.WebUser;
 import idas.chox.service.security.PermissionedUser;
 import java.io.Serializable;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 /**
  *

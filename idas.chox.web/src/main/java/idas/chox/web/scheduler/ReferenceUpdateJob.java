@@ -7,10 +7,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.annotation.Secured;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
-
-import idas.chox.core.model.WebUser;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;

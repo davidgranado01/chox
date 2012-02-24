@@ -4,8 +4,9 @@ import idas.chox.service.security.PermissionedUser;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.opensymphony.xwork2.ActionInvocation;
 import java.lang.reflect.Method;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 public class AcegiInterceptor extends AbstractInterceptor {
 

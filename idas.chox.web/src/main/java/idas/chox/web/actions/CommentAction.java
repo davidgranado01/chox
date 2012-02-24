@@ -11,7 +11,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);

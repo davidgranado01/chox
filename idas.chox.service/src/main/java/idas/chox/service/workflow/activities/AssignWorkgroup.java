@@ -7,7 +7,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class AssignWorkgroup extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(AssignWorkgroup.class);

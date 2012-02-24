@@ -15,7 +15,7 @@ import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ResolveLiability extends BaseActivity {
 

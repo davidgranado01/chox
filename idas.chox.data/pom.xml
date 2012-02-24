@@ -62,92 +62,97 @@
         <dependency>
             <groupId>idas.chox</groupId>
             <artifactId>core</artifactId>
-            <version>2.0</version>
+            <version>${chox.core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.8.Final</version>
+            <version>${hibernate-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
-            <version>3.6.8.Final</version>
+            <version>${hibernate-ehcache.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
-      <exclusions>
-         <exclusion>
-           <groupId>commons-logging</groupId>
-           <artifactId>commons-logging</artifactId>
-         </exclusion>
-       </exclusions>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>2.5.6.SEC01</version>
+            <version>${spring-core.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>2.5.6.SEC01</version>
+            <version>${spring-orm.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.8.0.GA</version>
+            <version>3.12.1.GA</version>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
+            <version>${postgresql-jdbc.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.3.154</version>
+            <version>${h2database.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>2.5.6.SEC01</version>
+            <version>${spring-test.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context.version}</version>
         </dependency>
         <dependency>
             <groupId>org.unitils</groupId>
             <artifactId>unitils-core</artifactId>
-            <version>3.1</version>
+            <version>3.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.unitils</groupId>
             <artifactId>unitils-orm</artifactId>
-            <version>3.1</version>
+            <version>3.3</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--  Hibernate Annotations is incorporated into Hibernate Core, so the old hibernate-annotations jar should not be included -->
+<!--        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
-            <version>3.4.0.GA</version>
-            <scope>test</scope>
-        </dependency>
+            <version>${hibernate-annotations.version}</version>
+        </dependency>-->
         <!-- jsoup HTML parser library @ http://jsoup.org/ -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.6.1</version>
+            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 </project>

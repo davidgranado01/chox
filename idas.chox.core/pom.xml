@@ -10,7 +10,7 @@
     <groupId>idas.chox</groupId>
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>2.0</version>
+    <version>${chox.core.version}</version>
     <name>idas.chox.core</name>
     <url>http://maven.apache.org</url>
     <build>
@@ -30,24 +30,24 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.6.4</version>
+            <version>${jcl-over-slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.0.4</version>
+            <version>${commons-logging.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
+            <version>${commons-lang.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -68,17 +68,17 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.0.0</version>
+            <version>${logback-core.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.0</version>
+            <version>${logback-classic.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-access</artifactId>
-            <version>1.0.0</version>
+            <version>${logback-access.version}</version>
         </dependency>
         <dependency> 
             <groupId>de.huxhorn.lilith</groupId> 
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -110,7 +110,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.6.1</version>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.2.0.Final</version>
+            <version>${hibernate-validator.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -3,7 +3,7 @@ package idas.chox.web.actions;
 import idas.chox.core.services.WebUserUserRoleService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 public class WebUserroleDropDownAction extends BaseAction {
 

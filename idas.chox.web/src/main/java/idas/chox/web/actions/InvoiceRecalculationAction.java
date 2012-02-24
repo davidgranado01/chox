@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
