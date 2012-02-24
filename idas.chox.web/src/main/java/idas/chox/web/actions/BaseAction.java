@@ -22,16 +22,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private String actionResult;
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
-    private Map session;
+    private Map<String,Object> session;
     private String VALID_SESSION = "validSession";
 
-    public Map getSession() {
+    public Map<String,Object> getSession() {
         return session;
     }
 
     @Override
-    public void setSession(Map arg0) {
-        this.session = arg0;
+    public void setSession(Map<String,Object> session) {
+        this.session = session;
     }
 
     public boolean isSearchHistory() {
@@ -43,7 +43,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public void setSearchHistory(boolean searchHistory) {
-        if (!session.containsKey("searchHistory") && searchHistory) {
+        if (session !=null && !session.containsKey("searchHistory") && searchHistory) {
             session.put("searchHistory", searchHistory);
         }
     }
