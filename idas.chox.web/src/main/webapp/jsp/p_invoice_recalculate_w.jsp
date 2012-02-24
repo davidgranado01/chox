@@ -479,7 +479,7 @@
                 Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
-            
+//            return randomNumber;
         }
 
         function refreshPenaltyChargeForm(){
