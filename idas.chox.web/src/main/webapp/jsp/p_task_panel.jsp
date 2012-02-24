@@ -566,7 +566,6 @@
                 }
             });
             setTimeout("loadTasks()", 100);
-            //          loadTasks();
         }
     }
 
@@ -588,7 +587,7 @@
         hideCompleted = !hideCompleted;
         loadTasks();
     }
-
+    
 </script>
 
 <div class="chox-form-item">

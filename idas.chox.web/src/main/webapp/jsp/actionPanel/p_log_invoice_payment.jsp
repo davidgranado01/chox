@@ -1,6 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
+<s:if test="#parameters.devp || development">
+	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
+</s:if>
+<s:else>
+	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
+</s:else>
 <script type="text/javascript">
     var paymentDetailsConfirmationEnabled = <s:property value="paymentDetailsConfirmationEnabled"/>;
     var panaltyChargeApplied = <s:property value="PenaltyChargeApplied"/>;

@@ -10,6 +10,8 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import java.util.Map;
 import net.sf.json.JSONObject;
+
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
@@ -370,4 +372,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         return SUCCESS;
     }
+
+	public String getDevelopment() {
+		return ServletActionContext.getServletContext().getInitParameter("development");
+	}
+
 }
