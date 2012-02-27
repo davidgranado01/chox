@@ -25,7 +25,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     private BreBandService breBandService;
     private VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService;
 
-    public void setBreBandServiceService(BreBandService breBandService) {
+    public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }
 
