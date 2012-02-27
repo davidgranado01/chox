@@ -46,8 +46,7 @@
         <spring-jdbc.version>3.1.1.RELEASE</spring-jdbc.version>
         <spring-expression.version>3.1.1.RELEASE</spring-expression.version>
         <spring-beans.version>3.1.1.RELEASE</spring-beans.version>
-        <spring-security-core-tiger.version>2.0.7.RELEASE</spring-security-core-tiger.version>
-        <spring-support.version>2.0.8</spring-support.version>
+        <spring-context-support.version>3.1.1.RELEASE</spring-context-support.version>
         <spring-web.version>3.1.1.RELEASE</spring-web.version>
         <spring-security-config.version>3.1.0.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.1.0.RELEASE</spring-security-web.version>

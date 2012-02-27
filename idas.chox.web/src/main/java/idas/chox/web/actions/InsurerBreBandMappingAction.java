@@ -4,7 +4,6 @@ import idas.chox.core.model.BreBand;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
-import org.springframework.security.annotation.Secured;
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BreBandChorganisationViewData;
 import idas.chox.web.viewdata.ChorganisationViewData;
 import java.util.Iterator;
+import org.springframework.security.access.annotation.Secured;
 
 public class InsurerBreBandMappingAction extends BaseAction {
 

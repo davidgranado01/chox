@@ -4,7 +4,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.service.security.AdminAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 public class AdminAction extends BaseAction {
 

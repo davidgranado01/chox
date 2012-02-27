@@ -6,10 +6,10 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.ChorganisationAlias;
-import org.springframework.security.annotation.Secured;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChoAliasViewData;
+import org.springframework.security.access.annotation.Secured;
 
 public class ChoAliasAction extends BaseAction implements ModelDriven<ChorganisationAlias>, Preparable {
 

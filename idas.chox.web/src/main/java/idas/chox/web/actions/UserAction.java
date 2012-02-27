@@ -6,7 +6,6 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
-import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
@@ -18,6 +17,7 @@ import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserViewData;
 import idas.chox.service.ActionResponse;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 

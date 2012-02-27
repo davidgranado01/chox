@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.text.ParseException;
-import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.sf.json.JSONArray;
@@ -17,6 +16,7 @@ import idas.chox.service.admin.BillingService;
 import idas.chox.web.viewdata.BillingViewData;
 import idas.chox.core.model.BillingDetail;
 import idas.chox.web.viewdata.BillingDetailViewData;
+import org.springframework.security.access.annotation.Secured;
 
 /**
  *

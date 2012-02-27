@@ -5,11 +5,11 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAliasViewData;
+import org.springframework.security.access.annotation.Secured;
 
 public class InsurerAliasAction extends BaseAction implements ModelDriven<InsurerAlias>, Preparable {
 

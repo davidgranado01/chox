@@ -8,7 +8,7 @@ import idas.chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 public class UserWorkgroupAction extends BaseAction {
 
