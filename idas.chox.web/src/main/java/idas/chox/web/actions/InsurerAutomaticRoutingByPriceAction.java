@@ -4,7 +4,6 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.core.model.IdLookupItem;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 
 /**
  *

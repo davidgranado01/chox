@@ -256,12 +256,6 @@
 			<version>1.6.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core-tiger</artifactId>
-			<version>${spring-security-core-tiger.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>net.sourceforge.messadmin</groupId>
 			<artifactId>MessAdmin-Core</artifactId>
 			<version>4.1.1</version>
@@ -330,8 +324,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-support</artifactId>
-			<version>${spring-support.version}</version>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-context-support.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>

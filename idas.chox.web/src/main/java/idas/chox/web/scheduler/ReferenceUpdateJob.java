@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.annotation.Secured;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
+import org.springframework.security.access.annotation.Secured;
 
 public class ReferenceUpdateJob extends BaseUpdateJob {
 

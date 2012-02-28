@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.annotation.Secured;
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
 import java.util.Iterator;
+import org.springframework.security.access.annotation.Secured;
 
 public class InsurerVehicleClassCeiling extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerVehicleClassCeiling.class);

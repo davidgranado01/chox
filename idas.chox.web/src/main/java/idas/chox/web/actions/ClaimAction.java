@@ -63,7 +63,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import net.sf.json.JSONObject;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
