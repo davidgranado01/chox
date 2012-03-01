@@ -1,0 +1,4 @@
+--
+-- 6.9.6 BRE Modifications
+--
+ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) not null default 0.0;

@@ -652,6 +652,18 @@
                         </div>
                     </div>
 
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Extras Tolerances</div>
+                        <div class="status-info">
+                            <b>Extras Tolerances:</b><br/>
+                            Below are the maximum allowed total charges for the relevant Invoice extras.
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Non Standard Risk Insurance Premium Ceiling (£)</label>
+                            <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumCeilingToleranceId" name="nonStandardInsurancePremiumCeilingTolerance" value="<s:property value="nonStandardInsurancePremiumCeilingTolerance" />" />
+                        </div>
+                    </div>
+
 
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Additional Invoice Validations</div>
@@ -929,7 +941,7 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div>
                             <label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging more than the specified limit/ceiling for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="miscellaneousChargeCheck" value="miscellaneousChargeCheck" /></div>
