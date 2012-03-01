@@ -36,7 +36,8 @@ public class ClaimRevert extends BaseActivity {
                 && !claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) && !claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG) && !claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_ENG)
                 && !claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_PAID) && !claim.getStatus().equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)
-                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA))) {
+                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
+                && !claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_CONTESTED))) {
             throw new AccessDeniedException("Not in correct role to revert claim in status '" + claim.getStatus() + "'.");
         }
     }
@@ -125,5 +126,6 @@ public class ClaimRevert extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_PAID);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
     }
 }

@@ -197,6 +197,8 @@ public class UploadServiceBean {
                 result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_APPROVED);
             else if (uploadResult.getClaimStatus().equals("ManualInvoiceBRERejected"))
                 result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_REJECTED);
+            else if (uploadResult.getClaimStatus().equals("ManualInvoiceContested"))
+                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
             else if (uploadResult.getClaimStatus().equals("ManualInvoicePaid"))
                 result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_PAID);
             else if (uploadResult.getClaimStatus().equals("InvoiceUnassigned"))

@@ -66,6 +66,8 @@ public class InvoiceStatusReportCummulativeData {
     private BigDecimal valOfManualInvoicesApprovedCumm;
     private Integer noOfManualInvoicesRejectedCumm;
     private BigDecimal valOfManualInvoicesRejectedCumm;
+    private Integer noOfManualInvoicesContestedCumm;
+    private BigDecimal valOfManualInvoicesContestedCumm;
 
     public static InvoiceStatusReportCummulativeData getObject(Map data) {
 
@@ -130,6 +132,8 @@ public class InvoiceStatusReportCummulativeData {
         result.setValOfManualInvoicesApprovedCumm((BigDecimal) data.get("val_manual_invoices_approved_total".toLowerCase()));
         result.setNoOfManualInvoicesRejectedCumm(((BigInteger) data.get("no_manual_invoices_rejected_total".toLowerCase())).intValue());
         result.setValOfManualInvoicesRejectedCumm((BigDecimal) data.get("val_manual_invoices_rejected_total".toLowerCase()));
+        result.setNoOfManualInvoicesContestedCumm(((BigInteger) data.get("no_manual_invoices_contested_total".toLowerCase())).intValue());
+        result.setValOfManualInvoicesContestedCumm((BigDecimal) data.get("val_manual_invoices_contested_total".toLowerCase()));
 
         return result;
 
@@ -590,4 +594,21 @@ public class InvoiceStatusReportCummulativeData {
     public void setValOfManualInvoicesRejectedCumm(BigDecimal valOfManualInvoicesRejectedCumm) {
         this.valOfManualInvoicesRejectedCumm = valOfManualInvoicesRejectedCumm;
     }
+
+    public Integer getNoOfManualInvoicesContestedCumm() {
+        return noOfManualInvoicesContestedCumm;
+    }
+
+    public void setNoOfManualInvoicesContestedCumm(Integer noOfManualInvoicesContestedCumm) {
+        this.noOfManualInvoicesContestedCumm = noOfManualInvoicesContestedCumm;
+    }
+
+    public BigDecimal getValOfManualInvoicesContestedCumm() {
+        return valOfManualInvoicesContestedCumm;
+    }
+
+    public void setValOfManualInvoicesContestedCumm(BigDecimal valOfManualInvoicesContestedCumm) {
+        this.valOfManualInvoicesContestedCumm = valOfManualInvoicesContestedCumm;
+    }
+    
 }

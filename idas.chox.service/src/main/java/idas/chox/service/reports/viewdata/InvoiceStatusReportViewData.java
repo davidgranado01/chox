@@ -66,6 +66,8 @@ public class InvoiceStatusReportViewData {
     private BigDecimal valOfManualInvoicesApproved;
     private Integer noOfManualInvoicesRejected;
     private BigDecimal valOfManualInvoicesRejected;
+    private Integer noOfManualInvoicesContested;
+    private BigDecimal valOfManualInvoicesContested;
 
     public static InvoiceStatusReportViewData getObject(Map data) {
 
@@ -131,6 +133,8 @@ public class InvoiceStatusReportViewData {
         result.setValOfManualInvoicesApproved((BigDecimal) data.get("val_manual_invoices_approved_current_month".toLowerCase()));
         result.setNoOfManualInvoicesRejected(((BigInteger) data.get("no_manual_invoices_rejected_current_month".toLowerCase())).intValue());
         result.setValOfManualInvoicesRejected((BigDecimal) data.get("val_manual_invoices_rejected_current_month".toLowerCase()));
+        result.setNoOfManualInvoicesContested(((BigInteger) data.get("no_manual_invoices_contested_current_month".toLowerCase())).intValue());
+        result.setValOfManualInvoicesContested((BigDecimal) data.get("val_manual_invoices_contested_current_month".toLowerCase()));
 
         return result;
 
@@ -591,4 +595,21 @@ public class InvoiceStatusReportViewData {
     public void setValOfManualInvoicesRejected(BigDecimal valOfManualInvoicesRejected) {
         this.valOfManualInvoicesRejected = valOfManualInvoicesRejected;
     }
+
+    public Integer getNoOfManualInvoicesContested() {
+        return noOfManualInvoicesContested;
+    }
+
+    public void setNoOfManualInvoicesContested(Integer noOfManualInvoicesContested) {
+        this.noOfManualInvoicesContested = noOfManualInvoicesContested;
+    }
+
+    public BigDecimal getValOfManualInvoicesContested() {
+        return valOfManualInvoicesContested;
+    }
+
+    public void setValOfManualInvoicesContested(BigDecimal valOfManualInvoicesContested) {
+        this.valOfManualInvoicesContested = valOfManualInvoicesContested;
+    }
+    
 }

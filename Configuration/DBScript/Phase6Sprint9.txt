@@ -34,3 +34,75 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.TeamSiteBreWorkflowReport';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.WorkgroupOwnerBreInvoiceReport';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.OverviewSummary';
+
+
+
+
+---------------------------------------------------------------------
+-- TO-DO ITEM 6.9.4 Manual Invoices - New Contested Status/Queue ---
+---------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('action.updateManualInvoice.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.InvoiceDetail.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.ClaimDetail.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.HireMonitoring.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.AuditTrail.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.History.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Notes.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.PaymentPack.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Tasks.ManualInvoiceContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceContested',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ManualInvoiceContested',FALSE,FALSE);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('filter.ManualInvoiceContested',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.History.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Notes.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+
+
+

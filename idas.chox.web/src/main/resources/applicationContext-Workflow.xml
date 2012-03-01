@@ -89,6 +89,7 @@
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype"/>
     <bean id="updateManualInvoicePaid" class="idas.chox.service.workflow.activities.UpdateManualInvoicePaid" scope="prototype"/>
+    <bean id="updateManualInvoiceContested" class="idas.chox.service.workflow.activities.UpdateManualInvoiceContested" scope="prototype"/>
     
     
 </beans>
