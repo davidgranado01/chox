@@ -6,6 +6,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.DateHelper;
 
 public class RepairBookedInDateOnSaturday implements IBusinessRule {
@@ -20,7 +21,15 @@ public class RepairBookedInDateOnSaturday implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
+        boolean isExcluded = false;
+        /*
+         * Phase 6 Sprint 9 todo item 6.9.6 excludes commercial, private hire and taxi vehicles
+         */
+        if (claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null) {
+            isExcluded = VehicleClass.isCommercialPrivateOrTaxi(claim.getCustomer().getVehicleClass().getName());
+        }
+
+        if (!isExcluded && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
             boolean success = true;
 
             if (claim.getHireMonitoringDetail().getRepairBookInDate() != null && claim.getCustomer().getIsUsable()) {

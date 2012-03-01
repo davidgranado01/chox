@@ -35,6 +35,26 @@ public class VehicleClass extends Entity implements Serializable {
         this.name = name;
     }
 
+    static public boolean isCommercialPrivateOrTaxi(String className) {
+        /*
+         * All Ts
+         * All PTs
+         * All PVs
+         * All CVs
+         * All RVs
+         * All CPs
+         * All CSs
+         * All CMs
+         */
+        if (className.charAt(0) == 'T' || className.startsWith("PT") || className.startsWith("PV")
+               || className.startsWith("CV") || className.startsWith("RV")
+               || className.startsWith("CP") || className.startsWith("CS")
+               || className.startsWith("CM") ) {
+            return true;
+        }
+
+        return false;
+    }
     static public boolean isPClass(String className) {
         if (className.charAt(0) == 'P' && className.charAt(1) >= '1' && className.charAt(1) <= '9') {
             return true;
