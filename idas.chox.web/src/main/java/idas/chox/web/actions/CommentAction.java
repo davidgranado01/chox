@@ -99,11 +99,12 @@ public class CommentAction extends ClaimModelAction<Comment> {
         try {
             if (model.getId() != null) {
                 WebUser user = model.getCreatedBy();
-                if (getAuthenticatedUser().isCHOXAdmin() || (getAuthenticatedUser().getId().compareTo(user.getId())==0 
-                           && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)
-                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())
-                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer())) {
-                    
+                if (getAuthenticatedUser().isCHOXAdmin() 
+                        || ((getAuthenticatedUser().getId().compareTo(user.getId())==0 
+                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())   
+                             || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
+                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
+
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
                     this.getActionResponse().AssignMessageResult("Note has been deleted.");
