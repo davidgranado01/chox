@@ -7,6 +7,7 @@ import idas.chox.core.services.CommentService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import java.util.ArrayList;
+import idas.chox.core.util.DateHelper;
 import java.util.List;
 import net.sf.json.JSONArray;
 import org.slf4j.Logger;
@@ -98,7 +99,8 @@ public class CommentAction extends ClaimModelAction<Comment> {
         try {
             if (model.getId() != null) {
                 WebUser user = model.getCreatedBy();
-                if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().getId().compareTo(user.getId())==0 
+                if (getAuthenticatedUser().isCHOXAdmin() || (getAuthenticatedUser().getId().compareTo(user.getId())==0 
+                           && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)
                         || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())
                         || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer())) {
                     
@@ -107,6 +109,13 @@ public class CommentAction extends ClaimModelAction<Comment> {
                     this.getActionResponse().AssignMessageResult("Note has been deleted.");
                     
                 } else {
+                    
+                    if (getAuthenticatedUser().getId().compareTo(user.getId()) == 0
+                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) >= 5) {
+                        LOG.warn("User trying to delete Comment which they created more than 5 mins ago.");
+                        this.getActionResponse().AssignMessageResult("Sorry, 5 minutes have elapsed since the creation of this note and therefore the note cannot be deleted.");
+                        return ERROR;
+                    }
                     LOG.warn("User trying to delete Comment which they do not own. user display name: {}, user id : {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
                     this.getActionResponse().AssignMessageResult("Sorry, You do not have permission to delete this note");
                     return ERROR;
