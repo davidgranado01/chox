@@ -21,7 +21,7 @@
         <intercept-url pattern="/prv/**"           access="hasAnyRole('ROLE_CHO','ROLE_INS','ROLE_CHOX')" />
         <logout invalidate-session="true" logout-success-url="/login.action" delete-cookies="JSESSIONID"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="authenticationFilter" />
-        <session-management session-authentication-strategy-ref="sessionAuthStrategy" invalid-session-url="/j_spring_security_logout"/>
+        <session-management session-authentication-strategy-ref="sessionAuthStrategy" />
     </http>
     
     <authentication-manager alias="authenticationManager" erase-credentials="true">
