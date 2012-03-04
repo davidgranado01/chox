@@ -87,14 +87,6 @@
                 }
             }
         });
-        $.validator.addMethod("claimOwnerSelection",
-        function(value) {
-            if(value === "") {
-                return false;
-            }
-            return true;
-        }, "You must select a 'Claim Owner'"
-    );
 
         if(isWorkgroupEnable) {
             selectedWorkgroupId = '<s:property value="workgroup.id"/>';
@@ -136,7 +128,8 @@
                     blur: function () {
                         if(this.getRawValue() == "") {
                             selectedWorkgroupId = '<s:property value="workgroup.id"/>';
-                            this.clearValue(); workgroupCombo.setValue(selectedWorkgroupId);;
+                            this.clearValue(); 
+                            workgroupCombo.setValue(selectedWorkgroupId);
                             doRenderClaimHandlerDropDown(selectedWorkgroupId);
                         }
                     }
@@ -166,21 +159,6 @@
         // DECLARE FORM VALIDATION
         var form = $("form#formOwnershipAssignmentAction");
 
-        form.validate(
-        {
-            errorLabelContainer: "#OwnershippAssignmentMessageBox",
-            rules: {
-                reasonOfRejectionId: {required: true},
-                oasWorkgroupId:{min:1},
-                claimOwnerId:{claimOwnerSelection: document.getElementById('claimOwnerComboId')}
-            },
-            messages: {
-                reasonOfRejectionId: {required:"You must choose a 'Reason For Rejection'"},
-                oasWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
-                claimOwnerId: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
-            }
-        });
-
         // RENDER CLAIM HANDLER DROP DOWN
         doRenderClaimHandlerDropDown(selectedWorkgroupId);
 
@@ -203,34 +181,45 @@
             claimOwnerCombo.reset();
         }
     }
-
+    
+    function validateComboBox(){
+    	if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
+    		$("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Claim Owner'").show();
+    		return false;
+    	} else if ($("#workgroupComboId").val() == "--- Please Select ---") {
+    		$("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Work Group'").show();
+    		return false;
+    	} else {
+    		$("#OwnershippAssignmentMessageBox").text("").show();
+    		return true;
+    	}
+    		
+    }
+    
     function doAssignOwnershipToFnolSubmit(){
-        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
-        actionPanel.registerAction("referFNOL");
-        delete settings.rules.claimOwnerId;
-        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
-        if($("form#formOwnershipAssignmentAction").valid()){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-        }
+    	if ($("[name='claimOwnerId']").val() == "")
+    		$("[name='claimOwnerId']").val(-1);
+    	actionPanel.registerAction("referFNOL");
+    	 if ($("#workgroupComboId").val() != "--- Please Select ---") {
+         	$("#OwnershippAssignmentMessageBox").text("").show();
+         	Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+         	$("#formOwnershipAssignmentAction").submit();
+         } else {
+        	 $("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Work Group'").show();
+         }
+    	
     }
 
     function doAssignOwnershipRejectSubmit(){
-        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
-        actionPanel.registerAction("rejectClaim");
-        delete settings.rules.claimOwnerId;
-        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
-            required: true,
-            messages: {required: "You must choose a 'Reason For Rejection'"}
-        });
-
-        if($("#formOwnershipAssignmentAction").valid()){
-            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
-        }
-
-        return false;
+    	actionPanel.registerAction("rejectClaim");
+    	if($("#reasonOfRejectionId").val() == "-1") {
+    		$("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").show();
+    	} else {
+    		$("#OwnershippAssignmentMessageBox").text("").show();
+    		Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+    	}
     }
+    
     function rejectClaim(btn) {
         if (btn == 'yes')    {
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
@@ -239,17 +228,13 @@
     }
 
     function doAssignOwnershipSubmit(){
-        actionPanel.registerAction("assignOwner");
-        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
-        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
-        settings.rules.claimOwnerId = {claimOwnerSelection: document.getElementById('claimOwnerComboId')};
-        if($("form#formOwnershipAssignmentAction").valid()){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-        }
-        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
-        //            claimOwnerSelection: document.getElementById('claimOwnerComboId')
-        //        })
-    }
+    	actionPanel.registerAction("assignOwner");
+    	if (validateComboBox()) {
+			Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+			$("#formOwnershipAssignmentAction").submit();
+    	}
+	}
+
 
 </script>
 
@@ -319,7 +304,7 @@
                                                     list="reasonOfClaimRejectionsRestricted"
                                                     listKey="id"
                                                     listValue="name"
-                                                    headerKey=""
+                                                    headerKey="-1"
                                                     headerValue="N/A"
                                                     emptyOption="false">
                                                 </s:select>
@@ -331,7 +316,7 @@
                                                     list="reasonOfClaimRejectionsRestricted"
                                                     listKey="id"
                                                     listValue="name"
-                                                    headerKey=""
+                                                    headerKey="-1"
                                                     headerValue="N/A"
                                                     disabled="true"
                                                     emptyOption="false">
@@ -350,9 +335,9 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="submit" id="ACOAAssignOwnerButtonId"value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
+                                        <input type="button" id="ACOAAssignOwnerButtonId" value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
                                         <s:if test="insurerIsFnolEnabled">
-                                            <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
+                                            <input type="button" id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
                                         <s:if test="rejectButtonEnabled">
                                             <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>

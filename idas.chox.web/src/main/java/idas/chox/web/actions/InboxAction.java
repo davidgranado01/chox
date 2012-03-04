@@ -55,7 +55,8 @@ public class InboxAction extends BaseAction {
     public void setShowHistory(int showHistory) {
         LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
         if (showHistory == 10) {
-            getSession().put("tabIndex", 0);
+        	if(getSession()!= null) // TODO when we press "Home" session is null?!?
+        		getSession().put("tabIndex", 0);
             this.showHistory = 0;
         } else {
             this.showHistory = showHistory;

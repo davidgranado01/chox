@@ -55,7 +55,7 @@
     });
 
     function userrole_loadGridViewList(){
-        userrole_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
+        userrole_gridviewData.load();
     }
 
     function doAddNewWebUserRole(){
@@ -235,7 +235,7 @@
                             list="availableUserroles"
                             listKey="id"
                             listValue="name"
-                            headerKey=""
+                            headerKey="-1"
                             headerValue="-- Please Select --"
                             emptyOption="false">
                         </s:select><input type="button" onclick="javascript: doAddNewWebUserRole();" value="Add New Role"/>

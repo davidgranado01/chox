@@ -108,7 +108,8 @@
 
     function brebandMapping_loadGridViewList(){
         breband_a_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
-        breband_s_gridviewData.load({params:{insurerId:<s:property value="insurerId" />,breBandId:$("#breBandId").val()}});
+        if($("#breBandId").val() != undefined)
+        	breband_s_gridviewData.load({params:{insurerId:<s:property value="insurerId" />,breBandId:$("#breBandId").val()}});
     }
 
     function breband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
@@ -149,7 +150,7 @@
         var param = {"insurerId":<s:property value="insurerId" />};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
-            $("#breBandId").val(-1);
+           
         });
     }
 

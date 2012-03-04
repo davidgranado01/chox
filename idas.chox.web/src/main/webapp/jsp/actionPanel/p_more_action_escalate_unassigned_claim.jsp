@@ -44,27 +44,16 @@
                                            }
             });
             workgroupStore.load({ params : {"orgId":insurerId}});
-            $.validator.addMethod("workgroupSelection",
-                            function(value) {
-                                if(value === "") {
-                                    return false;
-                                }
-                                return true;
-                            }, "You must select a 'Claim Owner'"
-            );
-
-            $("#formEscalateClaimAction").validate(
-            {
-                errorLabelContainer: "#EscalateClaimMessageBox",
-                    rules: {
-                        escalateWorkgroupId:{workgroupSelection: document.getElementById('escalateWorkgroupComboId')}
-                    },
-                    messages: {
-                        escalateWorkgroupId: {workgroupSelection:"You must supply a value for 'Workgroup'"}
-                    }
-            });
+            
+            $("#formEscalateClaimAction").submit(function() {
+                if ($("#escalateWorkgroupComboId").val() != "--- Please Select ---") {
+                  $("#EscalateClaimMessageBox").text("").show();
+                  return true;
+                }
+                $("#EscalateClaimMessageBox").text("You must supply a value for 'Workgroup'").show();
+                return false;
+             });
     });
-
     
 </script>
 

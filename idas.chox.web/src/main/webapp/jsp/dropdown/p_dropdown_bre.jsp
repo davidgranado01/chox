@@ -11,6 +11,7 @@
     listValue="name" 
     headerKey="-1"
     headerValue="-- Please Select --"    
+    onload="javascript: doBRESelectOnChange();"
     onchange="javascript: doBRESelectOnChange();"
     emptyOption="false">
 </s:select>

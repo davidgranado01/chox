@@ -479,7 +479,7 @@
                                         list="extraActionList"
                                         listKey="text"
                                         listValue="value"
-                                        headerKey=""
+                                        headerKey="-1"
                                         headerValue="-- More Actions --"
                                         emptyOption="false"
                                         onchange="javascript: moreActionOnchange();">

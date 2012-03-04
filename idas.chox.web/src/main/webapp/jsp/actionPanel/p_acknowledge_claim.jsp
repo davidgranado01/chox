@@ -151,7 +151,7 @@
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
                                                 listValue="name"
-                                                headerKey=""
+                                                headerKey="-1"
                                                 headerValue="N/A"
                                                 emptyOption="false">
                                             </s:select>
@@ -163,7 +163,7 @@
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
                                                 listValue="name"
-                                                headerKey=""
+                                                headerKey="-1"
                                                 headerValue="N/A"
                                                 disabled="true"
                                                 emptyOption="false">

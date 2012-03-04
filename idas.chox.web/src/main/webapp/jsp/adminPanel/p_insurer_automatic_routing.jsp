@@ -391,7 +391,7 @@
                                             list="availableWorkgroups"
                                             listKey="id"
                                             listValue="name"
-                                            headerKey=""
+                                            headerKey="-1"
                                             headerValue="--- ALL ---"
                                             emptyOption="false">
                                         </s:select>

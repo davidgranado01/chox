@@ -8,7 +8,7 @@
         list="userroleList" 
         listKey="id" 
         listValue="name" 
-        headerKey=""
+        headerKey="-1"
         headerValue="--- ALL ---"
         onchange="javascript:loadGridViewList();"
         emptyOption="false">
