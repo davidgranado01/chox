@@ -832,6 +832,10 @@
             <result name="success">/jsp/alertPanel/p_duplicated_supplementary_invoice_claim.jsp</result>
             <result name="empty">/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <action name="getAwaitingLitigationOutcomeAlert" class="idas.chox.web.actions.AlertAction" method="getAwaitingLitigationOutcomeAlert">
+            <result name="success">/jsp/alertPanel/p_awaiting_litigation_outcome.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
         
        <!--End Alert Panel-->
        <!--Start Admin-->

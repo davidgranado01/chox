@@ -68,6 +68,9 @@ public class InvoiceStatusReportViewData {
     private BigDecimal valOfManualInvoicesRejected;
     private Integer noOfManualInvoicesContested;
     private BigDecimal valOfManualInvoicesContested;
+    private Integer noOfInvoicesInLitigationStatus;
+    private BigDecimal valOfInvoicesInLitigationStatus;
+    private BigDecimal valOfInterimPaymentInLitigationStatus;
 
     public static InvoiceStatusReportViewData getObject(Map data) {
 
@@ -135,6 +138,10 @@ public class InvoiceStatusReportViewData {
         result.setValOfManualInvoicesRejected((BigDecimal) data.get("val_manual_invoices_rejected_current_month".toLowerCase()));
         result.setNoOfManualInvoicesContested(((BigInteger) data.get("no_manual_invoices_contested_current_month".toLowerCase())).intValue());
         result.setValOfManualInvoicesContested((BigDecimal) data.get("val_manual_invoices_contested_current_month".toLowerCase()));
+        
+        result.setNoOfInvoicesInLitigationStatus(((BigInteger) data.get("no_invoices_in_litigation_status_current_month".toLowerCase())).intValue());
+        result.setValOfInvoicesInLitigationStatus(((BigDecimal) data.get("val_invoices_in_litigation_status_current_month".toLowerCase())));
+        result.setValOfInterimPaymentInLitigationStatus(((BigDecimal) data.get("val_interim_payment_invoices_in_litigation_status_current_month".toLowerCase())));
 
         return result;
 
@@ -610,6 +617,30 @@ public class InvoiceStatusReportViewData {
 
     public void setValOfManualInvoicesContested(BigDecimal valOfManualInvoicesContested) {
         this.valOfManualInvoicesContested = valOfManualInvoicesContested;
+    }
+
+    public Integer getNoOfInvoicesInLitigationStatus() {
+        return noOfInvoicesInLitigationStatus;
+    }
+
+    public void setNoOfInvoicesInLitigationStatus(Integer noOfInvoicesInLitigationStatus) {
+        this.noOfInvoicesInLitigationStatus = noOfInvoicesInLitigationStatus;
+    }
+
+    public BigDecimal getValOfInterimPaymentInLitigationStatus() {
+        return valOfInterimPaymentInLitigationStatus;
+    }
+
+    public void setValOfInterimPaymentInLitigationStatus(BigDecimal valOfInterimPaymentInLitigationStatus) {
+        this.valOfInterimPaymentInLitigationStatus = valOfInterimPaymentInLitigationStatus;
+    }
+
+    public BigDecimal getValOfInvoicesInLitigationStatus() {
+        return valOfInvoicesInLitigationStatus;
+    }
+
+    public void setValOfInvoicesInLitigationStatus(BigDecimal valOfInvoicesInLitigationStatus) {
+        this.valOfInvoicesInLitigationStatus = valOfInvoicesInLitigationStatus;
     }
     
 }

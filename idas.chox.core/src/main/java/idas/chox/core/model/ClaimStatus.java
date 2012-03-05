@@ -36,6 +36,7 @@ public class ClaimStatus {
     public static final String MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
     public static final String MANUAL_INVOICE_PAID = "ManualInvoicePaid";
     public static final String MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
+    public static final String AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcome";
     private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>();
     private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>();
     private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>();
@@ -57,6 +58,7 @@ public class ClaimStatus {
 
         invoiceWithCHOStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        invoiceWithCHOStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
 
     }
 
@@ -109,6 +111,7 @@ public class ClaimStatus {
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(INVOICE_APPROVED_BY_BRE);
         status.add(INVOICE_DATA_CALCULATION_INCORRECT);
+        status.add(AWAITING_LITIGATION_OUTCOME);
         if (isEngineersEnabled) {
             status.add(INVOICE_ESCALATED);
         }

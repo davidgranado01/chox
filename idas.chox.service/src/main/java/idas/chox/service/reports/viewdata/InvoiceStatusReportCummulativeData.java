@@ -68,6 +68,9 @@ public class InvoiceStatusReportCummulativeData {
     private BigDecimal valOfManualInvoicesRejectedCumm;
     private Integer noOfManualInvoicesContestedCumm;
     private BigDecimal valOfManualInvoicesContestedCumm;
+    private Integer noOfInvoicesInLitigationStatusCumm;
+    private BigDecimal valOfInvoicesInLitigationStatusCumm;
+    private BigDecimal valOfInterimPaymentInLitigationStatusCumm;
 
     public static InvoiceStatusReportCummulativeData getObject(Map data) {
 
@@ -134,6 +137,10 @@ public class InvoiceStatusReportCummulativeData {
         result.setValOfManualInvoicesRejectedCumm((BigDecimal) data.get("val_manual_invoices_rejected_total".toLowerCase()));
         result.setNoOfManualInvoicesContestedCumm(((BigInteger) data.get("no_manual_invoices_contested_total".toLowerCase())).intValue());
         result.setValOfManualInvoicesContestedCumm((BigDecimal) data.get("val_manual_invoices_contested_total".toLowerCase()));
+        
+        result.setNoOfInvoicesInLitigationStatusCumm(((BigInteger) data.get("no_invoices_in_litigation_status_total".toLowerCase())).intValue());
+        result.setValOfInvoicesInLitigationStatusCumm(((BigDecimal) data.get("val_invoices_in_litigation_status_total".toLowerCase())));
+        result.setValOfInterimPaymentInLitigationStatusCumm(((BigDecimal) data.get("val_interim_payment_invoices_in_litigation_status_total".toLowerCase())));
 
         return result;
 
@@ -610,5 +617,28 @@ public class InvoiceStatusReportCummulativeData {
     public void setValOfManualInvoicesContestedCumm(BigDecimal valOfManualInvoicesContestedCumm) {
         this.valOfManualInvoicesContestedCumm = valOfManualInvoicesContestedCumm;
     }
-    
+
+    public Integer getNoOfInvoicesInLitigationStatusCumm() {
+        return noOfInvoicesInLitigationStatusCumm;
+    }
+
+    public void setNoOfInvoicesInLitigationStatusCumm(Integer noOfInvoicesInLitigationStatusCumm) {
+        this.noOfInvoicesInLitigationStatusCumm = noOfInvoicesInLitigationStatusCumm;
+    }
+
+    public BigDecimal getValOfInterimPaymentInLitigationStatusCumm() {
+        return valOfInterimPaymentInLitigationStatusCumm;
+    }
+
+    public void setValOfInterimPaymentInLitigationStatusCumm(BigDecimal valOfInterimPaymentInLitigationStatusCumm) {
+        this.valOfInterimPaymentInLitigationStatusCumm = valOfInterimPaymentInLitigationStatusCumm;
+    }
+
+    public BigDecimal getValOfInvoicesInLitigationStatusCumm() {
+        return valOfInvoicesInLitigationStatusCumm;
+    }
+
+    public void setValOfInvoicesInLitigationStatusCumm(BigDecimal valOfInvoicesInLitigationStatusCumm) {
+        this.valOfInvoicesInLitigationStatusCumm = valOfInvoicesInLitigationStatusCumm;
+    }
 }

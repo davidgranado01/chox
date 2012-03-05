@@ -203,6 +203,8 @@ public class UploadServiceBean {
                 result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_PAID);
             else if (uploadResult.getClaimStatus().equals("InvoiceUnassigned"))
                 result.setClaimStatus(ClaimStatus.INVOICE_UNASSIGNED);
+            else if (uploadResult.getClaimStatus().equals("AwaitingLitigationOutcome"))
+                result.setClaimStatus(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
             else {
                 LOG.error("Unknown claim status found in upload result: {}", uploadResult.getClaimStatus());
                 result.setClaimStatus(null);

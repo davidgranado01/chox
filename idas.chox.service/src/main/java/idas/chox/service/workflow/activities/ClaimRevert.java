@@ -31,7 +31,7 @@ public class ClaimRevert extends BaseActivity {
         if ((securityInfoProvider.getIsCHO() && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED) && !claim.getStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
                 && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
-                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED))
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED) && !claim.getStatus().equals(ClaimStatus.AWAITING_LITIGATION_OUTCOME))
                 || (securityInfoProvider.getIsINS() && !claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
                 && !claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) && !claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG) && !claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_ENG)
@@ -127,5 +127,6 @@ public class ClaimRevert extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_PAID);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
 }

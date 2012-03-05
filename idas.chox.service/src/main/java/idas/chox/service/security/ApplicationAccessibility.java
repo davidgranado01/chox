@@ -63,6 +63,7 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
     public static final String NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE = "DuplicatedSupplementaryInvoiceNotification";
+    public static final String NOTE_AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcomeNotification";
     // ***************************************
     // FILTER
     // ***************************************
