@@ -322,11 +322,12 @@
 			<artifactId>quartz</artifactId>
 			<version>1.8.6</version>
 		</dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-context-support</artifactId>
-                        <version>3.1.1.RELEASE</version>
-                </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-context-support.version}</version>
+			<type>jar</type>
+		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>

@@ -41,6 +41,7 @@ public class MoveToInvoicePaymentLogged extends BaseActivity {
                 logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
                 LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
             }
+            setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(claim.getStatus());
             claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
             LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");

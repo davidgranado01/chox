@@ -554,7 +554,6 @@ public class InvoiceStatusReport implements Report {
         LOG.debug("outside for loop");
 
         for (int x = 0; x <= 11; x++) {
-            int y = 1 - x;
             StringBuilder sb = new StringBuilder();
 
             sb.append("select ");
@@ -564,248 +563,88 @@ public class InvoiceStatusReport implements Report {
             else if (x == 1) {
                 sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
             }
-            else if (x == 2) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 3) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 4) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 5) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 6) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 7) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 8) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 9) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\')))as month_header, ");
-            }
-            else if (x == 10) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\'))) as month_header, ");
-            }
-            else if (x == 11) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
+            else {
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '")
+                  .append(x)
+                  .append(" months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '")
+                  .append(x)
+                  .append(" months', TEXT(\'yyyy\'))) as month_header, ");
             }
 
+            /*
+             * Build the query restriction on created_date which we will re-use
+             */
+            StringBuilder createdDateRestrictionSb = new StringBuilder();
+            createdDateRestrictionSb.append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
+                .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
+
+            if (x == 1) {
+                createdDateRestrictionSb.append(" - interval ' ").append(x).append("  month' ");
+            } else {
+                createdDateRestrictionSb.append(" - interval ' ").append(x).append("  months' ");
+            }
+
+            createdDateRestrictionSb.append("and to_date(to_char(cast(:pStartDate as Date) ");
+
+            if (x == 0) {
+                createdDateRestrictionSb.append(" + interval '1 month'");
+            }
+            else if (x == 2) {
+                createdDateRestrictionSb.append(" - interval '1 month'");
+            } else if (x > 2) {
+                createdDateRestrictionSb.append(" - interval '").append(x-1).append(" months'");
+            }
+
+            createdDateRestrictionSb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
+
+            if (x == 1) {
+                createdDateRestrictionSb.append(" + interval '1 month'");
+            }
+            else if (x == 2) {
+                createdDateRestrictionSb.append(" - interval '1 month'");
+            } else if (x > 2) {
+                createdDateRestrictionSb.append(" - interval '").append(x-1).append(" months'");
+            }
+
+            createdDateRestrictionSb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
+            String createdDateRestriction = createdDateRestrictionSb.toString();
+            
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_uploaded_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_uploaded_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_uploaded_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_uploaded_current_month, ");
             
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_invoices_uploaded_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_invoices_uploaded_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and i.total_penalty_charge > 0.0 ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_penalty_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_penalty_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_penalty_charge),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and i.total_penalty_charge > 0.0 ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_penalty_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_penalty_current_month, ");
 
 
             sb.append("(select count(*) from claim c, invoice i ")
@@ -813,602 +652,112 @@ public class InvoiceStatusReport implements Report {
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoicePaymentLogged' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_payment_logged_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_payment_logged_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoicePaymentLogged' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_payment_logged_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_payment_logged_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoicePaymentLogged' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_payment_logged_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_payment_logged_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'PaymentReceived' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_payment_reconciled_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_payment_reconciled_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'PaymentReceived' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_payment_reconciled_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_payment_reconciled_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'PaymentReceived' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_reconciled_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_reconciled_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceRejectionAccepted', 'ClaimClosed') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_withdrawn_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_withdrawn_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceRejectionAccepted', 'ClaimClosed') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_withdrawn_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_withdrawn_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceRejectionAccepted', 'ClaimClosed') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_withdrawn_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_withdrawn_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('AwaitingLiabilityResolution', 'ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'InvoiceEscalatedToHandler', 'InvoiceEscalated', 'InvoiceReferredToEngineer', 'InvoiceReferredToClaimsHandler', 'ContestedInvoiceReferredToInsurer', 'AwaitingInvoicePayment', 'InvoiceUnassigned', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('AwaitingLiabilityResolution', 'ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'InvoiceEscalatedToHandler', 'InvoiceEscalated', 'InvoiceReferredToEngineer', 'InvoiceReferredToClaimsHandler', 'ContestedInvoiceReferredToInsurer', 'AwaitingInvoicePayment', 'InvoiceUnassigned', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('AwaitingLiabilityResolution', 'ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'InvoiceEscalatedToHandler', 'InvoiceEscalated', 'InvoiceReferredToEngineer', 'InvoiceReferredToClaimsHandler', 'ContestedInvoiceReferredToInsurer', 'AwaitingInvoicePayment', 'InvoiceUnassigned', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_awaiting_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingLiabilityResolution' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_awaitingliability_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_awaitingliability_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingLiabilityResolution' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_awaitingliability_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_awaitingliability_current_month, ");
 
             
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
@@ -1416,43 +765,8 @@ public class InvoiceStatusReport implements Report {
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingLiabilityResolution' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_awaitingliability_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_awaitingliability_current_month, ");
             
             
             sb.append("(select count(*) from claim c, invoice i ")
@@ -1460,1132 +774,208 @@ public class InvoiceStatusReport implements Report {
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ( 'ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_cho_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_cho_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ( 'ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_cho_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_cho_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ( 'ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_cho_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_cho_awaiting_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceApprovedByBRE','InvoiceEscalatedToHandler','InvoiceEscalated','InvoiceReferredToEngineer','InvoiceReferredToClaimsHandler','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_insurer_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_insurer_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceApprovedByBRE','InvoiceEscalatedToHandler','InvoiceEscalated','InvoiceReferredToEngineer','InvoiceReferredToClaimsHandler','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_insurer_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_insurer_awaiting_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status in ('InvoiceApprovedByBRE','InvoiceEscalatedToHandler','InvoiceEscalated','InvoiceReferredToEngineer','InvoiceReferredToClaimsHandler','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment') ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_insurer_awaiting_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_insurer_awaiting_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceApprovedByBRE' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_approved_by_businessrules_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_approved_by_businessrules_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceApprovedByBRE' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_approved_by_businessrules_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_approved_by_businessrules_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceApprovedByBRE' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_approved_by_businessrules_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_approved_by_businessrules_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalatedToHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_escalated_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_escalated_to_handler_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalatedToHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_escalated_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_escalated_to_handler_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalatedToHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_escalated_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_escalated_to_handler_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalated' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_escalated_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_escalated_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalated' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_escalated_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_escalated_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceEscalated' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            }else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_escalated_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_escalated_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToEngineer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_referred_to_engineer_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_referred_to_engineer_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToEngineer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_referred_to_engineer_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_referred_to_engineer_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToEngineer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_referred_to_engineer_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_referred_to_engineer_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToClaimsHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_referred_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_referred_to_handler_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToClaimsHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_referred_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_referred_to_handler_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceReferredToClaimsHandler' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_referred_to_handler_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_referred_to_handler_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceUnassigned' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_unassigned_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_unassigned_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceUnassigned' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_unassigned_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_unassigned_current_month, ");
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'InvoiceUnassigned' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_unassigned_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_unassigned_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ContestedInvoiceReferredToInsurer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_cho_dispute_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_cho_dispute_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ContestedInvoiceReferredToInsurer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_cho_dispute_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_cho_dispute_current_month, ");
 
 
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
@@ -2593,436 +983,80 @@ public class InvoiceStatusReport implements Report {
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ContestedInvoiceReferredToInsurer' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_cho_dispute_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_cho_dispute_current_month, ");
             
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingInvoicePayment' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_awaiting_payment_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_invoices_awaiting_payment_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingInvoicePayment' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_awaiting_payment_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_invoices_awaiting_payment_current_month, ");
             
             sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'AwaitingInvoicePayment' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_awaiting_payment_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_interim_payment_awaiting_payment_current_month, ");
 
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoicePaid' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_manual_invoices_paid_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_manual_invoices_paid_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoicePaid' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_manual_invoices_paid_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_manual_invoices_paid_current_month, ");
 
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoiceBREApproved' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_manual_invoices_approved_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_manual_invoices_approved_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoiceBREApproved' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_manual_invoices_approved_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as val_manual_invoices_approved_current_month, ");
 
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoiceBRERejected' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_manual_invoices_rejected_current_month, ");
+              .append(createdDateRestriction)
+              .append(") as no_manual_invoices_rejected_current_month, ");
 
             sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoiceBRERejected' ")
-              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
-              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-
-            if (x > 0 && x == 1) {
-                sb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
-                sb.append(" - interval ' ").append(x).append("  months' ");
-            }
-
-            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (y > 0) {
-                sb.append(" + interval '").append(y).append(" month'");
-            }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" month'");
-            } else {
-                int z = -y;
-                sb.append(" - interval '").append(z).append(" months'");
-            }
-
-            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) as val_manual_invoices_rejected_current_month ");
+              .append(createdDateRestriction)
+              .append(") as val_manual_invoices_rejected_current_month ");
 
             String query = sb.toString();
             LOG.debug(query);
