@@ -727,7 +727,7 @@ public class DBInterceptor extends EmptyInterceptor {
     }
 
     
-    public void setSecurityInfoProvider(SecurityInfoProvider securityInforProvider) {
-        this.securityInfoProvider = securityInforProvider;
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
     }
 }
