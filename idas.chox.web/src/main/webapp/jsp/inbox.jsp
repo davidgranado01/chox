@@ -403,7 +403,7 @@
 
                             var workgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {}}),
+                                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params:{claimId : sm2.getSelected().get('id')}}),
                                 reader : workgroupJsonReader
                             });
 
@@ -515,7 +515,7 @@
                                     errorLabelContainer: '#routeClaimFormMessageBox'
                                 });
                                 //                            console.log("Loading store.");
-                                workgroupStore.load({ params : {}});
+                                workgroupStore.load({ params : {claimId : sm2.getSelected().get('id')}});
                                 //                            console.log("Resetting combo");
                                 workgroupCombo.reset();
 
