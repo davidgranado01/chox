@@ -278,10 +278,24 @@
         }
         return false;
     }
+    
+    function validTaskCombo(){
+    	var msgBox = $("#claimTaskFormMsgBox");
+    	var taskCombo = $("#claimTaskTypeComboId") 
+    	if(taskCombo.val() == "Please select a task type..."){
+    		msgBox.text("Please enter a 'Task Type'").show();
+    		$('#claimTaskForm').valid();
+    		return false;
+    	} else {
+    		msgBox.text("").show();
+    		$('#claimTaskForm').valid();
+    		return true;
+    	}
+    }
 
     function addNewTask() {
 
-        if ($('#claimTaskForm').valid()) {
+        if (validTaskCombo() && $('#claimTaskForm').valid()) {
             var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
             var description = $('#claimTaskDescriptionId').val();
             var dDate =  dateRenderer(Ext.getCmp('claimDueDateId').getValue());

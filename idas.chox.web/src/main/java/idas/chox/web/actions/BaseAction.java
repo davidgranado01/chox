@@ -1,19 +1,24 @@
 package idas.chox.web.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.opensymphony.xwork2.ActionSupport;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
+
+import java.util.HashMap;
 import java.util.Map;
+
 import net.sf.json.JSONObject;
+
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -26,6 +31,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private String VALID_SESSION = "validSession";
 
     public Map<String,Object> getSession() {
+    	if(session == null)
+    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
         return session;
     }
 

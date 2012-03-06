@@ -46,7 +46,7 @@
                                     <input type="submit" id="loginSubmitButtonId" value="Sign In" /><!--<a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>!-->
                                 </p>
                                 
-                                <s:if test="#parameters.size()>0">
+                                <s:if test="#parameters.size > 1">
                                     <p><span id="login-error">Incorrect Username and/or Password </span></p>
                                 </s:if>
                             </div>

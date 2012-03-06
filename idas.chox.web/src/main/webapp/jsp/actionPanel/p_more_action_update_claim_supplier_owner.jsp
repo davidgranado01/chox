@@ -102,6 +102,16 @@
             supplierClaimOwnerCombo.setValue(currentOwnerId);
         }
     });
+    
+    $("#formSupplierOwnershipAction").submit(function() {
+        if ($("#supplierClaimOwnerComboId").val() != "--- Please Select ---") {
+          $("#supplierOwnershipAssignmentMessageBox").text("").show();
+          return true;
+        }
+        $("#supplierOwnershipAssignmentMessageBox").text("You must supply a value for 'Claim Owner'").show();
+        return false;
+     });
+    
 
 </script>
 

@@ -11,8 +11,6 @@
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
                 <input id="claimNumber" name="claimNumber" type="hidden"/>
-                <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden">
-                <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
                 <!-- 

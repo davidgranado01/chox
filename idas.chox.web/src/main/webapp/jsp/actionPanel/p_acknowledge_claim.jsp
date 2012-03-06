@@ -10,7 +10,8 @@
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
-                <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+               
+               <%--  <input name="currentVersion" type="hidden" value="<s:property value="version" />" /> --%>
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
                     <div class="status-info">

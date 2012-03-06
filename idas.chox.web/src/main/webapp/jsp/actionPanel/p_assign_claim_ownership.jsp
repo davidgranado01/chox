@@ -183,29 +183,32 @@
     }
     
     function validateComboBox(){
+    	var mesBox = $("#OwnershippAssignmentMessageBox");
     	if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
-    		$("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Claim Owner'").show();
+    		mesBox.text("You must supply a value for 'Claim Owner'").show();
     		return false;
     	} else if ($("#workgroupComboId").val() == "--- Please Select ---") {
-    		$("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Work Group'").show();
+    		mesBox.text("You must supply a value for 'Work Group'").show();
     		return false;
     	} else {
-    		$("#OwnershippAssignmentMessageBox").text("").show();
+    		mesBox.text("").show();
     		return true;
     	}
     		
     }
     
     function doAssignOwnershipToFnolSubmit(){
-    	if ($("[name='claimOwnerId']").val() == "")
-    		$("[name='claimOwnerId']").val(-1);
+    	var coh = $("[name='claimOwnerId']");
+    	var mesBox = $("#OwnershippAssignmentMessageBox");
+    	if (coh.val() == "")
+    		coh.val(-1);
     	actionPanel.registerAction("referFNOL");
     	 if ($("#workgroupComboId").val() != "--- Please Select ---") {
-         	$("#OwnershippAssignmentMessageBox").text("").show();
+    		 mesBox.text("").show();
          	Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
          	$("#formOwnershipAssignmentAction").submit();
          } else {
-        	 $("#OwnershippAssignmentMessageBox").text("You must supply a value for 'Work Group'").show();
+        	 mesBox.text("You must supply a value for 'Work Group'").show();
          }
     	
     }

@@ -49,46 +49,40 @@
             }
         });
 
-        $.validator.addMethod("workgroupSelection",
-        function(value) {
-            if(value === "") {
-                return false;
-            }
-            return true;
-        }, "You must select a 'Workgroup'"
-    );
-
         workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
 
 
-        var form = $("form#routeUnacknowledgedUnroutedClaim");
-        form.validate(
-        {
-            errorLabelContainer: "#RouteUnacknowledgedUnroutedClaimMessageBox",
-            rules: {
-                workgroupId: {workgroupSelection: document.getElementById('workgroupComboId')},
-                reasonOfRejectionId: {required: true}
-            },
-            messages: {
-                workgroupId:{workgroupSelection:"You must select a 'Workgroup'."},
-                reasonOfRejectionId: {required:"You must choose a 'Reason For Rejection'"}
-            }
-        });
-
     });
 
+    function validateRejectionComboBox(){
+    	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
+    	if ($("#reasonOfRejectionId").val() == "-1") {
+    		msgBox.text("You must choose a 'Reason For Rejection'").show();
+    		return false;
+    	} else {
+    		msgBox.text("").show();
+    		return true;
+    	}
+    }
+    
+    function validateWorkgroupComboBox(){
+    	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
+    	if ($("#workgroupComboId").val() == "--- Please Select ---") {
+    		msgBox.text("You must select a 'Workgroup'").show();
+    		return false;
+    	} else {
+    		msgBox.text("").show();
+    		return true;
+    	}
+    }
+    
     function doClaimUnacknowledgedFormSubmit(action){
         actionPanel.registerAction(action);
-        doClaimUnacknowledgedValidationSetup(action);
-
-        if($("#routeUnacknowledgedUnroutedClaim").valid()){
-
-            if(action === 'rejectClaim'){
-                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
-            }else if(action === 'assignWorkgroup'){
-                Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-                $("form#routeUnacknowledgedUnroutedClaim").submit();
-            }
+        if(action === 'rejectClaim' && validateRejectionComboBox()){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+        }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+            $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
     }
 
@@ -98,20 +92,6 @@
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
         return false;
-    }
-
-    function doClaimUnacknowledgedValidationSetup(action) {
-
-        var settings = $('form#routeUnacknowledgedUnroutedClaim').validate().settings;
-        // ADD NEW VALIDATION PER SUBMIT TYPE
-        if(action === 'rejectClaim'){
-            delete settings.rules.workgroupId;
-            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("add", {required: true});
-        } else if(action === 'assignWorkgroup') {
-            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("remove");
-            settings.rules.workgroupId = {workgroupSelection: document.getElementById('workgroupComboId')};
-        }
-
     }
 
 </script>
@@ -157,7 +137,7 @@
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
                                             listValue="name"
-                                            headerKey=""
+                                            headerKey="-1"
                                             headerValue="N/A"
                                             emptyOption="false">
                                         </s:select>
@@ -169,7 +149,7 @@
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
                                             listValue="name"
-                                            headerKey=""
+                                            headerKey="-1"
                                             disabled="true"
                                             headerValue="N/A"
                                             emptyOption="false">

@@ -24,7 +24,6 @@ public class UpdateLiability extends BaseActivity {
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
     private BigDecimal percentageLiabilityAccepted;
-    private int reasonOfRejectionId;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
@@ -139,20 +138,6 @@ public class UpdateLiability extends BaseActivity {
      */
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
-    }
-
-    /**
-     * @return the reasonOfRejectionId
-     */
-    public int getReasonOfRejectionId() {
-        return reasonOfRejectionId;
-    }
-
-    /**
-     * @param reasonOfRejectionId the reasonOfRejectionId to set
-     */
-    public void setReasonOfRejectionId(int reasonOfRejectionId) {
-        this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
     /**
