@@ -284,42 +284,50 @@
     function claimChangeOver(){
 
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?', 
-            function ChangeOver(btn){
+            function ChangeOver(btn){ 
                 if(btn=='yes') {
-                    document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=switchClaim&nonce=" + nonce;
-//                    Ext.Ajax.request({
-//                        url: '/prv/processClaim.action',
-//                        url: '/prv/switchClaimAction.action',
-//                        params: {"name":"switchClaim", "id":<s:property value="id" />, "currentVersion" : <s:property value="version" />, "nonce":$('#nonceId').val()},
-//                        success: loadPage,
-//                        failure: errorPage
-//                    });
-//                    var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-//                    var param = {"name":"switchClaim", "id":<s:property value="id" />, "currentVersion" : <s:property value="version" />};
-//                    ajax.loadJson2(url, param, function(data) {
-//                        console.log("Resulttype is " + data.resultType);
-//                        console.log("Result is " + data.result);
-//                        loadPage();
-//                    });
-                    return false;
-                }
-            }
-        );
-        return false;
+                     Ext.Ajax.request({
+                     url: '<%= request.getContextPath()%>/prv/p/switchClaim.action',
+                     params: {
+                                 name  : 'switchClaim',
+                                 id    : <s:property value="id" />,
+                                 nonce :'<%= session.getAttribute("SessionNonce")%>'
+                              },
+                     callback : function(options,success,response){
+                         if(response.responseText){
+                             var resp = Ext.util.JSON.decode(response.responseText);
+                             if(resp && resp.success){
+                                 // if not admin chox then load inbox as the current insurer no longer own the switched claim.
+                                 loadPage(); 
+                              }else if(!resp.success){ 
+                                 Ext.MessageBox.show({
+                                    title: 'Error',
+                                    msg: resp.errors,
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon : Ext.MessageBox.ERROR
+                                  });
+                              }
+                             }
+                            }
+                       });
+                   }
+            });
     }
+    
 
-//    function loadPage(result, request){
-//        <s:if test="isAdminChox" >
-//
-//            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
-//        
-//        </s:if>
-//        <s:else >
-//        
-//            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
-//        </s:else>
-//        
-//    }
+    function loadPage(result, request){
+        <s:if test="isAdminChox" >
+            Ext.get('claimDetailScreenDiv').mask();
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
+        
+        </s:if>
+        <s:else >
+            Ext.get('claimDetailScreenDiv').mask();
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
+        </s:else>
+        
+    }
     
     
     /***********************************************************************************
