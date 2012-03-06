@@ -11,6 +11,7 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
@@ -377,4 +378,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         return SUCCESS;
     }
+
+	public String getDevelopment() {
+		return ServletActionContext.getServletContext().getInitParameter("development");
+	}
+
 }

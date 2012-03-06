@@ -2,9 +2,16 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
+<s:if test="#parameters.devp || development">
+	<%-- <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script> --%>
+	<script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
+	<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
+</s:if>
+<s:else>
+	<%-- <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script> --%>
+	<script src="<%= request.getContextPath()%>/scripts/activityMonitor-min.js" type="text/javascript"></script>
+	<script src="<%= request.getContextPath()%>/scripts/claim_detail-min.js" type="text/javascript"></script>
+</s:else>
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;

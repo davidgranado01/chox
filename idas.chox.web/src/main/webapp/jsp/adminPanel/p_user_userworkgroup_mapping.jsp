@@ -221,7 +221,7 @@
                                 list="availableWorkgroups"
                                 listKey="id"
                                 listValue="name"
-                                headerKey=""
+                                headerKey="-1"
                                 headerValue="--- ALL ---"
                                 emptyOption="false">
                             </s:select><input type="button" value="Add New Workgroup" onclick="javascript: doAddNewWorkgroup();"/>

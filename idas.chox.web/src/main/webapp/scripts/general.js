@@ -79,7 +79,7 @@ function openFile(folderPath){
 
     newwindow=window.open(folderPath, 'CHOX');
     if (window.focus) {
-        newwindow.focus()
+        newwindow.focus();
     }
 
 }
@@ -101,7 +101,7 @@ function openChoxPolicyPage(url, name){
 
     newwindow=window.open(folderPath, 'CHOX');
     if (window.focus) {
-        newwindow.focus()
+        newwindow.focus();
     }
 }
 

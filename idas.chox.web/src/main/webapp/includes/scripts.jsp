@@ -6,8 +6,9 @@
 <script src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/additional-methods.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.timer.js" type="text/javascript" ></script>
-<script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/extjs/ext-base-3.4.0.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/extjs/ext-all-3.4.0.js" type="text/javascript"></script>
+
 <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>

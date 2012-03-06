@@ -1,20 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
 <html>
 
     <head>
         <title><decorator:title default="CHOX"/></title>
-        <%@ include file="/includes/styles.jsp"%>
-        <%@ include file="/includes/scripts.jsp"%>
+	       <s:if test="#parameters.devp || development">
+	           	<%@ include file="/includes/styles.jsp"%>
+	        	<%@ include file="/includes/scripts.jsp"%>
+	       </s:if>
+	       <s:else>
+	           	<%@ include file="/includes/styles-min.jsp"%>
+	        	<%@ include file="/includes/scripts-min.jsp"%>
+	       </s:else>
         <decorator:head />
 
     </head>
 
     <body>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-
+        
         <div class="outer" id="outerDiv">
 
             <div class="inner">
@@ -24,7 +32,7 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="middle">
                             <td>
-                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt="" />
+                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 70px; height: 33px" alt="" />
                             </td>
                             <td width="100%" align="right">
 

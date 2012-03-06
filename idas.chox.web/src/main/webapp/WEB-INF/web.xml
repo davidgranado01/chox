@@ -7,6 +7,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:applicationContext*.xml</param-value>
     </context-param>
+    <context-param>
+        <param-name>development</param-name>
+        <param-value>true</param-value>
+    </context-param>
  
     <!-- Listeners -->
     <listener>
@@ -22,6 +26,11 @@
     </listener>
 
     <!-- Filters -->
+    <filter>
+		<filter-name>CachingResponseFilter</filter-name>
+		<filter-class>idas.chox.web.CachingResponseFilter</filter-class>
+	</filter>
+    
     <filter>
         <filter-name>hibernateFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
@@ -50,6 +59,18 @@
 
 
     <!-- Filters Mappings -->
+    <filter-mapping>
+  		<filter-name>CachingResponseFilter</filter-name>
+ 		 <url-pattern>/images/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+  		<filter-name>CachingResponseFilter</filter-name>
+ 		 <url-pattern>/css/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+  		<filter-name>CachingResponseFilter</filter-name>
+ 		 <url-pattern>/scripts/*</url-pattern>
+	</filter-mapping>
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.action</url-pattern>
