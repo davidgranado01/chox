@@ -8,6 +8,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
@@ -78,9 +79,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         if (!securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
             throw new AccessDeniedException("Not in correct role to switch claim.");
         }
-        if (claim.getInvoice() != null) {
-            throw new AccessDeniedException("Cannot switch claim as it has an invoice attached.");
-        }
+
         LOG.debug("insurer id is  '{}' ", insId);
         LOG.debug("insurer service class is {}", insurerService.toString());
         newInsurer = insurerService.getInsurer(insId);
@@ -159,6 +158,15 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         }
 
         setCurrentStatus("");
+        
+        if (claim.getInvoice() != null) {
+            LOG.debug("This claim has invoice and will be deleted as switching the claim to another insurer");
+            Invoice oldInvoice = claim.getInvoice();
+            claim.setInvoice(null);
+            LOG.debug("claim invoice set to null");
+            getDataService().delete(oldInvoice);
+            LOG.warn("claim invoice deleted");
+        }
 //        getDataService().save(claim);
 //        getDataService().flush();
         LOG.debug("Switching Claim: claim details has been updated");
