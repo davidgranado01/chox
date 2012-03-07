@@ -80,12 +80,11 @@ public class InboxAction extends BaseAction {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
         List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser());
-
+        List<String> insurerName = new ArrayList<String>();
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
-
-            if (!statusAllow.contains(claim.getStatus())) {
+            if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName,claim)) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
@@ -95,6 +94,22 @@ public class InboxAction extends BaseAction {
         return SUCCESS;
     }
 
+    // This below method ensure that chox admin can not 'Route Claims' via batch update when multiple insurers are selected.
+    private boolean canShowRouteClaimsInBatchUpdate(List<String> insurerName, Claim claim) {
+        if (getAuthenticatedUser().isCHOXAdmin()
+                && batchUpdateAction.equalsIgnoreCase("routeClaims")
+                && !insurerName.isEmpty()
+                && (!insurerName.contains(claim.getInsurer().getName())
+                    || !claim.getInsurer().isWorkgroupEnable())) {
+            return true;
+        } else {
+            if (insurerName.isEmpty()) {
+                insurerName.add(claim.getInsurer().getName());
+            }
+            return false;
+        }
+    }
+    
     public String checkClaimsBatchUpdate() {
         LOG.debug("Inside checkClaimsBatchUpdate method ");
         int iCount = 0;

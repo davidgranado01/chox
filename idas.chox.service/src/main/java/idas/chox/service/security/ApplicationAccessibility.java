@@ -602,7 +602,7 @@ public class ApplicationAccessibility {
                 if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isAnInsurer() && !user.getInsurer().isEngineersEnable()) {
                     accessRight = 0;
                 }
-                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable()) {
+                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && user.isCHO() && !user.getChorganisation().isClaimOwnershipEnable()) {
                     accessRight = 0;
                 }
                 roleMap.put(aItem.getRole().trim(), accessRight);

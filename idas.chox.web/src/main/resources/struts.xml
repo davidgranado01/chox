@@ -1271,7 +1271,7 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
-        <action name ="switchClaimToMulInsAction" class ="idas.chox.web.actions.ClaimActivityAction">
+        <action name ="switchClaim" class ="idas.chox.web.actions.ClaimActivityAction">
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>

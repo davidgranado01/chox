@@ -1885,7 +1885,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimToMultipleInsButton() {
 
-        if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility()) && (claim.getInvoice() == null)) {
+        if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility())) {
             return true;
         }
 
