@@ -28,10 +28,12 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
     }
 
     public void setGtaNoticeDate(String gtaNoticeDate) {
-        model.setGtaNoticeDate(DateHelper.Parse(gtaNoticeDate));
+    	if(model != null)
+    		model.setGtaNoticeDate(DateHelper.Parse(gtaNoticeDate));
     }
     public void setCreditAgreementDate(String creditAgreementDate) {
-        model.setCreditAgreementDate(DateHelper.Parse(creditAgreementDate));
+    	if(model != null)
+    		model.setCreditAgreementDate(DateHelper.Parse(creditAgreementDate));
     }
 
 }

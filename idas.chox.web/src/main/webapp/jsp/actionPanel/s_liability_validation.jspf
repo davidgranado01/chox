@@ -210,9 +210,9 @@
     
     function doUpdateLiabilityFormSubmit(action){        
         actionPanel.registerAction(action);        
-        doFormValidationSetup(action);        
-        if($("#formAcknowledgeAction").valid()){
-            var form = $("form#formAcknowledgeAction");
+        doFormValidationSetup(action);      
+        var form = $("form#formAcknowledgeAction");
+        if(form.valid()){
             form.submit();
         }
     }
@@ -255,7 +255,9 @@
 
     function doFormValidationSetup(action){
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        if($("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0 ){
+        	$("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        }
         var liabilityStatus = $("#liabilityStatus").val();
         var validationCheck=false;
         if(<s:property value="liabilityStatusValue"/>>=0){

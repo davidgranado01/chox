@@ -174,9 +174,38 @@
             claimOwnerCombo.reset();
         }
     }
+    
+    function validateComboBox(){
+    	var mesBox = $("#OwnershippAssignmentMessageBox");
+    	if ($("#claimOwnerComboId").val() == "--- Please Select ---" || $("#workgroupComboId").val() == "--- Please Select ---") {
+    		if($("#claimOwnerComboId").val() == "--- Please Select ---")
+    			mesBox.text("You must supply a value for 'Claim Owner'").show();
+    		if($("#workgroupComboId").val() == "--- Please Select ---")
+    			mesBox.text("You must supply a value for 'Workgroup'").show();
+    		return false;
+    	} else {
+    		mesBox.text("").show();
+    		return true;
+    	}
+    		
+    }
 
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
+        
+        var co = $("[name='claimOwnerIdField']");
+        var wo = $("[name='workgroupIdField']");
+        
+    	var mesBox = $("#OwnershippAssignmentMessageBox");
+    	if (co.val() == "")
+    		co.val(-1);
+    	if (wo.val() == "")
+    		co.val(-1);
+    	
+    	 if (validateComboBox()) {
+         	$("#formOwnershipAssignmentAction").submit();
+         } 
+        
     }
 
 </script>
@@ -223,7 +252,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="submit" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
+                                        <input type="button" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

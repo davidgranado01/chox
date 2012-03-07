@@ -52,7 +52,7 @@
     });
 
     function userworkgroup_loadGridViewList(){
-        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
+        userworkgroup_gridviewData.load();
     }
 
     function doAddNewWorkgroup(){

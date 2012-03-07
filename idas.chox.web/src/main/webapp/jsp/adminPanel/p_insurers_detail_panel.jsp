@@ -26,7 +26,33 @@
 
     Ext.onReady(function(){
 
-       
+    	 Ext.override(Ext.form.ComboBox, {
+             setValue : function(v){
+                 //begin patch
+                 // Store not loaded yet? Set value when it *is* loaded.
+                 // Defer the setValue call until after the next load.
+                 if (this.store.getCount() == 0) {
+                     this.store.on('load',
+                     this.setValue.createDelegate(this, [v]), null, {single: true});
+                     return;
+                 }
+                 //end patch
+                 var text = v;
+                 if(this.valueField){
+                     var r = this.findRecord(this.valueField, v);
+                     if(r){
+                         text = r.data[this.displayField];
+                     }else if(this.valueNotFoundText !== undefined){
+                         text = this.valueNotFoundText;
+                     }
+                 }
+                 this.lastSelectionText = text;
+                 if(this.hiddenField){
+                     this.hiddenField.value = v;
+                 }
+                 Ext.form.ComboBox.superclass.setValue.call(this, text);
+                 this.value = v;
+             }});
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
@@ -56,13 +82,13 @@
                 valueField: 'text',
                 id: 'workgroupComboId',
                 hiddenName: 'workgroupIdField',
-                value:'<s:property value="workgroupIdFieldName"/>',
+//                 value:'',
                 displayField:'value',
                 typeAhead: true,
                 mode: 'local',
                 editable:false,
                 triggerAction: 'all',
-                emptyText: '--- Please Select ---',
+                emptyText: '<s:property value="workgroupIdFieldName"/>',
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
@@ -112,14 +138,14 @@
             valueField: 'id',
             id: 'claimOwnerComboId',
             hiddenName: 'claimOwnerIdField',
-            value:'<s:property value="claimOwnerIdFieldName"/>',
+//             value:'',
             displayField:'name',
             typeAhead: true,
             mode: 'local',
             listWidth: 200,
             forceSelection: true,
             triggerAction: 'all',
-            emptyText: '--- Please Select ---',
+            emptyText: '<s:property value="claimOwnerIdFieldName"/>',
             forceSelection : true,
             listeners: {
                 select: function () {
@@ -137,8 +163,16 @@
         });
         
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
-        
-//        }
+       
+		$("#formUpdateInsurerDetail").submit(function(){
+			if($("[name='claimOwnerIdField']").val() == ""){
+				$("[name='claimOwnerIdField']").val(-1)
+				}
+			if($("[name='workgroupIdField']").val() == ""){
+				$("[name='workgroupIdField']").val(-1)
+				}
+		});
+		
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
@@ -486,7 +520,7 @@
             <div id="mainPanel"></div>
             <div id="insurerDetailPanelTab" class="x-hide-display">
                 <div class="sub-admin-tab-css">
-                        <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
+                        <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" class="XXentity-form" method="POST">
                     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'/>
                     <div class="admin-form-container">
                         <div class="chox-form-item">
