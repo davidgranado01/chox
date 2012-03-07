@@ -32,17 +32,11 @@ public class ExcelReportBuilder implements ReportBuilder {
         }
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
+        LOG.info("Report data generated - constructing report from template file '{}'", templeteName);
         return doCreateReport(reportParameters, templeteName, addLogo);
-//        InputStream reportStream = new ByteArrayInputStream(buf.toByteArray());
-//        return reportStream;
     }
 
-    public ByteArrayOutputStream buildReport(Map reportParameters, String templatePath) {
-
-        ByteArrayOutputStream buf = doCreateReport(reportParameters, templatePath, true);
-        return buf;
-    }
-
+    
     public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
 
         int col = 1, row = 0;
@@ -65,12 +59,13 @@ public class ExcelReportBuilder implements ReportBuilder {
             anchor.setAnchorType(2);
 
         } catch (IOException ioe) {
-            LOG.error("Exception adding image to report: " + ioe.getMessage());
+            LOG.error("Exception adding image to report: " + ioe.getMessage(), ioe);
         }
 
         return resultWorkbook;
     }
 
+    
     protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo) {
         ByteArrayOutputStream out = null;
         try {
@@ -83,7 +78,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             }
             resultWorkbook.write(out);
         } catch (Exception e) {
-            LOG.error("Exception creating report: " + e.getMessage());
+            LOG.error("Exception creating report: " + e.getMessage(), e);
         }
         LOG.info("Report written to stream");
         return out;
