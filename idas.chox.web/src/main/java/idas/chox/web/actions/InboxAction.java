@@ -31,7 +31,16 @@ public class InboxAction extends BaseAction {
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
+    private String jsonData;
 
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+    
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
@@ -109,6 +118,22 @@ public class InboxAction extends BaseAction {
         }
     }
     
+    // Below functionality implemented for bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
+    public String getUniqueWorkgroupId() {
+        List<Integer> workgrouId = new ArrayList<Integer>();
+        for (Integer id : selectedClaimIdList) {
+            Claim claim = claimService.getClaim(id);
+            if (claim.getWorkgroup() == null || (!workgrouId.isEmpty() && !workgrouId.contains(claim.getWorkgroup().getId()))) {
+                setJsonData("{workgroupId:-1}");
+                return SUCCESS;
+            } else if (workgrouId.isEmpty()) {
+                workgrouId.add(claim.getWorkgroup().getId());
+            }
+        }
+        setJsonData("{workgroupId:" + workgrouId.get(0) + "}");
+        return SUCCESS;
+    }
+
     public String checkClaimsBatchUpdate() {
         LOG.debug("Inside checkClaimsBatchUpdate method ");
         int iCount = 0;

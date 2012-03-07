@@ -504,7 +504,7 @@
             messages:
                 {
 
-                uploadedFile : {required:"You must select an Attachment"}
+                uploadedFile : {required:"You must select an XML Bordereau."}
             },
 
             submitHandler: function(form) {
