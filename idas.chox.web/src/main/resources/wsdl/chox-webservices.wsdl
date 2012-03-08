@@ -840,7 +840,7 @@
         <wsdl:port binding="tns:UploadServiceSOAP" name="UploadServiceSOAP">
             <!--soap:address location="http://localhost:8080/services/UploadService" /-->
             <!--soap:address location="https://test.idaschox.com:8443/services/UploadService" /-->
-            <soap:address location="https://www.idaschox.com:8443/services/UploadService" />
+            <soap:address location="http://localhost:8080/idas.chox.web/services/UploadService" />
         </wsdl:port>
     </wsdl:service>
 
