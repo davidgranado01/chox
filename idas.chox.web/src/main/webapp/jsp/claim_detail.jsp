@@ -526,6 +526,12 @@
             This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
         </div>
     </s:if>
+    
+    <s:if test="notificationAccessibility.awaitingLitigationOutcomeNotificationAccessibility">
+        <s:action name="getAwaitingLitigationOutcomeAlert" namespace="/prv/p" executeResult="true">
+            <s:param name="claimId"><s:property value="id" /></s:param>
+        </s:action>
+    </s:if>
 
     <s:if test="isAnyIntelligentNotes && notificationAccessibility.intelligentNotesNotificationAccessibility">
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -773,7 +779,7 @@
         	<s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
         </div>
     </s:if>
-
+    
     <div id="tabContainer">
         <div id="claimDetailsContainer" class="x-hide-display">
             <div id="claimDetails">

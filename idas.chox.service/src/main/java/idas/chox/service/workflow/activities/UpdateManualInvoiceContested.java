@@ -8,9 +8,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UpdateManualInvoicePaid extends BaseActivity {
+public class UpdateManualInvoiceContested extends BaseActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdateManualInvoicePaid.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateManualInvoiceContested.class);
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -19,7 +19,7 @@ public class UpdateManualInvoicePaid extends BaseActivity {
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if ((!securityInfoProvider.isInRoleOf("ROLE_INS") && !securityInfoProvider.getIsCHOXAdmin())
                 || (securityInfoProvider.isInRoleOf("ROLE_INS") && (claim.getInsurer().getId().compareTo(securityInfoProvider.getCurrentUser().getInsurer().getId())) != 0)) {
-            throw new AccessDeniedException("Not in correct role to update Manual Invoice Payment.");
+            throw new AccessDeniedException("Not in correct role to update Manual Invoice Contested.");
         }
 
     }
@@ -27,14 +27,13 @@ public class UpdateManualInvoicePaid extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
 
-        claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);
-        LOG.debug("Claim {} have been moved to manual invoice paid status", claim.getChoReference());
+        claim.setStatus(ClaimStatus.MANUAL_INVOICE_CONTESTED);
+        LOG.debug("Claim {} have been moved to manual invoice contested status", claim.getChoReference());
     }
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
     }
 }

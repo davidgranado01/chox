@@ -42,6 +42,8 @@ public class DashBoardViewData {
     private BigDecimal valueOfManualInvoicesPaid;
     private Integer noOfManualInvoicesClosed;
     private BigDecimal valueOfManualInvoicesClosed;
+    private Integer noOfInvoicesAwaitingLitigationOutcome;
+    private BigDecimal valueOfInvoicesAwaitingLitigationOutcome;
 
     public static DashBoardViewData getObject(Map data) {
 
@@ -85,6 +87,8 @@ public class DashBoardViewData {
         viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
         viewData.setNoOfManualInvoicesClosed(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
         viewData.setValueOfManualInvoicesClosed(getDecimalValue(data.get("v_manual_InvoicesClosed".toLowerCase())));
+        viewData.setNoOfInvoicesAwaitingLitigationOutcome(getIntegerValue(data.get("n_InvoicesAwaitingLitigationOutcome".toLowerCase())));
+        viewData.setValueOfInvoicesAwaitingLitigationOutcome(getDecimalValue(data.get("v_InvoicesAwaitingLitigationOutcome".toLowerCase())));
         return viewData;
     }
 
@@ -479,5 +483,19 @@ public class DashBoardViewData {
         this.valueOfManualInvoicesClosed = valueOfManualInvoicesClosed;
     }
 
-    
+    public Integer getNoOfInvoicesAwaitingLitigationOutcome() {
+        return noOfInvoicesAwaitingLitigationOutcome;
+    }
+
+    public void setNoOfInvoicesAwaitingLitigationOutcome(Integer noOfInvoicesAwaitingLitigationOutcome) {
+        this.noOfInvoicesAwaitingLitigationOutcome = noOfInvoicesAwaitingLitigationOutcome;
+    }
+
+    public BigDecimal getValueOfInvoicesAwaitingLitigationOutcome() {
+        return valueOfInvoicesAwaitingLitigationOutcome;
+    }
+
+    public void setValueOfInvoicesAwaitingLitigationOutcome(BigDecimal valueOfInvoicesAwaitingLitigationOutcome) {
+        this.valueOfInvoicesAwaitingLitigationOutcome = valueOfInvoicesAwaitingLitigationOutcome;
+    }
 }

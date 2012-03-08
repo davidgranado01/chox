@@ -3,6 +3,7 @@ package idas.chox.web.viewdata;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
+import idas.chox.core.util.DateHelper;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
@@ -35,9 +36,11 @@ public class CommentViewData {
             orgName = String.format("(%1$s)", user.getChorganisation().getName());
         }
         this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
-        if(authenticatedUser.isCHOXAdmin() || authenticatedUser.getId().compareTo(user.getId())==0 
-                || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO()) 
-                || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer())){
+        if (authenticatedUser.isCHOXAdmin() 
+                        || ((authenticatedUser.getId().compareTo(user.getId())==0 
+                             || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())   
+                             || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
+                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {
             this.delete = "Delete";
         }
     }

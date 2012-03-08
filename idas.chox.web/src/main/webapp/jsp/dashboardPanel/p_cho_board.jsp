@@ -29,6 +29,8 @@
             new Ext.ToolTip({target: 'tip20',html: 'Number of claims where payment has been received'});
             new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip22',html: 'Average invoice payment time (In days)'});
+            new Ext.ToolTip({target: 'tip23',html: 'Number of invoices awaiting litigation outcome by CHO'});
+            new Ext.ToolTip({target: 'tip24',html: 'Value of invoices awaiting litigation outcome (using Total To Pay amount)'});
             Ext.QuickTips.init();
     });    
     
@@ -76,4 +78,6 @@
     <tr><th nowrap><label id="tip20">Number of Payments Received</label></th>                <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentReceived"/></label></td>                <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip21">Value of Payments Received</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentReceived"/></label></td>             <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip22">Average Invoice Payment Time (Days)</label></th>                 <td nowrap><label ><s:property value="w2DData.avgInvoicePaymentTime"/></label></td>                 <td nowrap><label><s:property value="m2DData.avgInvoicePaymentTime"/></label></td>             <td nowrap><label><s:property value="cData.avgInvoicePaymentTime"/></label></td></tr>
+    <tr><th nowrap><label id="tip23">Number of Invoices Awaiting Litigation Outcome</label></th>                         <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesAwaitingLitigationOutcome"/></label></td>                             <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesAwaitingLitigationOutcome"/></label></td>                         <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesAwaitingLitigationOutcome"/></label></td></tr>
+    <tr><th nowrap><label id="tip24">Value of Awaiting Litigation Outcome</label></th>                          <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesAwaitingLitigationOutcome"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesAwaitingLitigationOutcome"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesAwaitingLitigationOutcome"/></label></td></tr>
 </table>
