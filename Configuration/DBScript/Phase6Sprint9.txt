@@ -1,0 +1,75 @@
+-------------------------------------------------------
+-- TO-DO ITEM 6.9.2 New MI Role For Insurer & CHO ---
+-------------------------------------------------------
+
+INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
+SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Accesser', 2, false, false, false, false, true, true, false, 0;
+
+INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
+SELECT 'ROLE_CHO_MI', 999, now(), 999, now(), 'MI Accesser', 3, false, false, false, false, true, true, false, 0;
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='menu.Report';
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='menu.Report';
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='report.ClaimRejection';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='report.InsurerWeeklySummary';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='report.InvoiceStatusReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='report.InvoiceSummary';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='report.OverviewSummary';
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.ClaimRejection';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InsurerSetupWorkflowReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InsurerWeeklySummary';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InvoiceReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InvoiceSummary';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.OverviewSummary';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.OwnerPerformanceReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.TeamPerformanceReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.OwnerWorkflowReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.TeamWorkflowReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.BreInvoiceApprovalDisputeReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InsurerPayment';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.InvoiceStatusReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.TeamSiteBreWorkflowReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.WorkgroupOwnerBreInvoiceReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.OverviewSummary';
+ 
+-- Add all the queues in the 'Inbox' tab for ROLE_INS_MI
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ApprovedInvoicesAwaitingPayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimsAwaitingAcknowledgement';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ClaimsAwaitingClaimsHandlingPayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ContestedInvoicesReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.EscalatedInvoices';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.HireUpdateAnomalies';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.InvoicesApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.InvoicesReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.NewClaimsToBerouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ReSubmittedClaimsAwaitingAcknowledgement';
+
+-- Add all the queues in the 'Inbox' tab for ROLE_CHO_MI
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.ClaimsAwaitingHireMonitoringInformation';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.ContestedInvoicesReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.IncorrectInvoiceDataCalculations';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.InterimPayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.LiabilityUpdate';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.PenaltyChargesApplied';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedClaims';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedSubscriberClaims';
