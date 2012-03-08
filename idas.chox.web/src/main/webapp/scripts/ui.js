@@ -26,7 +26,8 @@ var ui = function(){
             return true;
 
         }else{
-            Ext.MessageBox.alert('',"Please wait until other save operations have completed");
+            return false;
+//            Ext.MessageBox.alert('',"Please wait until other save operations have completed");
         }
 
         return false;

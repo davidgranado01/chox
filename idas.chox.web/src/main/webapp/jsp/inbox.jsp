@@ -29,10 +29,44 @@
         var grid;
         var ds;
         var exportIntervelId;
-
+        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
+            
+           // Ext.BLANK_IMAGE_URL = 'images/s.gif';
+           // The 'setValue' function on the combo box doesn't work
+           // as, fue to the asynchronous nature of the widget, the store may
+           // not be loaded. Below is a patch to fix this problem.
+           Ext.override(Ext.form.ComboBox, {
+            setValue : function(v){
+                //begin patch
+                // Store not loaded yet? Set value when it *is* loaded.
+                // Defer the setValue call until after the next load.
+                if (this.store.getCount() == 0) {
+                    this.store.on('load',
+                    this.setValue.createDelegate(this, [v]), null, {single: true});
+                    return;
+                }
+                //end patch
+                var text = v;
+                if(this.valueField){
+                    var r = this.findRecord(this.valueField, v);
+                    if(r){
+                        text = r.data[this.displayField];
+                    }else if(this.valueNotFoundText !== undefined){
+                        text = this.valueNotFoundText;
+                    }
+                }
+                this.lastSelectionText = text;
+                if(this.hiddenField){
+                    this.hiddenField.value = v;
+                }
+                Ext.form.ComboBox.superclass.setValue.call(this, text);
+                this.value = v;
+            }});
+        
+        
             Ext.QuickTips.init();
             loadDataFromSession();
             setupGrid();
@@ -412,7 +446,7 @@
 
                             var workgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {}}),
+                                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params:{claimId : sm2.getSelected().get('id')}}),
                                 reader : workgroupJsonReader
                             });
 
@@ -524,7 +558,7 @@
                                     errorLabelContainer: '#routeClaimFormMessageBox'
                                 });
                                 //                            console.log("Loading store.");
-                                workgroupStore.load({ params : {}});
+                                workgroupStore.load({ params : {claimId : sm2.getSelected().get('id')}});
                                 //                            console.log("Resetting combo");
                                 workgroupCombo.reset();
 
@@ -796,7 +830,7 @@
                             var workgroupStore = -1;
                             var workgroupCombo = -1;
                             var isInsurerWorkgroupEnable = false;
-
+                            
                             if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
                                 isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                             }
@@ -975,34 +1009,65 @@
                             });
 
                             claimOwnerSelectionDlg.addListener('beforeshow', function(dialog){
-
-                                $("form#ownershipClaimForm").validate(
-                                {
-                                    errorLabelContainer: "#ownershipClaimFormMessageBox",
-                                    rules: {
-                                        // specify our validator (added above)
-                                        oasWorkgroupId: {itemSelected: document.getElementById('oasWorkgroupId')},
-                                        claimOwnerId: {itemSelected: document.getElementById('claimOwnerId')}
+                                
+                                var selectedRecords =  sm2.getSelections();
+                                var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
+                                var idsParam = selectedIDs.join(",");
+                                var uniqueWorkgroupId;
+                                // getUniqueWorkgroupId for the selected claims. implemented for  
+                                // bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
+                                Ext.Ajax.request({
+                                    url: '<%= request.getContextPath()%>/prv/p/getUniqueWorkgroupId.action',
+                                    params: {
+                                        selectedClaimIds  : idsParam,
+                                        nonce :'<%= session.getAttribute("SessionNonce")%>'
                                     },
-                                    messages: {
-                                        oasWorkgroupId: {itemSelected:"You must select a 'Workgroup'."},
-                                        claimOwnerId: {itemSelected:"You must select a 'Claim Owner'."}
-                                    }
-                                });
+                                    callback : function(options,success,response){
+                                        if(response.responseText){
+                                            var resp = Ext.util.JSON.decode(response.responseText);
+                                            if(resp){
+                                                uniqueWorkgroupId = resp.workgroupId;
+                                            } else { 
+                                                uniqueWorkgroupId = -1;
+                                             }
+                                           }
+                                            $("form#ownershipClaimForm").validate(
+                                            {
+                                                errorLabelContainer: "#ownershipClaimFormMessageBox",
+                                                rules: {
+                                                    // specify our validator (added above)
+                                                    oasWorkgroupId: {itemSelected: document.getElementById('oasWorkgroupId')},
+                                                    claimOwnerId: {itemSelected: document.getElementById('claimOwnerId')}
+                                                },
+                                                messages: {
+                                                    oasWorkgroupId: {itemSelected:"You must select a 'Workgroup'."},
+                                                    claimOwnerId: {itemSelected:"You must select a 'Claim Owner'."}
+                                                }
+                                            });
 
-                                // LOAD WORKGROUP AND CLAIM OWNER
-                                var insurerId = $("#userInsurerId").val();
-                                if (isInsurerWorkgroupEnable){
-                                    workgroupStore.load({ params : {"insurerId":insurerId}});
-                                    workgroupCombo.reset();
-                                }
+                                            // LOAD WORKGROUP AND CLAIM OWNER
+                                            var insurerId = $("#userInsurerId").val();
 
-                                // GENERATE CLAIM OWNER
-                                claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
-                                claimOwnerCombo.reset();
+                                            if (isInsurerWorkgroupEnable){
 
-                            });
-                        }
+                                                workgroupStore.load({ params : {"insurerId":insurerId}});
+                                                workgroupCombo.reset();
+                                                if(uniqueWorkgroupId >= 1) {
+                                                    workgroupCombo.setValue(uniqueWorkgroupId);
+                                                } 
+                                            }
+
+                                            // GENERATE CLAIM OWNER
+                                            if(uniqueWorkgroupId >= 1) { 
+                                              claimOwnerStore.load({ params : {"workgroupId":uniqueWorkgroupId,"insurerId":insurerId}});
+                                            } else {
+                                              claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                            }
+                                            claimOwnerCombo.reset();
+                                         }
+                                     });
+                                  });
+                           }
 
                         // claimOwnerSelectionDlg.show(this);
                         var selectedRecords =  sm2.getSelections();

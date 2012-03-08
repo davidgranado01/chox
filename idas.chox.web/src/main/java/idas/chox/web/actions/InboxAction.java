@@ -31,7 +31,16 @@ public class InboxAction extends BaseAction {
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
+    private String jsonData;
 
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+    
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
@@ -80,18 +89,49 @@ public class InboxAction extends BaseAction {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
         List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser());
-
+        List<String> insurerName = new ArrayList<String>();
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
-
-            if (!statusAllow.contains(claim.getStatus())) {
+            if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName,claim)) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
 
+        return SUCCESS;
+    }
+
+    // This below method ensure that chox admin can not 'Route Claims' via batch update when multiple insurers are selected.
+    private boolean canShowRouteClaimsInBatchUpdate(List<String> insurerName, Claim claim) {
+        if (getAuthenticatedUser().isCHOXAdmin()
+                && batchUpdateAction.equalsIgnoreCase("routeClaims")
+                && !insurerName.isEmpty()
+                && (!insurerName.contains(claim.getInsurer().getName())
+                    || !claim.getInsurer().isWorkgroupEnable())) {
+            return true;
+        } else {
+            if (insurerName.isEmpty()) {
+                insurerName.add(claim.getInsurer().getName());
+            }
+            return false;
+        }
+    }
+    
+    // Below functionality implemented for bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
+    public String getUniqueWorkgroupId() {
+        List<Integer> workgrouId = new ArrayList<Integer>();
+        for (Integer id : selectedClaimIdList) {
+            Claim claim = claimService.getClaim(id);
+            if (claim.getWorkgroup() == null || (!workgrouId.isEmpty() && !workgrouId.contains(claim.getWorkgroup().getId()))) {
+                setJsonData("{workgroupId:-1}");
+                return SUCCESS;
+            } else if (workgrouId.isEmpty()) {
+                workgrouId.add(claim.getWorkgroup().getId());
+            }
+        }
+        setJsonData("{workgroupId:" + workgrouId.get(0) + "}");
         return SUCCESS;
     }
 

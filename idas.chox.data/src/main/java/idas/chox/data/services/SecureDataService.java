@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
 public class SecureDataService extends BaseDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SecureDataService.class);
-    private SecurityInfoProvider securityInforProvider;
+    private SecurityInfoProvider securityInfoProvider;
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
 
-        this.securityInforProvider = provider;
+        this.securityInfoProvider = provider;
 
-        if (this.securityInforProvider != null && this.securityInforProvider.getCurrentUser() != null) {
+        if (this.securityInfoProvider != null && this.securityInfoProvider.getCurrentUser() != null) {
             initGlobalFilter();
         }
     }
@@ -61,7 +61,7 @@ public class SecureDataService extends BaseDataService {
     }
 
     public SecurityInfoProvider getSecurityInfoProvider() {
-        return this.securityInforProvider;
+        return this.securityInfoProvider;
     }
 
     public Set<Integer> getInsurerIds() {
