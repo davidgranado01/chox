@@ -1993,7 +1993,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRentalStartTime_original(String time) {
-        if (!time.equals(getRentalStartTime_original()) && (getRentalStartTime_original() == null)) {
+        if (time != null && !time.equals(getRentalStartTime_original()) && (getRentalStartTime_original() == null) ) {
 
             vehicleHireAction.setRentalStartTime_original(time);
 
