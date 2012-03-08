@@ -105,7 +105,9 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public int getVehicleClassId() {
-        return this.model.getVehicleClass() != null ? this.model.getVehicleClass().getId() : 0;
+    	if(this.model == null && this.model.getVehicleClass() == null)
+    		return 0;
+        return this.model.getVehicleClass().getId();
     }
 
     public List<VehicleClass> getVehicleClasses() {
@@ -158,6 +160,8 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalStartTime() {
+    	if(model == null)
+    		return null;
         return DateHelper.getTimeFormat().format(model.getHireStart());
     }
 
