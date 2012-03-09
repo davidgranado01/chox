@@ -90,24 +90,24 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public void setVehicleClassId(int vehicleClassId) {
-        setVehicleClassId_original(getVehicleClassId());
-
-        if (model.getVehicleClass().getId() != vehicleClassId) {
-            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses) {
-                if (vClass.getId() == vehicleClassId) {
-                    model.setVehicleClass(vClass);
-                    break;
-                }
-            }
-
-        }
+    	if(model != null){
+	    	setVehicleClassId_original(getVehicleClassId());
+	        if (model.getVehicleClass().getId() != vehicleClassId) {
+	            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+	            for (VehicleClass vClass : vehicleClasses) {
+	                if (vClass.getId() == vehicleClassId) {
+	                    model.setVehicleClass(vClass);
+	                    break;
+	                }
+	            }
+	        }
+    	}
     }
 
     public int getVehicleClassId() {
-    	if(this.model == null && this.model.getVehicleClass() == null)
-    		return 0;
-        return this.model.getVehicleClass().getId();
+    	if(this.model != null && this.model.getVehicleClass() != null)
+    		return this.model.getVehicleClass().getId();
+    	return 0;
     }
 
     public List<VehicleClass> getVehicleClasses() {
@@ -118,7 +118,9 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public int getVehicleClassId_original() {
-        return this.model.getVehicleClass_original() != null ? this.model.getVehicleClass_original().getId() : 0;
+    	if(this.model != null && this.model.getVehicleClass_original() != null)
+    		return this.model.getVehicleClass_original().getId();
+    	return 0;
     }
 
     public String getVehicleClassName_original() {
