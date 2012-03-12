@@ -157,6 +157,11 @@
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
+    <!-- We don't want struts dispatcher errors to be emailed, so define a separate logger for this -->
+    <logger name="org.apache.struts2.dispatcher.Dispatcher" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
     <logger name="com.opensymphony" level="WARN" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
