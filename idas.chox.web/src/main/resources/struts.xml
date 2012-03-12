@@ -4,10 +4,11 @@
     <constant name="struts.devMode" value="false" />
     <constant name="struts.multipart.maxSize" value="10000000" />
     <constant name="struts.codebehind.classSuffix" value="Controller"/>
-	<constant name="struts.codebehind.action.checkImplementsAction" value="false"/>
-	<constant name="struts.codebehind.action.checkAnnotation" value="false"/>
-	<constant name="struts.codebehind.action.defaultMethodName" value="index"/>
-	<constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
+    <constant name="struts.codebehind.action.checkImplementsAction" value="false"/>
+    <constant name="struts.codebehind.action.checkAnnotation" value="false"/>
+    <constant name="struts.codebehind.action.defaultMethodName" value="index"/>
+    <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
+    <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
