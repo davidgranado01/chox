@@ -1,0 +1,4 @@
+BUG#1549 Allow .zip files to be added as an attachment to a claim
+=====================================================================
+
+INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
