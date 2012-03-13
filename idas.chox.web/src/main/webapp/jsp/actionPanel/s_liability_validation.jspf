@@ -276,7 +276,6 @@
             if(validationCheck){
                 supportingLiabilityCheck(liabilityStatus);
             }
-            
         }else if(action=='acknowledgeClaim' && validationCheck){
 
             supportingLiabilityCheck(liabilityStatus);
@@ -300,17 +299,16 @@
             if(validationCheck){
                 supportingLiabilityCheck(liabilityStatus);
             }
-            
-
-
         }else if(action=='updateLiability'){
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
 
             if(validationCheck){
                 supportingLiabilityCheck(liabilityStatus);
             }
-            
         }
+        
+        if($("#reasonOfRejectionId").val() == '')
+        	$("#reasonOfRejectionId option[value='']").val(-1)
     }
 
     function supportingLiabilityCheck(liabilityStatus){

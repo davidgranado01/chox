@@ -132,6 +132,15 @@
         <MaxSize>2048</MaxSize>
     </appender>
     
+    <!-- We don't want struts Dispatcher or ActionComponent errors to be emailed, so we will define separate loggers for these -->
+    <logger name="org.apache.struts2.dispatcher.Dispatcher" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
+    <logger name="org.apache.struts2.components.ActionComponent " level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
