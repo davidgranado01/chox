@@ -1,24 +1,20 @@
 package idas.chox.bre;
 
-import idas.chox.test.BaseTest;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.NonStandardRiskInsurancePremiumCheck;
 import java.io.IOException;
 import java.math.BigDecimal;
+import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author rajareddydodda
- */
-public class Rule044NonStandardRiskInsurancePremiumCheckTest extends BaseTest {
+public class Rule044NonStandardRiskInsurancePremiumCheckTest extends TestCase {
 
     MockObjects testClaim = new MockObjects();
 
@@ -49,13 +45,16 @@ public class Rule044NonStandardRiskInsurancePremiumCheckTest extends BaseTest {
     }
 
     @Test
-    public void testSkipped_1() throws IOException {
+    public void testSkipped_OnOffFlag() throws IOException {
 
+        /*
+         * CHO Control Flag is OFF
+         */
 
         Claim claim = getTestClaim();
         claim.getBreBand().setNonStandardRiskInsurancePremiumCheck(false);
-        NonStandardRiskInsurancePremiumCheck rule = new NonStandardRiskInsurancePremiumCheck();
-        RuleEvaluation rv = rule.applyToClaim(claim);
+        RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
+
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
@@ -64,16 +63,16 @@ public class Rule044NonStandardRiskInsurancePremiumCheckTest extends BaseTest {
     }
 
     @Test
-    public void testPassed() throws IOException {
-
+    public void testPassed_zero() throws IOException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setNonStandardRiskInsurancePremiumCheck(true);
+        claim.getBreBand().setNonStandardInsurancePremiumCeilingTolerance(new BigDecimal("10.00"));
 
-        claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal(0.00).setScale(2, BigDecimal.ROUND_HALF_DOWN));
+        claim.getInvoice().setNonStandardInsurancePremiumFee(BigDecimal.ZERO);
 
-        NonStandardRiskInsurancePremiumCheck rule = new NonStandardRiskInsurancePremiumCheck();
-        RuleEvaluation rv = rule.applyToClaim(claim);
+        RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
+
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
@@ -82,22 +81,53 @@ public class Rule044NonStandardRiskInsurancePremiumCheckTest extends BaseTest {
     }
 
     @Test
-    public void testFailed() throws IOException {
-
+    public void testPassed_negative() throws IOException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setNonStandardRiskInsurancePremiumCheck(true);
+        claim.getBreBand().setNonStandardInsurancePremiumCeilingTolerance(new BigDecimal("10.00"));
 
-        claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal(1.00).setScale(2, BigDecimal.ROUND_HALF_DOWN));
-        NonStandardRiskInsurancePremiumCheck rule = new NonStandardRiskInsurancePremiumCheck();
+        claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal("-1.00"));
 
-        RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
 
-
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging a non-standard risk insurance premium fee for the hire, please review need."));
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
+    }
+
+    @Test
+    public void testFailled() throws IOException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setNonStandardRiskInsurancePremiumCheck(true);
+        claim.getBreBand().setNonStandardInsurancePremiumCeilingTolerance(new BigDecimal("10.00"));
+
+        claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal("15.00"));
+
+        RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging £15.00 for the Non Standard Risk Insurance Premium and the allowed ceiling is £10.00, please review."));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed() throws IOException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setNonStandardRiskInsurancePremiumCheck(true);
+        claim.getBreBand().setNonStandardInsurancePremiumCeilingTolerance(new BigDecimal("10.00"));
+
+        claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal("10.00"));
+
+        RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertFalse(rv.getIsVisibleToCHO());
     }
 }
