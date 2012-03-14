@@ -18,7 +18,8 @@ public class ChoxExceptionInterceptor extends ExceptionMappingInterceptor {
     protected void publishException(ActionInvocation invocation, ExceptionHolder exceptionHolder) {
         try {
             if (exceptionHolder.getException() instanceof javax.net.ssl.SSLException
-                    || (exceptionHolder.getException() != null && exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException))
+                    || (exceptionHolder.getException() != null && exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException)
+                    || (exceptionHolder.getException() instanceof java.io.IOException))
                 LOG.warn("Exception intercepted from action '{}': {}", invocation.getAction().toString(), exceptionHolder.getExceptionStack());
             else
                 LOG.error("Exception intercepted from action '{}': {}",invocation.getAction().toString(), exceptionHolder.getExceptionStack());

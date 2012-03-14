@@ -90,22 +90,24 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public void setVehicleClassId(int vehicleClassId) {
-        setVehicleClassId_original(getVehicleClassId());
-
-        if (model.getVehicleClass().getId() != vehicleClassId) {
-            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses) {
-                if (vClass.getId() == vehicleClassId) {
-                    model.setVehicleClass(vClass);
-                    break;
-                }
-            }
-
-        }
+    	if(model != null){
+	    	setVehicleClassId_original(getVehicleClassId());
+	        if (model.getVehicleClass().getId() != vehicleClassId) {
+	            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+	            for (VehicleClass vClass : vehicleClasses) {
+	                if (vClass.getId() == vehicleClassId) {
+	                    model.setVehicleClass(vClass);
+	                    break;
+	                }
+	            }
+	        }
+    	}
     }
 
     public int getVehicleClassId() {
-        return this.model.getVehicleClass() != null ? this.model.getVehicleClass().getId() : 0;
+    	if(this.model != null && this.model.getVehicleClass() != null)
+    		return this.model.getVehicleClass().getId();
+    	return 0;
     }
 
     public List<VehicleClass> getVehicleClasses() {
@@ -116,7 +118,9 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public int getVehicleClassId_original() {
-        return this.model.getVehicleClass_original() != null ? this.model.getVehicleClass_original().getId() : 0;
+    	if(this.model != null && this.model.getVehicleClass_original() != null)
+    		return this.model.getVehicleClass_original().getId();
+    	return 0;
     }
 
     public String getVehicleClassName_original() {
@@ -158,6 +162,8 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalStartTime() {
+    	if(model == null)
+    		return null;
         return DateHelper.getTimeFormat().format(model.getHireStart());
     }
 

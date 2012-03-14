@@ -28,7 +28,7 @@ public class CachingResponseFilter implements Filter {
 				&& (request.getServletPath().contains("ext") || request.getServletPath().contains("jquery"))){
 			
 			Calendar cal = new GregorianCalendar();
-			cal.roll(Calendar.YEAR, 1); //1 year for libraries
+			cal.add(Calendar.YEAR, 1); //1 year for libraries
 			
 			response.setHeader("Cache-control", "max-age=31536000");
 			response.setHeader("Expires", htmlExpiresDateFormat().format(cal.getTime()));
@@ -36,14 +36,14 @@ public class CachingResponseFilter implements Filter {
 				&& (request.getServletPath().contains("images"))) {
 			
 			Calendar cal = new GregorianCalendar();
-			cal.roll(Calendar.MONTH, 1); //1 month for images
+			cal.add(Calendar.MONTH, 1); //1 month for images
 			
 			response.setHeader("Cache-control", "max-age=2678400");
 			response.setHeader("Expires", htmlExpiresDateFormat().format(cal.getTime()));
 		} else if (response != null && request != null) {
 			
 			Calendar cal = new GregorianCalendar();
-			cal.roll(Calendar.HOUR, 12); //12 hours for rest
+			cal.add(Calendar.HOUR, 12); //12 hours for rest
 		
 			response.setHeader("Cache-control", "max-age=43200");
 			response.setHeader("Expires", htmlExpiresDateFormat().format(cal.getTime()));

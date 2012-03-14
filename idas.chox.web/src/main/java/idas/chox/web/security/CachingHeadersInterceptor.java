@@ -14,40 +14,35 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  * @author John
  */
 public class CachingHeadersInterceptor extends AbstractInterceptor implements
-		Serializable {
+        Serializable {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(CachingHeadersInterceptor.class);
-	private static final long serialVersionUID = -2773375159350215037L;
+    private static final Logger LOG = LoggerFactory.getLogger(CachingHeadersInterceptor.class);
+    private static final long serialVersionUID = -2773375159350215037L;
 
-	@Override
-	public String intercept(ActionInvocation invocation) throws Exception {
-		final ActionContext context = invocation.getInvocationContext();
-		final HttpServletResponse response = (HttpServletResponse) context
-				.get(StrutsStatics.HTTP_RESPONSE);
-		final HttpServletRequest request = (HttpServletRequest) context
-				.get(StrutsStatics.HTTP_REQUEST);
-		// Don't add to streaming requests
-		if (response != null
-				&& request != null
-				&& request.getServletPath().contains("downloadExcelReport")
-				&& request.getServletPath().contains("doExportAttachment")
-				&& request.getServletPath().contains("doExportExcel")
-				&& request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
-			
-			response.setHeader("Cache-control", "cache");//not a valid header
-			response.setHeader("Pragma", "cache");//not a valid header
-			response.setHeader("Expires", "-1");
-		
-		}
-		else if (response != null && request != null) {
-			// This action is never cached and is always downloaded; even with
-			// back/forward buttons.
-			response.setHeader("Cache-control", "no-cache, no-store");
-			response.setHeader("Pragma", "no-cache");
-			response.setHeader("Expires", "-1");
-		}
+    @Override
+    public String intercept(ActionInvocation invocation) throws Exception {
+        final ActionContext context = invocation.getInvocationContext();
+        final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
+        final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
+        // Don't add to streaming requests
+        if (response != null
+                && request != null
+                && !request.getServletPath().contains("downloadExcelReport")
+                && !request.getServletPath().contains("doExportAttachment")
+                && !request.getServletPath().contains("doExportExcel")
+                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
+            // This action is never cached and is always downloaded; even with
+            // back/forward buttons.
+            response.setHeader("Cache-control", "no-cache, no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "-1");
 
-		return invocation.invoke();
-	}
+        } else if (response != null && request != null) {
+            response.setHeader("Cache-control", "cache");//not a valid header
+            response.setHeader("Pragma", "cache");//not a valid header
+            response.setHeader("Expires", "-1");
+        }
+
+        return invocation.invoke();
+    }
 }
