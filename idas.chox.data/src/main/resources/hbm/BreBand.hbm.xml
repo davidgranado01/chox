@@ -113,6 +113,7 @@
         <property column="hire_vat_tolerance" name="hireVatTolerance"/>
         <property column="repair_vat_tolerance" name="repairVatTolerance"/>
         <property column="total_vat_tolerance" name="totalVatTolerance"/>
+        <property column="non_standard_insurance_tolerance" name="nonStandardInsurancePremiumCeilingTolerance"/>
         <property column="allow_penalty_charges" name="allowPenaltyCharges"/>
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
