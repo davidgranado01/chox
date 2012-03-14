@@ -41,8 +41,9 @@
             <div>
                 <div class="status-info">
                     Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer. 
-                    Decide whether to resubmit the invoice or close the invoice. 
-                    Resubmission will require a modification to the invoice details and/or the attachment of a payment pack or other supporting documentation.
+                    Decide whether to resubmit the invoice, close the invoice or move the claim to a pending status 
+                    if the claim is being taken to litigation (once/if litigation has been resolved the claim can be moved back into this status). 
+                    Resubmission will require a modification to the invoice details and/or the attachment of a payment pack or other supporting documentation. 
                     Please include supporting notes on the decision made using the 'Supporting Notes' text box below.
                 </div>
                 <div>
@@ -71,6 +72,7 @@
                             <td colspan="4" class="choice" nowrap>
                                 <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Resubmit Invoice"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
                                 <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Close Invoice" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
+                                <input type="submit" id="ROACIAwaitingLitigationOutcomeButtonId"value="Move Claim To Litigation Status"  onclick="resubmitOrAcceptContestedInvoiceSubmit('awaitingLitigationOutcome');" />
                             </td>
                         </tr>
                     </table>
