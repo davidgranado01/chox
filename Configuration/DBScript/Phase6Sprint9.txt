@@ -8,10 +8,10 @@ ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) n
 -------------------------------------------------------
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
-SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Accesser', 2, false, false, false, false, true, true, false, 0;
+SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Access', 2, false, false, false, false, true, true, false, 0;
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
-SELECT 'ROLE_CHO_MI', 999, now(), 999, now(), 'MI Accesser', 3, false, false, false, false, true, true, false, 0;
+SELECT 'ROLE_CHO_MI', 999, now(), 999, now(), 'MI Access', 3, false, false, false, false, true, true, false, 0;
 
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='menu.Report';
 
