@@ -108,7 +108,7 @@
                 }
                 if (!validateFileExtension(uploadFile)) {
                     Ext.MessageBox.alert('Sorry this file type is not allowed',
-                    '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
+                    '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml, .zip');
                     return;
                 }else{
                     $(form).ajaxSubmit(op);
@@ -210,7 +210,7 @@
     }
 
     function validateFileExtension(fileName) {
-        var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML)$/;
+        var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML|zip|ZIP)$/;
         return exp.test(fileName);
     }
 
