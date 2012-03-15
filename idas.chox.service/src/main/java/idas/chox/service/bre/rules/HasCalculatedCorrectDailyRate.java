@@ -84,17 +84,17 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                     
                 }
                 try {
-                    allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
+                    allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance()).setScale(2, BigDecimal.ROUND_HALF_UP);
                 } catch (Exception ex) {
                     LOG.warn("Cannot determine allowed daily rate for claim '{}' - using £0.00: {}", claim.getChoReference(), ex.getMessage());
-                    allowedDailyRate = BigDecimal.ZERO;
+                    allowedDailyRate = BigDecimal.ZERO.setScale(2);
                 }
                 BigDecimal dailyHireRateCharged;
                 try {
-                     dailyHireRateCharged  = cCalc.getDailyHireRateCharged();
+                     dailyHireRateCharged  = cCalc.getDailyHireRateCharged().setScale(2, BigDecimal.ROUND_HALF_UP) ;
                 } catch (Exception ex) {
                     LOG.warn("Cannot determine  daily rate charged for claim '{}' - using £0.00: {}", claim.getChoReference(), ex.getMessage());
-                    dailyHireRateCharged = BigDecimal.ZERO;
+                    dailyHireRateCharged = BigDecimal.ZERO.setScale(2);
                 }
                 LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
                 boolean success = dailyHireRateCharged.compareTo(allowedDailyRate) <= 0;
@@ -112,20 +112,20 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                     else if (isTclass) {
                         if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
                             if (age == null)
-                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
+                                narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + "." ;
                             else
-                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
+                                narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
                         } else {
                             if (age == null)
-                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " (note that the age of the vehicle could not be determined and so the lower rate for the vehicle class was used)." ;
+                                narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + " (note that the age of the vehicle could not be determined and so the lower rate for the vehicle class was used)." ;
                             else
-                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
+                                narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
                         }
                     } else {
                         if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
-                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + ".";
                         } else {
-                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + ".";
                         }
                     }
                 }
