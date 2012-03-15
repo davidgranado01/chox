@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <%@page session="false" contentType="text/html; charset=UTF-8" %>
 <%@page import="clime.messadmin.core.Constants" %>
+<%@page import="clime.messadmin.admin.AdminActionProvider"%>
+<%@page import="clime.messadmin.admin.BaseAdminActionWithContext"%>
+<%@page import="clime.messadmin.admin.BaseAdminActionWithContextAndSession"%>
+<%@page import="clime.messadmin.admin.actions.ServerInfos"%>
+<%@page import="clime.messadmin.admin.actions.WebAppsList"%>
+<%@page import="clime.messadmin.admin.actions.WebAppStats"%>
+<%@page import="clime.messadmin.admin.actions.SessionsList"%>
+<%@page import="clime.messadmin.admin.actions.ReloadSessionDataProvider"%>
+<%@page import="clime.messadmin.admin.actions.ReloadDataProviderHelper"%>
 <%@page import="clime.messadmin.model.IApplicationInfo" %>
+<%@page import="clime.messadmin.model.ApplicationInfo"%>
 <%@page import="clime.messadmin.model.ISessionInfo" %>
+<%@page import="clime.messadmin.model.DisplayDataHolder"%>
 <%@taglib prefix="core" uri="http://messadmin.sf.net/core" %>
 <%@taglib prefix="format" uri="http://messadmin.sf.net/fmt" %>
 <%--!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"--%>
@@ -21,8 +32,7 @@
 <% String context = (String) request.getAttribute("context");
    IApplicationInfo webAppStats = (IApplicationInfo) request.getAttribute("webAppStats");
    ISessionInfo currentSession = (ISessionInfo)request.getAttribute("currentSession");
-   String currentSessionId = currentSession.getId();
-   String webFilesRoot = (String) request.getAttribute("WebFilesRoot"); %>
+   String currentSessionId = currentSession.getId(); %>
 <%--c:url value="${pageContext.request.servletPath}" var="submitUrl" scope="page"/--%><%-- can use value="${pageContext.request.servletPath}" because this JSP is include()'ed --%>
 <%-- or use directly ${pageContext.request.requestURI} --%>
 <% String submitUrl = request.getContextPath() + request.getServletPath(); /* Can use +request.getServletPath() because this JSP is include()'ed */ %>
@@ -34,33 +44,39 @@
 	</style>
 	<script type="text/javascript">//<![CDATA[
 		function reloadPage() {
-			window.location.reload();
+			//window.location.reload();
+			document.getElementById('refreshButton').click();
 		}
 	//]]>
 	</script>
 </head>
 <body>
 
-<div id="menu" style="font-size: small;">
+<div id="menu">
+<jsp:include page="inc/menuTools.jsp"/>
+<span>
 [
-<a href="<%=submitUrl%>?action=serverInfos"><format:message key="menu.serverInfos"/></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=ServerInfos.ID%>"><format:message key="menu.serverInfos"/></a>
 |
-<a href="<%=submitUrl%>?action=webAppsList"><format:message key="menu.webAppsList"/></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppsList.ID%>"><format:message key="menu.webAppsList"/></a>
 |
-<a href="<%=submitUrl%>?action=webAppStats&amp;context=<%=context%>"><format:message key="menu.webAppStats"><format:param><%=webAppStats.getContextPath()%></format:param></format:message></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppStats.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%=context%>"><format:message key="menu.webAppStats"><format:param><core:out value="<%=webAppStats.getContextPath()%>"/></format:param></format:message></a>
 |
-<a href="<%=submitUrl%>?action=sessionsList&amp;context=<%=context%>"><format:message key="menu.sessionsList"><format:param><%=webAppStats.getContextPath()%></format:param></format:message></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=SessionsList.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%=context%>"><format:message key="menu.sessionsList"><format:param><core:out value="<%=webAppStats.getContextPath()%>"/></format:param></format:message></a>
 ]
+</span>
 </div>
 
 <h1><format:message key="page.title2"><format:param><core:out value="<%= currentSessionId %>"/></format:param><format:param><core:out value="<%= webAppStats.getServletContextName() %>"/></format:param></format:message></h1>
 
-<div class="collapsible" id="sessionDetails"></div>
+<jsp:include page="inc/stuckThreads.jsp"/>
+
+<div><span class="collapsible" id="sessionDetails"></span></div>
 <div id="sessionDetails-target" style="<core:if test='<%=currentSession.isSecure()%>'> background-color: #F5F6BE;</core:if>">
 <table style="text-align: left;" border="0">
   <tr>
     <th><format:message key="session.id"/></th>
-    <td colspan="3"><%= currentSessionId %></td>
+    <td colspan="3"><core:out value="<%= currentSessionId %>"/></td>
   </tr>
   <tr>
     <th nowrap="nowrap"><format:message key="request.last_url"/></th>
@@ -75,13 +91,14 @@
 </table>
 <table style="text-align: left;" border="0">
   <tr>
-    <th><format:message key="message_pending"/></th>
-    <td>
+    <th><core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>"><format:message key="message_pending"/></core:if></th>
+    <td><core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 <core:if test="<%=currentSession.getAttribute(Constants.SESSION_MESSAGE_KEY) != null%>"><format:message key="message_pending.yes"/></core:if>
 <core:if test="<%=currentSession.getAttribute(Constants.SESSION_MESSAGE_KEY) == null%>"><format:message key="message_pending.no"/></core:if>
+</core:if>
     </td>
     <th><format:message key="remote_host"/></th>
-    <td><%= currentSession.getRemoteHost() %></td>
+    <td><core:out value="<%= currentSession.getRemoteHost() %>"/></td>
   </tr>
   <tr>
     <th><format:message key="user"/></th>
@@ -206,6 +223,7 @@
     	</div>
     </td>
   </tr>
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
   <tr>
     <th><format:message key="response.last_size"/></th>
     <td><span id="responseSize1" class="infoballoonable"><format:formatNumber value="<%= currentSession.getResponseLastLength() %>" type="bytes"/></span>
@@ -240,64 +258,58 @@
     	</div>
     </td>
   </tr>
+</core:if>
 </table>
 </div>
 
-<p style="text-align: center;">
-<button type="button" onclick="window.location.reload()"><format:message key="refresh"/></button>
+<div class="noprint" style="text-align: center;">
+<p>
+<form action="<%= submitUrl %>" method="get">
+	<input type="hidden" name="action" value="sessionDetail" />
+	<input type="hidden" name="context" value="<%= context %>" />
+	<input type="hidden" name="sessionId" value="<core:out value='<%= currentSessionId %>'/>" />
+	<input type="number" name="autorefresh" id="autorefresh" min="5" title="<format:message key='autorefresh.TT'/>" value="<core:out value='<%=request.getAttribute("autorefresh")%>'/>" size="3" maxlength="3" onchange="setAutorefresh(this); return false;" />
+	<input type="submit" name="refresh" id="refreshButton" value="<format:message key='refresh' />" title="<format:message key='refresh.TT'/>" />
+</form>
 </p>
+</div>
 
 <div class="error"><core:out value='<%= request.getAttribute("error") %>'/></div>
 <div class="message"><core:out value='<%= request.getAttribute("message") %>'/></div>
 
-<fieldset>
-<legend class="collapsible" id="sessionAttributes"><format:message key="session.attributes.legend"/></legend>
-<table id="sessionAttributes-target" class="strippable" style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
-	<caption style="font-variant: small-caps;">
-	<format:message key="session.attributes.caption"><format:param><format:formatNumber value="<%= currentSession.getAttributes().size() %>" type="number"/></format:param></format:message></caption>
-	<thead>
-		<tr>
-			<th><format:message key="session.attributes.remove"/></th>
-			<th><format:message key="session.attributes.size"/></th>
-			<th><format:message key="session.attributes.name"/></th>
-			<th><format:message key="session.attributes.value"/></th>
-		</tr>
-	</thead>
-	<%--tfoot>
-		<tr>
-			<td colspan="4" style="text-align: center;">
-				TODO: set (String/OGNL) attributes and Max Inactive Interval on sessions
-			</td>
-		</tr>
-	</tfoot--%>
-	<tbody>
-<core:forEach items="<%= currentSession.getAttributes() %>" var="attribute" varStatus="status">
-<%	java.util.Map.Entry attribute = (java.util.Map.Entry) pageContext.getAttribute("attribute"); %>
-		<tr style="<core:notSerializable object='<%= attribute.getValue() %>'>background-color: #EE0000;</core:notSerializable>"><%-- class="${status.count%2==0?'even':'odd'}"--%>
-			<td align="center"><form action="<%= submitUrl %>"><div><input type="hidden" name="action" value="removeSessionAttribute" /><input type="hidden" name="context" value="<%= context %>" /><input type="hidden" name="sessionId" value="<%= currentSessionId %>" /><input type="hidden" name="attributeName" value="<%= attribute.getKey() %>" /><input type="submit" value="<format:message key='remove'/>" /></div></form></td>
-			<td><format:formatNumber type="bytes"><core:sizeof object="<%= attribute.getValue() %>"/></format:formatNumber></td>
-			<td><core:out value='<%= attribute.getKey() %>'/></td>
-			<td><core:outWithClass value="<%= attribute.getValue() %>"/></td>
-		</tr>
-</core:forEach>
-	</tbody>
-</table>
-</fieldset>
-
 <div id="extraSessionAttributes">
 <% int index = 0; %>
 <core:forEach items="<%= currentSession.getSessionSpecificData() %>" var="sessionSpecificData" varStatus="status">
-<%	java.util.Map.Entry sessionSpecificData = (java.util.Map.Entry) pageContext.getAttribute("sessionSpecificData");
-    ++index; %>
-	<fieldset>
-		<legend class="collapsible" id="<%=index%>"><%= sessionSpecificData.getKey() %></legend>
-		<div id="<%=index%>-target"><%= sessionSpecificData.getValue() %></div>
+<%	DisplayDataHolder sessionSpecificData = (DisplayDataHolder) pageContext.getAttribute("sessionSpecificData");
+	String dataTitle = sessionSpecificData.getTitle();
+	String dataXHTML = sessionSpecificData.getXHTMLData();
+	String refreshTitleURL = submitUrl + '?' + AdminActionProvider.ACTION_PARAMETER_NAME + '=' + ReloadSessionDataProvider.ID + '&' + ReloadDataProviderHelper.PARAM_PROVIDER + '=' + sessionSpecificData.getHTMLId() + '&' + ReloadDataProviderHelper.PARAM_SCOPE + '=' + ReloadDataProviderHelper.SCOPE_TITLE + '&' + BaseAdminActionWithContext.CONTEXT_KEY + '=' + context + '&' + BaseAdminActionWithContextAndSession.SESSION_KEY + '=' + currentSessionId;
+	String refreshDataURL = submitUrl + '?' + AdminActionProvider.ACTION_PARAMETER_NAME + '=' + ReloadSessionDataProvider.ID + '&' + ReloadDataProviderHelper.PARAM_PROVIDER + '=' + sessionSpecificData.getHTMLId() + '&' + ReloadDataProviderHelper.PARAM_SCOPE + '=' + ReloadDataProviderHelper.SCOPE_CONTENT + '&' + BaseAdminActionWithContext.CONTEXT_KEY + '=' + context + '&' + BaseAdminActionWithContextAndSession.SESSION_KEY + '=' + currentSessionId;
+	if (dataTitle != null && dataXHTML != null) {
+		++index; %>
+	<fieldset><%--
+Refresh
+0x21BA	8634	ANTICLOCKWISE OPEN CIRCLE ARROW	↺
+0x21BB	8635	CLOCKWISE OPEN CIRCLE ARROW	↻
+0x21B9	8633	LEFTWARDS ARROW TO BAR OVER RIGHTWARDS ARROW TO BAR	↹
+0x21C4	8644	RIGHTWARDS ARROW OVER LEFTWARDS ARROW	⇄
+0x21C6	8646	LEFTWARDS ARROW OVER RIGHTWARDS ARROW	⇆
+--%>
+		<legend><a href="#" title="<format:message key='refresh'/>" style="text-decoration: none;" onclick="javascript:/*jah('<%=refreshTitleURL%>','extraSessionAttributes-<%=index%>');*/jah('<%=refreshDataURL%>','<%=sessionSpecificData.getHTMLId()%>');return false;">&#8635;</a><span class="collapsible" id="extraSessionAttributes-<%=index%>"><%= dataTitle %></span></legend>
+		<div id="extraSessionAttributes-<%=index%>-target"><div id="<%=sessionSpecificData.getHTMLId()%>"><%= dataXHTML %></div></div>
 	</fieldset>
+<% } %>
 </core:forEach>
 </div>
 
 <jsp:include page="inc/footer.jsp"/>
 
 <%@ include file="inc/js.inc" %>
+	<script type="text/javascript" defer="defer">//<![CDATA[
+		addWindowOnLoadHandler(function() {
+			setAutorefresh(document.getElementById('autorefresh'));
+		});
+	//]]>
+	</script>
 </body>
 </html>
