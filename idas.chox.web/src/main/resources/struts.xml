@@ -8,7 +8,7 @@
     <constant name="struts.codebehind.action.checkAnnotation" value="false"/>
     <constant name="struts.codebehind.action.defaultMethodName" value="index"/>
     <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
-    <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
+    <constant name="struts.action.extension" value="action" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
