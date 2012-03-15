@@ -1,0 +1,13 @@
+----------------------------------------------------------------------------
+-- 6.9.8 Append Supplier Reference Update Failures To A Historic List --
+----------------------------------------------------------------------------
+CREATE TABLE queued_ticket (
+    id serial NOT NULL,
+    created_date timestamp without time zone,
+    sender character varying(256),
+    old_reference character varying(128),
+    new_reference character varying(128)
+    )
+ WITH (OIDS=FALSE);
+ grant select, update, insert, delete on queued_ticket to chox_user;
+ grant select, update on queued_ticket_id_seq to chox_user; 
