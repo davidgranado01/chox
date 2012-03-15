@@ -180,14 +180,14 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal hireRateChargedPerDay;
     private BigDecimal excessAmountCollected;
     private BigDecimal vatAmountCollected;
-    private BigDecimal hirePenaltyCharge;
+    private BigDecimal hirePenaltyCharge = BigDecimal.ZERO.setScale(2);
     private String hirePenaltyPercentage;
     private Date hirePenaltyChargeAppliedDate;
-    private BigDecimal repairPenaltyCharge;
+    private BigDecimal repairPenaltyCharge = BigDecimal.ZERO.setScale(2);
     private String repairPenaltyPercentage;
     private Date repairPenaltyChargeAppliedDate;
     private Integer penaltyAlertQty;
-    private BigDecimal totalPenaltyCharge;
+    private BigDecimal totalPenaltyCharge = BigDecimal.ZERO.setScale(2);
     private ReasonOfRejection reasonOfRejection;
     private BigDecimal originalFullTotalToPay;
     private BigDecimal totalToPay;
