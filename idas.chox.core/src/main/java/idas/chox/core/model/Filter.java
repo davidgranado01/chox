@@ -36,6 +36,7 @@ public interface Filter {
     public static final String FILTER_INVOICE_UNASSIGNED = "InvoiceUnassigned";
     public static final String FILTER_MANUAL_INVOICE_APPROVED = "ManualInvoiceBREApproved";
     public static final String FILTER_MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
+    public static final String FILTER_MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
 
     String getKey();
 

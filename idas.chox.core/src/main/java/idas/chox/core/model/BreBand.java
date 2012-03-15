@@ -108,6 +108,7 @@ public class BreBand extends Entity implements Serializable {
     private BigDecimal hireVatTolerance;
     private BigDecimal repairVatTolerance;
     private BigDecimal totalVatTolerance;
+    private BigDecimal nonStandardInsurancePremiumCeilingTolerance;
     private String nameOfRepairer = "Autorestore ltd";
     private boolean subscriberCheckRejectedClaims;
     private boolean subscriberAcquisitionFeeCheck;
@@ -1063,6 +1064,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setTotalVatTolerance(BigDecimal totalVatTolerance) {
         this.totalVatTolerance = totalVatTolerance;
+    }
+
+    public BigDecimal getNonStandardInsurancePremiumCeilingTolerance() {
+        return nonStandardInsurancePremiumCeilingTolerance;
+    }
+
+    public void setNonStandardInsurancePremiumCeilingTolerance(BigDecimal nonStandardInsurancePremiumCeilingTolerance) {
+        this.nonStandardInsurancePremiumCeilingTolerance = nonStandardInsurancePremiumCeilingTolerance;
     }
 
     public boolean isMobileVehicleTotalLossCheck() {

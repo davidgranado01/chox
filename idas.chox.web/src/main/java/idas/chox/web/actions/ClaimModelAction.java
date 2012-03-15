@@ -1,20 +1,21 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
+
 import java.util.Map;
-//import java.util.Set;
 
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
@@ -110,6 +111,8 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             claim = this.claimService.getClaim(claimId);
             session = ActionContext.getContext().getSession();
             session.put(model.getClass().getName(), model.getVersion());
+            //if model is not claim we also need to add the session for claim version
+            session.put(claim.getClass().getName(), claim.getVersion());
             if (model instanceof Claim) {
                 getSession().put("claimDetailPageClaimVersion", model.getVersion());
             } else {

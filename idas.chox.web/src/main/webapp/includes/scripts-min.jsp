@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.7.1-min.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form-min.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate-min.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.blockUI-min.js" type="text/javascript" ></script>

@@ -28,7 +28,8 @@
 			<url>http://messadmin.sourceforge.net/maven2/</url>
 		</repository>
 	</repositories>
-	<build>
+
+    <build>
 		<finalName>idas.chox.web</finalName>
 		<pluginManagement>
 			<plugins>
@@ -81,9 +82,9 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			<!-- WSDL2Java (Apache-CXF) plugin Uncomment only when WSDL (contract-first) 
-				changes We could also use the JAX-WS maven plugin (wsimport) - see below -->
 
+            <!-- WSDL2Java (Apache-CXF) plugin Uncomment only when WSDL (contract-first) 
+				changes Yhe JAX-WS maven plugin (wsimport) can also be used - see below -->
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-codegen-plugin</artifactId>
@@ -107,18 +108,44 @@
 				</executions>
 			</plugin>
 
-			<!-- wsimport (JAX-WS) maven plugin Uncomment only when WSDL (contract-first) 
-				changes -->
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jaxws-maven-plugin</artifactId> 
-				<version>1.10</version> <executions> <execution> <goals> <goal>wsimport</goal> 
-				</goals> <configuration> <wsdlFiles> <wsdlFile>chox-webservices.wsdl</wsdlFile> 
-				</wsdlFiles> <staleFile>${project.build.directory}/jaxws/stale/chox-webservices.stale</staleFile> 
-				</configuration> <id>wsimport-generate-chox-webservices</id> <phase>generate-sources</phase> 
-				</execution> </executions> <dependencies> <dependency> <groupId>javax.xml</groupId> 
-				<artifactId>webservices-api</artifactId> <version>1.4</version> </dependency> 
-				</dependencies> <configuration> <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir> 
-				<xnocompile>true</xnocompile> <verbose>true</verbose> <extension>true</extension> 
-				<catalog>${basedir}/src/jax-ws-catalog.xml</catalog> </configuration> </plugin> -->
+<!-- No longer used - use (the above) CXF codegen plugin instead -->
+<!-- wsimport (JAX-WS) maven plugin Uncomment only when WSDL (contract-first) changes -->
+<!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId> 
+				<version>1.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal> 
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>chox-webservices.wsdl</wsdlFile> 
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/jaxws/stale/chox-webservices.stale</staleFile> 
+                        </configuration>
+                        <id>wsimport-generate-chox-webservices</id>
+                        <phase>generate-sources</phase> 
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.xml</groupId> 
+                        <artifactId>webservices-api</artifactId>
+                        <version>1.4</version>
+                    </dependency> 
+				</dependencies>
+                <configuration>
+                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir> 
+                    <xnocompile>true</xnocompile>
+                    <verbose>true</verbose>
+                    <extension>true</extension> 
+                    <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
+                </configuration>
+            </plugin>
+-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -145,7 +172,8 @@
 			</resource>
 		</resources>
 	</build>
-	<dependencies>
+
+    <dependencies>
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
@@ -196,8 +224,8 @@
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
-                        <version>2.4</version>
-                        <classifier>jdk15</classifier>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -244,37 +272,28 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring-security-core.version}</version>
 		</dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                    <version>${spring-web.version}</version>
-                </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring-web.version}</version>
+            </dependency>
 		<dependency>
 			<groupId>net.sf.jxls</groupId>
 			<artifactId>jxls-core</artifactId>
-			<!--version>0.9.8</version -->
-			<!--version>0.9.9-SNAPSHOT</version -->
 			<version>0.9.9</version>
 			<type>jar</type>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>poi</artifactId>
-		   <groupId>org.apache.poi</groupId>
-		  </exclusion>
-		 </exclusions>
+            <exclusions>
+                <exclusion>
+                    <artifactId>poi</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.6.6</version>
 		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.messadmin</groupId>
-			<artifactId>MessAdmin-Core</artifactId>
-			<version>4.1.1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- add here other MessAdmin plugins as required -->
 		<!-- Apache CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -298,10 +317,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!--dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-rt-transports-http-jetty</artifactId> 
-			<version>${cxf.version}</version> <exclusions> <exclusion> <groupId>org.apache.geronimo.specs</groupId> 
-			<artifactId>geronimo-stax-api_1.0_spec</artifactId> </exclusion> </exclusions> 
-			</dependency -->
+<!--
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId> 
+			<version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId> 
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+            </exclusions> 
+		</dependency>
+-->
 		<!-- Apache CXF WS security -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -361,7 +389,44 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Runtime Dependencies -->
+        <!-- MessAdmin -->
+		<dependency>
+			<groupId>net.sourceforge.messadmin</groupId>
+			<artifactId>MessAdmin-Core</artifactId>
+			<version>5.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.messadmin</groupId>
+			<artifactId>MessAdmin-AutoProbe</artifactId>
+			<version>5.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- add here other MessAdmin plugins as required -->
+        <dependency>
+            <groupId>net.sourceforge.messadmin</groupId>
+            <artifactId>MessAdmin-ClickStream</artifactId>
+            <version>5.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.messadmin</groupId>
+            <artifactId>MessAdmin-SessionKiller</artifactId>
+            <version>5.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.messadmin</groupId>
+            <artifactId>MessAdmin-ServletStats</artifactId>
+            <version>5.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.messadmin</groupId>
+            <artifactId>MessAdmin-Quartz1</artifactId>
+            <version>5.2</version>
+            <scope>runtime</scope>
+        </dependency>
 	</dependencies>
 </project>
-
-

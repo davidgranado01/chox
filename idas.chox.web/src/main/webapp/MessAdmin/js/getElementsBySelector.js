@@ -27,6 +27,11 @@ function getAllChildren(e) {
 }
 
 document.getElementsBySelector = function(selector) {
+  // Try native implementation if available: http://www.w3.org/TR/selectors-api/
+  if (document.querySelectorAll) {
+    return document.querySelectorAll(selector);
+  }
+
   // Attempt to fail gracefully in lesser browsers
   if (!document.getElementsByTagName) {
     return new Array();

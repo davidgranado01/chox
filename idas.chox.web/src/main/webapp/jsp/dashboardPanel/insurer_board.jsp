@@ -327,10 +327,10 @@
               </s:if>
             </table>
                 <s:if test="uploadEnabled">
-                    <div style="height:830px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:900px; width:960px" id="resultHolder" name="resultHolder"></div>
                 </s:if>
                 <s:else>
-                    <div style="height:690px; width:960px" id="resultHolder" name="resultHolder"></div>
+                    <div style="height:740px; width:960px" id="resultHolder" name="resultHolder"></div>
                 </s:else>
             
         </div>

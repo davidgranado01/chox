@@ -6,7 +6,6 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
 
 public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
 
@@ -24,9 +23,11 @@ public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getNonStandardInsurancePremiumFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getNonStandardInsurancePremiumFee().compareTo(claim.getBreBand().getNonStandardInsurancePremiumCeilingTolerance()) > 0) {
                 success = false;
-                narrative = "The CHO is charging a non-standard risk insurance premium fee for the hire, please review need.";
+                narrative = "The CHO is charging £" + claim.getInvoice().getNonStandardInsurancePremiumFee()
+                        + " for the Non Standard Risk Insurance Premium and the allowed ceiling is £"
+                        + claim.getBreBand().getNonStandardInsurancePremiumCeilingTolerance() + ", please review.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

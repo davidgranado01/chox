@@ -1,7 +1,6 @@
 package idas.chox.service.security;
 
 import idas.chox.core.model.WebUser;
-import java.util.Set;
 
 public class MenuAccessibility {
 

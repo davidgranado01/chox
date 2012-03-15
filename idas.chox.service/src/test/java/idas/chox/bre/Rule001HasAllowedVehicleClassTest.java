@@ -10,6 +10,7 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.bre.rules.HasAllowedVehicleClass;
 import java.io.IOException;
+import java.math.BigDecimal;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,6 +48,7 @@ public class Rule001HasAllowedVehicleClassTest extends BaseTest {
         claim.setHireMonitoringDetail(testClaim.getTestHireMonitoringDetail());
         claim.setInvoice(testClaim.getTestInvoice());
         claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
+        claim.setClaimType(ClaimType.GTA);
 
         return claim;
     }
@@ -107,11 +109,14 @@ public class Rule001HasAllowedVehicleClassTest extends BaseTest {
 
         claim.getInsurer().setId(3);
         claim.getChorganisation().setId(1006);
-        claim.getCustomer().getVehicleClass().setName("SP1");
+        claim.getCustomer().getVehicleClass().setName("SP1"); // SP1 is charged at 73.52 per day
         claim.getCustomer().getVehicleClass().setId(65);
 
         claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getVehicleHire().getVehicleClass().setId(65);
+        claim.getVehicleHire().setDays(1);
+        
+        claim.getInvoice().setHireNet(new BigDecimal("113.53")); // SP1 charged at 73.52 p/day + 30 (admin extra) + 10 (Automatic fee)
         HasAllowedVehicleClass rule = new HasAllowedVehicleClass();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -119,6 +124,38 @@ public class Rule001HasAllowedVehicleClassTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    @Transactional
+    public void testSkipped() throws IOException {
+
+        // Skip if daily rate charged is less than the customers vehicle class price
+        // ToDo item: 6.9.3 Like For Like Rule Linked To Daily Rate Of Customer's Class
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setHasAllowedVehicleClass(true);
+
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
+        claim.getCustomer().getVehicleClass().setName("SP1"); // SP1 is charged at 73.52 per day
+        claim.getCustomer().getVehicleClass().setId(65);
+
+        claim.getVehicleHire().getVehicleClass().setName("SP2");
+        claim.getVehicleHire().getVehicleClass().setId(95);
+        claim.getVehicleHire().setDays(1);
+        
+        claim.getInvoice().setHireNet(new BigDecimal("113.52")); // charge for SP1 at 73.52 p/day + 30 (admin extra) + 10 (Automatic fee)
+        HasAllowedVehicleClass rule = new HasAllowedVehicleClass();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+
+        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The calculated daily rate charged is less than or equal to the allowed daily rate based upon the customers vehicle class."));
         assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -141,7 +178,9 @@ public class Rule001HasAllowedVehicleClassTest extends BaseTest {
 
         claim.getVehicleHire().getVehicleClass().setId(95);
         claim.getVehicleHire().getVehicleClass().setName("SP2");
+        claim.getVehicleHire().setDays(1);
 
+        claim.getInvoice().setHireNet(new BigDecimal("125.93")); // charge for SP2 at 85.93 p/day + 30 (admin extra) + 10 (Automatic fee)
 
        
         HasAllowedVehicleClass rule = new HasAllowedVehicleClass();

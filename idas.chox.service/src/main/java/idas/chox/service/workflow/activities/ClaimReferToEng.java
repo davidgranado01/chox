@@ -14,7 +14,6 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
-import java.util.ArrayList;
 
 public class ClaimReferToEng extends BaseActivity {
 
@@ -71,7 +70,7 @@ public class ClaimReferToEng extends BaseActivity {
             }
 
             claim.setLiabilityStatus(liabilityStatus);
-            Comment comment = Comment.New(0, note);
+            Comment comment = Comment.New(1, note);
             comment.setClaim(claim);
             claim.addComment(comment);
             claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));

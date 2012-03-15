@@ -210,6 +210,7 @@
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
+                <ref bean="ManualInvoiceContested" />
 
             </list>
         </property>

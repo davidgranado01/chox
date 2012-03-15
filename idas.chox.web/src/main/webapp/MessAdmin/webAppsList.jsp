@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <%@page session="false" contentType="text/html; charset=UTF-8" %>
 <%@page import="java.util.Collection" %>
+<%@page import="clime.messadmin.admin.AdminActionProvider"%>
+<%@page import="clime.messadmin.admin.BaseAdminActionWithContext"%>
+<%@page import="clime.messadmin.admin.actions.ServerInfos"%>
+<%@page import="clime.messadmin.admin.actions.WebAppStats"%>
+<%@page import="clime.messadmin.admin.actions.SessionsList"%>
 <%@page import="clime.messadmin.model.IApplicationInfo" %>
+<%@page import="clime.messadmin.model.ApplicationInfo"%>
 <%@page import="clime.messadmin.core.Constants" %>
 <%@taglib prefix="core" uri="http://messadmin.sf.net/core" %>
 <%@taglib prefix="format" uri="http://messadmin.sf.net/fmt" %>
@@ -18,8 +24,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%= response.getLocale() %>">
 <format:setBundle basename="clime.messadmin.admin.i18n.webAppsList"/>
-<% String webFilesRoot = (String) request.getAttribute("WebFilesRoot");
-   Collection applications = (Collection)request.getAttribute("applications"); %>
+<% Collection applications = (Collection)request.getAttribute("applications"); %>
 <%--c:url value="${pageContext.request.servletPath}" var="submitUrl" scope="page"/--%><%-- can use value="${pageContext.request.servletPath}" because this JSP is include()'ed --%>
 <%-- or use directly ${pageContext.request.requestURI} --%>
 <% String submitUrl = request.getContextPath() + request.getServletPath(); /* Can use +request.getServletPath() because this JSP is include()'ed */ %>
@@ -46,20 +51,25 @@
 </head>
 <body>
 
-<div id="menu" style="font-size: small;">
+<div id="menu">
+<jsp:include page="inc/menuTools.jsp"/>
+<span>
 [
-<a href="<%=submitUrl%>?action=serverInfos"><format:message key="menu.serverInfos"/></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=ServerInfos.ID%>"><format:message key="menu.serverInfos"/></a>
 |
 <format:message key="menu.webAppsList"/>
 ]
+</span>
 </div>
 
 <h1><format:message key="page.title"/></h1>
 
+<jsp:include page="inc/stuckThreads.jsp"/>
+
 <div class="error"><core:out value='<%= request.getAttribute("error") %>'/></div>
 <div class="message"><core:out value='<%= request.getAttribute("message") %>'/></div>
 
-<p style="text-align: center;"><button type="button" title="Refresh Applications list" onclick="window.location.reload()"><format:message key="refresh"/></button></p>
+<p class="noprint" style="text-align: center;"><button type="button" onclick="window.location.reload()"><format:message key="refresh"/></button></p>
 
 <form action="<%= submitUrl %>" method="post" id="applicationsForm">
 	<fieldset><legend><format:message key="list.legend"/></legend>
@@ -75,20 +85,22 @@
 			</thead>
 			<tbody>
 <% IApplicationInfo context; %>
+<% boolean hasMessageCapabilities = false; %>
 <core:forEach items='<%= applications %>' var="context" varStatus="status">
 <% context = (IApplicationInfo) pageContext.getAttribute("context"); %>
 				<tr><%-- class="${status.count%2==0?'even':'odd'}"--%>
-					<td><label><input type="checkbox" name="applicationIds" value="<%= context.getInternalContextPath() %>" /><%= context.getContextPath() %></label></td>
+					<td><label><core:if test="<%=((ApplicationInfo) context).isMessAdminFullMode()%>"><% hasMessageCapabilities = true; %><input type="checkbox" name="applicationIds" value="<core:out value='<%= context.getInternalContextPath() %>'/>" /></core:if><core:out value="<%= context.getContextPath() %>"/></label></td>
 					<td style="text-align: right;"><format:formatNumber value="<%= context.getActiveSessionsCount() + context.getPassiveSessionsCount() %>" type="number"/></td>
 					<td style="text-align: center;">
 						<core:if test="<%= context.getAttribute(Constants.GLOBAL_MESSAGE_KEY) != null %>">M</core:if>
 					</td>
-					<td style="text-align: center;"><a href="<%= submitUrl %>?action=sessionsList&amp;context=<%= context.getInternalContextPath() %>"><format:message key="list.session_list"/></a></td>
-					<td style="text-align: center;"><a href="<%= submitUrl %>?action=webAppStats&amp;context=<%= context.getInternalContextPath() %>"><format:message key="list.webapp_stats"/></a></td>
+					<td style="text-align: center;"><a href="<%= submitUrl %>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=SessionsList.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%= context.getInternalContextPath() %>"><format:message key="list.session_list"/></a></td>
+					<td style="text-align: center;"><a href="<%= submitUrl %>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppStats.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%= context.getInternalContextPath() %>"><format:message key="list.webapp_stats"/></a></td>
 				</tr>
 </core:forEach>
 			</tbody>
 		</table>
+<core:if test="<%=hasMessageCapabilities%>">
 		<label><input type="checkbox" onclick="javascript:checkUncheckAllCB(this, 'applicationIds');" /><format:message key="select.all"/></label>
 		<table border="0">
 			<tr>
@@ -108,6 +120,7 @@
 				</td>
 			</tr>
 		</table>
+</core:if>
 	</fieldset>
 </form>
 
