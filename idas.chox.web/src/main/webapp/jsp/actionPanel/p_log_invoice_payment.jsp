@@ -4,7 +4,7 @@
 	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
 </s:if>
 <s:else>
-	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
+	<script src="<%= request.getContextPath()%>/scripts/paymentDetails-min.js" type="text/javascript"></script>
 </s:else>
 <script type="text/javascript">
     var paymentDetailsConfirmationEnabled = <s:property value="paymentDetailsConfirmationEnabled"/>;

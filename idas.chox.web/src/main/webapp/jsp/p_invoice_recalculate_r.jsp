@@ -370,7 +370,8 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/> (Payment Received)</label></td>
+                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/> 
+										 (£<s:property value="interimPaymentReceivedAmount" /> Received, <s:property value="partialInterimPayment" /> Not Yet Received).</label></label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
@@ -380,7 +381,8 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /> (Not Yet Received)</label></td>
+                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /> 
+										(£<s:property value="interimPaymentReceivedAmount" /> Received, <s:property value="partialInterimPayment" /> Not Yet Received).</label></label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>

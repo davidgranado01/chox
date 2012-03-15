@@ -157,6 +157,10 @@ public class Invoice extends Entity implements Serializable {
      */
     private Integer towBarsQty;
     /**
+     * This attribute maps to the column interim_payment_received_amount in the invoice table.
+     */
+    private BigDecimal interimPaymentReceivedAmount;
+    /**
      * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
      */
     private BigDecimal nonStandardInsurancePremiumFee;
@@ -1397,4 +1401,13 @@ public class Invoice extends Entity implements Serializable {
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
         this.totalPenaltyCharge = totalPenaltyCharge;
     }
+
+	public BigDecimal getInterimPaymentReceivedAmount() {
+		return interimPaymentReceivedAmount;
+	}
+
+	public void setInterimPaymentReceivedAmount(
+			BigDecimal interimPaymentReceivedAmount) {
+		this.interimPaymentReceivedAmount = interimPaymentReceivedAmount;
+	}
 }

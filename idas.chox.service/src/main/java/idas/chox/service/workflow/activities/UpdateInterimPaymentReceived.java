@@ -13,6 +13,8 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
     
+    private BigDecimal partialInterimPayment;
+    
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -28,11 +30,17 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         
-        if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
-            claim.getInvoice().setInterimPaymentReceived(true);
-        }else{
-           LOG.error(" Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",claim.getChoReference(),this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName()); 
-        }
+		if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
+
+			claim.getInvoice().setInterimPaymentReceivedAmount(partialInterimPayment);
+			
+		} else {
+			LOG.error(
+					" Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",
+					claim.getChoReference(), this.getWorkflowContext()
+							.getSecurityInfoProvider().getCurrentUser()
+							.getDisplayName());
+		}
     }
 
     @Override
@@ -53,4 +61,12 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
     }
+
+	public BigDecimal getPartialInterimPayment() {
+		return partialInterimPayment;
+	}
+
+	public void setPartialInterimPayment(BigDecimal partialInterimPayment) {
+		this.partialInterimPayment = partialInterimPayment;
+	}
 }
