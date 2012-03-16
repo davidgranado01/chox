@@ -307,9 +307,9 @@
             }
         }
         
-        if($("#reasonOfRejectionId").val() == '')
-        	$("#reasonOfRejectionId option[value='']").val(-1)
-    }
+        if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == '')
+          	$("#reasonOfRejectionId option[value='']").val(-1)
+    } 
 
     function supportingLiabilityCheck(liabilityStatus){
 
