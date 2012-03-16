@@ -14,11 +14,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author John
+ * @author Seeni
  */
-public abstract class DbSchedulerJob implements SchedulerJob{
+public abstract class DbSchedulerJob implements SchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(DbSchedulerJob.class);
+    protected static final String email_date_format = "dd MMMM yyyy";
     private MailUtil mailUtil;
     private String bccReceivers;
     private String emailSubject;
@@ -32,22 +33,25 @@ public abstract class DbSchedulerJob implements SchedulerJob{
     private String updateUserName;
     private String updatePassword;
     private MailSecurityAthenticator mailSecurityAthenticator;
-    protected static final String email_date_format = "dd MMMM yyyy";
     
 
     public abstract Map<Integer, List<String>> doJob(List<QueuedTicket> queuedTickets);
-    
-//    protected abstract String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap);
-    
+        
     @Override
     public void execute() throws JobExecutionException {
-        // below log to explain that all properties works only by getter method. Accessing directly gives null value
-        LOG.debug("propertyies accessed directly :{},{},{},{},{},{},{},{},{},{}", 
-                new Object[]{bccReceivers,emailSubject,smtpHostName,smtpPort,smtpEmailUser,
-                    smtpEmailPassword,errorMessageReceivers,updateUserName,updatePassword});
+// TODO: investigate why we cannot access properties directly - if we do this we get null values
+        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}, {}, {}, {}, {}", 
+                    new Object[]{bccReceivers, emailSubject, smtpHostName, smtpPort, smtpEmailUser,
+                            smtpEmailPassword, errorMessageReceivers,
+                            updateUserName, updatePassword});
+        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}", 
+                    new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
+                            getSmtpEmailUser(), getSmtpEmailPassword(), getErrorMessageReceivers(),
+                            getUpdateUserName(),getUpdatePassword()});
         getMailSecurityAthenticator().authenticateSender(getUpdateUserName(), getUpdatePassword()); 
     }
-    
+
+
     protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
         try {
             EmailHelper emailHelper = new EmailHelper(getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword());
@@ -65,13 +69,16 @@ public abstract class DbSchedulerJob implements SchedulerJob{
         }
     }
 
+
     public String getBccReceivers() {
         return bccReceivers;
     }
 
+
     public void setBccReceivers(String bccReceivers) {
         this.bccReceivers = bccReceivers;
     }
+    
 
     public ClaimService getClaimService() {
         return claimService;

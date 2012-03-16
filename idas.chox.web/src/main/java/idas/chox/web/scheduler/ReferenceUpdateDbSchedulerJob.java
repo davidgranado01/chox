@@ -1,16 +1,16 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.model.QueuedTicket;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.util.DateHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.quartz.JobExecutionException;
 import org.springframework.security.access.annotation.Secured;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.quartz.JobExecutionException;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.model.QueuedTicket;
 
 public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
@@ -21,10 +21,13 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
     @Override
     public final void execute() throws JobExecutionException {
         try {
-            // below log to explain that all properties works only by getter method. Accessing directly gives null value
-            LOG.debug("propertyies accessed using getters :{},{},{},{},{},{},{},{},{},{}", 
-                    new Object[]{getBccReceivers(),getEmailSubject(),getSmtpHostName(),getSmtpPort(),getSmtpEmailUser()
-                            ,getSmtpEmailPassword(),getErrorMessageReceivers(),getUpdateUserName(),getUpdatePassword(),getQueuedTicketUpdateReceivers()});
+// TODO: investigate why we cannot access properties directly - if we do this we get null values
+//            LOG.debug("queuedTicketUpdateReceivers: {}", queuedTicketUpdateReceivers);
+//            LOG.debug("queuedTicketUpdateReceivers: {}", getQueuedTicketUpdateReceivers());
+            LOG.debug("properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}, {}", 
+                    new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
+                            getSmtpEmailUser(), getSmtpEmailPassword(), getErrorMessageReceivers(),
+                            getUpdateUserName(),getUpdatePassword(),getQueuedTicketUpdateReceivers()});
             super.execute();
             List<QueuedTicket> queuedTickets = getClaimService().getQueuedTicket();
             if (queuedTickets.size() > 0) {
@@ -48,7 +51,8 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
         int i = 1;
         for (QueuedTicket queuedTicket : queuedTickets) {
 
-            int status = getClaimService().updateQueuedTicket(queuedTicket, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
+            int status = getClaimService().updateQueuedTicket(queuedTicket,
+                                    getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
             String statusString = null;
             if (status == 0) {
                 statusString = "Updated";
@@ -68,7 +72,9 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
             cellStringList.add(queuedTicket.getSender());
             cellStringList.add(DateHelper.getSdf().format(queuedTicket.getCreatedDate()));
             xlsDataMap.put(i++, cellStringList);
-            LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(), statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
+            LOG.debug("CHO reference updated: {} -> {} : {} [{}]",
+                    new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(),
+                                 statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
         }
         return xlsDataMap;
     }
@@ -79,8 +85,8 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
         emailMsg.append("Subject: Queued Tokens Update Results.").append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
-            emailMsg.append("Original CHO Reference        New CHO Reference                  Status                                                    sender                                       created date\n");
-            emailMsg.append("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            emailMsg.append("Date Added    Sender                                 Original CHO Reference    New CHO Reference    Status\n");
+            emailMsg.append("---------------------------------------------------------------------------------------------------------------------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
             // This is specific for the excel file with two columns and
             // first row is a header.
@@ -90,15 +96,15 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
-                        emailMsg.append(cells.get(0).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(1).trim());
-                        emailMsg.append("\t\t");
+                        emailMsg.append(String.format("%-10s", cells.get(4).trim()));
+                        emailMsg.append("    ");
+                        emailMsg.append(String.format("%-35s", cells.get(3).trim()));
+                        emailMsg.append("    ");
+                        emailMsg.append(String.format("%-22s", cells.get(0).trim()));
+                        emailMsg.append("    ");
+                        emailMsg.append(String.format("%-17s", cells.get(1).trim()));
+                        emailMsg.append("    ");
                         emailMsg.append(cells.get(2).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(3).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(4).trim());
                         emailMsg.append("\n");
                     }
                 }

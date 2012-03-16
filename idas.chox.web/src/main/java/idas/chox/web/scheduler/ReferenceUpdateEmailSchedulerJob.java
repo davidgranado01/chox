@@ -73,8 +73,8 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
         emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
-            emailMsg.append("Original CHO Reference      New CHO Reference            Status\n");
-            emailMsg.append("----------------------------------------------------------------------\n");
+            emailMsg.append("Original CHO Reference    New CHO Reference    Status\n");
+            emailMsg.append("-----------------------------------------------------------------------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
             // This is specific for the excel file with two columns and
             // first row is a header.
@@ -84,10 +84,10 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
-                        emailMsg.append(cells.get(0).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(1).trim());
-                        emailMsg.append("\t\t");
+                        emailMsg.append(String.format("%-22s", cells.get(0).trim()));
+                        emailMsg.append("    ");
+                        emailMsg.append(String.format("%-17s", cells.get(1).trim()));
+                        emailMsg.append("    ");
                         emailMsg.append(cells.get(2).trim());
                         emailMsg.append("\n");
                     }
