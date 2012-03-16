@@ -16,7 +16,7 @@
     var storageRecoveryGrossPaid = <s:property value="storageRecoveryGrossPaid"/>;
     var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
     var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
-    var totalPaid = <s:property value="totalPaid"/>;
+    var finalPayment = <s:property value="finalPayment"/>;
     var paymentDetailsCHODiscount = <s:property value="paymentDetailsCHODiscount"/>;
     var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDiscount"/>;
     var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;

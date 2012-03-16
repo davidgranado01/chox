@@ -2,5 +2,9 @@
 -- 6.9.6 BRE Modifications
 --
 ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) not null default 0.0;
+--
+-- 6.9.1 Part Payments Modifications
+--
+ALTER TABLE invoice ADD COLUMN interim_payment_received_amount numeric(10,2);
 
-alter table invoice add column interim_payment_received_amount numeric(10,2);
+ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;

@@ -145,7 +145,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal storageRecoveryGrossPaid;
     private BigDecimal hirePenaltyChargePaid;
     private BigDecimal repairPenaltyChargePaid;
-    private BigDecimal totalPaid;
+    private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private String jsonData;
     private List<Insurer> mappedInsurers;
@@ -1806,16 +1806,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
     }
 
-    public BigDecimal getTotalPaid() {
+    public BigDecimal getFinalPayment() {
         if (claim.getInvoice() != null) {
             return claim.getInvoice().getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
         } else {
             return BigDecimal.ZERO;
         }
-    }
-
-    public void setTotalPaid(BigDecimal totalPaid) {
-        this.totalPaid = totalPaid;
     }
 
     public String updatePaymentDetails() {
@@ -1830,7 +1826,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
                 inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
                 inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
-                inv.setTotalPaid(totalPaid);
+                inv.setFinalPayment(finalPayment);
                 inv.setPenaltyChargesPaid(penaltyChargesPaid);
                 service.updateClaim(claim);
                 jsonObject.put("success", Boolean.TRUE);
@@ -2238,5 +2234,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 	public void setAdditionalInterimPayment(BigDecimal additionalInterimPayment) {
 		this.additionalInterimPayment = additionalInterimPayment;
+	}
+
+	public void setFinalPayment(BigDecimal finalPayment) {
+		this.finalPayment = finalPayment;
 	}
 }

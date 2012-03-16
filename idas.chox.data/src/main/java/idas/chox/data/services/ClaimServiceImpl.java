@@ -134,7 +134,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.getInvoice().setStorageRecoveryGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setHirePenaltyChargePaid(BigDecimal.ZERO);
                     claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
-                    claim.getInvoice().setTotalPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setFinalPayment(BigDecimal.ZERO);
                 }
 
                 auditTrailService.revertAuditEntry(auditTrail.getId());

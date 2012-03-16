@@ -210,7 +210,7 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal storageRecoveryGrossPaid;
     private BigDecimal hirePenaltyChargePaid;
     private BigDecimal repairPenaltyChargePaid;
-    private BigDecimal totalPaid;
+    private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private Date autoPenaltyStart;
     private Integer autoPenaltyAlertQty;
@@ -293,14 +293,6 @@ public class Invoice extends Entity implements Serializable {
 
     public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
-    }
-
-    public BigDecimal getTotalPaid() {
-        return totalPaid;
-    }
-
-    public void setTotalPaid(BigDecimal totalPaid) {
-        this.totalPaid = totalPaid;
     }
     
     public Boolean getInterimPaymentReceivedFullAndFinal() {
@@ -1409,5 +1401,13 @@ public class Invoice extends Entity implements Serializable {
 	public void setInterimPaymentReceivedAmount(
 			BigDecimal interimPaymentReceivedAmount) {
 		this.interimPaymentReceivedAmount = interimPaymentReceivedAmount;
+	}
+
+	public BigDecimal getFinalPayment() {
+		return finalPayment;
+	}
+
+	public void setFinalPayment(BigDecimal finalPayment) {
+		this.finalPayment = finalPayment;
 	}
 }

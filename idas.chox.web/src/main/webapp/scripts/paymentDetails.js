@@ -57,9 +57,10 @@ Ext.onReady(function(){
                         var totalPenaltyAmount = hirePenaltyChargePaid + repairPenaltyChargePaid;
                         Ext.getCmp('hirePenaltyId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setValue(0.00);
-                        Ext.getCmp('totalPaidId').setValue(totalPaid-totalPenaltyAmount);
+                        Ext.getCmp('totalToPayId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setReadOnly(true);
                         Ext.getCmp('hirePenaltyId').setReadOnly(true);
+                        Ext.getCmp('finalPayId').setValue(finalPayment);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#e4e4e4'
@@ -71,9 +72,10 @@ Ext.onReady(function(){
                     }else{
                         Ext.getCmp('hirePenaltyId').setValue(hirePenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setValue(repairPenaltyChargePaid);
-                        Ext.getCmp('totalPaidId').setValue(totalPaid);
+                        Ext.getCmp('totalToPayId').setValue(hirePenaltyChargePaid + repairPenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setReadOnly(false);
                         Ext.getCmp('hirePenaltyId').setReadOnly(false);
+                        Ext.getCmp('finalPayId').setValue(finalPayment);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#ffffff'
@@ -252,11 +254,22 @@ Ext.onReady(function(){
                 color:'red'
             }
         },{
-            fieldLabel: 'Total Paid',
-            id : 'totalPaidId',
-            name: 'totalPaid',
-            value: totalPaid,
-            blankText: 'Total Paid is required'
+            fieldLabel: 'Total To Pay',
+            id : 'totalToPayId',
+            name: 'totalToPay',
+            value: hirePenaltyChargePaid + repairPenaltyChargePaid,
+            readOnly : true,
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('totalToPayId').validate();
+                },
+                afterrender : function(){
+                    this.getEl().applyStyles({
+                        'text-align':'right',
+                        background: '#e4e4e4'
+                    });  
+                }
+            }
         },{
             xtype : 'label',
             id : 'labelId',
@@ -267,6 +280,12 @@ Ext.onReady(function(){
                 'text-align':'center'
             }
             
+        },{
+            fieldLabel: 'Final Payment',
+            id : 'finalPayId',
+            name: 'finalPayment',
+            value: finalPayment,
+            blankText: 'Final Payment is required'
         },{
             xtype : 'hidden',
             id : 'nonceId',
@@ -288,6 +307,20 @@ Ext.onReady(function(){
         textGroup
         ],
         buttons:[{
+            text:'Edit',
+            handler:function(){
+	            	if(this.getText() == 'Reset'){
+	            		paymentDetailsForm.getForm().reset();
+	            		this.setText('Edit');
+	            		disablePayFields();
+	            	}else{
+	            		paymentDetailsForm.enable();
+	            		this.setText('Reset');
+	            		enablePayFields();
+	            	}
+	                
+	            }
+        	},{
             text:'Ok',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
@@ -327,6 +360,8 @@ Ext.onReady(function(){
         }]
         
     });
+
+
     
     win = new Ext.Window({
         layout:'fit',
@@ -338,6 +373,45 @@ Ext.onReady(function(){
         paymentDetailsForm
         ]
     });
+    
+    function disablePayFields(){
+    	Ext.getCmp('penaltyChargesPaidId').disable();
+    	Ext.getCmp('repairGrossId').disable();
+    	Ext.getCmp('hireGrossId').disable();
+    	Ext.getCmp('engineerGrossId').disable();
+    	Ext.getCmp('totalLossFeeGrossId').disable();
+    	Ext.getCmp('storageRecoveryGrossId').disable();
+    	Ext.getCmp('hirePenaltyId').disable();
+    	Ext.getCmp('repairPenaltyId').disable();
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').disable();
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').disable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').disable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').disable();
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').disable();
+    	Ext.getCmp('totalToPayId').disable();
+    	Ext.getCmp('finalPayId').disable();
+    }
+
+    function enablePayFields(){
+    	Ext.getCmp('penaltyChargesPaidId').enable();
+    	Ext.getCmp('repairGrossId').enable();
+    	Ext.getCmp('hireGrossId').enable();
+    	Ext.getCmp('engineerGrossId').enable();
+    	Ext.getCmp('totalLossFeeGrossId').enable();
+    	Ext.getCmp('storageRecoveryGrossId').enable();
+    	Ext.getCmp('hirePenaltyId').enable();
+    	Ext.getCmp('repairPenaltyId').enable();
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').enable();
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').enable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').enable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').enable();
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').enable();
+    	Ext.getCmp('totalToPayId').enable();
+    	Ext.getCmp('finalPayId').enable();
+    }
+    
+    disablePayFields();
+    
 });
 
 function confirmPaymentlogAction(){
@@ -360,5 +434,6 @@ function confirmPaymentlogAction(){
     }
         
 }
-        
+
+
  

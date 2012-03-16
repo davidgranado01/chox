@@ -1918,8 +1918,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         return invoiceAction.model.getTotalLossFeeGrossPaid();
     }
 
-    public BigDecimal getTotalPaid() {
-        return invoiceAction.model.getTotalPaid();
+    public BigDecimal getFinalPayment() {
+        return invoiceAction.model.getFinalPayment();
     }
     
     public boolean isPenaltyChargesPaid() {

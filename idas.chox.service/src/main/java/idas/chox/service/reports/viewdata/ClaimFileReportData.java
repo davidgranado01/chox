@@ -261,7 +261,7 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsStorageRecoveryPaid;
     private BigDecimal paymentDetailsHirePenaltyPaid;
     private BigDecimal paymentDetailsRepairPenaltyPaid;
-    private BigDecimal paymentDetailsTotalPaid;
+    private BigDecimal paymentDetailsFinalPayment;
     private String claimType;
 
     public ClaimFileReportData(Claim claim) {
@@ -596,7 +596,7 @@ public class ClaimFileReportData {
             paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
             paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
             paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
-            paymentDetailsTotalPaid = invoice.getTotalPaid();
+            paymentDetailsFinalPayment = invoice.getFinalPayment();
         }
 
         EngineerReport engineerReport = claim.getEngineerReport();
@@ -2514,14 +2514,6 @@ public class ClaimFileReportData {
         this.paymentDetailsTotalLossPaid = paymentDetailsTotalLossPaid;
     }
 
-    public BigDecimal getPaymentDetailsTotalPaid() {
-        return paymentDetailsTotalPaid;
-    }
-
-    public void setPaymentDetailsTotalPaid(BigDecimal paymentDetailsTotalPaid) {
-        this.paymentDetailsTotalPaid = paymentDetailsTotalPaid;
-    }
-
     public boolean isShowPaymentDetails() {
         return showPaymentDetails;
     }
@@ -2529,6 +2521,14 @@ public class ClaimFileReportData {
     public void setShowPaymentDetails(boolean showPaymentDetails) {
         this.showPaymentDetails = showPaymentDetails;
     }
+
+	public BigDecimal getPaymentDetailsFinalPayment() {
+		return paymentDetailsFinalPayment;
+	}
+
+	public void setPaymentDetailsFinalPayment(BigDecimal paymentDetailsFinalPayment) {
+		this.paymentDetailsFinalPayment = paymentDetailsFinalPayment;
+	}
 
 }
 
