@@ -133,9 +133,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private void checkBrowserWarning(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
-
+    	PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
         LOG.debug("checking Browser warning...with targetUrl: {}", targetUrl);
-        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
+        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7 && !user.getUser().getIsExpired()) {
             getRedirectStrategy().sendRedirect(request, response, targetUrl.concat(browserWarningParam));
             return;
         }
