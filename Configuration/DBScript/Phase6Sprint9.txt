@@ -182,14 +182,14 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES (
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.AwaitingLitigationOutcomeNotification.AwaitingLitigationOutcome';
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.AwaitingLitigationOutcome';
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.AwaitingLitigationOutcome';
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.AwaitingLitigationOutcome';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.AwaitingLitigationOutcome';
