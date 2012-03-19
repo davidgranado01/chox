@@ -73,9 +73,6 @@
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);
 
-
-
-
         //Call Information Help ToolTip
         createInfoHelp();
 
@@ -84,7 +81,7 @@
         
     function isDateCorrect(){
             
-        var bFlag = true;
+        var bFlag = false;
         var repairBookInDt = $("#repairBookInDatePH :input").val();
         var repairCompletionDt = $("#repairCompletionDatePH :input").val();
             
@@ -94,7 +91,7 @@
             bFlag = (dRepairBookInDt <= dRepairCompletionDt);
         }
             
-        return !bFlag;
+        return bFlag;
     }
         
     function isNonProvisionReasonRequired(){
@@ -221,7 +218,7 @@
 
     }
     function hireMonitoringSubmit() {
-        $("form#formUpdateHireMonitoringDetail").submit();
+        
         // Update Customer Vehicle Damage Total Loss field
         var customerVehicleTotalLossId = document.getElementById("customerVehicleTotalLossId");
         
@@ -256,6 +253,14 @@
             }
             
         }
+        
+        if(isDateCorrect()){
+        	$("form#formUpdateHireMonitoringDetail").submit();
+        }
+        else {
+        	$("#HMmessageBox").empty();
+        	$("#HMmessageBox").append("The 'Repair Completion Date' must be after the 'Repair Book In Date'.\n<br/>").show();
+        }
     }
 
 </script>
@@ -264,7 +269,7 @@
       action="<%=request.getContextPath()%>/prv/p/updateHireMonitorDetail.action" method="POST">
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input type="hidden" name="date_compare_field" value=''>
+    <input type="hidden" name="date_compare_field" id="date_compare_field" value=''>
     <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
     <fieldset class="x-fieldset partial">
