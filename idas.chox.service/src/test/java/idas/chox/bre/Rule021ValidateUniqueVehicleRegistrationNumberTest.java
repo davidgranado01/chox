@@ -49,7 +49,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
         claim.getBreBand().setValidateUniqueVehicleRegistrationNumber(false);
         RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue("InvoiceVehicleRegistrationNotUnique".equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
@@ -66,7 +66,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -81,7 +81,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Customer's Vehicle Registration Number supplied already exists in the system."));
 
     }

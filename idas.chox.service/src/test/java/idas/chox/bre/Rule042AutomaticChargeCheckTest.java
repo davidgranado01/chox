@@ -56,7 +56,7 @@ public class Rule042AutomaticChargeCheckTest extends BaseTest {
         claim.getBreBand().setAutomaticChargeCheck(false);
         AutomaticChargeCheck rule = new AutomaticChargeCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -75,7 +75,7 @@ public class Rule042AutomaticChargeCheckTest extends BaseTest {
 
         AutomaticChargeCheck rule = new AutomaticChargeCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -94,7 +94,7 @@ public class Rule042AutomaticChargeCheckTest extends BaseTest {
         AutomaticChargeCheck rule = new AutomaticChargeCheck();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
 
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an automatic fee for the hire, please review need."));

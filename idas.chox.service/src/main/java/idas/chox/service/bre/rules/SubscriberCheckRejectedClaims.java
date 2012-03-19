@@ -50,17 +50,17 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
                             + " (considering rejections before 3pm), allowing the CHO to charge for " + numDays
                             + " hire days, however the CHO are charging for " + hireDays + " hire days.";
                 }
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else {
                 LOG.debug("Subscriber claim was not rejected and agreed - rule skipped");
                 narrative = "";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
             }
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

@@ -54,11 +54,11 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
                 narrative = "The hire commenced " + noOfDays + " days prior to the date repairs commenced, the allowable number of days is " + maxDays + " day(s) for un-driveable vehicles.";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
         
         LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is End");

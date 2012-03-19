@@ -84,7 +84,7 @@
                                 -->
                                 <td>
                                     <input type="text" class="chox-ttxt-readonly" readonly="true"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
-                                    <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.ordinal()" />"/>
+                                    <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.getLiablityValue()" />"/>
 
                                 </td>
                                 <td colspan="2">

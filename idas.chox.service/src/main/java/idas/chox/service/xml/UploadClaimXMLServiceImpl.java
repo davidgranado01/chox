@@ -15,6 +15,7 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.workflow.Activity;
+import idas.chox.core.xmlValidation.BordereauParseStatus;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -97,27 +98,27 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             try {
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
 
-                if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
-                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)) {
+                if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)) {
                     LOG.debug("Processing '{}' activity.", claimResult.getClaimParseStatus());
                     Activity activity = activityFactory.getActivity("newClaim");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newClaim activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
-                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
-                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)) {
                     LOG.debug("Processing hire monitoring activity.");
 
                     Claim claim = claimResult.getClaim();
@@ -137,7 +138,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claim);
                     LOG.debug("hire monitering and newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
                     LOG.debug("Processing hire monitering activity.");
 
                     // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
@@ -152,7 +153,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering activity completed.");
 
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)) {
                     LOG.debug("Processing insurer upload activity.");
 
 
@@ -244,7 +245,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     private void validate(ClaimResult claimResult, List<String> choReferences) {
         LOG.debug("Validating CHO references are unique");
-//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)) {
 
         if (claimResult.getClaim() != null) {
 
@@ -428,13 +429,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
          */
         LOG.debug("Finished processing bordereau.");
         if (totalProcessed >= totalRecord) {
-            bordereau.setStatus("All Uploaded");
+            bordereau.setStatus(BordereauParseStatus.ALL_UPLOADED.getDescription());
             bordereau.setDescription("All claims have been uploaded successfully");
         } else if (totalProcessed < totalRecord && totalProcessed != 0) {
-            bordereau.setStatus("Partially Uploaded");
+            bordereau.setStatus(BordereauParseStatus.PARTIAL_UPLOAD.getDescription());
             bordereau.setDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
         } else if (totalProcessed == 0) {
-            bordereau.setStatus("All Rejected");
+            bordereau.setStatus(BordereauParseStatus.ALL_REJECTED.getDescription());
             bordereau.setDescription("All " + totalRecord + " claims have been rejected");
         }
         try {

@@ -25,7 +25,7 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()) {
 
             boolean success = claim.getInvoice().getHireNet().compareTo(claim.getBreBand().getHireNetCeiling()) <= 0;
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (!success) {
 
@@ -37,7 +37,7 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

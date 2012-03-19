@@ -54,7 +54,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
         claim.getBreBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(false);
         RuleEvaluation rv = new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -84,7 +84,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
 
         RuleEvaluation rv = new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -107,7 +107,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
 
         RuleEvaluation rv = new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Gross calculation is incorrect."));
 
     }

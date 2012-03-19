@@ -56,7 +56,7 @@ public class Rule050TotalGrossSumCheckTest extends BaseTest {
         claim.getBreBand().setHasTotalGrossSumCheck(false);
         TotalGrossSumCheck rule = new TotalGrossSumCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -76,7 +76,7 @@ public class Rule050TotalGrossSumCheckTest extends BaseTest {
 
         TotalGrossSumCheck rule = new TotalGrossSumCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -95,7 +95,7 @@ public class Rule050TotalGrossSumCheckTest extends BaseTest {
 
         TotalGrossSumCheck rule = new TotalGrossSumCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Gross - The sum of the Total Net and the Total VAT is incorrect."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());

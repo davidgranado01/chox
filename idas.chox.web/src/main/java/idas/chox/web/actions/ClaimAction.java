@@ -205,7 +205,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public int getLiabilityStatusValue() {
-        return this.claim.getLiabilityStatus().ordinal();
+        return this.claim.getLiabilityStatus().getLiablityValue();
     }
 
     public boolean getInvoiceDeleteWarning() {

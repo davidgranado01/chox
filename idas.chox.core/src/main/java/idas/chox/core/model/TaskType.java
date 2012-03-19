@@ -6,15 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum TaskType {
-	Clientallegations("Client Allegations"),
-	EngInspection("Engineer Inspection"),
-	InvoiceIssue("Invoice/Payment Issue"),
-	PaymentPack("Payment Pack"),
-	RepairDocs("Repair Documentation"),
-	TelephoneCall("Telephone Call"),
-	TotalLossPack("Total Loss Pack"),
-	WitnessStatement("Witness Statement(s)"),
-	UndefinedTask("Other") {
+	CLIENT_ALLEGATIONS  ("Client Allegations"),
+	ENG_INSPECTION      ("Engineer Inspection"),
+	INVOICE_ISSUE       ("Invoice/Payment Issue"),
+	PAYMENT_PACK        ("Payment Pack"),
+	REPAIR_DOCS         ("Repair Documentation"),
+	TELEPHONE_CALL      ("Telephone Call"),
+	TOTAL_LOSS_PACK     ("Total Loss Pack"),
+	WITNESS_STATEMENT   ("Witness Statement(s)"),
+	UNDEFINED_TASK      ("Other") {
             @Override
             public boolean isInsurerPrivateType(){
 		return true;
@@ -29,7 +29,7 @@ public enum TaskType {
 	private static Map<String, String> insurerTasks;
 	private static Map<String, String> choTasks;
 	private static Map<String, String> privateTasks;
-        private String description;
+        private final String description;
 
         TaskType(String description){ this.description = description;}
 

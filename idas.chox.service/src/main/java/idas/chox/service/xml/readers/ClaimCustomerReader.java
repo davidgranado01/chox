@@ -29,12 +29,12 @@ public class ClaimCustomerReader extends BaseEntityReader {
 
         LOG.debug("Validating Claim Customer");
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
             LOG.debug("Validating new claim");
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

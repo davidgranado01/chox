@@ -32,7 +32,7 @@ public class HireGrossSumCheck implements IBusinessRule {
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
             boolean success = CalcHelper.EqualTo(invoice.getHireGross(), invoice.getHireNet().add(invoice.getHireVat()));
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -46,7 +46,7 @@ public class HireGrossSumCheck implements IBusinessRule {
         } else {
             narrative = "";
             LOG.debug("Skipping rule HireGrossSumCheck");
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

@@ -30,11 +30,11 @@ public class AutomaticChargeCheckWithHpiLookup implements IBusinessRule {
                 success = false;
                 narrative = "The CHO is charging an automatic fee for hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need.";
             }
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

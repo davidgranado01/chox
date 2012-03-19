@@ -23,12 +23,12 @@ public class InvoiceTotalLossFeeReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "total-loss");
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE) 
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)) {
 
             isAllowToReadData = true;
 

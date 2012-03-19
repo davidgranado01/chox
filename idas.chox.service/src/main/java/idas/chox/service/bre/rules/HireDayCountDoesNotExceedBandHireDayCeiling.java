@@ -29,7 +29,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireDayCountDoesNotExceedBandHireDayCeiling() && claim.getVehicleHire() != null) {
 
             boolean success = claim.getVehicleHire().getDays() <= claim.getBreBand().getHireDayCeiling();
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -41,7 +41,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

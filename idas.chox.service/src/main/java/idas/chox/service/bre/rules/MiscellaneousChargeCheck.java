@@ -29,12 +29,12 @@ public class MiscellaneousChargeCheck implements IBusinessRule {
                 narrative = "The CHO is charging miscellaneous costs for this claim, please review.";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         }else{
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

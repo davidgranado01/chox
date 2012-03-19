@@ -30,7 +30,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
             if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getChorganisation().isDelegatedAuthority()) {
 
                 boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
                 if (success) {
                     narrative = "";
@@ -41,14 +41,14 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
             } else {
 
                 narrative = "Rule does not apply to CHOs not in the DA scheme";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             }
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

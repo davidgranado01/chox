@@ -54,7 +54,7 @@ public class Rule036DeliveryOrCollectionChargeCheckTest extends TestCase {
         claim.getBreBand().setDeliveryOrCollectionChargeCheck(false);
         RuleEvaluation rv = new DeliveryOrCollectionChargeCheck().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -71,7 +71,7 @@ public class Rule036DeliveryOrCollectionChargeCheckTest extends TestCase {
 
         RuleEvaluation rv = new DeliveryOrCollectionChargeCheck().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -88,7 +88,7 @@ public class Rule036DeliveryOrCollectionChargeCheckTest extends TestCase {
 
         RuleEvaluation rv = new DeliveryOrCollectionChargeCheck().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -105,7 +105,7 @@ public class Rule036DeliveryOrCollectionChargeCheckTest extends TestCase {
 
         RuleEvaluation rv = new DeliveryOrCollectionChargeCheck().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging a delivery/collection fee for the hire, please review need."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());

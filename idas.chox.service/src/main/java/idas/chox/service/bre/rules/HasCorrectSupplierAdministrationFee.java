@@ -50,11 +50,11 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
                 narrative = "CHO is charging £"+ supplierAdminFee +" for the Admin Fee, the allowed Admin Fee is £"+ adminFeeCeiling +".";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
          LOG.debug("Currect Supplier Administration Fee Check  is End");
         return res;

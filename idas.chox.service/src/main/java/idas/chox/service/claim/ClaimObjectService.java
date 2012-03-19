@@ -29,7 +29,7 @@ public class ClaimObjectService {
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 0; i < arr.length; i++) {
-                dropDownMap.put(arr[i].ordinal(), arr[i]);
+                dropDownMap.put(arr[i].getLiablityValue(), arr[i]);
             }
         }
         return dropDownMap;
@@ -44,7 +44,7 @@ public class ClaimObjectService {
             dropDownMapSearch = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 1; i < arr.length; i++) {
-                dropDownMapSearch.put(arr[i].ordinal(), arr[i]);
+                dropDownMapSearch.put(arr[i].getLiablityValue(), arr[i]);
             }
         }
         return dropDownMapSearch;

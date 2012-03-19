@@ -2,24 +2,40 @@ package idas.chox.core.xmlValidation;
 
 public enum ClaimParseStatus {
 
-    newClaim,
-    newSubscriberClaim,
-    existClaim,
-    existSubscriberClaim,
-    ClaimNotEditable,
-    newInvoice,
-    existInvoice,
-    invalidSchema,
-    invalidHireState,
-    tpiNotRecognized,
-    tpiIntervention,
-    tpiNotAcceptedByInsurer,
-    subscriberNotAcceptedByInsurer,
-    hireMonitoringAndNewInvoice,
-    existingSupplementaryInvoice,
-    newSupplementaryInvoice,
-    hireMonitoring,
-    invalidClaimStatus,
-    insurerVsInsurerInvoice,
-    insurerUpload
+    NEW_CLAIM                                   (0, "New Claim"),
+    NEW_SUBSCRIBER_CLAIM                        (1, "New Claim (Subscriber)"),
+    EXIST_CLAIM                                 (2, "Claim Already Exists"),
+    EXIST_SUBSCRIBER_CLAIM                      (3, "Claim Already Exists (Subscriber)"),
+    CLAIM_NOT_EDITABLE                          (4, "Claim Closed or Pending"),
+    NEW_INVOICE                                 (5, "New Invoice"),
+    EXIST_INVOICE                               (6, "Invoice Already Exists"),
+    INVALID_SCHEMA                              (7, "Incorrect XML Structure"),
+    INVALID_HIRE_STATE                          (8, "Incorrect Hire State"),
+    TPI_NOT_RECOGNIZED                          (9, "Incorrect Value Provided for Hire State"),
+    TPI_INTERVENTION                            (10, "New TPI Claim"),
+    TPI_NOT_ACCEPTED_BY_INSURER                 (11, "Insurer is not accepting TPI invoice"),
+    SUBSCRIBER_NOT_ACCEPTED_BY_INSURER          (12, "Insurer is not accepting Subscriber Claim"),
+    HIRE_MONITORING_AND_NEW_INVOICE             (13, "Hire Monitoring and New Invoice"),
+    EXISTING_SUPPLEMENTARY_INVOICE              (14, "Supplementary Invoice Already Exists"),
+    NEW_SUPPLEMENTARY_INVOICE                   (15, "New Supplementary Invoice"),
+    HIRE_MONITORING                             (16, "Hire Monitoring"),
+    INVALID_CLAIM_STATUS                        (17, "Invalid Claim Status"),
+    INSURER_VS_INSURER_INVOICE                  (18, "New Invoice (Insurer vs Insurer)"),
+    INSURER_UPLOAD                              (19, "New Claim/Invoice (Insurer Upload)");
+    
+    private final String description;
+    private final int ClaimParseStatusValue;
+
+    ClaimParseStatus(int claimParseStatusValue, String description) {
+        this.ClaimParseStatusValue = claimParseStatusValue;
+        this.description = description;
+    }
+    
+    public int getClaimParseStatusValue() {
+        return ClaimParseStatusValue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

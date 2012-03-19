@@ -37,7 +37,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present";
                 LOG.debug("Rule skipped: isTotalLoss: {}, EngineerReport: {}", claim.getVehicleHire().getIsTotalLoss(), eReport);
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             } else {
 
@@ -65,13 +65,13 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
                 if (success) {
                     narrative = "";
                     LOG.debug("Rule passed.");
-                    res.setResult(RuleEvaluationResult.RulePassed);
+                    res.setResult(RuleEvaluationResult.RULE_PASSED);
 
                 } else {
                     LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
 //                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
                     narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's estimated days under repair.";
-                    res.setResult(RuleEvaluationResult.RuleFailed);
+                    res.setResult(RuleEvaluationResult.RULE_FAILED);
 
                 }
 
@@ -81,7 +81,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
             narrative = "";
             LOG.debug("Rule skipped: rule disabled");
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

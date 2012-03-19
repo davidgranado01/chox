@@ -44,19 +44,19 @@ public class LabourCostBusinessRule implements IBusinessRule {
                 else
                     LOG.debug("LabourCostBusinessRule passed.");
 
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             } else {
                 LOG.debug("Insufficient information to perform  LabourCostBusinessRule - rule skipped.");
                 narrative = "Insufficient information to perform labour cost rule.";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             }
 
         } else {
             LOG.debug("LabourCostBusinessRule skipped.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

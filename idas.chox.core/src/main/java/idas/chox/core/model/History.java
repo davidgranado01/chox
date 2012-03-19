@@ -104,7 +104,7 @@ public class History extends Entity implements Serializable {
     public static History New(RuleEvaluation rv) {
 
         String sType = "INFO";
-        if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
+        if (rv.getResult() == RuleEvaluationResult.RULE_FAILED) {
             sType = "ERROR";
         }
 

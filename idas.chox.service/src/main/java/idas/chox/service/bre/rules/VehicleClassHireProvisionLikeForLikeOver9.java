@@ -45,7 +45,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
                             if (difference >= 9.0) {
 
                                 boolean success = false;
-                                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                                 if (success) {
                                     LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
                                     narrative = "";
@@ -58,33 +58,33 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
                             } else {
                                 LOG.debug("Rule skipped: Registration period was {} years ago");
                                 narrative = "Customer vehicle registration date not available.";
-                                res.setResult(RuleEvaluationResult.RuleSkipped);
+                                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                             }
                         } else {
                             LOG.debug("Rule skipped: no first registration date available.");
                             narrative = "Customer vehicle registration date not available.";
-                            res.setResult(RuleEvaluationResult.RuleSkipped);
+                            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                         }
                     } else {
                         LOG.debug("Rule skipped: customer vehicle class is not prestige (p-class).");
                         narrative = "Customer vehicle not prestige.";
-                        res.setResult(RuleEvaluationResult.RuleSkipped);
+                        res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                     }
                 } else {
                     LOG.debug("Rule skipped: no hire start date available.");
                     narrative = "Customer hire start date not available.";
-                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 }
             } else {
                 LOG.debug("Rule skipped: Customer vehicle class is not specified.");
                 narrative = "Customer vehicle class is not specified.";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
             }
 
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

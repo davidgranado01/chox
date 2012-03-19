@@ -36,7 +36,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
             BigDecimal expected = iCalc.getCalculatedHireVat();
 
             boolean success = CalcHelper.EqualTo(actual, expected);
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -47,7 +47,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

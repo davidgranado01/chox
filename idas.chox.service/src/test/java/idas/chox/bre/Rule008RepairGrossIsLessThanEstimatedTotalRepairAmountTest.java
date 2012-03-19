@@ -56,7 +56,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(false);
         RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
@@ -81,8 +81,8 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         // System.out.println(">>>" + (claim.getEngineerReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
 
-        // assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        // assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -103,7 +103,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         
         RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
         
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -124,7 +124,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         
         RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair Gross is higher than the Estimated Total Repair Amount."));
         
     }
@@ -147,7 +147,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         // System.out.println(">>>" + (claim.getEngineerReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -171,7 +171,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         // System.out.println(">>>" + (claim.getEngineerReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }

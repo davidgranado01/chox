@@ -28,7 +28,7 @@ public class MobileVehicleTotalLossCheck implements IBusinessRule {
 
             boolean success = !(claim.getCustomer().getIsTotalLoss() && claim.getCustomer().getIsUsable());
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -38,7 +38,7 @@ public class MobileVehicleTotalLossCheck implements IBusinessRule {
 
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

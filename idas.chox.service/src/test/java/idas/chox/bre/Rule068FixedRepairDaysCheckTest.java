@@ -55,7 +55,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
         claim.getBreBand().setAutoRestoreOneDayRepairCheck(false);
         FixedRepairDaysCheck rule = new FixedRepairDaysCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -70,7 +70,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
 
         FixedRepairDaysCheck rule = new FixedRepairDaysCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -86,7 +86,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
 
         FixedRepairDaysCheck rule = new FixedRepairDaysCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -102,7 +102,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
 
         FixedRepairDaysCheck rule = new FixedRepairDaysCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -120,7 +120,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
 
         FixedRepairDaysCheck rule = new FixedRepairDaysCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -140,7 +140,7 @@ public class Rule068FixedRepairDaysCheckTest extends BaseTest {
 
         RuleEvaluation rv = rule.applyToClaim(claim);
         
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed (5 days) exceeds the allowable number of hire days for 'Autorestore ltd' repairs (4 days)"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());

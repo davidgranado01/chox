@@ -42,10 +42,10 @@ public class RepairBookedInDateOnFriday implements IBusinessRule {
                     narrative = "Repair booked in on Friday and the CHO's Customer's vehicle was driveable.";
                 }
             }
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

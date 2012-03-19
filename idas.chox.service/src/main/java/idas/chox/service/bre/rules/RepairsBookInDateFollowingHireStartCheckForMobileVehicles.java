@@ -55,12 +55,12 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
                 narrative = "The hire commenced " + noOfDays + " days prior to the repair book in date, the allowable number of days is " + maxDays + " day(s) for driveable vehicles.";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
         LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles is End");

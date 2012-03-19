@@ -46,11 +46,11 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
                                 if (difference >= 8.0 && difference < 9.0) {
 
                                     if (VehicleClass.classPDifference(customerVehicleClass, hireVehicleClass) <= -2) {
-                                        res.setResult(RuleEvaluationResult.RulePassed);
+                                        res.setResult(RuleEvaluationResult.RULE_PASSED);
                                         LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
                                         narrative = "";
                                     } else {
-                                        res.setResult(RuleEvaluationResult.RuleFailed);
+                                        res.setResult(RuleEvaluationResult.RULE_FAILED);
                                         narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
                                                 + customerVehicleClass.getName() + ", the replacement vehicle class of "
                                                 + hireVehicleClass.getName() + " is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place.";
@@ -59,38 +59,38 @@ public class VehicleClassHireProvisionLikeForLike8To9 implements IBusinessRule {
                                 } else {
                                     LOG.debug("Rule skipped: Registration period was {} years ago");
                                     narrative = "Customer vehicle registration date not available.";
-                                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                                 }
                             } else {
                                 LOG.debug("Rule skipped: no first registration date available.");
                                 narrative = "Customer vehicle registration date not available.";
-                                res.setResult(RuleEvaluationResult.RuleSkipped);
+                                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                             }
                         } else {
                             LOG.debug("Rule skipped: hire vehicle class is not prestige (p-class) or standard (s-class).");
                             narrative = "Customer vehicle not prestige.";
-                            res.setResult(RuleEvaluationResult.RuleSkipped);
+                            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                         }
                     } else {
                         LOG.debug("Rule skipped: customer vehicle class is not prestige (p-class).");
                         narrative = "Customer vehicle not prestige.";
-                        res.setResult(RuleEvaluationResult.RuleSkipped);
+                        res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                     }
                 } else {
                     LOG.debug("Rule skipped: no hire start date available.");
                     narrative = "Customer hire start date not available.";
-                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 }
             } else {
                 LOG.debug("Rule skipped: Customer vehicle class is not specified.");
                 narrative = "Customer vehicle class is not specified.";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
             }
 
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;
