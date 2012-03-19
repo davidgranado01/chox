@@ -184,11 +184,12 @@
     
     function validateComboBox(){
     	var mesBox = $("#OwnershippAssignmentMessageBox");
+    	mesBox.empty();
     	if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
-    		mesBox.text("You must supply a value for 'Claim Owner'").show();
+    		mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
     		return false;
     	} else if ($("#workgroupComboId").val() == "--- Please Select ---") {
-    		mesBox.text("You must supply a value for 'Work Group'").show();
+    		mesBox.append("You must supply a value for 'Work Group'\n<br/>").show();
     		return false;
     	} else {
     		mesBox.text("").show();

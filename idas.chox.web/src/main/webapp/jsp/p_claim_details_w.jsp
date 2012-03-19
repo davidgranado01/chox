@@ -52,10 +52,11 @@ function saveChanges(){
 		
    	var msgBox = $("#claimDetailsMsgBox");
    	if(noticeDatePicker.getValue() == "" || signedByDatePicker.getValue() == ""){
+   		msgBox.empty()
    		if(noticeDatePicker.getValue() == "")
-   			msgBox.text("You must supply a propper value for 'GTA 4.1 Notice Date'").show();
+   			msgBox.append("You must supply a propper value for 'GTA 4.1 Notice Date'\n<br/>").show();
    		if(signedByDatePicker.getValue() == "")
-   			msgBox.text("You must supply a propper value for 'Credit Agreement Signed by Customer Date'").show();
+   			msgBox.append("You must supply a propper value for 'Credit Agreement Signed by Customer Date'\n<br/>").show();
             return false;
    	} else {
    		msgBox.text("").show();
