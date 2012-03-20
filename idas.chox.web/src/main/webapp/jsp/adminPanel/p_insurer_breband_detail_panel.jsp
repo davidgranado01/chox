@@ -290,10 +290,15 @@
                 InsurerMainPanelTabs.activate(tabIndex);
     </s:else>
             
-            
             });
 
         }
+        
+        function fadeOutMessage(){
+        	  $("#formUpdateInsurerBreBandDetail").submit();
+        	  $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);
+        	  $("#submitMesResult").show().fadeOut(10000);
+        };
 
 </script>
 
@@ -311,12 +316,14 @@
                             <div class="label-block">
                                 <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                                <input type="submit" value="Save"/>
+                                <input type="button" value="Save" onclick="javascript: fadeOutMessage();"/>
                                 <s:if test="!isNew">
                                     <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                                 </s:if>
                                 <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
                             </div>
+                             <div id="CDInsurerBreBandmessageBox" class="action-error-msg"></div>
+                             <div id="submitMesResult" class="chox-form-submit-result"></div>
                         </td>
                     </tr>
                 </table>
@@ -327,8 +334,8 @@
                 <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'/>
 
                 <div class="admin-bre-band-detail-holder">
-                    <div id="CDInsurerBreBandmessageBox" class="action-error-msg"></div>
-                    <div class="chox-form-submit-result"></div>
+                   
+                    
 
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Claim Upload Note</div>
