@@ -2085,3 +2085,12 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
 
+-------------------------------------------------------------------------------
+-- BUG#1573 6.9.4 - Queues missing from CHOX Admin
+-------------------------------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+
+
