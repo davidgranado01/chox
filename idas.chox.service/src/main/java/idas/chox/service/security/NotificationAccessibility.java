@@ -9,6 +9,7 @@ public class NotificationAccessibility {
     private short intelligentNotesNotificationAccessibility;
     private short notificationNotesNotificationAccessibility;
     private short duplicatedSupplementaryInvoiceNotificationAccessibility;
+    private short awaitingLitigationOutcomeNotificationAccessibility;
 
     public NotificationAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, String claimStatus) {
         claimNumberNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NUMBER, user, claimStatus);
@@ -16,6 +17,7 @@ public class NotificationAccessibility {
         intelligentNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_INTELLIGENT_NOTE, user, claimStatus);
         notificationNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NOTES, user, claimStatus);
         duplicatedSupplementaryInvoiceNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE, user, claimStatus);
+        awaitingLitigationOutcomeNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_AWAITING_LITIGATION_OUTCOME, user, claimStatus);
     }
 
     public boolean getDuplicatedSupplementaryInvoiceNotificationAccessibility() {
@@ -36,5 +38,9 @@ public class NotificationAccessibility {
 
     public boolean getUserViewingNotificationAccessibility() {
         return userViewingNotificationAccessibility > 0;
+    }
+
+    public boolean getAwaitingLitigationOutcomeNotificationAccessibility() {
+        return awaitingLitigationOutcomeNotificationAccessibility > 0;
     }
 }

@@ -2217,6 +2217,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 	public BigDecimal getPartialInterimPayment() {
 		if(interimPaymentReceivedAmount == null)
 			interimPaymentReceivedAmount = new BigDecimal(0.00);
+		if(interimPayment == null)
+			interimPayment = new BigDecimal(0.00);
 		return interimPayment.subtract(interimPaymentReceivedAmount);
 	}
 

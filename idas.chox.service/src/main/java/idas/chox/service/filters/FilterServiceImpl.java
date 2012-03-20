@@ -43,7 +43,8 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
-                        } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED))
+                        } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED)
+                                                                                                  || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_CONTESTED))
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
                             LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
                             continue;

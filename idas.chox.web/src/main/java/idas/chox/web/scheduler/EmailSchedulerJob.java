@@ -1,6 +1,7 @@
 package idas.chox.web.scheduler;
 
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.EmailHelper;
 
 import java.io.InputStream;
@@ -21,9 +22,9 @@ import org.springframework.security.access.AccessDeniedException;
  *
  * @author John
  */
-public abstract class BaseUpdateJob {
+public abstract class EmailSchedulerJob implements SchedulerJob{
 
-    private static final Logger LOG = LoggerFactory.getLogger(BaseUpdateJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmailSchedulerJob.class);
     private ImapMailReceiver imapMailReceiver;
     private XlsFileParser xlsFileParser;
     private String emailAccount;
@@ -39,12 +40,17 @@ public abstract class BaseUpdateJob {
     private String smtpPort;
     private String smtpEmailUser;
     private String smtpEmailPassword;
+    private String errorMessageReceivers;
+    private ClaimService claimService;
+    private SecurityInfoProvider securityInfoProvider;
+    protected static final String email_date_format = "dd MMMM yyyy";
 
-    protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput);
-
+    protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
+    
     protected abstract String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap);
 
-    protected final void execute() throws JobExecutionException {
+    @Override
+    public final void execute() throws JobExecutionException {
         String sender = null;
         try {
             InternetAddress internetAddress = new InternetAddress();
@@ -64,20 +70,19 @@ public abstract class BaseUpdateJob {
                     try {
                         for (InputStream attachemt : attachmentStreams) {
                             xlsDataMap = xlsFileParser.readExcelFile(attachemt);
-                            Map<Integer, List<String>> resultMap = doJob(xlsDataMap);
-                            sendMail(sender, "RE: " + emailSubject, resultMap, true);
+                            Map<Integer, List<String>> resultMap = doJob(xlsDataMap,sender);
+                            String emailMessage = buildMessage(sender, emailSubject, resultMap);
+                            sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
                         }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown processing scheduler job from sender {} with subject '{}'\n",
                                 new Object[]{sender, emailSubject, ex});
-                        sendMail((String)mailUtil.parseStringToList(bccReceivers, ",").toArray()[0],
-                                "Error parsing email '" + emailSubject + "' - please see logs for details", null, false);
-                        
+                        sendMail(errorMessageReceivers,null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
                     }
                 } else {
-                    sendMail((String) mailUtil.parseStringToList(bccReceivers, ",").toArray()[0],
-                            "Supplier reference update request received from unauthorised user '" + sender + "'",
-                            null, false);
+                    sendMail(errorMessageReceivers, bccReceivers,
+                            "Update request received from unauthorised user",
+                            "Supplier reference update request received from unauthorised user '" + sender + "'");
                 }
             }
 
@@ -91,15 +96,15 @@ public abstract class BaseUpdateJob {
             imapMailReceiver.clean();
         }
     }
-
-    protected final void sendMail(String sender, String subject, Map<Integer, List<String>> xlsDataMap, boolean bcc) {
+    
+    protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
         try {
             EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
-            String emailMessage = buildMessage(sender, emailSubject, xlsDataMap);
-            if (bcc)
-                emailHelper.postMail(subject, emailMessage, new String[]{sender}, (String[]) mailUtil.parseStringToList(bccReceivers, ",").toArray());
-            else
-                emailHelper.postMail(subject, emailMessage, new String[]{sender});
+            if (!bccReceiver.isEmpty()) {
+                emailHelper.postMail(subject, emailMessage, new String[]{receiver}, (String[]) mailUtil.parseStringToList(bccReceiver, ",").toArray());
+            } else {
+                emailHelper.postMail(subject, emailMessage, new String[]{receiver});
+            }
         } catch (UnsupportedEncodingException e) {
             LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
                     new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
@@ -108,6 +113,7 @@ public abstract class BaseUpdateJob {
                     new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
         }
     }
+    
 
     public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
         this.imapMailReceiver = imapMailReceiver;
@@ -174,4 +180,27 @@ public abstract class BaseUpdateJob {
         this.smtpEmailPassword = smtpEmailPassword;
     }
 
+    public void setErrorMessageReceivers(String errorMessageReceivers) {
+        this.errorMessageReceivers = errorMessageReceivers;
+    }
+
+    public String getBccReceivers() {
+        return bccReceivers;
+    }
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return securityInfoProvider;
+    }
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
 }

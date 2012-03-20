@@ -392,5 +392,18 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
+    
+    <bean id="ManualInvoiceContested" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Manual Invoices Contested With CHO"/>
+        <property name="key" value="ManualInvoiceContested"/>
+        <property name="status" value="ManualInvoiceContested"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
 
 </beans>

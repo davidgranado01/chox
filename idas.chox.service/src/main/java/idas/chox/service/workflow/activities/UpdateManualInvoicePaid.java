@@ -35,5 +35,6 @@ public class UpdateManualInvoicePaid extends BaseActivity {
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
     }
 }

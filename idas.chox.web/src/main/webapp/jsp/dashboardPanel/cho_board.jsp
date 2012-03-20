@@ -206,7 +206,7 @@
                 </s:if>
                 </s:if>
             </table>
-            <div style="height:655px; width:960px" id="resultHolder" name="resultHolder"></div>
+            <div style="height:700px; width:960px" id="resultHolder" name="resultHolder"></div>
         </div>        
 
     </fieldset>

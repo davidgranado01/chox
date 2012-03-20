@@ -6,26 +6,16 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import org.springframework.security.access.annotation.Secured;
 
-public class ReferenceUpdateJob extends BaseUpdateJob {
+public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateJob.class);
-    private static final String email_date_format = "dd MMMM yyyy";
-    private ClaimService claimService;
-    private SecurityInfoProvider securityInfoProvider;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
 
     @Secured({"ROLE_CHO"})
     @Override
-    protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap) {
-        String referenceNumber = null;
+    protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
         Set<Integer> rowNumbers = xlsDataMap.keySet();
         // This is specific for the excel file with two columns and
         // first row is a header.
@@ -46,8 +36,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
                 String newReference = cells.get(1).trim();
 
                 if (oldReference != null && !oldReference.equals("")) {
-                    referenceNumber = oldReference;
-                    int status = claimService.updateChoReferenceNumber(oldReference, newReference, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                    int status = getClaimService().updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
                     String statusString = null;
                     if (status == 0)
                         statusString = "Updated";
@@ -61,7 +50,7 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
                         statusString = "Failed - an internal error occurred";
                     
                 
-                    LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{oldReference, newReference, statusString, securityInfoProvider.getCurrentUser().getChorganisation().getId()});
+                    LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{oldReference, newReference, statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
                     if (xlsDataMap.get(row).size() < 3) {
                         xlsDataMap.get(row).add(statusString);
                     } else {
@@ -84,8 +73,8 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
-            emailMsg.append("Original CHO Reference      New CHO Reference            Status\n");
-            emailMsg.append("----------------------------------------------------------------------\n");
+            emailMsg.append("Original CHO Reference    New CHO Reference    Status\n");
+            emailMsg.append("-----------------------------------------------------------------------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
             // This is specific for the excel file with two columns and
             // first row is a header.
@@ -95,10 +84,10 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
                 if (row.intValue() != 0) {
                     List<String> cells = xlsDataMap.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
-                        emailMsg.append(cells.get(0).trim());
-                        emailMsg.append("\t\t");
-                        emailMsg.append(cells.get(1).trim());
-                        emailMsg.append("\t\t");
+                        emailMsg.append(String.format("%-22s", cells.get(0).trim()));
+                        emailMsg.append("    ");
+                        emailMsg.append(String.format("%-17s", cells.get(1).trim()));
+                        emailMsg.append("    ");
                         emailMsg.append(cells.get(2).trim());
                         emailMsg.append("\n");
                     }
@@ -109,9 +98,5 @@ public class ReferenceUpdateJob extends BaseUpdateJob {
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
     }
-
-	public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
-		this.securityInfoProvider = securityInfoProvider;
-	}
 
 }

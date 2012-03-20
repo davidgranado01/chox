@@ -170,6 +170,8 @@ public class MockObjects {
         hire.setIsTotalLoss(true);
         hire.setRentalEnd(DateHelper.getCurrentDate());
         hire.setRentalStart(DateHelper.getCurrentDate());
+        hire.setHireEnd(DateHelper.getCurrentDate());
+        hire.setHireStart(DateHelper.getCurrentDate());
 
         VehicleClass vehicleClass = new VehicleClass();
         vehicleClass.setName("SP1");

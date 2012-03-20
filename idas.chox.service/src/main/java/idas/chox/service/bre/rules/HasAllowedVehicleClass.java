@@ -11,10 +11,8 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class HasAllowedVehicleClass implements IBusinessRule {
 
@@ -74,7 +72,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     boolean success = vehicleHireClassPrice.compareTo(customerVehicleClassPrice) <= 0;
                     res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                     if (success) {
-                        LOG.debug("Rule passed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
+                        LOG.debug("Rule passed: Vehicle class allocated for hire is a like for like match on the customer's vehicle class.");
                         narrative = "";
                     } else {
 

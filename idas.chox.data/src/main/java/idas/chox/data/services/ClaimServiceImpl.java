@@ -42,6 +42,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.common.OrganisationType;
+import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.services.CommentService;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
@@ -665,6 +666,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_CONTESTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_alert_qty+1)*30"));
             criteria.add(Restrictions.disjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE)).add(Restrictions.conjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE)).add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
@@ -1103,32 +1105,100 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return false;
     }
     
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public int updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
-		Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
-		if (claim != null) {
-			Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
-			if (newClaim == null) {
-				try {
-					claim.setChoReference(newReference);
-					claim.addComment(Comment.New(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
-					updateClaim(claim);
-					LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: "+ newReference);
-					return 0;
-				} catch (Exception ex) {
-					LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
-					return 9;
-				}
-			} else {
-				return 1;
-			}
-		}
-        else {
+    private int updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
+        Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
+        if (claim != null) {
             Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
-            if (newClaim != null)
+            if (newClaim == null) {
+                try {
+                    claim.setChoReference(newReference);
+                    claim.addComment(Comment.New(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
+                    updateClaim(claim);
+                    LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
+                    return 0;
+                } catch (Exception ex) {
+                    LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
+                    return 9;
+                }
+            } else {
+                return 1;
+            }
+        } else {
+            Claim newClaim = getClaimByChoIdAndCHOReferenceNumber(choId, newReference);
+            if (newClaim != null) {
                 return 3;
+            }
         }
-		return 2;
-	}
+
+        return 2;
+    }
+
+    @Override
+    public List<QueuedTicket> getQueuedTicket() {
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(QueuedTicket.class);
+            criteria.addOrder(Order.asc("sender"));
+            List<QueuedTicket> queuedTickets = findByCriteria(criteria);
+            return queuedTickets;
+        } catch (Exception ex) {
+            LOG.error("Exception thrown while getting queuedTickets ", ex);
+            return new ArrayList<QueuedTicket>();
+        }
+    }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender) {
+        int result = updateChoReferenceNumber(oldReference, newReference, choId);
+        if (result == 2) {
+            addChoRefToQueuedTicket(oldReference, newReference, sender);
+            return result;
+        } else {
+            return result;
+        }
+    }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId) {
+
+        int result = updateChoReferenceNumber(queuedTicket.getOldReference(), queuedTicket.getNewReference(), choId);
+        if (result != 2) {
+            removeQueuedTicket(queuedTicket);
+            return result;
+        } else {
+            return result;
+        }
+    }
+
+    private void addChoRefToQueuedTicket(String oldReference, String newReference, String sender) {
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(QueuedTicket.class);
+            criteria.add(Restrictions.like("sender", sender).ignoreCase());
+            criteria.add(Restrictions.like("oldReference", oldReference).ignoreCase());
+            criteria.add(Restrictions.like("newReference", newReference).ignoreCase());
+            List<QueuedTicket> queuedTickets = findByCriteria(criteria);
+            if (queuedTickets.size() <= 0) {
+                QueuedTicket queuedTicket = new QueuedTicket();
+                queuedTicket.setOldReference(oldReference);
+                queuedTicket.setNewReference(newReference);
+                queuedTicket.setSender(sender);
+                queuedTicket.setCreatedDate(new Date());
+                save(queuedTicket);
+            } else {
+                LOG.debug("queuedTicket already exists for sender:{} with old_cho_ref:{} and new_cho_ref:{}", new Object[]{sender, oldReference, newReference});
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Exception thrown while saving queuedTicket: sender:{} old_cho_ref:{} new_cho_ref:{}", new Object[]{sender, oldReference, newReference}, ex);
+        }
+    }
+
+    private void removeQueuedTicket(QueuedTicket queuedTicket) {
+        try {
+            delete(queuedTicket);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown while deleting QueuedTicket: sender:{} old_cho_ref:{} new_cho_ref:{}", new Object[]{queuedTicket.getSender(), queuedTicket.getOldReference(), queuedTicket.getNewReference()}, ex);
+        }
+    }
 }

@@ -6,23 +6,16 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import org.springframework.security.access.annotation.Secured;
 
-public class PenaltyChargeUpdateJob extends BaseUpdateJob {
+public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateJob.class);
-    private static final String email_date_format = "dd MMMM yyyy";
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
 
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
-    protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap) {
+    protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
         String referenceNumber = null;
         Set<Integer> rowNumbers = xlsDataMap.keySet();
         // This is specific for the excel file with two columns and
@@ -44,7 +37,7 @@ public class PenaltyChargeUpdateJob extends BaseUpdateJob {
 
                 if (choReference != null && !choReference.equals("")) {
                     referenceNumber = choReference;
-                    boolean isUpdateSuccessful = claimService.setPenaltyStartToDateInvoiced(choReference);
+                    boolean isUpdateSuccessful = getClaimService().setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
                         if (xlsDataMap.get(row).size() == 1) {

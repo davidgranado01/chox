@@ -4,8 +4,9 @@
 	<meta http-equiv="expires" content="0" /><!-- 0 is an invalid value and should be treated as 'now' -->
 	<meta http-equiv="content-language" content="<%= response.getLocale() %>" />
 	<meta name="author" content="Cedrik LIME" />
-	<meta name="copyright" content="copyright 2005-2007 Cedrik LIME" />
+	<meta name="copyright" content="copyright 2005--2011 Cedrik LIME" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<meta name="format-detection" content="telephone=no"/>
 <%-- if (request.getServletPath().toLowerCase().endsWith(".jsp")) { --%>
 	<script type="text/javascript">//<![CDATA[
 		if (/^.+\.jsp$/gi.test('<%=request.getServletPath()%>')) {

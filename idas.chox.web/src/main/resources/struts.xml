@@ -8,7 +8,7 @@
     <constant name="struts.codebehind.action.checkAnnotation" value="false"/>
     <constant name="struts.codebehind.action.defaultMethodName" value="index"/>
     <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
-    <constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
+    <constant name="struts.action.extension" value="action" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
@@ -840,6 +840,10 @@
         <action name="getDuplicatedSupplementaryInvoiceAlert" class="idas.chox.web.actions.AlertAction" method="getDuplicatedSupplementaryInvoiceAlert">
             <result name="success">/jsp/alertPanel/p_duplicated_supplementary_invoice_claim.jsp</result>
             <result name="empty">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="getAwaitingLitigationOutcomeAlert" class="idas.chox.web.actions.AlertAction" method="getAwaitingLitigationOutcomeAlert">
+            <result name="success">/jsp/alertPanel/p_awaiting_litigation_outcome.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
         </action>
         
        <!--End Alert Panel-->

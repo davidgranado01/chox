@@ -143,10 +143,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     void checkVersion(T model) throws Exception {
         session = ActionContext.getContext().getSession();
         Integer sessionModelVersion = (Integer) session.get(model.getClass().getName());
-        System.out.println("sessionModelVersion " + sessionModelVersion);
-        System.out.println("model.getVersion() " + model.getVersion());
-        System.out.println("model.getClass().getName() " + model.getClass().getName());
-        System.out.println("model.getId() " + model.getId());
         LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
         LOG.debug("Session model is: {}={}", model.getClass().getName(), sessionModelVersion);
         if (sessionModelVersion != null && model.getVersion() != null && !model.getVersion().equals(sessionModelVersion)) {

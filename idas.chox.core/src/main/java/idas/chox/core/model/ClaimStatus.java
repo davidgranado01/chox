@@ -35,6 +35,8 @@ public class ClaimStatus {
     public static final String MANUAL_INVOICE_APPROVED = "ManualInvoiceBREApproved";
     public static final String MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
     public static final String MANUAL_INVOICE_PAID = "ManualInvoicePaid";
+    public static final String MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
+    public static final String AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcome";
     private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>();
     private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>();
     private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>();
@@ -50,11 +52,13 @@ public class ClaimStatus {
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
         invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+        invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
 
         awaitingLiabilityStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
 
         invoiceWithCHOStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        invoiceWithCHOStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
 
     }
 
@@ -107,6 +111,7 @@ public class ClaimStatus {
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(INVOICE_APPROVED_BY_BRE);
         status.add(INVOICE_DATA_CALCULATION_INCORRECT);
+        status.add(AWAITING_LITIGATION_OUTCOME);
         if (isEngineersEnabled) {
             status.add(INVOICE_ESCALATED);
         }
@@ -126,6 +131,7 @@ public class ClaimStatus {
             status.add(MANUAL_INVOICE_APPROVED);
             status.add(MANUAL_INVOICE_REJECTED);
             status.add(MANUAL_INVOICE_PAID);
+            status.add(MANUAL_INVOICE_CONTESTED);
         }
 
         return status;
@@ -186,6 +192,7 @@ public class ClaimStatus {
         if (usesInsurerUpload) {
             results.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
             results.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+            results.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
  //           results.add(ClaimStatus.MANUAL_INVOICE_PAID);
         }
         return results;

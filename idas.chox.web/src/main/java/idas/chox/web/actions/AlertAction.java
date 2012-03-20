@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.ActionResponse;
 import java.util.List;
@@ -26,6 +27,13 @@ public class AlertAction extends BaseAction {
     public String getDuplicatedClaimAlert() {
         duplicatedClaims = claimService.getOtherClaimsByClaimNumber(claimNumber, claimId);
         return SUCCESS;
+    }
+    
+    public String getAwaitingLitigationOutcomeAlert() {
+        if (claimService.getClaim(claimId).getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_LITIGATION_OUTCOME)) {
+            return SUCCESS;
+        }
+        return "empty";
     }
 
     public String isClaimNumberDuplicated() {

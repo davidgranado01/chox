@@ -3,7 +3,24 @@
 
 <script type="text/javascript">
     function doUpdatePaymentReceived(action) {
-        $("#formUpdatePaymentReceivedName").val(action);
+    	var interimPayment = <s:property value="partialInterimPayment" />;
+    	$("#formUpdatePaymentReceivedName").val(action);
+    	if (action=='fullInvoicePaymentReceived') {
+            if (interimPayment != undefined &&  interimPayment > 0){
+            	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
+            			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
+            }else{
+            	$("form#formUpdatePaymentReceived").submit();
+            }
+        } else if (action == 'invoicePaymentReceived') {
+           	Ext.MessageBox.confirm('Confirm', 'Insurer has made a payment of £<s:property value="partialInterimPayment" /> against an amount outstanding of £<s:property value="interimPayment" />. Please confirm the amount you have received:' 
+           			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
+        } else {
+        	$("form#formUpdatePaymentReceived").submit();
+        }
+    	
+    	
+        
     }
 </script> 
 
@@ -17,14 +34,18 @@
             <div class="status-control-set">
                 <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
                     <div class="status-info">
-                        Please click on the 'Payment Received' button when the payment has been received from the Insurer.
-                        If the payment has not been received then click on the 'Payment Not Received' button which will push the claim
-                        back to the Insurer for review.
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
+					   Please click on the ‘Payment Received But Not Full Amount’ button if the Insurer has made a payment but there is a balance outstanding 
+					   on the invoice, this will return the claim to the Insurer for review and the amount received recorded on the invoice.<br/><br/>
+					   If the payment has not been received then clicking on the 'Payment Not Received' button will return the claim to the Insurer for review.  
+					   Note that this button will only be visible after 9 days.
                     </div>
                 </s:if>
                 <s:else>
                     <div class="status-info">
-                        Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
+					   Please click on the ‘Payment Received But Not Full Amount’ button if the Insurer has made a payment but there is a balance outstanding 
+					   on the invoice, this will return the claim to the Insurer for review and the amount received recorded on the invoice.
                     </div>
                 </s:else>
 
@@ -36,9 +57,10 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                        	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('fullInvoicePaymentReceived');" />
+                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
-                                <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
+                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
                         </td>
                     </tr>

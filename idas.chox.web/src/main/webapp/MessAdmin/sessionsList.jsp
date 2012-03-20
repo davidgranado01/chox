@@ -2,8 +2,16 @@
 <%@page session="false" contentType="text/html; charset=UTF-8" %>
 <%@page import="java.util.Collection" %>
 <%@page import="clime.messadmin.taglib.core.Util" %>
+<%@page import="clime.messadmin.admin.AdminActionProvider"%>
+<%@page import="clime.messadmin.admin.BaseAdminActionWithContext"%>
+<%@page import="clime.messadmin.admin.BaseAdminActionWithContextAndSession"%>
+<%@page import="clime.messadmin.admin.actions.ServerInfos"%>
+<%@page import="clime.messadmin.admin.actions.WebAppsList"%>
+<%@page import="clime.messadmin.admin.actions.WebAppStats"%>
+<%@page import="clime.messadmin.admin.actions.SessionDetail"%>
 <%@page import="clime.messadmin.model.IApplicationInfo" %>
 <%@page import="clime.messadmin.model.ISessionInfo" %>
+<%@page import="clime.messadmin.model.ApplicationInfo"%>
 <%@page import="clime.messadmin.core.Constants" %>
 <%@taglib prefix="core" uri="http://messadmin.sf.net/core" %>
 <%@taglib prefix="format" uri="http://messadmin.sf.net/fmt" %>
@@ -23,8 +31,7 @@
 <% IApplicationInfo webAppStats = (IApplicationInfo) request.getAttribute("webAppStats");
    String context = (String) request.getAttribute("context");
    Collection activeSessions = (Collection)request.getAttribute("activeSessions");
-   Collection passiveSessionsIds = (Collection)request.getAttribute("passiveSessionsIds");
-   String webFilesRoot = (String) request.getAttribute("WebFilesRoot"); %>
+   Collection passiveSessionsIds = (Collection)request.getAttribute("passiveSessionsIds"); %>
 <%--c:url value="${pageContext.request.servletPath}" var="submitUrl" scope="page"/--%><%-- can use value="${pageContext.request.servletPath}" because this JSP is include()'ed --%>
 <%-- or use directly ${pageContext.request.requestURI} --%>
 <% String submitUrl = request.getContextPath() + request.getServletPath(); /* Can use +request.getServletPath() because this JSP is include()'ed */ %>
@@ -36,7 +43,7 @@
 	</style>
 	<script type="text/javascript">//<![CDATA[
 		function reloadPage() {
-			document.getElementById('sessionsFormAction').value='refreshSessions';
+			document.getElementById('sessionsFormAction').value='sessionsList';
 			document.getElementById('sessionsForm').method='GET';
 			document.getElementById('refreshButton').click();
 		}
@@ -61,20 +68,26 @@
 </head>
 <body>
 
-<div id="menu" style="font-size: small;">
+<div id="menu">
+<jsp:include page="inc/menuTools.jsp"/>
+<span>
 [
-<a href="<%=submitUrl%>?action=serverInfos"><format:message key="menu.serverInfos"/></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=ServerInfos.ID%>"><format:message key="menu.serverInfos"/></a>
 |
-<a href="<%=submitUrl%>?action=webAppsList"><format:message key="menu.webAppsList"/></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppsList.ID%>"><format:message key="menu.webAppsList"/></a>
 |
-<a href="<%=submitUrl%>?action=webAppStats&amp;context=<%=context%>"><format:message key="menu.webAppStats"><format:param><%=webAppStats.getContextPath()%></format:param></format:message></a>
+<a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppStats.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%=context%>"><format:message key="menu.webAppStats"><format:param><core:out value="<%=webAppStats.getContextPath()%>"/></format:param></format:message></a>
 |
-<format:message key="menu.sessionsList"><format:param><%=webAppStats.getContextPath()%></format:param></format:message>
+<format:message key="menu.sessionsList"><format:param><core:out value="<%=webAppStats.getContextPath()%>"/></format:param></format:message>
 ]
+</span>
 </div>
 
 <h1><format:message key="page.title2"><format:param><core:out value="<%= webAppStats.getContextPath() %>"/></format:param></format:message></h1>
 
+<jsp:include page="inc/stuckThreads.jsp"/>
+
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 <form action="<%= submitUrl %>" method="post" id="applicationForm">
 	<input type="hidden" name="context" value="<%= context %>" />
 	<input type="hidden" id="applicationFormAction" name="action" value="injectApplication" />
@@ -97,6 +110,7 @@
 			</tr>
 		</table>
 </form>
+</core:if>
 
 <div class="error"><core:out value='<%= request.getAttribute("error") %>'/></div>
 <div class="message"><core:out value='<%= request.getAttribute("message") %>'/></div>
@@ -106,21 +120,26 @@
 	<input type="hidden" name="action" id="sessionsFormAction" value="injectSessions" />
 	<input type="hidden" name="sort" id="sessionsFormSort" value="<core:out value='<%=request.getAttribute("sort")%>'/>" />
 	<input type="hidden" name="order" id="sessionsFormSortOrder" value="<core:out value='<%=request.getAttribute("order")%>' default='ASC'/>" />
-	<div style="text-align: center;">
-		<input type="text" name="autorefresh" id="autorefresh" title="<format:message key='autorefresh.TT'/>" value="<core:out value='<%=request.getAttribute("autorefresh")%>'/>" size="3" maxlength="3" onchange="setAutorefresh(this); return false;" />
-		<input type="submit" name="refresh" id="refreshButton" value="<format:message key='refresh'/>" title="<format:message key='refresh.TT'/>" onclick="document.getElementById('sessionsFormAction').value='refreshSessions'; document.getElementById('sessionsForm').method='GET'; return true;" />
+	<div class="noprint" style="text-align: center;">
+		<input type="number" name="autorefresh" id="autorefresh" min="5" title="<format:message key='autorefresh.TT'/>" value="<core:out value='<%=request.getAttribute("autorefresh")%>'/>" size="3" maxlength="3" onchange="setAutorefresh(this); return false;" />
+		<input type="submit" name="refresh" id="refreshButton" value="<format:message key='refresh'/>" title="<format:message key='refresh.TT'/>" onclick="document.getElementById('sessionsFormAction').value='sessionsList'; document.getElementById('sessionsForm').method='GET'; return true;" />
 	</div>
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 	<fieldset><legend><format:message key="list.legend"/></legend>
+</core:if>
 		<format:message key="list.summary">
 			<format:param><format:formatNumber value="<%= activeSessions.size() %>" type="number"/></format:param>
 			<format:param><format:formatNumber value="<%= passiveSessionsIds.size() %>" type="number"/></format:param>
 		</format:message>
-		(<a href="<%= submitUrl %>?action=webAppStats&amp;context=<%=context%>"><format:message key="list.summary.more"/></a>)<br />
+		(<a href="<%= submitUrl %>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=WebAppStats.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%=context%>"><format:message key="list.summary.more"/></a>)<br />
 		<table id="sessionsListTable" class="strippable" border="1" cellpadding="2" cellspacing="2" width="100%">
 			<thead>
 				<tr>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='id'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.session_id"/></a></th>
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 					<th><format:message key="list.message_pending"/></th>
+</core:if>
+					<th><format:message key="list.remoteHost"/></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='locale'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.locale"/></a></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='user'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.username"/></a></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='CreationTime'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.creation_time"/></a></th>
@@ -134,7 +153,10 @@
 			<tfoot><%-- <tfoot> is the same as <thead> --%>
 				<tr>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='id'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.session_id"/></a></th>
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 					<th><format:message key="list.message_pending"/></th>
+</core:if>
+					<th><format:message key="list.remoteHost"/></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='locale'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.locale"/></a></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='user'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.username"/></a></th>
 					<th><a onclick="document.getElementById('sessionsFormSort').value='CreationTime'; document.getElementById('refreshButton').click(); return true;"><format:message key="list.creation_time"/></a></th>
@@ -151,13 +173,16 @@
 <% currentSession = (ISessionInfo) pageContext.getAttribute("currentSession"); %>
 				<tr style="<core:if test='<%=currentSession.isSecure()%>'>background-color: #F5F6BE;</core:if>"><%-- class="${status.count%2==0?'even':'odd'}"--%>
 					<td>
-<input type="checkbox" name="sessionIds" value="<%= currentSession.getId() %>" /><a href="<%=submitUrl%>?action=sessionDetail&amp;context=<%=context%>&amp;sessionId=<%=Util.URLEncode(currentSession.getId(), response.getCharacterEncoding())%>"><%= currentSession.getId() %></a>
+<input type="checkbox" name="sessionIds" value="<core:out value='<%= currentSession.getId() %>'/>" /><a href="<%=submitUrl%>?<%=AdminActionProvider.ACTION_PARAMETER_NAME%>=<%=SessionDetail.ID%>&amp;<%=BaseAdminActionWithContext.CONTEXT_KEY%>=<%=context%>&amp;<%=BaseAdminActionWithContextAndSession.SESSION_KEY%>=<%=Util.URLEncode(currentSession.getId(), response.getCharacterEncoding())%>"><core:out value="<%= currentSession.getId() %>"/></a>
 					</td>
-					<td style="text-align: center;" title="<core:out value='<%= currentSession.getLastRequestURL() %>'/>">
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
+					<td style="text-align: center;">
 <core:if test="<%= currentSession.getAttribute(Constants.SESSION_MESSAGE_KEY) != null %>">M</core:if>
 					</td>
-					<td style="text-align: center;" title="<core:out value='<%= currentSession.getUserAgent() %>'/>"><core:out value="<%= currentSession.getGuessedLocale() %>"/></td>
-					<td style="text-align: center;" title="<core:out value='<%= currentSession.getRemoteHost() %>'/>"><core:out value="<%= currentSession.getGuessedUser() %>"/></td>
+</core:if>
+					<td style="text-align: center;" title="<core:out value='<%= currentSession.getUserAgent() %>'/>"><core:out value="<%= currentSession.getRemoteAddr() %>"/></td>
+					<td style="text-align: center;"><core:out value="<%= currentSession.getGuessedLocale() %>"/></td>
+					<td style="text-align: center;" title="<core:out value='<%= currentSession.getLastRequestURL() %>'/>"><core:out value="<%= currentSession.getGuessedUser() %>"/></td>
 					<td style="text-align: center;"><format:formatDate value="<%= currentSession.getCreationTime() %>" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 					<td style="text-align: center;"><format:formatDate value="<%= currentSession.getLastAccessedTime() %>" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 					<td style="text-align: center;"><format:formatTimeInterval value="<%=currentSession.getTotalUsedTime() %>"/></td>
@@ -169,18 +194,20 @@
 		</table>
 		<label><input type="checkbox" onclick="javascript:checkUncheckAllCB(this, 'sessionIds');" /><format:message key="select.all"/></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="submit" name="invalidate" value="<format:message key='invalidate'/>" title="<format:message key='invalidate.TT'/>" onclick="return invalidateSessions(this);" />
+<core:if test="<%=((ApplicationInfo) webAppStats).isMessAdminFullMode()%>">
 		<div style="text-align: center;">
 			<format:message key="msg.session.title"/><br />
 			<textarea rows="4" cols="70" id="sessionsMessage" name="message"></textarea><br />
 			<input type="submit" name="submit" value="<format:message key='msg.session.send'/>" title="<format:message key='msg.session.send.TT'/>" onclick="document.getElementById('sessionsFormAction').value='injectSessions'; return checkSessions(this, 'sessionIds');" />
 		</div>
 	</fieldset>
+</core:if>
 </form>
 
 <jsp:include page="inc/footer.jsp"/>
 
 <%@ include file="inc/js.inc" %>
-	<script type="text/javascript">//<![CDATA[
+	<script type="text/javascript" defer="defer">//<![CDATA[
 		addWindowOnLoadHandler(function() {
 			setAutorefresh(document.getElementById('autorefresh'));
 		});

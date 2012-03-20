@@ -141,33 +141,24 @@
             workgroupStore.load({ params : {"orgId":insurerId}});
         }
 
-        
-
         var form = $("form#formOwnershipAssignmentAction");
-
         form.validate(
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-
                 workgroupIdField:{comboSelection:workgroupId },
                 claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
             },
             messages: {
-
                 workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
                 claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
-
         });
-
         doRenderClaimHandlerDropDown(workgroupId);
-
     });
 
 
     function doRenderClaimHandlerDropDown(workgroupId){
-
         if((isWorkgroupEnable && workgroupId>0) || !isWorkgroupEnable){
             claimOwnerStore.removeAll();
             claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":insurerId}});
@@ -175,13 +166,15 @@
         }
     }
     
+    //XXX 'input drop down' validation does not work as it should - check if this can be reomoved when ExtJs will be upgraded
     function validateComboBox(){
     	var mesBox = $("#OwnershippAssignmentMessageBox");
     	if ($("#claimOwnerComboId").val() == "--- Please Select ---" || $("#workgroupComboId").val() == "--- Please Select ---") {
+    		mesBox.empty();
     		if($("#claimOwnerComboId").val() == "--- Please Select ---")
-    			mesBox.text("You must supply a value for 'Claim Owner'").show();
+    			mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
     		if($("#workgroupComboId").val() == "--- Please Select ---")
-    			mesBox.text("You must supply a value for 'Workgroup'").show();
+    			mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
     		return false;
     	} else {
     		mesBox.text("").show();
@@ -192,15 +185,13 @@
 
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
-        
         var co = $("[name='claimOwnerIdField']");
         var wo = $("[name='workgroupIdField']");
-        
     	var mesBox = $("#OwnershippAssignmentMessageBox");
     	if (co.val() == "")
     		co.val(-1);
     	if (wo.val() == "")
-    		co.val(-1);
+    		wo.val(-1);
     	
     	 if (validateComboBox()) {
          	$("#formOwnershipAssignmentAction").submit();

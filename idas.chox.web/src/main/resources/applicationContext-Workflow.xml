@@ -47,6 +47,7 @@
     <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" scope="prototype"/>
     <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" scope="prototype"/>
     <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" scope="prototype"/>
+    <bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
@@ -89,6 +90,7 @@
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype"/>
     <bean id="updateManualInvoicePaid" class="idas.chox.service.workflow.activities.UpdateManualInvoicePaid" scope="prototype"/>
-    
+    <bean id="updateManualInvoiceContested" class="idas.chox.service.workflow.activities.UpdateManualInvoiceContested" scope="prototype"/>
+    <bean id="awaitingLitigationOutcome" class="idas.chox.service.workflow.activities.AwaitingLitigationOutcome" scope="prototype"/>
     
 </beans>

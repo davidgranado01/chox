@@ -1,6 +1,3 @@
-	<!--[if !IE]> -->
-	<script type="text/javascript" src="<%=webFilesRoot%>js/resizetaOverlay.js"></script>
-	<!-- <![endif]-->
-	<script type="text/javascript" src="<%=webFilesRoot%>js/getElementsBySelector.js"></script>
-	<script type="text/javascript" src="<%=webFilesRoot%>js/behavior.js"></script>
-	<script type="text/javascript" src="<%=webFilesRoot%>js/MessAdmin.js"></script>
+	<script type="text/javascript" src="<%=staticFilesRoot%>js/getElementsBySelector.js"></script>
+	<script type="text/javascript" src="<%=staticFilesRoot%>js/behavior.js"></script>
+	<script type="text/javascript" src="<%=staticFilesRoot%>js/MessAdmin.js"></script><%-- Can not be defered as some of its functions are used in pages... --%>

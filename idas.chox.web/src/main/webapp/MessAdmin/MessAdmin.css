@@ -20,19 +20,36 @@ a tooltips-like system that was used in OpenStep.
 	padding-left: 4px;
 	padding-right: 4px;
 	opacity: .9; /* CSS 3 */
-	-moz-opacity: 0.9; /* Gecko */
 	filter: alpha(opacity=90); /* IE */
 	border-radius: 4px; /* CSS 3 */
-	-moz-border-radius: 4px; /* Gecko */
 	-webkit-border-radius: 4px; /* WebKit */
 }
 .infoballoonable {
 	cursor: help;
+	background-color: infobackground;
 }
 
 /* IE hack */
 .infoballoon table tr th {
 	text-align: left;
+}
+
+/* Display a little cue that this element has a tooltip (doesn't work on IE6... never mind...) */
+/* Disabled, as beta-testers indicated this to be confusing. Default to a simple cursor hint. */
+/*
+*[title]:after {
+	content: "?"; / * no html here: emulate a <sup> * /
+	font-size: 50%;
+	font-style: normal;
+	font-weight: lighter;
+	margin-left: 0.25em;
+	position: relative;
+	top: -1ex;
+}
+*/
+*[title] {
+	cursor: help;
+	background-color: infobackground;
 }
 
 /***************************************************************************/
@@ -60,6 +77,44 @@ input[type="submit"]:active, button:active {
 input[type="submit"]:hover, button:hover { background-color: #E0E0E0; }
 
 /***************************************************************************/
+/* AJAX */
+/***************************************************************************/
+
+#ajaxLoadingDiv {
+	display: none;
+	position: fixed;
+	top: 1px;
+	right: 16px;
+	z-index: 9999;
+	background-color: #CC4444; /* #FFF1A8 */
+	font-size: 80%;
+	color: white; /* black */
+	padding: 2px; /* 4px */
+	font-family: sans-serif;
+	/*font-weight: bold;*/
+}
+
+/***************************************************************************/
+/* Strippable tables (CSS3) */
+/***************************************************************************/
+
+table.strippable {
+	/*border: 1px solid #666;*/
+	border-collapse: collapse;
+}
+
+table.strippable thead th, table.strippable tfoot th {
+	background: rgb(187,187,187);
+}
+
+table.strippable tbody tr:nth-child(odd) {
+	background-color: #fff;
+}
+table.strippable tbody tr:nth-child(even) {
+	background-color: #eee;
+}
+
+/***************************************************************************/
 /* Misc */
 /***************************************************************************/
 
@@ -69,6 +124,25 @@ input[type="submit"]:hover, button:hover { background-color: #E0E0E0; }
 
 .collapsible {
 	cursor: pointer;
+}
+
+#menu {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	padding-top: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	/*z-index: 9999;*/
+	background-color: threedlightshadow;
+	border-bottom-style: double;
+	/*font-weight: bold;*/
+}
+
+#submenu {
+	font-size: smaller;
 }
 
 textarea {
@@ -90,4 +164,10 @@ input:focus, textarea:focus { background-color: infobackground; }
 	input[type="submit"], button, .noprint {
 		display: none;
 	}
+	/*
+	a:link:after, a:visited:after {
+		content: " [" attr(href) "] ";
+		font-size: 75%;
+	}
+	*/
 }
