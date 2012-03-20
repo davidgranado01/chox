@@ -18,8 +18,6 @@
         } else {
         	$("form#formUpdatePaymentReceived").submit();
         }
-    	
-    	
         
     }
 </script> 
