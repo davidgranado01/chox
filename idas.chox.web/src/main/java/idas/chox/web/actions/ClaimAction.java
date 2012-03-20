@@ -484,18 +484,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 //    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
     public String makeInterimPayment() {
+    	Comment comment = null;
         try {
-        	if(newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) > 0 ){
+        	if(newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0 && 
+        			additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0){
 	            claim.getInvoice().setInterimPayment(newTotalInterimPayment);
-	            setActionResult( "The interim payment has been modified to a new total of £" + newTotalInterimPayment.toString());
+	            
+	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
+	            	comment = Comment.New(0, "The interim payment has been removed");
+	            else if(claim.getInvoice().getInterimPayment() != null)
+	            	comment = Comment.New(0, "The interim payment has been modified to a new total of £" + newTotalInterimPayment.toString());
+	            else
+	            	comment = Comment.New(0, "The interim of £" + newTotalInterimPayment.toString() + " has been made." );
+	            
         	} else if(additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0){
         		BigDecimal paymentSum = claim.getInvoice().getInterimPayment().add(additionalInterimPayment);
         		claim.getInvoice().setInterimPayment(paymentSum);
-        		setActionResult("An additional interim payment of £"  + additionalInterimPayment.toString() +  " has been made." +
+        		comment = Comment.New(0, "An additional interim payment of £"  + additionalInterimPayment.toString() +  " has been made." +
         		 		" The total interim payment amount is now £" + claim.getInvoice().getInterimPayment());
-        	} else if (newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0 ){
-        		setActionResult("The interim payment has been removed");
-        	}
+        	} 
+        	claim.addComment(comment);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown making an interime payment on claim '{}': ", claim.getChoReference(), ex);
@@ -1808,11 +1816,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getFinalPayment() {
         if (claim.getInvoice() != null) {
-            return claim.getInvoice().getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        	return claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentAmount());
         } else {
             return BigDecimal.ZERO;
         }
     }
+    
+    public BigDecimal getTotalToPay(){
+    	 if (claim.getInvoice() != null) {
+         	return claim.getInvoice().getFullTotalToPay();
+         } else {
+             return BigDecimal.ZERO;
+         }
+    }
+    
 
     public String updatePaymentDetails() {
         JSONObject jsonObject = new JSONObject();

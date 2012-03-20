@@ -3095,4 +3095,20 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 	public boolean isModelSaved() {
 		return modelSaved;
 	}
+	
+	public BigDecimal getInterimPaymentReceivedAmount() {
+        LOG.debug("getInterimPaymentReceivedAmount is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceivedAmount());
+        return invoiceAction.model.getInterimPaymentReceivedAmount();
+    }
+	
+	public BigDecimal getPartialInterimPayment() {
+		BigDecimal interimPaymentReceivedAmount = new BigDecimal(0.00);
+		BigDecimal interimPayment = new BigDecimal(0.00);
+		if(interimPaymentReceivedAmount != null)
+			interimPaymentReceivedAmount = getInterimPaymentReceivedAmount();
+		if(interimPayment != null)
+			interimPayment = invoiceAction.model.getInterimPayment();
+		return interimPayment.subtract(interimPaymentReceivedAmount);
+    }
+	
 }

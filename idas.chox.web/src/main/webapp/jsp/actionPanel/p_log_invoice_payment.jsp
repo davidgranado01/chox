@@ -17,6 +17,7 @@
     var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
     var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
     var finalPayment = <s:property value="finalPayment"/>;
+    var totalToPay = <s:property value="totalToPay"/>;
     var paymentDetailsCHODiscount = <s:property value="paymentDetailsCHODiscount"/>;
     var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDiscount"/>;
     var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;

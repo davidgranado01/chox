@@ -370,8 +370,8 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/></label></td>
-										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received, <s:property value="partialInterimPayment" /> Not Yet Received)</label></td>
+                                        <td style="width: 20px"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/></label></td>
+										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
@@ -381,8 +381,8 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /></label></td>
-										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received, <s:property value="partialInterimPayment" /> Not Yet Received)</label></td>
+                                        <td style="width: 20px"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /></label></td>
+										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>

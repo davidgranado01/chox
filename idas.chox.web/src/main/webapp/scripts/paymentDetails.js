@@ -57,7 +57,7 @@ Ext.onReady(function(){
                         var totalPenaltyAmount = hirePenaltyChargePaid + repairPenaltyChargePaid;
                         Ext.getCmp('hirePenaltyId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setValue(0.00);
-                        Ext.getCmp('totalToPayId').setValue(0.00);
+                        Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(true);
                         Ext.getCmp('hirePenaltyId').setReadOnly(true);
                         Ext.getCmp('finalPayId').setValue(finalPayment);
@@ -72,7 +72,7 @@ Ext.onReady(function(){
                     }else{
                         Ext.getCmp('hirePenaltyId').setValue(hirePenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setValue(repairPenaltyChargePaid);
-                        Ext.getCmp('totalToPayId').setValue(hirePenaltyChargePaid + repairPenaltyChargePaid);
+                        Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(false);
                         Ext.getCmp('hirePenaltyId').setReadOnly(false);
                         Ext.getCmp('finalPayId').setValue(finalPayment);
@@ -257,7 +257,7 @@ Ext.onReady(function(){
             fieldLabel: 'Total To Pay',
             id : 'totalToPayId',
             name: 'totalToPay',
-            value: hirePenaltyChargePaid + repairPenaltyChargePaid,
+            value: totalToPay,
             readOnly : true,
             listeners: {
                 keyup: function() {
@@ -271,6 +271,12 @@ Ext.onReady(function(){
                 }
             }
         },{
+            fieldLabel: 'Final Payment',
+            id : 'finalPayId',
+            name: 'finalPayment',
+            value: finalPayment,
+            blankText: 'Final Payment is required'
+        },{
             xtype : 'label',
             id : 'labelId',
             width : '100%',
@@ -279,13 +285,6 @@ Ext.onReady(function(){
             style: {
                 'text-align':'center'
             }
-            
-        },{
-            fieldLabel: 'Final Payment',
-            id : 'finalPayId',
-            name: 'finalPayment',
-            value: finalPayment,
-            blankText: 'Final Payment is required'
         },{
             xtype : 'hidden',
             id : 'nonceId',
