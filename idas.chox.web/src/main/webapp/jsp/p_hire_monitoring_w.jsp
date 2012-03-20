@@ -81,7 +81,7 @@
         
     function isDateCorrect(){
             
-        var bFlag = false;
+        var bFlag = true;
         var repairBookInDt = $("#repairBookInDatePH :input").val();
         var repairCompletionDt = $("#repairCompletionDatePH :input").val();
             
