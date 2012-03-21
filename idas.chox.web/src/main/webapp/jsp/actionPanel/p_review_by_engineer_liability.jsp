@@ -141,10 +141,11 @@
                             </tr>
                             <tr valign="top">
                                 <td>
-                                    <label>Claim Review Notes (Private)</label>
+                                    <label>Claim Review Notes</label>
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" id="RBELengineerClaimReviewNotesId" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                    <label class="std-label-ro-small" style="padding-top: 0px; vertical-align: top; height:30px">N.B. The above note will be ’Public’ if you are acknowledging the claim and ‘Private’ if you are updating the Claims Handler.</label>
                                 </td>
                             </tr>
  
