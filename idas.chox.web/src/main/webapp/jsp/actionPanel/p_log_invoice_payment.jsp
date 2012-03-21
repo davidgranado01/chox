@@ -22,7 +22,10 @@
     var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
     var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
     var interimPaymentAmount = <s:property value="interimPaymentAmount"/>;
-    var InterimPaymentAmountReceived = <s:property value="InterimPaymentAmountReceived"/>;
+    var InterimPaymentAmountReceived = 0;
+    <s:if test="InterimPaymentAmountReceived != null">
+    	InterimPaymentAmountReceived = <s:property value="InterimPaymentAmountReceived"/>;
+	</s:if>
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -32,7 +35,9 @@
             <s:hidden id="name" name="name" value="invoicePaymentLogged"/>
             <div>
                 <div class="status-info">
-                    Please update the claim by recording that a payment has been logged against this claim.
+                    If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
+                    this button should only be used if this is intended to be a final payment.  However if an interim payment 
+                    is being made please click on the ‘Make Interim Payment’ button.’
                 </div>
                 <div class="status-info-submit">
                     <table>
@@ -44,7 +49,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/></td>
+                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/>
+                            <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="makeIterimPayment();"/></td>
                         </tr>
                     </table>
                 </div>

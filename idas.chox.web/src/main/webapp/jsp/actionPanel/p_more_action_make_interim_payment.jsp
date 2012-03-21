@@ -2,18 +2,14 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+	var currentRecAmount = 0;
+	var interimPayMade = false;
 	<s:if test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0">
 		var currentRecAmount = <s:property value="interimPaymentReceivedAmount" />;
 	</s:if>
-	<s:else>
-		var currentRecAmount = 0;
-	</s:else>
 	<s:if test="interimPayment != null && interimPayment > 0">
 		var interimPayMade = true;
 	</s:if>
-	<s:else>
-		var interimPayMade = false;
-	</s:else>
 	
     $(function(){
     	
@@ -75,11 +71,6 @@
     	if (action == 'additional'){
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("add", {
-            	/* required: function(element){
-                    if($('#additionalInterimPayment').val() === 0)
-                    	return false;
-                    return true;
-                }, */
                 min: 1,
                 number:true,
                 messages: { required:"You must supply a value bigger than 0 for 'Additional Interim Payment'",
@@ -89,14 +80,6 @@
     	} else if (action == 'newTotal'){
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
-            	/* required: function(element){
-            		console.log("currentRecAmount" + currentRecAmount);
-            		console.log("$('#$('#newTotalInterimPayment').val()').val()" + $('#newTotalInterimPayment').val());
-            		console.log(currentRecAmount > 0 && currentRecAmount > $('#newTotalInterimPayment').val());
-                    if(currentRecAmount > 0 && currentRecAmount < $('#newTotalInterim').val())
-                    	return false;
-                    return true;
-                }, */
                 min: currentRecAmount,
             	number:true,
                 messages: { required:"You must supply a value which is bigger than the current interim amount received value",
@@ -119,10 +102,10 @@
              <s:if test="(interimPayment != null && interimPayment > 0) || (interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0)">
 	            <div class="status-info">
 	            <s:if test="interimPayment != null && interimPayment > 0">
-	                 An interim payment of £ <s:property value="interimPayment" /> has been made on this claim.<br/>
+	                 An interim payment of £<s:property value="interimPayment" /> has been made on this claim.<br/>
 	            </s:if>
 	            <s:if test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0">
-	                  An interim payment of £ <s:property value="interimPaymentReceivedAmount" /> has already been received on this claim.
+	                  An interim payment of £<s:property value="interimPaymentReceivedAmount" /> has already been received on this claim.
 	            </s:if>
 	            </div>
 	            <br/>

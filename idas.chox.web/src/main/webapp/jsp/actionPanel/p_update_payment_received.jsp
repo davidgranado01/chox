@@ -2,19 +2,125 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+var confPayRec;
+Ext.onReady(function(){
+	
+	var amountReceived = <s:property value="partialInterimPayment" />;
+	
+	var inFields = {
+	        xtype: 'fieldset',
+	        title: 'Please Cofirm Amount Received',
+	        layout: 'form',
+	        collapsed: false,   
+	        collapsible: false,
+	        defaultType:'numberfield',
+	        defaults: {              
+	            labelStyle: 'text-align: right;',
+	            allowBlank:false,
+	            width : 80,
+	            allowNegative : false,
+	            decimalPrecision : 2,
+	            minValue : 0.00,
+	            style: {
+	                'text-align':'right'
+	            }
+	        },
+	        items: [
+	        {
+	            fieldLabel: 'Amount Received',
+	            id : 'hireGrossId',
+	            name: 'hireGrossPaid',
+	            value: amountReceived.toFixed(2),
+	            blankText: 'Cofirm Amount Received'
+	        }]
+    };
+	
+	var paymentDetailsForm = new Ext.FormPanel({
+	    id: 'paymentDetails-form',
+	    autoHeight: true,
+	    labelWidth: 210,
+	    frame:true,
+	    title:'<div class="status-info">Insurer has made a payment of £<s:property value="partialInterimPayment" /> against an amount outstanding of £<s:property value="totalToPay" />.</div>',
+	    buttonAlign : 'center',
+	    items : [inFields
+	    ],
+	    buttons:[{
+	        text:'Ok',
+	        handler:function(){
+	            if(paymentDetailsForm.getForm().isValid()){
+	                paymentDetailsForm.getEl().mask();
+	                paymentDetailsForm.getForm().submit({
+	                    method:'POST',
+	                    url:contextPath +'/prv/p/updatePaymentDetails.action',
+	                    
+	                    success : function(f, a) {
+	
+	                        if ( a.result.success ){
+	                        	confPayRec.hide();
+	                            Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
+	                            var queryString = $('#logInvoicePayment').formSerialize();
+	                            window.location = contextPath+"/prv/processClaim.action?" + queryString;
+	                        }
+	                    },
+	                    failure : function(f, a) {
+	                        
+	                        Ext.MessageBox.show({
+	                            title: 'Error',
+	                            msg: a.result.errors,
+	                            width:300,
+	                            buttons: Ext.MessageBox.OK,
+	                            icon : Ext.MessageBox.ERROR
+	                        }); 
+	                    }
+	                });
+	            }
+	        }
+	    },{
+	        text:'Cancel',
+	        handler:function(){
+	            paymentDetailsForm.getForm().reset();
+	            confPayRec.hide();
+	        }
+	    }]
+	    
+		});
+	
+	
+		
+	confPayRec = new Ext.Window({
+		    layout:'fit',
+		    width:450,
+		    autoHeight: true,
+		    closable:false,
+		    resizable : false,
+		    items : [
+		    paymentDetailsForm
+		    ]
+		});
+	
+	
+	
+});
+
+function confirmNotFullPayRec(){
+	confPayRec.show(document.body);
+}
+
     function doUpdatePaymentReceived(action) {
-    	var interimPayment = <s:property value="partialInterimPayment" />;
+    	var interimParPayment = 0;
+    	<s:if test="partialInterimPayment != null && partialInterimPayment >= 0 ">
+    		interimParPayment = <s:property value="partialInterimPayment" />;
+    	</s:if>
     	$("#formUpdatePaymentReceivedName").val(action);
     	if (action=='fullInvoicePaymentReceived') {
-            if (interimPayment != undefined &&  interimPayment > 0){
+            if (interimParPayment != undefined &&  interimParPayment > 0){
             	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
             			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
             }else{
             	$("form#formUpdatePaymentReceived").submit();
             }
         } else if (action == 'invoicePaymentReceived') {
-           	Ext.MessageBox.confirm('Confirm', 'Insurer has made a payment of £<s:property value="partialInterimPayment" /> against an amount outstanding of £<s:property value="interimPayment" />. Please confirm the amount you have received:' 
-           			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
+        	confirmNotFullPayRec();
         } else {
         	$("form#formUpdatePaymentReceived").submit();
         }
@@ -56,7 +162,7 @@
                     <tr>
                         <td colspan="3">
                         	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('fullInvoicePaymentReceived');" />
-                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
                                 <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>

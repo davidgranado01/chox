@@ -29,7 +29,6 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
         if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
 
-            claim.getInvoice().setInterimPaymentReceived(true);
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
             claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
 

@@ -1845,25 +1845,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         return invoiceAction.model.getInterimPayment();
     }
 
-//    public void setInterimPayment(BigDecimal interimPayment) {
-//        if (actionSelected != reset) {
-//            LOG.debug("setInterimPayment is being called inside InvoiceRecalculation with the value of {}",interimPayment);
-//            setInterimPayment_original(invoiceAction.model.getInterimPayment());
-//            invoiceAction.model.setInterimPayment(interimPayment);
-//        }
-//    }
-    public Boolean getInterimPaymentReceived() {
-        LOG.debug("getInterimPaymentReceived is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceived());
-        return invoiceAction.model.getInterimPaymentReceived();
-    }
-
-//    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-//
-//        if (actionSelected != reset) {
-//            LOG.debug("setInterimPaymentReceived is being called inside InvoiceRecalculation with the value of {}",interimPaymentReceived);
-//            invoiceAction.model.setInterimPaymentReceived(interimPaymentReceived);
-//        }
-//    }
     public String getInterimPaymentReceivedDesc() {
         return invoiceAction.model.getInterimPaymentReceivedDesc();
     }

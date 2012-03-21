@@ -2,22 +2,11 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-
-    $(function(){
-        <s:if test="interimPaymentReceived || false" >
-            $('#submitInterimPaymentReceived').attr("disabled", true);
-        </s:if>
-        <s:elseif test="(interimPaymentReceived!=true || false) && interimPayment != null" >
-            $('#submitInterimPaymentReceived').attr("disabled", false);
-        </s:elseif>
-        <s:else >
-            $('#submitInterimPaymentReceived').attr("disabled", true);
-        </s:else>
-    });
     
     function updateInterimPaymentAction(action){
     	if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
+            $('#formUpdateInterimPayment').submit()
         }
     }
 
@@ -38,10 +27,10 @@
                                 <label >Interim Payment Amount</label></td><td nowrap>
                                 £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="partialInterimPayment" />"/>
 
-                                <s:if test="!interimPaymentReceived">
-                                    <input type="submit" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
+                                <s:if test="interimPaymentReceivedAmount == 0">
+                                    <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
                                 </s:if>
-                                	<input type="submit" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
+                                	<input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
                             </td>
 
                             <td></td><td></td>
@@ -61,14 +50,13 @@
                         <s:if test="InterimPaymentReceivedFullAndFinal">
                             <tr><td colspan="3"><label>This interim payment has already been Received Full & Final </label></td></tr>
                         </s:if>
-                        <s:elseif test="interimPaymentReceived">
+                        <s:elseif test="interimPayment != null &&  interimPayment == 0">
+                             <tr><td></td><td colspan="3"><label>No interim payment has been made.</label></td><td></td></tr>
+                        </s:elseif>
+                        <s:elseif test="partialInterimPayment != null &&  partialInterimPayment == 0">
                             <tr><td></td><td colspan="3"><label>This interim payment has already been received.</label></td><td></td></tr>
                         </s:elseif>
-                        <s:elseif test="!interimPaymentReceived && interimPayment">
-                        </s:elseif>
-                        <s:else>
-                             <tr><td></td><td colspan="3"><label>No interim payment has been made.</label></td><td></td></tr>
-                        </s:else>
+                        
                        
                     </table>
                 </div>

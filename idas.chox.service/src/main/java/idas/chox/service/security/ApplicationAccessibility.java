@@ -213,11 +213,13 @@ public class ApplicationAccessibility {
 
             if (accessRight >= 2) {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
-                    boolean b = true;
+                    boolean b = false;
                     try {
-
-                        b = claim.getInvoice().getInterimPaymentReceived();
-
+                    	if(claim.getInvoice().getInterimPayment() != null 
+                    			&& claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0 
+                    			&& (claim.getInvoice().getInterimPayment().subtract(claim.getInvoice().getInterimPaymentReceivedAmount())).compareTo(BigDecimal.ZERO) <= 0){
+                    		b = true;
+                    	}
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());
                         b = false;
