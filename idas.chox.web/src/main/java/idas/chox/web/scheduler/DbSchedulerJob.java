@@ -56,9 +56,9 @@ public abstract class DbSchedulerJob implements SchedulerJob {
         try {
             EmailHelper emailHelper = new EmailHelper(getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword());
             if (!bccReceiver.isEmpty()) {
-                emailHelper.postMail(subject, emailMessage, new String[]{receiver}, (String[]) getMailUtil().parseStringToList(bccReceiver, ",").toArray());
+                emailHelper.postMail(subject, emailMessage, (String[]) getMailUtil().parseStringToList(receiver, ",").toArray(), (String[]) getMailUtil().parseStringToList(bccReceiver, ",").toArray());
             } else {
-                emailHelper.postMail(subject, emailMessage, new String[]{receiver});
+                emailHelper.postMail(subject, emailMessage, (String[]) getMailUtil().parseStringToList(receiver, ",").toArray());
             }
         } catch (UnsupportedEncodingException e) {
             LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",

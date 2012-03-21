@@ -101,9 +101,9 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         try {
             EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
             if (!bccReceiver.isEmpty()) {
-                emailHelper.postMail(subject, emailMessage, new String[]{receiver}, (String[]) mailUtil.parseStringToList(bccReceiver, ",").toArray());
+                emailHelper.postMail(subject, emailMessage, (String[]) mailUtil.parseStringToList(receiver, ",").toArray(), (String[]) mailUtil.parseStringToList(bccReceiver, ",").toArray());
             } else {
-                emailHelper.postMail(subject, emailMessage, new String[]{receiver});
+                emailHelper.postMail(subject, emailMessage, (String[]) mailUtil.parseStringToList(receiver, ",").toArray());
             }
         } catch (UnsupportedEncodingException e) {
             LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
