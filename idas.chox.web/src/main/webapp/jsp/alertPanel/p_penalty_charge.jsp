@@ -250,7 +250,7 @@
                 <s:if test="interimPaymentReceived ">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentReceivedAmount" /> (Payment Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
@@ -258,7 +258,7 @@
                 <s:elseif test="!interimPaymentReceived && interimPayment">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="partialInterimPayment" /> (Payment Not Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>

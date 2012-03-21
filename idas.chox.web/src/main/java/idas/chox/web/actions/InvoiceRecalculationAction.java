@@ -81,7 +81,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private boolean modelSaved = false;
     
     public boolean getcanShowPaymentDetails() {
-        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
             return true;
         }
@@ -89,7 +89,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
     
     public boolean getcanShowPenaltyChargesPaidField() {
-        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) 
                 && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO)==1 
                 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO)==1)) {
@@ -3098,17 +3098,16 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 	
 	public BigDecimal getInterimPaymentReceivedAmount() {
         LOG.debug("getInterimPaymentReceivedAmount is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceivedAmount());
+        if(invoiceAction.model.getInterimPaymentReceivedAmount() == null)
+        	return new BigDecimal(0.00);
         return invoiceAction.model.getInterimPaymentReceivedAmount();
     }
 	
 	public BigDecimal getPartialInterimPayment() {
-		BigDecimal interimPaymentReceivedAmount = new BigDecimal(0.00);
 		BigDecimal interimPayment = new BigDecimal(0.00);
-		if(interimPaymentReceivedAmount != null)
-			interimPaymentReceivedAmount = getInterimPaymentReceivedAmount();
-		if(interimPayment != null)
+		if(invoiceAction.model.getInterimPayment() != null)
 			interimPayment = invoiceAction.model.getInterimPayment();
-		return interimPayment.subtract(interimPaymentReceivedAmount);
+		return interimPayment.subtract(getInterimPaymentReceivedAmount());
     }
 	
 }

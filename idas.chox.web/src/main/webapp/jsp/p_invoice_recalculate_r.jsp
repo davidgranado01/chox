@@ -370,7 +370,7 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td style="width: 20px"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/></label></td>
+                                        <td style="width: 18%"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/></label></td>
 										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label></td>
                                     </tr>
                                     <tr>
@@ -381,7 +381,7 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td style="width: 20px"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /></label></td>
+                                        <td style="width: 18%"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /></label></td>
 										<td><label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label></td>
                                     </tr>
                                     <tr>
@@ -495,14 +495,10 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="vehicleClass.name" /></label></td>
                                     <td>
-
                                         <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                             <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
                                         </s:if>
-
-
-
                                     </td>
                                 </tr>
 

@@ -1029,7 +1029,7 @@
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
                                                     <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" />
-                                                    <label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Yet Received)</label>
+                                                    <label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
@@ -1037,7 +1037,7 @@
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
                                                     <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" />
-													<label class="std-data-ro-red-invrecalc" style="align: middle;">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Yet Received)</label><br/>
+													<label class="std-data-ro-red-invrecalc" style="align: middle;">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label><br/>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>

@@ -7,7 +7,6 @@
 	<script src="<%= request.getContextPath()%>/scripts/paymentDetails-min.js" type="text/javascript"></script>
 </s:else>
 <script type="text/javascript">
-    var paymentDetailsConfirmationEnabled = <s:property value="paymentDetailsConfirmationEnabled"/>;
     var panaltyChargeApplied = <s:property value="PenaltyChargeApplied"/>;
     var hireGrossPaid = <s:property value="hireGrossPaid"/>;
     var repairGrossPaid = <s:property value="repairGrossPaid"/>;

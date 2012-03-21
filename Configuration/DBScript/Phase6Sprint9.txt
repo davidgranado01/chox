@@ -17,13 +17,6 @@ CREATE TABLE queued_ticket (
 --
 ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) not null default 0.0;
 
---
--- 6.9.1 Part Payments Modifications
---
-ALTER TABLE invoice ADD COLUMN interim_payment_received_amount numeric(10,2);
-
-ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;
-
 -------------------------------------------------------
 -- TO-DO ITEM 6.9.2 New MI Role For Insurer & CHO ---
 -------------------------------------------------------
@@ -2092,4 +2085,11 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
 
->>>>>>> Phase6Sprint9
+--
+-- 6.9.1 Part Payments Modifications
+--
+ALTER TABLE invoice ADD COLUMN interim_payment_received_amount numeric(10,2);
+
+ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;
+
+ALTER TABLE insurer DROP COLUMN is_payment_details_confirm_enable;

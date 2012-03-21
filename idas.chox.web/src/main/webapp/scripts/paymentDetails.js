@@ -85,18 +85,22 @@ Ext.onReady(function(){
                             background: '#ffffff'
                         });
                     }
+                }, load: function (){
+                	Ext.getCmp('penaltyChargesPaidId').setValue([true, false]);
                 }
             },
             items: [
             {
                 boxLabel: 'Yes', 
                 name: 'penaltyChargesPaid',
-                inputValue: true
+                inputValue: true,
+                checked: panaltyChargeApplied
             },
             {
                 boxLabel: 'No', 
                 name: 'penaltyChargesPaid',
-                inputValue: false
+                inputValue: false,
+                checked: !panaltyChargeApplied
             }
             ]
         }]
@@ -271,20 +275,29 @@ Ext.onReady(function(){
                 }
             }
         },{
+            fieldLabel: 'Interim Payments Made',
+            id : 'interimPayId',
+            name: 'interimPayId',
+            value: interimPaymentAmount.toFixed(2),
+            readOnly : true,
+            hidden : interimPaymentAmount<=0,
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('totalToPayId').validate();
+                },
+                afterrender : function(){
+                    this.getEl().applyStyles({
+                        'text-align':'right',
+                        background: '#e4e4e4'
+                    });  
+                }
+            }
+        },{
             fieldLabel: 'Final Payment',
             id : 'finalPayId',
             name: 'finalPayment',
             value: finalPayment,
             blankText: 'Final Payment is required'
-        },{
-            xtype : 'label',
-            id : 'labelId',
-            width : '100%',
-            hidden : interimPaymentAmount<=0,
-            html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£'+interimPaymentAmount.toFixed(2)+'</label></div>',
-            style: {
-                'text-align':'center'
-            }
         },{
             xtype : 'hidden',
             id : 'nonceId',
@@ -389,6 +402,8 @@ Ext.onReady(function(){
     	Ext.getCmp('paymentDetailsInsurerDiscountId').disable();
     	Ext.getCmp('totalToPayId').disable();
     	Ext.getCmp('finalPayId').disable();
+    	Ext.getCmp('interimPayId').disable();
+    	
     }
 
     function enablePayFields(){
@@ -407,6 +422,7 @@ Ext.onReady(function(){
     	Ext.getCmp('paymentDetailsInsurerDiscountId').enable();
     	Ext.getCmp('totalToPayId').enable();
     	Ext.getCmp('finalPayId').enable();
+    	Ext.getCmp('interimPayId').enable();
     }
     
     disablePayFields();
@@ -414,24 +430,7 @@ Ext.onReady(function(){
 });
 
 function confirmPaymentlogAction(){
-        
-    if(paymentDetailsConfirmationEnabled){
-        win.show(document.body);
-    }else{
-        Ext.Msg.show({
-            title      : 'Confirm',
-            msg        : 'Clicking on this button indicates to the CHO that payment has been made on your internal claims system.  Click \'OK\' to confirm payment has been made.',
-            width      : 800,
-            buttons    : Ext.MessageBox.OKCANCEL,
-            fn         : function(btn) {
-                if(btn=='ok') {
-                    var queryString = $('#logInvoicePayment').formSerialize();
-                    window.location = contextPath + "/prv/processClaim.action?" + queryString;
-                }
-            }
-        });
-    }
-        
+	win.show(document.body);
 }
 
 

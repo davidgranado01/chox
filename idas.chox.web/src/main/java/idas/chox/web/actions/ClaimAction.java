@@ -488,7 +488,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
         	if(newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0 && 
         			additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0){
-	            claim.getInvoice().setInterimPayment(newTotalInterimPayment);
 	            
 	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
 	            	comment = Comment.New(0, "The interim payment has been removed");
@@ -497,6 +496,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 	            else
 	            	comment = Comment.New(0, "The interim of £" + newTotalInterimPayment.toString() + " has been made." );
 	            
+	            claim.getInvoice().setInterimPayment(newTotalInterimPayment);
         	} else if(additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0){
         		BigDecimal paymentSum = claim.getInvoice().getInterimPayment().add(additionalInterimPayment);
         		claim.getInvoice().setInterimPayment(paymentSum);
@@ -1877,12 +1877,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getChoRef() {
 
         return claim.getChoReference();
-
-    }
-
-    public boolean getPaymentDetailsConfirmationEnabled() {
-
-        return claim.getInsurer().isPaymentDetailsConfirmationEnabled();
 
     }
 

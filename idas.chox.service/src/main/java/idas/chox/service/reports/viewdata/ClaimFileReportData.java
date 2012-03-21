@@ -253,7 +253,6 @@ public class ClaimFileReportData {
     private String vehicleTypeRequired;
     private String specialRequirements;
     private String averageDailyMileage;
-    public boolean showPaymentDetails;
     private BigDecimal paymentDetailsHirePaid;
     private BigDecimal paymentDetailsRepairPaid;
     private BigDecimal paymentDetailsEngineerFeePaid;
@@ -588,7 +587,7 @@ public class ClaimFileReportData {
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
             extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
-            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
+//            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
             paymentDetailsHirePaid = invoice.getHireGrossPaid();
             paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
             paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
@@ -2512,14 +2511,6 @@ public class ClaimFileReportData {
 
     public void setPaymentDetailsTotalLossPaid(BigDecimal paymentDetailsTotalLossPaid) {
         this.paymentDetailsTotalLossPaid = paymentDetailsTotalLossPaid;
-    }
-
-    public boolean isShowPaymentDetails() {
-        return showPaymentDetails;
-    }
-
-    public void setShowPaymentDetails(boolean showPaymentDetails) {
-        this.showPaymentDetails = showPaymentDetails;
     }
 
 	public BigDecimal getPaymentDetailsFinalPayment() {
