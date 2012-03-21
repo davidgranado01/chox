@@ -70,7 +70,7 @@ public class ClaimReferToEng extends BaseActivity {
             }
 
             claim.setLiabilityStatus(liabilityStatus);
-            Comment comment = Comment.New(1, note);
+            Comment comment = Comment.New(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
             claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));

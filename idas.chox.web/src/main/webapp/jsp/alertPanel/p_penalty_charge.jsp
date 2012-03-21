@@ -305,7 +305,7 @@
                     <td colspan="4" align="left">
                         <input type="submit" id="PCApplyButtonId"value="Apply"/>
                         <s:if test="showRemoveFromQueueCheckbox">
-                            &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId"label="Remove From Penalty Charge Queue"/>
+                            &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId" label="Remove From Penalty Charge Queue"/>
                             <label>Remove From Queue</label>
                         </s:if>
                     </td>

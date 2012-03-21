@@ -546,7 +546,7 @@
             defaultDays=1;
             canSelectRow=true;
             loadUploadedFiles();
-            
+            refreshFilterPanel();
         }
     
     }
