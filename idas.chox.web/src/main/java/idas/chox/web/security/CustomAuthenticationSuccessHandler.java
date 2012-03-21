@@ -2,20 +2,18 @@ package idas.chox.web.security;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
-import idas.chox.core.util.DateHelper;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Date;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.postgresql.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -26,7 +24,6 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
-    private String passwordExpiredUrl;
     private UserService userService;
     private String browserWarningParam;
     private Authentication currentAuthentication;
@@ -45,14 +42,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
     public void setCurrentAuthentication(Authentication currentAuthentication) {
         this.currentAuthentication = currentAuthentication;
-    }
-
-    public String getPasswordExpiredUrl() {
-        return passwordExpiredUrl;
-    }
-
-    public void setPasswordExpiredUrl(String passwordExpiredUrl) {
-        this.passwordExpiredUrl = passwordExpiredUrl;
     }
 
     public UserService getUserService() {
@@ -92,54 +81,18 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
             LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
         }
-        checkPasswordExpiry(request, response);
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
-    }
-
-    private void checkPasswordExpiry(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        LOG.debug("checking password expiry...with request: {}", request);
-
-        if (currentAuthentication != null) {
-            int forcePasswordChangeDays = 0;
-
-            PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
-            Date passwordLastModifiedDate = user.getUser().getPasswordLastModifiedDate();
-            long passwordNotChangedDays = DateHelper.getNumberOf24HourPeriodsBetween(passwordLastModifiedDate, new Date());
-
-            if (user.getIsCHO()) {
-                forcePasswordChangeDays = user.getUser().getChorganisation().getForcePasswordChange();
-            } else if (user.getIsINS()) {
-                forcePasswordChangeDays = user.getUser().getInsurer().getForcePasswordChange();
-            }
-            if (forcePasswordChangeDays > 0 && passwordNotChangedDays >= forcePasswordChangeDays) {
-                LOG.debug("Password is '{}' days old and password expirey is set to '{}' days - forcing password change.",
-                        passwordNotChangedDays, forcePasswordChangeDays);
-                WebUser webUser = user.getUser();
-                webUser.setIsExpired(Boolean.TRUE);
-                userService.saveUser(webUser);
-            } else {
-                LOG.debug("No forced password change: password is '{}' days old, forced days set to '{}'", passwordNotChangedDays, forcePasswordChangeDays);
-            }
-
-            if (user.getUser().getIsExpired()) {
-                getRedirectStrategy().sendRedirect(request, response, passwordExpiredUrl);
-                return;
-            }
-        }
     }
 
     private void checkBrowserWarning(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
-    	PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
         LOG.debug("checking Browser warning...with targetUrl: {}", targetUrl);
-        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7 && !user.getUser().getIsExpired()) {
+        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
             getRedirectStrategy().sendRedirect(request, response, targetUrl.concat(browserWarningParam));
             return;
         }
-
     }
 
     private BrowserType checkBrowserType(HttpServletRequest req) {

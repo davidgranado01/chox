@@ -303,7 +303,7 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             fieldLabel : 'Omit Supplementary Invoices?'
         },{
             xtype : 'hidden',
-            id : 'nonceId',
+            id : 'billingNonceId',
             name : 'nonce'
         }];
         if ( Chox.billing.billingmode == 'insurer'){
@@ -331,7 +331,7 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
         text : 'Save',
         handler : function() {
             Ext.getCmp('billingTypeId').setValue(Chox.billing.billingmode);
-            Ext.getCmp('nonceId').setValue(Chox.nonce);
+            Ext.getCmp('billingNonceId').setValue(Chox.nonce);
             Ext.getCmp('refbillingform').getForm().submit( {
                 waitTitle :'Please wait',
                 waitMsg :'Creating Bills...',
