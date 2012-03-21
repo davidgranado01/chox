@@ -17,6 +17,7 @@
             <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
             <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
+            <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
@@ -26,6 +27,7 @@
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
                 <interceptor-ref name="contactDetailsInterceptor"/>
+                <interceptor-ref name="passwordExpiredInterceptor"/>
                     <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
             </interceptor-stack>
             <interceptor-stack name="authenticatedNonce">
@@ -44,6 +46,11 @@
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
             <result name="rsa.nocontactdetails" type="redirectAction">
                 <param name="actionName">addContactDetails</param>
+                <param name="namespace">/prv</param>
+                <param name="redirect">true</param>
+            </result>
+            <result name="password.expired" type="redirectAction">
+                <param name="actionName">openUserAccountRedirect</param>
                 <param name="namespace">/prv</param>
                 <param name="redirect">true</param>
             </result>

@@ -12,14 +12,14 @@ CREATE TABLE queued_ticket (
  grant select, update, insert, delete on queued_ticket to chox_user;
  grant select, update on queued_ticket_id_seq to chox_user; 
 
---
+----------------------------------------------------------------------
 -- 6.9.6 BRE Modifications
---
+----------------------------------------------------------------------
 ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) not null default 0.0;
 
--------------------------------------------------------
+----------------------------------------------------------------------
 -- TO-DO ITEM 6.9.2 New MI Role For Insurer & CHO ---
--------------------------------------------------------
+----------------------------------------------------------------------
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
 SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Access', 2, false, false, false, false, true, true, false, 0;
@@ -2080,16 +2080,33 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 ----------------------------------------------------------------------
--- BUG#1549 Allow .zip files to be added as an attachment to a claim
-----------------------------------------------------------------------
-
-INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
-
---
 -- 6.9.1 Part Payments Modifications
---
+----------------------------------------------------------------------
 ALTER TABLE invoice ADD COLUMN interim_payment_received_amount numeric(10,2);
 
 ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;
 
 ALTER TABLE insurer DROP COLUMN is_payment_details_confirm_enable;
+
+----------------------------------------------------------------------
+-- BUG#1549 Allow .zip files to be added as an attachment to a claim
+----------------------------------------------------------------------
+
+INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
+
+
+-------------------------------------------------------------------------------
+-- BUG#1573 6.9.4 - Queues missing from CHOX Admin
+-------------------------------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+
+-------------------------------------------------------------------------------
+-- BUG#1543 Revert status for subscriber claims at 'AwaitingInvoiceData'
+-------------------------------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility WHERE name ='button.RevertClaimStatus.AwaitingInvoiceData';
+
+
