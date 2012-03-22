@@ -27,6 +27,15 @@
     	InterimPaymentAmountReceived = <s:property value="InterimPaymentAmountReceived"/>;
 	</s:if>
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    
+    function callInterimPayment(){
+    	 var target = "#moreActionPanel";
+         var url = "<%= request.getContextPath()%>/prv/p/makeInterimPayment.action";
+         var param = {"id":<s:property value="id" />};
+         ajax.loadHtml2(url,param,function(data){
+             $(target).html(data);
+         }); 
+    }
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form id="logInvoicePayment" action="post" >
@@ -50,7 +59,7 @@
                         </tr>
                         <tr>
                             <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/>
-                            <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="makeIterimPayment();"/></td>
+                            <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/></td>
                         </tr>
                     </table>
                 </div>

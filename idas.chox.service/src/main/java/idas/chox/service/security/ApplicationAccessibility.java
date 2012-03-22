@@ -213,13 +213,9 @@ public class ApplicationAccessibility {
 
             if (accessRight >= 2) {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
-                    boolean b = false;
+                    boolean b = true;
                     try {
-                    	if(claim.getInvoice().getInterimPayment() != null 
-                    			&& claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0 
-                    			&& (claim.getInvoice().getInterimPayment().subtract(claim.getInvoice().getInterimPaymentReceivedAmount())).compareTo(BigDecimal.ZERO) <= 0){
-                    		b = true;
-                    	}
+                    		b = isPaymentReceived(claim);
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());
                         b = false;
@@ -688,4 +684,16 @@ public class ApplicationAccessibility {
 
         return right;
     }
+    
+    private boolean isPaymentReceived(Claim claim) {
+    	BigDecimal interimPayment = claim.getInvoice().getInterimPayment();
+    	BigDecimal interimPaymentReceived = claim.getInvoice().getInterimPaymentReceivedAmount();
+        if(interimPaymentReceived == null)
+        	interimPaymentReceived = new BigDecimal(0.00);
+		if(interimPayment == null)
+			interimPayment = new BigDecimal(0.00);
+		if(interimPayment.signum() == 0 && interimPaymentReceived.signum() == 0)
+        	return false;
+		return interimPayment.compareTo(interimPaymentReceived) <= 0;
+	}
 }

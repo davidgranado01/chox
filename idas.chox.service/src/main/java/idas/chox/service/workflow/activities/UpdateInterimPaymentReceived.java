@@ -29,14 +29,10 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        
 		if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
-
 			claim.getInvoice().setInterimPaymentReceivedAmount(partialInterimPayment);
-			
 		} else {
-			LOG.error(
-					" Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",
+			LOG.error(" Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",
 					claim.getChoReference(), this.getWorkflowContext()
 							.getSecurityInfoProvider().getCurrentUser()
 							.getDisplayName());

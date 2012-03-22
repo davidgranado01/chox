@@ -4,6 +4,8 @@ import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import org.apache.poi.hssf.record.chart.BeginRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -664,7 +666,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsInterimPaymentMade() {
         boolean bFlag = false;
 
-        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null) {
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && !isPaymentReceived()) {
             bFlag = true;
         }
 
@@ -1818,14 +1820,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claim.getInvoice() != null) {
             try {
                 Invoice inv = claim.getInvoice();
-                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
-                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £"));
-                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
-                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £y (penalty charges have not been paid)."));
+//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+//                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
+//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £"));
+//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+//                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
+//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £y (penalty charges have not been paid)."));
                 inv.setHireGrossPaid(hireGrossPaid);
                 inv.setRepairGrossPaid(repairGrossPaid);
                 inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
@@ -2221,6 +2223,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 		if(interimPayment == null)
 			interimPayment = new BigDecimal(0.00);
 		return interimPayment.subtract(interimPaymentReceivedAmount);
+	}
+	
+	private boolean isPaymentReceived() {
+		interimPayment = claim.getInvoice().getInterimPayment();
+        interimPaymentReceivedAmount = claim.getInvoice().getInterimPaymentReceivedAmount();
+        if(interimPaymentReceivedAmount == null)
+        	interimPaymentReceivedAmount = new BigDecimal(0.00);
+		if(interimPayment == null)
+			interimPayment = new BigDecimal(0.00);
+		return interimPayment.compareTo(interimPaymentReceivedAmount) <= 0;
 	}
 
 	public BigDecimal getNewTotalInterimPayment() {

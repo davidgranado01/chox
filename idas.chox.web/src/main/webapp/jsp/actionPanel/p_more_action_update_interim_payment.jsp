@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+     
     function updateInterimPaymentAction(action){
     	if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
