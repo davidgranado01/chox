@@ -371,15 +371,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public void prepare() throws Exception {
         if (id < 0) { // No Claim provided so use session
-            if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
-                LOG.debug("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
-                claim = service.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
-                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            if (getSession().containsKey(SESSION_CLAIM_ID) && getSession().get(SESSION_CLAIM_ID) != null) {
+                LOG.debug("claim is null and got id from session id is {}", (Integer) getSession().get(SESSION_CLAIM_ID));
+                claim = service.getClaim((Integer) getSession().get(SESSION_CLAIM_ID));
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             }
         } else {
             claim = service.getClaim(id);
-            getSession().put("claimDetailPageClaimId", id);
-            getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            getSession().put(SESSION_CLAIM_ID, id);
+            getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             LOG.debug("Claim from db {}", claim.getChoReference());
         }
     }

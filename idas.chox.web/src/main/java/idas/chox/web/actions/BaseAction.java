@@ -20,6 +20,7 @@ import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureExcep
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ActionSupport;
+import idas.chox.core.model.Entity;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -30,6 +31,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private SecurityInfoProvider securityInfoProvider;
     private Map<String,Object> session;
     private String VALID_SESSION = "validSession";
+    // ClaimVersion and ClaimId string starts with capital letter because it can be used some times when model is claim 
+    // eg. model.getClass().getSession().concat("Version"). Please do not change the name untill this is refactored.
+    public static final String SESSION_CLAIM_VERSION = "ClaimVersion";
+    public static final String SESSION_CLAIM_ID = "ClaimId";
 
     public Map<String,Object> getSession() {
     	if(session == null)
@@ -379,8 +384,36 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return SUCCESS;
     }
 
-	public String getDevelopment() {
-		return ServletActionContext.getServletContext().getInitParameter("development");
-	}
-
+    public String getDevelopment() {
+        return ServletActionContext.getServletContext().getInitParameter("development");
+    }
+    
+    public void checkVersion(Entity model) throws StaleObjectStateException {
+        HashMap<String, Integer> map = (HashMap)getSession().get(model.getClass().getSimpleName());
+        Integer sessionModelVersion = map.get("version");
+        LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
+        LOG.debug("Session model is: {}={}", model.getClass().getSimpleName().concat("Version"), sessionModelVersion);
+        if (sessionModelVersion != null && model.getVersion() != null && !model.getVersion().equals(sessionModelVersion)) {
+            StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId());
+            throw ex;
+        }
+    }
+    
+    public void updateModelInSession(Entity model) {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("version", model.getVersion());
+        map.put("id", model.getId());
+        getSession().put(model.getClass().getSimpleName(), map);
+    }
+    
+    public void addModelToSession(Entity model) {
+        if (!getSession().containsKey(model.getClass().getSimpleName())) {
+            updateModelInSession(model);
+        } else {
+            HashMap<String, Integer> map = (HashMap)getSession().get(model.getClass().getSimpleName());
+            if (map.get("id").compareTo(model.getId()) != 0) {
+                updateModelInSession(model);
+            } 
+        }
+    }
 }
