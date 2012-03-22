@@ -2099,4 +2099,13 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility WHERE name ='button.RevertClaimStatus.AwaitingInvoiceData';
 
+----------------------------------------------------------------------------------------------------------------------------
+-- TO DO ITEM : 6.9.5 CHO Litigation Status & BUG 1587 - Dev - New Queue For Claims In Status 'AwaitingLitigationOutcome'
+----------------------------------------------------------------------------------------------------------------------------
 
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('filter.AwaitingLitigationOutcome',FALSE,FALSE);
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';

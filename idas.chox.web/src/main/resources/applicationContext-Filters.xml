@@ -330,6 +330,19 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
     
+    <bean id="AwaitingLitigationOutcome" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value= "Awaiting Litigation Outcome"/>
+        <property name="key" value="AwaitingLitigationOutcome"/>
+        <property name="status" value="AwaitingLitigationOutcome"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+    
     <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated" >
         <property name="name" value= "Liability Status Update Notifications"/>
         <property name="key" value= "LiabilityUpdate"/>

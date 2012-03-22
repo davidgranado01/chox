@@ -206,6 +206,7 @@
                 <ref bean="InvoicesApprovedByBRE" />
                 <ref bean="InterimPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
+                <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoiceBREApproved" />
