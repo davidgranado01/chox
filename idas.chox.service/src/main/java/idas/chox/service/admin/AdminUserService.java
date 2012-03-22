@@ -230,17 +230,17 @@ public class AdminUserService extends SecureDataService {
     // </editor-fold>
 
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId) {
-        return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true);
+        return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true, true);
     }
 
-    public Set<WebUserRole> getAllAvailableUserroles(int organisationTypeId, boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
-        return this.webUserUserRoleService.getWebUserroles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
+    public Set<WebUserRole> getAllAvailableUserroles(int organisationTypeId, boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
+        return this.webUserUserRoleService.getWebUserroles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled);
     }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId,
-            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled) {
-        List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled);
+            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
+        List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled, isInsurerUploadEnabled);
 
         return availableUserRoles;
     }

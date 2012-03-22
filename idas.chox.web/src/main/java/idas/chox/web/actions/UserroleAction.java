@@ -127,11 +127,11 @@ public class UserroleAction extends BaseAction {
       if (insurer != null)
           return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
               insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable());
+              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled());
 
       return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled());
     }
 
     public String getAllAvailableUserroles() {
@@ -145,11 +145,11 @@ public class UserroleAction extends BaseAction {
         if (insurer != null)
             webUserRoles = adminUserService.getAllAvailableUserroles(2,
               insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable());
+              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled());
         else
             webUserRoles = adminUserService.getAllAvailableUserroles(3,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled());
         for (WebUserRole webUserRole : webUserRoles)
                     userroles.add(new UserroleViewData(webUserRole));
       } catch (Exception ex) {

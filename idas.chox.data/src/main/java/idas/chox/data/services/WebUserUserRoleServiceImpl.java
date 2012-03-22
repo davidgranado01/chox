@@ -115,7 +115,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public Set<WebUserRole> getWebUserroles(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
+    public Set<WebUserRole> getWebUserroles(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
         Set<WebUserRole> webUserRoles = new HashSet<WebUserRole>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("typeId", orgTypeId));
@@ -134,14 +134,17 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         if (!isEngineersEnabled) {
             criteria.add(Restrictions.ne("engineerRelated", true));
         }
+        if (!isInsurerUploadEnabled) {
+            criteria.add(Restrictions.ne("showInsurerUploadDisabled", false));
+        }
         webUserRoles.addAll(findByCriteria(criteria));
         return webUserRoles;
     }
 
     @Override
-    public List<IdLookupItem> getWebUserrolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
+    public List<IdLookupItem> getWebUserrolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
 
-        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
+        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled);
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
 
         Iterator itr = webUserroles.iterator();
@@ -154,10 +157,10 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
+    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
 
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
-        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
+        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled);
 
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();
