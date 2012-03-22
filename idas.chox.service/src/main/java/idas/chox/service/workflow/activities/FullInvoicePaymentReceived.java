@@ -26,7 +26,7 @@ public class FullInvoicePaymentReceived extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-    	claim.getInvoice().setInterimPaymentReceived(true);
+    	claim.getInvoice().setInterimPaymentReceivedAmount(claim.getInvoice().getInterimPayment());
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());

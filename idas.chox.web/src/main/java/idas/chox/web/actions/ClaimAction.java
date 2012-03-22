@@ -4,8 +4,6 @@ import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
-import org.apache.poi.hssf.record.chart.BeginRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -133,6 +131,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String hirePenaltyPercentage;
     private String repairPenaltyPercentage;
     private BigDecimal interimPayment;
+    private Boolean interimPaymentReceived;
     private BigDecimal interimPaymentReceivedAmount;
     private BigDecimal partialInterimPayment;
     private ButtonAccessibility buttonAccessibility;
@@ -541,6 +540,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
         setInterimPayment(invoice.getInterimPayment());
+        setInterimPaymentReceived(invoice.isInterimPaymentReceived());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
@@ -666,7 +666,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsInterimPaymentMade() {
         boolean bFlag = false;
 
-        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && !isPaymentReceived()) {
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && claim.getInvoice().isInterimPaymentReceived()) {
             bFlag = true;
         }
 
@@ -709,10 +709,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getMakeInterimPayment() {
         if (claim != null && claim.getInvoice() != null) {
             interimPayment = claim.getInvoice().getInterimPayment();
-            interimPaymentReceivedAmount = claim.getInvoice().getInterimPaymentReceivedAmount();
+            interimPaymentReceived = claim.getInvoice().isInterimPaymentReceived();
         } else {
             interimPayment = null;
-            interimPaymentReceivedAmount = null;
+            interimPaymentReceived = null;
         }
         return SUCCESS;
     }
@@ -720,10 +720,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getUpdateInterimPayment() {
         if (claim != null && claim.getInvoice() != null) {
             interimPayment = claim.getInvoice().getInterimPayment();
-            interimPaymentReceivedAmount = claim.getInvoice().getInterimPaymentReceivedAmount();
+            interimPaymentReceived = claim.getInvoice().isInterimPaymentReceived();
         } else {
             interimPayment = null;
-            interimPaymentReceivedAmount = null;
+            interimPaymentReceived = null;
         }
         return SUCCESS;
     }
@@ -2225,15 +2225,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 		return interimPayment.subtract(interimPaymentReceivedAmount);
 	}
 	
-	private boolean isPaymentReceived() {
-		interimPayment = claim.getInvoice().getInterimPayment();
-        interimPaymentReceivedAmount = claim.getInvoice().getInterimPaymentReceivedAmount();
-        if(interimPaymentReceivedAmount == null)
-        	interimPaymentReceivedAmount = new BigDecimal(0.00);
-		if(interimPayment == null)
-			interimPayment = new BigDecimal(0.00);
-		return interimPayment.compareTo(interimPaymentReceivedAmount) <= 0;
-	}
+	public Boolean getInterimPaymentReceived() {
+        return interimPaymentReceived;
+    }
+
+    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+        this.interimPaymentReceived = interimPaymentReceived;
+    }
 
 	public BigDecimal getNewTotalInterimPayment() {
 		return newTotalInterimPayment;

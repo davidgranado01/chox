@@ -1,7 +1,6 @@
 
 package idas.chox.web.actions;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.StaleObjectStateException;
@@ -33,7 +32,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String jsonData;
     private boolean showMessage = false;
     private String message = null;
-    
     
     @Override
     public Activity getModel() {

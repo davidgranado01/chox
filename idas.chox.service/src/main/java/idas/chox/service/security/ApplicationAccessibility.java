@@ -215,7 +215,9 @@ public class ApplicationAccessibility {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
                     boolean b = true;
                     try {
-                    		b = isPaymentReceived(claim);
+
+                        b = claim.getInvoice().isInterimPaymentReceived();
+
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());
                         b = false;
@@ -684,16 +686,4 @@ public class ApplicationAccessibility {
 
         return right;
     }
-    
-    private boolean isPaymentReceived(Claim claim) {
-    	BigDecimal interimPayment = claim.getInvoice().getInterimPayment();
-    	BigDecimal interimPaymentReceived = claim.getInvoice().getInterimPaymentReceivedAmount();
-        if(interimPaymentReceived == null)
-        	interimPaymentReceived = new BigDecimal(0.00);
-		if(interimPayment == null)
-			interimPayment = new BigDecimal(0.00);
-		if(interimPayment.signum() == 0 && interimPaymentReceived.signum() == 0)
-        	return false;
-		return interimPayment.compareTo(interimPaymentReceived) <= 0;
-	}
 }

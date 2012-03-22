@@ -50,6 +50,7 @@
     });
     
     function setPaymentField(){
+    	$('#ACKmMakeInterimPaymentMessageBox').empty();
     	if($('#interimPayAdd').attr('checked') != undefined){
     		$('#additionalInterim').show();
     		$('#newTotalInterim').hide();
@@ -64,7 +65,11 @@
     
     function setAdditionalInterimInfo(){
     	$('#additionalInterimInfo').show();
-    	$('#additionalInterimPaymentInfo').val(<s:property value="interimPayment" /> + parseInt($('#additionalInterimPayment').val()));
+    	var aip = parseInt($('#additionalInterimPayment').val());
+    	if(!isNaN(aip))
+    		$('#additionalInterimPaymentInfo').text(<s:property value="interimPayment" /> + aip);
+    	else
+    		$('#additionalInterimPaymentInfo').text('Not A Valid Number');
     }
     
     function submitInterim(action){
@@ -73,7 +78,7 @@
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("add", {
                 min: 1,
                 number:true,
-                messages: { required:"You must supply a value bigger than 0 for 'Additional Interim Payment'",
+                messages: { required:"The Supplied Value must Be bigger Than 0.",
                 	min:"You must supply a value bigger than 0 for 'Additional Interim Payment'",
                     number:"Invalid 'Interim Payment' Format"}
             });
@@ -82,7 +87,7 @@
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
                 min: currentRecAmount,
             	number:true,
-                messages: { required:"You must supply a value which is bigger than the current interim amount received value",
+                messages: { required:"The Supplied Value Cannot Be Less Than The Interim Amount Received.",
                 	min:"You must supply a value which is bigger than the current interim amount received value",
                 	number:"Invalid 'Interim Payment' Format"}
             });
@@ -129,9 +134,9 @@
 	                            <td></td><td></td>
 	                        </tr>
 	                         <tr id="additionalInterimInfo">
-	                            <td><label>New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
+	                            <td><label>New Total Interim Payment Amount</label></td>
 	                       			<td nowrap>
-		                                £&nbsp;<input type="text" id="additionalInterimPaymentInfo" name="additionalInterimPaymentInfo" class="chox-ttxt" disabled="disabled"/>
+		                                £&nbsp;<label id="additionalInterimPaymentInfo" name="additionalInterimPaymentInfo" ></label>
 		                            </td>
 	                            <td></td><td></td>
 	                        </tr>

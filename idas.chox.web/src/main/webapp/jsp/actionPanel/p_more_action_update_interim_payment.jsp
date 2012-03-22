@@ -56,8 +56,6 @@
                         <s:elseif test="partialInterimPayment != null &&  partialInterimPayment == 0">
                             <tr><td></td><td colspan="3"><label>This interim payment has already been received.</label></td><td></td></tr>
                         </s:elseif>
-                        
-                       
                     </table>
                 </div>
                  <br>

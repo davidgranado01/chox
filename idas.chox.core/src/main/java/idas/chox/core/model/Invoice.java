@@ -1359,20 +1359,30 @@ public class Invoice extends Entity implements Serializable {
         this.interimPayment = interimPayment;
     }
 
-	public Boolean getInterimPaymentReceived() {
-        return interimPaymentReceived;
+	public Boolean isInterimPaymentReceived() {
+        if(interimPaymentReceivedAmount == null)
+        	interimPaymentReceivedAmount = new BigDecimal(0.00);
+		if(interimPayment == null)
+			interimPayment = new BigDecimal(0.00);
+		if(interimPayment.signum() == 0 && interimPaymentReceivedAmount.signum() == 0)
+        	return false;
+		return interimPayment.compareTo(interimPaymentReceivedAmount) <= 0;
     }
-    
-    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+	
+	//XXX not used - will be removed
+	public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
+        if (interimPaymentReceived == null) {
+            setInterimPaymentReceivedDesc("");
+        } else if (interimPaymentReceived) {
+            setInterimPaymentReceivedDesc("Yes");
+        } else {
+            setInterimPaymentReceivedDesc("No");
+        }
     }
 
     public String getInterimPaymentReceivedDesc() {
-        if (interimPaymentReceivedAmount == null) {
-            return "";
-        } else {
-            return interimPaymentReceivedAmount.compareTo(BigDecimal.ZERO) > 0 ? "Yes" : "No";
-        }
+            return isInterimPaymentReceived() ? "Yes" : "No";
     }
 
     public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
