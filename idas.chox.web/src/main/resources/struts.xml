@@ -57,7 +57,7 @@
         </global-results>
 
         <global-exception-mappings>
-            <exception-mapping exception="org.springframework.security.AccessDeniedException" result="AccessDenied"/>
+            <exception-mapping exception="org.springframework.security.access.AccessDeniedException" result="AccessDenied"/>
             <exception-mapping exception="java.lang.Exception" result="Exception"/>
         </global-exception-mappings>
         <action name="login" class="idas.chox.web.actions.BaseAction" >
@@ -90,7 +90,6 @@
                 <param name="id">${id}</param>
             </result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <exception-mapping exception="java.lang.Exception" result="error"/>
             <result name="error" type="redirectAction">
                 <param name="actionName">openClaimDetail</param>
                 <param name="parse">true</param>
