@@ -2109,3 +2109,16 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+
+----------------------------------------------------------------------------------------------------------------------------
+-- BUG 1586 - Dev - Add 'Revert Status' to a claim in status 'ManualInvoicePaid' and 'ManualInvoiceContested'
+----------------------------------------------------------------------------------------------------------------------------
+
+DELETE FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoiceContested' AND role = 'ROLE_INS');
+DELETE FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoicePaid' AND role = 'ROLE_INS');
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility WHERE name ='button.RevertClaimStatus.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id from accessibility WHERE name ='button.RevertClaimStatus.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
