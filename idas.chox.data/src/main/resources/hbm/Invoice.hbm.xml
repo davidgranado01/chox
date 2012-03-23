@@ -94,7 +94,6 @@
         <property column="repair_penalty_charge_paid" name="repairPenaltyChargePaid"/>
         <property column="penalty_charges_paid" name="penaltyChargesPaid"/>
         <property column="final_payment" name="finalPayment"/>
-        <property column="interim_payment_received_amount" name="interimPaymentReceivedAmount"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
