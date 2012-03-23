@@ -2099,9 +2099,12 @@ update invoice
     set interim_payment_received = 0.00
 where interim_payment_received_old = false;
 
-ALTER TABLE insurer DROP COLUMN interim_payment_received_old;
+-- update for full and final
+update invoice
+    set interim_payment_received = interim_payment_made
+where interim_payment_received_full_final  = true;
 
--- update for full and final?? TBD
+ALTER TABLE insurer DROP COLUMN interim_payment_received_old;
 
 ----------------------------------------------------------------------
 -- BUG#1549 Allow .zip files to be added as an attachment to a claim
