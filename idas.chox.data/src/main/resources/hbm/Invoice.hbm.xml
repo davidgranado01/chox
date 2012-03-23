@@ -82,7 +82,7 @@
         <property column="penalty_alert_qty" name="penaltyAlertQty"/>
         <property column="hire_penalty_charge_applied_date" name="hirePenaltyChargeAppliedDate"/>
         <property column="repair_penalty_charge_applied_date" name="repairPenaltyChargeAppliedDate"/>
-        <property column="interim_payment_amount" name="interimPayment"/>
+        <property column="interim_payment_made" name="interimPaymentMade"/>
         <property column="interim_payment_received" name="interimPaymentReceived"/>
         <property column="interim_payment_received_full_final" name="InterimPaymentReceivedFullAndFinal"/>
         <property column="hire_gross_paid" name="hireGrossPaid"/>

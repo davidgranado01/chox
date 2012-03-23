@@ -216,7 +216,9 @@ public class ApplicationAccessibility {
                     boolean b = true;
                     try {
 
-                        b = claim.getInvoice().isInterimPaymentReceived();
+                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentReceived() == null
+                                || BigDecimal.ZERO.compareTo(claim.getInvoice().getInterimPaymentReceived()) >= 0)
+                            b = false;
 
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());

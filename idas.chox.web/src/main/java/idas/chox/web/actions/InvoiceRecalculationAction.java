@@ -1841,19 +1841,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getInterimPayment() {
-        LOG.debug("getInterimPayment is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPayment());
-        return invoiceAction.model.getInterimPayment();
-    }
-
-    public String getInterimPaymentReceivedDesc() {
-        return invoiceAction.model.getInterimPaymentReceivedDesc();
-    }
-
-    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
-
-        if (actionSelected != reset && invoiceAction != null && invoiceAction.model != null) {
-            invoiceAction.model.setInterimPaymentReceivedDesc(interimPaymentReceivedDesc);
-        }
+        LOG.debug("getInterimPayment is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentMade());
+        return invoiceAction.model.getInterimPaymentMade();
     }
 
     public BigDecimal getTotalPenaltyCharge() {
@@ -1867,8 +1856,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public Boolean getInterimPaymentReceivedFullAndFinal() {
-        return invoiceAction.model.getInterimPaymentReceivedFullAndFinal();
+    public Boolean isInterimPaymentReceivedFullAndFinal() {
+        return invoiceAction.model.isInterimPaymentReceivedFullAndFinal();
     }
 
     public BigDecimal getEngineerFeeGrossPaid() {
@@ -3077,18 +3066,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 		return modelSaved;
 	}
 	
-	public BigDecimal getInterimPaymentReceivedAmount() {
-        LOG.debug("getInterimPaymentReceivedAmount is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceivedAmount());
-        if(invoiceAction.model.getInterimPaymentReceivedAmount() == null)
+	public BigDecimal getInterimPaymentReceived() {
+        LOG.debug("getInterimPaymentReceivedAmount is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceived());
+        if(invoiceAction.model.getInterimPaymentReceived() == null)
         	return new BigDecimal(0.00);
-        return invoiceAction.model.getInterimPaymentReceivedAmount();
+        return invoiceAction.model.getInterimPaymentReceived();
     }
 	
 	public BigDecimal getPartialInterimPayment() {
-		BigDecimal interimPayment = new BigDecimal(0.00);
-		if(invoiceAction.model.getInterimPayment() != null)
-			interimPayment = invoiceAction.model.getInterimPayment();
-		return interimPayment.subtract(getInterimPaymentReceivedAmount());
+		BigDecimal interimPayment = BigDecimal.ZERO.setScale(2);
+		if(invoiceAction.model.getInterimPaymentMade() != null)
+			interimPayment = invoiceAction.model.getInterimPaymentMade();
+		return interimPayment.subtract(getInterimPaymentReceived());
     }
 	
 }

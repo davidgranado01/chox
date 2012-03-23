@@ -41,7 +41,7 @@ public class InvoicePaymentReceived extends BaseActivity {
     	claim.addComment(Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + sdf.format(currentTime) + "; " +
     			"however the CHO has marked the Payment as an Interim Payment of £" + partialInterimPayment + "as there is an amount outstanding. Please check " +
     					"the payment details in your claim system and mark the claim as Invoice Payment Logged when the outstanding amount has been paid."));
-    	claim.getInvoice().setInterimPaymentReceivedAmount(partialInterimPayment);
+    	claim.getInvoice().setInterimPaymentReceived(partialInterimPayment);
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());

@@ -2,11 +2,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-var partialInterimPayment = 0;
-<s:if test="partialInterimPayment != null && partialInterimPayment > 0 ">
-	partialInterimPayment = <s:property value="partialInterimPayment" />;
-</s:if>
+	var partialInterimPayment = <s:property value="outstandingInterimPayment" />;
 var confPayRec;
+
 Ext.onReady(function(){
 	
 	var inFields = {
@@ -53,7 +51,7 @@ Ext.onReady(function(){
 	    autoHeight: true,
 	    labelWidth: 210,
 	    frame:true,
-	    title:'<div class="status-info">Insurer has made a payment of £<s:property value="partialInterimPayment" /> against an amount outstanding of £<s:property value="totalToPay" />.</div>',
+	    title:'<div class="status-info">Insurer has made a payment of £<s:property value="interimPaymentMade" /> against an amount outstanding of £<s:property value="totalToPay" />.</div>',
 	    buttonAlign : 'center',
 	    items : [inFields
 	    ],

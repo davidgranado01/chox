@@ -159,10 +159,6 @@ public class Invoice extends Entity implements Serializable {
      */
     private Integer towBarsQty;
     /**
-     * This attribute maps to the column interim_payment_received_amount in the invoice table.
-     */
-    private BigDecimal interimPaymentReceivedAmount;
-    /**
      * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
      */
     private BigDecimal nonStandardInsurancePremiumFee;
@@ -201,10 +197,9 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal totalLossFeeNet;
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;
-    private BigDecimal interimPayment;
-    private Boolean interimPaymentReceived;
-    private String interimPaymentReceivedDesc;
-    private Boolean InterimPaymentReceivedFullAndFinal;
+    private BigDecimal interimPaymentMade;
+    private BigDecimal interimPaymentReceived;
+    private Boolean interimPaymentReceivedFullAndFinal;
     private BigDecimal hireGrossPaid;
     private BigDecimal repairGrossPaid;
     private BigDecimal engineerFeeGrossPaid;
@@ -297,12 +292,12 @@ public class Invoice extends Entity implements Serializable {
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
     }
     
-    public Boolean getInterimPaymentReceivedFullAndFinal() {
-        return InterimPaymentReceivedFullAndFinal;
+    public Boolean isInterimPaymentReceivedFullAndFinal() {
+        return interimPaymentReceivedFullAndFinal;
     }
 
-    public void setInterimPaymentReceivedFullAndFinal(Boolean InterimPaymentReceivedFullAndFinal) {
-        this.InterimPaymentReceivedFullAndFinal = InterimPaymentReceivedFullAndFinal;
+    public void setInterimPaymentReceivedFullAndFinal(Boolean interimPaymentReceivedFullAndFinal) {
+        this.interimPaymentReceivedFullAndFinal = interimPaymentReceivedFullAndFinal;
     }
 
     public Invoice() {
@@ -1353,41 +1348,22 @@ public class Invoice extends Entity implements Serializable {
         this.repairPenaltyPercentage = repairPenaltyPercentage;
     }
 
-    public BigDecimal getInterimPayment() {
-        return interimPayment;
+    public BigDecimal getInterimPaymentMade() {
+        return interimPaymentMade;
     }
 
-    public void setInterimPayment(BigDecimal interimPayment) {
-        this.interimPayment = interimPayment;
+    public void setInterimPaymentMade(BigDecimal interimPaymentMade) {
+        this.interimPaymentMade = interimPaymentMade;
     }
 
-	public Boolean isInterimPaymentReceived() {
-        if(interimPaymentReceivedAmount == null)
-        	interimPaymentReceivedAmount = BigDecimal.ZERO;
-		if(interimPayment == null)
-			interimPaymentReceivedAmount = BigDecimal.ZERO;
-		return interimPayment.compareTo(interimPaymentReceivedAmount) > 0;
+	public Boolean isInterimPaymentOutstanding() {
+        if (interimPaymentReceived == null)
+        	interimPaymentReceived = BigDecimal.ZERO;
+		if (interimPaymentMade == null)
+			interimPaymentReceived = BigDecimal.ZERO;
+		return interimPaymentMade.compareTo(interimPaymentReceived) > 0;
     }
 	
-	//XXX not used - will be removed
-	public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-        this.interimPaymentReceived = interimPaymentReceived;
-        if (interimPaymentReceived == null) {
-            setInterimPaymentReceivedDesc("");
-        } else if (interimPaymentReceived) {
-            setInterimPaymentReceivedDesc("Yes");
-        } else {
-            setInterimPaymentReceivedDesc("No");
-        }
-    }
-
-    public String getInterimPaymentReceivedDesc() {
-            return isInterimPaymentReceived() ? "Yes" : "No";
-    }
-
-    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
-        this.interimPaymentReceivedDesc = interimPaymentReceivedDesc;
-    }
 
     public BigDecimal getTotalPenaltyCharge() {
         return totalPenaltyCharge;
@@ -1397,13 +1373,12 @@ public class Invoice extends Entity implements Serializable {
         this.totalPenaltyCharge = totalPenaltyCharge;
     }
 
-	public BigDecimal getInterimPaymentReceivedAmount() {
-		return interimPaymentReceivedAmount;
+	public BigDecimal getInterimPaymentReceived() {
+		return interimPaymentReceived;
 	}
 
-	public void setInterimPaymentReceivedAmount(
-			BigDecimal interimPaymentReceivedAmount) {
-		this.interimPaymentReceivedAmount = interimPaymentReceivedAmount;
+	public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
+		this.interimPaymentReceived = interimPaymentReceived;
 	}
 
 	public BigDecimal getFinalPayment() {

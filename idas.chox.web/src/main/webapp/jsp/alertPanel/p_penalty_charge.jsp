@@ -247,18 +247,26 @@
                     <td style="width:20%"></td>
                 </tr>
 
-                <s:if test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0 ">
+                <s:if test="outstandingInterimPayment > 0">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentReceivedAmount" /> (Payment Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Only £<s:property value="interimPaymentReceived" /> Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
                 </s:if>
-                <s:elseif test="interimPayment != null && interimPayment > 0">
+                <s:elseif test="interimPaymentMade  > 0 && outstandingInterimPayment == 0">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="partialInterimPayment" /> (Payment Not Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Received)</label></td>
+                        <td style="width:20%"></td>
+                        <td style="width:20%"></td>
+                    </tr>
+                </s:elseif>
+                <s:elseif test="interimPaymentMade  > 0">
+                    <tr>
+                        <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Not Yet Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>

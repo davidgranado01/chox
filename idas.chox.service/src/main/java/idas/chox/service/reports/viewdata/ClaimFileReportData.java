@@ -546,14 +546,17 @@ public class ClaimFileReportData {
             invoiceTotalToPay = invoice.getTotalToPay();
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
-            invoiceInterimPaymentAmount = invoice.getInterimPayment();
+            invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
             if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0)
                 invoiceInterimPayment = "";
-            else if (invoice.isInterimPaymentReceived()!=null && invoice.isInterimPaymentReceived()) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
+            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
+            }
+            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) < 0) {
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Only £" + invoice.getInterimPaymentReceived() + " Received)";
             }
             else {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
             }
             if (invoice.getDateInvoiced() != null)
                 invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());

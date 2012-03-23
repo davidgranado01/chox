@@ -2,18 +2,15 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-	var currentRecAmount = 0;
 	var interimPayMade = false;
-	<s:if test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0">
-		var currentRecAmount = <s:property value="interimPaymentReceivedAmount" />;
-	</s:if>
-	<s:if test="interimPayment != null && interimPayment > 0">
+    var currentRecAmount = <s:property value="interimPaymentReceived" />;
+	<s:if test="interimPaymentMade > 0">
 		var interimPayMade = true;
 	</s:if>
 	
     $(function(){
     	
-    	$('#additionalInterimPaymentInfo').text('<s:property value="interimPayment" />')
+    	$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />')
     	if(interimPayMade){
     		$('#radioBox').show();
     	} else {
@@ -68,9 +65,9 @@
     function setAdditionalInterimInfo(){
     	var aip = parseInt($('#additionalInterimPayment').val());
     	if(!isNaN(aip))
-    		$('#additionalInterimPaymentInfo').text(<s:property value="interimPayment" /> + aip);
+    		$('#additionalInterimPaymentInfo').text(<s:property value="interimPaymentMade" /> + aip);
     	else
-    		$('#additionalInterimPaymentInfo').text('<s:property value="interimPayment" />');
+    		$('#additionalInterimPaymentInfo').text('<s:property value="interimPaymentMade" />');
     }
     
     function submitInterim(action){
@@ -105,13 +102,13 @@
             <legend>Make Interim Payment</legend>
             <s:hidden id="claimId" name="id" />
             
-             <s:if test="(interimPayment != null && interimPayment > 0) || (interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0)">
+             <s:if test="(interimPaymentMade > 0) || (interimPaymentReceived > 0)">
 	            <div class="status-info">
-	            <s:if test="interimPayment != null && interimPayment > 0">
-	                 An interim payment of £<s:property value="interimPayment" /> has been made on this claim.<br/>
+	            <s:if test="interimPaymentMade > 0">
+	                 An interim payment of £<s:property value="interimPaymentMade" /> has been made on this claim.<br/>
 	            </s:if>
-	            <s:if test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0">
-	                  An interim payment of £<s:property value="interimPaymentReceivedAmount" /> has already been received on this claim.
+	            <s:if test="interimPaymentReceived > 0">
+	                  An interim payment of £<s:property value="interimPaymentReceived" /> has already been received on this claim.
 	            </s:if>
 	            </div>
 	            <br/>

@@ -580,7 +580,7 @@
         </div>
     </s:if>
 
-    <s:if test="isInterimPaymentMade">
+    <s:if test="hasOutstandingInterimPayment">
         <div id="interimPaymentDiv">
             <s:action namespace="/prv/p" executeResult="true" name="updateInterimPayment">
                 <s:param name="id"><s:property value="id" /></s:param>

@@ -1022,22 +1022,31 @@
                                             <s:if test="interimPaymentReceivedFullAndFinal">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc"> (Received & Accepted as Full & Final)</label>
+                                                    <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:if>
-                                            <s:elseif test="interimPaymentReceivedAmount != null && interimPaymentReceivedAmount > 0">
+                                            <s:elseif test="outstandingInterimPayment > 0">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" />
-                                                    <label class="std-data-ro-red-invrecalc">(£<s:property value="interimPaymentReceivedAmount" /> Received, £<s:property value="partialInterimPayment" /> Not Received)</label><br/>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
+                                                    <label class="std-data-ro-red-invrecalc">(Only £<s:property value="interimPaymentReceived" /> Received)</label><br/>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
-                                            <s:elseif test="interimPayment != null && interimPayment > 0">
+                                            <s:elseif test="interimPaymentReceived != null && interimPaymentReceived > 0">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" />
-													<label class="std-data-ro-red-invrecalc" style="align: middle;">(£<s:property value="interimPaymentReceivedAmount" /> Received,<br/> £<s:property value="partialInterimPayment" /> Not Received)</label><br/>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
+                                                    <label class="std-data-ro-red-invrecalc">(Received)</label><br/>
+                                                    <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
+                                                </div>
+                                            </s:elseif>
+                                            <s:elseif test="interimPaymentMade != null && interimPaymentMade > 0">
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Interim Payment</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
+													<label class="std-data-ro-red-invrecalc">(Not Yet Received)</label><br/>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>

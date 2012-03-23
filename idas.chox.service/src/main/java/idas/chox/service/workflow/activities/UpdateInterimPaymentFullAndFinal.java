@@ -27,11 +27,11 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
 
-        if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
+        if (claim.getInvoice().getInterimPaymentMade().compareTo(BigDecimal.ZERO) > 0) {
 
-            //XXXclaim.getInvoice().setInterimPaymentReceived(true);
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
-            claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
+            claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
+            claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
 
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
@@ -47,7 +47,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
             }
 
         } else {
-            LOG.error(" Trying to update interim payment received full and final when there is no interim payment amount for this claim: {} by {}", claim.getChoReference(), this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName());
+            LOG.error("Trying to update interim payment received full and final when there is no interim payment amount for this claim: {} by {}", claim.getChoReference(), this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName());
         }
     }
 

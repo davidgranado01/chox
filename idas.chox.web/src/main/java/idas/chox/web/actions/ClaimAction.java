@@ -130,9 +130,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private UserService userService;
     private String hirePenaltyPercentage;
     private String repairPenaltyPercentage;
-    private BigDecimal interimPayment;
-//    private Boolean interimPaymentReceived;
-    private BigDecimal interimPaymentReceivedAmount;
+    private BigDecimal interimPaymentMade;
+    private BigDecimal interimPaymentReceived;
     private BigDecimal partialInterimPayment;
     private ButtonAccessibility buttonAccessibility;
     private int actionSelected;
@@ -356,12 +355,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getInsurer().isEngineersEnable();
     }
 
-    public BigDecimal getInterimPayment() {
-        return interimPayment;
+    public BigDecimal getInterimPaymentMade() {
+        return interimPaymentMade == null ? BigDecimal.ZERO.setScale(2): interimPaymentMade;
     }
 
-    public void setInterimPayment(BigDecimal interimPayment) {
-        this.interimPayment = interimPayment;
+    public void setInterimPaymentMade(BigDecimal interimPaymentMade) {
+        this.interimPaymentMade = interimPaymentMade;
     }
 
     @Override
@@ -483,17 +482,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 	            
 	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
 	            	comment = Comment.New(0, "The interim payment has been removed");
-	            else if(claim.getInvoice().getInterimPayment() != null)
+	            else if(claim.getInvoice().getInterimPaymentMade() != null)
 	            	comment = Comment.New(0, "The interim payment has been modified to a new total of £" + newTotalInterimPayment.toString());
 	            else
 	            	comment = Comment.New(0, "The interim of £" + newTotalInterimPayment.toString() + " has been made." );
 	            
-	            claim.getInvoice().setInterimPayment(newTotalInterimPayment);
+	            claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
         	} else if(additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0){
-        		BigDecimal paymentSum = claim.getInvoice().getInterimPayment().add(additionalInterimPayment);
-        		claim.getInvoice().setInterimPayment(paymentSum);
+        		BigDecimal paymentSum = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
+        		claim.getInvoice().setInterimPaymentMade(paymentSum);
         		comment = Comment.New(0, "An additional interim payment of £"  + additionalInterimPayment.toString() +  " has been made." +
-        		 		" The total interim payment amount is now £" + claim.getInvoice().getInterimPayment());
+        		 		" The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
         	} 
         	claim.addComment(comment);
             this.service.updateClaim(claim);
@@ -539,7 +538,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
-        setInterimPayment(invoice.getInterimPayment());
+        setInterimPaymentMade(invoice.getInterimPaymentMade());
 //        setInterimPaymentReceived(invoice.isInterimPaymentReceived());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
@@ -663,10 +662,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
-    public boolean getIsInterimPaymentMade() {
+    public boolean getHasOutstandingInterimPayment() {
         boolean bFlag = false;
 
-        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && !claim.getInvoice().isInterimPaymentReceived()) {
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && claim.getInvoice().isInterimPaymentOutstanding()) {
             bFlag = true;
         }
 
@@ -706,24 +705,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    public String getMakeInterimPayment() {
-        if (claim != null && claim.getInvoice() != null) {
-            interimPayment = claim.getInvoice().getInterimPayment();
-//            interimPaymentReceived = claim.getInvoice().isInterimPaymentReceived();
-        } else {
-            interimPayment = null;
-//            interimPaymentReceived = null;
-        }
-        return SUCCESS;
-    }
-
     public String getUpdateInterimPayment() {
         if (claim != null && claim.getInvoice() != null) {
-            interimPayment = claim.getInvoice().getInterimPayment();
-//            interimPaymentReceived = claim.getInvoice().isInterimPaymentReceived();
+            interimPaymentMade = claim.getInvoice().getInterimPaymentMade();
+            interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
         } else {
-            interimPayment = null;
-//            interimPaymentReceived = null;
+            interimPaymentMade = null;
+            interimPaymentReceived = null;
         }
         return SUCCESS;
     }
@@ -1685,10 +1673,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Payment Details Panel">
-    public BigDecimal getInterimPaymentAmount() {
-        return claim.getInvoice().getInterimPayment() != null ? claim.getInvoice().getInterimPayment() : BigDecimal.ZERO;
-    }
 
     public BigDecimal getPaymentDetailsCHODiscount() {
         return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1800,7 +1784,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getFinalPayment() {
         if (claim.getInvoice() != null) {
-        	return claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentAmount());
+        	return claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentMade());
         } else {
             return BigDecimal.ZERO;
         }
@@ -2205,24 +2189,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-	public BigDecimal getInterimPaymentReceivedAmount() {
-		return interimPaymentReceivedAmount;
+	public BigDecimal getInterimPaymentReceived() {
+		return interimPaymentReceived == null? BigDecimal.ZERO.setScale(2) : interimPaymentReceived;
 	}
 
 	public void setInterimPaymentReceivedAmount(BigDecimal interimPaymentReceivedAmount) {
-		this.interimPaymentReceivedAmount = interimPaymentReceivedAmount;
+		this.interimPaymentReceived = interimPaymentReceivedAmount;
 	}
 
 	public void setPartialInterimPayment(BigDecimal partialInterimPayment) {
 		this.partialInterimPayment = partialInterimPayment;
 	}
 	
-	public BigDecimal getPartialInterimPayment() {
-		if(interimPaymentReceivedAmount == null)
-			interimPaymentReceivedAmount = new BigDecimal(0.00);
-		if(interimPayment == null)
-			interimPayment = new BigDecimal(0.00);
-		return interimPayment.subtract(interimPaymentReceivedAmount);
+	public BigDecimal getOutstandingInterimPayment() {
+		if(interimPaymentReceived == null)
+			interimPaymentReceived = BigDecimal.ZERO;
+		if(interimPaymentMade == null)
+			interimPaymentMade = BigDecimal.ZERO;
+		return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
 	}
 	
 //	public Boolean getInterimPaymentReceived() {
