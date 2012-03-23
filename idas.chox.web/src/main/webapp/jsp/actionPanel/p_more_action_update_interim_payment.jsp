@@ -58,7 +58,7 @@
                                 <label >Interim Payment Amount</label></td><td nowrap>
                                 £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="outstandingInterimPayment" />"/>
 
-                                <s:if test="outstandingInterimPayment != 0">
+                                <s:if test="outstandingInterimPayment > 0">
                                     <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
                                 </s:if>
                                 	<input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>

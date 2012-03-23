@@ -368,6 +368,10 @@
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
                 });
+                
+                //in case we already have the interim payment div on page we remove the bottom div
+                if(selectedAction == 'updateInterimPayment' && $('#interimPaymentDiv').size() != 0)
+                	$('#interimPaymentDiv').remove()
             }
         }
 
