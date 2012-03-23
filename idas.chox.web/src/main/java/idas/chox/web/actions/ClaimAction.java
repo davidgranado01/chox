@@ -1791,11 +1791,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getFinalPayment() {
-        if (claim.getInvoice() != null) {
-        	return claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentMade());
+        if (finalPayment == null && claim.getInvoice() != null) {
+        	finalPayment = claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentMade());
         } else {
-            return BigDecimal.ZERO;
+            finalPayment =  BigDecimal.ZERO;
         }
+        
+        return finalPayment;
     }
     
     public BigDecimal getTotalToPay(){
@@ -1820,16 +1822,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 //                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
 //                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
 //                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £y (penalty charges have not been paid)."));
-                inv.setHireGrossPaid(hireGrossPaid);
-                inv.setRepairGrossPaid(repairGrossPaid);
-                inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
-                inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
-                inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
-                inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
-                inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
-                inv.setFinalPayment(finalPayment);
-                inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
+                    inv.setHireGrossPaid(inv.getHireGross());
+                    inv.setRepairGrossPaid(inv.getRepairGross());
+                    inv.setEngineerFeeGrossPaid(inv.getEngineerFeeGross());
+                    inv.setTotalLossFeeGrossPaid(inv.getTotalLossFeeGross());
+                    inv.setStorageRecoveryGrossPaid(inv.getStorageRecoveryGross());
+                    inv.setHirePenaltyChargePaid(inv.getHirePenaltyCharge());
+                    inv.setRepairPenaltyChargePaid(inv.getRepairPenaltyCharge());
+                    if (inv.getInterimPaymentMade() != null)
+                        inv.setFinalPayment(inv.getTotalToPay().subtract(inv.getInterimPaymentMade()));
+                    else
+                        inv.setFinalPayment(inv.getTotalToPay());
+                    inv.setPenaltyChargesPaid(Boolean.TRUE);                  
+                }
+                else {
+                    inv.setHireGrossPaid(hireGrossPaid);
+                    inv.setRepairGrossPaid(repairGrossPaid);
+                    inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
+                    inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
+                    inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
+                    inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
+                    inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
+                    inv.setFinalPayment(finalPayment);
+                    inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                }
                 service.updateClaim(claim);
+                LOG.debug("PaymentDetails added:  finalPayment={}", finalPayment);
                 jsonObject.put("success", Boolean.TRUE);
                 jsonObject.put("message", "Payment details updated successfully.");
                 setJsonData(jsonObject.toString());

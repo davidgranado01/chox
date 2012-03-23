@@ -45,7 +45,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private InsurerDiscountService insurerDiscountService;
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
-    private Claim claim = new Claim();
+    private Claim claim = null;
     private Map session;
     private int actionSelected;
     private int submit = 10;
@@ -80,15 +80,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal insurerDiscountPercentageApplied;
     private boolean modelSaved = false;
     
-    public boolean getcanShowPaymentDetails() {
+    public boolean getCanShowPaymentDetails() {
+        LOG.debug("Claim is {}, claimId={}", claim, claimId);
         if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
-                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED))
+              && claim.getInvoice().getFinalPayment() != null) {
             return true;
         }
         return false;
     }
     
-    public boolean getcanShowPenaltyChargesPaidField() {
+    public boolean getCanShowPenaltyChargesPaidField() {
         if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) 
                 && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO)==1 
