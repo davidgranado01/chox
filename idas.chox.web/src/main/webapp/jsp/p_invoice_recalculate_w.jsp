@@ -1026,7 +1026,7 @@
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:if>
-                                            <s:elseif test="outstandingInterimPayment > 0">
+                                            <s:elseif test="outstandingInterimPayment > 0 && interimPaymentReceived > 0">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
                                                     <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
@@ -1034,7 +1034,7 @@
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
-                                            <s:elseif test="interimPaymentReceived != null && interimPaymentReceived > 0">
+                                            <s:elseif test="interimPaymentReceived > 0">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
                                                     <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
@@ -1042,7 +1042,7 @@
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
-                                            <s:elseif test="interimPaymentMade != null && interimPaymentMade > 0">
+                                            <s:elseif test="interimPaymentMade > 0">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
                                                     <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPaymentMade" />"  onkeyup="extractNumber(this,2,true);" />
