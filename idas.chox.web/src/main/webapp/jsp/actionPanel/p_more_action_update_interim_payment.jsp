@@ -44,7 +44,7 @@
                      	<tr>
                             <td colspan="4">
 			             	<div class="status-info">
-			                   <s:if test="interimPaymentReceived > 0">
+			                   <s:if test="interimPaymentReceived < 0">
 			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been made (<s:property value="interimPaymentReceived" /> so far received). Please enter the additional amount received: 
 			                   </s:if>
 			                   <s:else>
@@ -58,7 +58,7 @@
                                 <label >Interim Payment Amount</label></td><td nowrap>
                                 £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="outstandingInterimPayment" />"/>
 
-                                <s:if test="interimPaymentReceived == 0">
+                                <s:if test="outstandingInterimPayment != 0">
                                     <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
                                 </s:if>
                                 	<input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
