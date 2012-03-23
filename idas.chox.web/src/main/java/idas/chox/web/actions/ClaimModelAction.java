@@ -6,14 +6,11 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 
-import java.util.Map;
 
-import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
@@ -31,7 +28,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     protected Claim claim;
     protected T model;
     // </editor-fold>
-    private Map session;
 
     abstract String getTabName();
 
@@ -56,10 +52,10 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         LOG.debug("Preparing...");
 
         if (claimId <= 0) {
-            if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
-                LOG.info("claim id is not provided and got claim id from session claim id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
-                claim = claimService.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
-                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            if (getSession().containsKey(SESSION_CLAIM_ID) && getSession().get(SESSION_CLAIM_ID) != null) {
+                LOG.info("claim id is not provided and got claim id from session claim id is {}", (Integer) getSession().get(SESSION_CLAIM_ID));
+                claim = claimService.getClaim((Integer) getSession().get(SESSION_CLAIM_ID));
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             }
         } else {
             claim = claimService.getClaim(claimId);
@@ -87,13 +83,12 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
         if (model != null) {
-            LOG.debug("Settingt model version in session: {}={}", model.getClass().getName(), model.getVersion());
-            session = ActionContext.getContext().getSession();
-            session.put(model.getClass().getName(), model.getVersion());
+            LOG.debug("Settingt model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
             if (model instanceof Claim) {
-                getSession().put("claimDetailPageClaimVersion", model.getVersion());
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             } else {
-                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+                getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             }
         }
 
@@ -109,16 +104,13 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             LOG.debug("claim is saved");
             // Now update the model version in the session
             claim = this.claimService.getClaim(claimId);
-            session = ActionContext.getContext().getSession();
-            session.put(model.getClass().getName(), model.getVersion());
-            //if model is not claim we also need to add the session for claim version
-            session.put(claim.getClass().getName(), claim.getVersion());
             if (model instanceof Claim) {
-                getSession().put("claimDetailPageClaimVersion", model.getVersion());
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             } else {
-                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+                getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
             }
-            LOG.debug("Model Version added to session: {}={}", model.getClass().getName(), model.getVersion());
+            LOG.debug("Model Version added to session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -128,27 +120,16 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     }
 
     public void updateSessionModel() {
-        if (!(model.getVersion().equals((Integer) session.get(model.getClass().getName())))) {
-            LOG.debug("Setting model version in session: {}={}", model.getClass().getName(), model.getVersion());
-            session.put(model.getClass().getName(), model.getVersion());
-            LOG.debug("Setting is done for model version in session: {}={}", model.getClass().getName(), model.getVersion());
+        if (!(model.getVersion().equals((Integer) getSession().get(model.getClass().getSimpleName().concat("Version"))))) {
+            LOG.debug("Setting model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
+            getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
+            LOG.debug("Setting is done for model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
         }
     }
 
     @Override
     public T getModel() {
         return model;
-    }
-
-    void checkVersion(T model) throws Exception {
-        session = ActionContext.getContext().getSession();
-        Integer sessionModelVersion = (Integer) session.get(model.getClass().getName());
-        LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
-        LOG.debug("Session model is: {}={}", model.getClass().getName(), sessionModelVersion);
-        if (sessionModelVersion != null && model.getVersion() != null && !model.getVersion().equals(sessionModelVersion)) {
-            StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getName(), model.getId());
-            throw ex;
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Services">

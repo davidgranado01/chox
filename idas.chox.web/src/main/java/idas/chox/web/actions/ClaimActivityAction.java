@@ -87,11 +87,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public void prepare() throws Exception {
 
-        if (getSession().containsKey("claimDetailPageClaimId")) {
-            Integer claimId = (Integer) getSession().get("claimDetailPageClaimId");
+        if (getSession().containsKey(SESSION_CLAIM_ID)) {
+            Integer claimId = (Integer) getSession().get(SESSION_CLAIM_ID);
             LOG.debug("Getting claim from session claimId={}", claimId);
             claim = claimService.getClaim(claimId);
-            setCurrentVersion((Integer) getSession().get("claimDetailPageClaimVersion"));
+            setCurrentVersion((Integer) getSession().get(SESSION_CLAIM_VERSION));
         } else if (selectedClaimIdList == null || selectedClaimIdList.isEmpty()) {
             LOG.error("No claimId in session");
         }

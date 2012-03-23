@@ -120,6 +120,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminChorganisationService.getChorganisation(objectId);
+                    addModelToSession(model);
                 }
             }
 
@@ -185,9 +186,9 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                     return ERROR;
                 }
             }
-
+            checkVersion(model);
             model = adminChorganisationService.updateChorganisation(model);
-
+            updateModelInSession(model);
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
                 chorganisationAliasService.createDefaultRecord(model);

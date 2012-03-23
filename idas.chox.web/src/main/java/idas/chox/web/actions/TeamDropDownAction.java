@@ -2,11 +2,7 @@ package idas.chox.web.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TeamDropDownAction extends BaseAction {
