@@ -2122,3 +2122,10 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
+
+---------------------------------------------------------
+-- BUG 1578 - 6.9.2 - Queue missing from MI Access Role
+---------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+
