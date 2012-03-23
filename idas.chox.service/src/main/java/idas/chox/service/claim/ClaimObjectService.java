@@ -99,7 +99,7 @@ public class ClaimObjectService {
             newClaim.setWorkgroup(claim.getWorkgroupOriginal());
         }
         newClaim.setInvoice(null);
-        newClaim.setInvoice_original(null);
+        newClaim.setInvoiceOriginal(null);
         newClaim.setAttachments(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);

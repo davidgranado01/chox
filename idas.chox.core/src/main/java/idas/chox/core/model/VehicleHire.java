@@ -10,12 +10,12 @@ public class VehicleHire extends Entity implements Serializable {
     private String vehicleManufacturer;
     private String vehicleModel;
     private Date rentalStart;
-    private Date rentalStart_original;
+    private Date rentalStartOriginal;
     private Date rentalEnd;
-    private Date rentalEnd_original;
+    private Date rentalEndOriginal;
     private String collectionReason;
     private int days;
-    private Integer days_original;
+    private Integer daysOriginal;
     private boolean miscellaneousFee;
     private boolean automaticFee;
     private boolean satNavFee;
@@ -28,7 +28,7 @@ public class VehicleHire extends Entity implements Serializable {
     private boolean dualControlFee;
     private boolean deliveryCollectionFee;
     private VehicleClass vehicleClass;
-    private VehicleClass vehicleClass_original;
+    private VehicleClass vehicleClassOriginal;
     /**
      * HPI attributes
      */
@@ -45,20 +45,20 @@ public class VehicleHire extends Entity implements Serializable {
     public VehicleHire() {
     }
 
-    public VehicleClass getVehicleClass_original() {
-        return vehicleClass_original;
+    public VehicleClass getVehicleClassOriginal() {
+        return vehicleClassOriginal;
     }
 
-    public void setVehicleClass_original(VehicleClass vehicleClass_original) {
-        this.vehicleClass_original = vehicleClass_original;
+    public void setVehicleClassOriginal(VehicleClass vehicleClassOriginal) {
+        this.vehicleClassOriginal = vehicleClassOriginal;
     }
 
-    public Integer getDays_original() {
-        return days_original;
+    public Integer getDaysOriginal() {
+        return daysOriginal;
     }
 
-    public void setDays_original(Integer days_original) {
-        this.days_original = days_original;
+    public void setDaysOriginal(Integer daysOriginal) {
+        this.daysOriginal = daysOriginal;
     }
 
     public void setIsTotalLoss(boolean IsTotalLoss) {
@@ -130,8 +130,8 @@ public class VehicleHire extends Entity implements Serializable {
         return rentalStart;
     }
 
-    public java.util.Date getRentalStart_original() {
-        return rentalStart_original;
+    public java.util.Date getRentalStartOriginal() {
+        return rentalStartOriginal;
     }
 
     /**
@@ -143,8 +143,8 @@ public class VehicleHire extends Entity implements Serializable {
         this.rentalStart = rentalStart;
     }
 
-    public void setRentalStart_original(java.util.Date rentalStart) {
-        this.rentalStart_original = rentalStart;
+    public void setRentalStartOriginal(java.util.Date rentalStart) {
+        this.rentalStartOriginal = rentalStart;
     }
 
     /**
@@ -156,8 +156,8 @@ public class VehicleHire extends Entity implements Serializable {
         return rentalEnd;
     }
 
-    public java.util.Date getRentalEnd_original() {
-        return rentalEnd_original;
+    public java.util.Date getRentalEndOriginal() {
+        return rentalEndOriginal;
     }
 
     /**
@@ -169,8 +169,8 @@ public class VehicleHire extends Entity implements Serializable {
         this.rentalEnd = rentalEnd;
     }
 
-    public void setRentalEnd_original(java.util.Date rentalEnd) {
-        this.rentalEnd_original = rentalEnd;
+    public void setRentalEndOriginal(java.util.Date rentalEnd) {
+        this.rentalEndOriginal = rentalEnd;
     }
 
     /**
@@ -370,32 +370,32 @@ public class VehicleHire extends Entity implements Serializable {
         return this.rentalStart;
     }
 
-    public java.util.Date getHireStart_original() {
-        return this.rentalStart_original;
+    public java.util.Date getHireStartOriginal() {
+        return this.rentalStartOriginal;
     }
 
     public void setHireStart(Date hireStart) {
         this.rentalStart = hireStart;
     }
 
-    public void setHireStart_original(Date hireStart) {
-        this.rentalStart_original = hireStart;
+    public void setHireStartOriginal(Date hireStart) {
+        this.rentalStartOriginal = hireStart;
     }
 
     public java.util.Date getHireEnd() {
         return this.rentalEnd;
     }
 
-    public java.util.Date getHireEnd_original() {
-        return this.rentalEnd_original;
+    public java.util.Date getHireEndOriginal() {
+        return this.rentalEndOriginal;
     }
 
     public void setHireEnd(Date hireEnd) {
         this.rentalEnd = hireEnd;
     }
 
-    public void setHireEnd_original(Date hireEnd) {
-        this.rentalEnd_original = hireEnd;
+    public void setHireEndOriginal(Date hireEnd) {
+        this.rentalEndOriginal = hireEnd;
     }
 
     // ##### NOT FROM HERE #############
