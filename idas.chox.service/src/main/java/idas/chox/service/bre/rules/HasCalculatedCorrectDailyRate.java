@@ -99,7 +99,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
                 boolean success = dailyHireRateCharged.compareTo(allowedDailyRate) <= 0;
 
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                 if (success) {
                     LOG.debug("Rule passed: Daily rate billed for replacement vehicle class does not exceed ABI rate.");
                     narrative = "";
@@ -133,18 +133,18 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 LOG.debug("No Vehicle class supplied for claim '{}'.", claim.getChoReference());
                 if (ClaimType.isTPI(claim.getClaimType())) {
                     narrative = "Vehicle Hire vehicle class is not specified.";
-                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 } else {
                     LOG.error("Non-TPI claim has no vehicle attached: cho ref='{}'", claim.getChoReference());
                     narrative = "Vehicle Hire vehicle class is not specified.";
-                    res.setResult(RuleEvaluationResult.RuleFailed);
+                    res.setResult(RuleEvaluationResult.RULE_FAILED);
                 }
             }
 
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

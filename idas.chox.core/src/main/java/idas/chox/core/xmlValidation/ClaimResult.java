@@ -130,7 +130,7 @@ public class ClaimResult {
 
             processStatus = "Uploaded";
 
-            if (this.claimParseStatus.equals(ClaimParseStatus.existClaim)) {
+            if (this.claimParseStatus.equals(ClaimParseStatus.EXIST_CLAIM)) {
                 processStatus = "Updated";
             }
 
@@ -147,17 +147,17 @@ public class ClaimResult {
             sReturn = this.claim.getStatus();
         }
 
-//        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
+//        if(this.claimParseStatus.equals(ClaimParseStatus.NEW_CLAIM)
 //            && (!this.dataValid || !this.valid)
 //        ){
 //            sReturn = "N/A";
 //        }
 //
-//        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
+//        if(this.claimParseStatus.equals(ClaimParseStatus.INVALID_SCHEMA)){
 //            sReturn = "N/A";
 //        }
 //
-//        if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
+//        if(this.claimParseStatus.equals(ClaimParseStatus.TPI_NOT_RECOGNIZED)){
 //            sReturn = "N/A";
 //        }
 
@@ -167,51 +167,6 @@ public class ClaimResult {
     }
 
     public String getUploadedStatus() {
-
-        String sReturn = "";
-
-        if (this.claimParseStatus.equals(ClaimParseStatus.newInvoice)) {
-            sReturn = "New Invoice";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
-            sReturn = "Hire Monitoring and New Invoice";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.newClaim)) {
-            sReturn = "New Claim";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.newSubscriberClaim)) {
-            sReturn = "New Claim (Subscriber)";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.ClaimNotEditable)) {
-            sReturn = "Claim Closed or Pending";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.existClaim)) {
-            sReturn = "Claim Already Exists";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.existSubscriberClaim)) {
-            sReturn = "Claim Already Exists (Subscriber)";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.existInvoice)) {
-            sReturn = "Invoice Already Exists";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)) {
-            sReturn = "Incorrect XML Structure";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.invalidHireState)) {
-            sReturn = "Incorrect Hire State";
-        }else if (this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)) {
-            sReturn = "Incorrect Value Provided for Hire State";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.tpiNotAcceptedByInsurer)) {
-            sReturn = "Insurer is not accepting TPI invoice";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)) {
-            sReturn = "New TPI Claim";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.insurerVsInsurerInvoice)) {
-            sReturn = "New Invoice (Insurer vs Insurer)";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.existingSupplementaryInvoice)) {
-            sReturn = "Supplementary Invoice Already Exists";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.newSupplementaryInvoice)) {
-            sReturn = "New Supplementary Invoice";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.hireMonitoring)) {
-            sReturn = "Hire Monitoring";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.insurerUpload)) {
-            sReturn = "New Claim/Invoice (Insurer Upload)";
-        } else if (this.claimParseStatus.equals(ClaimParseStatus.invalidClaimStatus)) {
-            sReturn = "Invalid Claim Status";
-        } else {
-            sReturn = "Error";
-        }
-
-        return sReturn;
+        return this.claimParseStatus.getDescription();
     }
 }

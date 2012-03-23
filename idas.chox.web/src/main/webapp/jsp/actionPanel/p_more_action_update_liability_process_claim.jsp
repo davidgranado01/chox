@@ -41,7 +41,7 @@
                                         name="liabilityStatus"
                                         list="liabilityStatusDropDownMap"
                                         emptyOption="false"
-                                        value="liabilityStatus.ordinal()"
+                                        value="liabilityStatus.getLiablityValue()"
                                         >
                                     </s:select>
                                 </td>

@@ -29,7 +29,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
             boolean success = CalcHelper.EqualTo(claim.getInvoice().getTotalLossFeeGross(), iCalc.getCalculatedTotalLossGross());
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -40,7 +40,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

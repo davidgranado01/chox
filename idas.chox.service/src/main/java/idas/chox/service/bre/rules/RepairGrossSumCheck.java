@@ -31,7 +31,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
             boolean success = CalcHelper.EqualTo(invoice.getRepairGross(), invoice.getRepairNet().add(invoice.getRepairVat()));
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -43,7 +43,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
             }
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

@@ -59,7 +59,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
         claim.getBreBand().setHireVatHireEndCheck(false);
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -73,7 +73,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
         claim.setVehicleHire(null);
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -92,7 +92,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
 
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -111,7 +111,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
 
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
         System.out.println("rv.getRelatedRule().getNarrative() :"+rv.getRelatedRule().getNarrative());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire VAT charged by this CHO is dependent on the Hire End Date, with this in consideration the CHO is charging more than the allowed VAT rate of 20.00% for the Hire."));

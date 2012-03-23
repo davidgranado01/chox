@@ -29,7 +29,7 @@ public class RulesEngineResponse {
             for (int i = 0; i < results.size(); i++) {
                 RuleEvaluation rev = results.get(i);
                 LOG.debug("Processing response from: {}", rev.toString());
-                if (rev.getResult() == RuleEvaluationResult.RuleFailed) {
+                if (rev.getResult() == RuleEvaluationResult.RULE_FAILED) {
                     foundFailedRule = true;
                     LOG.debug("Rule failed: related rule=[]], statusAfterFailure={}", rev.getRelatedRule().getRuleId(), rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()));
                     if (ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()))) {

@@ -112,17 +112,17 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimResult.getElement(), "repair-details");
 
         // AND ONLY FOR NEW CLAIM, EXISTING CLAIM, AND NEW INVOICE
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existSubscriberClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

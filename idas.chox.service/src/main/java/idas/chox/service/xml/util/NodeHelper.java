@@ -146,28 +146,28 @@ public class NodeHelper {
 
         LOG.debug("checking inside isDataMandatory method");
         if (claimResult.getClaimParseStatus() != null) {
-            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && value.isNewClaimDataMandatory()) {
+            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM) && value.isNewClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim) && value.isNewSubscriberClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM) && value.isNewSubscriberClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) && value.isExistingClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM) && value.isExistingClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existSubscriberClaim) && value.isExistingSubscriberClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM) && value.isExistingSubscriberClaimDataMandatory()) {
                 return true;
-            }else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
-                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice))&& value.isNewInvoiceDataMandatory()) {
+            }else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE))&& value.isNewInvoiceDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existInvoice) && value.isExistingInvoiceDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_INVOICE) && value.isExistingInvoiceDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload) && value.isInsurerUploadDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD) && value.isInsurerUploadDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION) && value.isTpiInterventionDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice) && value.isOffHiredDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE) && value.isOffHiredDataMandatory()) {
                 return true;
-            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring) && value.isHireMonitoringDataMandatory()) {
+            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING) && value.isHireMonitoringDataMandatory()) {
                 return true;
-            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice) && value.isNewSupplementaryInvoiceMandatory()) {
+            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) && value.isNewSupplementaryInvoiceMandatory()) {
                 return true;
             }else {
                 return false;

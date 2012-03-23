@@ -15,7 +15,7 @@ public class HistoryHelper {
     public static History createHistory(Claim claim, RuleEvaluation rv) {
 
         String sType = "INFO";
-        if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
+        if (rv.getResult() == RuleEvaluationResult.RULE_FAILED) {
             sType = "ERROR";
         }
 

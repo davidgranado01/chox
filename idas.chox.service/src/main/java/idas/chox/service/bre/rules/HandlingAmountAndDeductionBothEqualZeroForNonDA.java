@@ -29,7 +29,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
                 Invoice invoice = claim.getInvoice();
                 boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
                 success = success && CalcHelper.EqualTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                 if (success) {
                     narrative = "";
                 }else{
@@ -38,7 +38,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
             } else {
 
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 narrative = "Rule does not apply to CHOs in the DA scheme";
 
             }
@@ -46,7 +46,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

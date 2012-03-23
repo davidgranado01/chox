@@ -691,7 +691,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("iv.interimPaymentReceived", false));
         }
 
-        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0) {
+        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().getLiablityValue() > 0) {
             criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
             LOG.debug("Liability Search Criteria: {}", searchCriteria.getLiabilityStatus());
         } else {
@@ -724,7 +724,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getClaimType() != null && searchCriteria.getClaimType().ordinal() >= 0) {
+        if (searchCriteria.getClaimType() != null && searchCriteria.getClaimType().getClaimTypeValue() >= 0) {
             if (searchCriteria.getClaimType() == ClaimType.GTA) {
                 criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
                             ClaimType.GTA_SUPPLEMENTARY_INVOICE}));

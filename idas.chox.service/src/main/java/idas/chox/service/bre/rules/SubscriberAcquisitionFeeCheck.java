@@ -42,15 +42,15 @@ public class SubscriberAcquisitionFeeCheck implements IBusinessRule {
                     narrative = "The CHO is charging an Acquisition Fee however the Subscriber rejection was accepted and therefore this charge should not be made.";
                 }
                 
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else {
                 LOG.debug("Subscriber claim was not rejected and agreed - rule skipped");
                 narrative = "";
-                res.setResult(RuleEvaluationResult.RuleSkipped);                
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);                
             }
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
         
         return res;

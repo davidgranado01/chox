@@ -55,7 +55,7 @@ public class Rule062TotalLabourCostBusinessRuleTest extends BaseTest {
         claim.getBreBand().setTotalLabourCostBusinessRule(false);
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -69,7 +69,7 @@ public class Rule062TotalLabourCostBusinessRuleTest extends BaseTest {
         claim.getInvoice().setRepairGross(BigDecimal.ZERO);
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -86,7 +86,7 @@ public class Rule062TotalLabourCostBusinessRuleTest extends BaseTest {
 
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -104,7 +104,7 @@ public class Rule062TotalLabourCostBusinessRuleTest extends BaseTest {
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("It seems that the CHO has supplied the Repair Gross as the value for the Total Labour Cost, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));

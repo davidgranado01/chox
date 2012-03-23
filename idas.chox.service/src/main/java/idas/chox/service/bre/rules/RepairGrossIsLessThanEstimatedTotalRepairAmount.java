@@ -38,11 +38,11 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
             if (eReport.getEstimatedTotalRepairAmount() != null && eReport.getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0) {
 
                 success = invoice.getRepairGross().compareTo(eReport.getEstimatedTotalRepairAmount()) <= 0;
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             } else {
                 success = true;
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 // success = CalcHelper.EqualTo(invoice.getRepairGross(), BigDecimal.ZERO);
             }
 
@@ -55,7 +55,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

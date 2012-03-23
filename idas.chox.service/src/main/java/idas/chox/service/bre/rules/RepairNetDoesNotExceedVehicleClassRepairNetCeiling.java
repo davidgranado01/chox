@@ -35,7 +35,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
             LOG.debug("Comparing repair net: {} to max repair net ceiling: {}", repairNet, repairNetCeiling);
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (!success) {
 
@@ -53,7 +53,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

@@ -35,7 +35,7 @@ public class HasCorrectTotalLossVatCalculation implements IBusinessRule {
             BigDecimal expected = iCalc.getCalculatedTotalLossVat();
 
             boolean success = CalcHelper.EqualTo(actual, expected);
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -46,7 +46,7 @@ public class HasCorrectTotalLossVatCalculation implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

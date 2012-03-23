@@ -25,7 +25,7 @@ public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
 
             Boolean isVehicleRegistrationExist = Icust.isVehicleRegistrationExist();
 
-            res.setResult(isVehicleRegistrationExist ? RuleEvaluationResult.RuleFailed : RuleEvaluationResult.RulePassed);
+            res.setResult(isVehicleRegistrationExist ? RuleEvaluationResult.RULE_FAILED : RuleEvaluationResult.RULE_PASSED);
 
             if (isVehicleRegistrationExist) {
                 narrative = "The Customer's Vehicle Registration Number supplied already exists in the system.";
@@ -34,7 +34,7 @@ public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

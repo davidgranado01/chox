@@ -29,10 +29,10 @@ public class CustomerReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
             LOG.debug("Validating new claim");
 
             isAllowToReadData = true;

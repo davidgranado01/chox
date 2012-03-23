@@ -49,11 +49,11 @@ public class RuleEvaluation {
         if(result != null && relatedRule != null){
             
             String rtnVal = "";
-            if(result == RuleEvaluationResult.RuleFailed){
+            if(result == RuleEvaluationResult.RULE_FAILED){
                 rtnVal+= "BRE Rule Failed - " + relatedRule.getNarrative();
 //                LOG.info("Rule failed : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
-            else if(result == RuleEvaluationResult.RuleSkipped){
+            else if(result == RuleEvaluationResult.RULE_SKIPPED){
                 rtnVal+= "BRE Rule Skipped - " + relatedRule.getNarrative();
 //                LOG.info("Rule Skipped : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }

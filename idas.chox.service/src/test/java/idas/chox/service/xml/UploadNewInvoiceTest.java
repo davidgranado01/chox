@@ -50,7 +50,7 @@ public class UploadNewInvoiceTest extends BaseTest {
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
 //            Claim claim = claimResult.getClaim();
-            Assert.assertEquals(ClaimParseStatus.newClaim, claimResult.getClaimParseStatus());
+            Assert.assertEquals(ClaimParseStatus.NEW_CLAIM, claimResult.getClaimParseStatus());
             uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences);
         }
 
@@ -58,7 +58,7 @@ public class UploadNewInvoiceTest extends BaseTest {
 //        Assert.assertEquals(1, result.getClaimResult().size());
 
 //        for (ClaimResult cr : result.getClaimResult()) {
-//            Assert.assertEquals(ClaimParseStatus.newClaim, cr.getClaimParseStatus());
+//            Assert.assertEquals(ClaimParseStatus.NEW_CLAIM, cr.getClaimParseStatus());
 //        }
     }
 
@@ -97,16 +97,16 @@ public class UploadNewInvoiceTest extends BaseTest {
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
 //            Claim claim = claimResult.getClaim();
-            Assert.assertEquals(ClaimParseStatus.newInvoice, claimResult.getClaimParseStatus());
+            Assert.assertEquals(ClaimParseStatus.NEW_INVOICE, claimResult.getClaimParseStatus());
 //            uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences);
-//            Assert.assertEquals(ClaimParseStatus.newInvoice, result.getClaimResult().get(2).getClaimParseStatus());
+//            Assert.assertEquals(ClaimParseStatus.NEW_INVOICE, result.getClaimResult().get(2).getClaimParseStatus());
         }
 
 
 //        Assert.assertEquals(4, result.getClaimResult().size());
 //
 //        //Claim 1 [UT-CLAIM001], exist in CHOX, Detail updated
-//        Assert.assertEquals(ClaimParseStatus.existClaim, result.getClaimResult().get(0).getClaimParseStatus());
+//        Assert.assertEquals(ClaimParseStatus.EXIST_CLAIM, result.getClaimResult().get(0).getClaimParseStatus());
 //        Assert.assertNotSame(claim1EngineerReportName, result.getClaimResult().get(0).getClaim().getEngineerReport().getName());
 //        Assert.assertNotSame(claim1EngineerReportCompany, result.getClaimResult().get(0).getClaim().getEngineerReport().getCompany());
 //        //Uploading xml have no invoice detaill for this claim, so it's status remain same, only claim details updated
@@ -114,16 +114,16 @@ public class UploadNewInvoiceTest extends BaseTest {
 //        Assert.assertEquals(ClaimStatus.AWAITING_INVOICE_PAYMENT, result.getClaimResult().get(0).getClaim().getStatus());
 //
 //        //Claim 2 [UT-CLAIM002], exist in CHOX, but invoice update not allowed
-//        Assert.assertEquals(ClaimParseStatus.existClaim, result.getClaimResult().get(1).getClaimParseStatus());
+//        Assert.assertEquals(ClaimParseStatus.EXIST_CLAIM, result.getClaimResult().get(1).getClaimParseStatus());
 
         //Claim 3, Invalid claim not updated due to mandatory fields not provided
-//        Assert.assertEquals(ClaimParseStatus.newInvoice, result.getClaimResult().get(2).getClaimParseStatus());
+//        Assert.assertEquals(ClaimParseStatus.NEW_INVOICE, result.getClaimResult().get(2).getClaimParseStatus());
 //        Assert.assertFalse(result.getClaimResult().get(2).isValid());
 //        //status remain same
 //        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, result.getClaimResult().get(2).getClaim().getStatus());
 //
 //        //Claim 4, Invoice update and claim status promoted to "InvoiceApprovedByBre"
-//        Assert.assertEquals(ClaimParseStatus.newInvoice, result.getClaimResult().get(3).getClaimParseStatus());
+//        Assert.assertEquals(ClaimParseStatus.NEW_INVOICE, result.getClaimResult().get(3).getClaimParseStatus());
 //        Assert.assertTrue(result.getClaimResult().get(3).isValid());
 //        Assert.assertNotNull(result.getClaimResult().get(3).getClaim().getInvoice());
 //        Assert.assertEquals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT, result.getClaimResult().get(3).getClaim().getStatus());

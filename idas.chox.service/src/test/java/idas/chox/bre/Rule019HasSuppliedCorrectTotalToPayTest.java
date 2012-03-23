@@ -69,7 +69,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         claim.getBreBand().setHasSuppliedCorrectTotalToPay(false);
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -86,7 +86,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
 
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -108,7 +108,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getFullTotalToPay(), iCalc.getCalculatedTotalToPay()));
          */
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -130,7 +130,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getFullTotalToPay(), iCalc.getCalculatedTotalToPay()));
          */
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total to Pay calculation is incorrect."));
 
     }
