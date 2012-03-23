@@ -2,11 +2,30 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+
+	$("form#formUpdateInterimPayment").validate(
+        {
+            errorLabelContainer: "#ACKmUpdateInterimPaymentMessageBox",
+            rules: {
+            	partialInterimPayment:{
+            		max: <s:property value="outstandingInterimPayment" />,
+                    required:true,
+                    number: true
+                }
+            },
+            messages: {
+            	partialInterimPayment: {
+            		number: "Invalid 'Interim Payment' Format",
+                    required:"You must supply a value for 'Claim Number'",
+                    max:"The supplied value cannot be bigger than the current interim ammount."
+                }
+            }
+     });
      
     function updateInterimPaymentAction(action){
     	if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
-            $('#formUpdateInterimPayment').submit()
+            $('#formUpdateInterimPayment').submit();
         }
     }
 
@@ -22,6 +41,18 @@
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
+                     	<tr>
+                            <td colspan="4">
+			             	<div class="status-info">
+			                   <s:if test="interimPaymentReceived > 0">
+			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been made (<s:property value="interimPaymentReceived" /> so far received). Please enter the additional amount received: 
+			                   </s:if>
+			                   <s:else>
+			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been made. Please enter the amount received: 
+			                   </s:else>
+			            	</div>
+                            </td>
+                        </tr>
                         <tr>
                             <td nowrap>
                                 <label >Interim Payment Amount</label></td><td nowrap>
@@ -34,18 +65,6 @@
                             </td>
 
                             <td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td span="3">
-			             	<div class="status-info">
-			                   <s:if test="interimPaymentReceived > 0">
-			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been made (<s:property value="interimPaymentReceived" /> so far received). Please enter the additional amount received: 
-			                   </s:if>
-			                   <s:else>
-			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been made. Please enter the amount received: 
-			                   </s:else>
-			            	</div>
-                            </td>
                         </tr>
                         <s:if test="interimPaymentReceivedFullAndFinal">
                             <tr><td colspan="3"><label>This interim payment has already been Received as Full & Final </label></td></tr>

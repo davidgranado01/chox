@@ -373,7 +373,7 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label></td>
+                                        <td style="width: 18%"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label></td>
 										<td><label class="std-data-ro-red-invrecalc">(Only £<s:property value="interimPaymentReceived" /> Received)</label></td>
                                     </tr>
                                     <tr>
@@ -384,7 +384,7 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label></td>
+                                        <td style="width: 18%"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label></td>
 										<td><label class="std-data-ro-red-invrecalc">(Received)</label></td>
                                     </tr>
                                     <tr>
@@ -395,7 +395,7 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade" /></label></td>
+                                        <td style="width: 18%"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade" /></label></td>
 										<td><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label></td>
                                     </tr>
                                     <tr>
