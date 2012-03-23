@@ -22,10 +22,6 @@
     var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
     var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
     var interimPaymentAmount = <s:property value="interimPaymentAmount"/>;
-    var InterimPaymentAmountReceived = 0;
-    <s:if test="InterimPaymentAmountReceived != null">
-    	InterimPaymentAmountReceived = <s:property value="InterimPaymentAmountReceived"/>;
-	</s:if>
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
     
     function callInterimPayment(){

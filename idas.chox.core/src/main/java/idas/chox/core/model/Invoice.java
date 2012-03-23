@@ -1,9 +1,11 @@
 package idas.chox.core.model;
 
 import idas.chox.core.util.DateHelper;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1361,12 +1363,10 @@ public class Invoice extends Entity implements Serializable {
 
 	public Boolean isInterimPaymentReceived() {
         if(interimPaymentReceivedAmount == null)
-        	interimPaymentReceivedAmount = new BigDecimal(0.00);
+        	interimPaymentReceivedAmount = BigDecimal.ZERO;
 		if(interimPayment == null)
-			interimPayment = new BigDecimal(0.00);
-		if(interimPayment.signum() == 0 && interimPaymentReceivedAmount.signum() == 0)
-        	return false;
-		return interimPayment.compareTo(interimPaymentReceivedAmount) <= 0;
+			interimPaymentReceivedAmount = BigDecimal.ZERO;
+		return interimPayment.compareTo(interimPaymentReceivedAmount) > 0;
     }
 	
 	//XXX not used - will be removed

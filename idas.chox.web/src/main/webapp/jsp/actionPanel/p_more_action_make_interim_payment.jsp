@@ -13,12 +13,13 @@
 	
     $(function(){
     	
-    	$('#additionalInterimInfo').hide();
+    	$('#additionalInterimPaymentInfo').text('<s:property value="interimPayment" />')
     	if(interimPayMade){
     		$('#radioBox').show();
     	} else {
     		$('#radioBox').hide();
     		$('#additionalInterim').hide();
+    		$('#additionalInterimInfo').hide();
     		$('#newPayLabel').html("Interim Payment Amount<span class='mandatory'>*</span>");
     		$('#newTotalInterim').show();
     	}
@@ -53,6 +54,7 @@
     	$('#ACKmMakeInterimPaymentMessageBox').empty();
     	if($('#interimPayAdd').attr('checked') != undefined){
     		$('#additionalInterim').show();
+    		$('#additionalInterimInfo').show();
     		$('#newTotalInterim').hide();
     		$('#newTotalInterimPayment').val('');
     	}else{
@@ -64,12 +66,11 @@
     }
     
     function setAdditionalInterimInfo(){
-    	$('#additionalInterimInfo').show();
     	var aip = parseInt($('#additionalInterimPayment').val());
     	if(!isNaN(aip))
     		$('#additionalInterimPaymentInfo').text(<s:property value="interimPayment" /> + aip);
     	else
-    		$('#additionalInterimPaymentInfo').text('Not A Valid Number');
+    		$('#additionalInterimPaymentInfo').text('<s:property value="interimPayment" />');
     }
     
     function submitInterim(action){
