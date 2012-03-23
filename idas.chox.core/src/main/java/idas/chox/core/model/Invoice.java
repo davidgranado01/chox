@@ -293,7 +293,7 @@ public class Invoice extends Entity implements Serializable {
     }
     
     public Boolean isInterimPaymentReceivedFullAndFinal() {
-        return interimPaymentReceivedFullAndFinal;
+        return interimPaymentReceivedFullAndFinal == null ? Boolean.FALSE : interimPaymentReceivedFullAndFinal;
     }
 
     public void setInterimPaymentReceivedFullAndFinal(Boolean interimPaymentReceivedFullAndFinal) {
