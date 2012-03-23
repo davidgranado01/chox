@@ -1,0 +1,3167 @@
+package idas.chox.web.actions;
+
+import idas.chox.service.bre.util.CalcHelper;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.hpi.Hpi;
+import idas.chox.core.hpi.HpiException;
+import idas.chox.core.hpi.HpiResponse;
+import idas.chox.core.model.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.core.services.VehicleClassService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.web.VehicleClassComparator;
+import idas.chox.web.VehicleClassPriceMapperComparator;
+import idas.chox.web.VehicleClassPriceMapper;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
+public class InvoiceDetailAction extends BaseAction implements Preparable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceDetailAction.class);
+    private int claimId = 0;
+    private ClaimService claimService;
+    private LookupService lookupService;
+    private InsurerDiscountService insurerDiscountService;
+    private String actionResult;
+    private ApplicationAccessibility applicationAccessibility;
+    private Claim claim = new Claim();
+    private Map session;
+    private int actionSelected;
+    private int submit = 10;
+    private int recalculate = 20;
+    private int reset = 30;
+    private static final String READ_ONLY = "r";
+    private static final String EDITABLE = "w";
+    private static final String DECLINE = "decline";
+    private VehicleClassService vehicleClassService;
+    private VehicleClassPriceService vehicleClassPriceService;
+    private VehicleClass vehicleClass;
+    private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
+    private BigDecimal hire_vat_used;
+    private BigDecimal repair_vat_used;
+    private BigDecimal engineerFee_vat_used;
+    private BigDecimal tpiInsurancePremiumVatUsed;
+    private BigDecimal totalLossFee_vat_used;
+    private BigDecimal storageRecovery_vat_used;
+    private BigDecimal previousHireNet;
+    private BigDecimal previousRepairNet;
+    private BigDecimal previousEngineerFeeNet;
+    private BigDecimal previousTotalLossNet;
+    private BigDecimal previousStorageNet;
+    private BigDecimal previousHireVat;
+    private BigDecimal previousRepairVat;
+    private BigDecimal previousEngineerFeeVat;
+    private BigDecimal previousTotalLossVat;
+    private BigDecimal previousStorageVat;
+    private BigDecimal previousNonStandardInsurancePremiumFee;
+    private Boolean canAddInsurerDiscountComment = false;
+    private UserService userService;
+    private BigDecimal insurerDiscountPercentageApplied;
+    private boolean modelSaved = false;
+    private String oldVRN;
+    private EngineerReport engineerReport;
+    private InvoiceOriginal invoiceOriginal;
+    private VehicleHire vehicleHire;
+    private Invoice invoice;
+    private String daysWithCHOForReview;
+    private String daysWithInsurerForReview;
+    private String daysAwaitingLiabilityResolution;
+
+    // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+    public Boolean getCanAddInsurerDiscountComment() {
+        return canAddInsurerDiscountComment;
+    }
+
+    public void setCanAddInsurerDiscountComment(Boolean canAddInsurerDiscountComment) {
+        this.canAddInsurerDiscountComment = canAddInsurerDiscountComment;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public BigDecimal getInsurerDiscountPercentageApplied() {
+        return insurerDiscountPercentageApplied;
+    }
+
+    public void setInsurerDiscountPercentageApplied(BigDecimal insurerDiscountApplied) {
+        this.insurerDiscountPercentageApplied = insurerDiscountApplied;
+    }
+
+    public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
+        return previousNonStandardInsurancePremiumFee;
+    }
+
+    public void setPreviousNonStandardInsurancePremiumFee(BigDecimal previousNonStandardInsurancePremiumFee) {
+        this.previousNonStandardInsurancePremiumFee = previousNonStandardInsurancePremiumFee;
+    }
+
+    public BigDecimal getPreviousHireNet() {
+        return previousHireNet;
+    }
+
+    public void setPreviousHireNet(BigDecimal previousHireNet) {
+        this.previousHireNet = previousHireNet;
+    }
+
+    public BigDecimal getPreviousHireVat() {
+        return previousHireVat;
+    }
+
+    public void setPreviousHireVat(BigDecimal previousHireVat) {
+        this.previousHireVat = previousHireVat;
+    }
+
+    public BigDecimal getPreviousEngineerFeeVat() {
+        return previousEngineerFeeVat;
+    }
+
+    public void setPreviousEngineerFeeVat(BigDecimal previousEngineerFeeVat) {
+        this.previousEngineerFeeVat = previousEngineerFeeVat;
+    }
+
+    public BigDecimal getPreviousRepairVat() {
+        return previousRepairVat;
+    }
+
+    public void setPreviousRepairVat(BigDecimal previousRepairVat) {
+        this.previousRepairVat = previousRepairVat;
+    }
+
+    public BigDecimal getPreviousStorageVat() {
+        return previousStorageVat;
+    }
+
+    public void setPreviousStorageVat(BigDecimal previousStorageVat) {
+        this.previousStorageVat = previousStorageVat;
+    }
+
+    public BigDecimal getPreviousTotalLossVat() {
+        return previousTotalLossVat;
+    }
+
+    public void setPreviousTotalLossVat(BigDecimal previousTotalLossVat) {
+        this.previousTotalLossVat = previousTotalLossVat;
+    }
+
+    public BigDecimal getPreviousEngineerFeeNet() {
+        return previousEngineerFeeNet;
+    }
+
+    public void setPreviousEngineerFeeNet(BigDecimal previousEngineerFeeNet) {
+        this.previousEngineerFeeNet = previousEngineerFeeNet;
+    }
+
+    public BigDecimal getPreviousRepairNet() {
+        return previousRepairNet;
+    }
+
+    public void setPreviousRepairNet(BigDecimal previousRepairNet) {
+        this.previousRepairNet = previousRepairNet;
+    }
+
+    public BigDecimal getPreviousStorageNet() {
+        return previousStorageNet;
+    }
+
+    public void setPreviousStorageNet(BigDecimal previousStorageNet) {
+        this.previousStorageNet = previousStorageNet;
+    }
+
+    public BigDecimal getPreviousTotalLossNet() {
+        return previousTotalLossNet;
+    }
+
+    public void setPreviousTotalLossNet(BigDecimal previousTotalLossNet) {
+        this.previousTotalLossNet = previousTotalLossNet;
+    }
+
+    private BigDecimal getInsurerDiscountPercentage(Claim claim) {
+        if (claim.getInsurer().isInsurerDiscountEnable()) {
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public BigDecimal getEngineerFee_vat_used() {
+        return engineerFee_vat_used.multiply(new BigDecimal(100));
+    }
+
+    public void setEngineerFee_vat_used(BigDecimal engineerFee_vat_used) {
+        this.engineerFee_vat_used = engineerFee_vat_used;
+    }
+
+    public BigDecimal getTpiInsurancePremiumVatUsed() {
+        return tpiInsurancePremiumVatUsed.multiply(new BigDecimal(100));
+    }
+
+    public void setTpiInsurancePremiumVatUsed(BigDecimal tpiInsurancePremiumVatUsed) {
+        this.tpiInsurancePremiumVatUsed = tpiInsurancePremiumVatUsed;
+    }
+
+    public BigDecimal getHire_vat_used() {
+        return hire_vat_used.multiply(new BigDecimal(100));
+    }
+
+    public void setHire_vat_used(BigDecimal hire_vat_used) {
+        this.hire_vat_used = hire_vat_used;
+    }
+
+    public BigDecimal getRepair_vat_used() {
+        return repair_vat_used.multiply(new BigDecimal(100));
+    }
+
+    public void setRepair_vat_used(BigDecimal repair_vat_used) {
+        this.repair_vat_used = repair_vat_used;
+    }
+
+    public BigDecimal getStorageRecovery_vat_used() {
+        return storageRecovery_vat_used.multiply(new BigDecimal(100));
+    }
+
+    public void setStorageRecovery_vat_used(BigDecimal storageRecovery_vat_used) {
+        this.storageRecovery_vat_used = storageRecovery_vat_used;
+    }
+
+    public BigDecimal getTotalLossFee_vat_used() {
+        return totalLossFee_vat_used.multiply(new BigDecimal(100));
+    }
+
+    public void setTotalLossFee_vat_used(BigDecimal totalLossFee_vat_used) {
+        this.totalLossFee_vat_used = totalLossFee_vat_used;
+    }
+    private int formChanged = -1;
+    private short accessRight;
+
+    public short getAccessRight() {
+        return accessRight;
+    }
+
+    public int getFormChanged() {
+        return formChanged;
+    }
+
+    public void setFormChanged(int formChanged) {
+        this.formChanged = formChanged;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return claim.getPercentageLiabilityAccepted();
+    }
+
+    public BigDecimal getVat_Rate() {
+        return Vat_Rate;
+    }
+
+    public int getActionSelected() {
+        return actionSelected;
+    }
+
+    public void setActionSelected(int actionSelected) {
+        LOG.debug("setbuttonclicked called with the value of {}", actionSelected);
+        this.actionSelected = actionSelected;
+    }
+
+    public int getClaimId() {
+        return claimId;
+    }
+
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
+
+    public String getClaimStatus() {
+        return claim.getStatus();
+    }
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
+
+    public void setLookupService(LookupService lookupService) {
+
+        this.lookupService = lookupService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public boolean getcanShowPaymentDetails() {
+        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getcanShowPenaltyChargesPaidField() {
+        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1
+                || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String getActionResult() {
+
+        return this.actionResult;
+    }
+
+    @Override
+    public void setActionResult(String actionResult) {
+
+        this.actionResult = actionResult;
+    }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
+
+    public java.util.Date getDateInvoicedOriginal() {
+
+        return invoiceOriginal.getDateInvoicedOriginal();
+    }
+
+    public void setDateInvoicedOriginal(java.util.Date dateInvoiced) {
+        if ((getDateInvoicedOriginal() == null) && (dateInvoiced != getDateInvoicedOriginal())) {
+            invoiceOriginal.setDateInvoicedOriginal(dateInvoiced);
+        }
+    }
+
+    public java.math.BigDecimal getHireNetOriginal() {
+
+
+        LOG.debug("getHireNetOriginal is being called");
+
+        return invoiceOriginal.getHireNetOriginal();
+
+    }
+
+    public void setHireNetOriginal(java.math.BigDecimal hireNet) {
+
+        LOG.debug("setHireNetOriginal is being called");
+
+        if ((getHireNetOriginal() == null) && (hireNet != getHireNetOriginal())) {
+            invoiceOriginal.setHireNetOriginal(hireNet);
+        }
+    }
+
+    public java.math.BigDecimal getHireVatOriginal() {
+
+        return invoiceOriginal.getHireVatOriginal();
+    }
+
+    public void setHireVatOriginal(java.math.BigDecimal hireVat) {
+
+        if (hireVat != getHireVatOriginal() && (getHireVatOriginal() == null)) {
+            invoiceOriginal.setHireVatOriginal(hireVat);
+        }
+    }
+
+    public java.math.BigDecimal getHireGrossOriginal() {
+
+        return invoiceOriginal.getHireGrossOriginal();
+    }
+
+    public void setHireGrossOriginal(java.math.BigDecimal hireGross) {
+
+        if (hireGross != getHireGrossOriginal() && (getHireGrossOriginal() == null)) {
+            invoiceOriginal.setHireGrossOriginal(hireGross);
+        }
+    }
+
+    public java.math.BigDecimal getRepairNetOriginal() {
+
+        return invoiceOriginal.getRepairNetOriginal();
+    }
+
+    public void setRepairNetOriginal(java.math.BigDecimal repairNet) {
+
+        if (repairNet != getRepairNetOriginal() && (getRepairNetOriginal() == null)) {
+            invoiceOriginal.setRepairNetOriginal(repairNet);
+        }
+    }
+
+    public java.math.BigDecimal getRepairVatOriginal() {
+        return invoiceOriginal.getRepairVatOriginal();
+    }
+
+    public void setRepairVatOriginal(java.math.BigDecimal repairVat) {
+        if (repairVat != getRepairVatOriginal() && (getRepairVatOriginal() == null)) {
+            invoiceOriginal.setRepairVatOriginal(repairVat);
+        }
+    }
+
+    public java.math.BigDecimal getRepairGrossOriginal() {
+        return invoiceOriginal.getRepairGrossOriginal();
+    }
+
+    public void setRepairGrossOriginal(java.math.BigDecimal repairGross) {
+        if (repairGross != getRepairGrossOriginal() && (getRepairGrossOriginal() == null)) {
+            invoiceOriginal.setRepairGrossOriginal(repairGross);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeNetOriginal() {
+        return invoiceOriginal.getEngineerFeeNetOriginal();
+    }
+
+    public void setEngineerFeeNetOriginal(java.math.BigDecimal engineerFeeNet) {
+        if (engineerFeeNet != getEngineerFeeNetOriginal() && (getEngineerFeeNetOriginal() == null)) {
+            invoiceOriginal.setEngineerFeeNetOriginal(engineerFeeNet);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeVatOriginal() {
+        return invoiceOriginal.getEngineerFeeVatOriginal();
+    }
+
+    public void setEngineerFeeVatOriginal(java.math.BigDecimal engineerFeeVat) {
+        if (engineerFeeVat != getEngineerFeeVatOriginal() && (getEngineerFeeVatOriginal() == null)) {
+            invoiceOriginal.setEngineerFeeVatOriginal(engineerFeeVat);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeGrossOriginal() {
+        return invoiceOriginal.getEngineerFeeGrossOriginal();
+    }
+
+    public void setEngineerFeeGrossOriginal(java.math.BigDecimal engineerFeeGross) {
+        if (engineerFeeGross != getEngineerFeeGrossOriginal() && (getEngineerFeeGrossOriginal() == null)) {
+            invoiceOriginal.setEngineerFeeGrossOriginal(engineerFeeGross);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryNetOriginal() {
+        return invoiceOriginal.getStorageRecoveryNetOriginal();
+    }
+
+    public void setStorageRecoveryNetOriginal(java.math.BigDecimal storageRecoveryNet) {
+        if (storageRecoveryNet != getStorageRecoveryNetOriginal() && (getStorageRecoveryNetOriginal() == null)) {
+            invoiceOriginal.setStorageRecoveryNetOriginal(storageRecoveryNet);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryVatOriginal() {
+        return invoiceOriginal.getStorageRecoveryVatOriginal();
+    }
+
+    public void setStorageRecoveryVatOriginal(java.math.BigDecimal storageRecoveryVat) {
+        if (storageRecoveryVat != getStorageRecoveryVatOriginal() && (getStorageRecoveryVatOriginal() == null)) {
+            invoiceOriginal.setStorageRecoveryVatOriginal(storageRecoveryVat);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryGrossOriginal() {
+        return invoiceOriginal.getStorageRecoveryGrossOriginal();
+    }
+
+    public void setStorageRecoveryGrossOriginal(java.math.BigDecimal storageRecoveryGross) {
+        if (storageRecoveryGross != getStorageRecoveryGrossOriginal() && (getStorageRecoveryGrossOriginal() == null)) {
+            invoiceOriginal.setStorageRecoveryGrossOriginal(storageRecoveryGross);
+        }
+    }
+
+    public java.math.BigDecimal getTotalNetOriginal() {
+        return invoiceOriginal.getTotalNetOriginal();
+    }
+
+    public void setTotalNetOriginal(java.math.BigDecimal totalNet) {
+        if (totalNet != getTotalNetOriginal() && (getTotalNetOriginal() == null)) {
+            invoiceOriginal.setTotalNetOriginal(totalNet);
+        }
+    }
+
+    public java.math.BigDecimal getTotalVatOriginal() {
+        return invoiceOriginal.getTotalVatOriginal();
+    }
+
+    public void setTotalVatOriginal(java.math.BigDecimal totalVat) {
+        if (totalVat != getTotalVatOriginal() && (getTotalVatOriginal() == null)) {
+            invoiceOriginal.setTotalVatOriginal(totalVat);
+        }
+    }
+
+    public java.math.BigDecimal getTotalGrossOriginal() {
+        return invoiceOriginal.getTotalGrossOriginal();
+    }
+
+    public void setTotalGrossOriginal(java.math.BigDecimal totalGross) {
+        if (totalGross != getTotalGrossOriginal() && (getTotalGrossOriginal() == null)) {
+            invoiceOriginal.setTotalGrossOriginal(totalGross);
+        }
+    }
+
+    public java.math.BigDecimal getClaimsHandlingInvoiceAmountOriginal() {
+        return invoiceOriginal.getClaimsHandlingInvoiceAmountOriginal();
+    }
+
+    public void setClaimsHandlingInvoiceAmountOriginal(java.math.BigDecimal claimsHandlingInvoiceAmount) {
+        if (claimsHandlingInvoiceAmount != getClaimsHandlingInvoiceAmountOriginal() && (getClaimsHandlingInvoiceAmountOriginal() == null)) {
+            invoiceOriginal.setClaimsHandlingInvoiceAmountOriginal(claimsHandlingInvoiceAmount);
+        }
+    }
+
+    public java.math.BigDecimal getDeductionForClaimsHandlingFeeOriginal() {
+        return invoiceOriginal.getDeductionForClaimsHandlingFeeOriginal();
+    }
+
+    public void setDeductionForClaimsHandlingFeeOriginal(java.math.BigDecimal deductionForClaimsHandlingFee) {
+        if (deductionForClaimsHandlingFee != getDeductionForClaimsHandlingFeeOriginal() && (getDeductionForClaimsHandlingFeeOriginal() == null)) {
+            invoiceOriginal.setDeductionForClaimsHandlingFeeOriginal(deductionForClaimsHandlingFee);
+        }
+    }
+
+    public java.math.BigDecimal getDiscountOriginal() {
+        return invoiceOriginal.getDiscountOriginal();
+    }
+
+    public void setDiscountOriginal(java.math.BigDecimal discount) {
+        if (discount != getDiscountOriginal() && (getDiscountOriginal() == null)) {
+            invoiceOriginal.setDiscountOriginal(discount);
+        }
+    }
+
+    public java.math.BigDecimal getInsurerDiscountOriginal() {
+        return invoiceOriginal.getInsurerDiscountOriginal();
+    }
+
+    public void setInsurerDiscountOriginal(java.math.BigDecimal insurerDiscount) {
+        if (insurerDiscount != getInsurerDiscountOriginal() && (getInsurerDiscountOriginal() == null)) {
+            invoiceOriginal.setInsurerDiscountOriginal(insurerDiscount);
+        }
+    }
+
+    public java.math.BigDecimal getFullTotalToPayOriginal() {
+        return invoiceOriginal.getFullTotalToPayOriginal();
+    }
+
+    public void setFullTotalToPayOriginal(java.math.BigDecimal totalToPay) {
+        if (totalToPay != getFullTotalToPayOriginal() && (getFullTotalToPayOriginal() == null)) {
+            invoiceOriginal.setFullTotalToPayOriginal(totalToPay);
+
+        }
+        if (invoice.getTotalToPay() != getTotalToPayOriginal() && (getTotalToPayOriginal() == null)) {
+            LOG.debug("setTotalToPayOriginal is set with the value of {}", invoice.getTotalToPay());
+            invoiceOriginal.setTotalToPayOriginal(invoice.getTotalToPay());
+        }
+
+    }
+
+    public java.math.BigDecimal getMiscellaneousFeeOriginal() {
+        return invoiceOriginal.getMiscellaneousFeeOriginal();
+    }
+
+    public void setMiscellaneousFeeOriginal(java.math.BigDecimal miscellaneousFee) {
+        if (miscellaneousFee != getMiscellaneousFeeOriginal() && (getMiscellaneousFeeOriginal() == null)) {
+            invoiceOriginal.setMiscellaneousFeeOriginal(miscellaneousFee);
+        }
+    }
+
+    public java.math.BigDecimal getAutomaticFeeOriginal() {
+        return invoiceOriginal.getAutomaticFeeOriginal();
+    }
+
+    public void setAutomaticFeeOriginal(java.math.BigDecimal automaticFee) {
+        if (automaticFee != getAutomaticFeeOriginal() && (getAutomaticFeeOriginal() == null)) {
+            invoiceOriginal.setAutomaticFeeOriginal(automaticFee);
+        }
+
+    }
+
+    public Integer getEstateQtyOriginal() {
+        return invoiceOriginal.getEstateQtyOriginal();
+    }
+
+    public void setEstateQtyOriginal(Integer estateQty) {
+        if (estateQty != getEstateQtyOriginal() && (getEstateQtyOriginal() == null)) {
+            invoiceOriginal.setEstateQtyOriginal(estateQty);
+        }
+    }
+
+    public Integer getMiscellaneousQtyOriginal() {
+        return invoiceOriginal.getMiscellaneousQtyOriginal();
+    }
+
+    public void setMiscellaneousQtyOriginal(Integer miscellaneousQty) {
+        if (miscellaneousQty != getMiscellaneousQtyOriginal() && (getMiscellaneousQtyOriginal() == null)) {
+            invoiceOriginal.setMiscellaneousQtyOriginal(miscellaneousQty);
+        }
+    }
+
+    public Integer getAutomaticQtyOriginal() {
+        return invoiceOriginal.getAutomaticQtyOriginal();
+    }
+
+    public void setAutomaticQtyOriginal(Integer automaticQty) {
+        if (automaticQty != getAutomaticQtyOriginal() && (getAutomaticQtyOriginal() == null)) {
+            invoiceOriginal.setAutomaticQtyOriginal(automaticQty);
+        }
+    }
+
+    public Integer getSatNavQtyOriginal() {
+        return invoiceOriginal.getSatNavQtyOriginal();
+    }
+
+    public void setSatNavQtyOriginal(Integer satNavQty) {
+        if (satNavQty != getSatNavQtyOriginal() && (getSatNavQtyOriginal() == null)) {
+            invoiceOriginal.setSatNavQtyOriginal(satNavQty);
+        }
+    }
+
+    public Integer getBabySeatQtyOriginal() {
+        return invoiceOriginal.getBabySeatQtyOriginal();
+    }
+
+    public void setBabySeatQtyOriginal(Integer babySeatQty) {
+        if (babySeatQty != getBabySeatQtyOriginal() && (getBabySeatQtyOriginal() == null)) {
+            invoiceOriginal.setBabySeatQtyOriginal(babySeatQty);
+        }
+    }
+
+    public Integer getTowBarsQtyOriginal() {
+        return invoiceOriginal.getTowBarsQtyOriginal();
+    }
+
+    public void setTowBarsQtyOriginal(Integer towBarsQty) {
+        if (towBarsQty != getTowBarsQtyOriginal() && (getTowBarsQtyOriginal() == null)) {
+            invoiceOriginal.setTowBarsQtyOriginal(towBarsQty);
+        }
+    }
+
+    public Integer getNonStandardInsurancePremiumQtyOriginal() {
+        return invoiceOriginal.getNonStandardInsurancePremiumQtyOriginal();
+    }
+
+    public void setNonStandardInsurancePremiumQtyOriginal(Integer nonStandardInsurancePremiumQty) {
+        if (nonStandardInsurancePremiumQty != getNonStandardInsurancePremiumQtyOriginal() && (getNonStandardInsurancePremiumQtyOriginal() == null)) {
+            invoiceOriginal.setNonStandardInsurancePremiumQtyOriginal(nonStandardInsurancePremiumQty);
+        }
+    }
+
+    public Integer getAdminQtyOriginal() {
+        return invoiceOriginal.getAdminQtyOriginal();
+    }
+
+    public void setAdminQtyOriginal(Integer adminQty) {
+        if (adminQty != getAdminQtyOriginal() && (getAdminQtyOriginal() == null)) {
+            invoiceOriginal.setAdminQtyOriginal(adminQty);
+        }
+    }
+
+    public Integer getRoofRackQtyOriginal() {
+        return invoiceOriginal.getRoofRackQtyOriginal();
+    }
+
+    public void setRoofRackQtyOriginal(Integer roofRackQty) {
+        if (roofRackQty != getRoofRackQtyOriginal() && (getRoofRackQtyOriginal() == null)) {
+            invoiceOriginal.setRoofRackQtyOriginal(roofRackQty);
+        }
+    }
+
+    public Integer getDualControlQtyOriginal() {
+        return invoiceOriginal.getDualControlQtyOriginal();
+    }
+
+    public void setDualControlQtyOriginal(Integer dualControlQty) {
+        if (dualControlQty != getDualControlQtyOriginal() && (getDualControlQtyOriginal() == null)) {
+            invoiceOriginal.setDualControlQtyOriginal(dualControlQty);
+        }
+    }
+
+    public Integer getDeliveryCollectionQtyOriginal() {
+        return invoiceOriginal.getDeliveryCollectionQtyOriginal();
+    }
+
+    public void setDeliveryCollectionQtyOriginal(Integer deliveryCollectionQty) {
+        if (deliveryCollectionQty != getDeliveryCollectionQtyOriginal() && (getDeliveryCollectionQtyOriginal() == null)) {
+            invoiceOriginal.setDeliveryCollectionQtyOriginal(deliveryCollectionQty);
+        }
+    }
+
+    public java.math.BigDecimal getSatNavFeeOriginal() {
+        return invoiceOriginal.getSatNavFeeOriginal();
+    }
+
+    public void setSatNavFeeOriginal(java.math.BigDecimal satNavFee) {
+        if (satNavFee != getSatNavFeeOriginal() && (getSatNavFeeOriginal() == null)) {
+            invoiceOriginal.setSatNavFeeOriginal(satNavFee);
+        }
+    }
+
+    public java.math.BigDecimal getEstateFeeOriginal() {
+        return invoiceOriginal.getEstateFeeOriginal();
+    }
+
+    public void setEstateFeeOriginal(java.math.BigDecimal estateFee) {
+        if (estateFee != getEstateFeeOriginal() && (getEstateFeeOriginal() == null)) {
+            invoiceOriginal.setEstateFeeOriginal(estateFee);
+        }
+    }
+
+    public java.math.BigDecimal getBabySeatFeeOriginal() {
+        return invoiceOriginal.getBabySeatFeeOriginal();
+    }
+
+    public void setBabySeatFeeOriginal(java.math.BigDecimal babySeatFee) {
+        if (babySeatFee != getBabySeatFeeOriginal() && (getBabySeatFeeOriginal() == null)) {
+            invoiceOriginal.setBabySeatFeeOriginal(babySeatFee);
+        }
+    }
+
+    public java.math.BigDecimal getTowBarsFeeOriginal() {
+        return invoiceOriginal.getTowBarsFeeOriginal();
+    }
+
+    public void setTowBarsFeeOriginal(java.math.BigDecimal towBarsFee) {
+        if (towBarsFee != getTowBarsFeeOriginal() && (getTowBarsFeeOriginal() == null)) {
+            invoiceOriginal.setTowBarsFeeOriginal(towBarsFee);
+        }
+    }
+
+    public java.math.BigDecimal getNonStandardInsurancePremiumFeeOriginal() {
+        return invoiceOriginal.getNonStandardInsurancePremiumFeeOriginal();
+    }
+
+    public void setNonStandardInsurancePremiumFeeOriginal(java.math.BigDecimal nonStandardInsurancePremiumFee) {
+        if (nonStandardInsurancePremiumFee != getNonStandardInsurancePremiumFeeOriginal() && (getNonStandardInsurancePremiumFeeOriginal() == null)) {
+            invoiceOriginal.setNonStandardInsurancePremiumFeeOriginal(nonStandardInsurancePremiumFee);
+        }
+    }
+
+    public java.math.BigDecimal getAdminFeeOriginal() {
+        return invoiceOriginal.getAdminFeeOriginal();
+    }
+
+    public void setAdminFeeOriginal(java.math.BigDecimal adminFee) {
+        if (adminFee != getAdminFeeOriginal() && (getAdminFeeOriginal() == null)) {
+            invoiceOriginal.setAdminFeeOriginal(adminFee);
+        }
+    }
+
+    public java.math.BigDecimal getRoofRackFeeOriginal() {
+        return invoiceOriginal.getRoofRackFeeOriginal();
+    }
+
+    public void setRoofRackFeeOriginal(java.math.BigDecimal roofRackFee) {
+        if (roofRackFee != getRoofRackFeeOriginal() && (getRoofRackFeeOriginal() == null)) {
+            invoiceOriginal.setRoofRackFeeOriginal(roofRackFee);
+        }
+    }
+
+    public java.math.BigDecimal getDualControlFeeOriginal() {
+        return invoiceOriginal.getDualControlFeeOriginal();
+    }
+
+    public void setDualControlFeeOriginal(java.math.BigDecimal dualControlFee) {
+        if (dualControlFee != getDualControlFeeOriginal() && (getDualControlFeeOriginal() == null)) {
+            invoiceOriginal.setDualControlFeeOriginal(dualControlFee);
+        }
+    }
+
+    public java.math.BigDecimal getDeliveryCollectionFeeOriginal() {
+        return invoiceOriginal.getDeliveryCollectionFeeOriginal();
+    }
+
+    public void setDeliveryCollectionFeeOriginal(java.math.BigDecimal deliveryCollectionFee) {
+        if (deliveryCollectionFee != getDeliveryCollectionFeeOriginal() && (getDeliveryCollectionFeeOriginal() == null)) {
+            invoiceOriginal.setDeliveryCollectionFeeOriginal(deliveryCollectionFee);
+        }
+    }
+
+    public BigDecimal getHireRateChargedPerDayOriginal() {
+        return invoiceOriginal.getHireRateChargedPerDayOriginal();
+    }
+
+    public void setHireRateChargedPerDayOriginal(BigDecimal hireRateChargedPerDay) {
+        if (hireRateChargedPerDay != getHireRateChargedPerDayOriginal() && (getHireRateChargedPerDayOriginal() == null)) {
+            invoiceOriginal.setHireRateChargedPerDayOriginal(hireRateChargedPerDay);
+        }
+    }
+
+    public BigDecimal getExcessAmountCollectedOriginal() {
+        return invoiceOriginal.getExcessAmountCollectedOriginal();
+    }
+
+    public void setExcessAmountCollectedOriginal(BigDecimal excessAmountCollected) {
+        if (excessAmountCollected != getExcessAmountCollectedOriginal() && (getExcessAmountCollectedOriginal() == null)) {
+            invoiceOriginal.setExcessAmountCollectedOriginal(excessAmountCollected);
+        }
+    }
+
+    public BigDecimal getVatAmountCollectedOriginal() {
+        return invoiceOriginal.getVatAmountCollectedOriginal();
+    }
+
+    public void setVatAmountCollectedOriginal(BigDecimal vatAmountCollected) {
+        if (vatAmountCollected != getVatAmountCollectedOriginal() && (getVatAmountCollectedOriginal() == null)) {
+            invoiceOriginal.setVatAmountCollectedOriginal(vatAmountCollected);
+        }
+    }
+
+    public BigDecimal getHirePenaltyChargeOriginal() {
+        return invoiceOriginal.getHirePenaltyChargeOriginal();
+    }
+
+    public void setHirePenaltyChargeOriginal(BigDecimal hirePenaltyCharge) {
+        LOG.debug("setHirePenaltyChargeOriginal() is called with the value of {}", hirePenaltyCharge);
+        if (hirePenaltyCharge != getHirePenaltyChargeOriginal() && (getHirePenaltyChargeOriginal() == null)) {
+            LOG.debug("setHirePenaltyChargeOriginal is set with the value of {}", hirePenaltyCharge);
+            invoiceOriginal.setHirePenaltyChargeOriginal(hirePenaltyCharge);
+        }
+        LOG.debug("setHirePenaltyChargeOriginal is called but condition failed value did not setup");
+
+    }
+
+    public BigDecimal getRepairPenaltyChargeOriginal() {
+        return invoiceOriginal.getRepairPenaltyChargeOriginal();
+    }
+
+    public void setRepairPenaltyChargeOriginal(BigDecimal repairPenaltyCharge) {
+        if (repairPenaltyCharge != getRepairPenaltyChargeOriginal() && (getRepairPenaltyChargeOriginal() == null)) {
+            invoiceOriginal.setRepairPenaltyChargeOriginal(repairPenaltyCharge);
+        }
+    }
+
+    public Integer getPenaltyAlertQtyOriginal() {
+        return invoiceOriginal.getPenaltyAlertQtyOriginal();
+    }
+
+    public void setPenaltyAlertQtyOriginal(Integer penaltyAlertQty) {
+        if (penaltyAlertQty != getPenaltyAlertQtyOriginal() && (getPenaltyAlertQtyOriginal() == null)) {
+            invoiceOriginal.setPenaltyAlertQtyOriginal(invoice.getPenaltyAlertQty());
+        }
+    }
+
+    public BigDecimal getOriginalFullTotalToPayOriginal() {
+        return invoiceOriginal.getOriginalFullTotalToPayOriginal();
+    }
+
+    public void setOriginalFullTotalToPayOriginal(BigDecimal originalTotalToPay) {
+        if (originalTotalToPay != getOriginalFullTotalToPayOriginal() && (getOriginalFullTotalToPayOriginal() == null)) {
+            invoiceOriginal.setOriginalFullTotalToPayOriginal(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getTotalToPayOriginal() {
+        return invoiceOriginal.getTotalToPayOriginal();
+    }
+
+    public void setTotalToPayOriginal(BigDecimal totalToPaySplitLiability) {
+        LOG.debug("setTotalToPayOriginal() is called with the value of {}", totalToPaySplitLiability);
+        if (totalToPaySplitLiability != getTotalToPayOriginal() && (getTotalToPayOriginal() == null)) {
+            LOG.debug("setTotalToPayOriginal is set with the value of {}", totalToPaySplitLiability);
+            invoiceOriginal.setTotalToPayOriginal(totalToPaySplitLiability);
+        }
+        LOG.debug("setTotalToPayOriginal() is called but value is not set as condition failed");
+    }
+
+    public BigDecimal getOriginalTotalToPayOriginal() {
+        return invoiceOriginal.getOriginalTotalToPayOriginal();
+    }
+
+    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPay) {
+        if (originalTotalToPay != getOriginalTotalToPayOriginal() && (getOriginalTotalToPayOriginal() == null)) {
+            invoiceOriginal.setOriginalTotalToPayOriginal(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getAdditionalDriverFeeOriginal() {
+
+        return invoiceOriginal.getAdditionalDriverFeeOriginal();
+    }
+
+    public void setAdditionalDriverFeeOriginal(BigDecimal additionalDriverFee) {
+        if (additionalDriverFee != getAdditionalDriverFeeOriginal() && (getAdditionalDriverFeeOriginal() == null)) {
+            invoiceOriginal.setAdditionalDriverFeeOriginal(additionalDriverFee);
+        }
+    }
+
+    public Integer getAdditionalDriverQtyOriginal() {
+
+        return invoiceOriginal.getAdditionalDriverQtyOriginal();
+    }
+
+    public void setAdditionalDriverQtyOriginal(Integer additionalDriverQty) {
+        if (additionalDriverQty != getAdditionalDriverQtyOriginal() && (getAdditionalDriverQtyOriginal() == null)) {
+            invoiceOriginal.setAdditionalDriverQtyOriginal(additionalDriverQty);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeGrossOriginal() {
+        return invoiceOriginal.getTotalLossFeeGrossOriginal();
+    }
+
+    public void setTotalLossFeeGrossOriginal(BigDecimal totalLossFeeGross) {
+        if (totalLossFeeGross != getTotalLossFeeGrossOriginal() && (getTotalLossFeeGrossOriginal() == null)) {
+            invoiceOriginal.setTotalLossFeeGrossOriginal(totalLossFeeGross);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeNetOriginal() {
+        return invoiceOriginal.getTotalLossFeeNetOriginal();
+    }
+
+    public void setTotalLossFeeNetOriginal(BigDecimal totalLossFeeNet) {
+        if (totalLossFeeNet != getTotalLossFeeNetOriginal() && (getTotalLossFeeNetOriginal() == null)) {
+            invoiceOriginal.setTotalLossFeeNetOriginal(totalLossFeeNet);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeVatOriginal() {
+        return invoiceOriginal.getTotalLossFeeVatOriginal();
+    }
+
+    public void setTotalLossFeeVatOriginal(BigDecimal totalLossFeeVat) {
+        if (totalLossFeeVat != getTotalLossFeeVatOriginal() && (getTotalLossFeeVatOriginal() == null)) {
+            invoiceOriginal.setTotalLossFeeVatOriginal(totalLossFeeVat);
+        }
+    }
+
+    public String getHirePenaltyPercentageOriginal() {
+        return invoiceOriginal.getHirePenaltyPercentageOriginal();
+    }
+
+    public void setHirePenaltyPercentageOriginal(String hirePenaltyPercentage) {
+        if (!hirePenaltyPercentage.equals(getHirePenaltyPercentageOriginal()) && (getHirePenaltyPercentageOriginal() == null)) {
+            invoiceOriginal.setHirePenaltyPercentageOriginal(hirePenaltyPercentage);
+        }
+    }
+
+    public String getRepairPenaltyPercentageOriginal() {
+        return invoiceOriginal.getRepairPenaltyPercentageOriginal();
+    }
+
+    public void setRepairPenaltyPercentageOriginal(String repairPenaltyPercentage) {
+        if (!repairPenaltyPercentage.equals(getRepairPenaltyPercentageOriginal()) && (getRepairPenaltyPercentageOriginal() == null)) {
+            invoiceOriginal.setRepairPenaltyPercentageOriginal(repairPenaltyPercentage);
+        }
+    }
+
+    public BigDecimal getInterimPaymentOriginal() {
+
+        return invoiceOriginal.getInterimPaymentOriginal();
+    }
+
+    public void setInterimPaymentOriginal(BigDecimal interimPayment) {
+        if (interimPayment != getInterimPaymentOriginal() && (getInterimPaymentOriginal() == null)) {
+            invoiceOriginal.setInterimPaymentOriginal(interimPayment);
+        }
+    }
+
+    public BigDecimal getTotalPenaltyChargeOriginal() {
+        return invoiceOriginal.getTotalPenaltyChargeOriginal();
+    }
+
+    public void setTotalPenaltyChargeOriginal(BigDecimal totalPenaltyCharge) {
+        if (totalPenaltyCharge != getTotalPenaltyChargeOriginal() && (getTotalPenaltyChargeOriginal() == null)) {
+            invoiceOriginal.setTotalPenaltyChargeOriginal(totalPenaltyCharge);
+        }
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Invoice">
+    public java.util.Date getInvoiceCreatedDate() {
+        return invoice.getCreatedDate();
+    }
+
+    public java.util.Date getPenaltyChargeDate() {
+        return invoice.getAutoPenaltyStart();
+    }
+
+    public java.util.Date getDateInvoiced() {
+
+        return invoice.getDateInvoiced();
+    }
+
+    public void setDateInvoiced(java.util.Date dateInvoiced) {
+        if (actionSelected != reset && invoice != null) {
+            setDateInvoicedOriginal(getDateInvoiced());
+            invoice.setDateInvoiced(dateInvoiced);
+        }
+    }
+
+    public java.math.BigDecimal getHireNet() {
+
+        return invoice.getHireNet();
+    }
+
+    public void setHireNet(java.math.BigDecimal hireNet) {
+
+        if (actionSelected != reset && invoice != null) {
+
+            setPreviousHireNet(invoice.getHireNet());
+
+            setHireNetOriginal(invoice.getHireNet());
+            invoice.setHireNet(hireNet);
+
+
+        }
+    }
+
+    public java.math.BigDecimal getHireVat() {
+
+        return invoice.getHireVat();
+    }
+
+    public void setHireVat(java.math.BigDecimal hireVat) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousHireVat(invoice.getHireVat());
+            setHireVatOriginal(invoice.getHireVat());
+            invoice.setHireVat(hireVat);
+        }
+    }
+
+    public java.math.BigDecimal getHireGross() {
+        return invoice.getHireGross();
+    }
+
+    public void setHireGross(java.math.BigDecimal hireGross) {
+        if (actionSelected != reset && invoice != null) {
+            setHireGrossOriginal(invoice.getHireGross());
+            invoice.setHireGross(hireGross);
+        }
+    }
+
+    public java.math.BigDecimal getRepairNet() {
+        return invoice.getRepairNet();
+    }
+
+    public void setRepairNet(java.math.BigDecimal repairNet) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousRepairNet(invoice.getRepairNet());
+            setRepairNetOriginal(invoice.getRepairNet());
+            invoice.setRepairNet(repairNet);
+        }
+    }
+
+    public java.math.BigDecimal getRepairVat() {
+        return invoice.getRepairVat();
+    }
+
+    public void setRepairVat(java.math.BigDecimal repairVat) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousRepairVat(invoice.getRepairVat());
+            setRepairVatOriginal(invoice.getRepairVat());
+            invoice.setRepairVat(repairVat);
+        }
+    }
+
+    public java.math.BigDecimal getRepairGross() {
+        return invoice.getRepairGross();
+    }
+
+    public void setRepairGross(java.math.BigDecimal repairGross) {
+        if (actionSelected != reset && invoice != null) {
+            setRepairGrossOriginal(invoice.getRepairGross());
+            invoice.setRepairGross(repairGross);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeNet() {
+        return invoice.getEngineerFeeNet();
+    }
+
+    public void setEngineerFeeNet(java.math.BigDecimal engineerFeeNet) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousEngineerFeeNet(invoice.getEngineerFeeNet());
+            setEngineerFeeNetOriginal(invoice.getEngineerFeeNet());
+            invoice.setEngineerFeeNet(engineerFeeNet);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeVat() {
+        return invoice.getEngineerFeeVat();
+    }
+
+    public void setEngineerFeeVat(java.math.BigDecimal engineerFeeVat) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousEngineerFeeVat(invoice.getEngineerFeeVat());
+            setEngineerFeeVatOriginal(invoice.getEngineerFeeVat());
+            invoice.setEngineerFeeVat(engineerFeeVat);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeGross() {
+        return invoice.getEngineerFeeGross();
+    }
+
+    public void setEngineerFeeGross(java.math.BigDecimal engineerFeeGross) {
+        if (actionSelected != reset && invoice != null) {
+            setEngineerFeeGrossOriginal(invoice.getEngineerFeeGross());
+            invoice.setEngineerFeeGross(engineerFeeGross);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryNet() {
+        return invoice.getStorageRecoveryNet();
+    }
+
+    public void setStorageRecoveryNet(java.math.BigDecimal storageRecoveryNet) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousStorageNet(invoice.getStorageRecoveryNet());
+            setStorageRecoveryNetOriginal(invoice.getStorageRecoveryNet());
+            invoice.setStorageRecoveryNet(storageRecoveryNet);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryVat() {
+        return invoice.getStorageRecoveryVat();
+    }
+
+    public void setStorageRecoveryVat(java.math.BigDecimal storageRecoveryVat) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousStorageVat(invoice.getStorageRecoveryVat());
+            setStorageRecoveryVatOriginal(invoice.getStorageRecoveryVat());
+            invoice.setStorageRecoveryVat(storageRecoveryVat);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryGross() {
+        return invoice.getStorageRecoveryGross();
+    }
+
+    public void setStorageRecoveryGross(java.math.BigDecimal storageRecoveryGross) {
+        if (actionSelected != reset && invoice != null) {
+            setStorageRecoveryGrossOriginal(invoice.getStorageRecoveryGross());
+            invoice.setStorageRecoveryGross(storageRecoveryGross);
+        }
+    }
+
+    public java.math.BigDecimal getTotalNet() {
+        return invoice.getTotalNet();
+    }
+
+    public void setTotalNet(java.math.BigDecimal totalNet) {
+        if (actionSelected != reset && invoice != null) {
+            setTotalNetOriginal(invoice.getTotalNet());
+            invoice.setTotalNet(totalNet);
+        }
+    }
+
+    public java.math.BigDecimal getTotalVat() {
+        return invoice.getTotalVat();
+    }
+
+    public void setTotalVat(java.math.BigDecimal totalVat) {
+        if (actionSelected != reset && invoice != null) {
+            setTotalVatOriginal(invoice.getTotalVat());
+            invoice.setTotalVat(totalVat);
+        }
+    }
+
+    public java.math.BigDecimal getTotalGross() {
+        return invoice.getTotalGross();
+    }
+
+    public void setTotalGross(java.math.BigDecimal totalGross) {
+        if (actionSelected != reset && invoice != null) {
+            setTotalGrossOriginal(invoice.getTotalGross());
+            invoice.setTotalGross(totalGross);
+        }
+    }
+
+    public java.math.BigDecimal getClaimsHandlingInvoiceAmount() {
+        return invoice.getClaimsHandlingInvoiceAmount();
+    }
+
+    public void setClaimsHandlingInvoiceAmount(java.math.BigDecimal claimsHandlingInvoiceAmount) {
+        if (actionSelected != reset && invoice != null) {
+            setClaimsHandlingInvoiceAmountOriginal(invoice.getClaimsHandlingInvoiceAmount());
+            invoice.setClaimsHandlingInvoiceAmount(claimsHandlingInvoiceAmount);
+        }
+    }
+
+    public java.math.BigDecimal getDeductionForClaimsHandlingFee() {
+        return invoice.getDeductionForClaimsHandlingFee();
+    }
+
+    public void setDeductionForClaimsHandlingFee(java.math.BigDecimal deductionForClaimsHandlingFee) {
+        if (actionSelected != reset && invoice != null) {
+            setDeductionForClaimsHandlingFeeOriginal(invoice.getDeductionForClaimsHandlingFee());
+            invoice.setDeductionForClaimsHandlingFee(deductionForClaimsHandlingFee);
+        }
+    }
+
+    public java.math.BigDecimal getDiscount() {
+        return invoice.getDiscount();
+    }
+
+    public void setDiscount(java.math.BigDecimal discount) {
+        if (actionSelected != reset && invoice != null) {
+            setDiscountOriginal(invoice.getDiscount());
+            invoice.setDiscount(discount);
+        }
+    }
+
+    public java.math.BigDecimal getInsurerDiscount() {
+        return invoice.getInsurerDiscount();
+    }
+
+    public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
+        if (actionSelected != reset && invoice != null) {
+            if (insurerDiscount.compareTo(invoice.getInsurerDiscount()) != 0) {
+                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerDiscount());
+                setCanAddInsurerDiscountComment(true);
+            }
+            setInsurerDiscountOriginal(invoice.getInsurerDiscount());
+            invoice.setInsurerDiscount(insurerDiscount);
+        }
+    }
+
+    public java.math.BigDecimal getFullTotalToPay() {
+        return invoice.getFullTotalToPay();
+    }
+
+    public void setFullTotalToPay(java.math.BigDecimal totalToPay) {
+        if (actionSelected != reset && invoice != null) {
+            setFullTotalToPayOriginal(invoice.getFullTotalToPay());
+            invoice.setFullTotalToPay(totalToPay);
+        }
+    }
+
+    public java.lang.String getHandlingInvoiceNo() {
+        return invoice.getHandlingInvoiceNo();
+    }
+
+    public void setHandlingInvoiceNo(java.lang.String handlingInvoiceNo) {
+        if (actionSelected != reset && invoice != null) {
+
+            invoice.setHandlingInvoiceNo(handlingInvoiceNo);
+        }
+    }
+
+    public java.lang.String getClaimInvoiceNo() {
+        return invoice.getClaimInvoiceNo();
+    }
+
+    public void setClaimInvoiceNo(java.lang.String claimInvoiceNo) {
+        if (actionSelected != reset && invoice != null) {
+
+            invoice.setClaimInvoiceNo(claimInvoiceNo);
+        }
+    }
+
+    public java.math.BigDecimal getMiscellaneousFee() {
+        return invoice.getMiscellaneousFee();
+    }
+
+    public void setMiscellaneousFee(java.math.BigDecimal miscellaneousFee) {
+        if (actionSelected != reset && invoice != null) {
+            setMiscellaneousFeeOriginal(invoice.getMiscellaneousFee());
+            invoice.setMiscellaneousFee(miscellaneousFee);
+        }
+    }
+
+    public java.math.BigDecimal getAutomaticFee() {
+        return invoice.getAutomaticFee();
+    }
+
+    public void setAutomaticFee(java.math.BigDecimal automaticFee) {
+        if (actionSelected != reset && invoice != null) {
+            setAutomaticFeeOriginal(invoice.getAutomaticFee());
+            invoice.setAutomaticFee(automaticFee);
+        }
+    }
+
+    public Integer getEstateQty() {
+        return invoice.getEstateQty();
+    }
+
+    public void setEstateQty(Integer estateQty) {
+        if (actionSelected != reset && invoice != null) {
+            setEstateQtyOriginal(invoice.getEstateQty());
+            invoice.setEstateQty(estateQty);
+        }
+    }
+
+    /**
+     * public Integer getMiscellaneousQty() { return
+     * invoice.getMiscellaneousQty(); }
+     *
+     * public void setMiscellaneousQty(Integer miscellaneousQty) { if
+     * (actionSelected != reset) {
+     * setMiscellaneousQtyOriginal(invoice.getMiscellaneousQty());
+     * invoice.setMiscellaneousQty(miscellaneousQty); } }
+     *
+     */
+    public Integer getAutomaticQty() {
+        return invoice.getAutomaticQty();
+    }
+
+    public void setAutomaticQty(Integer automaticQty) {
+        if (actionSelected != reset && invoice != null) {
+            setAutomaticQtyOriginal(invoice.getAutomaticQty());
+            invoice.setAutomaticQty(automaticQty);
+        }
+    }
+
+    public Integer getSatNavQty() {
+        return invoice.getSatNavQty();
+    }
+
+    public void setSatNavQty(Integer satNavQty) {
+        if (actionSelected != reset && invoice != null) {
+            setSatNavQtyOriginal(invoice.getSatNavQty());
+            invoice.setSatNavQty(satNavQty);
+        }
+    }
+
+    public Integer getBabySeatQty() {
+        return invoice.getBabySeatQty();
+    }
+
+    public void setBabySeatQty(Integer babySeatQty) {
+        if (actionSelected != reset && invoice != null) {
+            setBabySeatQtyOriginal(invoice.getBabySeatQty());
+            invoice.setBabySeatQty(babySeatQty);
+        }
+    }
+
+    public Integer getTowBarsQty() {
+        return invoice.getTowBarsQty();
+    }
+
+    public void setTowBarsQty(Integer towBarsQty) {
+        if (actionSelected != reset && invoice != null) {
+            setTowBarsQtyOriginal(invoice.getTowBarsQty());
+            invoice.setTowBarsQty(towBarsQty);
+        }
+    }
+
+    public Integer getNonStandardInsurancePremiumQty() {
+        return invoice.getNonStandardInsurancePremiumQty();
+    }
+
+    public void setNonStandardInsurancePremiumQty(Integer nonStandardInsurancePremiumQty) {
+        if (actionSelected != reset && invoice != null) {
+            setNonStandardInsurancePremiumQtyOriginal(invoice.getNonStandardInsurancePremiumQty());
+            invoice.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
+        }
+    }
+
+    public Integer getAdminQty() {
+        return invoice.getAdminQty();
+    }
+
+    public void setAdminQty(Integer adminQty) {
+        if (actionSelected != reset && invoice != null) {
+            setAdminQtyOriginal(invoice.getAdminQty());
+            invoice.setAdminQty(adminQty);
+        }
+    }
+
+    public Integer getRoofRackQty() {
+        return invoice.getRoofRackQty();
+    }
+
+    public void setRoofRackQty(Integer roofRackQty) {
+        if (actionSelected != reset && invoice != null) {
+            setRoofRackQtyOriginal(invoice.getRoofRackQty());
+            invoice.setRoofRackQty(roofRackQty);
+        }
+    }
+
+    public Integer getDualControlQty() {
+        return invoice.getDualControlQty();
+    }
+
+    public void setDualControlQty(Integer dualControlQty) {
+        if (actionSelected != reset && invoice != null) {
+            setDualControlQtyOriginal(invoice.getDualControlQty());
+            invoice.setDualControlQty(dualControlQty);
+        }
+    }
+
+    public Integer getDeliveryCollectionQty() {
+        return invoice.getDeliveryCollectionQty();
+    }
+
+    public void setDeliveryCollectionQty(Integer deliveryCollectionQty) {
+        if (actionSelected != reset && invoice != null) {
+            setDeliveryCollectionQtyOriginal(invoice.getDeliveryCollectionQty());
+            invoice.setDeliveryCollectionQty(deliveryCollectionQty);
+        }
+    }
+
+    public java.math.BigDecimal getSatNavFee() {
+        return invoice.getSatNavFee();
+    }
+
+    public void setSatNavFee(java.math.BigDecimal satNavFee) {
+        if (actionSelected != reset && invoice != null) {
+            setSatNavFeeOriginal(invoice.getSatNavFee());
+            invoice.setSatNavFee(satNavFee);
+        }
+    }
+
+    public java.math.BigDecimal getEstateFee() {
+        return invoice.getEstateFee();
+    }
+
+    public void setEstateFee(java.math.BigDecimal estateFee) {
+        if (actionSelected != reset && invoice != null) {
+            setEstateFeeOriginal(invoice.getEstateFee());
+            invoice.setEstateFee(estateFee);
+        }
+    }
+
+    public java.math.BigDecimal getBabySeatFee() {
+        return invoice.getBabySeatFee();
+    }
+
+    public void setBabySeatFee(java.math.BigDecimal babySeatFee) {
+        if (actionSelected != reset && invoice != null) {
+            setBabySeatFeeOriginal(invoice.getBabySeatFee());
+            invoice.setBabySeatFee(babySeatFee);
+        }
+    }
+
+    public java.math.BigDecimal getTowBarsFee() {
+        return invoice.getTowBarsFee();
+    }
+
+    public void setTowBarsFee(java.math.BigDecimal towBarsFee) {
+        if (actionSelected != reset && invoice != null) {
+            setTowBarsFeeOriginal(invoice.getTowBarsFee());
+            invoice.setTowBarsFee(towBarsFee);
+        }
+    }
+
+    public java.math.BigDecimal getNonStandardInsurancePremiumFee() {
+        return invoice.getNonStandardInsurancePremiumFee();
+    }
+
+    public void setNonStandardInsurancePremiumFee(java.math.BigDecimal nonStandardInsurancePremiumFee) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousNonStandardInsurancePremiumFee(invoice.getNonStandardInsurancePremiumFee());
+            setNonStandardInsurancePremiumFeeOriginal(invoice.getNonStandardInsurancePremiumFee());
+            invoice.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        }
+    }
+
+    public java.math.BigDecimal getAdminFee() {
+        return invoice.getAdminFee();
+    }
+
+    public void setAdminFee(java.math.BigDecimal adminFee) {
+        if (actionSelected != reset && invoice != null) {
+            setAdminFeeOriginal(invoice.getAdminFee());
+            invoice.setAdminFee(adminFee);
+        }
+    }
+
+    public java.math.BigDecimal getRoofRackFee() {
+        return invoice.getRoofRackFee();
+    }
+
+    public void setRoofRackFee(java.math.BigDecimal roofRackFee) {
+        if (actionSelected != reset && invoice != null) {
+            setRoofRackFeeOriginal(invoice.getRoofRackFee());
+            invoice.setRoofRackFee(roofRackFee);
+        }
+    }
+
+    public java.math.BigDecimal getDualControlFee() {
+        return invoice.getDualControlFee();
+    }
+
+    public void setDualControlFee(java.math.BigDecimal dualControlFee) {
+        if (actionSelected != reset && invoice != null) {
+            setDualControlFeeOriginal(invoice.getDualControlFee());
+            invoice.setDualControlFee(dualControlFee);
+        }
+    }
+
+    public java.math.BigDecimal getDeliveryCollectionFee() {
+        return invoice.getDeliveryCollectionFee();
+    }
+
+    public void setDeliveryCollectionFee(java.math.BigDecimal deliveryCollectionFee) {
+        if (actionSelected != reset && invoice != null) {
+            setDeliveryCollectionFeeOriginal(invoice.getDeliveryCollectionFee());
+            invoice.setDeliveryCollectionFee(deliveryCollectionFee);
+        }
+    }
+
+    public String getEngineerInvoiceReviewNotes() {
+        return invoice.getEngineerInvoiceReviewNotes();
+    }
+
+    public void setEngineerInvoiceReviewNotes(String engineerInvoiceReviewNotes) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setEngineerInvoiceReviewNotes(engineerInvoiceReviewNotes);
+        }
+    }
+
+    public boolean isIsEngineerDecisionApproved() {
+        return invoice.isIsEngineerDecisionApproved();
+    }
+
+    public void setIsEngineerDecisionApproved(boolean isEngineerDecisionApproved) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setIsEngineerDecisionApproved(isEngineerDecisionApproved);
+        }
+    }
+
+    public boolean isIsPaymentMode() {
+        return invoice.isIsPaymentMode();
+    }
+
+    public void setIsPaymentMode(boolean isPaymentMode) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setIsPaymentMode(isPaymentMode);
+        }
+    }
+
+    public String getRejectionReason() {
+        return invoice.getRejectionReason();
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRejectionReason(rejectionReason);
+        }
+    }
+
+    public BigDecimal getHireRateChargedPerDay() {
+        return invoice.getHireRateChargedPerDay();
+    }
+
+    public void setHireRateChargedPerDay(BigDecimal hireRateChargedPerDay) {
+        if (actionSelected != reset && invoice != null) {
+            setHireRateChargedPerDayOriginal(invoice.getHireRateChargedPerDay());
+            invoice.setHireRateChargedPerDay(hireRateChargedPerDay);
+        }
+    }
+
+    public BigDecimal getExcessAmountCollected() {
+        return invoice.getExcessAmountCollected();
+    }
+
+    public void setExcessAmountCollected(BigDecimal excessAmountCollected) {
+        if (actionSelected != reset && invoice != null) {
+            setExcessAmountCollectedOriginal(invoice.getExcessAmountCollected());
+            invoice.setExcessAmountCollected(excessAmountCollected);
+        }
+    }
+
+    public BigDecimal getVatAmountCollected() {
+        return invoice.getVatAmountCollected();
+    }
+
+    public void setVatAmountCollected(BigDecimal vatAmountCollected) {
+        if (actionSelected != reset && invoice != null) {
+            setVatAmountCollectedOriginal(invoice.getVatAmountCollected());
+            invoice.setVatAmountCollected(vatAmountCollected);
+        }
+    }
+
+    public BigDecimal getHirePenaltyCharge() {
+        return invoice.getHirePenaltyCharge();
+    }
+
+    public void setHirePenaltyCharge(BigDecimal hirePenaltyCharge) {
+        if (actionSelected != reset && invoice != null) {
+            setHirePenaltyChargeOriginal(invoice.getHirePenaltyCharge());
+            invoice.setHirePenaltyCharge(hirePenaltyCharge);
+        }
+
+    }
+
+    public BigDecimal getRepairPenaltyCharge() {
+        return invoice.getRepairPenaltyCharge();
+    }
+
+    public void setRepairPenaltyCharge(BigDecimal repairPenaltyCharge) {
+        if (actionSelected != reset && invoice != null) {
+            setRepairPenaltyChargeOriginal(invoice.getRepairPenaltyCharge());
+            invoice.setRepairPenaltyCharge(repairPenaltyCharge);
+        }
+    }
+
+    public Integer getPenaltyAlertQty() {
+        return invoice.getPenaltyAlertQty();
+    }
+
+    public void setPenaltyAlertQty(Integer penaltyAlertQty) {
+        if (actionSelected != reset && invoice != null) {
+            setPenaltyAlertQtyOriginal(invoice.getPenaltyAlertQty());
+            invoice.setPenaltyAlertQty(penaltyAlertQty);
+        }
+    }
+
+    public long getInvoicedDays() {
+        // long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getDateInvoiced(), new Date()) + 1;
+        return invoice.getInvoicedDays();
+
+    }
+
+    public ReasonOfRejection getReasonOfRejection() {
+        return invoice.getReasonOfRejection();
+    }
+
+    public void setReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setReasonOfRejection(reasonOfRejection);
+        }
+    }
+
+    public Date getHirePenaltyChargeAppliedDate() {
+        return invoice.getHirePenaltyChargeAppliedDate();
+    }
+
+    public void setHirePenaltyChargeAppliedDate(Date hirePenaltyChargeAppliedDate) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setHirePenaltyChargeAppliedDate(hirePenaltyChargeAppliedDate);
+        }
+    }
+
+    public Date getRepairPenaltyChargeAppliedDate() {
+        return invoice.getRepairPenaltyChargeAppliedDate();
+    }
+
+    public void setRepairPenaltyChargeAppliedDate(Date repairPenaltyChargeAppliedDate) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairPenaltyChargeAppliedDate(repairPenaltyChargeAppliedDate);
+        }
+    }
+
+    public BigDecimal getOriginalFullTotalToPay() {
+        return invoice.getOriginalFullTotalToPay();
+    }
+
+    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
+        if (actionSelected != reset && invoice != null) {
+            setOriginalFullTotalToPayOriginal(invoice.getOriginalFullTotalToPay());
+            invoice.setOriginalTotalToPay(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getTotalToPay() {
+        return invoice.getTotalToPay();
+    }
+
+    public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
+        LOG.debug("setTotalToPay() is called with the value of {}", totalToPaySplitLiability);
+        if (actionSelected != reset && invoice != null) {
+            LOG.debug("setTotalToPay() is passed through the reset condition with the value of {}", totalToPaySplitLiability);
+            setTotalToPayOriginal(invoice.getTotalToPay());
+            LOG.debug("setTotalToPayOriginal() from settotaltopay() is called with the value of {}", getTotalToPay());
+            invoice.setTotalToPay(totalToPaySplitLiability);
+            LOG.debug("setTotalToPay set up done");
+        }
+    }
+
+    public BigDecimal getOriginalTotalToPay() {
+        return invoice.getOriginalTotalToPay();
+    }
+
+    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
+        if (actionSelected != reset && invoice != null) {
+            setOriginalTotalToPayOriginal(invoice.getOriginalTotalToPay());
+            invoice.setOriginalTotalToPay(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getAdditionalDriverFee() {
+
+        return invoice.getAdditionalDriverFee();
+    }
+
+    public void setAdditionalDriverFee(BigDecimal additionalDriverFee) {
+        if (actionSelected != reset && invoice != null) {
+            setAdditionalDriverFeeOriginal(invoice.getAdditionalDriverFee());
+            invoice.setAdditionalDriverFee(additionalDriverFee);
+        }
+    }
+
+    public Integer getAdditionalDriverQty() {
+
+        return invoice.getAdditionalDriverQty();
+    }
+
+    public void setAdditionalDriverQty(Integer additionalDriverQty) {
+        if (actionSelected != reset && invoice != null) {
+            setAdditionalDriverQtyOriginal(invoice.getAdditionalDriverQty());
+            invoice.setAdditionalDriverQty(additionalDriverQty);
+        }
+    }
+
+    public Boolean getCoverNoteRequired() {
+        return invoice.getCoverNoteRequired();
+    }
+
+    public void setCoverNoteRequired(Boolean coverNoteRequired) {
+
+        if (actionSelected != reset && invoice != null) {
+            invoice.setCoverNoteRequired(coverNoteRequired);
+        }
+    }
+
+    public String getCoverNoteRequiredDesc() {
+
+        return invoice.getCoverNoteRequiredDesc();
+
+    }
+
+    public BigDecimal getTotalLossFeeGross() {
+        return invoice.getTotalLossFeeGross();
+    }
+
+    public void setTotalLossFeeGross(BigDecimal totalLossFeeGross) {
+        if (actionSelected != reset && invoice != null) {
+            setTotalLossFeeGrossOriginal(invoice.getTotalLossFeeGross());
+            invoice.setTotalLossFeeGross(totalLossFeeGross);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeNet() {
+        return invoice.getTotalLossFeeNet();
+    }
+
+    public void setTotalLossFeeNet(BigDecimal totalLossFeeNet) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousTotalLossNet(invoice.getTotalLossFeeNet());
+            setTotalLossFeeNetOriginal(invoice.getTotalLossFeeNet());
+            invoice.setTotalLossFeeNet(totalLossFeeNet);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeVat() {
+        return invoice.getTotalLossFeeVat();
+    }
+
+    public void setTotalLossFeeVat(BigDecimal totalLossFeeVat) {
+        if (actionSelected != reset && invoice != null) {
+            setPreviousTotalLossVat(invoice.getTotalLossFeeVat());
+            setTotalLossFeeVatOriginal(invoice.getTotalLossFeeVat());
+            invoice.setTotalLossFeeVat(totalLossFeeVat);
+        }
+    }
+
+    public String getHirePenaltyPercentage() {
+        return invoice.getHirePenaltyPercentage();
+    }
+
+    public void setHirePenaltyPercentage(String hirePenaltyPercentage) {
+        if (actionSelected != reset && invoice != null) {
+            setHirePenaltyPercentageOriginal(invoice.getHirePenaltyPercentage());
+            invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+        }
+    }
+
+    public String getRepairPenaltyPercentage() {
+        return invoice.getRepairPenaltyPercentage();
+    }
+
+    public void setRepairPenaltyPercentage(String repairPenaltyPercentage) {
+        if (actionSelected != reset && invoice != null) {
+            setRepairPenaltyPercentageOriginal(invoice.getRepairPenaltyPercentage());
+            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+        }
+    }
+
+    public BigDecimal getInterimPayment() {
+        LOG.debug("getInterimPayment is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPayment());
+        return invoice.getInterimPayment();
+    }
+
+//    public void setInterimPayment(BigDecimal interimPayment) {
+//        if (actionSelected != reset) {
+//            LOG.debug("setInterimPayment is being called inside InvoiceRecalculation with the value of {}",interimPayment);
+//            setInterimPaymentOriginal(invoice.getInterimPayment());
+//            invoice.setInterimPayment(interimPayment);
+//        }
+//    }
+    public Boolean getInterimPaymentReceived() {
+        LOG.debug("getInterimPaymentReceived is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPaymentReceived());
+        return invoice.getInterimPaymentReceived();
+    }
+
+//    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+//
+//        if (actionSelected != reset) {
+//            LOG.debug("setInterimPaymentReceived is being called inside InvoiceRecalculation with the value of {}",interimPaymentReceived);
+//            invoice.setInterimPaymentReceived(interimPaymentReceived);
+//        }
+//    }
+    public String getInterimPaymentReceivedDesc() {
+        return invoice.getInterimPaymentReceivedDesc();
+    }
+
+    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
+
+        if (actionSelected != reset && invoice != null) {
+            invoice.setInterimPaymentReceivedDesc(interimPaymentReceivedDesc);
+        }
+    }
+
+    public BigDecimal getTotalPenaltyCharge() {
+        return invoice.getTotalPenaltyCharge();
+    }
+
+    public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
+        if (actionSelected != reset && invoice != null) {
+            setTotalPenaltyChargeOriginal(invoice.getTotalPenaltyCharge());
+            invoice.setTotalPenaltyCharge(totalPenaltyCharge);
+        }
+    }
+
+    public Boolean getInterimPaymentReceivedFullAndFinal() {
+        return invoice.getInterimPaymentReceivedFullAndFinal();
+    }
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        return invoice.getEngineerFeeGrossPaid();
+    }
+
+    public BigDecimal getHireGrossPaid() {
+        return invoice.getHireGrossPaid();
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        return invoice.getHirePenaltyChargePaid();
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        return invoice.getRepairGrossPaid();
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        return invoice.getRepairPenaltyChargePaid();
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        return invoice.getStorageRecoveryGrossPaid();
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        return invoice.getTotalLossFeeGrossPaid();
+    }
+
+    public BigDecimal getTotalPaid() {
+        return invoice.getTotalPaid();
+    }
+
+    public boolean isPenaltyChargesPaid() {
+        return invoice.isPenaltyChargesPaid();
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="InvoiceAction">
+    String getTabName() {
+        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
+    }
+
+    public String getDaysWithCHOForReview() {
+        LOG.debug("Getting number of days claim was with CHO for review");
+        if (daysWithCHOForReview == null) {
+            daysWithCHOForReview = claimService.getDaysWithCHOForReview(claim.getId());
+        }
+        return daysWithCHOForReview;
+    }
+
+    public String getDaysWithInsurerForReview() {
+        LOG.debug("Getting number of days claim was with Insurer for review");
+        if (daysWithInsurerForReview == null) {
+            daysWithInsurerForReview = claimService.getDaysWithInsurerForReview(claim.getId());
+        }
+        return daysWithInsurerForReview;
+    }
+
+    public String getDaysAwaitingLiabilityResolution() {
+        LOG.debug("Getting number of days claim was with Insurer for review");
+        if (daysAwaitingLiabilityResolution == null) {
+            daysAwaitingLiabilityResolution = claimService.getDaysAwaitingLiabilityResolution(claim.getId());
+        }
+        return daysAwaitingLiabilityResolution;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="VehicleHireAction">
+    private void updateHpi() {
+        if (!oldVRN.equalsIgnoreCase(vehicleHire.getVehicleRegistration())) {
+            try {
+                LOG.debug("VRN has changed - performing HPI check/retrieval");
+                HpiResponse response = Hpi.getHpiInfo(vehicleHire.getVehicleRegistration());
+                vehicleHire.setHpiVehicleManufacturer(response.getManufacturer());
+                vehicleHire.setHpiVehicleModel(response.getModel());
+                vehicleHire.setHpiVehicleYear(response.getYear());
+                vehicleHire.setHpiVehicleCapacity(response.getCapacity());
+                vehicleHire.setHpiVehicleDoorplan(response.getDoorPlan());
+                vehicleHire.setHpiVehicleTransmission(response.getTransmission());
+                vehicleHire.setHpiFirstRegistration(response.getFirstRegistration());
+                vehicleHire.setHpiError(null);
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                vehicleHire.setHpiError(ex.getMessage());
+                vehicleHire.setHpiVehicleManufacturer(null);
+                vehicleHire.setHpiVehicleModel(null);
+                vehicleHire.setHpiVehicleYear(null);
+                vehicleHire.setHpiVehicleCapacity(null);
+                vehicleHire.setHpiVehicleDoorplan(null);
+                vehicleHire.setHpiVehicleTransmission(null);
+                vehicleHire.setHpiFirstRegistration(null);
+            }
+        }
+    }
+
+    public boolean isModelSaved() {
+        return modelSaved;
+    }
+
+    public String getOldVRN() {
+        return oldVRN;
+    }
+
+    public String getVehicleClassNameOriginal() {
+        if (getVehicleClassIdOriginal() != 0) {
+            return lookupService.getVehicleClassName(getVehicleClassIdOriginal());
+        } else {
+            return null;
+        }
+
+    }
+
+    public String getVehicleClassName() {
+        if (getVehicleClassId() != 0) {
+            return lookupService.getVehicleClassName(getVehicleClassId());
+        } else {
+            return null;
+        }
+
+    }
+
+    public String getRentalStartTime() {
+        if (vehicleHire == null) {
+            return null;
+        }
+        return DateHelper.getTimeFormat().format(vehicleHire.getHireStart());
+    }
+
+    public void setRentalStartTime(String time) {
+        if (actionSelected != reset) {
+            setRentalStartTimeOriginal(getRentalStartTime());
+            if (vehicleHire != null) {
+                try {
+                    Date a = vehicleHire.getHireStart();
+                    Date b = DateHelper.getTimeFormat().parse(time);
+                    vehicleHire.setHireStart(DateHelper.mergeTimeToDate(a, b));
+                } catch (Exception ex) {
+                    LOG.error("Error setting Rental Start-time to '{}': {}", time, ex.getMessage());
+                }
+            }
+        }
+
+    }
+
+    public String getRentalEndTime() {
+        return DateHelper.getTimeFormat().format(vehicleHire.getHireEnd());
+    }
+
+    public void setRentalEndTime(String time) {
+        if (actionSelected != reset && vehicleHire != null) {
+            setRentalEndTimeOriginal(getRentalEndTime());
+            if (vehicleHire != null) {
+                try {
+                    Date a = vehicleHire.getHireEnd();
+                    Date b = DateHelper.getTimeFormat().parse(time);
+                    vehicleHire.setHireEnd(DateHelper.mergeTimeToDate(a, b));
+                } catch (Exception ex) {
+                    LOG.error("Error setting Rental End-time to '{}': {}", time, ex.getMessage());
+                }
+            }
+        }
+
+
+    }
+
+    public String getRentalStartTimeOriginal() {
+        return DateHelper.getTimeFormat().format(vehicleHire.getHireStartOriginal());
+    }
+
+    public void setRentalStartTimeOriginal(String time) {
+        if (time != null && !time.equals(getRentalStartTimeOriginal()) && (getRentalStartTimeOriginal() == null)) {
+            if (vehicleHire != null) {
+                try {
+                    Date a = vehicleHire.getHireStartOriginal();
+                    Date b = DateHelper.getTimeFormat().parse(time);
+                    vehicleHire.setHireStartOriginal(DateHelper.mergeTimeToDate(a, b));
+                } catch (Exception ex) {
+                    LOG.error("Error setting Rental Start-time-original to '{}': {}", time, ex.getMessage());
+                }
+            }
+
+        }
+
+    }
+
+    public String getRentalEndTimeOriginal() {
+        return DateHelper.getTimeFormat().format(vehicleHire.getHireEndOriginal());
+
+    }
+
+    public void setRentalEndTimeOriginal(String time) {
+
+        if (!time.equals(getRentalEndTimeOriginal()) && (getRentalEndTimeOriginal() == null)) {
+            if (vehicleHire != null) {
+                try {
+                    Date a = vehicleHire.getHireEndOriginal();
+                    Date b = DateHelper.getTimeFormat().parse(time);
+                    vehicleHire.setHireEndOriginal(DateHelper.mergeTimeToDate(a, b));
+                } catch (Exception ex) {
+                    LOG.error("Error setting Rental End-time-original to '{}': {}", time, ex.getMessage());
+                }
+            }
+        }
+
+
+    }
+
+    public int getVehicleClassId() {
+        if (this.vehicleHire != null && this.vehicleHire.getVehicleClass() != null) {
+            return this.vehicleHire.getVehicleClass().getId();
+        }
+        return 0;
+    }
+
+    public List<VehicleClass> getVehicleClasses() {
+        List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+        Collections.sort(vehicleClasses, new VehicleClassComparator());
+
+        return vehicleClasses;
+    }
+
+    public int getVehicleClassIdOriginal() {
+        if (this.vehicleHire != null && this.vehicleHire.getVehicleClassOriginal() != null) {
+            return this.vehicleHire.getVehicleClassOriginal().getId();
+        }
+        return 0;
+    }
+
+    public void setVehicleClassIdOriginal(int vehicleClassId) {
+
+        if (vehicleClassId != getVehicleClassIdOriginal() && getVehicleClassIdOriginal() == 0) {
+
+            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+            for (VehicleClass vClass : vehicleClasses) {
+                if (vClass.getId() == vehicleClassId) {
+                    vehicleHire.setVehicleClassOriginal(vClass);
+                    break;
+                }
+            }
+        }
+
+    }
+
+    public void setVehicleClassId(int vehicleClassId) {
+        if (actionSelected != reset) {
+            if (vehicleHire != null) {
+                setVehicleClassIdOriginal(getVehicleClassId());
+                if (vehicleHire.getVehicleClass().getId() != vehicleClassId) {
+                    List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+                    for (VehicleClass vClass : vehicleClasses) {
+                        if (vClass.getId() == vehicleClassId) {
+                            vehicleHire.setVehicleClass(vClass);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public String getRentalStartTimeDisplayFormat() {
+        String time = getRentalStartTimeOriginal();
+        if (time.equals("24:00")) {
+            return "00:00";
+        } else {
+            return time;
+        }
+    }
+
+    public String getRentalEndTimeDisplayFormat() {
+        String time = getRentalEndTimeOriginal();
+        if (time.equals("24:00")) {
+            return "00:00";
+        } else {
+            return time;
+        }
+    }
+
+    public boolean getIsSubscriberClaim() {
+        return ClaimType.isSubscriber(claim.getClaimType());
+    }
+
+    public boolean getCanShowOriginalStartDate() {
+
+        String d1 = DateHelper.getLocalDateFormat().format(getRentalStart());
+        String d2 = DateHelper.getLocalDateFormat().format(getRentalStartOriginal());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean getCanShowOriginalEndDate() {
+
+        String d1 = DateHelper.getLocalDateFormat().format(getRentalEnd());
+        String d2 = DateHelper.getLocalDateFormat().format(getRentalEndOriginal());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean getCanShowOriginalInvoicedDate() {
+
+        String d1 = DateHelper.getLocalDateFormat().format(getDateInvoiced());
+        String d2 = DateHelper.getLocalDateFormat().format(getDateInvoicedOriginal());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="VehicleHire">
+    public boolean isTpiClaim() {
+        return ClaimType.isTPI(claim.getClaimType());
+    }
+
+    public String getCourtesyCarProvidedDesc() {
+        return vehicleHire.getCourtesyCarProvidedDesc();
+    }
+
+    public boolean isCourtesyCarProvided() {
+        return vehicleHire.isCourtesyCarProvided();
+    }
+
+    public void setCourtesyCarProvided(boolean courtesyCarProvided) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setCourtesyCarProvided(courtesyCarProvided);
+        }
+    }
+
+    public void setIsTotalLoss(boolean IsTotalLoss) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setIsTotalLoss(IsTotalLoss);
+        }
+    }
+
+    public java.lang.String getVehicleRegistration() {
+        return vehicleHire.getVehicleRegistration();
+    }
+
+    public void setVehicleRegistration(java.lang.String vehicleRegistration) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setVehicleRegistration(vehicleRegistration);
+        }
+    }
+
+    public java.lang.String getVehicleManufacturer() {
+        return vehicleHire.getVehicleManufacturer();
+    }
+
+    public void setVehicleManufacturer(java.lang.String vehicleManufacturer) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setVehicleManufacturer(vehicleManufacturer);
+        }
+    }
+
+    public java.lang.String getVehicleModel() {
+        return vehicleHire.getVehicleModel();
+    }
+
+    public void setVehicleModel(java.lang.String vehicleModel) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setVehicleModel(vehicleModel);
+
+        }
+    }
+
+    public java.util.Date getRentalStart() {
+        return vehicleHire.getRentalStart();
+    }
+
+    public void setRentalStart(java.util.Date rentalStart) {
+        if (actionSelected != reset && vehicleHire != null) {
+            setRentalStartOriginal(getRentalStart());
+            vehicleHire.setRentalStart(rentalStart);
+        }
+    }
+
+    public java.util.Date getRentalStartOriginal() {
+        return vehicleHire.getRentalStartOriginal();
+    }
+
+    public void setRentalStartOriginal(java.util.Date rentalStart) {
+        if (rentalStart != getRentalStartOriginal() && getRentalStartOriginal() == null && vehicleHire != null) {
+            vehicleHire.setRentalStartOriginal(rentalStart);
+        }
+    }
+
+    public java.util.Date getRentalEnd() {
+        return vehicleHire.getRentalEnd();
+    }
+
+    public void setRentalEnd(java.util.Date rentalEnd) {
+        if (actionSelected != reset && vehicleHire != null) {
+            setRentalEndOriginal(getRentalEnd());
+            vehicleHire.setRentalEnd(rentalEnd);
+        }
+    }
+
+    public java.util.Date getRentalEndOriginal() {
+        return vehicleHire.getRentalEndOriginal();
+    }
+
+    public void setRentalEndOriginal(java.util.Date rentalEnd) {
+        if (rentalEnd != getRentalEndOriginal() && getRentalEndOriginal() == null && vehicleHire != null) {
+            vehicleHire.setRentalEndOriginal(rentalEnd);
+        }
+    }
+
+    public java.lang.String getCollectionReason() {
+        return vehicleHire.getCollectionReason();
+    }
+
+    public void setCollectionReason(java.lang.String collectionReason) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setCollectionReason(collectionReason);
+        }
+    }
+
+    public Integer getDaysOriginal() {
+        return vehicleHire.getDaysOriginal();
+    }
+
+    public void setDaysOriginal(Integer days) {
+        if (getDaysOriginal() == null && vehicleHire != null) {
+            vehicleHire.setDaysOriginal(days);
+        }
+    }
+
+    public Integer getDays() {
+
+        return vehicleHire.getDays();
+    }
+
+    public void setDays(Integer days) {
+
+
+        days = (days == null) ? 0 : days;
+
+        if (actionSelected != reset && vehicleHire != null) {
+
+            setDaysOriginal(getDays());
+
+            vehicleHire.setDays(days);
+
+        }
+    }
+
+    public boolean isVHMiscellaneousFee() {
+        return vehicleHire.isMiscellaneousFee();
+    }
+
+    public void setVHMiscellaneousFee(boolean miscellaneousFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setMiscellaneousFee(miscellaneousFee);
+        }
+    }
+
+    public boolean isVHAutomaticFee() {
+        return vehicleHire.isAutomaticFee();
+    }
+
+    public void setVHAutomaticFee(boolean automaticFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setAutomaticFee(automaticFee);
+        }
+    }
+
+    public boolean isVHSatNavFee() {
+        return vehicleHire.isSatNavFee();
+    }
+
+    public void setVHSatNavFee(boolean satNavFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setSatNavFee(satNavFee);
+        }
+    }
+
+    public boolean isVHEstateFee() {
+        return vehicleHire.isEstateFee();
+    }
+
+    public void setVHEstateFee(boolean estateFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setEstateFee(estateFee);
+        }
+    }
+
+    public boolean isVHBabySeatFee() {
+        return vehicleHire.isBabySeatFee();
+    }
+
+    public void setVHBabySeatFee(boolean babySeatFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setBabySeatFee(babySeatFee);
+        }
+    }
+
+    public boolean isVHTowBarsFee() {
+        return vehicleHire.isTowBarsFee();
+    }
+
+    public void setVHTowBarsFee(boolean towBarsFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setTowBarsFee(towBarsFee);
+        }
+    }
+
+    public boolean isVHNonStandardInsurancePremiumFee() {
+        return vehicleHire.isNonStandardInsurancePremiumFee();
+    }
+
+    public void setVHNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        }
+    }
+
+    public boolean isVHAdminFee() {
+        return vehicleHire.isAdminFee();
+    }
+
+    public void setVHAdminFee(boolean adminFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setAdminFee(adminFee);
+        }
+    }
+
+    public boolean isVHRoofRackFee() {
+        return vehicleHire.isRoofRackFee();
+    }
+
+    public void setVHRoofRackFee(boolean roofRackFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setRoofRackFee(roofRackFee);
+        }
+    }
+
+    public boolean isVHDualControlFee() {
+        return vehicleHire.isDualControlFee();
+    }
+
+    public void setVHDualControlFee(boolean dualControlFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setDualControlFee(dualControlFee);
+        }
+    }
+
+    public boolean isVHDeliveryCollectionFee() {
+        return vehicleHire.isDeliveryCollectionFee();
+    }
+
+    public void setVHDeliveryCollectionFee(boolean deliveryCollectionFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setDeliveryCollectionFee(deliveryCollectionFee);
+        }
+    }
+
+    public VehicleClass getVehicleClass() {
+        return vehicleHire.getVehicleClass();
+    }
+
+    public void setVehicleClass(VehicleClass vehicleClass) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setVehicleClass(vehicleClass);
+        }
+    }
+
+    public java.util.Date getHireStart() {
+        return vehicleHire.getHireStart();
+    }
+
+    public void setHireStart(Date hireStart) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHireStart(hireStart);
+        }
+    }
+
+    public java.util.Date getHireEnd() {
+        return vehicleHire.getHireEnd();
+    }
+
+    public void setHireEnd(Date hireEnd) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHireEnd(hireEnd);
+        }
+    }
+
+    // ##### NOT FROM HERE #############
+    public boolean getIsTotalLoss() {
+        return vehicleHire.getIsTotalLoss();
+    }
+
+    public String getHpiError() {
+        return vehicleHire.getHpiError();
+    }
+
+    public void setHpiError(String hpiError) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiError(hpiError);
+        }
+    }
+
+    public String getHpiVehicleCapacity() {
+        return vehicleHire.getHpiVehicleCapacity();
+    }
+
+    public void setHpiVehicleCapacity(String hpiVehicleCapacity) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleCapacity(hpiVehicleCapacity);
+        }
+    }
+
+    public String getHpiVehicleDoorplan() {
+        return vehicleHire.getHpiVehicleDoorplan();
+    }
+
+    public void setHpiVehicleDoorplan(String hpiVehicleDoorplan) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleDoorplan(hpiVehicleDoorplan);
+        }
+    }
+
+    public String getHpiVehicleManufacturer() {
+        return vehicleHire.getHpiVehicleManufacturer();
+    }
+
+    public void setHpiVehicleManufacturer(String hpiVehicleManufacturer) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleManufacturer(hpiVehicleManufacturer);
+        }
+    }
+
+    public String getHpiVehicleModel() {
+        return vehicleHire.getHpiVehicleModel();
+    }
+
+    public void setHpiVehicleModel(String hpiVehicleModel) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleModel(hpiVehicleModel);
+        }
+    }
+
+    public String getHpiVehicleTransmission() {
+        return vehicleHire.getHpiVehicleTransmission();
+    }
+
+    public void setHpiVehicleTransmission(String hpiVehicleTransmission) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleTransmission(hpiVehicleTransmission);
+        }
+    }
+
+    public String getHpiVehicleYear() {
+        return vehicleHire.getHpiVehicleYear();
+    }
+
+    public void setHpiVehicleYear(String hpiVehicleYear) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiVehicleYear(hpiVehicleYear);
+        }
+    }
+
+    public void setHpiFirstRegistration(Date firstRegistration) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setHpiFirstRegistration(firstRegistration);
+        }
+    }
+
+    public Date getHpiFirstRegistration() {
+        return vehicleHire.getHpiFirstRegistration();
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="EngineerReportAction">
+    // Nothing to be added ( no getter and setter for this perticular action class)
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="EngineerReport">
+    public java.lang.Integer getEstimatedDays() {
+        return engineerReport.getDays();
+    }
+
+    public void setEstimatedDays(java.lang.Integer days) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setDays(days);
+        }
+    }
+
+    public java.lang.String getName() {
+        return engineerReport.getName();
+    }
+
+    public void setName(java.lang.String name) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setName(name);
+        }
+    }
+
+    public java.lang.String getCompany() {
+        return engineerReport.getCompany();
+    }
+
+    public void setCompany(java.lang.String company) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setCompany(company);
+        }
+    }
+
+    public java.lang.String getAddress1() {
+        return engineerReport.getAddress1();
+    }
+
+    public void setAddress1(java.lang.String address1) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setAddress1(address1);
+        }
+    }
+
+    public java.lang.String getAddress2() {
+        return engineerReport.getAddress2();
+    }
+
+    public void setAddress2(java.lang.String address2) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setAddress2(address2);
+        }
+    }
+
+    public java.lang.String getAddress3() {
+        return engineerReport.getAddress3();
+    }
+
+    public void setAddress3(java.lang.String address3) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setAddress3(address3);
+        }
+    }
+
+    public java.lang.String getAddress4() {
+        return engineerReport.getAddress4();
+    }
+
+    public void setAddress4(java.lang.String address4) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setAddress4(address4);
+        }
+    }
+
+    public java.lang.String getAddress5() {
+        return engineerReport.getAddress5();
+    }
+
+    public void setAddress5(java.lang.String address5) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setAddress5(address5);
+        }
+    }
+
+    public java.lang.String getPostcode() {
+        return engineerReport.getPostcode();
+    }
+
+    public void setPostcode(java.lang.String postcode) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setPostcode(postcode);
+        }
+    }
+
+    public java.lang.String getTelephone() {
+        return engineerReport.getTelephone();
+    }
+
+    public void setTelephone(java.lang.String telephone) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setTelephone(telephone);
+        }
+    }
+
+    public java.lang.String getEmail() {
+        return engineerReport.getEmail();
+    }
+
+    public void setEmail(java.lang.String email) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setEmail(email);
+        }
+    }
+
+    public Boolean getIsUsable() {
+        return engineerReport.isIsUsable();
+    }
+
+    public void setIsUsable(Boolean isUsable) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setIsUsable(isUsable);
+        }
+    }
+
+    public java.math.BigDecimal getLabourAmount() {
+        return engineerReport.getLabourAmount();
+    }
+
+    public void setLabourAmount(java.math.BigDecimal labourAmount) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setLabourAmount(labourAmount);
+        }
+    }
+
+    public java.math.BigDecimal getTotalAmount() {
+        return engineerReport.getTotalAmount();
+    }
+
+    public void setTotalAmount(java.math.BigDecimal totalAmount) {
+        if (actionSelected != reset && vehicleHire != null) {
+            engineerReport.setTotalAmount(totalAmount);
+        }
+    }
+
+    public BigDecimal getEstimatedLabourAmount() {
+        return engineerReport.getEstimatedLabourAmount();
+    }
+
+    public BigDecimal getEstimatedTotalRepairAmount() {
+        return engineerReport.getEstimatedTotalRepairAmount();
+    }
+
+    public int getEstimatedDaysUnderRepair() {
+        return engineerReport.getEstimatedDaysUnderRepair();
+    }
+
+    public String getIsUsableDesc() {
+        return engineerReport.getIsUsableDesc();
+
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="updateModel">
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+    public String updateModel() {
+
+        if (actionSelected == reset) {
+            this.setActionResult("Invoice Reset");
+            return SUCCESS;
+        } else if (actionSelected == recalculate) {
+            try {
+                recalculate(claim);
+            } catch (Exception ex) {
+                handleException(ex);
+                LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
+                return ERROR;
+            }
+            return SUCCESS;
+        } else if (actionSelected == submit) {
+
+            claim.setEngineerReport(engineerReport);
+            claim.setInvoiceOriginal(invoiceOriginal);
+            claim.setVehicleHire(vehicleHire);
+            claim.setInvoice(invoice);
+            claim.updateLiabilityPayment();
+            updateHpi();
+            try {
+//                                checkVersion(invoice);
+//                                checkVersion(vehicleHire);
+//                                checkVersion(engineerReport);
+                BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
+                /*
+                 * getCanAddInsurerDiscountComment will return true if the
+                 * insurer discount amount changed after the original invoice
+                 * upload.
+                 */
+                if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+//                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
+                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
+                    comment.setRaisedBy(userService.findByUserName("system"));
+                    claim.addComment(comment);
+                }
+
+                claimService.updateClaim(claim);
+//                        invoiceAction.prepare();
+//                        invoiceAction.updateSessionModel();
+//                                engineerReportAction.prepare();
+//                                engineerReportAction.updateSessionModel();
+//                        vehicleHireAction.prepare();
+//                        vehicleHireAction.updateSessionModel();
+                modelSaved = true;
+                getSession().put(SESSION_CLAIM_ID, claim.getId().intValue());
+                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
+                this.setActionResult("Your Changes Have Been Saved");
+                return SUCCESS;
+            } catch (Exception ex) {
+//                                ex.printStackTrace();
+                LOG.debug("Exception is thrown and passing to baseAction {} ", ex.getMessage());
+                handleException(ex);
+                return ERROR;
+            }
+
+        } else {
+            return ERROR;
+        }
+
+    }
+
+    public boolean isPenaltyChargesAppled() {
+        if (modelSaved && claim.getInvoice().getTotalPenaltyCharge() != null
+                && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isPenaltyChargeDateModified() {
+        if (DateHelper.removeTime(claim.getInvoice().getCreatedDate()).compareTo(DateHelper.removeTime(claim.getInvoice().getAutoPenaltyStart())) != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+//    public String updateInvoiceModel() {
+//        return invoiceAction.updateModel(claim);
+//    }
+//    public String updateEngineerReportModel() {
+//        return engineerReportAction.updateModel(claim);
+//    }
+//    public String updateVehicleHireModel() {
+//        return vehicleHireAction.updateModel(claim);
+//    }
+//    public String updateInvoiceOriginalModel() {
+//        return invoiceOriginalAction.updateModel(claim);
+//    }
+//    public void updateAllModel() throws Exception {
+//        LOG.debug("Updating all model claim");
+//        claimService.updateClaim(claim);
+//        LOG.debug("claim is saved");
+//        claim = claimService.getClaim(claimId);
+//    }
+    // </editor-fold>
+    @Override
+    public String execute() {
+
+        String tabName = getTabName();
+        accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
+        String result = accessRight > 1 ? EDITABLE : READ_ONLY;
+        LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
+        if (invoice != null) {
+            LOG.debug("invoiceAction getModel is not null and value of object is: {} ", invoice);
+            LOG.debug("Setting model version in session: {}={}", invoice.getClass().getName(), invoice.getVersion());
+            session = ActionContext.getContext().getSession();
+            session.put(invoice.getClass().getName(), invoice.getVersion());
+        }
+        if (vehicleHire != null) {
+            LOG.debug("Setting model version in session: {}={}", vehicleHire.getClass().getName(), vehicleHire.getVersion());
+            session = ActionContext.getContext().getSession();
+            session.put(vehicleHire.getClass().getName(), vehicleHire.getVersion());
+        }
+//        updateSession(engineerReport);
+        if (engineerReport != null) {
+            LOG.debug("Setting model version in session: {}={}", engineerReport.getClass().getName(), engineerReport.getVersion());
+            session = ActionContext.getContext().getSession();
+            session.put(engineerReport.getClass().getName(), engineerReport.getVersion());
+        }
+        return result;
+    }
+
+    @Override
+    public void prepare() throws Exception {
+        try {
+            LOG.debug("Preparing... ");
+            claim = this.claimService.getClaim(claimId);
+            if (claim == null) {
+                throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+            }
+            if (claim.getEngineerReport() != null) {
+                LOG.debug("engineerReport Model is not null ");
+                engineerReport = claim.getEngineerReport();
+            } else {
+                LOG.debug("engineerReport Model is null ");
+                engineerReport = new EngineerReport();
+            }
+            if (claim.getInvoiceOriginal() != null) {
+                LOG.debug("invoiceOriginal Model is not null ");
+                invoiceOriginal = claim.getInvoiceOriginal();
+            } else {
+                LOG.debug("invoiceOriginal Model is null ");
+                invoiceOriginal = new InvoiceOriginal();
+            }
+            if (claim.getVehicleHire() != null) {
+                LOG.debug("VehicleHire Model is not null ");
+                vehicleHire = claim.getVehicleHire();
+                oldVRN = vehicleHire.getVehicleRegistration();
+            } else {
+                LOG.debug("VehicleHire Model is null ");
+                oldVRN = "";
+                vehicleHire = new VehicleHire();
+            }
+            if (claim.getInvoice() != null) {
+                LOG.debug("invoice Model is not null ");
+                invoice = claim.getInvoice();
+            } else {
+                LOG.debug("invoice Model is null ");
+                invoice = new Invoice();
+            }
+            LOG.debug("Preparing completed.");
+        } catch (Throwable ex) {
+            LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+    public List<VehicleClassPriceMapper> getAllVehicleClassPriceMapper() {
+        List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();
+        Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
+        LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
+        Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
+        Date hireStart = null;
+        if (claim.getVehicleHire() == null) {
+            LOG.warn("No vehicle hire for claim: {}", claim.getChoReference());
+            hireStart = new Date();
+        } else {
+            hireStart = claim.getVehicleHire().getHireStart();
+        }
+        BigDecimal age = BigDecimal.ZERO;
+
+        if (hireStart != null & firstRegistration != null) {
+            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+        }
+
+        while (itr.hasNext()) {
+            vehicleClass = (VehicleClass) itr.next();
+            BigDecimal price = new BigDecimal(0.0);
+            try {
+                price = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+            } catch (Exception e) {
+                LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}' - price set to 0.0", new Object[]{vehicleClass.getName(), age, getHireStart()});
+            }
+            vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
+        }
+        LOG.debug("Total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
+        Collections.sort(vehicleClassPriceMapper, new VehicleClassPriceMapperComparator());
+        return vehicleClassPriceMapper;
+    }
+
+    public VehicleClassPriceService getVehicleClassPriceService() {
+        return vehicleClassPriceService;
+    }
+
+    public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
+        this.vehicleClassPriceService = vehicleClassPriceService;
+    }
+
+    public VehicleClassService getVehicleClassService() {
+        return vehicleClassService;
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="validation">
+
+    @Override
+    public void validate() {
+        if (claim != null) {
+            LOG.debug("inside attachment action validate method, claim is present and validation started");
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("InvoiceDetailAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+        } else {
+            LOG.debug("inside attachment action validate method, claim is null no validation done");
+        }
+
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO",""})
+
+    public void recalculate(Claim claim) throws Exception {
+
+        BigDecimal tpiInsurancePremiumFee = BigDecimal.ZERO;
+        BigDecimal tpiInsurancePremiumVat = BigDecimal.ZERO;
+        BigDecimal totalExtras = BigDecimal.ZERO;
+        BigDecimal hireNet = BigDecimal.ZERO;
+        BigDecimal hireVat = BigDecimal.ZERO;
+        BigDecimal hireGross = BigDecimal.ZERO;
+        BigDecimal totalNet = BigDecimal.ZERO;
+        BigDecimal totalVat = BigDecimal.ZERO;
+        BigDecimal totalGross = BigDecimal.ZERO;
+        BigDecimal repairVat = BigDecimal.ZERO;
+        BigDecimal repairGross = BigDecimal.ZERO;
+        BigDecimal engineerVat = BigDecimal.ZERO;
+        BigDecimal engineerGross = BigDecimal.ZERO;
+        BigDecimal storageRecoveryVat = BigDecimal.ZERO;
+        BigDecimal storageRecoveryGross = BigDecimal.ZERO;
+        BigDecimal totalLossVat = BigDecimal.ZERO;
+        BigDecimal totalLossGross = BigDecimal.ZERO;
+        BigDecimal fullTotalRequested = BigDecimal.ZERO;
+        BigDecimal fullTotalToPay = BigDecimal.ZERO;
+        BigDecimal liablitityPercentage = BigDecimal.ZERO;
+        BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
+        BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
+
+        LOG.debug("initial value setup done in recalculate() function");
+        setInsurerDiscountPercentageApplied(insurerDiscountPercentage);
+
+        totalExtras = totalExtras.add(getMiscellaneousFee());
+
+        totalExtras = totalExtras.add(getAutomaticFee());
+        totalExtras = totalExtras.add(getAdditionalDriverFee());
+        totalExtras = totalExtras.add(getSatNavFee());
+        totalExtras = totalExtras.add(getEstateFee());
+        totalExtras = totalExtras.add(getBabySeatFee());
+        totalExtras = totalExtras.add(getTowBarsFee());
+        if (!ClaimType.isTPI(claim.getClaimType())) {
+            totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
+        } else {
+            tpiInsurancePremiumFee = tpiInsurancePremiumFee.add(getNonStandardInsurancePremiumFee());
+            tpiInsurancePremiumVat = tpiInsurancePremiumVat.add(tpiInsurancePremiumFee);
+            tpiInsurancePremiumVatUsed = CalcHelper.getInsurancePremiumVatRate(claim.getInvoice().getDateInvoiced());
+            tpiInsurancePremiumVat = tpiInsurancePremiumVat.multiply(tpiInsurancePremiumVatUsed);
+        }
+        totalExtras = totalExtras.add(getRoofRackFee());
+        totalExtras = totalExtras.add(getAdminFee());
+        totalExtras = totalExtras.add(getDualControlFee());
+        totalExtras = totalExtras.add(getDeliveryCollectionFee());
+        LOG.debug("total extras {}", totalExtras);
+
+        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0)) {
+            if (ClaimType.isTPI(claim.getClaimType()) && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
+                setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+            } else {
+                setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+            }
+            LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
+
+//            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+
+        } else {
+            LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
+            hire_vat_used = Vat_Rate;
+        }
+
+        hireNet = hireNet.add(new BigDecimal(getDays()));
+
+        hireNet = hireNet.multiply(getHireRateChargedPerDay());
+        hireNet = hireNet.add(totalExtras);
+
+        setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+
+        hireVat = hireVat.add(hireNet);
+
+        hireVat = hireVat.multiply(hire_vat_used);
+
+        setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
+
+        // add Insurance Premium fee & vat to hire net & hire vat for TPI CLAIM ONLY.  Insurance Premium fee & vat should be added to hire net & vat after calculating hire vat.
+        if (ClaimType.isTPI(claim.getClaimType())) {
+
+            hireNet = hireNet.add(tpiInsurancePremiumFee);
+            setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+            hireVat = hireVat.add(tpiInsurancePremiumVat);
+            setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
+        }
+        hireGross = hireGross.add(hireVat);
+        hireGross = hireGross.add(hireNet);
+        setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
+
+        if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue() == 0)) {
+            setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" Repair_vat_used value{} ", getRepair_vat_used());
+
+//            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+
+        } else {
+
+            repair_vat_used = Vat_Rate;
+        }
+
+        repairVat = repairVat.add(getRepairNet());
+        repairVat = repairVat.multiply(repair_vat_used);
+
+        setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
+
+        repairGross = repairGross.add(getRepairVat());
+        repairGross = repairGross.add(getRepairNet());
+
+        setRepairGross(repairGross.setScale(2, RoundingMode.HALF_UP));
+
+        if (getPreviousEngineerFeeNet() != null && getPreviousEngineerFeeVat() != null && !(getPreviousEngineerFeeNet().doubleValue() == 0)) {
+            setEngineerFee_vat_used(getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" EngineerFee_vat_used value{} ", getEngineerFee_vat_used());
+
+//            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+        } else {
+            //LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
+            engineerFee_vat_used = Vat_Rate;
+        }
+
+        engineerVat = engineerVat.add(getEngineerFeeNet());
+        engineerVat = engineerVat.multiply(engineerFee_vat_used);
+
+        setEngineerFeeVat(engineerVat.setScale(2, RoundingMode.HALF_UP));
+
+        engineerGross = engineerGross.add(getEngineerFeeVat());
+        engineerGross = engineerGross.add(getEngineerFeeNet());
+
+        setEngineerFeeGross(engineerGross.setScale(2, RoundingMode.HALF_UP));
+
+        if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue() == 0)) {
+            setTotalLossFee_vat_used(getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" TotalLossFee_vat_used value{} ", getTotalLossFee_vat_used());
+
+//            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+
+        } else {
+            totalLossFee_vat_used = Vat_Rate;
+        }
+
+        totalLossVat = totalLossVat.add(totalLossFee_vat_used);
+        totalLossVat = totalLossVat.multiply(getTotalLossFeeNet());
+
+        setTotalLossFeeVat(totalLossVat.setScale(2, RoundingMode.HALF_UP));
+
+        totalLossGross = totalLossGross.add(getTotalLossFeeNet());
+        totalLossGross = totalLossGross.add(getTotalLossFeeVat());
+
+        setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
+
+        if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue() == 0)) {
+            setStorageRecovery_vat_used(getPreviousStorageVat().divide(getPreviousStorageNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" StorageRecovery_vat_used value{} ", getStorageRecovery_vat_used());
+
+//            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+
+        } else {
+            storageRecovery_vat_used = Vat_Rate;
+        }
+
+        storageRecoveryVat = storageRecoveryVat.add(storageRecovery_vat_used);
+        storageRecoveryVat = storageRecoveryVat.multiply(getStorageRecoveryNet());
+
+        setStorageRecoveryVat(storageRecoveryVat.setScale(2, RoundingMode.HALF_UP));
+
+        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryVat());
+        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryNet());
+
+        setStorageRecoveryGross(storageRecoveryGross.setScale(2, RoundingMode.HALF_UP));
+
+        totalNet = totalNet.add(hireNet);
+        totalNet = totalNet.add(getRepairNet());
+        totalNet = totalNet.add(getEngineerFeeNet());
+        totalNet = totalNet.add(getTotalLossFeeNet());
+        totalNet = totalNet.add(getStorageRecoveryNet());
+
+        setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" totalNet value{} ", totalNet.setScale(2, RoundingMode.HALF_UP));
+
+        totalVat = totalVat.add(hireVat);
+        totalVat = totalVat.add(repairVat);
+        totalVat = totalVat.add(engineerVat);
+        totalVat = totalVat.add(totalLossVat);
+        totalVat = totalVat.add(storageRecoveryVat);
+
+        setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
+//        LOG.debug(" getRepairNet() value{} ", getRepairNet());
+//        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
+
+        totalGross = totalGross.add(hireGross);
+        totalGross = totalGross.add(repairGross);
+        totalGross = totalGross.add(engineerGross);
+        totalGross = totalGross.add(totalLossGross);
+        totalGross = totalGross.add(storageRecoveryGross);
+
+        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+            insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+        }
+        setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
+
+        setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
+        //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
+
+        fullTotalRequested = fullTotalRequested.add(totalGross);
+        fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
+        fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
+        fullTotalRequested = fullTotalRequested.add(getDiscount());
+        fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
+        fullTotalRequested = fullTotalRequested.subtract(insurerDiscountAmount);
+
+        setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
+
+        liablitityPercentage = liablitityPercentage.add(getPercentageLiabilityAccepted());
+        LOG.debug(" liablitityPercentage() value{} ", liablitityPercentage);
+        liablitityPercentage = liablitityPercentage.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+
+        fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
+
+        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
+        }
+        LiabilityStatus l = claim.getLiabilityStatus();
+        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType()) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            setTotalToPay(fullTotalToPay.multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+        } else {
+            setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        }
+//        invoiceOriginalAction.model.setTotalToPayOriginal(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
+    }
+    // </editor-fold>
+}

@@ -692,14 +692,14 @@
 
 
 
-        <action name="getInvoiceRecalculation" class="idas.chox.web.actions.InvoiceRecalculationAction">
+        <action name="getInvoiceRecalculation" class="idas.chox.web.actions.InvoiceDetailAction">
             <result name="w">/jsp/p_invoice_recalculate_w.jsp</result>
             <result name="r">/jsp/p_invoice_recalculate_r.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
 
 
-        <action name="updateInvoiceRecalculation" class="idas.chox.web.actions.InvoiceRecalculationAction" method="updateModel">
+        <action name="updateInvoiceRecalculation" class="idas.chox.web.actions.InvoiceDetailAction" method="updateModel">
             <interceptor-ref name="authenticatedNonce"/>
             
             <result name="success">/jsp/p_invoice_recalculate_w.jsp</result>

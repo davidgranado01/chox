@@ -45,9 +45,9 @@
                                     <td><label class="std-data-ro">£<s:property value="hireRateChargedPerDay" /></label></td>
                                     <td>
 
-                                        <s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
+                                        <s:if test="hireRateChargedPerDay!=hireRateChargedPerDayOriginal&&(hireRateChargedPerDayOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll" id="tooltip">(<s:property value="hireRateChargedPerDay_original" />)</label>
+                                            <label class="chox-ttnum-smalll" id="tooltip">(<s:property value="hireRateChargedPerDayOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -56,9 +56,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="hireNet" /></label></td>
                                     <td>
-                                        <s:if test="hireNet!=hireNet_original&&(hireNet_original!=null)">
+                                        <s:if test="hireNet!=hireNetOriginal&&(hireNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll" >(<s:property value="hireNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll" >(<s:property value="hireNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -67,9 +67,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="hireVat" /></label></td>
                                     <td>
-                                        <s:if test="hireVat!=hireVat_original&&(hireVat_original!=null)">
+                                        <s:if test="hireVat!=hireVatOriginal&&(hireVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="hireVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="hireVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -78,9 +78,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="hireGross" /></label></td>
                                     <td>
-                                        <s:if test="hireGross!=hireGross_original&&(hireGross_original!=null)">
+                                        <s:if test="hireGross!=hireGrossOriginal&&(hireGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="hireGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="hireGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -89,9 +89,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="repairNet" /></label></td>
                                     <td>
-                                        <s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
+                                        <s:if test="repairNet!=repairNetOriginal&&(repairNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="repairNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="repairNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -100,9 +100,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="repairVat" /></label></td>
                                     <td>
-                                        <s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
+                                        <s:if test="repairVat!=repairVatOriginal&&(repairVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="repairVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="repairVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -111,9 +111,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="repairGross" /></label></td>
                                     <td>
-                                        <s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
+                                        <s:if test="repairGross!=repairGrossOriginal&&(repairGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="repairGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="repairGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -122,9 +122,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="engineerFeeNet" /></label></td>
                                     <td>
-                                        <s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
+                                        <s:if test="engineerFeeNet!=engineerFeeNetOriginal&&(engineerFeeNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -133,9 +133,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="engineerFeeVat" /></label></td>
                                     <td>
-                                        <s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
+                                        <s:if test="engineerFeeVat!=engineerFeeVatOriginal&&(engineerFeeVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -144,9 +144,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="engineerFeeGross" /></label></td>
                                     <td>
-                                        <s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
+                                        <s:if test="engineerFeeGross!=engineerFeeGrossOriginal&&(engineerFeeGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -155,9 +155,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalLossFeeNet" /></label></td>
                                     <td>
-                                        <s:if test="totalLossFeeNet!=totalLossFeeNet_original&&(totalLossFeeNet_original!=null)">
+                                        <s:if test="totalLossFeeNet!=totalLossFeeNetOriginal&&(totalLossFeeNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -166,9 +166,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalLossFeeVat" /></label></td>
                                     <td>
-                                        <s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
+                                        <s:if test="totalLossFeeVat!=totalLossFeeVatOriginal&&(totalLossFeeVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -177,9 +177,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalLossFeeGross" /></label></td>
                                     <td>
-                                        <s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
+                                        <s:if test="totalLossFeeGross!=totalLossFeeGrossOriginal&&(totalLossFeeGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -188,9 +188,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="storageRecoveryNet" /></label></td>
                                     <td>
-                                        <s:if test="storageRecoveryNet!=storageRecoveryNet_original&&(storageRecoveryNet_original!=null)">
+                                        <s:if test="storageRecoveryNet!=storageRecoveryNetOriginal&&(storageRecoveryNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -199,9 +199,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="storageRecoveryVat" /></label></td>
                                     <td>
-                                        <s:if test="storageRecoveryVat!=storageRecoveryVat_original&&(storageRecoveryVat_original!=null)">
+                                        <s:if test="storageRecoveryVat!=storageRecoveryVatOriginal&&(storageRecoveryVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -210,9 +210,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="storageRecoveryGross" /></label></td>
                                     <td>
-                                        <s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
+                                        <s:if test="storageRecoveryGross!=storageRecoveryGrossOriginal&&(storageRecoveryGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -221,9 +221,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalNet" /></label></td>
                                     <td>
-                                        <s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
+                                        <s:if test="totalNet!=totalNetOriginal&&(totalNetOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalNet_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalNetOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -232,9 +232,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalVat" /></label></td>
                                     <td>
-                                        <s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
+                                        <s:if test="totalVat!=totalVatOriginal&&(totalVatOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalVat_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalVatOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -243,9 +243,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalGross" /></label></td>
                                     <td>
-                                        <s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
+                                        <s:if test="totalGross!=totalGrossOriginal&&(totalGrossOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalGross_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalGrossOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -254,9 +254,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="claimsHandlingInvoiceAmount" /></label></td>
                                     <td>
-                                        <s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
+                                        <s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmountOriginal&&(claimsHandlingInvoiceAmountOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmountOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -265,9 +265,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="deductionForClaimsHandlingFee" /></label></td>
                                     <td>
-                                        <s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
+                                        <s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFeeOriginal&&(deductionForClaimsHandlingFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -282,9 +282,9 @@
                                     </s:else>
                                     
                                     <td>
-                                        <s:if test="discount!=discount_original&&(discount_original!=null)">
+                                        <s:if test="discount!=discountOriginal&&(discountOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="discountOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -299,9 +299,9 @@
                                     </s:else>
                                     
                                     <td>
-                                        <s:if test="insurerDiscount!=insurer_discount_original&&(insurer_discount_original!=null)">
+                                        <s:if test="insurerDiscount!=insurerDiscountOriginal&&(insurerDiscountOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="insurer_discount_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="insurerDiscountOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -343,8 +343,8 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="fullTotalToPay" /></label></td>
                                     <td>
-                                        <s:if test="fullTotalToPay!=fullTotalToPay_original&&(fullTotalToPay_original!=null)">
-                                            <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPay_original" />)</label>
+                                        <s:if test="fullTotalToPay!=fullTotalToPayOriginal&&(fullTotalToPayOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPayOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -353,9 +353,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalToPay" /></label></td>
                                     <td>
-                                        <s:if test="totalToPay!=totalToPay_original&&(totalToPay_original!=null)">
+                                        <s:if test="totalToPay!=totalToPayOriginal&&(totalToPayOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="totalToPay_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="totalToPayOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -410,7 +410,7 @@
                                     <td>
                                         <s:if test="CanShowOriginalInvoicedDate">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:date format="dd/MM/yyyy" name="dateInvoiced_original" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:date format="dd/MM/yyyy" name="dateInvoicedOriginal" />)</label>
                                         </s:if>
 
                                     </td>
@@ -494,9 +494,9 @@
                                     <td><label class="std-data-ro"><s:property value="vehicleClass.name" /></label></td>
                                     <td>
 
-                                        <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)">
+                                        <s:if test="VehicleClassName!=VehicleClassNameOriginal&&(VehicleClassNameOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassNameOriginal" />)</label>
                                         </s:if>
 
 
@@ -512,7 +512,7 @@
                                     <td>
                                         <s:if test="canShowOriginalStartDate">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy HH:mm" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy HH:mm" name="rentalStartOriginal" /><span id="rentalStart_originalPH"></span>)</label>
                                         </s:if>
 
 
@@ -527,7 +527,7 @@
                                     <td>
                                         <s:if test="canShowOriginalEndDate">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy HH:mm" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy HH:mm" name="rentalEndOriginal" /><span id="rentalEnd_originalPH"></span>)</label>
                                         </s:if>
 
 
@@ -549,9 +549,9 @@
 
 
 
-                                        <s:if test="days!=days_original&&(days_original!=null)">
+                                        <s:if test="days!=daysOriginal&&(daysOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="daysOriginal" />)</label>
                                         </s:if>
 
 
@@ -630,8 +630,8 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="miscellaneousFee" /></label></td>
                                     <td>
-                                        <s:if test="miscellaneousFee!=miscellaneousFee_original&&(miscellaneousFee_original!=null)">
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="miscellaneousFee_original" />)</label>&nbsp;
+                                        <s:if test="miscellaneousFee!=miscellaneousFeeOriginal&&(miscellaneousFeeOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="miscellaneousFeeOriginal" />)</label>&nbsp;
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                         </s:if>
                                     </td>
@@ -642,9 +642,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="automaticFee" /></label></td>
                                     <td>
-                                        <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
+                                        <s:if test="automaticFee!=automaticFeeOriginal&&(automaticFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticFeeOriginal" />)</label>
                                         </s:if>
 
 
@@ -656,9 +656,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="automaticQty" /></label></td>
                                     <td>
-                                        <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
+                                        <s:if test="automaticQty!=automaticQtyOriginal&&(automaticQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticQtyOriginal" />)</label>
                                         </s:if>
 
 
@@ -670,9 +670,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="additionalDriverFee" /></label></td>
                                     <td>
-                                        <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
+                                        <s:if test="additionalDriverFee!=additionalDriverFeeOriginal&&(additionalDriverFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverFeeOriginal" />)</label>
                                         </s:if>
 
 
@@ -684,9 +684,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="additionalDriverQty" /></label></td>
                                     <td>
-                                        <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
+                                        <s:if test="additionalDriverQty!=additionalDriverQtyOriginal&&(additionalDriverQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverQtyOriginal" />)</label>
                                         </s:if>
 
 
@@ -698,9 +698,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="satNavFee" /></label></td>
                                     <td>
-                                        <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
+                                        <s:if test="satNavFee!=satNavFeeOriginal&&(satNavFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavFeeOriginal" />)</label>
                                         </s:if>
 
 
@@ -712,9 +712,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="satNavQty" /></label></td>
                                     <td>
-                                        <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
+                                        <s:if test="satNavQty!=satNavQtyOriginal&&(satNavQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavQtyOriginal" />)</label>
                                         </s:if>
 
 
@@ -726,9 +726,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="estateFee" /></label></td>
                                     <td>
-                                        <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
+                                        <s:if test="estateFee!=estateFeeOriginal&&(estateFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateFeeOriginal" />)</label>
                                         </s:if>
 
 
@@ -740,9 +740,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="estateQty" /></label></td>
                                     <td>
-                                        <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
+                                        <s:if test="estateQty!=estateQtyOriginal&&(estateQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateQtyOriginal" />)</label>
                                         </s:if>
 
 
@@ -754,9 +754,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="babySeatFee" /></label></td>
                                     <td>
-                                        <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
+                                        <s:if test="babySeatFee!=babySeatFeeOriginal&&(babySeatFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatFeeOriginal" />)</label>
                                         </s:if>
 
 
@@ -769,9 +769,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="babySeatQty" /></label></td>
                                     <td>
-                                        <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
+                                        <s:if test="babySeatQty!=babySeatQtyOriginal&&(babySeatQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -781,9 +781,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="towBarsFee" /></label></td>
                                     <td>
-                                        <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
+                                        <s:if test="towBarsFee!=towBarsFeeOriginal&&(towBarsFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -793,9 +793,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="towBarsQty" /></label></td>
                                     <td>
-                                        <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
+                                        <s:if test="towBarsQty!=towBarsQtyOriginal&&(towBarsQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsQtyOriginal" />)</label>
                                         </s:if>
 
 
@@ -807,9 +807,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="nonStandardInsurancePremiumFee" /></label></td>
                                     <td>
-                                        <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
+                                        <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFeeOriginal&&(nonStandardInsurancePremiumFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -819,9 +819,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="nonStandardInsurancePremiumQty" /></label></td>
                                     <td>
-                                        <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
+                                        <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQtyOriginal&&(nonStandardInsurancePremiumQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -836,9 +836,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="adminFee" /></label></td>
                                     <td>
-                                        <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
+                                        <s:if test="adminFee!=adminFeeOriginal&&(adminFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -848,9 +848,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="adminQty" /></label></td>
                                     <td>
-                                        <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
+                                        <s:if test="adminQty!=adminQtyOriginal&&(adminQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -860,9 +860,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="roofRackFee" /></label></td>
                                     <td>
-                                        <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
+                                        <s:if test="roofRackFee!=roofRackFeeOriginal&&(roofRackFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -872,9 +872,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="roofRackQty" /></label></td>
                                     <td>
-                                        <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
+                                        <s:if test="roofRackQty!=roofRackQtyOriginal&&(roofRackQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -884,9 +884,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="dualControlFee" /></label></td>
                                     <td>
-                                        <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
+                                        <s:if test="dualControlFee!=dualControlFeeOriginal&&(dualControlFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -896,9 +896,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="dualControlQty" /></label></td>
                                     <td>
-                                        <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
+                                        <s:if test="dualControlQty!=dualControlQtyOriginal&&(dualControlQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -908,9 +908,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="deliveryCollectionFee" /></label></td>
                                     <td>
-                                        <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
+                                        <s:if test="deliveryCollectionFee!=deliveryCollectionFeeOriginal&&(deliveryCollectionFeeOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFee_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFeeOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -920,9 +920,9 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="deliveryCollectionQty" /></label></td>
                                     <td>
-                                        <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
+                                        <s:if test="deliveryCollectionQty!=deliveryCollectionQtyOriginal&&(deliveryCollectionQtyOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQty_original" />)</label>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQtyOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>

@@ -9,77 +9,77 @@
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
-        <property column="date_invoiced" name="dateInvoiced_original" />
-        <property column="hire_net" name="hireNet_original"/>
-        <property column="hire_vat" name="hireVat_original"/>
-        <property column="hire_gross" name="hireGross_original"/>
-        <property column="repair_net" name="repairNet_original"/>
-        <property column="repair_vat" name="repairVat_original"/>
-        <property column="repair_gross" name="repairGross_original"/>
-        <property column="engineer_fee_net" name="engineerFeeNet_original"/>
-        <property column="engineer_fee_vat" name="engineerFeeVat_original"/>
-        <property column="engineer_fee_gross" name="engineerFeeGross_original"/>
-        <property column="storage_recovery_net" name="storageRecoveryNet_original"/>
-        <property column="storage_recovery_vat" name="storageRecoveryVat_original"/>
-        <property column="storage_recovery_gross" name="storageRecoveryGross_original"/>
-        <property column="total_loss_net" name="totalLossFeeNet_original"/>
-        <property column="total_loss_vat" name="totalLossFeeVat_original"/>
-        <property column="total_loss_gross" name="totalLossFeeGross_original"/>
-        <property column="total_net" name="totalNet_original"/>
-        <property column="total_vat" name="totalVat_original"/>
-        <property column="total_gross" name="totalGross_original"/>
-        <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmount_original"/>
-        <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee_original"/>
-        <property column="discount" name="discount_original"/>
-        <property column="insurer_discount" name="insurer_discount_original"/>
-        <property column="full_total_to_pay" name="fullTotalToPay_original"/>
-        <property column="total_to_pay" name="totalToPay_original"/>
-        <property column="original_full_total_to_pay" name="originalFullTotalToPay_original"/>
-        <property column="original_total_to_pay" name="originalTotalToPay_original"/>
+        <property column="date_invoiced" name="dateInvoicedOriginal" />
+        <property column="hire_net" name="hireNetOriginal"/>
+        <property column="hire_vat" name="hireVatOriginal"/>
+        <property column="hire_gross" name="hireGrossOriginal"/>
+        <property column="repair_net" name="repairNetOriginal"/>
+        <property column="repair_vat" name="repairVatOriginal"/>
+        <property column="repair_gross" name="repairGrossOriginal"/>
+        <property column="engineer_fee_net" name="engineerFeeNetOriginal"/>
+        <property column="engineer_fee_vat" name="engineerFeeVatOriginal"/>
+        <property column="engineer_fee_gross" name="engineerFeeGrossOriginal"/>
+        <property column="storage_recovery_net" name="storageRecoveryNetOriginal"/>
+        <property column="storage_recovery_vat" name="storageRecoveryVatOriginal"/>
+        <property column="storage_recovery_gross" name="storageRecoveryGrossOriginal"/>
+        <property column="total_loss_net" name="totalLossFeeNetOriginal"/>
+        <property column="total_loss_vat" name="totalLossFeeVatOriginal"/>
+        <property column="total_loss_gross" name="totalLossFeeGrossOriginal"/>
+        <property column="total_net" name="totalNetOriginal"/>
+        <property column="total_vat" name="totalVatOriginal"/>
+        <property column="total_gross" name="totalGrossOriginal"/>
+        <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmountOriginal"/>
+        <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFeeOriginal"/>
+        <property column="discount" name="discountOriginal"/>
+        <property column="insurer_discount" name="insurerDiscountOriginal"/>
+        <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
+        <property column="total_to_pay" name="totalToPayOriginal"/>
+        <property column="original_full_total_to_pay" name="originalFullTotalToPayOriginal"/>
+        <property column="original_total_to_pay" name="originalTotalToPayOriginal"/>
        
-        <property column="miscellaneous_fee" name="miscellaneousFee_original"/>
-        <property column="miscellaneous_qty" name="miscellaneousQty_original"/>
-        <property column="automatic_fee" name="automaticFee_original"/>
-        <property column="automatic_qty" name="automaticQty_original"/>
-        <property column="additional_driver_fee" name="additionalDriverFee_original"/>
-        <property column="additional_driver_qty" name="additionalDriverQty_original"/>
-        <property column="sat_nav_fee" name="satNavFee_original"/>
-        <property column="sat_nav_qty" name="satNavQty_original"/>
-        <property column="estate_fee" name="estateFee_original"/>
-        <property column="estate_qty" name="estateQty_original"/>
-        <property column="baby_seat_fee" name="babySeatFee_original"/>
-        <property column="baby_seat_qty" name="babySeatQty_original"/>
-        <property column="tow_bars_fee" name="towBarsFee_original"/>
-        <property column="tow_bars_qty" name="towBarsQty_original"/>
-        <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee_original"/>
-        <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty_original"/>
+        <property column="miscellaneous_fee" name="miscellaneousFeeOriginal"/>
+        <property column="miscellaneous_qty" name="miscellaneousQtyOriginal"/>
+        <property column="automatic_fee" name="automaticFeeOriginal"/>
+        <property column="automatic_qty" name="automaticQtyOriginal"/>
+        <property column="additional_driver_fee" name="additionalDriverFeeOriginal"/>
+        <property column="additional_driver_qty" name="additionalDriverQtyOriginal"/>
+        <property column="sat_nav_fee" name="satNavFeeOriginal"/>
+        <property column="sat_nav_qty" name="satNavQtyOriginal"/>
+        <property column="estate_fee" name="estateFeeOriginal"/>
+        <property column="estate_qty" name="estateQtyOriginal"/>
+        <property column="baby_seat_fee" name="babySeatFeeOriginal"/>
+        <property column="baby_seat_qty" name="babySeatQtyOriginal"/>
+        <property column="tow_bars_fee" name="towBarsFeeOriginal"/>
+        <property column="tow_bars_qty" name="towBarsQtyOriginal"/>
+        <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFeeOriginal"/>
+        <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQtyOriginal"/>
        
-        <property column="admin_fee" name="adminFee_original"/>
-        <property column="admin_qty" name="adminQty_original"/>
-        <property column="roof_rack_fee" name="roofRackFee_original"/>
-        <property column="roof_rack_qty" name="roofRackQty_original"/>
-        <property column="dual_control_fee" name="dualControlFee_original"/>
-        <property column="dual_control_qty" name="dualControlQty_original"/>
-        <property column="delivery_collection_fee" name="deliveryCollectionFee_original"/>
-        <property column="delivery_collection_qty" name="deliveryCollectionQty_original"/>
+        <property column="admin_fee" name="adminFeeOriginal"/>
+        <property column="admin_qty" name="adminQtyOriginal"/>
+        <property column="roof_rack_fee" name="roofRackFeeOriginal"/>
+        <property column="roof_rack_qty" name="roofRackQtyOriginal"/>
+        <property column="dual_control_fee" name="dualControlFeeOriginal"/>
+        <property column="dual_control_qty" name="dualControlQtyOriginal"/>
+        <property column="delivery_collection_fee" name="deliveryCollectionFeeOriginal"/>
+        <property column="delivery_collection_qty" name="deliveryCollectionQtyOriginal"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
        
         
        
        
-        <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay_original"/>
-        <property column="excess_amount_collected" name="excessAmountCollected_original"/>
-        <property column="vat_amount_collected" name="vatAmountCollected_original"/>
-        <property column="hire_penalty_charge" name="hirePenaltyCharge_original"/>
-        <property column="hire_penalty_percentage" name="hirePenaltyPercentage_original"/>
-        <property column="repair_penalty_charge" name="repairPenaltyCharge_original"/>
-        <property column="repair_penalty_percentage" name="repairPenaltyPercentage_original"/>
-        <property column="total_penalty_charge" name="totalPenaltyCharge_original"/>
-        <property column="penalty_alert_qty" name="penaltyAlertQty_original"/>
+        <property column="hire_rate_charged_per_day" name="hireRateChargedPerDayOriginal"/>
+        <property column="excess_amount_collected" name="excessAmountCollectedOriginal"/>
+        <property column="vat_amount_collected" name="vatAmountCollectedOriginal"/>
+        <property column="hire_penalty_charge" name="hirePenaltyChargeOriginal"/>
+        <property column="hire_penalty_percentage" name="hirePenaltyPercentageOriginal"/>
+        <property column="repair_penalty_charge" name="repairPenaltyChargeOriginal"/>
+        <property column="repair_penalty_percentage" name="repairPenaltyPercentageOriginal"/>
+        <property column="total_penalty_charge" name="totalPenaltyChargeOriginal"/>
+        <property column="penalty_alert_qty" name="penaltyAlertQtyOriginal"/>
         
         
-        <property column="interim_payment_amount" name="interimPayment_original"/>
+        <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

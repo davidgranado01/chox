@@ -51,7 +51,7 @@ public class Claim extends Entity implements Serializable {
     private Customer customer;
     private Incident incident;
     private Invoice invoice;
-    private InvoiceOriginal invoice_original;
+    private InvoiceOriginal invoiceOriginal;
     private ThirdParty thirdParty;
     private VehicleHire vehicleHire;
     private EngineerReport engineerReport;
@@ -136,12 +136,12 @@ public class Claim extends Entity implements Serializable {
         this.tpiClaimStatus = TpiClaimStatus;
     }
 
-    public InvoiceOriginal getInvoice_original() {
-        return invoice_original;
+    public InvoiceOriginal getInvoiceOriginal() {
+        return invoiceOriginal;
     }
 
-    public void setInvoice_original(InvoiceOriginal invoice_original) {
-        this.invoice_original = invoice_original;
+    public void setInvoiceOriginal(InvoiceOriginal invoiceOriginal) {
+        this.invoiceOriginal = invoiceOriginal;
     }
 
     public boolean isManagingRepair() {
