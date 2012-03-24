@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,7 +31,7 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
 		if (claim.getInvoice().getInterimPaymentMade().compareTo(BigDecimal.ZERO) > 0) {
-			//XXXclaim.getInvoice().setInterimPaymentReceived(true);
+			claim.addComment(Comment.New(0, "The interim payment of £" + partialInterimPayment.toString() + " has been received."));
 			claim.getInvoice().setInterimPaymentReceived(partialInterimPayment);
 		} else {
 			LOG.error("Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",

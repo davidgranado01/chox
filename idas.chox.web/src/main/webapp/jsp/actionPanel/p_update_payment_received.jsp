@@ -2,7 +2,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-	var partialInterimPayment = <s:property value="outstandingInterimPayment" />;
+var partialInterimPayment = <s:property value="outstandingInterimPayment" />;
+var finalToPay = 0;
+<s:if test="finalToPay > 0">
+finalToPay = <s:property value="finalToPay" />;
+</s:if>
+var interimPaymentMade = <s:property value="interimPaymentMade" />;
 var confPayRec;
 
 Ext.onReady(function(){
@@ -29,14 +34,14 @@ Ext.onReady(function(){
 	        {
 	            fieldLabel: 'Amount Received',
 	            id : 'amountReceivedId',
-	            name: 'partialInterimPayment',
-	            value: partialInterimPayment.toFixed(2),
+	            name: 'interimPaymentMade',
+	            value: finalToPay.toFixed(2),
 	            blankText: 'Cofirm Amount Received'
 	        },{
 	            xtype : 'hidden',
 	            id : 'actionId',
 	            name : 'name',
-	            value : 'invoicePaymentReceived'
+	            value : 'notFullPaymentReceived'
 	        },{
 	            xtype : 'hidden',
 	            id : 'nonceId',
@@ -72,14 +77,7 @@ Ext.onReady(function(){
 	                        }
 	                    },
 	                    failure : function(f, a) {
-	                        /* Ext.MessageBox.show({
-	                            title: 'Error',
-	                            msg: a.result.errors,
-	                            width:300,
-	                            buttons: Ext.MessageBox.OK,
-	                            icon : Ext.MessageBox.ERROR
-	                        });  */
-	                    	confPayRec.hide();
+	                    	 	confPayRec.hide();
 	                            Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
 	                            var queryString = $('#logInvoicePayment').formSerialize();
                                 window.location = contextPath+"/prv/processClaim.action?" + queryString;
@@ -117,14 +115,14 @@ function confirmNotFullPayRec(){
     function doUpdatePaymentReceived(action) {
     	
     	$("#formUpdatePaymentReceivedName").val(action);
-    	if (action=='fullInvoicePaymentReceived') {
+    	if (action=='updateInterimPaymentFullAndFinal') {
             if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
             	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
             			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
             }else{
             	$("form#formUpdatePaymentReceived").submit();
             }
-        } else if (action == 'invoicePaymentReceived') {
+        } else if (action == 'notFullPaymentReceived') {
         	confirmNotFullPayRec();
         } else {
         	$("form#formUpdatePaymentReceived").submit();
@@ -166,8 +164,8 @@ function confirmNotFullPayRec(){
                     </tr>
                     <tr>
                         <td colspan="3">
-                        	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('fullInvoicePaymentReceived');" />
-                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                        	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('updateInterimPaymentFullAndFinal');" />
+                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('notFullPaymentReceived');" />
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
                                 <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>

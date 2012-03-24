@@ -132,7 +132,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String repairPenaltyPercentage;
     private BigDecimal interimPaymentMade;
     private BigDecimal interimPaymentReceived;
-    private BigDecimal partialInterimPayment;
     private ButtonAccessibility buttonAccessibility;
     private int actionSelected;
     private String nonce;
@@ -547,7 +546,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
         setInterimPaymentMade(invoice.getInterimPaymentMade());
-//        setInterimPaymentReceived(invoice.isInterimPaymentReceived());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
@@ -2216,10 +2214,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-	public void setPartialInterimPayment(BigDecimal partialInterimPayment) {
-		this.partialInterimPayment = partialInterimPayment;
-	}
-	
 	public BigDecimal getOutstandingInterimPayment() {
         interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
 		if(interimPaymentReceived == null)

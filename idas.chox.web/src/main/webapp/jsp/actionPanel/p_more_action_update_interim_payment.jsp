@@ -16,14 +16,18 @@
             messages: {
             	partialInterimPayment: {
             		number: "Invalid 'Interim Payment' Format",
-                    required:"You must supply a value for 'Claim Number'",
-                    max:"The supplied value cannot be bigger than the current interim ammount."
+                    required:"You must supply a value for 'Interim Payment Amount'",
+                    max:"The supplied value cannot be bigger than the current interim amount."
                 }
             }
      });
      
     function updateInterimPaymentAction(action){
-    	if($("form#formUpdateInterimPayment").valid()){
+    	if(action == 'updateInterimPaymentFullAndFinal'){
+    		$("#updateInterimPaymentFormNameId").val(action);
+        	$('#formUpdateInterimPayment').submit();
+    	}
+    	else if($("form#formUpdateInterimPayment").valid()){
             $("#updateInterimPaymentFormNameId").val(action);
             $('#formUpdateInterimPayment').submit();
         }

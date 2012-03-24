@@ -47,7 +47,8 @@
     <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" scope="prototype"/>
     <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" scope="prototype"/>
     <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" scope="prototype"/>
-    <bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
+    <bean id="notFullPaymentReceived" class="idas.chox.service.workflow.activities.NotFullPaymentReceived" scope="prototype"/>
+	<bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
@@ -85,7 +86,7 @@
         <property name="chainActivity" ref="newInvoice" />
     </bean>
     <bean id="updateInterimPaymentFullAndFinal" class="idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal" scope="prototype">
-        <property name="chainActivity" ref="invoicePaymentReceived" />
+<!--         <property name="chainActivity" ref="invoicePaymentReceived" /> -->
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype"/>
