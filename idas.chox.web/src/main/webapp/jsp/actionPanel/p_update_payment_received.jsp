@@ -41,7 +41,7 @@ Ext.onReady(function(){
 	            xtype : 'hidden',
 	            id : 'actionId',
 	            name : 'name',
-	            value : 'notFullPaymentReceived'
+	            value : 'fullPaymenAmountNotReceived'
 	        },{
 	            xtype : 'hidden',
 	            id : 'nonceId',
@@ -122,7 +122,7 @@ function confirmNotFullPayRec(){
             }else{
             	$("form#formUpdatePaymentReceived").submit();
             }
-        } else if (action == 'notFullPaymentReceived') {
+        } else if (action == 'fullPaymenAmountNotReceived') {
         	confirmNotFullPayRec();
         } else {
         	$("form#formUpdatePaymentReceived").submit();
@@ -165,7 +165,7 @@ function confirmNotFullPayRec(){
                     <tr>
                         <td colspan="3">
                         	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('updateInterimPaymentFullAndFinal');" />
-                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('notFullPaymentReceived');" />
+                            <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymenAmountNotReceived');" />
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
                                 <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
