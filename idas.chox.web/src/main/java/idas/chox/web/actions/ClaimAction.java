@@ -1789,11 +1789,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getFinalPayment() {
-        if (finalPayment == null && claim.getInvoice() != null) {
+        if (claim.getInvoice() != null && finalPayment == null) {
         	finalPayment = claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentMade());
-        } else {
-            finalPayment =  BigDecimal.ZERO;
-        }
+        } 
         
         return finalPayment;
     }
@@ -1812,14 +1810,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claim.getInvoice() != null) {
             try {
                 Invoice inv = claim.getInvoice();
-//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+                
+//                boolean hasFinalPaymentChanged = inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment;
+//                if(hasFinalPaymentChanged  && hirePenaltyChargePaid != null && inv.getTotalToPay() == null) 
 //                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
-//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £"));
-//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
+//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid != null)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay()));
+//                else if(hasFinalPaymentChanged  && hirePenaltyChargePaid == null && inv.getTotalToPay() == null)
 //                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
-//                if(inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £y (penalty charges have not been paid)."));
+//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid == null)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay() + " (penalty charges have not been paid)."));
+                
                 if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
                     inv.setHireGrossPaid(inv.getHireGross());
                     inv.setRepairGrossPaid(inv.getRepairGross());

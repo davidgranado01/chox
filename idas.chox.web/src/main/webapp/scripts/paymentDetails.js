@@ -130,31 +130,61 @@ Ext.onReady(function(){
             id : 'hireGrossId',
             name: 'hireGrossPaid',
             value: hireGrossPaid,
-            blankText: 'Hire Gross Paid is required'
+            blankText: 'Hire Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Repair Gross Paid',
             id : 'repairGrossId',
             name: 'repairGrossPaid',
             value: repairGrossPaid,
-            blankText: 'Repair Gross Paid is required'
+            blankText: 'Repair Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Engineer Fee Gross Paid',
             id : 'engineerGrossId',
             name: 'engineerFeeGrossPaid',
             value: engineerFeeGrossPaid,
-            blankText: 'Engineer Fee Gross Paid is required'
+            blankText: 'Engineer Fee Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         }, {
             fieldLabel: 'Total Loss Fee Gross Paid',
             id : 'totalLossFeeGrossId',
             name: 'totalLossFeeGrossPaid',
             value: totalLossFeeGrossPaid,
-            blankText: 'Total Loss Fee Gross Paid is required'
+            blankText: 'Total Loss Fee Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Storage Recovery Gross Paid',
             id : 'storageRecoveryGrossId',
             name: 'storageRecoveryGrossPaid',
             value: storageRecoveryGrossPaid,
-            blankText: 'Storage Recovery Gross Paid is required'
+            blankText: 'Storage Recovery Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Hire Penalty Charges Paid',
             id : 'hirePenaltyId',
@@ -167,6 +197,7 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('repairPenaltyId').validate();
+                    calculateFinalPayment();
                 },
                 afterrender : function(){
                     if(!panaltyChargeApplied){
@@ -191,6 +222,7 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('hirePenaltyId').validate();
+                    calculateFinalPayment();
                 },
                 afterrender : function(){
                     if(!panaltyChargeApplied){
@@ -214,6 +246,12 @@ Ext.onReady(function(){
             style: {
                 'text-align':'right',
                 background: '#e4e4e4'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'Deduction For Claims Handling Fee',
@@ -226,6 +264,12 @@ Ext.onReady(function(){
             style: {
                 'text-align':'right',
                 background: '#e4e4e4'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'CHO Discount',
@@ -241,6 +285,12 @@ Ext.onReady(function(){
                 'text-align':'right',
                 background: '#e4e4e4',
                 color:'red'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'Insurer Discount',
@@ -256,6 +306,12 @@ Ext.onReady(function(){
                 'text-align':'right',
                 background: '#e4e4e4',
                 color:'red'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'Total To Pay',
@@ -423,6 +479,24 @@ Ext.onReady(function(){
     	Ext.getCmp('totalToPayId').enable();
     	Ext.getCmp('finalPayId').enable();
     	Ext.getCmp('interimPayId').enable();
+    }
+    
+    function calculateFinalPayment(){
+    	var finaPayment = 
+    	Ext.getCmp('repairGrossId').getValue() +
+    	Ext.getCmp('hireGrossId').getValue() +
+    	Ext.getCmp('engineerGrossId').getValue() +
+    	Ext.getCmp('totalLossFeeGrossId').getValue() +
+    	Ext.getCmp('storageRecoveryGrossId').getValue() +
+    	Ext.getCmp('hirePenaltyId').getValue() +
+    	Ext.getCmp('repairPenaltyId').getValue() +
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').getValue() +
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').getValue() +
+    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
+    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').getValue();
+    	
+    	Ext.getCmp('finalPayId').setValue(finaPayment);
     }
     
     disablePayFields();
