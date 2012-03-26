@@ -5,10 +5,11 @@
 
     $(function(){
 
-        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
+            ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalMonitoringStartPH');
 
         var rentalStartTimPicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
+            id : 'rentalStartTimePickerHMVId',
             width: 100,
             allowBlank: true,
             validationEvent : false,
