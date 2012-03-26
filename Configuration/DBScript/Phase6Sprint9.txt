@@ -2104,7 +2104,7 @@ update invoice
     set interim_payment_received = interim_payment_made
 where interim_payment_received_full_final  = true;
 
-ALTER TABLE insurer DROP COLUMN interim_payment_received_old;
+ALTER TABLE invoice DROP COLUMN interim_payment_received_old;
 
 ----------------------------------------------------------------------
 -- BUG#1549 Allow .zip files to be added as an attachment to a claim
