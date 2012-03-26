@@ -7,22 +7,22 @@
 	<script src="<%= request.getContextPath()%>/scripts/paymentDetails-min.js" type="text/javascript"></script>
 </s:else>
 <script type="text/javascript">
-    var panaltyChargeApplied = <s:property value="PenaltyChargeApplied"/>;
-    var hireGrossPaid = <s:property value="hireGrossPaid"/>;
-    var repairGrossPaid = <s:property value="repairGrossPaid"/>;
-    var engineerFeeGrossPaid = <s:property value="engineerFeeGrossPaid"/>;
-    var totalLossFeeGrossPaid = <s:property value="totalLossFeeGrossPaid"/>;
-    var storageRecoveryGrossPaid = <s:property value="storageRecoveryGrossPaid"/>;
-    var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
-    var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
-    var finalPayment = <s:property value="finalPayment"/>;
-    var totalToPay = <s:property value="totalToPay"/>;
-    var paymentDetailsCHODiscount = <s:property value="paymentDetailsCHODiscount"/>;
-    var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDiscount"/>;
-    var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
-    var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
-    var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
-    var nonce = '<%= session.getAttribute("SessionNonce")%>';
+var penaltyChargeApplied = new Boolean(<s:property value="penaltyChargeApplied"/>);
+var hireGrossPaid = <s:property value="hireGrossPaid"/>;
+var repairGrossPaid = <s:property value="repairGrossPaid"/>;
+var engineerFeeGrossPaid = <s:property value="engineerFeeGrossPaid"/>;
+var totalLossFeeGrossPaid = <s:property value="totalLossFeeGrossPaid"/>;
+var storageRecoveryGrossPaid = <s:property value="storageRecoveryGrossPaid"/>;
+var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
+var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
+var outstandingPayment = <s:property value="projectedFinalPayment"/>;
+var totalToPay = <s:property value="totalToPay"/>;
+var paymentDetailsCHODiscount = <s:property value="paymentDetailsCHODiscount"/>;
+var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDiscount"/>;
+var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
+var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
+var interimPaymentAmount = <s:property value="interimPaymentMade"/>;
+var nonce = '<%= session.getAttribute("SessionNonce")%>';
     
     function callInterimPayment(){
     	 var target = "#moreActionPanel";
@@ -54,7 +54,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/>
+                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentLogAction();"/>
                             <input type="button" id="interimPaydButtonId"value="Make Interim Payment" onclick="callInterimPayment();"/></td>
                         </tr>
                     </table>

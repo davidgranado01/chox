@@ -44,6 +44,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
@@ -52,6 +53,8 @@ import idas.chox.service.security.ButtonAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.ClaimRevert;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -68,6 +71,7 @@ import org.springframework.security.access.annotation.Secured;
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
+    private ActivityFactory activityFactory;
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
     private JSONArray jObject;
@@ -143,6 +147,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal storageRecoveryGrossPaid;
     private BigDecimal hirePenaltyChargePaid;
     private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal projectedFinalPayment;
     private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private String jsonData;
@@ -166,6 +171,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getStatusMsg() {
         return statusMsg;
+    }
+
+    public void setActivityFactory(ActivityFactory activityFactory) {
+        this.activityFactory = activityFactory;
     }
 
     public void setStatusMsg(String statusMsg) {
@@ -197,13 +206,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
-    }
-
-    public boolean isPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
-            return true;
-        }
-        return false;
     }
 
     public int getLiabilityStatusValue() {
@@ -488,11 +490,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         			additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
 	            
 	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
-	            	comment = Comment.New(0, "The interim payment has been removed");
+	            	comment = Comment.New(0, "The interim payment made has been removed");
 	            else if (claim.getInvoice().getInterimPaymentMade() != null)
 	            	comment = Comment.New(0, "The interim payment has been modified to a new total of £" + newTotalInterimPayment.toString());
 	            else
-	            	comment = Comment.New(0, "The interim of £" + newTotalInterimPayment.toString() + " has been made." );
+	            	comment = Comment.New(0, "An interim payment of £" + newTotalInterimPayment.toString() + " has been made." );
 	            
 	            claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
         	} else if (additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0) {
@@ -510,6 +512,116 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return SUCCESS;
+    }
+    
+    
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+    public String fullPaymentNotReceived() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (claim.getInvoice().getInterimPaymentMade() != null)
+                claim.getInvoice().setInterimPaymentMade(claim.getInvoice().getInterimPaymentMade().add(interimPaymentReceived));
+            else
+                claim.getInvoice().setInterimPaymentMade(interimPaymentReceived);
+            if (claim.getInvoice().getInterimPaymentReceived() != null)
+                claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentReceived().add(interimPaymentReceived));
+            else
+                claim.getInvoice().setInterimPaymentReceived(interimPaymentReceived);
+            LOG.debug("Claim updated...");
+            Activity claimRevertActivity = activityFactory.getActivity("revertClaim");
+//            service.revertClaim(claim.getId(), interimPaymentReceived);
+            ((ClaimRevert)claimRevertActivity).setAmountReceived(interimPaymentReceived);
+            try {
+                LOG.debug("Calling revert activity...");
+                claimRevertActivity.process(claim);
+                jsonObject.put("success", Boolean.TRUE);
+                jsonObject.put("message", claimRevertActivity.getMessage());
+                setJsonData(jsonObject.toString());
+                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+            } catch(AccessDeniedException ex) {
+                LOG.error("AccessDenied Error processing 'revertClaim' activity for 'fullPaymentNotReceived': {}",ex.getMessage());
+                throw(ex);
+            } catch (Exception ex) {
+                LOG.error("Error processing 'revertClaim' activity for 'fullPaymentNotReceived': {}",ex.getMessage());
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("message", "An internal error occurred while updating this claim. Please contact CHOX support.");
+                setJsonData(jsonObject.toString());
+                return ERROR;
+            }
+ //           LOG.debug("Updating claim...");
+ //           this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown moving a full payment to an interime payment on claim '{}': ", claim.getChoReference(), ex);
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("message", "An internal error occurred while updating this claim. Please contact CHOX support.");
+            setJsonData(jsonObject.toString());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+ 
+    public String updatePaymentDetails() {
+        JSONObject jsonObject = new JSONObject();
+        if (claim.getInvoice() != null) {
+            try {
+                Invoice inv = claim.getInvoice();
+                // TODO - need to check invoice version with version in session
+                
+//                boolean hasFinalPaymentChanged = inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment;
+//                if(hasFinalPaymentChanged  && hirePenaltyChargePaid != null && inv.getTotalToPay() == null) 
+//                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
+//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid != null)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay()));
+//                else if(hasFinalPaymentChanged  && hirePenaltyChargePaid == null && inv.getTotalToPay() == null)
+//                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
+//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid == null)
+//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay() + " (penalty charges have not been paid)."));
+                
+                if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
+                    inv.setHireGrossPaid(inv.getHireGross());
+                    inv.setRepairGrossPaid(inv.getRepairGross());
+                    inv.setEngineerFeeGrossPaid(inv.getEngineerFeeGross());
+                    inv.setTotalLossFeeGrossPaid(inv.getTotalLossFeeGross());
+                    inv.setStorageRecoveryGrossPaid(inv.getStorageRecoveryGross());
+                    inv.setHirePenaltyChargePaid(inv.getHirePenaltyCharge());
+                    inv.setRepairPenaltyChargePaid(inv.getRepairPenaltyCharge());
+                    if (inv.getInterimPaymentMade() != null)
+                        inv.setFinalPayment(inv.getTotalToPay().subtract(inv.getInterimPaymentMade()));
+                    else
+                        inv.setFinalPayment(inv.getTotalToPay());
+                    inv.setPenaltyChargesPaid(Boolean.TRUE);                  
+                }
+                else {
+                    inv.setHireGrossPaid(hireGrossPaid);
+                    inv.setRepairGrossPaid(repairGrossPaid);
+                    inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
+                    inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
+                    inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
+                    inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
+                    inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
+                    inv.setFinalPayment(finalPayment);
+                    inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                }
+                service.updateClaim(claim);
+                LOG.debug("PaymentDetails added:  finalPayment={}", projectedFinalPayment);
+                jsonObject.put("success", Boolean.TRUE);
+                jsonObject.put("message", "Payment details updated successfully.");
+                setJsonData(jsonObject.toString());
+                return SUCCESS;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown while updating payment details, error message : {}", ex.getMessage());
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", "An unexpected error occured while updating payment details. Please report to CHOX support.");
+                setJsonData(jsonObject.toString());
+                return ERROR;
+            }
+        } else {
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("errors", "Sorry - This claim do not have invoice.");
+            setJsonData(jsonObject.toString());
+            return ERROR;
+        }
     }
 
     public String getCreatedByDesc() {
@@ -1708,6 +1820,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.engineerFeeGrossPaid = engineerFeeGrossPaid;
     }
 
+    public boolean isPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+            return true;
+        
+        return false;
+    }
+    
+    public boolean getPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+            return true;
+        
+        return false;
+    }
+    
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
             return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1788,84 +1914,42 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
     }
 
+    public BigDecimal getProjectedFinalPayment() {
+        if (claim.getInvoice() != null && projectedFinalPayment == null) {
+        	projectedFinalPayment = claim.getInvoice().getTotalToPay().subtract(getInterimPaymentMade());
+        } 
+        
+        return projectedFinalPayment;
+    }
+    
     public BigDecimal getFinalPayment() {
         if (claim.getInvoice() != null && finalPayment == null) {
-        	finalPayment = claim.getInvoice().getFullTotalToPay().subtract(getInterimPaymentMade());
+        	finalPayment = claim.getInvoice().getFinalPayment();
         } 
         
         return finalPayment;
     }
     
+    public BigDecimal getFinalPaymentOrTotal() {
+        BigDecimal finalPaymentOrTotal = finalPayment;
+        if (claim.getInvoice() != null && finalPaymentOrTotal == null) {
+        	finalPaymentOrTotal = claim.getInvoice().getFinalPayment();
+            if (finalPaymentOrTotal == null)
+                finalPaymentOrTotal = claim.getInvoice().getTotalToPay();
+        } 
+        
+        return finalPaymentOrTotal;
+    }
+    
     public BigDecimal getTotalToPay(){
     	 if (claim.getInvoice() != null) {
-         	return claim.getInvoice().getFullTotalToPay();
+         	return claim.getInvoice().getTotalToPay();
          } else {
              return BigDecimal.ZERO;
          }
     }
     
 
-    public String updatePaymentDetails() {
-        JSONObject jsonObject = new JSONObject();
-        if (claim.getInvoice() != null) {
-            try {
-                Invoice inv = claim.getInvoice();
-                
-//                boolean hasFinalPaymentChanged = inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment;
-//                if(hasFinalPaymentChanged  && hirePenaltyChargePaid != null && inv.getTotalToPay() == null) 
-//                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
-//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid != null)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay()));
-//                else if(hasFinalPaymentChanged  && hirePenaltyChargePaid == null && inv.getTotalToPay() == null)
-//                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
-//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid == null)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay() + " (penalty charges have not been paid)."));
-                
-                if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
-                    inv.setHireGrossPaid(inv.getHireGross());
-                    inv.setRepairGrossPaid(inv.getRepairGross());
-                    inv.setEngineerFeeGrossPaid(inv.getEngineerFeeGross());
-                    inv.setTotalLossFeeGrossPaid(inv.getTotalLossFeeGross());
-                    inv.setStorageRecoveryGrossPaid(inv.getStorageRecoveryGross());
-                    inv.setHirePenaltyChargePaid(inv.getHirePenaltyCharge());
-                    inv.setRepairPenaltyChargePaid(inv.getRepairPenaltyCharge());
-                    if (inv.getInterimPaymentMade() != null)
-                        inv.setFinalPayment(inv.getTotalToPay().subtract(inv.getInterimPaymentMade()));
-                    else
-                        inv.setFinalPayment(inv.getTotalToPay());
-                    inv.setPenaltyChargesPaid(Boolean.TRUE);                  
-                }
-                else {
-                    inv.setHireGrossPaid(hireGrossPaid);
-                    inv.setRepairGrossPaid(repairGrossPaid);
-                    inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
-                    inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
-                    inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
-                    inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
-                    inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
-                    inv.setFinalPayment(finalPayment);
-                    inv.setPenaltyChargesPaid(penaltyChargesPaid);
-                }
-                service.updateClaim(claim);
-                LOG.debug("PaymentDetails added:  finalPayment={}", finalPayment);
-                jsonObject.put("success", Boolean.TRUE);
-                jsonObject.put("message", "Payment details updated successfully.");
-                setJsonData(jsonObject.toString());
-                return SUCCESS;
-            } catch (Exception ex) {
-                LOG.error("Exception thrown while updating payment details, error message : {}", ex.getMessage());
-                jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("errors", "An unexpected error occured while updating payment details. Please report to CHOX support.");
-                setJsonData(jsonObject.toString());
-                return ERROR;
-            }
-        } else {
-            jsonObject.put("success", Boolean.FALSE);
-            jsonObject.put("errors", "Sorry - This claim do not have invoice.");
-            setJsonData(jsonObject.toString());
-            return ERROR;
-        }
-    }
 
     // </editor-fold>
     public ButtonAccessibility getButtonAccessibility() {
@@ -1960,6 +2044,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.buttonAccessibility = buttonAccessibility;
     }
 
+    public boolean isAtInvoicePaymentLogged() {
+        return ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus());
+    }
+    
     public boolean isPaymentLoggedOverDays() {
         Date loggedDate = claim.getStatusModifiedDate();
 

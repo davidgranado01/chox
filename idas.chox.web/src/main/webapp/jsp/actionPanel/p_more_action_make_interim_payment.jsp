@@ -105,10 +105,10 @@
              <s:if test="(interimPaymentMade > 0) || (interimPaymentReceived > 0)">
 	            <div class="status-info">
 	            <s:if test="interimPaymentMade > 0">
-	                 An interim payment of £<s:property value="interimPaymentMade" /> has been made on this claim.<br/>
+	                 An interim payment of £<s:property value="interimPaymentMade" /> has already been made on this claim.<br/>
 	            </s:if>
 	            <s:if test="interimPaymentReceived > 0">
-	                  An interim payment of £<s:property value="interimPaymentReceived" /> has already been received on this claim.
+	                  An interim payment of £<s:property value="interimPaymentReceived" /> has been received on this claim.
 	            </s:if>
 	            </div>
 	            <br/>

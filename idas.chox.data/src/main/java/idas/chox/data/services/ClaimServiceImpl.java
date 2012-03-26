@@ -93,9 +93,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean revertClaim(int id) {
+        return revertClaim(id, null);
+    }
+
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public Boolean revertClaim(int id, BigDecimal amount) {
         Boolean result = false;
         AuditTrail auditTrail;
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
@@ -103,7 +108,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
                 // Log note
-                Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
+                Comment comment = null;
+                if (amount == null)
+                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
+                else
+                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £" + amount + " as there is an amount outstanding. Please check " +
+    					"the payment details in your claim system and mark the claim as Invoice Payment Logged when the outstanding amount has been paid.");
                 claim.addComment(comment);
             }
 

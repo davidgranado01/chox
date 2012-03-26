@@ -1,4 +1,5 @@
 var win;
+
 Ext.onReady(function(){
     
     Ext.override(Ext.form.NumberField, {
@@ -41,26 +42,25 @@ Ext.onReady(function(){
         xtype: 'fieldset',
         title: 'Penalty Charge',
         layout: 'form',
-        hidden : !panaltyChargeApplied,
+        hidden : (penaltyChargeApplied == false),
         collapsible: false,
         items: [{
             xtype: 'radiogroup',
             fieldLabel: 'Have penalty charges been paid?',
             columns: [.35, .25],
             width : 150,
-            allowBlank: !panaltyChargeApplied,
+//            allowBlank: !penaltyChargeApplied,
             id : 'penaltyChargesPaidId',
             blankText: 'Please select Yes or No',
             listeners: {
                 change: function () {
                     if(this.getValue()!=null && (this.getValue().getGroupValue()=='false')){
-                        var totalPenaltyAmount = hirePenaltyChargePaid + repairPenaltyChargePaid;
                         Ext.getCmp('hirePenaltyId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setValue(0.00);
                         Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(true);
                         Ext.getCmp('hirePenaltyId').setReadOnly(true);
-                        Ext.getCmp('finalPayId').setValue(finalPayment);
+                        Ext.getCmp('finalPayId').setValue(outstandingPayment - hirePenaltyChargePaid - repairPenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#e4e4e4'
@@ -75,7 +75,7 @@ Ext.onReady(function(){
                         Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(false);
                         Ext.getCmp('hirePenaltyId').setReadOnly(false);
-                        Ext.getCmp('finalPayId').setValue(finalPayment);
+                        Ext.getCmp('finalPayId').setValue(outstandingPayment);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#ffffff'
@@ -94,13 +94,13 @@ Ext.onReady(function(){
                 boxLabel: 'Yes', 
                 name: 'penaltyChargesPaid',
                 inputValue: true,
-                checked: panaltyChargeApplied
+                checked: (penaltyChargeApplied == true)
             },
             {
                 boxLabel: 'No', 
                 name: 'penaltyChargesPaid',
                 inputValue: false,
-                checked: !panaltyChargeApplied
+                checked: !(penaltyChargeApplied == true)
             }
             ]
         }]
@@ -200,7 +200,7 @@ Ext.onReady(function(){
                     calculateFinalPayment();
                 },
                 afterrender : function(){
-                    if(!panaltyChargeApplied){
+                    if(!(penaltyChargeApplied == true)){
                         this.setReadOnly(true);
                         this.getEl().applyStyles({
                             'text-align':'right',
@@ -225,7 +225,7 @@ Ext.onReady(function(){
                     calculateFinalPayment();
                 },
                 afterrender : function(){
-                    if(!panaltyChargeApplied){
+                    if(!(penaltyChargeApplied == true)){
                         this.setReadOnly(true);
                         this.getEl().applyStyles({
                             'text-align':'right',
@@ -352,7 +352,7 @@ Ext.onReady(function(){
             fieldLabel: 'Final Payment',
             id : 'finalPayId',
             name: 'finalPayment',
-            value: finalPayment,
+            value: outstandingPayment,
             blankText: 'Final Payment is required'
         },{
             xtype : 'hidden',
@@ -493,7 +493,8 @@ Ext.onReady(function(){
     	Ext.getCmp('paymentDetailsClaimHandInvAmtId').getValue() +
     	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').getValue() +
     	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
-    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
+    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() -
+        Ext.getCmp('interimPayId').getValue() +
     	Ext.getCmp('paymentDetailsInsurerDiscountId').getValue();
     	
     	Ext.getCmp('finalPayId').setValue(finaPayment);
@@ -503,7 +504,7 @@ Ext.onReady(function(){
     
 });
 
-function confirmPaymentlogAction(){
+function confirmPaymentLogAction(){
 	win.show(document.body);
 }
 

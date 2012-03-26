@@ -31,7 +31,8 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
             claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
-            claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
+//            if (claim.getInvoice().getFinalPayment() == null)
+//                claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
 
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
@@ -41,7 +42,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
                 setCurrentStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
                 claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
                 LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");
-            }else if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)){ 
+            }else if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)){ 
                 // if the claim status is payment received then do not change the claim status via paymentreceived chain activity.
                 super.setChainActivity(null);
             }

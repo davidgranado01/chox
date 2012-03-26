@@ -6,15 +6,23 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
+    private BigDecimal amountReceived = null;
     private ClaimService claimService;
     private TaskService taskService;
+    private BreBandService breBandService;
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
     
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
@@ -22,6 +30,10 @@ public class ClaimRevert extends BaseActivity {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    public void setAmountReceived(BigDecimal amountReceived) {
+        this.amountReceived = amountReceived;
     }
 
     @Override
@@ -46,6 +58,7 @@ public class ClaimRevert extends BaseActivity {
     protected void doProcess(Claim claim) {
         boolean reOpenTasks = false;
         boolean reCloseTasks = false;
+        boolean fullAndFinal = false;
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
@@ -56,14 +69,25 @@ public class ClaimRevert extends BaseActivity {
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getPreviousStatus())
                 || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
             reCloseTasks = true; // Indicates reverting to a closed state
+        if (ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus()) && claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
+                fullAndFinal = true;
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
-        if (claimService.revertClaim(claim.getId()) != null) {
+        if (claimService.revertClaim(claim.getId(), amountReceived) != null) {
+            if (fullAndFinal) {
+                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(Boolean.FALSE);
+            }
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}", new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
+            // Make sure we have a BRE Band
+
+            if (claim.getBreBand() == null) {
+                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
 
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))

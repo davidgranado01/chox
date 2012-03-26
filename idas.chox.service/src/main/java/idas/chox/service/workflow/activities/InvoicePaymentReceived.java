@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
 import java.util.List;
@@ -26,6 +27,12 @@ public class InvoicePaymentReceived extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
+        if (claim.getInvoice().getInterimPaymentMade() != null && (claim.getInvoice().getInterimPaymentReceived() == null
+                || claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0)) {
+            claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
+            claim.addComment(Comment.New(0, "Updating interim payments received to £" + claim.getInvoice().getInterimPaymentReceived()
+                    + " (as full payment has been marked as received)."));
+        }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());
