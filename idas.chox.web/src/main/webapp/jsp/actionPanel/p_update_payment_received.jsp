@@ -48,7 +48,7 @@ Ext.onReady(function(){
 	    frame:true,
 	    title:'<div class="status-info">Insurer has made a payment of £<s:property value="finalPaymentOrTotal" /> against an amount outstanding of £<s:property value="projectedFinalPayment" />.\n\
               </br><s:if test="interimPaymentMade > 0.0">Note that an interim payment of £<s:property value="interimPaymentMade" />\
-                      has been made against this claim <s:if test="interimPaymentReceived == 0">(Not Yet Received)</s:if><s:elseif test="interimPaymentReceived > 0 && outstandingInterimPayment" >(Only <s:property value="interimPaymentReceived"/> Received)</s:elseif><s:else>(Received)</s:else>.</s:if></div>',
+                      has been made against this claim <s:if test="interimPaymentReceived == 0">(Not Yet Received)</s:if><s:elseif test="interimPaymentReceived > 0 && outstandingInterimPayment" >(Only £<s:property value="interimPaymentReceived"/> Received)</s:elseif><s:else>(Received)</s:else>.</s:if></div>',
 	    buttonAlign : 'center',
 	    items : [inFields
 	    ],

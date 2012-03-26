@@ -49,7 +49,7 @@
                             <td colspan="4">
 			             	<div class="status-info">
                                 <s:if test="interimPaymentReceived > 0">
-			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (<s:property value="interimPaymentReceived" /> so far received). Please enter the new total amount received: 
+			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received). Please enter the new total amount received: 
 			                   </s:if>
 			                   <s:else>
 			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been paid. Please enter the amount received: 
