@@ -490,9 +490,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         			additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
 	            
 	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
-	            	comment = Comment.New(0, "The interim payment made has been removed");
+	            	comment = Comment.New(0, "The interim payment has been removed");
 	            else if (claim.getInvoice().getInterimPaymentMade() != null)
-	            	comment = Comment.New(0, "The interim payment has been modified to a new total of £" + newTotalInterimPayment.toString());
+	            	comment = Comment.New(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
 	            else
 	            	comment = Comment.New(0, "An interim payment of £" + newTotalInterimPayment.toString() + " has been made." );
 	            
@@ -567,17 +567,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             try {
                 Invoice inv = claim.getInvoice();
                 // TODO - need to check invoice version with version in session
-                
-//                boolean hasFinalPaymentChanged = inv.getFinalPayment() != null && inv.getFinalPayment() != finalPayment;
-//                if(hasFinalPaymentChanged  && hirePenaltyChargePaid != null && inv.getTotalToPay() == null) 
-//                	claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
-//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid != null)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay()));
-//                else if(hasFinalPaymentChanged  && hirePenaltyChargePaid == null && inv.getTotalToPay() == null)
-//                	claim.addComment(Comment.New(0, "A payemnt amount of £" + finalPayment + " has been made (penalty charges have not been paid)."));
-//                else if(hasFinalPaymentChanged && hirePenaltyChargePaid == null)
-//                	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay() + " (penalty charges have not been paid)."));
-                
+                                
                 if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
                     inv.setHireGrossPaid(inv.getHireGross());
                     inv.setRepairGrossPaid(inv.getRepairGross());
@@ -590,9 +580,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         inv.setFinalPayment(inv.getTotalToPay().subtract(inv.getInterimPaymentMade()));
                     else
                         inv.setFinalPayment(inv.getTotalToPay());
-                    inv.setPenaltyChargesPaid(Boolean.TRUE);                  
+                    if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+                    	claim.addComment(Comment.New(0, "A full payment amount of £" + inv.getFinalPayment() + " has been made."));
+                        inv.setPenaltyChargesPaid(Boolean.TRUE);
+                    } else {
+                    	claim.addComment(Comment.New(0, "A full payment amount of £" + inv.getFinalPayment() + " has been made."));
+                        inv.setPenaltyChargesPaid(Boolean.FALSE);
+                    }
                 }
                 else {
+                    BigDecimal total = inv.getTotalToPay();
+                    if (inv.getInterimPaymentMade() != null) {
+                        total = total.subtract(inv.getInterimPaymentMade());
+                    }
                     inv.setHireGrossPaid(hireGrossPaid);
                     inv.setRepairGrossPaid(repairGrossPaid);
                     inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
@@ -602,6 +602,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
                     inv.setFinalPayment(finalPayment);
                     inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                    if (!penaltyChargesPaid && inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+                    	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay() + " (penalty charges have not been paid)."));
+                    } else if (total.compareTo(finalPayment) != 0) {
+                    	claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + inv.getTotalToPay()));
+                    } else {
+                        claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
+                    }
                 }
                 service.updateClaim(claim);
                 LOG.debug("PaymentDetails added:  finalPayment={}", projectedFinalPayment);
