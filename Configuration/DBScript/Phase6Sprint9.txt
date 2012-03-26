@@ -2083,10 +2083,9 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 -- 6.9.1 Part Payments Modifications
 ----------------------------------------------------------------------
 ALTER TABLE invoice RENAME COLUMN interim_payment_received TO interim_payment_received_old;
-ALTER TABLE invoice ADD COLUMN interim_payment_received numeric(10,2);
+ALTER TABLE invoice ADD COLUMN interim_payment_received numeric(10,2) NOT NULL DEFAULT 0.00;
 
 ALTER TABLE invoice RENAME COLUMN interim_payment_amount TO interim_payment_made;
-
 ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;
 
 ALTER TABLE insurer DROP COLUMN is_payment_details_confirm_enable;
@@ -2095,16 +2094,13 @@ ALTER TABLE insurer DROP COLUMN is_payment_details_confirm_enable;
 update invoice
     set interim_payment_received = interim_payment_made
 where interim_payment_received_old = true;
-update invoice
-    set interim_payment_received = 0.00
-where interim_payment_received_old = false;
 
 -- update for full and final
 update invoice
     set interim_payment_received = interim_payment_made
 where interim_payment_received_full_final  = true;
 
-ALTER TABLE insurer DROP COLUMN interim_payment_received_old;
+ALTER TABLE invoice DROP COLUMN interim_payment_received_old;
 
 ----------------------------------------------------------------------
 -- BUG#1549 Allow .zip files to be added as an attachment to a claim
