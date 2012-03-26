@@ -509,7 +509,9 @@ public class ApplicationAccessibility {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
                 return DECLINED;
             }
-            if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) && !ClaimType.isSubscriber(claim.getClaimType()))
+            if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
+                                    && !(ClaimType.isSubscriber(claim.getClaimType()) 
+                                         || ClaimType.isInsurerUpload(claim.getClaimType())))
                     || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) && ClaimType.isSubscriber(claim.getClaimType()))) {
                 LOG.debug("Declined access to Button accessibility (Revert claim).");
                 return DECLINED;

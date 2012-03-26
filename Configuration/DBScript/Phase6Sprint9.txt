@@ -22,10 +22,10 @@ ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) n
 ----------------------------------------------------------------------
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
-SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Access', 2, false, false, false, false, true, true, false, 0;
+SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Access', 2, false, false, false, false, true, true, true, 0;
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
-SELECT 'ROLE_CHO_MI', 999, now(), 999, now(), 'MI Access', 3, false, false, false, false, true, true, false, 0;
+SELECT 'ROLE_CHO_MI', 999, now(), 999, now(), 'MI Access', 3, false, false, false, false, false, false, true, 0;
 
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='menu.Report';
 
@@ -2127,4 +2127,33 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility WHERE name ='button.RevertClaimStatus.AwaitingInvoiceData';
 
+----------------------------------------------------------------------------------------------------------------------------
+-- TO DO ITEM : 6.9.5 CHO Litigation Status & BUG 1587 - Dev - New Queue For Claims In Status 'AwaitingLitigationOutcome'
+----------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('filter.AwaitingLitigationOutcome',FALSE,FALSE);
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MI',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='filter.AwaitingLitigationOutcome';
+
+----------------------------------------------------------------------------------------------------------------------------
+-- BUG 1586 - Dev - Add 'Revert Status' to a claim in status 'ManualInvoicePaid' and 'ManualInvoiceContested'
+----------------------------------------------------------------------------------------------------------------------------
+
+DELETE FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoiceContested' AND role = 'ROLE_INS');
+DELETE FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoicePaid' AND role = 'ROLE_INS');
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility WHERE name ='button.RevertClaimStatus.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id from accessibility WHERE name ='button.RevertClaimStatus.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id FROM accessibility WHERE name ='button.RevertClaimStatus.ManualInvoicePaid';
+
+---------------------------------------------------------
+-- BUG 1578 - 6.9.2 - Queue missing from MI Access Role
+---------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
 
