@@ -610,6 +610,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
                     }
                 }
+                claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
                 service.updateClaim(claim);
                 LOG.debug("PaymentDetails added:  finalPayment={}", projectedFinalPayment);
                 jsonObject.put("success", Boolean.TRUE);

@@ -66,7 +66,7 @@ Ext.onReady(function(){
                                 if (a.result.message.length > 0) {
                                     Ext.MessageBox.alert('Info', a.result.message,function(){  
 //                                                                var queryString = $('#logInvoicePayment').formSerialize();
-                                window.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
 //                                                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
                                                                 return false;
                                     });  
@@ -74,7 +74,7 @@ Ext.onReady(function(){
 //                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
 //                                    var queryString = $('#logInvoicePayment').formSerialize();
 //                                    window.location = contextPath+"/prv/processClaim.action?" + queryString;
-                                window.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
                                 }
 	                        }
 	                    },
@@ -84,7 +84,7 @@ Ext.onReady(function(){
  //                                                               Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
  //                                                               var queryString = $('#logInvoicePayment').formSerialize();
 //                                                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
-                                window.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
                                                                 return false;
                                 });
 	                    }
