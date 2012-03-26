@@ -401,9 +401,10 @@ Ext.onReady(function(){
 
                             if ( a.result.success ){
                                 win.hide();
-                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
-                                var queryString = $('#logInvoicePayment').formSerialize();
-                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
+//                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
+//                                var queryString = $('#logInvoicePayment').formSerialize();
+                                window.location = contextPath + "/prv/openClaimDetail.action?id=" + $('#claimId').val();;
+//                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
                             }
                         },
                         failure : function(f, a) {

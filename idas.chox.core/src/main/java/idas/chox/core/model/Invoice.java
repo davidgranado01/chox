@@ -198,7 +198,7 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;
     private BigDecimal interimPaymentMade;
-    private BigDecimal interimPaymentReceived;
+    private BigDecimal interimPaymentReceived = BigDecimal.ZERO;
     private Boolean interimPaymentReceivedFullAndFinal;
     private BigDecimal hireGrossPaid;
     private BigDecimal repairGrossPaid;
