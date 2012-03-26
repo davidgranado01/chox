@@ -131,7 +131,7 @@
 
     
 
-    <!-- <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true" />
         <property name="quartzProperties">
             <props>
@@ -154,6 +154,6 @@
                 <ref bean="cronRefDbUpdateTriggerWeek" />
             </list>
         </property>
-    </bean> -->
+    </bean>
 
 </beans>
