@@ -20,6 +20,9 @@ import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureExcep
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ActionSupport;
+import idas.chox.core.model.Entity;
+import java.util.Arrays;
+import java.util.List;
 
 public class BaseAction extends ActionSupport implements SessionAware {
 
@@ -379,8 +382,69 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return SUCCESS;
     }
 
-	public String getDevelopment() {
-		return ServletActionContext.getServletContext().getInitParameter("development");
-	}
+    public String getDevelopment() {
+        return ServletActionContext.getServletContext().getInitParameter("development");
+    }
+
+    public void checkVersion(List<? extends Entity> models) throws StaleObjectStateException {
+        for (Entity model : models) {
+            if (getSession().containsKey(model.getClass().getSimpleName())) {
+                HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
+                if (map != null && map.get("version") != null && map.get("id") != null && model.getVersion() != null) {
+                    Integer sessionModelVersion = map.get("version");
+                    Integer sessionModelId = map.get("id");
+                    LOG.debug("Checking version for modelname={} with sessionVersion={}, sessionId={}, modelVersion={}, modelId={}",
+                            new Object[]{model.getClass().getSimpleName(), sessionModelVersion, sessionModelId, model.getVersion(), model.getId()});
+                    if (model.getId().compareTo(sessionModelId) == 0 && model.getVersion().compareTo(sessionModelVersion) != 0) {
+                        LOG.info("{} model is updated by another user. session version={}, database version={}. Throwing staleObject Exception.",
+                                new Object[]{model.getClass().getSimpleName(), sessionModelVersion, model.getVersion()});
+                        StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId());
+                        // before throwing exception update model so that next time when the user save the model they will not get stale object exception.
+                        updateModelInSession(models);
+                        throw ex;
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateModelInSession(List<? extends Entity> models) {
+        for (Entity model : models) {
+            if (model.getVersion() != null && model.getId() != null) {
+                HashMap<String, Integer> map = new HashMap<String, Integer>();
+                map.put("version", model.getVersion());
+                map.put("id", model.getId());
+                getSession().put(model.getClass().getSimpleName(), map);
+                LOG.debug("session updated for model name={}, modelVersion={} modelId={}",
+                        new Object[]{model.getClass().getSimpleName(), model.getVersion(), model.getId()});
+            }
+        }
+    }
+    
+    public void addModelToSession(List<? extends Entity> models) {
+        for (Entity model : models) {
+            if (!getSession().containsKey(model.getClass().getSimpleName())) {
+                LOG.debug("model is not in session and will be added to session");
+                updateModelInSession(Arrays.asList(model));
+            } else {
+                HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
+                if (model.getId() != null && map.get("id").compareTo(model.getId()) != 0) {
+                    LOG.debug("model with same name exists but different Id, replacing with new model");
+                    updateModelInSession(Arrays.asList(model));
+                }
+            }
+        }
+    }
+
+    public Integer getModelIdFromSession(Class model) {
+        if (getSession().containsKey(model.getSimpleName())) {
+            HashMap<String, Integer> map = (HashMap) getSession().get(model.getSimpleName());
+            LOG.debug("{} model is accessed from session and id is {}", model.getSimpleName(), map.get("id"));
+            return map.get("id");
+        } else {
+            LOG.info("Claim is not in session and returing null");
+            return null;
+        }
+    }
 
 }

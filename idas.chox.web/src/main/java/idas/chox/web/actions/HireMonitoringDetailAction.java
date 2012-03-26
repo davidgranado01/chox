@@ -6,6 +6,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,44 +75,52 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     
     @Override
     public String updateModel() {
-        LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
-        // If total loss has changed, we also need to update the hire monitoring total loss field
-        if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
-            Customer customer = claim.getCustomer();
-            if (customer.getIsTotalLossOriginal() == null) {
-                customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
+        try {
+            checkVersion(Arrays.asList(claim,model));
+            LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
+            // If total loss has changed, we also need to update the hire monitoring total loss field
+            if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
+                Customer customer = claim.getCustomer();
+                if (customer.getIsTotalLossOriginal() == null) {
+                    customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
+                }
+                customer.setIsTotalLoss(model.isIsTotalLostCheck());
+                claim.setCustomer(customer);
             }
-            customer.setIsTotalLoss(model.isIsTotalLostCheck());
-            claim.setCustomer(customer);
-        }
-        /*
-         *  labourCost , labourHour, labourRate is defined here as String to accept null value. 
-         *  Struts is not setting null value for those Bigdecimal fields in model class.
-         *  see bug#1018 for more details.
-         */
-        if (this.labourCost.trim().isEmpty()) {
-            model.setLabourCost(null);
-        }
-        if (this.labourHour.trim().isEmpty()) {
-            model.setLabourHour(null);
-        }
-        if (this.labourRate.trim().isEmpty()) {
-            model.setLabourRate(null);
-        }
-        
+            /*
+             * labourCost , labourHour, labourRate is defined here as String to
+             * accept null value. Struts is not setting null value for those
+             * Bigdecimal fields in model class. see bug#1018 for more details.
+             */
+            if (this.labourCost.trim().isEmpty()) {
+                model.setLabourCost(null);
+            }
+            if (this.labourHour.trim().isEmpty()) {
+                model.setLabourHour(null);
+            }
+            if (this.labourRate.trim().isEmpty()) {
+                model.setLabourRate(null);
+            }
+
 //        if (validateModel(model).equals(ERROR)) {
 //            return ERROR;            
 //        }
-        
-        claim.setHireMonitoringDetail(model);
-        claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
-        
-        if (isUpdateInsurer) {
-            claim.AddNotification(new HireUpdatedNotification());
+
+            claim.setHireMonitoringDetail(model);
+            claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
+
+            if (isUpdateInsurer) {
+                claim.AddNotification(new HireUpdatedNotification());
+            }
+            isTotalLossOriginal = model.isIsTotalLostCheck();
+            // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.
+            updateModelInSession(Arrays.asList(claim));
+            return super.updateModel();
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
         }
-        isTotalLossOriginal = model.isIsTotalLostCheck();
-        
-        return super.updateModel();
+
         
     }
     

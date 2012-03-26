@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.sf.json.JSONArray;
 import org.springframework.security.access.AccessDeniedException;
@@ -411,8 +412,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         model.setFileBuffer(obj);
         claim.addAttachment(model);
         claimService.updateClaim(claim);
-        getSession().put("claimDetailPageClaimId", claim.getId().intValue());
-        getSession().put("claimDetailPageClaimVersion", claim.getVersion());
+        updateModelInSession(Arrays.asList(claim));
     }
     // </editor-fold>
 

@@ -31,6 +31,7 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
+import java.util.*;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -2606,9 +2607,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                             LOG.debug(" INVOICEORIGINALMODEL is done ");
 
                             try {
-                                invoiceAction.checkVersion(invoiceAction.getModel());
-                                vehicleHireAction.checkVersion(vehicleHireAction.getModel());
-                                engineerReportAction.checkVersion(engineerReportAction.getModel());
+//                                invoiceAction.checkVersion(invoiceAction.getModel());
+//                                vehicleHireAction.checkVersion(vehicleHireAction.getModel());
+//                                engineerReportAction.checkVersion(engineerReportAction.getModel());
+                                checkVersion(Arrays.asList(engineerReportAction.getModel(), vehicleHireAction.getModel(), invoiceAction.getModel(), claim));
                                 BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
                                 /*
                                  *  getCanAddInsurerDiscountComment will return true if the insurer discount amount changed after the original invoice upload.
@@ -2622,11 +2624,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
                                 updateAllModel();
                                 invoiceAction.prepare();
-                                invoiceAction.updateSessionModel();
+//                                invoiceAction.updateSessionModel();
                                 engineerReportAction.prepare();
-                                engineerReportAction.updateSessionModel();
+//                                engineerReportAction.updateSessionModel();
                                 vehicleHireAction.prepare();
-                                vehicleHireAction.updateSessionModel();
+//                                vehicleHireAction.updateSessionModel();
+                                updateModelInSession(Arrays.asList(engineerReportAction.getModel(), vehicleHireAction.getModel(), invoiceAction.getModel(), claim));
                                 modelSaved = true;
                                 getSession().put("claimDetailPageClaimId", claim.getId().intValue());
                                 getSession().put("claimDetailPageClaimVersion", claim.getVersion());
@@ -2740,6 +2743,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             engineerReportAction.setClaimId(claimId);
             engineerReportAction.prepare();
             LOG.debug("Preparing completed.");
+            addModelToSession(Arrays.asList(claim, engineerReportAction.getModel(), vehicleHireAction.getModel(), invoiceAction.getModel()));
         } catch (Throwable ex) {
             LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
         }
