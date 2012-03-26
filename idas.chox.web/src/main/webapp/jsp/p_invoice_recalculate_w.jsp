@@ -388,12 +388,18 @@
             c=2;
             d=2;
             document.getElementById('hideAndShow').value=2;
-        <s:if test="IsInsurer!=true">
-            var vehicleClassId = $('#vehicleClassComboId :selected').text();
-            document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
+            var vehicleClassText = $('#vehicleClassComboId :selected').text();
+            var vehicleClassId = $('#vehicleClassComboId :selected').val();
             var time = document.formUpdateInvoiceRecalculationForm.rentalStart.value + ' ' + rentalStartTimePicker.getValue();
-            document.getElementById("hireMonitorHireStartId").innerHTML = time;
-        </s:if>
+            if (document.getElementById("hireMonitorVehicleClassId") != null && document.getElementById("hireMonitorHireStartId") != null) {
+                document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassText;
+                document.getElementById("hireMonitorHireStartId").innerHTML = time;
+            } else if (document.getElementById("hireMonitoringVehiclevehicleClassMonitoringId") != null && document.getElementById("rentalStart") != null 
+                                                                                                        && document.getElementById("rentalStartTimePickerHMVId") != null) {
+                $("#hireMonitoringVehiclevehicleClassMonitoringId").val(vehicleClassId);
+                Ext.getCmp("rentalStart").setValue(document.formUpdateInvoiceRecalculationForm.rentalStart.value);
+                Ext.getCmp("rentalStartTimePickerHMVId").setValue(rentalStartTimePicker.getValue());
+            }
             if(randomNumber==20){
                 $("#resultMessage").hide();
                 <s:if test="tpiClaim">
