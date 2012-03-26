@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.Arrays;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
@@ -50,12 +51,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     @Override
     public void prepare() throws Exception {
         LOG.debug("Preparing...");
-
         if (claimId <= 0) {
-            if (getSession().containsKey(SESSION_CLAIM_ID) && getSession().get(SESSION_CLAIM_ID) != null) {
-                LOG.info("claim id is not provided and got claim id from session claim id is {}", (Integer) getSession().get(SESSION_CLAIM_ID));
-                claim = claimService.getClaim((Integer) getSession().get(SESSION_CLAIM_ID));
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
+            if (getModelIdFromSession(Claim.class) != null) {
+                claim = claimService.getClaim(getModelIdFromSession(Claim.class));
             }
         } else {
             claim = claimService.getClaim(claimId);
@@ -63,8 +61,8 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         if (claim == null) {
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
-
         model = loadModel();
+        addModelToSession(Arrays.asList(claim,model));
     }
 
     protected abstract T loadModel();
@@ -76,55 +74,27 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
                 || (getUserOrganisationType() == 2 && getUserOrganisationId() != claim.getInsurer().getId().intValue())) {
             throw new AccessDeniedException("Illegal claim access detected.");
         }
-        //Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
-        if (model != null) {
-            LOG.debug("Settingt model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
-            if (model instanceof Claim) {
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
-            } else {
-                getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
-            }
-        }
-
         return result;
     }
 
     public String updateModel() {
         LOG.debug("Updating claim");
         try {
-            checkVersion(model);
+            checkVersion(Arrays.asList(claim,model));
             this.claimService.updateClaim(claim);
             this.setActionResult("Your changes have been saved.");
-            LOG.debug("claim is saved");
-            // Now update the model version in the session
-            claim = this.claimService.getClaim(claimId);
-            if (model instanceof Claim) {
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
-            } else {
-                getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
-            }
-            LOG.debug("Model Version added to session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
+            updateModelInSession(Arrays.asList(claim,model));
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
         }
         LOG.debug("claim is saved and returning success");
         return SUCCESS;
-    }
-
-    public void updateSessionModel() {
-        if (!(model.getVersion().equals((Integer) getSession().get(model.getClass().getSimpleName().concat("Version"))))) {
-            LOG.debug("Setting model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
-            getSession().put(model.getClass().getSimpleName().concat("Version"), model.getVersion());
-            LOG.debug("Setting is done for model version in session: {}={}", model.getClass().getSimpleName().concat("Version"), model.getVersion());
-        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.EcdUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,30 +44,26 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
                 || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
             throw new AccessDeniedException("Attempt to access a claim that you do not own.");
         }
-
         try {
+            checkVersion(Arrays.asList(claim,model));
             if (reasonOfDelayId > 0) {
-
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());
-
                 claim.addHireMonitoringEcd(model);
-
                 List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
                 claim.AddNotifications(newECDAddedChecker.getAnomalousChecks(), notifications);
 
                 if (isIsUpdateInsurer()) {
                     claim.AddNotification(new EcdUpdatedNotification());
                 }
-
+                // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.
+                updateModelInSession(Arrays.asList(claim));
                 super.updateModel();
-
             }
-
         } catch (Exception ex) {
             handleException(ex);
+            return ERROR;
         }
-
         return SUCCESS;
     }
 

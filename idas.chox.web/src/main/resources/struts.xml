@@ -672,6 +672,7 @@
         <action name="addNewHireMonitoringEcd" class="idas.chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getHireMonitoringEcds" class="idas.chox.web.actions.ClaimAction" method="getHireMonitoringEcds">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>

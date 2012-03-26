@@ -371,17 +371,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public void prepare() throws Exception {
         if (id < 0) { // No Claim provided so use session
-            if (getSession().containsKey(SESSION_CLAIM_ID) && getSession().get(SESSION_CLAIM_ID) != null) {
-                LOG.debug("claim is null and got id from session id is {}", (Integer) getSession().get(SESSION_CLAIM_ID));
-                claim = service.getClaim((Integer) getSession().get(SESSION_CLAIM_ID));
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
+            if (getModelIdFromSession(Claim.class) != null) {
+                claim = service.getClaim(getModelIdFromSession(Claim.class));
             }
         } else {
             claim = service.getClaim(id);
-            getSession().put(SESSION_CLAIM_ID, id);
-            getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
-            LOG.debug("Claim from db {}", claim.getChoReference());
         }
+        if (claim == null) {
+            throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+        }
+        addModelToSession(Arrays.asList(claim));
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Insurer;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -88,7 +89,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
-                    addModelToSession(model);
+                    addModelToSession(Arrays.asList(model));
                 }
             }
 
@@ -149,7 +150,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         }
 
         try {
-            checkVersion(model);
+            checkVersion(Arrays.asList(model));
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
             if (this.adminInsurerService.getWebuserById(claimOwnerIdField) != null) {
                 model.setTpiClaimOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
@@ -158,12 +159,12 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
                 model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
             }
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
-            updateModelInSession(model);
+            updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
 
         } catch (Exception ex) {
             handleException(ex);
-            return ERROR;
+            return SUCCESS;
         }
 
         return SUCCESS;

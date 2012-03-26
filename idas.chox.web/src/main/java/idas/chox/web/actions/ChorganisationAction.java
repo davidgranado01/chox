@@ -12,6 +12,7 @@ import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
+import java.util.Arrays;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
@@ -120,7 +121,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminChorganisationService.getChorganisation(objectId);
-                    addModelToSession(model);
+                    addModelToSession(Arrays.asList(model));
                 }
             }
 
@@ -186,9 +187,9 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                     return ERROR;
                 }
             }
-            checkVersion(model);
+            checkVersion(Arrays.asList(model));
             model = adminChorganisationService.updateChorganisation(model);
-            updateModelInSession(model);
+            updateModelInSession(Arrays.asList(model));
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
                 chorganisationAliasService.createDefaultRecord(model);
@@ -196,7 +197,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
         } catch (Exception ex) {
             handleException(ex);
-            return ERROR;
+            return SUCCESS;
         }
 
         return SUCCESS;

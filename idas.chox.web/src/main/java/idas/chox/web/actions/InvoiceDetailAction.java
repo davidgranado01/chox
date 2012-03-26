@@ -22,10 +22,7 @@ import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapperComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -2695,17 +2692,14 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             }
             return SUCCESS;
         } else if (actionSelected == submit) {
-
-            claim.setEngineerReport(engineerReport);
-            claim.setInvoiceOriginal(invoiceOriginal);
-            claim.setVehicleHire(vehicleHire);
-            claim.setInvoice(invoice);
-            claim.updateLiabilityPayment();
-            updateHpi();
             try {
-//                                checkVersion(invoice);
-//                                checkVersion(vehicleHire);
-//                                checkVersion(engineerReport);
+                checkVersion(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
+                claim.setEngineerReport(engineerReport);
+                claim.setInvoiceOriginal(invoiceOriginal);
+                claim.setVehicleHire(vehicleHire);
+                claim.setInvoice(invoice);
+                claim.updateLiabilityPayment();
+                updateHpi();
                 BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
                 /*
                  * getCanAddInsurerDiscountComment will return true if the
@@ -2718,30 +2712,19 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                     comment.setRaisedBy(userService.findByUserName("system"));
                     claim.addComment(comment);
                 }
-
                 claimService.updateClaim(claim);
-//                        invoiceAction.prepare();
-//                        invoiceAction.updateSessionModel();
-//                                engineerReportAction.prepare();
-//                                engineerReportAction.updateSessionModel();
-//                        vehicleHireAction.prepare();
-//                        vehicleHireAction.updateSessionModel();
+                updateModelInSession(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
                 modelSaved = true;
-                getSession().put(SESSION_CLAIM_ID, claim.getId().intValue());
-                getSession().put(SESSION_CLAIM_VERSION, claim.getVersion());
                 this.setActionResult("Your Changes Have Been Saved");
                 return SUCCESS;
             } catch (Exception ex) {
-//                                ex.printStackTrace();
-                LOG.debug("Exception is thrown and passing to baseAction {} ", ex.getMessage());
+                LOG.warn("Exception is thrown and passing to baseAction ", ex);
                 handleException(ex);
                 return ERROR;
             }
-
         } else {
             return ERROR;
         }
-
     }
 
     public boolean isPenaltyChargesAppled() {
@@ -2761,24 +2744,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return false;
     }
 
-//    public String updateInvoiceModel() {
-//        return invoiceAction.updateModel(claim);
-//    }
-//    public String updateEngineerReportModel() {
-//        return engineerReportAction.updateModel(claim);
-//    }
-//    public String updateVehicleHireModel() {
-//        return vehicleHireAction.updateModel(claim);
-//    }
-//    public String updateInvoiceOriginalModel() {
-//        return invoiceOriginalAction.updateModel(claim);
-//    }
-//    public void updateAllModel() throws Exception {
-//        LOG.debug("Updating all model claim");
-//        claimService.updateClaim(claim);
-//        LOG.debug("claim is saved");
-//        claim = claimService.getClaim(claimId);
-//    }
     // </editor-fold>
     @Override
     public String execute() {
@@ -2787,23 +2752,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
-        if (invoice != null) {
-            LOG.debug("invoiceAction getModel is not null and value of object is: {} ", invoice);
-            LOG.debug("Setting model version in session: {}={}", invoice.getClass().getName(), invoice.getVersion());
-            session = ActionContext.getContext().getSession();
-            session.put(invoice.getClass().getName(), invoice.getVersion());
-        }
-        if (vehicleHire != null) {
-            LOG.debug("Setting model version in session: {}={}", vehicleHire.getClass().getName(), vehicleHire.getVersion());
-            session = ActionContext.getContext().getSession();
-            session.put(vehicleHire.getClass().getName(), vehicleHire.getVersion());
-        }
-//        updateSession(engineerReport);
-        if (engineerReport != null) {
-            LOG.debug("Setting model version in session: {}={}", engineerReport.getClass().getName(), engineerReport.getVersion());
-            session = ActionContext.getContext().getSession();
-            session.put(engineerReport.getClass().getName(), engineerReport.getVersion());
-        }
         return result;
     }
 
@@ -2815,39 +2763,17 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             if (claim == null) {
                 throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
             }
-            if (claim.getEngineerReport() != null) {
-                LOG.debug("engineerReport Model is not null ");
-                engineerReport = claim.getEngineerReport();
-            } else {
-                LOG.debug("engineerReport Model is null ");
-                engineerReport = new EngineerReport();
-            }
-            if (claim.getInvoiceOriginal() != null) {
-                LOG.debug("invoiceOriginal Model is not null ");
-                invoiceOriginal = claim.getInvoiceOriginal();
-            } else {
-                LOG.debug("invoiceOriginal Model is null ");
-                invoiceOriginal = new InvoiceOriginal();
-            }
-            if (claim.getVehicleHire() != null) {
-                LOG.debug("VehicleHire Model is not null ");
-                vehicleHire = claim.getVehicleHire();
-                oldVRN = vehicleHire.getVehicleRegistration();
-            } else {
-                LOG.debug("VehicleHire Model is null ");
-                oldVRN = "";
-                vehicleHire = new VehicleHire();
-            }
-            if (claim.getInvoice() != null) {
-                LOG.debug("invoice Model is not null ");
-                invoice = claim.getInvoice();
-            } else {
-                LOG.debug("invoice Model is null ");
-                invoice = new Invoice();
-            }
-            LOG.debug("Preparing completed.");
+            engineerReport  = (claim.getEngineerReport() != null) ? claim.getEngineerReport() : new EngineerReport();
+            invoiceOriginal = (claim.getInvoiceOriginal() != null) ? claim.getInvoiceOriginal() : new InvoiceOriginal();
+            invoice         = (claim.getInvoice() != null) ? claim.getInvoice() : new Invoice();
+            vehicleHire     = (claim.getVehicleHire() != null) ? claim.getVehicleHire() : new VehicleHire();
+            
+            oldVRN          = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
+                        
+            addModelToSession(Arrays.asList(claim, engineerReport, invoiceOriginal, vehicleHire, invoice));
+            
         } catch (Throwable ex) {
-            LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
+            LOG.debug("Exception in preparing for InvoiceDetailAction : {}", ex.getStackTrace());
         }
     }
 
