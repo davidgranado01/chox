@@ -359,6 +359,11 @@ Ext.onReady(function(){
             id : 'nonceId',
             name : 'nonce',
             value : nonce
+        },{
+            xtype : 'hidden',
+            id : 'name',
+            name : 'name',
+            value : 'invoicePaymentLogged'
         }
         ]
     };
@@ -392,23 +397,18 @@ Ext.onReady(function(){
             text:'Ok',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
-                    paymentDetailsForm.getEl().mask();
+                    win.hide();
                     paymentDetailsForm.getForm().submit({
                         method:'POST',
-                        url:contextPath +'/prv/p/updatePaymentDetails.action',
-                        
+//                        url:contextPath +'/prv/p/updatePaymentDetails.action',
+                        url:contextPath +'/prv/p/updatePaymentDetails.action?'+$('#logInvoicePayment').formSerialize(),
                         success : function(f, a) {
 
                             if ( a.result.success ){
-                                win.hide();
-//                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
-//                                var queryString = $('#logInvoicePayment').formSerialize();
-                                window.location = contextPath + "/prv/openClaimDetail.action?id=" + $('#claimId').val();;
-//                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
+                                pageRefresh(); 
                             }
                         },
                         failure : function(f, a) {
-                            
                             Ext.MessageBox.show({
                                 title: 'Error',
                                 msg: a.result.errors,
@@ -418,6 +418,7 @@ Ext.onReady(function(){
                             }); 
                         }
                     });
+
                 }
             }
         },{

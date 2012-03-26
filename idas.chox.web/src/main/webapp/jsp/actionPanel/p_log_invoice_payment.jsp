@@ -37,7 +37,6 @@ var nonce = '<%= session.getAttribute("SessionNonce")%>';
     <form id="logInvoicePayment" action="post" >
         <fieldset class="x-fieldset"><legend>Invoice ready for payment - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" value="invoicePaymentLogged"/>
             <div>
                 <div class="status-info">
                     If the claim is being paid in full then please click on the ‘Invoice Payment Logged’ button, 
