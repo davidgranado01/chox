@@ -106,7 +106,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
 
-            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
+            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus()) && this.getCurrentUser().isCHO()) {
                 // Log note
                 Comment comment = null;
                 if (amount == null)
@@ -115,6 +115,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £" + amount + " as there is an amount outstanding. Please check " +
     					"the payment details in your claim system and mark the claim as Invoice Payment Logged when the outstanding amount has been paid.");
                 claim.addComment(comment);
+            } else if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) { // and we are an Insurer or CHOX Admin
+                // we need to remove the note added when the claim moved to INVOICE_PAYMENT_LOGGED
+                for (Comment comment : claim.getComments()) {
+                    if (!comment.isReverted() && (comment.getComment().startsWith("A payment amount of") || comment.getComment().startsWith("A full payment amount of"))
+                            && comment.getComment().contains("has been made")) {
+                        LOG.debug("Marking comment with id={} as deleted: '{}'", comment.getId(), comment.getComment());
+                        commentService.deleteCommentById(comment.getId());
+                        break;
+                    }
+                }
             }
 
             if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {

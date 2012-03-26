@@ -58,7 +58,7 @@ public class ClaimRevert extends BaseActivity {
     protected void doProcess(Claim claim) {
         boolean reOpenTasks = false;
         boolean reCloseTasks = false;
-        boolean fullAndFinal = false;
+//        boolean fullAndFinal = false;
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
@@ -69,14 +69,15 @@ public class ClaimRevert extends BaseActivity {
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getPreviousStatus())
                 || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
             reCloseTasks = true; // Indicates reverting to a closed state
-        if (ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus()) && claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
-                fullAndFinal = true;
+//        if (ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus()) && claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
+//                fullAndFinal = true;
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
         if (claimService.revertClaim(claim.getId(), amountReceived) != null) {
-            if (fullAndFinal) {
-                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(Boolean.FALSE);
-            }
+//  Not needed - done in revertClaimservice
+//            if (fullAndFinal) {
+//                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(Boolean.FALSE);
+//            }
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}", new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
