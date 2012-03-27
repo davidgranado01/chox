@@ -2155,3 +2155,9 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
 
+---------------------------------------------------------
+-- BUG 1600 - Dev - Order Of Queues For CHOX Admin Role
+---------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.InterimPayment';
+
