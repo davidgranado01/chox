@@ -233,6 +233,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)) {
                 task.setVisibilityRole(WebUserRole.ROLE_FNOL);
+            } else if (claimStatus.equals(ClaimStatus.AWAITING_LITIGATION_OUTCOME)) {
+                task.setVisibilityRole(WebUserRole.ROLE_CH);
             } else {
                 LOG.error("Cannot raise a task on a claim in status '{}'", claimStatus);
                 throw new IllegalArgumentException("Sorry, cannot raise a task on a claim when the status is '" + claimStatus + "'");

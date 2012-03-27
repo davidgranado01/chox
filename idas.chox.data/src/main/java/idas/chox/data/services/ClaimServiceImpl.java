@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
-import org.apache.http.impl.cookie.DateUtils;
 import org.hibernate.criterion.Property;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;

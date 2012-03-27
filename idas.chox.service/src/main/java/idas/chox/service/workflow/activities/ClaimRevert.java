@@ -11,10 +11,10 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.TaskService;
+import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
@@ -67,7 +67,7 @@ public class ClaimRevert extends BaseActivity {
     protected void doProcess(Claim claim) {
         boolean reOpenTasks = false;
         boolean reCloseTasks = false;
-//        boolean fullAndFinal = false;
+
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
@@ -78,17 +78,11 @@ public class ClaimRevert extends BaseActivity {
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getPreviousStatus())
                 || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
             reCloseTasks = true; // Indicates reverting to a closed state
-//        if (ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus()) && claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
-//                fullAndFinal = true;
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
         Date originalStatusModifiedDate = claim.getStatusModifiedDate();
         
         if (claimService.revertClaim(claim.getId()) != null) {
-//  Not needed - done in revertClaimservice
-//            if (fullAndFinal) {
-//                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(Boolean.FALSE);
-//            }
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}",
                     new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
             if (reOpenTasks)
@@ -101,11 +95,11 @@ public class ClaimRevert extends BaseActivity {
                 Comment comment = null;
                 if (amountReceived == null)
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
-                            + DateUtils.formatDate(originalStatusModifiedDate)
+                            + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
                 else
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
-                            + DateUtils.formatDate(originalStatusModifiedDate)
+                            + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
                             + amountReceived + " as there is an amount outstanding. Please check " 
                             + "the payment details in your claim system and mark the claim as Invoice Payment Logged when the outstanding amount has been paid.");
@@ -119,10 +113,7 @@ public class ClaimRevert extends BaseActivity {
                                 && originalStatusModifiedDate.getTime() < comment.getCreatedDate().getTime() + 500) {
                             LOG.debug("Marking comment with id={} as deleted: '{}'", comment.getId(), comment.getComment());
                             commentService.deleteCommentById(comment.getId());
-//                          break;
-                        } else {
-                            LOG.debug("Not Marking comment with id={} as deleted: '{}'", comment.getId(), comment.getComment());
-                            LOG.debug("Comment time={},  statusChangeTime={}", comment.getCreatedDate().getTime(), originalStatusModifiedDate.getTime());
+                          break;
                         }
                     }
                 }
@@ -155,11 +146,17 @@ public class ClaimRevert extends BaseActivity {
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
     }
     
+    /*
+     * We'll overide the afterProcess as we do not want to log a state change for a revert operation.
+     * The claim is also saved in the service, so we do not need to do this either.
+     */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-// Claim already saved in the service, so we shouldn't need to do this
 //        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
 //        getDataService().save(claim);
+//        LOG.debug("Claim saved - logging transaction...");
+//        logTransaction(claim);
+//        LOG.debug("Claim saved & transaction logged.");
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

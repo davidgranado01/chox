@@ -378,20 +378,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-        /**
-        if (claim == null) {
-        LOG.error("claim is null");
-        throw new IllegalStateException("No Claim available.");
-        } else if (claim.getInvoice() != null) {
-        if (service.updateAutomaticPenaltyCharge(claim)){
-        LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
-        // Invoice details may have changed  so we need to reload the claim
-        claim = service.getClaim(claim.getId());
-        } else {
-        LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
-        }
-        }
-         **/
+        updateModelInSession(Arrays.asList(claim));
         return SUCCESS;
     }
 

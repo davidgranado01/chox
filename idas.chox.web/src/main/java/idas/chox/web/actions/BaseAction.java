@@ -349,7 +349,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     protected void handleException(Exception ex) {
-        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
+        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
+                || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException)) {
             LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
             LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
@@ -386,7 +387,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return ServletActionContext.getServletContext().getInitParameter("development");
     }
 
-    public void checkVersion(List<? extends Entity> models) throws StaleObjectStateException {
+    public void checkVersion(List<? extends Entity> models) throws Exception {
         for (Entity model : models) {
             if (getSession().containsKey(model.getClass().getSimpleName())) {
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
@@ -398,7 +399,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
                     if (model.getId().compareTo(sessionModelId) == 0 && model.getVersion().compareTo(sessionModelVersion) != 0) {
                         LOG.info("{} model is updated by another user. session version={}, database version={}. Throwing staleObject Exception.",
                                 new Object[]{model.getClass().getSimpleName(), sessionModelVersion, model.getVersion()});
-                        StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId());
+//                        StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId());
+                        Exception ex = new Exception("Record was updated by another transaction/user, please try again."
+                                , new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId()));
                         // before throwing exception update model so that next time when the user save the model they will not get stale object exception.
                         updateModelInSession(models);
                         throw ex;
