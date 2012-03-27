@@ -1,14 +1,14 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.math.BigDecimal;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MakeInterimPayment extends BaseActivity {
 
@@ -16,16 +16,35 @@ public class MakeInterimPayment extends BaseActivity {
     
     private BigDecimal newTotalInterimPayment;
     private BigDecimal additionalInterimPayment;
-    
+
+    public BigDecimal getAdditionalInterimPayment() {
+        return additionalInterimPayment;
+    }
+
+    public void setAdditionalInterimPayment(BigDecimal additionalInterimPayment) {
+        this.additionalInterimPayment = additionalInterimPayment;
+    }
+
+    public BigDecimal getNewTotalInterimPayment() {
+        return newTotalInterimPayment;
+    }
+
+    public void setNewTotalInterimPayment(BigDecimal newTotalInterimPayment) {
+        this.newTotalInterimPayment = newTotalInterimPayment;
+    }
+
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
 
-//        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-//        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin())
-//                || (securityInfoProvider.isInRoleOf("ROLE_CHO") && (claim.getChorganisation().getId().compareTo(securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
-//            throw new AccessDeniedException("Not in correct role to update interim Payment.");
-//        }
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if ((!securityInfoProvider.isInRoleOf("ROLE_INS") && !securityInfoProvider.getIsCHOXAdmin())
+                || (securityInfoProvider.isInRoleOf("ROLE_CHO")
+                    && (claim.getChorganisation().getId().compareTo(
+                            securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
+            throw new AccessDeniedException("Not in correct role to make an interim Payment.");
+        }
 
     }
 
@@ -66,26 +85,7 @@ public class MakeInterimPayment extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
-    }
-
-    public BigDecimal getAdditionalInterimPayment() {
-        return additionalInterimPayment;
-    }
-
-    public void setAdditionalInterimPayment(BigDecimal additionalInterimPayment) {
-        this.additionalInterimPayment = additionalInterimPayment;
-    }
-
-    public BigDecimal getNewTotalInterimPayment() {
-        return newTotalInterimPayment;
-    }
-
-    public void setNewTotalInterimPayment(BigDecimal newTotalInterimPayment) {
-        this.newTotalInterimPayment = newTotalInterimPayment;
     }
 
 }

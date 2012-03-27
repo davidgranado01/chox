@@ -1,31 +1,37 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Comment;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.workflow.Activity;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 
 public class FullPaymentNotReceived extends BaseActivity {
-
     private static final Logger LOG = LoggerFactory.getLogger(FullPaymentNotReceived.class);
-    
     private BigDecimal interimPaymentReceived; 
+
+    public BigDecimal getInterimPaymentReceived() {
+        return interimPaymentReceived;
+    }
+
+    public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
+        this.interimPaymentReceived = interimPaymentReceived;
+    }
     
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
 
-//        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-//        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin())
-//                || (securityInfoProvider.isInRoleOf("ROLE_CHO") && (claim.getChorganisation().getId().compareTo(securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
-//            throw new AccessDeniedException("Not in correct role to update interim Payment.");
-//        }
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin())
+                || (securityInfoProvider.isInRoleOf("ROLE_CHO") && (claim.getChorganisation().getId().compareTo(
+                                securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
+            throw new AccessDeniedException("Not in correct role to reject a full payment.");
+        }
 
     }
 
@@ -46,19 +52,13 @@ public class FullPaymentNotReceived extends BaseActivity {
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
-
         expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-
     }
 
-    public BigDecimal getInterimPaymentReceived() {
-        return interimPaymentReceived;
-    }
-
-    public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
-        this.interimPaymentReceived = interimPaymentReceived;
-    }
-    
+    /*
+     * We'll override the afterProcess as we need to feed in the interimPaymentReceived amount
+     * to the ClaimRevert activity (in order to generate the correct comment/note)
+     */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
