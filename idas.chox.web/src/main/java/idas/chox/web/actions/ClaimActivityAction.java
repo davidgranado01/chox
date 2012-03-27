@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;
@@ -179,7 +178,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             }
             LOG.debug("claim activity returning success");
             jsonObject.put("success", Boolean.TRUE);
-            jsonObject.put("message", "claim processed successfully.");
+            if (getMessage() != null)
+                jsonObject.put("message", getMessage());
+//            else
+//                jsonObject.put("message", "Claim has been Successfully Processed.");
             setJsonData(jsonObject.toString());
             
             return SUCCESS;

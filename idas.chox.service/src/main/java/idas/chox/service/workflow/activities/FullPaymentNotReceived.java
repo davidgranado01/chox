@@ -72,6 +72,7 @@ public class FullPaymentNotReceived extends BaseActivity {
             getChainActivity().setWorkflowContext(getProcessContext());
             ((ClaimRevert)getChainActivity()).setAmountReceived(interimPaymentReceived);
             getChainActivity().processInBatch(claim);
+            setMessage(getChainActivity().getMessage());
         }
     }
 

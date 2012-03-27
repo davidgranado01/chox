@@ -68,29 +68,21 @@ Ext.onReady(function(){
 	                    success : function(f, a) {
 	                        if ( a.result.success ){
 	                        	confPayRec.hide();
-                                if (a.result.message.length > 0) {
+                                if (a.result.message && a.result.message.length > 0) {
                                     Ext.MessageBox.alert('Info', a.result.message,function(){  
-//                                                                var queryString = $('#logInvoicePayment').formSerialize();
-                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
-//                                                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
-                                                                return false;
+                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                            return false;
                                     });  
                                 } else {
-//                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
-//                                    var queryString = $('#logInvoicePayment').formSerialize();
-//                                    window.location = contextPath+"/prv/processClaim.action?" + queryString;
-                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                    window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
                                 }
 	                        }
 	                    },
 	                    failure : function(f, a) {
 	                    	 	confPayRec.hide();
-                                Ext.MessageBox.alert('Error', a.result.message,function(){  
- //                                                               Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
- //                                                               var queryString = $('#logInvoicePayment').formSerialize();
-//                                                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
-                                window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
-                                                                return false;
+                                Ext.MessageBox.alert('Error', a.result.message, function(){  
+                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                            return false;
                                 });
 	                    }
 	                });
