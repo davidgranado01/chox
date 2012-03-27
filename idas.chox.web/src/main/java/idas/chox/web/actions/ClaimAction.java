@@ -149,8 +149,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String statusMsg = null;
     private boolean showMessage = false;
     private boolean showErrorMessage = false;
-    private BigDecimal newTotalInterimPayment;
-    private BigDecimal additionalInterimPayment;
 
     public boolean isShowMessage() {
         return showMessage;
@@ -471,86 +469,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
-
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
-    public String makeInterimPayment() {
-    	Comment comment = null;
-        try {
-        	if(newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0 && 
-        			additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
-	            
-	            if(newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0)
-	            	comment = Comment.New(0, "The interim payment has been removed");
-	            else if (claim.getInvoice().getInterimPaymentMade() != null)
-	            	comment = Comment.New(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
-	            else
-	            	comment = Comment.New(0, "An interim payment of £" + newTotalInterimPayment.toString() + " has been made." );
-	            
-	            claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
-        	} else if (additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0) {
-        		BigDecimal paymentSum = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
-        		claim.getInvoice().setInterimPaymentMade(paymentSum);
-        		comment = Comment.New(0, "An additional interim payment of £"  + additionalInterimPayment.toString() +  " has been made." +
-        		 		" The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
-        	} 
-        	claim.addComment(comment);
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown making an interime payment on claim '{}': ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred while updating this claim. Please contact CHOX support.");
-            return ERROR;
-        }
-
-        return SUCCESS;
-    }
     
-    
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
-    public String fullPaymentNotReceived() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            if (claim.getInvoice().getInterimPaymentMade() != null)
-                claim.getInvoice().setInterimPaymentMade(claim.getInvoice().getInterimPaymentMade().add(interimPaymentReceived));
-            else
-                claim.getInvoice().setInterimPaymentMade(interimPaymentReceived);
-            if (claim.getInvoice().getInterimPaymentReceived() != null)
-                claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentReceived().add(interimPaymentReceived));
-            else
-                claim.getInvoice().setInterimPaymentReceived(interimPaymentReceived);
-            LOG.debug("Claim updated...");
-            Activity claimRevertActivity = activityFactory.getActivity("revertClaim");
-//            service.revertClaim(claim.getId(), interimPaymentReceived);
-            ((ClaimRevert)claimRevertActivity).setAmountReceived(interimPaymentReceived);
-            try {
-                LOG.debug("Calling revert activity...");
-                claimRevertActivity.process(claim);
-                jsonObject.put("success", Boolean.TRUE);
-                jsonObject.put("message", claimRevertActivity.getMessage());
-                setJsonData(jsonObject.toString());
-                getSession().put("claimDetailPageClaimVersion", claim.getVersion());
-            } catch(AccessDeniedException ex) {
-                LOG.error("AccessDenied Error processing 'revertClaim' activity for 'fullPaymentNotReceived': {}",ex.getMessage());
-                throw(ex);
-            } catch (Exception ex) {
-                LOG.error("Error processing 'revertClaim' activity for 'fullPaymentNotReceived': {}",ex.getMessage());
-                jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("message", "An internal error occurred while updating this claim. Please contact CHOX support.");
-                setJsonData(jsonObject.toString());
-                return ERROR;
-            }
- //           LOG.debug("Updating claim...");
- //           this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown moving a full payment to an interime payment on claim '{}': ", claim.getChoReference(), ex);
-            jsonObject.put("success", Boolean.FALSE);
-            jsonObject.put("message", "An internal error occurred while updating this claim. Please contact CHOX support.");
-            setJsonData(jsonObject.toString());
-            return ERROR;
-        }
-        return SUCCESS;
-    }
-    
- 
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -2204,22 +2123,4 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 			interimPaymentMade = BigDecimal.ZERO;
 		return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
 	}
-	
-
-	public BigDecimal getNewTotalInterimPayment() {
-		return newTotalInterimPayment;
-	}
-
-	public void setNewTotalInterimPayment(BigDecimal newTotalInterimPayment) {
-		this.newTotalInterimPayment = newTotalInterimPayment;
-	}
-
-	public BigDecimal getAdditionalInterimPayment() {
-		return additionalInterimPayment;
-	}
-
-	public void setAdditionalInterimPayment(BigDecimal additionalInterimPayment) {
-		this.additionalInterimPayment = additionalInterimPayment;
-	}
-
 }

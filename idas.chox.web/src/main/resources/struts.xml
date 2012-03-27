@@ -200,15 +200,6 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-        <action name="makeInterimPayment" class="idas.chox.web.actions.ClaimAction" method="makeInterimPayment">
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success" type="redirectAction">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="markSupplementaryInvoicedClaim" class="idas.chox.web.actions.ClaimAction" method="markSupplementaryInvoicedClaim">
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">
@@ -1277,7 +1268,7 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="fullPaymentNotReceived" class="idas.chox.web.actions.ClaimAction" method="fullPaymentNotReceived">
+        <action name="fullPaymentNotReceived" class="idas.chox.web.actions.ClaimActivityAction" >
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>

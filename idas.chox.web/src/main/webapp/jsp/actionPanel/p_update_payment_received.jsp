@@ -37,6 +37,11 @@ Ext.onReady(function(){
 	            id : 'nonceId',
 	            name : 'nonce',
 	            value : nonce
+	        },{
+	            xtype : 'hidden',
+	            id : 'PaymentDetailsFormNameId',
+	            name : 'name',
+	            value : 'fullPaymentNotReceived'
 	        }
 	        ]
     };
