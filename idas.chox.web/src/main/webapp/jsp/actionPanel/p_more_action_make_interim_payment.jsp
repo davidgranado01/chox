@@ -74,22 +74,37 @@
     	if (action == 'additional'){
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("add", {
-                min: 1,
+                required: true,
+                min: 0.01,
                 number:true,
-                messages: { required:"The Supplied Value must Be bigger Than 0.",
-                	min:"You must supply a value bigger than 0 for 'Additional Interim Payment'",
-                    number:"Invalid 'Interim Payment' Format"}
+                messages: {
+                    required:"You Must Enter An 'Additional Interim Payment Amount'",
+                	min:"The 'Additional Interim Payment Amount' Must Be Larger Than 0",
+                    number:"The 'Additional Interim Payment Amount' Must Be A Monetary Value"}
             });
-    	} else if (action == 'newTotal'){
+    	} else if (action == 'newTotal' && interimPayMade){
             $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
             $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
+                required: true,
                 min: currentRecAmount,
             	number:true,
-                messages: { required:"The Supplied Value Cannot Be Less Than The Interim Amount Received.",
-                	min:"You must supply a value which is bigger than the current interim amount received value",
-                	number:"Invalid 'Interim Payment' Format"}
+                messages: {
+                    required:"You Must Enter A 'New Total Interim Payment Amount'",
+                	min:"The 'New Total Interim Payment Amount' Must Be >= The Current Interim Amount Received",
+                	number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
             });
-    	}
+    	} else if (action == 'newTotal' && !interimPayMade) {
+            $("form#formMakeInterimPayment #additionalInterimPayment").rules("remove");
+            $("form#formMakeInterimPayment #newTotalInterimPayment").rules("add", {
+                required: true,
+                min: 0.01,
+            	number:true,
+                messages: { required:"You Must Enter An 'Interim Payment Amount'",
+                	min:"The 'Interim Payment Amount' Must Be Larger Than 0",
+                	number:"The 'Interim Payment Amount' Must Be A Monetary Value"}
+            });
+
+        }
     	if($("form#formMakeInterimPayment").valid())
     		$('#formMakeInterimPayment').submit();
     }

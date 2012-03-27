@@ -49,10 +49,22 @@
                             <td colspan="4">
 			             	<div class="status-info">
                                 <s:if test="interimPaymentReceived > 0">
-			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received). Please enter the new total amount received: 
+			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received).
+                                    <s:if test="outstandingInterimPayment > 0">
+                                        Please enter the new total amount received: 
+                                    </s:if>
+                                    <s:else>
+                                        Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
+                                    </s:else>
 			                   </s:if>
 			                   <s:else>
-			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been paid. Please enter the amount received: 
+			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been paid.
+                                    <s:if test="outstandingInterimPayment > 0">
+                                        Please enter the amount received:
+                                    </s:if>
+                                    <s:else>
+                                        Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
+                                    </s:else>
 			                   </s:else>
 			            	</div>
                             </td>
@@ -60,7 +72,12 @@
                         <tr>
                             <td nowrap>
                                 <label >Interim Payment Received</label></td><td nowrap>
-                                £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />"/>
+                                <s:if test="outstandingInterimPayment > 0">
+                                    £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />"/>
+                                </s:if>
+                                <s:else>
+                                    £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />" readonly="readonly"/>
+                                </s:else>
 
                                 <s:if test="outstandingInterimPayment > 0">
                                     <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
