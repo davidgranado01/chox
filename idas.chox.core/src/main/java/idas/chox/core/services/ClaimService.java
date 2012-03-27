@@ -3,7 +3,6 @@ package idas.chox.core.services;
 import idas.chox.core.search.*;
 import idas.chox.core.model.*;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -35,8 +34,6 @@ public interface ClaimService extends DataService {
     public void updateClaim(Claim claim);
 
     public Boolean revertClaim(int claimId);
-
-    public Boolean revertClaim(int claimId, BigDecimal amount);
 
     public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId);
 

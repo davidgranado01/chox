@@ -53,7 +53,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 // Next, get the allowed daily rate for the customers vehicle class
                 BigDecimal customerVehicleClassPrice = BigDecimal.ZERO;
                 try {
-                        customerVehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), customerVehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                    customerVehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), customerVehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
                     LOG.warn("Customer's Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getCustomer().getVehicleClass(), claim.getChoReference());
                     customerVehicleClassPrice = BigDecimal.ZERO;
