@@ -2212,3 +2212,12 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values (
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+
+--------------------------------------------------------------------------------------------------------------------------------------
+-- BUG 1599 Dev - Liability Update Notifications Not Being Displayed When Claim Is In The Status 'AwaitingLitigationOutcome'
+--------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('notification.NotificationNotesNotification.AwaitingLitigationOutcome',TRUE,TRUE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLitigationOutcome';
