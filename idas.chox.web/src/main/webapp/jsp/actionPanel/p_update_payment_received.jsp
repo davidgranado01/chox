@@ -121,8 +121,14 @@ function confirmNotFullPayRec(){
     	$("#formUpdatePaymentReceivedName").val(action);
     	if (action=='invoicePaymentReceived') {
             if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
-            	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
-            			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
+                Ext.Msg.show({
+                    title:'Please Confirm',
+                    msg: 'Please note that there is an interim payment on this claim which has not yet been marked as received. Marking the claim as \u2018Full Payment Received\u2018 will also mark this interim payment as received.',
+                    buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
+                    fn: function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}}
+                });
+//            	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
+//            			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
             }else{
             	$("form#formUpdatePaymentReceived").submit();
             }
