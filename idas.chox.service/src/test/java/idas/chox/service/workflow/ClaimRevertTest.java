@@ -1,9 +1,11 @@
 package idas.chox.service.workflow;
 
 import idas.chox.test.BaseTest;
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.ClaimRevert;
@@ -29,6 +31,8 @@ public class ClaimRevertTest extends BaseTest{
 
         Claim claim = new Claim();
         Insurer insurer = insurerService.getInsurer(3);
+        Chorganisation chorganisation = chorganisationService.getChorganisation(1006);
+        claim.setChorganisation(chorganisation);
         claim.setInsurer(insurer);
         claim.setChoReference("testing");
         claim.setManagingRepair(false);
