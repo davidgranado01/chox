@@ -1,13 +1,6 @@
 package idas.chox.service.security;
 
-import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityItem;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
+import idas.chox.core.model.*;
 import idas.chox.core.services.AccessibilityService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
@@ -511,6 +504,18 @@ public class ApplicationAccessibility {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
                 return DECLINED;
             }
+            // <editor-fold defaultstate="collapsed" desc="BUG#1543 FIX">
+            // this fix is for bug 1543 Revert status for subscriber claims at 'AwaitingInvoiceData'
+            if (user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM)
+                    && ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
+                    && claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
+                return DECLINED;
+            } else if (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM)
+                    && ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
+                    && claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
+                return accessRight;
+            }
+            // </editor-fold>
             if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
                                     && !(ClaimType.isSubscriber(claim.getClaimType()) 
                                          || ClaimType.isInsurerUpload(claim.getClaimType())))
