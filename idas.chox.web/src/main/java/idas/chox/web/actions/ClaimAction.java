@@ -1977,20 +1977,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && ClaimType.isGTA(claim.getClaimType())) ? true : false;
     }
 
-    public boolean getShowRemoveFromQueueCheckbox() {
-
-        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))
-                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                && (!claim.isAutoPenaltyChargeEnabled() || service.calculatePenaltyAlertQty(claim.getInvoice()) >= 3)
-                && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))) {
-
-            return true;
-
-        } else {
-            return false;
-        }
-    }
-
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 

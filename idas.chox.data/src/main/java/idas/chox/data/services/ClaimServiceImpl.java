@@ -1058,7 +1058,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.getNumberOfDaysBetween(inv.getAutoPenaltyStart(), new Date());
+        long dateDiff = inv.getInvoicedDays();
         return (int) (dateDiff / 30);
     }
 
