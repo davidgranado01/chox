@@ -11,7 +11,7 @@ public class ExtraAction {
     public static final String UPDATE_LIABILITY = "updateLiability";
     public static final String UPDATE_CLAIM_SUPPLIER_OWNER = "updateClaimSupplierOwner";
     public static final String MAKE_INTERIM_PAYMENT = "makeInterimPayment";
-    public static final String UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL = "updateInterimPayment";
+    public static final String UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL = "updateInterimPaymentFullAndFinal";
     public static final String PAYMENT_RECEIVED = "updatePaymentReceived";
     public static final String UPDATE_INSURER_CLAIM_OWNER = "updateInsurerClaimOwner";
     public static final String UPDATE_PENALTY_CHARGES = "updatePenaltyCharges";
