@@ -49,8 +49,8 @@
 	          <artifactId>yuicompressor-maven-plugin</artifactId>
 	          <version>1.1</version>
 	          <executions>
-		          <execution>
-		          <phase>generate-sources</phase>
+		         <execution>
+		          <phase>process-classes</phase>
 		            <goals>
 		              <goal>compress</goal>
 		            </goals>
@@ -164,6 +164,10 @@
 					</webResources>
 				</configuration>
 			</plugin>
+			 <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
 		</plugins>
 		<resources>
 			<resource>

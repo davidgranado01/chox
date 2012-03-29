@@ -24,7 +24,6 @@ public class XlsFileParserTest extends BaseWebTest{
 	 */
 	@Test
 	public void testReadExcelFile() throws Exception {
-        System.out.println("readExcelFile");
 		File file = new ClassPathResource("CHOX Reservation Vs Ticket.xls")
 				.getFile();
 		InputStream inputStream = new FileInputStream(file);
