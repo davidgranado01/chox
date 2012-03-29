@@ -51,7 +51,7 @@
                                 <s:if test="interimPaymentReceived > 0">
 			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received).
                                     <s:if test="outstandingInterimPayment > 0">
-                                        Please enter the new total amount received: 
+                                        Enter the new total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
                                     </s:if>
                                     <s:else>
                                         Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
@@ -60,7 +60,7 @@
 			                   <s:else>
 			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been paid.
                                     <s:if test="outstandingInterimPayment > 0">
-                                        Please enter the amount received:
+                                        Enter the total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status.
                                     </s:if>
                                     <s:else>
                                         Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
