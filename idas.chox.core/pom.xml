@@ -10,7 +10,7 @@
     <groupId>idas.chox</groupId>
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>${chox.core.version}</version>
+    <version>2.0</version>
     <name>idas.chox.core</name>
     <url>http://maven.apache.org</url>
     <build>

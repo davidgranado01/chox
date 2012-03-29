@@ -72,7 +72,7 @@
 				</configuration>
                 <executions>
                     <execution>
-                    	<phase>package</phase>
+                    	<phase>test</phase>
                         <goals>
                             <goal>cobertura</goal>
                         </goals>
