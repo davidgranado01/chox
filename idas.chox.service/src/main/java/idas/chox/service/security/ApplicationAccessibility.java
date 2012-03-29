@@ -215,9 +215,11 @@ public class ApplicationAccessibility {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
                     boolean b = true;
                     try {
-
-                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentReceived() == null
-                                || BigDecimal.ZERO.compareTo(claim.getInvoice().getInterimPaymentReceived()) >= 0)
+                        // If there is an outstanding interim payment to be received, this action panel
+                        // is already visible so do not display this more action
+                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
+                                || claim.getInvoice().getInterimPaymentReceived() == null
+                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0)
                             b = false;
 
                     } catch (Exception e) {
