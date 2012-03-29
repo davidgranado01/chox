@@ -69,5 +69,6 @@ public class MoveToInvoicePaymentLogged extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
 }
