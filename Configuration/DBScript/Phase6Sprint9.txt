@@ -2220,3 +2220,25 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
 
 
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.AwaitingInvoicePayment');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.AwaitingLiabilityResolution');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToCHO');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToInsurer');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceApprovedByBRE');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceDataCalculationIncorrect');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalated');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalatedToHandler');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToClaimsHandler');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToEngineer');
+
+delete from accessibility where name = 'extraAction.updateInterimPayment.AwaitingInvoicePayment';
+delete from accessibility where name = 'extraAction.updateInterimPayment.AwaitingLiabilityResolution';
+delete from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToCHO';
+delete from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToInsurer';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceApprovedByBRE';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceDataCalculationIncorrect';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalated';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalatedToHandler';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToClaimsHandler';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToEngineer';
+
