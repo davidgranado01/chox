@@ -44,7 +44,6 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.workflow.Activity;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
@@ -53,8 +52,6 @@ import idas.chox.service.security.ButtonAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.ActivityFactory;
-import idas.chox.service.workflow.activities.ClaimRevert;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -71,7 +68,6 @@ import org.springframework.security.access.annotation.Secured;
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
-    private ActivityFactory activityFactory;
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
     private JSONArray jObject;
@@ -140,7 +136,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ButtonAccessibility buttonAccessibility;
     private int actionSelected;
     private String nonce;
-    private Boolean paymentLogged = false;
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
@@ -162,10 +157,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statusMsg;
     }
 
-    public void setActivityFactory(ActivityFactory activityFactory) {
-        this.activityFactory = activityFactory;
-    }
-
     public void setStatusMsg(String statusMsg) {
         if (statusMsg != null && !statusMsg.isEmpty()) {
             this.statusMsg = statusMsg;
@@ -175,7 +166,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 showMessage = true;
         }
     }
-
 
     public Date getAutoPenaltyStart() {
         return autoPenaltyStart;
@@ -218,14 +208,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getPolicyNumber() {
         return claim.getThirdParty().getPolicyNumber();
-    }
-
-    public Boolean getPaymentLogged() {
-        return paymentLogged;
-    }
-
-    public void setPaymentLogged(Boolean paymentLogged) {
-        this.paymentLogged = paymentLogged;
     }
 
     public String getNonce() {
@@ -400,15 +382,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdatePaymentReceived() {
-
-        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-            LOG.debug("Claim status not INVOICE_PAYMENT_LOGGED: {}", claim.getStatus());
-            paymentLogged = true;
-            return SUCCESS;
-        } else {
-            return SUCCESS;
-        }
-
+        return SUCCESS;
     }
 
     public String validateHireMonitoringECDDetail() {

@@ -147,7 +147,6 @@ function confirmNotFullPayRec(){
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="formUpdatePaymentReceivedName" name="name"/>
-            <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
                 <s:if test="paymentLoggedOverDays && showPayNotReceivedButton && atInvoicePaymentLogged">
                     <div class="status-info">
@@ -186,7 +185,12 @@ function confirmNotFullPayRec(){
                     </tr>
                     <tr>
                         <td colspan="3">
-                        	<input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            <s:if test="status != InvoicePaymentLogged">
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
+                            </s:if>
+                            <s:else>
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            </s:else>
                             <s:if test="atInvoicePaymentLogged">
                                 <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
                             </s:if>

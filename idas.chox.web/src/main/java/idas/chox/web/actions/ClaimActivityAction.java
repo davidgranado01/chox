@@ -27,7 +27,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Claim claim;
     private String name;
     private List<Integer> selectedClaimIdList;
-    private Boolean paymentLogged = false;
     private String jsonData;
     private boolean showMessage = false;
     private String message = null;
@@ -54,10 +53,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public boolean isShowMessage() {
         return showMessage;
-    }
-
-    public void setPaymentLogged(Boolean paymentReceived) {
-        this.paymentLogged = paymentReceived;
     }
 
     @Override
@@ -150,17 +145,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
-                /*
-                 * If moving to payment received from a status that is not 'PaymentLogged',
-                 * then first move to payment logged status
-                 * (Note this flag is set from the more actions drop-down in p_update_payment_received.jsp,
-                 * this value is hidden and got it from claim action)
-                 */
-                if (paymentLogged == true) {
-                    LOG.debug("Moving claim to InvoicePaymentLogged (before setting to payment received).");
-                    activityFactory.getActivity("moveToInvoicePaymentLogged").process(claim);
-                }
-                
                 checkVersion(Arrays.asList(claim));
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
