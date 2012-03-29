@@ -3,24 +3,28 @@
 
 <script type="text/javascript">
 
-	$("form#formUpdateInterimPayment").validate(
+	$(function(){
+        $("form#formUpdateInterimPayment").validate(
         {
             errorLabelContainer: "#ACKmUpdateInterimPaymentMessageBox",
             rules: {
             	partialInterimPayment:{
             		max: <s:property value="interimPaymentMade" />,
                     required:true,
-                    number: true
+                    number: true,
+                    min: 0.01
                 }
             },
             messages: {
             	partialInterimPayment: {
-            		number: "Invalid 'Interim Payment' Format",
-                    required:"You must supply a value for 'Interim Payment Amount'",
-                    max:"The supplied value cannot be bigger than the current interim amount."
+            		number: "Invalid 'Interim Payment Received' Format",
+                    required:"You Must Supply A Value for the 'Interim Payment Received'",
+                    max: "The 'Interim Payment Received' Cannot Be Bigger Than The Total Interim Amount Paid",
+                    min: "The 'Interim Payment Received' Must Be Bigger Than 0"
                 }
             }
-     });
+        });
+    });
      
     function updateInterimPaymentAction(action){
     	if(action == 'updateInterimPaymentFullAndFinal'){
