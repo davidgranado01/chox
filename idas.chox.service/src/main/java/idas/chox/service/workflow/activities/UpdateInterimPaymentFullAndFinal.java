@@ -69,5 +69,6 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
 }
