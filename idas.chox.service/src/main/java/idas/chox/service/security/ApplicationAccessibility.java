@@ -1,26 +1,21 @@
 package idas.chox.service.security;
 
-import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityItem;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.services.AccessibilityService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.util.AccessibilityHelper;
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.*;
+import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.AccessibilityHelper;
+import idas.chox.core.util.DateHelper;
 
 public class ApplicationAccessibility {
 
@@ -501,9 +496,6 @@ public class ApplicationAccessibility {
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
-
-
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
 
@@ -512,9 +504,11 @@ public class ApplicationAccessibility {
                 return DECLINED;
             }
             if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
-                                    && !(ClaimType.isSubscriber(claim.getClaimType()) 
-                                         || ClaimType.isInsurerUpload(claim.getClaimType())))
-                    || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) && ClaimType.isSubscriber(claim.getClaimType()))) {
+                                    && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
+                                    && !(ClaimType.isSubscriber(claim.getClaimType())))
+                    || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
+                                     && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) 
+                                     && ClaimType.isSubscriber(claim.getClaimType()))) {
                 LOG.debug("Declined access to Button accessibility (Revert claim).");
                 return DECLINED;
             }
