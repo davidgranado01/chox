@@ -1028,46 +1028,85 @@
                         <legend>Payment Details</legend>
                         <div style="display:none" class="form-container"  id="formPaymentDetailsRId">
                             <table class="chox-table-form" style="width: 100%">
-                               <tr>
-                                   <td style="width: 30%"><label class="std-label-ro">
-                                            Hire Gross Paid</label></td>
+                                <tr>
+                                    <td style="width: 30%"><label class="std-label-ro">Hire Gross Paid</label></td>
                                     <td style="width: 10%">&nbsp;</td>
-                                    <td style="width: 60%"><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td></tr>
+                                    <td style="width: 60%"><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Repair Gross Paid</label></td>
+                                    <td><label class="std-label-ro">Repair Gross Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="repairGrossPaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="repairGrossPaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Engineer Fee Gross Paid</label></td>
+                                    <td><label class="std-label-ro">Engineer Fee Gross Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="engineerFeeGrossPaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="engineerFeeGrossPaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Total Loss Fee Gross Paid</label></td>
+                                    <td><label class="std-label-ro">Total Loss Fee Gross Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="totalLossFeeGrossPaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="totalLossFeeGrossPaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Storage Recovery Gross Paid</label></td>
+                                    <td><label class="std-label-ro">Storage Recovery Gross Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="storageRecoveryGrossPaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="storageRecoveryGrossPaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Hire Penalty Charges Paid</label></td>
+                                    <td><label class="std-label-ro">Hire Penalty Charges Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="hirePenaltyChargePaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="hirePenaltyChargePaid" /></label></td>
+                                </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Repair Penalty Charges Paid</label></td>
+                                    <td><label class="std-label-ro">Repair Penalty Charges Paid</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="repairPenaltyChargePaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="repairPenaltyChargePaid" /></label></td>
+                                </tr>
+                                <s:if test="paymentDetailsClaimHandInvAmt > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Claims Handling Invoice Amount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsClaimHandInvAmt" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsDeductionClaimHandFee > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Deduction For Claims Handling Fee</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsDeductionClaimHandFee" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsCHODiscount > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">CHO Discount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsCHODiscount" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsInsurerDiscount > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Insurer Discount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsInsurerDiscount" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <tr>
+                                    <td><label class="std-label-ro">Total To Pay</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="totalToPay" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Interim Payments Made</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="interimPaymentMade" /></label></td>
+                                </tr>
                                 <tr>
                                     <td><label class="std-label-ro">
                                             Final Payment</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="finalPayment" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="finalPayment" /></label></td>
+                                </tr>
                             </table>
                         </div>
                     </fieldset>

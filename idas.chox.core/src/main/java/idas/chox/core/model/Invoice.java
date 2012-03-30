@@ -207,6 +207,10 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal storageRecoveryGrossPaid;
     private BigDecimal hirePenaltyChargePaid;
     private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal claimHandlerChargePaid;
+    private BigDecimal deductionClaimHandlerFeePaid;
+    private BigDecimal choDiscountFeePaid;
+    private BigDecimal insurerDiscountFeePaid;
     private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private Date autoPenaltyStart;
@@ -298,6 +302,38 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInterimPaymentReceivedFullAndFinal(Boolean interimPaymentReceivedFullAndFinal) {
         this.interimPaymentReceivedFullAndFinal = interimPaymentReceivedFullAndFinal;
+    }
+
+    public BigDecimal getChoDiscountFeePaid() {
+        return choDiscountFeePaid;
+    }
+
+    public void setChoDiscountFeePaid(BigDecimal choDiscountFeePaid) {
+        this.choDiscountFeePaid = choDiscountFeePaid;
+    }
+
+    public BigDecimal getClaimHandlerChargePaid() {
+        return claimHandlerChargePaid;
+    }
+
+    public void setClaimHandlerChargePaid(BigDecimal claimHandlerChargePaid) {
+        this.claimHandlerChargePaid = claimHandlerChargePaid;
+    }
+
+    public BigDecimal getDeductionClaimHandlerFeePaid() {
+        return deductionClaimHandlerFeePaid;
+    }
+
+    public void setDeductionClaimHandlerFeePaid(BigDecimal deductionClaimHandlerFeePaid) {
+        this.deductionClaimHandlerFeePaid = deductionClaimHandlerFeePaid;
+    }
+
+    public BigDecimal getInsurerDiscountFeePaid() {
+        return insurerDiscountFeePaid;
+    }
+
+    public void setInsurerDiscountFeePaid(BigDecimal insurerDiscountFeePaid) {
+        this.insurerDiscountFeePaid = insurerDiscountFeePaid;
     }
 
     public Invoice() {

@@ -1887,6 +1887,22 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         return invoiceAction.model.getTotalLossFeeGrossPaid();
     }
 
+    public BigDecimal getPaymentDetailsCHODiscount() {
+        return invoiceAction.model.getChoDiscountFeePaid();
+    }
+
+    public BigDecimal getPaymentDetailsClaimHandInvAmt() {
+        return invoiceAction.model.getClaimHandlerChargePaid();
+    }
+
+    public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
+        return invoiceAction.model.getDeductionClaimHandlerFeePaid();
+    }
+
+    public BigDecimal getPaymentDetailsInsurerDiscount() {
+        return invoiceAction.model.getInsurerDiscountFeePaid();
+    }
+
     public BigDecimal getFinalPayment() {
         return invoiceAction.model.getFinalPayment();
     }
