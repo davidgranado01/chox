@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 public class UpdateInterimPaymentReceived extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
+    
+    private BigDecimal partialInterimPayment;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -27,12 +30,15 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        
-        if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
-            claim.getInvoice().setInterimPaymentReceived(true);
-        }else{
-           LOG.error(" Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",claim.getChoReference(),this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName()); 
-        }
+		if (claim.getInvoice().getInterimPaymentMade().compareTo(BigDecimal.ZERO) > 0) {
+			claim.addComment(Comment.New(0, "An interim payment of £" + partialInterimPayment.toString() + " has been received."));
+			claim.getInvoice().setInterimPaymentReceived(partialInterimPayment);
+		} else {
+			LOG.error("Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",
+					claim.getChoReference(), this.getWorkflowContext()
+							.getSecurityInfoProvider().getCurrentUser()
+							.getDisplayName());
+		}
     }
 
     @Override
@@ -43,14 +49,23 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
+
+	public BigDecimal getPartialInterimPayment() {
+		return partialInterimPayment;
+	}
+
+	public void setPartialInterimPayment(BigDecimal partialInterimPayment) {
+		this.partialInterimPayment = partialInterimPayment;
+	}
 }

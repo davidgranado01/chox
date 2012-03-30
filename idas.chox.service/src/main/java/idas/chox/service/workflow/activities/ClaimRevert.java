@@ -5,16 +5,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.CommentService;
 import idas.chox.core.services.TaskService;
+import idas.chox.core.util.DateHelper;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
+    private BigDecimal amountReceived = null;
     private ClaimService claimService;
+    private CommentService commentService;
     private TaskService taskService;
+    private BreBandService breBandService;
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
     
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
@@ -22,6 +35,14 @@ public class ClaimRevert extends BaseActivity {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    public void setAmountReceived(BigDecimal amountReceived) {
+        this.amountReceived = amountReceived;
     }
 
     @Override
@@ -46,6 +67,7 @@ public class ClaimRevert extends BaseActivity {
     protected void doProcess(Claim claim) {
         boolean reOpenTasks = false;
         boolean reCloseTasks = false;
+
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
@@ -58,14 +80,52 @@ public class ClaimRevert extends BaseActivity {
             reCloseTasks = true; // Indicates reverting to a closed state
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
+        Date originalStatusModifiedDate = claim.getStatusModifiedDate();
+        
         if (claimService.revertClaim(claim.getId()) != null) {
-            LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}", new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
+            LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}",
+                    new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
+            // Make sure we have a BRE Band
+            if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus()) && getCurrentUser().isCHO()) {
+                // CHO has reverted back from InvoicePaymentLogged - add a note
+                Comment comment = null;
+                if (amountReceived == null)
+                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
+                            + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
+                            + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
+                else
+                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
+                            + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
+                            + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
+                            + amountReceived + " as there is an amount outstanding. Please check " 
+                            + "the payment details in your claim system and mark the claim as 'Invoice Payment Logged' when the outstanding amount has been paid.");
+                claim.addComment(comment);
+            } else if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus())) { // and we are an Insurer or CHOX Admin
+                // we need to remove the note added when the claim moved to INVOICE_PAYMENT_LOGGED
+                for (Comment comment : claim.getComments()) {
+                    if (!comment.isReverted() && (comment.getComment().startsWith("A payment amount of") || comment.getComment().startsWith("A full payment amount of"))
+                            && comment.getComment().contains("has been made")) {
+                        if (comment.getCreatedDate().getTime() - 500 < originalStatusModifiedDate.getTime()
+                                && originalStatusModifiedDate.getTime() < comment.getCreatedDate().getTime() + 500) {
+                            LOG.debug("Marking comment with id={} as deleted: '{}'", comment.getId(), comment.getComment());
+                            commentService.deleteCommentById(comment.getId());
+                          break;
+                        }
+                    }
+                }
+            }
 
-            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+            if (claim.getBreBand() == null) {
+                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
+
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges()
+                    && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (
@@ -86,11 +146,17 @@ public class ClaimRevert extends BaseActivity {
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
     }
     
+    /*
+     * We'll overide the afterProcess as we do not want to log a state change for a revert operation.
+     * The claim is also saved in the service, so we do not need to do this either.
+     */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-// Claim already saved in the service, so we shouldn't need to do this
 //        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
 //        getDataService().save(claim);
+//        LOG.debug("Claim saved - logging transaction...");
+//        logTransaction(claim);
+//        LOG.debug("Claim saved & transaction logged.");
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

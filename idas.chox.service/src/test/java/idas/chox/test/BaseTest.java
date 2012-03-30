@@ -10,6 +10,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.ReasonOfDelayService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.UploadClaimXMLService;
@@ -98,4 +99,6 @@ public abstract class BaseTest {
     protected AuditTrailService auditTrailService;
     @Autowired
     protected FakeSecurityInfoProvider fakeSecurityInfoProvider;
+    @Autowired
+    protected InvoiceService invoiceService;
 }

@@ -27,7 +27,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Claim claim;
     private String name;
     private List<Integer> selectedClaimIdList;
-    private Boolean paymentLogged = false;
     private String jsonData;
     private boolean showMessage = false;
     private String message = null;
@@ -54,10 +53,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public boolean isShowMessage() {
         return showMessage;
-    }
-
-    public void setPaymentLogged(Boolean paymentReceived) {
-        this.paymentLogged = paymentReceived;
     }
 
     @Override
@@ -94,14 +89,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         }
 
         // Make sure we have a BRE Band (for non-batch requests)
-        if ((selectedClaimIdList == null ||  selectedClaimIdList.isEmpty())&& claim != null && claim.getBreBand() == null) {
+        if ((selectedClaimIdList == null || selectedClaimIdList.isEmpty()) && claim != null && claim.getBreBand() == null) {
             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
         }
 
         // Skip version checking if we are processing multiple claims
 //        if (selectedClaimIdList == null || selectedClaimIdList.isEmpty())
-            
+//            checkVersion();
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
@@ -150,17 +145,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
-//                LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", claim.getId(), currentVersion);
-                /*
-                 * If moving to payment received from a status that is not 'PaymentLogged',
-                 * then first move to payment logged status
-                 * (Note this flag is set from the more actions drop-down in p_update_payment_received.jsp,
-                 * this value is hidden and got it from claim action)
-                 */
-                if (paymentLogged == true) {
-                    LOG.debug("Moving claim to InvoicePaymentLogged (before setting to payment received).");
-                    activityFactory.getActivity("moveToInvoicePaymentLogged").process(claim);
-                }
                 checkVersion(Arrays.asList(claim));
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
@@ -177,7 +161,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             }
             LOG.debug("claim activity returning success");
             jsonObject.put("success", Boolean.TRUE);
-            jsonObject.put("message", "claim processed successfully.");
+            if (getMessage() != null)
+                jsonObject.put("message", getMessage());
+//            else
+//                jsonObject.put("message", "Claim has been Successfully Processed.");
             setJsonData(jsonObject.toString());
             
             return SUCCESS;

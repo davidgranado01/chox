@@ -709,12 +709,6 @@
                                         <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="javascript:doToggleInsurerDiscount();" />
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Confirm Payment Details</label>
-                                        <s:checkbox name="paymentDetailsConfirmationEnabled" value="paymentDetailsConfirmationEnabled" />
-                                    </div>  
-                                </td>
                             </tr>
                         </table>
                         <table>

@@ -48,7 +48,6 @@ public class Insurer extends Entity implements Serializable {
     private int forcePasswordChange;
     private int uniquePasswordHistory;
     private boolean insurerDiscountEnable;
-    private boolean paymentDetailsConfirmationEnabled;
     private int minimumPasswordLength;
     private boolean uploadEnabled;
     private boolean allowSubscriberClaims;
@@ -59,14 +58,6 @@ public class Insurer extends Entity implements Serializable {
 
     public void setMinimumPasswordLength(int minimumPasswordLength) {
         this.minimumPasswordLength = minimumPasswordLength;
-    }
-
-    public boolean isPaymentDetailsConfirmationEnabled() {
-        return paymentDetailsConfirmationEnabled;
-    }
-
-    public void setPaymentDetailsConfirmationEnabled(boolean paymentDetailsConfirmationEnabled) {
-        this.paymentDetailsConfirmationEnabled = paymentDetailsConfirmationEnabled;
     }
 
     public boolean isInsurerDiscountEnable() {

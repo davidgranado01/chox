@@ -253,7 +253,6 @@ public class ClaimFileReportData {
     private String vehicleTypeRequired;
     private String specialRequirements;
     private String averageDailyMileage;
-    public boolean showPaymentDetails;
     private BigDecimal paymentDetailsHirePaid;
     private BigDecimal paymentDetailsRepairPaid;
     private BigDecimal paymentDetailsEngineerFeePaid;
@@ -261,7 +260,7 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsStorageRecoveryPaid;
     private BigDecimal paymentDetailsHirePenaltyPaid;
     private BigDecimal paymentDetailsRepairPenaltyPaid;
-    private BigDecimal paymentDetailsTotalPaid;
+    private BigDecimal paymentDetailsFinalPayment;
     private String claimType;
 
     public ClaimFileReportData(Claim claim) {
@@ -547,14 +546,17 @@ public class ClaimFileReportData {
             invoiceTotalToPay = invoice.getTotalToPay();
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
-            invoiceInterimPaymentAmount = invoice.getInterimPayment();
+            invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
             if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0)
                 invoiceInterimPayment = "";
-            else if (invoice.getInterimPaymentReceived()!=null && invoice.getInterimPaymentReceived()) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
+            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
+            }
+            else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) < 0) {
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Only £" + invoice.getInterimPaymentReceived() + " Received)";
             }
             else {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
             }
             if (invoice.getDateInvoiced() != null)
                 invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
@@ -588,7 +590,7 @@ public class ClaimFileReportData {
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
             extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
-            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
+//            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
             paymentDetailsHirePaid = invoice.getHireGrossPaid();
             paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
             paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
@@ -596,7 +598,7 @@ public class ClaimFileReportData {
             paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
             paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
             paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
-            paymentDetailsTotalPaid = invoice.getTotalPaid();
+            paymentDetailsFinalPayment = invoice.getFinalPayment();
         }
 
         EngineerReport engineerReport = claim.getEngineerReport();
@@ -2514,21 +2516,13 @@ public class ClaimFileReportData {
         this.paymentDetailsTotalLossPaid = paymentDetailsTotalLossPaid;
     }
 
-    public BigDecimal getPaymentDetailsTotalPaid() {
-        return paymentDetailsTotalPaid;
-    }
+	public BigDecimal getPaymentDetailsFinalPayment() {
+		return paymentDetailsFinalPayment;
+	}
 
-    public void setPaymentDetailsTotalPaid(BigDecimal paymentDetailsTotalPaid) {
-        this.paymentDetailsTotalPaid = paymentDetailsTotalPaid;
-    }
-
-    public boolean isShowPaymentDetails() {
-        return showPaymentDetails;
-    }
-
-    public void setShowPaymentDetails(boolean showPaymentDetails) {
-        this.showPaymentDetails = showPaymentDetails;
-    }
+	public void setPaymentDetailsFinalPayment(BigDecimal paymentDetailsFinalPayment) {
+		this.paymentDetailsFinalPayment = paymentDetailsFinalPayment;
+	}
 
 }
 

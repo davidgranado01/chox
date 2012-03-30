@@ -12,14 +12,14 @@ CREATE TABLE queued_ticket (
  grant select, update, insert, delete on queued_ticket to chox_user;
  grant select, update on queued_ticket_id_seq to chox_user; 
 
---
+----------------------------------------------------------------------
 -- 6.9.6 BRE Modifications
---
+----------------------------------------------------------------------
 ALTER TABLE bre_band ADD COLUMN non_standard_insurance_tolerance numeric(10,2) not null default 0.0;
 
--------------------------------------------------------
+----------------------------------------------------------------------
 -- TO-DO ITEM 6.9.2 New MI Role For Insurer & CHO ---
--------------------------------------------------------
+----------------------------------------------------------------------
 
 INSERT INTO web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
 SELECT 'ROLE_INS_MI', 999, now(), 999, now(), 'MI Access', 2, false, false, false, false, true, true, true, 0;
@@ -2080,10 +2080,41 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 ----------------------------------------------------------------------
+-- 6.9.1 Part Payments Modifications
+----------------------------------------------------------------------
+ALTER TABLE invoice RENAME COLUMN interim_payment_received TO interim_payment_received_old;
+ALTER TABLE invoice ADD COLUMN interim_payment_received numeric(10,2) NOT NULL DEFAULT 0.00;
+
+ALTER TABLE invoice RENAME COLUMN interim_payment_amount TO interim_payment_made;
+ALTER TABLE invoice RENAME COLUMN total_paid TO final_payment;
+
+ALTER TABLE insurer DROP COLUMN is_payment_details_confirm_enable;
+
+
+update invoice
+    set interim_payment_received = interim_payment_made
+where interim_payment_received_old = true;
+
+-- update for full and final
+update invoice
+    set interim_payment_received = interim_payment_made
+where interim_payment_received_full_final  = true;
+
+UPDATE invoice SET final_payment = null WHERE final_payment = 0.00;
+
+ALTER TABLE invoice DROP COLUMN interim_payment_received_old;
+
+ALTER TABLE invoice ADD COLUMN claim_handler_charge_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN deduction_claim_handler_fee_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN cho_discount_fee_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN insurer_discount_fee_paid numeric(10,2);
+
+----------------------------------------------------------------------
 -- BUG#1549 Allow .zip files to be added as an attachment to a claim
 ----------------------------------------------------------------------
 
 INSERT INTO attachment_type (code,description,status,mime_type) VALUES ('zip','ZIP File',true,'application/zip');
+
 
 -------------------------------------------------------------------------------
 -- BUG#1573 6.9.4 - Queues missing from CHOX Admin
@@ -2128,4 +2159,91 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 ---------------------------------------------------------
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceContested';
+
+---------------------------------------------------------
+-- BUG 1600 - Dev - Order Of Queues For CHOX Admin Role
+---------------------------------------------------------
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.InterimPayment';
+
+-------------------------------------------------------------------------------------------
+-- BUG 1598 - Dev - More Actions Drop Down Missing From 'AwaitingLitigationOutcome' Status
+-------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updateClaimSupplierOwner.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateClaimSupplierOwner.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateClaimSupplierOwner.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updateInterimPaymentFullAndFinal.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updatePaymentReceived.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updatePenaltyCharges.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.penaltyChargeConfiguration.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.penaltyChargeConfiguration.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.makeInterimPayment.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.makeInterimPayment.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.makeInterimPayment.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updateLiability.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.updateLiability.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateLiability.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+
+--------------------------------------------------------------------------------------------------------------------------------------
+-- BUG 1599 Dev - Liability Update Notifications Not Being Displayed When Claim Is In The Status 'AwaitingLitigationOutcome'
+--------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('notification.NotificationNotesNotification.AwaitingLitigationOutcome',TRUE,TRUE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLitigationOutcome';
+
+
+------------------------------------------------------------------------------------------------------
+-- BUG 1598 - Dev - More Actions Drop Down Missing From 'AwaitingLitigationOutcome' Status : Re-fixed
+------------------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) values ('extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome',FALSE,FALSE);
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimNumber.AwaitingLitigationOutcome';
+
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.AwaitingInvoicePayment');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.AwaitingLiabilityResolution');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToCHO');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToInsurer');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceApprovedByBRE');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceDataCalculationIncorrect');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalated');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalatedToHandler');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToClaimsHandler');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToEngineer');
+
+delete from accessibility where name = 'extraAction.updateInterimPayment.AwaitingInvoicePayment';
+delete from accessibility where name = 'extraAction.updateInterimPayment.AwaitingLiabilityResolution';
+delete from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToCHO';
+delete from accessibility where name = 'extraAction.updateInterimPayment.ContestedInvoiceReferredToInsurer';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceApprovedByBRE';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceDataCalculationIncorrect';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalated';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceEscalatedToHandler';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToClaimsHandler';
+delete from accessibility where name = 'extraAction.updateInterimPayment.InvoiceReferredToEngineer';
 

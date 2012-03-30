@@ -1,31 +1,33 @@
 package idas.chox.web.actions;
 
-import idas.chox.service.bre.util.CalcHelper;
-import com.opensymphony.xwork2.ActionContext;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import com.opensymphony.xwork2.Preparable;
+
 import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
 import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.*;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.VehicleClassComparator;
-import idas.chox.web.VehicleClassPriceMapperComparator;
 import idas.chox.web.VehicleClassPriceMapper;
-import java.math.RoundingMode;
-import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
+import idas.chox.web.VehicleClassPriceMapperComparator;
 
 public class InvoiceDetailAction extends BaseAction implements Preparable {
 
@@ -36,8 +38,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private InsurerDiscountService insurerDiscountService;
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
-    private Claim claim = new Claim();
-    private Map session;
+    private Claim claim = null;
     private int actionSelected;
     private int submit = 10;
     private int recalculate = 20;
@@ -80,6 +81,22 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysAwaitingLiabilityResolution;
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+    public BigDecimal getPaymentDetailsCHODiscount() {
+        return invoice.getChoDiscountFeePaid();
+    }
+
+    public BigDecimal getPaymentDetailsClaimHandInvAmt() {
+        return invoice.getClaimHandlerChargePaid();
+    }
+
+    public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
+        return invoice.getDeductionClaimHandlerFeePaid();
+    }
+
+    public BigDecimal getPaymentDetailsInsurerDiscount() {
+        return invoice.getInsurerDiscountFeePaid();
+    }
+
     public Boolean getCanAddInsurerDiscountComment() {
         return canAddInsurerDiscountComment;
     }
@@ -300,16 +317,19 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         this.claimService = claimService;
     }
 
-    public boolean getcanShowPaymentDetails() {
-        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
-                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
+    public boolean getCanShowPaymentDetails() {
+        LOG.debug("Claim is {}, claimId={}", claim, claimId);
+        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED))
+                && claim.getInvoice().getFinalPayment() != null) {
             return true;
         }
         return false;
     }
 
-    public boolean getcanShowPenaltyChargesPaidField() {
-        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+    public boolean getCanShowPenaltyChargesPaidField() {
+        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))
                 && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1
                 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
@@ -1781,39 +1801,32 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public BigDecimal getInterimPayment() {
-        LOG.debug("getInterimPayment is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPayment());
-        return invoice.getInterimPayment();
-    }
-
-//    public void setInterimPayment(BigDecimal interimPayment) {
-//        if (actionSelected != reset) {
-//            LOG.debug("setInterimPayment is being called inside InvoiceRecalculation with the value of {}",interimPayment);
-//            setInterimPaymentOriginal(invoice.getInterimPayment());
-//            invoice.setInterimPayment(interimPayment);
-//        }
-//    }
-    public Boolean getInterimPaymentReceived() {
-        LOG.debug("getInterimPaymentReceived is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPaymentReceived());
+    public BigDecimal getInterimPaymentReceived() {
+        LOG.debug("getInterimPaymentReceived is being called inside InvoiceRecalculationAction and returning value is {}", invoice.getInterimPaymentReceived());
+        if (invoice.getInterimPaymentReceived() == null) {
+            return BigDecimal.ZERO;
+        }
         return invoice.getInterimPaymentReceived();
     }
 
-//    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-//
-//        if (actionSelected != reset) {
-//            LOG.debug("setInterimPaymentReceived is being called inside InvoiceRecalculation with the value of {}",interimPaymentReceived);
-//            invoice.setInterimPaymentReceived(interimPaymentReceived);
-//        }
-//    }
-    public String getInterimPaymentReceivedDesc() {
-        return invoice.getInterimPaymentReceivedDesc();
+    public BigDecimal getOutstandingInterimPayment() {
+        BigDecimal interimPayment = BigDecimal.ZERO.setScale(2);
+        if (invoice.getInterimPaymentMade() != null) {
+            interimPayment = invoice.getInterimPaymentMade();
+        }
+        return interimPayment.subtract(getInterimPaymentReceived());
     }
 
-    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
-
-        if (actionSelected != reset && invoice != null) {
-            invoice.setInterimPaymentReceivedDesc(interimPaymentReceivedDesc);
+    public BigDecimal getInterimPaymentMade() {
+        LOG.debug("getInterimPaymentMade() is being called inside InvoiceRecalculationAction and returning value is {}", invoice.getInterimPaymentMade());
+        if (invoice.getInterimPaymentMade() == null) {
+            return BigDecimal.ZERO;
         }
+        return invoice.getInterimPaymentMade();
+    }
+
+    public Boolean isInterimPaymentReceivedFullAndFinal() {
+        return invoice.isInterimPaymentReceivedFullAndFinal();
     }
 
     public BigDecimal getTotalPenaltyCharge() {
@@ -1825,10 +1838,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             setTotalPenaltyChargeOriginal(invoice.getTotalPenaltyCharge());
             invoice.setTotalPenaltyCharge(totalPenaltyCharge);
         }
-    }
-
-    public Boolean getInterimPaymentReceivedFullAndFinal() {
-        return invoice.getInterimPaymentReceivedFullAndFinal();
     }
 
     public BigDecimal getEngineerFeeGrossPaid() {
@@ -1857,10 +1866,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public BigDecimal getTotalLossFeeGrossPaid() {
         return invoice.getTotalLossFeeGrossPaid();
-    }
-
-    public BigDecimal getTotalPaid() {
-        return invoice.getTotalPaid();
     }
 
     public boolean isPenaltyChargesPaid() {
@@ -1962,17 +1967,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setRentalStartTime(String time) {
         if (actionSelected != reset) {
             setRentalStartTimeOriginal(getRentalStartTime());
-            if (vehicleHire != null) {
-                try {
-                    Date a = vehicleHire.getHireStart();
-                    Date b = DateHelper.getTimeFormat().parse(time);
-                    vehicleHire.setHireStart(DateHelper.mergeTimeToDate(a, b));
-                } catch (Exception ex) {
-                    LOG.error("Error setting Rental Start-time to '{}': {}", time, ex.getMessage());
-                }
-            }
+            setRentalStartTime(time);
         }
-
     }
 
     public String getRentalEndTime() {
@@ -2002,16 +1998,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRentalStartTimeOriginal(String time) {
         if (time != null && !time.equals(getRentalStartTimeOriginal()) && (getRentalStartTimeOriginal() == null)) {
-            if (vehicleHire != null) {
-                try {
-                    Date a = vehicleHire.getHireStartOriginal();
-                    Date b = DateHelper.getTimeFormat().parse(time);
-                    vehicleHire.setHireStartOriginal(DateHelper.mergeTimeToDate(a, b));
-                } catch (Exception ex) {
-                    LOG.error("Error setting Rental Start-time-original to '{}': {}", time, ex.getMessage());
-                }
-            }
+            if (time != null && !time.equals(getRentalStartTimeOriginal()) && (getRentalStartTimeOriginal() == null)) {
 
+                setRentalStartTimeOriginal(time);
+
+            }
         }
 
     }
@@ -2763,15 +2754,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             if (claim == null) {
                 throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
             }
-            engineerReport  = (claim.getEngineerReport() != null) ? claim.getEngineerReport() : new EngineerReport();
+            engineerReport = (claim.getEngineerReport() != null) ? claim.getEngineerReport() : new EngineerReport();
             invoiceOriginal = (claim.getInvoiceOriginal() != null) ? claim.getInvoiceOriginal() : new InvoiceOriginal();
-            invoice         = (claim.getInvoice() != null) ? claim.getInvoice() : new Invoice();
-            vehicleHire     = (claim.getVehicleHire() != null) ? claim.getVehicleHire() : new VehicleHire();
-            
-            oldVRN          = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
-                        
+            invoice = (claim.getInvoice() != null) ? claim.getInvoice() : new Invoice();
+            vehicleHire = (claim.getVehicleHire() != null) ? claim.getVehicleHire() : new VehicleHire();
+
+            oldVRN = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
+
             addModelToSession(Arrays.asList(claim, engineerReport, invoiceOriginal, vehicleHire, invoice));
-            
+
         } catch (Throwable ex) {
             LOG.debug("Exception in preparing for InvoiceDetailAction : {}", ex.getStackTrace());
         }

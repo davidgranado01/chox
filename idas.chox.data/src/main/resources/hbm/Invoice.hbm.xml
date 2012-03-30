@@ -82,8 +82,8 @@
         <property column="penalty_alert_qty" name="penaltyAlertQty"/>
         <property column="hire_penalty_charge_applied_date" name="hirePenaltyChargeAppliedDate"/>
         <property column="repair_penalty_charge_applied_date" name="repairPenaltyChargeAppliedDate"/>
-        <property column="interim_payment_amount" name="interimPayment"/>
-        <property column="interim_payment_received" name="interimPaymentReceived"/>
+        <property column="interim_payment_made" name="interimPaymentMade"/>
+        <property column="interim_payment_received" name="interimPaymentReceived" not-null="true"/>
         <property column="interim_payment_received_full_final" name="InterimPaymentReceivedFullAndFinal"/>
         <property column="hire_gross_paid" name="hireGrossPaid"/>
         <property column="repair_gross_paid" name="repairGrossPaid"/>
@@ -92,8 +92,12 @@
         <property column="storage_recovery_gross_paid" name="storageRecoveryGrossPaid"/>
         <property column="hire_penalty_charge_paid" name="hirePenaltyChargePaid"/>
         <property column="repair_penalty_charge_paid" name="repairPenaltyChargePaid"/>
+        <property column="claim_handler_charge_paid" name="claimHandlerChargePaid"/>
+        <property column="deduction_claim_handler_fee_paid" name="deductionClaimHandlerFeePaid"/>
+        <property column="cho_discount_fee_paid" name="choDiscountFeePaid"/>
+        <property column="insurer_discount_fee_paid" name="insurerDiscountFeePaid"/>
         <property column="penalty_charges_paid" name="penaltyChargesPaid"/>
-        <property column="total_paid" name="totalPaid"/>
+        <property column="final_payment" name="finalPayment"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

@@ -2,8 +2,142 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+var partialInterimPayment = <s:property value="outstandingInterimPayment" />;
+var interimPaymentMade = <s:property value="interimPaymentMade" />;
+var confPayRec;
+
+Ext.onReady(function(){
+	
+	var inFields = {
+	        xtype: 'fieldset',
+	        title: '<s:if test="interimPaymentReceived > 0.0">Please Confirm Additional Amount Received</s:if><s:else>Please Confirm Amount Received</s:else>',
+	        layout: 'form',
+	        collapsed: false,   
+	        collapsible: false,
+	        defaultType:'numberfield',
+	        defaults: {              
+	            labelStyle: 'text-align: right;',
+	            allowBlank:false,
+	            width : 80,
+	            allowNegative : false,
+	            decimalPrecision : 2,
+	            minValue : 0.00,
+	            style: {
+	                'text-align':'left'
+	            }
+	        },
+	        items: [
+	        {
+	            fieldLabel: 'Amount Received',
+	            id : 'amountReceivedId',
+	            name: 'interimPaymentReceived',
+	            blankText: 'Cofirm Amount Received'
+	        },{
+	            xtype : 'hidden',
+	            id : 'nonceId',
+	            name : 'nonce',
+	            value : nonce
+	        },{
+	            xtype : 'hidden',
+	            id : 'PaymentDetailsFormNameId',
+	            name : 'name',
+	            value : 'fullPaymentNotReceived'
+	        }
+	        ]
+    };
+	
+	var paymentDetailsForm = new Ext.FormPanel({
+	    id: 'paymentDetails-form',
+	    autoHeight: true,
+	    labelWidth: 210,
+	    frame:true,
+	    title:'<div class="status-info">Insurer has made a payment of £<s:property value="finalPaymentOrTotal" /> against an amount outstanding of £<s:property value="projectedFinalPayment" />.\n\
+              </br><s:if test="interimPaymentMade > 0.0">Note that an interim payment of £<s:property value="interimPaymentMade" />\
+                      has been made against this claim <s:if test="interimPaymentReceived == 0">(Not Yet Received)</s:if><s:elseif test="interimPaymentReceived > 0 && outstandingInterimPayment" >(Only £<s:property value="interimPaymentReceived"/> Received)</s:elseif><s:else>(Received)</s:else>.</s:if></div>',
+	    buttonAlign : 'center',
+	    items : [inFields
+	    ],
+	    buttons:[{
+	        text:'Ok',
+	        handler:function(){
+	            if(paymentDetailsForm.getForm().isValid()){
+	                paymentDetailsForm.getEl().mask();
+	                paymentDetailsForm.getForm().submit({
+	                    method:'POST',
+	                    url:contextPath +'/prv/p/fullPaymentNotReceived.action',
+	                    success : function(f, a) {
+	                        if ( a.result.success ){
+	                        	confPayRec.hide();
+                                if (a.result.message && a.result.message.length > 0) {
+                                    Ext.MessageBox.alert('Info', a.result.message,function(){  
+                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                            return false;
+                                    });  
+                                } else {
+                                    window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                }
+	                        }
+	                    },
+	                    failure : function(f, a) {
+	                    	 	confPayRec.hide();
+                                Ext.MessageBox.alert('Error', a.result.message, function(){  
+                                            window.location = contextPath + "/prv/openClaimDetail.action?id="+<s:property value="id" />;
+                                            return false;
+                                });
+	                    }
+	                });
+	            }
+                else console.log("Mot valis");
+	        }
+	    },{
+	        text:'Cancel',
+	        handler:function(){
+	            paymentDetailsForm.getForm().reset();
+	            confPayRec.hide();
+	        }
+	    }]
+	    
+	});
+		
+	confPayRec = new Ext.Window({
+		    layout:'fit',
+		    width:450,
+		    autoHeight: true,
+		    closable:false,
+		    resizable : false,
+		    items : [
+		    paymentDetailsForm
+		    ]
+		});
+	
+});
+
+function confirmNotFullPayRec(){
+	confPayRec.show(document.body);
+}
+
     function doUpdatePaymentReceived(action) {
-        $("#formUpdatePaymentReceivedName").val(action);
+    	
+    	$("#formUpdatePaymentReceivedName").val(action);
+    	if (action=='invoicePaymentReceived') {
+            if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
+                Ext.Msg.show({
+                    title:'Please Confirm',
+                    msg: 'Please note that there is an interim payment on this claim which has not yet been marked as received. Marking the claim as \u2018Full Payment Received\u2018 will also mark this interim payment as received.',
+                    buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
+                    fn: function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}}
+                });
+//            	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
+//            			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
+            }else{
+            	$("form#formUpdatePaymentReceived").submit();
+            }
+        } else if (action == 'fullPaymentAmountNotReceived') {
+        	confirmNotFullPayRec();
+        } else {
+        	$("form#formUpdatePaymentReceived").submit();
+        }
+        
     }
 </script> 
 
@@ -13,18 +147,31 @@
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="formUpdatePaymentReceivedName" name="name"/>
-             <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
-                <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
+                <s:if test="paymentLoggedOverDays && showPayNotReceivedButton && atInvoicePaymentLogged">
                     <div class="status-info">
-                        Please click on the 'Payment Received' button when the payment has been received from the Insurer.
-                        If the payment has not been received then click on the 'Payment Not Received' button which will push the claim
-                        back to the Insurer for review.
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
+					   Please click on the ‘Payment Received But Not Full Amount’ button if the Insurer has made a payment but there is a balance outstanding 
+					   on the invoice, this will return the claim to the Insurer for review and the amount received recorded on the invoice.<br/><br/>
+					   If the payment has not been received then clicking on the 'Payment Not Received' button will return the claim to the Insurer for review.  
                     </div>
                 </s:if>
+                <s:elseif test="paymentLoggedOverDays && showPayNotReceivedButton && !atInvoicePaymentLogged">
+                    <div class="status-info">
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
+					   If the payment has not been received then clicking on the 'Payment Not Received' button will return the claim to the Insurer for review.  
+                    </div>
+                </s:elseif>
+                <s:elseif test="atInvoicePaymentLogged">
+                    <div class="status-info">
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
+					   Please click on the ‘Payment Received But Not Full Amount’ button if the Insurer has made a payment but there is a balance outstanding 
+					   on the invoice, this will return the claim to the Insurer for review and the amount received recorded on the invoice.
+                    </div>
+                </s:elseif>
                 <s:else>
                     <div class="status-info">
-                        Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
+                       Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
                     </div>
                 </s:else>
 
@@ -36,9 +183,17 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            <s:if test="status != InvoicePaymentLogged">
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
+                            </s:if>
+                            <s:else>
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            </s:else>
+                            <s:if test="atInvoicePaymentLogged">
+                                <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
+                            </s:if>
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
-                                <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
+                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
                         </td>
                     </tr>

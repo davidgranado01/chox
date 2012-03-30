@@ -43,7 +43,6 @@ public class MailSecurityAthenticatorTest extends BaseWebTest{
      */
     @Test
     public void testIsPrivilegedSender()  {
-        System.out.println("isPrivilegedSender");
         List<String> listOfPrivilegedSenders = mailUtil.parseStringToList(props.getProperty("penUpdate_privilegedUsers"), ",");
         boolean result = mailSecurityAthenticator.isPrivilegedSender(listOfPrivilegedSenders, sender);
         assertEquals(true, result);

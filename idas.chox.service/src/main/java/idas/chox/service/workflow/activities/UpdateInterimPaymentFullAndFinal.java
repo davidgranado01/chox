@@ -24,14 +24,17 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     }
 
+    
     @Override
     protected void doProcess(Claim claim) {
 
-        if (claim.getInvoice().getInterimPayment().compareTo(BigDecimal.ZERO) > 0) {
+        if (claim.getInvoice().getInterimPaymentMade().compareTo(BigDecimal.ZERO) > 0) {
 
-            claim.getInvoice().setInterimPaymentReceived(true);
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
-            claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
+            claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
+            claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade());
+//            if (claim.getInvoice().getFinalPayment() == null)
+//                claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
 
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
@@ -41,13 +44,13 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
                 setCurrentStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
                 claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
                 LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");
-            }else if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)){ 
+            }else if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)){ 
                 // if the claim status is payment received then do not change the claim status via paymentreceived chain activity.
                 super.setChainActivity(null);
             }
 
         } else {
-            LOG.error(" Trying to update interim payment received full and final when there is no interim payment amount for this claim: {} by {}", claim.getChoReference(), this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName());
+            LOG.error("Trying to update interim payment received full and final when there is no interim payment amount for this claim: {} by {}", claim.getChoReference(), this.getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getDisplayName());
         }
     }
 
@@ -68,5 +71,6 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
 }

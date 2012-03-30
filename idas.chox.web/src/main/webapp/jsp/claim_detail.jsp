@@ -368,6 +368,10 @@
                 ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
                 });
+                
+                //in case we already have the interim payment div on page we remove the bottom div
+                if(selectedAction == 'updateInterimPayment' && $('#interimPaymentDiv').size() != 0)
+                	$('#interimPaymentDiv').remove()
             }
         }
 
@@ -580,7 +584,7 @@
         </div>
     </s:if>
 
-    <s:if test="isInterimPaymentMade">
+    <s:if test="hasOutstandingInterimPayment">
         <div id="interimPaymentDiv">
             <s:action namespace="/prv/p" executeResult="true" name="updateInterimPayment">
                 <s:param name="id"><s:property value="id" /></s:param>

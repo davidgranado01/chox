@@ -1,26 +1,21 @@
 package idas.chox.service.security;
 
-import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityItem;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.services.AccessibilityService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.util.AccessibilityHelper;
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.*;
+import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.AccessibilityHelper;
+import idas.chox.core.util.DateHelper;
 
 public class ApplicationAccessibility {
 
@@ -215,8 +210,12 @@ public class ApplicationAccessibility {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
                     boolean b = true;
                     try {
-
-                        b = claim.getInvoice().getInterimPaymentReceived();
+                        // If there is an outstanding interim payment to be received, this action panel
+                        // is already visible so do not display this more action
+                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
+                                || claim.getInvoice().getInterimPaymentReceived() == null
+                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0)
+                            b = false;
 
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());
@@ -497,9 +496,6 @@ public class ApplicationAccessibility {
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
-
-
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
 
@@ -507,13 +503,21 @@ public class ApplicationAccessibility {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
                 return DECLINED;
             }
+            // <editor-fold defaultstate="collapsed" desc="BUG#1543 FIX">
+            // this fix is for bug 1543 Revert status for subscriber claims at 'AwaitingInvoiceData'
             if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
-                                    && !(ClaimType.isSubscriber(claim.getClaimType()) 
-                                         || ClaimType.isInsurerUpload(claim.getClaimType())))
-                    || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) && ClaimType.isSubscriber(claim.getClaimType()))) {
+                                    && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
+                                    && ((!ClaimType.isSubscriber(claim.getClaimType()))
+                                         || (ClaimType.isSubscriber(claim.getClaimType()) 
+                                             && claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED))))
+                    || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
+                                     && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) 
+                                     && ClaimType.isSubscriber(claim.getClaimType())
+                                     && !claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED))) {
                 LOG.debug("Declined access to Button accessibility (Revert claim).");
                 return DECLINED;
             }
+            // </editor-fold>
             LOG.debug("Returning Button accessibility access right: {}", accessRight);
             return accessRight;
 

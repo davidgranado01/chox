@@ -45,7 +45,7 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
             throw new AccessDeniedException("Attempt to access a claim that you do not own.");
         }
         try {
-            checkVersion(Arrays.asList(claim,model));
+            checkVersion(Arrays.asList(claim, model));
             if (reasonOfDelayId > 0) {
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());

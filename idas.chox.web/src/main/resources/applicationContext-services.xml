@@ -189,6 +189,8 @@
                 <ref bean="ContestedInvoicesReferredToCHO" />
                 <ref bean="PenaltyChargesApplied" />
                 <ref bean="InvoicePaymentLogged" />
+                <ref bean="InterimPayment" />
+                <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="NewClaimsToBerouted" />
                 <ref bean="ClaimUnacknowledgedUnassigned" />
                 <ref bean="ClaimReferredToFNOL" />
@@ -204,15 +206,12 @@
                 <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
-                <ref bean="InterimPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
-                <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
                 <ref bean="ManualInvoiceContested" />
-
             </list>
         </property>
     </bean>

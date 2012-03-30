@@ -10,7 +10,7 @@
     <groupId>idas.chox</groupId>
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>${chox.core.version}</version>
+    <version>2.0</version>
     <name>idas.chox.core</name>
     <url>http://maven.apache.org</url>
     <build>
@@ -23,6 +23,10 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

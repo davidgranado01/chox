@@ -130,21 +130,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private UserService userService;
     private String hirePenaltyPercentage;
     private String repairPenaltyPercentage;
-    private BigDecimal interimPayment;
-    private Boolean interimPaymentReceived;
+    private BigDecimal interimPaymentMade;
+    private BigDecimal interimPaymentReceived;
+    private BigDecimal finalPayment;
     private ButtonAccessibility buttonAccessibility;
     private int actionSelected;
     private String nonce;
-    private Boolean paymentLogged = false;
-    private BigDecimal hireGrossPaid;
-    private BigDecimal repairGrossPaid;
-    private BigDecimal engineerFeeGrossPaid;
-    private BigDecimal totalLossFeeGrossPaid;
-    private BigDecimal storageRecoveryGrossPaid;
-    private BigDecimal hirePenaltyChargePaid;
-    private BigDecimal repairPenaltyChargePaid;
-    private BigDecimal totalPaid;
-    private boolean penaltyChargesPaid;
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
@@ -176,7 +167,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-
     public Date getAutoPenaltyStart() {
         return autoPenaltyStart;
     }
@@ -195,13 +185,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
-    }
-
-    public boolean isPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
-            return true;
-        }
-        return false;
     }
 
     public int getLiabilityStatusValue() {
@@ -225,14 +208,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getPolicyNumber() {
         return claim.getThirdParty().getPolicyNumber();
-    }
-
-    public Boolean getPaymentLogged() {
-        return paymentLogged;
-    }
-
-    public void setPaymentLogged(Boolean paymentLogged) {
-        this.paymentLogged = paymentLogged;
     }
 
     public String getNonce() {
@@ -352,19 +327,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getInsurer().isEngineersEnable();
     }
 
-    public BigDecimal getInterimPayment() {
-        return interimPayment;
+    public BigDecimal getInterimPaymentMade() {
+        return claim.getInvoice().getInterimPaymentMade() == null ? BigDecimal.ZERO.setScale(2): claim.getInvoice().getInterimPaymentMade();
     }
 
-    public void setInterimPayment(BigDecimal interimPayment) {
-        this.interimPayment = interimPayment;
+    public void setInterimPaymentMade(BigDecimal interimPaymentMade) {
+        this.interimPaymentMade = interimPaymentMade;
     }
 
-    public Boolean getInterimPaymentReceived() {
-        return interimPaymentReceived;
+    public BigDecimal getInterimPaymentReceived() {
+        return interimPaymentReceived == null ? BigDecimal.ZERO.setScale(2): interimPaymentReceived;
     }
 
-    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+    public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
     }
 
@@ -385,20 +360,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-        /**
-        if (claim == null) {
-        LOG.error("claim is null");
-        throw new IllegalStateException("No Claim available.");
-        } else if (claim.getInvoice() != null) {
-        if (service.updateAutomaticPenaltyCharge(claim)){
-        LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
-        // Invoice details may have changed  so we need to reload the claim
-        claim = service.getClaim(claim.getId());
-        } else {
-        LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
-        }
-        }
-         **/
+        updateModelInSession(Arrays.asList(claim));
         return SUCCESS;
     }
 
@@ -420,15 +382,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdatePaymentReceived() {
-
-        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-            LOG.debug("Claim status not INVOICE_PAYMENT_LOGGED: {}", claim.getStatus());
-            paymentLogged = true;
-            return SUCCESS;
-        } else {
-            return SUCCESS;
-        }
-
+        return SUCCESS;
     }
 
     public String validateHireMonitoringECDDetail() {
@@ -476,28 +430,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
-
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
-    public String makeInterimPayment() {
-        try {
-            claim.getInvoice().setInterimPayment(interimPayment);
-            if (interimPayment != null && interimPayment.compareTo(BigDecimal.ZERO) > 0) {
-                claim.getInvoice().setInterimPaymentReceived(false);
-
-            } else {
-                claim.getInvoice().setInterimPaymentReceived(null);
-
-            }
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown making an interime payment on claim '{}': ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred while updating this claim. Please contact CHOX support.");
-            return ERROR;
-        }
-
-        return SUCCESS;
-    }
-
+    
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -531,8 +464,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
-        setInterimPayment(invoice.getInterimPayment());
-        setInterimPaymentReceived(invoice.getInterimPaymentReceived());
+        setInterimPaymentMade(invoice.getInterimPaymentMade());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
@@ -604,8 +536,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     && (!claim.isAutoPenaltyChargeEnabled()
                     || service.calculatePenaltyAlertQty(invoice) >= 3)))) {
-
-                result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
+                result = invoice.getInvoicedDays() >= (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
         return result;
@@ -655,10 +586,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
-    public boolean getIsInterimPaymentMade() {
+    public boolean getHasOutstandingInterimPayment() {
         boolean bFlag = false;
 
-        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && !claim.getInvoice().getInterimPaymentReceived()) {
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && claim.getInvoice().isInterimPaymentOutstanding()) {
             bFlag = true;
         }
 
@@ -698,23 +629,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    public String getMakeInterimPayment() {
-        if (claim != null && claim.getInvoice() != null) {
-            interimPayment = claim.getInvoice().getInterimPayment();
-            interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
-        } else {
-            interimPayment = null;
-            interimPaymentReceived = null;
-        }
-        return SUCCESS;
-    }
-
     public String getUpdateInterimPayment() {
         if (claim != null && claim.getInvoice() != null) {
-            interimPayment = claim.getInvoice().getInterimPayment();
+            interimPaymentMade = claim.getInvoice().getInterimPaymentMade();
             interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
         } else {
-            interimPayment = null;
+            interimPaymentMade = null;
             interimPaymentReceived = null;
         }
         return SUCCESS;
@@ -1677,14 +1597,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Payment Details Panel">
-    public BigDecimal getInterimPaymentAmount() {
-        return claim.getInvoice().getInterimPayment() != null ? claim.getInvoice().getInterimPayment() : BigDecimal.ZERO;
-    }
-
-    public boolean getInterimPaymentAmountReceived() {
-        return claim.getInvoice().getInterimPaymentReceived() != null ? claim.getInvoice().getInterimPaymentReceived() : false;
-    }
 
     public BigDecimal getPaymentDetailsCHODiscount() {
         return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1710,28 +1622,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    public void setEngineerFeeGrossPaid(BigDecimal engineerFeeGrossPaid) {
-        this.engineerFeeGrossPaid = engineerFeeGrossPaid;
+    public boolean isPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+            return true;
+        
+        return false;
     }
-
+    
+    public boolean getPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+            return true;
+        
+        return false;
+    }
+    
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
             return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
         } else {
             return BigDecimal.ZERO;
         }
-    }
-
-    public boolean isPenaltyChargesPaid() {
-        return penaltyChargesPaid;
-    }
-
-    public void setPenaltyChargesPaid(boolean penaltyChargesPaid) {
-        this.penaltyChargesPaid = penaltyChargesPaid;
-    }
-
-    public void setHireGrossPaid(BigDecimal hireGrossPaid) {
-        this.hireGrossPaid = hireGrossPaid;
     }
 
     public BigDecimal getHirePenaltyChargePaid() {
@@ -1742,20 +1652,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    public void setHirePenaltyChargePaid(BigDecimal hirePenaltyChargePaid) {
-        this.hirePenaltyChargePaid = hirePenaltyChargePaid;
-    }
-
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
             return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
         } else {
             return BigDecimal.ZERO;
         }
-    }
-
-    public void setRepairGrossPaid(BigDecimal repairGrossPaid) {
-        this.repairGrossPaid = repairGrossPaid;
     }
 
     public BigDecimal getRepairPenaltyChargePaid() {
@@ -1766,20 +1668,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    public void setRepairPenaltyChargePaid(BigDecimal repairPenaltyChargePaid) {
-        this.repairPenaltyChargePaid = repairPenaltyChargePaid;
-    }
-
     public BigDecimal getStorageRecoveryGrossPaid() {
         if (claim.getInvoice() != null) {
             return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
         } else {
             return BigDecimal.ZERO;
         }
-    }
-
-    public void setStorageRecoveryGrossPaid(BigDecimal storageRecoveryGrossPaid) {
-        this.storageRecoveryGrossPaid = storageRecoveryGrossPaid;
     }
 
     public BigDecimal getTotalLossFeeGrossPaid() {
@@ -1790,55 +1684,43 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
-        this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
-    }
-
-    public BigDecimal getTotalPaid() {
+    public BigDecimal getProjectedFinalPayment() {
+        BigDecimal projectedFinalPayment = null;
         if (claim.getInvoice() != null) {
-            return claim.getInvoice().getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-        } else {
-            return BigDecimal.ZERO;
-        }
+        	projectedFinalPayment = claim.getInvoice().getTotalToPay().subtract(getInterimPaymentMade());
+        } 
+        
+        return projectedFinalPayment;
     }
+    
+    public BigDecimal getFinalPayment() {
+        if (claim.getInvoice() != null && finalPayment == null) {
+        	finalPayment = claim.getInvoice().getFinalPayment();
+        } 
+        
+        return finalPayment;
+    }
+    
+    public BigDecimal getFinalPaymentOrTotal() {
+        BigDecimal finalPaymentOrTotal = finalPayment;
+        if (claim.getInvoice() != null && finalPaymentOrTotal == null) {
+        	finalPaymentOrTotal = claim.getInvoice().getFinalPayment();
+            if (finalPaymentOrTotal == null)
+                finalPaymentOrTotal = claim.getInvoice().getTotalToPay();
+        } 
+        
+        return finalPaymentOrTotal;
+    }
+    
+    public BigDecimal getTotalToPay(){
+    	 if (claim.getInvoice() != null) {
+         	return claim.getInvoice().getTotalToPay();
+         } else {
+             return BigDecimal.ZERO;
+         }
+    }
+    
 
-    public void setTotalPaid(BigDecimal totalPaid) {
-        this.totalPaid = totalPaid;
-    }
-
-    public String updatePaymentDetails() {
-        JSONObject jsonObject = new JSONObject();
-        if (claim.getInvoice() != null) {
-            try {
-                Invoice inv = claim.getInvoice();
-                inv.setHireGrossPaid(hireGrossPaid);
-                inv.setRepairGrossPaid(repairGrossPaid);
-                inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
-                inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
-                inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
-                inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
-                inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
-                inv.setTotalPaid(totalPaid);
-                inv.setPenaltyChargesPaid(penaltyChargesPaid);
-                service.updateClaim(claim);
-                jsonObject.put("success", Boolean.TRUE);
-                jsonObject.put("message", "Payment details updated successfully.");
-                setJsonData(jsonObject.toString());
-                return SUCCESS;
-            } catch (Exception ex) {
-                LOG.error("Exception thrown while updating payment details, error message : {}", ex.getMessage());
-                jsonObject.put("success", Boolean.FALSE);
-                jsonObject.put("errors", "An unexpected error occured while updating payment details. Please report to CHOX support.");
-                setJsonData(jsonObject.toString());
-                return ERROR;
-            }
-        } else {
-            jsonObject.put("success", Boolean.FALSE);
-            jsonObject.put("errors", "Sorry - This claim do not have invoice.");
-            setJsonData(jsonObject.toString());
-            return ERROR;
-        }
-    }
 
     // </editor-fold>
     public ButtonAccessibility getButtonAccessibility() {
@@ -1852,12 +1734,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getChoRef() {
 
         return claim.getChoReference();
-
-    }
-
-    public boolean getPaymentDetailsConfirmationEnabled() {
-
-        return claim.getInsurer().isPaymentDetailsConfirmationEnabled();
 
     }
 
@@ -1939,6 +1815,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.buttonAccessibility = buttonAccessibility;
     }
 
+    public boolean isAtInvoicePaymentLogged() {
+        return ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus());
+    }
+    
     public boolean isPaymentLoggedOverDays() {
         Date loggedDate = claim.getStatusModifiedDate();
 
@@ -2097,20 +1977,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && ClaimType.isGTA(claim.getClaimType())) ? true : false;
     }
 
-    public boolean getShowRemoveFromQueueCheckbox() {
-
-        if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))
-                || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                && (!claim.isAutoPenaltyChargeEnabled() || service.calculatePenaltyAlertQty(claim.getInvoice()) >= 3)
-                && claim.getInvoice().getPenaltyAlertQty() < service.calculatePenaltyAlertQty(claim.getInvoice()))) {
-
-            return true;
-
-        } else {
-            return false;
-        }
-    }
-
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
@@ -2193,4 +2059,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug(" ClaimAction validation not done as claim is null");
         }
     }
+
+	public BigDecimal getOutstandingInterimPayment() {
+        interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
+		if(interimPaymentReceived == null)
+			interimPaymentReceived = BigDecimal.ZERO;
+        interimPaymentMade = claim.getInvoice().getInterimPaymentMade();
+		if(interimPaymentMade == null)
+			interimPaymentMade = BigDecimal.ZERO;
+		return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
+	}
 }

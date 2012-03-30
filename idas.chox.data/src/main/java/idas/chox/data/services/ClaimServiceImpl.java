@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
-import org.apache.http.impl.cookie.DateUtils;
 import org.hibernate.criterion.Property;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -93,6 +92,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
+
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean revertClaim(int id) {
@@ -101,11 +101,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
 
-            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
-                // Log note
-                Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
-                claim.addComment(comment);
-            }
 
             if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {
                 LOG.warn("Cannot revert non-subscriber claim back to 'SubscriberClaimRejected'");
@@ -122,10 +117,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 /*
                  *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
                  */
-                if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal() != null && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()) {
-                    claim.getInvoice().setInterimPaymentReceived(false);
-                    claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
+                if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
                     claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
+                    
+                    if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
+                        claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                 }
                 if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                     claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
@@ -135,7 +131,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.getInvoice().setStorageRecoveryGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setHirePenaltyChargePaid(BigDecimal.ZERO);
                     claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
-                    claim.getInvoice().setTotalPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setFinalPayment(null);
                 }
 
                 auditTrailService.revertAuditEntry(auditTrail.getId());
@@ -688,7 +684,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
-            criteria.add(Restrictions.eq("iv.interimPaymentReceived", false));
+            criteria.add(Restrictions.gtProperty("iv.interimPaymentMade", "iv.interimPaymentReceived"));
         }
 
         if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().getLiablityValue() > 0) {
@@ -1063,7 +1059,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.getNumberOfDaysBetween(inv.getAutoPenaltyStart(), new Date());
+        long dateDiff = inv.getInvoicedDays();
         return (int) (dateDiff / 30);
     }
 

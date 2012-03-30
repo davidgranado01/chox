@@ -1,9 +1,11 @@
 package idas.chox.core.model;
 
 import idas.chox.core.util.DateHelper;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -195,10 +197,9 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal totalLossFeeNet;
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;
-    private BigDecimal interimPayment;
-    private Boolean interimPaymentReceived;
-    private String interimPaymentReceivedDesc;
-    private Boolean InterimPaymentReceivedFullAndFinal;
+    private BigDecimal interimPaymentMade;
+    private BigDecimal interimPaymentReceived = BigDecimal.ZERO;
+    private Boolean interimPaymentReceivedFullAndFinal;
     private BigDecimal hireGrossPaid;
     private BigDecimal repairGrossPaid;
     private BigDecimal engineerFeeGrossPaid;
@@ -206,7 +207,11 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal storageRecoveryGrossPaid;
     private BigDecimal hirePenaltyChargePaid;
     private BigDecimal repairPenaltyChargePaid;
-    private BigDecimal totalPaid;
+    private BigDecimal claimHandlerChargePaid;
+    private BigDecimal deductionClaimHandlerFeePaid;
+    private BigDecimal choDiscountFeePaid;
+    private BigDecimal insurerDiscountFeePaid;
+    private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private Date autoPenaltyStart;
     private Integer autoPenaltyAlertQty;
@@ -290,21 +295,45 @@ public class Invoice extends Entity implements Serializable {
     public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
     }
-
-    public BigDecimal getTotalPaid() {
-        return totalPaid;
-    }
-
-    public void setTotalPaid(BigDecimal totalPaid) {
-        this.totalPaid = totalPaid;
-    }
     
-    public Boolean getInterimPaymentReceivedFullAndFinal() {
-        return InterimPaymentReceivedFullAndFinal;
+    public Boolean isInterimPaymentReceivedFullAndFinal() {
+        return interimPaymentReceivedFullAndFinal == null ? Boolean.FALSE : interimPaymentReceivedFullAndFinal;
     }
 
-    public void setInterimPaymentReceivedFullAndFinal(Boolean InterimPaymentReceivedFullAndFinal) {
-        this.InterimPaymentReceivedFullAndFinal = InterimPaymentReceivedFullAndFinal;
+    public void setInterimPaymentReceivedFullAndFinal(Boolean interimPaymentReceivedFullAndFinal) {
+        this.interimPaymentReceivedFullAndFinal = interimPaymentReceivedFullAndFinal;
+    }
+
+    public BigDecimal getChoDiscountFeePaid() {
+        return choDiscountFeePaid;
+    }
+
+    public void setChoDiscountFeePaid(BigDecimal choDiscountFeePaid) {
+        this.choDiscountFeePaid = choDiscountFeePaid;
+    }
+
+    public BigDecimal getClaimHandlerChargePaid() {
+        return claimHandlerChargePaid;
+    }
+
+    public void setClaimHandlerChargePaid(BigDecimal claimHandlerChargePaid) {
+        this.claimHandlerChargePaid = claimHandlerChargePaid;
+    }
+
+    public BigDecimal getDeductionClaimHandlerFeePaid() {
+        return deductionClaimHandlerFeePaid;
+    }
+
+    public void setDeductionClaimHandlerFeePaid(BigDecimal deductionClaimHandlerFeePaid) {
+        this.deductionClaimHandlerFeePaid = deductionClaimHandlerFeePaid;
+    }
+
+    public BigDecimal getInsurerDiscountFeePaid() {
+        return insurerDiscountFeePaid;
+    }
+
+    public void setInsurerDiscountFeePaid(BigDecimal insurerDiscountFeePaid) {
+        this.insurerDiscountFeePaid = insurerDiscountFeePaid;
     }
 
     public Invoice() {
@@ -1355,40 +1384,22 @@ public class Invoice extends Entity implements Serializable {
         this.repairPenaltyPercentage = repairPenaltyPercentage;
     }
 
-    public BigDecimal getInterimPayment() {
-        return interimPayment;
+    public BigDecimal getInterimPaymentMade() {
+        return interimPaymentMade;
     }
 
-    public void setInterimPayment(BigDecimal interimPayment) {
-        this.interimPayment = interimPayment;
+    public void setInterimPaymentMade(BigDecimal interimPaymentMade) {
+        this.interimPaymentMade = interimPaymentMade;
     }
 
-    public Boolean getInterimPaymentReceived() {
-        return interimPaymentReceived;
+	public Boolean isInterimPaymentOutstanding() {
+        if (interimPaymentReceived == null)
+        	interimPaymentReceived = BigDecimal.ZERO;
+		if (interimPaymentMade == null)
+			interimPaymentReceived = BigDecimal.ZERO;
+		return interimPaymentMade.compareTo(interimPaymentReceived) > 0;
     }
-
-    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-        this.interimPaymentReceived = interimPaymentReceived;
-        if (interimPaymentReceived == null) {
-            setInterimPaymentReceivedDesc("");
-        } else if (interimPaymentReceived) {
-            setInterimPaymentReceivedDesc("Yes");
-        } else {
-            setInterimPaymentReceivedDesc("No");
-        }
-    }
-
-    public String getInterimPaymentReceivedDesc() {
-        if (interimPaymentReceived == null) {
-            return "";
-        } else {
-            return interimPaymentReceived ? "Yes" : "No";
-        }
-    }
-
-    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
-        this.interimPaymentReceivedDesc = interimPaymentReceivedDesc;
-    }
+	
 
     public BigDecimal getTotalPenaltyCharge() {
         return totalPenaltyCharge;
@@ -1397,4 +1408,20 @@ public class Invoice extends Entity implements Serializable {
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
         this.totalPenaltyCharge = totalPenaltyCharge;
     }
+
+	public BigDecimal getInterimPaymentReceived() {
+		return interimPaymentReceived;
+	}
+
+	public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
+		this.interimPaymentReceived = interimPaymentReceived;
+	}
+
+	public BigDecimal getFinalPayment() {
+		return finalPayment;
+	}
+
+	public void setFinalPayment(BigDecimal finalPayment) {
+		this.finalPayment = finalPayment;
+	}
 }

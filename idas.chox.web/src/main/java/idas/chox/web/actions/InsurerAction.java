@@ -161,7 +161,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
-
+            updateModelInSession(Arrays.asList(model));
         } catch (Exception ex) {
             handleException(ex);
             return SUCCESS;

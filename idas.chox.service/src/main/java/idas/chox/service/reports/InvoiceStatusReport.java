@@ -158,7 +158,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_uploaded_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -192,7 +192,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoicePaymentLogged' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_payment_logged_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -213,7 +213,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'PaymentReceived' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_payment_reconciled_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -234,7 +234,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status in ('InvoiceRejectionAccepted', 'ClaimClosed') ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_withdrawn_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -255,7 +255,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status in ('AwaitingLiabilityResolution', 'ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'InvoiceEscalatedToHandler', 'InvoiceEscalated', 'InvoiceReferredToEngineer', 'InvoiceReferredToClaimsHandler', 'ContestedInvoiceReferredToInsurer', 'AwaitingInvoicePayment', 'InvoiceUnassigned', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'AwaitingLitigationOutcome') ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_awaiting_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -276,7 +276,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'AwaitingLiabilityResolution' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_awaitingliability_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -297,7 +297,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status in ( 'ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect') ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_cho_awaiting_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -318,7 +318,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status in ('InvoiceApprovedByBRE','InvoiceEscalatedToHandler','InvoiceEscalated','InvoiceReferredToEngineer','InvoiceReferredToClaimsHandler','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment', 'InvoiceUnassigned', 'ManualInvoiceBREApproved', 'ManualInvoiceBRERejected', 'ManualInvoiceContested') ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_insurer_awaiting_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -339,7 +339,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceApprovedByBRE' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_approved_by_businessrules_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -360,7 +360,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceEscalatedToHandler' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_escalated_to_handler_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -381,7 +381,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceEscalated' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_escalated_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -402,7 +402,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceReferredToEngineer' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_referred_to_engineer_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -423,7 +423,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceReferredToClaimsHandler' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_referred_to_handler_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -444,7 +444,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'ContestedInvoiceReferredToInsurer' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_cho_dispute_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -465,7 +465,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'InvoiceUnassigned' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_unassigned_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -486,7 +486,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'AwaitingInvoicePayment' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_awaiting_payment_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -563,7 +563,7 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status in ('AwaitingLitigationOutcome') ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_in_litigation_status_total, ");
-        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+        sb1.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -658,7 +658,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_uploaded_current_month, ");
             
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -698,7 +698,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_payment_logged_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -722,7 +722,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_payment_reconciled_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -746,7 +746,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_withdrawn_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -770,7 +770,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_awaiting_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -795,7 +795,7 @@ public class InvoiceStatusReport implements Report {
               .append(") as val_invoices_awaitingliability_current_month, ");
 
             
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -820,7 +820,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_cho_awaiting_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -844,7 +844,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_insurer_awaiting_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -868,7 +868,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_approved_by_businessrules_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -892,7 +892,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_escalated_to_handler_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -916,7 +916,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_escalated_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -940,7 +940,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_referred_to_engineer_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -964,7 +964,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_referred_to_handler_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -988,7 +988,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_unassigned_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -1013,7 +1013,7 @@ public class InvoiceStatusReport implements Report {
               .append(") as val_invoices_cho_dispute_current_month, ");
 
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -1037,7 +1037,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_awaiting_payment_current_month, ");
             
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
@@ -1125,7 +1125,7 @@ public class InvoiceStatusReport implements Report {
               .append(createdDateRestriction)
               .append(") as val_invoices_in_litigation_status_current_month, ");
 
-            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+            sb.append("(select COALESCE(sum(i.interim_payment_made),0.0) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")

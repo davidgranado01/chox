@@ -1,4 +1,5 @@
 var win;
+
 Ext.onReady(function(){
     
     Ext.override(Ext.form.NumberField, {
@@ -41,25 +42,25 @@ Ext.onReady(function(){
         xtype: 'fieldset',
         title: 'Penalty Charge',
         layout: 'form',
-        hidden : !panaltyChargeApplied,
+        hidden : (penaltyChargeApplied == false),
         collapsible: false,
         items: [{
             xtype: 'radiogroup',
             fieldLabel: 'Have penalty charges been paid?',
             columns: [.35, .25],
             width : 150,
-            allowBlank: !panaltyChargeApplied,
+//            allowBlank: !penaltyChargeApplied,
             id : 'penaltyChargesPaidId',
             blankText: 'Please select Yes or No',
             listeners: {
                 change: function () {
                     if(this.getValue()!=null && (this.getValue().getGroupValue()=='false')){
-                        var totalPenaltyAmount = hirePenaltyChargePaid + repairPenaltyChargePaid;
                         Ext.getCmp('hirePenaltyId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setValue(0.00);
-                        Ext.getCmp('totalPaidId').setValue(totalPaid-totalPenaltyAmount);
+                        Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(true);
                         Ext.getCmp('hirePenaltyId').setReadOnly(true);
+                        Ext.getCmp('finalPayId').setValue(outstandingPayment - hirePenaltyChargePaid - repairPenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#e4e4e4'
@@ -71,9 +72,10 @@ Ext.onReady(function(){
                     }else{
                         Ext.getCmp('hirePenaltyId').setValue(hirePenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setValue(repairPenaltyChargePaid);
-                        Ext.getCmp('totalPaidId').setValue(totalPaid);
+                        Ext.getCmp('totalToPayId').setValue(totalToPay);
                         Ext.getCmp('repairPenaltyId').setReadOnly(false);
                         Ext.getCmp('hirePenaltyId').setReadOnly(false);
+                        Ext.getCmp('finalPayId').setValue(outstandingPayment);
                         Ext.getCmp('repairPenaltyId').getEl().applyStyles({
                             'text-align':'right',
                             background: '#ffffff'
@@ -83,18 +85,22 @@ Ext.onReady(function(){
                             background: '#ffffff'
                         });
                     }
+                }, load: function (){
+                	Ext.getCmp('penaltyChargesPaidId').setValue([true, false]);
                 }
             },
             items: [
             {
                 boxLabel: 'Yes', 
                 name: 'penaltyChargesPaid',
-                inputValue: true
+                inputValue: true,
+                checked: (penaltyChargeApplied == true)
             },
             {
                 boxLabel: 'No', 
                 name: 'penaltyChargesPaid',
-                inputValue: false
+                inputValue: false,
+                checked: !(penaltyChargeApplied == true)
             }
             ]
         }]
@@ -124,31 +130,61 @@ Ext.onReady(function(){
             id : 'hireGrossId',
             name: 'hireGrossPaid',
             value: hireGrossPaid,
-            blankText: 'Hire Gross Paid is required'
+            blankText: 'Hire Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Repair Gross Paid',
             id : 'repairGrossId',
             name: 'repairGrossPaid',
             value: repairGrossPaid,
-            blankText: 'Repair Gross Paid is required'
+            blankText: 'Repair Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Engineer Fee Gross Paid',
             id : 'engineerGrossId',
             name: 'engineerFeeGrossPaid',
             value: engineerFeeGrossPaid,
-            blankText: 'Engineer Fee Gross Paid is required'
+            blankText: 'Engineer Fee Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         }, {
             fieldLabel: 'Total Loss Fee Gross Paid',
             id : 'totalLossFeeGrossId',
             name: 'totalLossFeeGrossPaid',
             value: totalLossFeeGrossPaid,
-            blankText: 'Total Loss Fee Gross Paid is required'
+            blankText: 'Total Loss Fee Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Storage Recovery Gross Paid',
             id : 'storageRecoveryGrossId',
             name: 'storageRecoveryGrossPaid',
             value: storageRecoveryGrossPaid,
-            blankText: 'Storage Recovery Gross Paid is required'
+            blankText: 'Storage Recovery Gross Paid is required',
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
+            }
         },{
             fieldLabel: 'Hire Penalty Charges Paid',
             id : 'hirePenaltyId',
@@ -161,9 +197,10 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('repairPenaltyId').validate();
+                    calculateFinalPayment();
                 },
                 afterrender : function(){
-                    if(!panaltyChargeApplied){
+                    if(!(penaltyChargeApplied == true)){
                         this.setReadOnly(true);
                         this.getEl().applyStyles({
                             'text-align':'right',
@@ -185,9 +222,10 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('hirePenaltyId').validate();
+                    calculateFinalPayment();
                 },
                 afterrender : function(){
-                    if(!panaltyChargeApplied){
+                    if(!(penaltyChargeApplied == true)){
                         this.setReadOnly(true);
                         this.getEl().applyStyles({
                             'text-align':'right',
@@ -208,6 +246,12 @@ Ext.onReady(function(){
             style: {
                 'text-align':'right',
                 background: '#e4e4e4'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'Deduction For Claims Handling Fee',
@@ -220,6 +264,12 @@ Ext.onReady(function(){
             style: {
                 'text-align':'right',
                 background: '#e4e4e4'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'CHO Discount',
@@ -235,6 +285,12 @@ Ext.onReady(function(){
                 'text-align':'right',
                 background: '#e4e4e4',
                 color:'red'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
             fieldLabel: 'Insurer Discount',
@@ -250,28 +306,64 @@ Ext.onReady(function(){
                 'text-align':'right',
                 background: '#e4e4e4',
                 color:'red'
+            },
+        	enableKeyEvents : true,
+            listeners: {
+                keyup: function() {
+                	calculateFinalPayment();
+                }
             }
         },{
-            fieldLabel: 'Total Paid',
-            id : 'totalPaidId',
-            name: 'totalPaid',
-            value: totalPaid,
-            blankText: 'Total Paid is required'
+            fieldLabel: 'Total To Pay',
+            id : 'totalToPayId',
+            name: 'totalToPay',
+            value: totalToPay,
+            readOnly : true,
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('totalToPayId').validate();
+                },
+                afterrender : function(){
+                    this.getEl().applyStyles({
+                        'text-align':'right',
+                        background: '#e4e4e4'
+                    });  
+                }
+            }
         },{
-            xtype : 'label',
-            id : 'labelId',
-            width : '100%',
+            fieldLabel: 'Interim Payments Made',
+            id : 'interimPayId',
+            name: 'interimPayId',
+            value: interimPaymentAmount.toFixed(2),
+            readOnly : true,
             hidden : interimPaymentAmount<=0,
-            html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£'+interimPaymentAmount.toFixed(2)+'</label></div>',
-            style: {
-                'text-align':'center'
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('totalToPayId').validate();
+                },
+                afterrender : function(){
+                    this.getEl().applyStyles({
+                        'text-align':'right',
+                        background: '#e4e4e4'
+                    });  
+                }
             }
-            
+        },{
+            fieldLabel: 'Final Payment',
+            id : 'finalPayId',
+            name: 'finalPayment',
+            value: outstandingPayment,
+            blankText: 'Final Payment is required'
         },{
             xtype : 'hidden',
             id : 'nonceId',
             name : 'nonce',
             value : nonce
+        },{
+            xtype : 'hidden',
+            id : 'name',
+            name : 'name',
+            value : 'invoicePaymentLogged'
         }
         ]
     };
@@ -281,32 +373,42 @@ Ext.onReady(function(){
         autoHeight: true,
         labelWidth: 210,
         frame:true,
-        title:'<div class="status-info">Please confirm that the below payment details are correct, if you need to modify the payment details you can do so.  Please note that the figures take into account the agreed liability %.</div>',
+        title:'<div class="status-info">Please confirm that the below payment details are correct. If you need to modify the payment details you can do so buy clicking on the \'Edit\' button.  Please note that the figures take into account the agreed liability %.</div>',
         buttonAlign : 'center',
         items : [
         checkGroup,
         textGroup
         ],
         buttons:[{
+            text:'Edit',
+            handler:function(){
+	            	if(this.getText() == 'Reset'){
+	            		paymentDetailsForm.getForm().reset();
+	            		this.setText('Edit');
+	            		disablePayFields();
+	            	}else{
+	            		paymentDetailsForm.enable();
+	            		this.setText('Reset');
+	            		enablePayFields();
+	            	}
+	                
+	            }
+        	},{
             text:'Ok',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
-                    paymentDetailsForm.getEl().mask();
+                    win.hide();
                     paymentDetailsForm.getForm().submit({
                         method:'POST',
-                        url:contextPath +'/prv/p/updatePaymentDetails.action',
-                        
+//                        url:contextPath +'/prv/p/updatePaymentDetails.action',
+                        url:contextPath +'/prv/p/updatePaymentDetails.action?'+$('#logInvoicePayment').formSerialize(),
                         success : function(f, a) {
 
                             if ( a.result.success ){
-                                win.hide();
-                                Ext.get('claimDetailScreenDiv').mask("Refereshing Claim Details ...");
-                                var queryString = $('#logInvoicePayment').formSerialize();
-                                window.location = contextPath+"/prv/processClaim.action?" + queryString;
+                                pageRefresh(); 
                             }
                         },
                         failure : function(f, a) {
-                            
                             Ext.MessageBox.show({
                                 title: 'Error',
                                 msg: a.result.errors,
@@ -316,6 +418,7 @@ Ext.onReady(function(){
                             }); 
                         }
                     });
+
                 }
             }
         },{
@@ -327,6 +430,8 @@ Ext.onReady(function(){
         }]
         
     });
+
+
     
     win = new Ext.Window({
         layout:'fit',
@@ -338,27 +443,72 @@ Ext.onReady(function(){
         paymentDetailsForm
         ]
     });
+    
+    function disablePayFields(){
+    	Ext.getCmp('penaltyChargesPaidId').disable();
+    	Ext.getCmp('repairGrossId').disable();
+    	Ext.getCmp('hireGrossId').disable();
+    	Ext.getCmp('engineerGrossId').disable();
+    	Ext.getCmp('totalLossFeeGrossId').disable();
+    	Ext.getCmp('storageRecoveryGrossId').disable();
+    	Ext.getCmp('hirePenaltyId').disable();
+    	Ext.getCmp('repairPenaltyId').disable();
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').disable();
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').disable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').disable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').disable();
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').disable();
+    	Ext.getCmp('totalToPayId').disable();
+    	Ext.getCmp('finalPayId').disable();
+    	Ext.getCmp('interimPayId').disable();
+    	
+    }
+
+    function enablePayFields(){
+    	Ext.getCmp('penaltyChargesPaidId').enable();
+    	Ext.getCmp('repairGrossId').enable();
+    	Ext.getCmp('hireGrossId').enable();
+    	Ext.getCmp('engineerGrossId').enable();
+    	Ext.getCmp('totalLossFeeGrossId').enable();
+    	Ext.getCmp('storageRecoveryGrossId').enable();
+    	Ext.getCmp('hirePenaltyId').enable();
+    	Ext.getCmp('repairPenaltyId').enable();
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').enable();
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').enable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').enable();
+    	Ext.getCmp('paymentDetailsCHODiscountId').enable();
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').enable();
+    	Ext.getCmp('totalToPayId').enable();
+    	Ext.getCmp('finalPayId').enable();
+    	Ext.getCmp('interimPayId').enable();
+    }
+    
+    function calculateFinalPayment(){
+    	var finaPayment = 
+    	Ext.getCmp('repairGrossId').getValue() +
+    	Ext.getCmp('hireGrossId').getValue() +
+    	Ext.getCmp('engineerGrossId').getValue() +
+    	Ext.getCmp('totalLossFeeGrossId').getValue() +
+    	Ext.getCmp('storageRecoveryGrossId').getValue() +
+    	Ext.getCmp('hirePenaltyId').getValue() +
+    	Ext.getCmp('repairPenaltyId').getValue() +
+    	Ext.getCmp('paymentDetailsClaimHandInvAmtId').getValue() +
+    	Ext.getCmp('paymentDetailsDeductionClaimHandFeeId').getValue() +
+    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() +
+    	Ext.getCmp('paymentDetailsCHODiscountId').getValue() -
+        Ext.getCmp('interimPayId').getValue() +
+    	Ext.getCmp('paymentDetailsInsurerDiscountId').getValue();
+    	
+    	Ext.getCmp('finalPayId').setValue(finaPayment);
+    }
+    
+    disablePayFields();
+    
 });
 
-function confirmPaymentlogAction(){
-        
-    if(paymentDetailsConfirmationEnabled){
-        win.show(document.body);
-    }else{
-        Ext.Msg.show({
-            title      : 'Confirm',
-            msg        : 'Clicking on this button indicates to the CHO that payment has been made on your internal claims system.  Click \'OK\' to confirm payment has been made.',
-            width      : 800,
-            buttons    : Ext.MessageBox.OKCANCEL,
-            fn         : function(btn) {
-                if(btn=='ok') {
-                    var queryString = $('#logInvoicePayment').formSerialize();
-                    window.location = contextPath + "/prv/processClaim.action?" + queryString;
-                }
-            }
-        });
-    }
-        
+function confirmPaymentLogAction(){
+	win.show(document.body);
 }
-        
+
+
  

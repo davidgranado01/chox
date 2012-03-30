@@ -363,24 +363,37 @@
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/> (Payment Received, Accepted Full & Final)</label></td>
+                                        <td colspan="2"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/> (Received as Full & Final)</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
                                     </tr>
                                 </s:if>
-                                <s:elseif test="interimPaymentReceived">
+                                <s:elseif test="outstandingInterimPayment > 0 && interimPaymentReceived > 0">
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment"/> (Payment Received)</label></td>
+                                        <td colspan="2"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label>&nbsp;<label class="std-data-ro-red-invrecalc">(Only £<s:property value="interimPaymentReceived" /> Received)</label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
                                     </tr>
                                 </s:elseif>
-                                <s:elseif test="!interimPaymentReceived && interimPayment">
+                                <s:elseif test="interimPaymentReceived > 0">
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
-                                        <td><label class="std-data-ro-red-invrecalc">£<s:property value="interimPayment" /> (Not Yet Received)</label></td>
+                                        <td colspan="2"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade"/></label>&nbsp;<label class="std-data-ro-red-invrecalc">(Received)</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
+                                    </tr>
+                                </s:elseif>
+                                <s:elseif test="interimPaymentMade > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Interim Payment</label></td>
+                                        <td>&nbsp;</td>
+                                        <td colspan="2"><label class="std-data-ro-red-invrecalc">£<s:property value="interimPaymentMade" /></label>&nbsp;<label class="std-data-ro-red-invrecalc">(Not Yet Received)</label></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
@@ -493,14 +506,10 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro"><s:property value="vehicleClass.name" /></label></td>
                                     <td>
-
                                         <s:if test="VehicleClassName!=VehicleClassNameOriginal&&(VehicleClassNameOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                             <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassNameOriginal" />)</label>
                                         </s:if>
-
-
-
                                     </td>
                                 </tr>
 
@@ -1019,46 +1028,85 @@
                         <legend>Payment Details</legend>
                         <div style="display:none" class="form-container"  id="formPaymentDetailsRId">
                             <table class="chox-table-form" style="width: 100%">
-                               <tr>
-                                   <td style="width: 30%"><label class="std-label-ro">
-                                            Hire Gross Paid</label></td>
+                                <tr>
+                                    <td style="width: 30%"><label class="std-label-ro">Hire Gross Paid</label></td>
                                     <td style="width: 10%">&nbsp;</td>
-                                    <td style="width: 60%"><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td></tr>
+                                    <td style="width: 60%"><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Repair Gross Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="repairGrossPaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Engineer Fee Gross Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="engineerFeeGrossPaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Total Loss Fee Gross Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="totalLossFeeGrossPaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Storage Recovery Gross Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="storageRecoveryGrossPaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Hire Penalty Charges Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="hirePenaltyChargePaid" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Repair Penalty Charges Paid</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="repairPenaltyChargePaid" /></label></td>
+                                </tr>
+                                <s:if test="paymentDetailsClaimHandInvAmt > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Claims Handling Invoice Amount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsClaimHandInvAmt" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsDeductionClaimHandFee > 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Deduction For Claims Handling Fee</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsDeductionClaimHandFee" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsCHODiscount < 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">CHO Discount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsCHODiscount" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="paymentDetailsInsurerDiscount < 0">
+                                    <tr>
+                                        <td><label class="std-label-ro">Insurer Discount</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro">£<s:property value="paymentDetailsInsurerDiscount" /></label></td>
+                                    </tr>
+                                </s:if>
+                                <tr>
+                                    <td><label class="std-label-ro">Total To Pay</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="totalToPay" /></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Interim Payments Made</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="interimPaymentMade" /></label></td>
+                                </tr>
                                 <tr>
                                     <td><label class="std-label-ro">
-                                            Repair Gross Paid</label></td>
+                                            Final Payment</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="repairGrossPaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Engineer Fee Gross Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="engineerFeeGrossPaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Total Loss Fee Gross Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="totalLossFeeGrossPaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Storage Recovery Gross Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="storageRecoveryGrossPaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Hire Penalty Charges Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="hirePenaltyChargePaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Repair Penalty Charges Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="repairPenaltyChargePaid" /></label></td></tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            Total Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="totalPaid" /></label></td></tr>
+                                    <td><label class="std-data-ro">£<s:property value="finalPayment" /></label></td>
+                                </tr>
                             </table>
                         </div>
                     </fieldset>

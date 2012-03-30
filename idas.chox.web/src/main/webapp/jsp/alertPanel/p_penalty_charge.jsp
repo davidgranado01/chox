@@ -247,18 +247,26 @@
                     <td style="width:20%"></td>
                 </tr>
 
-                <s:if test="interimPaymentReceived ">
+                <s:if test="outstandingInterimPayment > 0 && interimPaymentReceived > 0">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Only £<s:property value="interimPaymentReceived" /> Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
                 </s:if>
-                <s:elseif test="!interimPaymentReceived && interimPayment">
+                <s:elseif test="(interimPaymentMade  == interimPaymentReceived) && interimPaymentMade > 0">
                     <tr>
                         <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
-                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Received)</label></td>
+                        <td style="width:20%"></td>
+                        <td style="width:20%"></td>
+                    </tr>
+                </s:elseif>
+                <s:elseif test="interimPaymentMade  > 0">
+                    <tr>
+                        <td align="left" style="width:20%"><label>Interim Payment &nbsp;</label></td>
+                        <td align="left" style="width:20%"><label class="std-data-ro-red">£<s:property value="interimPaymentMade" /> (Not Yet Received)</label></td>
                         <td style="width:20%"></td>
                         <td style="width:20%"></td>
                     </tr>
@@ -303,8 +311,8 @@
 
                 <tr>
                     <td colspan="4" align="left">
-                        <input type="submit" id="PCApplyButtonId"value="Apply"/>
-                        <s:if test="showRemoveFromQueueCheckbox">
+                        <input type="submit" id="PCApplyButtonId" value="Apply"/>
+                        <s:if test="isShowPenaltyChargeAlert">
                             &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId" label="Remove From Penalty Charge Queue"/>
                             <label>Remove From Queue</label>
                         </s:if>
