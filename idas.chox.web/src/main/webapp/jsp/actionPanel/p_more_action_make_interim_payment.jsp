@@ -140,22 +140,24 @@
                     <table class="status-table">
                         <tr id="additionalInterim">
                             <td><label>Additional Interim Payment Amount<span class="mandatory">*</span></label></td>
-                            <td nowrap>
+                            <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="additionalInterimPayment" name="additionalInterimPayment" onkeyup="javascript: setAdditionalInterimInfo()" value="<s:property value="additionalInterimPayment" />" />
                                 <input type="button" onclick="javascript: submitInterim('additional')" value="Confirm Interim Payment" id="additionalInterimButton"/>
                             </td>
-                            <td></td><td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr id="additionalInterimInfo">
-                            <td><label>New Total Interim Payment Amount</label></td>
-                            <td nowrap>
-                                £&nbsp;<label id="additionalInterimPaymentInfo" name="additionalInterimPaymentInfo" ></label>
+                            <td><label>New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
+                            <td nowrap="nowrap">
+                                £&nbsp;<label id="additionalInterimPaymentInfo"></label>
                             </td>
-                            <td></td><td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr id="newTotalInterim" style="display: none;">
                             <td><label id="newPayLabel">New Total Interim Payment Amount</label></td>
-                            <td nowrap>
+                            <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="newTotalInterimPayment" name="newTotalInterimPayment" value="<s:property value="newTotalInterimPayment" />" />
                                 <input type="button" onclick="javascript: submitInterim('newTotal')" value="Confirm Interim Payment" id="newTotalInterimButton"/>
                             </td>
