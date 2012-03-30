@@ -117,10 +117,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 /*
                  *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
                  */
-                if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
-                		&& claim.getInvoice().isInterimPaymentReceivedFullAndFinal()) {
-                	claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
-//                    claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
+                if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                    claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
+                    
+                    if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
+                        claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                 }
                 if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                     claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);

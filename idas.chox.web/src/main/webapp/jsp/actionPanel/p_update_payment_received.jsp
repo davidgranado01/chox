@@ -154,14 +154,12 @@ function confirmNotFullPayRec(){
 					   Please click on the ‘Payment Received But Not Full Amount’ button if the Insurer has made a payment but there is a balance outstanding 
 					   on the invoice, this will return the claim to the Insurer for review and the amount received recorded on the invoice.<br/><br/>
 					   If the payment has not been received then clicking on the 'Payment Not Received' button will return the claim to the Insurer for review.  
-					   Note that this button will only be visible after 9 days.
                     </div>
                 </s:if>
                 <s:elseif test="paymentLoggedOverDays && showPayNotReceivedButton && !atInvoicePaymentLogged">
                     <div class="status-info">
                        Please click on the 'Full Payment Received' button when full payment for the invoice has been received from the Insurer.<br/><br/>
 					   If the payment has not been received then clicking on the 'Payment Not Received' button will return the claim to the Insurer for review.  
-					   Note that this button will only be visible after 9 days.
                     </div>
                 </s:elseif>
                 <s:elseif test="atInvoicePaymentLogged">

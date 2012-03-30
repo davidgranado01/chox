@@ -34,6 +34,7 @@ public class InvoicePaymentReceived extends BaseActivity {
                     + " (as full payment has been marked as received)."));
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
+        claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade().add(claim.getInvoice().getFinalPayment()).setScale(2));
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());
     }

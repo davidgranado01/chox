@@ -24,6 +24,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     }
 
+    
     @Override
     protected void doProcess(Claim claim) {
 
@@ -31,6 +32,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
             claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
+            claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade());
 //            if (claim.getInvoice().getFinalPayment() == null)
 //                claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
 
