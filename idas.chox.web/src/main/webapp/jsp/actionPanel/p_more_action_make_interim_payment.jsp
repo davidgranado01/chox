@@ -90,7 +90,7 @@
             	number:true,
                 messages: {
                     required:"You Must Enter A 'New Total Interim Payment Amount'",
-                	min:"The 'New Total Interim Payment Amount' Must Be >= The Current Interim Amount Received",
+                	min:"The 'New Total Interim Payment Amount' Must Be Greater Than Or Equal To The Current Interim Amount Received",
                 	number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
             });
     	} else if (action == 'newTotal' && !interimPayMade) {
@@ -129,10 +129,10 @@
                 <br/>
             </s:if>
             <div class="chox-form-item" id="radioBox">
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onchange="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onClick="javascript: setPaymentField()"/> 
                     This interim payment is an addition to the current interim payment.</span>
                 <br/>
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onchange="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onClick="javascript: setPaymentField()"/> 
                     This interim payment is a new total interim payment.</span>
             </div>
             <div>
@@ -140,22 +140,24 @@
                     <table class="status-table">
                         <tr id="additionalInterim">
                             <td><label>Additional Interim Payment Amount<span class="mandatory">*</span></label></td>
-                            <td nowrap>
+                            <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="additionalInterimPayment" name="additionalInterimPayment" onkeyup="javascript: setAdditionalInterimInfo()" value="<s:property value="additionalInterimPayment" />" />
                                 <input type="button" onclick="javascript: submitInterim('additional')" value="Confirm Interim Payment" id="additionalInterimButton"/>
                             </td>
-                            <td></td><td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr id="additionalInterimInfo">
-                            <td><label>New Total Interim Payment Amount</label></td>
-                            <td nowrap>
-                                £&nbsp;<label id="additionalInterimPaymentInfo" name="additionalInterimPaymentInfo" ></label>
+                            <td><label>New Total Interim Payment Amount<span class="mandatory">*</span></label></td>
+                            <td nowrap="nowrap">
+                                £&nbsp;<label id="additionalInterimPaymentInfo"></label>
                             </td>
-                            <td></td><td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr id="newTotalInterim" style="display: none;">
                             <td><label id="newPayLabel">New Total Interim Payment Amount</label></td>
-                            <td nowrap>
+                            <td nowrap="nowrap">
                                 £&nbsp;<input type="text" class="chox-ttxt" id="newTotalInterimPayment" name="newTotalInterimPayment" value="<s:property value="newTotalInterimPayment" />" />
                                 <input type="button" onclick="javascript: submitInterim('newTotal')" value="Confirm Interim Payment" id="newTotalInterimButton"/>
                             </td>

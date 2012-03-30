@@ -102,7 +102,7 @@ public class ClaimRevert extends BaseActivity {
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
                             + amountReceived + " as there is an amount outstanding. Please check " 
-                            + "the payment details in your claim system and mark the claim as Invoice Payment Logged when the outstanding amount has been paid.");
+                            + "the payment details in your claim system and mark the claim as 'Invoice Payment Logged' when the outstanding amount has been paid.");
                 claim.addComment(comment);
             } else if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus())) { // and we are an Insurer or CHOX Admin
                 // we need to remove the note added when the claim moved to INVOICE_PAYMENT_LOGGED

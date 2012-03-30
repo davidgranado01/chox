@@ -2104,6 +2104,11 @@ UPDATE invoice SET final_payment = null WHERE final_payment = 0.00;
 
 ALTER TABLE invoice DROP COLUMN interim_payment_received_old;
 
+ALTER TABLE invoice ADD COLUMN claim_handler_charge_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN deduction_claim_handler_fee_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN cho_discount_fee_paid numeric(10,2);
+ALTER TABLE invoice ADD COLUMN insurer_discount_fee_paid numeric(10,2);
+
 ----------------------------------------------------------------------
 -- BUG#1549 Allow .zip files to be added as an attachment to a claim
 ----------------------------------------------------------------------
