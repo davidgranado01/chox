@@ -9,6 +9,8 @@ import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.InvoicePaymentLogged;
 import idas.chox.test.BaseTest;
 
+import java.math.BigDecimal;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,6 +33,7 @@ public class InvoicePaymentLoggedTest extends BaseTest{
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInvoice(invoice);
         claim.setInsurer(insurer);
+        claim.setPercentageLiabilityAccepted(new BigDecimal(2.00));
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         InvoicePaymentLogged activity = (InvoicePaymentLogged) activityFactory.getActivity("invoicePaymentLogged");
         activity.process(claim);

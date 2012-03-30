@@ -260,6 +260,10 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsStorageRecoveryPaid;
     private BigDecimal paymentDetailsHirePenaltyPaid;
     private BigDecimal paymentDetailsRepairPenaltyPaid;
+    private BigDecimal paymentDetailsClaimHandlerChargePaid;
+    private BigDecimal paymentDetailsDeductionClaimHandlerFeePaid;
+    private BigDecimal paymentDetailsChoDiscountFeePaid;
+    private BigDecimal paymentDetailsInsurerDiscountFeePaid;
     private BigDecimal paymentDetailsFinalPayment;
     private String claimType;
 
@@ -598,6 +602,11 @@ public class ClaimFileReportData {
             paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
             paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
             paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
+            paymentDetailsClaimHandlerChargePaid = invoice.getClaimHandlerChargePaid();
+            paymentDetailsDeductionClaimHandlerFeePaid = invoice.getDeductionClaimHandlerFeePaid();
+            paymentDetailsChoDiscountFeePaid = invoice.getChoDiscountFeePaid();
+            paymentDetailsInsurerDiscountFeePaid = invoice.getInsurerDiscountFeePaid();
+
             paymentDetailsFinalPayment = invoice.getFinalPayment();
         }
 
@@ -2523,6 +2532,38 @@ public class ClaimFileReportData {
 	public void setPaymentDetailsFinalPayment(BigDecimal paymentDetailsFinalPayment) {
 		this.paymentDetailsFinalPayment = paymentDetailsFinalPayment;
 	}
+
+    public BigDecimal getPaymentDetailsChoDiscountFeePaid() {
+        return paymentDetailsChoDiscountFeePaid;
+    }
+
+    public void setPaymentDetailsChoDiscountFeePaid(BigDecimal paymentDetailsChoDiscountFeePaid) {
+        this.paymentDetailsChoDiscountFeePaid = paymentDetailsChoDiscountFeePaid;
+    }
+
+    public BigDecimal getPaymentDetailsClaimHandlerChargePaid() {
+        return paymentDetailsClaimHandlerChargePaid;
+    }
+
+    public void setPaymentDetailsClaimHandlerChargePaid(BigDecimal paymentDetailsClaimHandlerChargePaid) {
+        this.paymentDetailsClaimHandlerChargePaid = paymentDetailsClaimHandlerChargePaid;
+    }
+
+    public BigDecimal getPaymentDetailsDeductionClaimHandlerFeePaid() {
+        return paymentDetailsDeductionClaimHandlerFeePaid;
+    }
+
+    public void setPaymentDetailsDeductionClaimHandlerFeePaid(BigDecimal paymentDetailsDeductionClaimHandlerFeePaid) {
+        this.paymentDetailsDeductionClaimHandlerFeePaid = paymentDetailsDeductionClaimHandlerFeePaid;
+    }
+
+    public BigDecimal getPaymentDetailsInsurerDiscountFeePaid() {
+        return paymentDetailsInsurerDiscountFeePaid;
+    }
+
+    public void setPaymentDetailsInsurerDiscountFeePaid(BigDecimal paymentDetailsInsurerDiscountFeePaid) {
+        this.paymentDetailsInsurerDiscountFeePaid = paymentDetailsInsurerDiscountFeePaid;
+    }
 
 }
 

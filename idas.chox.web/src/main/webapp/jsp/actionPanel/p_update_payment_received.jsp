@@ -119,6 +119,7 @@ function confirmNotFullPayRec(){
     function doUpdatePaymentReceived(action) {
     	
     	$("#formUpdatePaymentReceivedName").val(action);
+//console.log("status is: " + <s:property value="status"/>);
     	if (action=='invoicePaymentReceived') {
             if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
                 Ext.Msg.show({
@@ -137,7 +138,6 @@ function confirmNotFullPayRec(){
         } else {
         	$("form#formUpdatePaymentReceived").submit();
         }
-        
     }
 </script> 
 
@@ -183,11 +183,11 @@ function confirmNotFullPayRec(){
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <s:if test="status != InvoicePaymentLogged">
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
+                            <s:if test='status.equals("InvoicePaymentLogged")'>
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
                             </s:if>
                             <s:else>
-                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                                <input type="button" id="FullPaymentReceivedButtonId" value="Full Payment Received" onclick="doUpdatePaymentReceived('moveToInvoicePaymentLogged');" />
                             </s:else>
                             <s:if test="atInvoicePaymentLogged">
                                 <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
