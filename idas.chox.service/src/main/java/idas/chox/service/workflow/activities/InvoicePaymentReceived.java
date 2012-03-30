@@ -35,7 +35,10 @@ public class InvoicePaymentReceived extends BaseActivity {
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         if (claim.getInvoice().getFinalPayment() != null) {
-            claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade().add(claim.getInvoice().getFinalPayment()).setScale(2));
+            if (claim.getInvoice().getInterimPaymentMade() != null)
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade().add(claim.getInvoice().getFinalPayment()).setScale(2));
+            else
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getFinalPayment());
         }
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());

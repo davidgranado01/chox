@@ -1077,14 +1077,14 @@
                                         <td><label class="std-data-ro">£<s:property value="paymentDetailsDeductionClaimHandFee" /></label></td>
                                     </tr>
                                 </s:if>
-                                <s:if test="paymentDetailsCHODiscount > 0">
+                                <s:if test="paymentDetailsCHODiscount < 0">
                                     <tr>
                                         <td><label class="std-label-ro">CHO Discount</label></td>
                                         <td>&nbsp;</td>
                                         <td><label class="std-data-ro">£<s:property value="paymentDetailsCHODiscount" /></label></td>
                                     </tr>
                                 </s:if>
-                                <s:if test="paymentDetailsInsurerDiscount > 0">
+                                <s:if test="paymentDetailsInsurerDiscount < 0">
                                     <tr>
                                         <td><label class="std-label-ro">Insurer Discount</label></td>
                                         <td>&nbsp;</td>
