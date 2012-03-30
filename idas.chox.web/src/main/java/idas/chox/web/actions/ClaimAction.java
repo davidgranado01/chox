@@ -1614,14 +1614,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
     }
 
-    public BigDecimal getEngineerFeeGrossPaid() {
-        if (claim.getInvoice() != null) {
-            return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-
     public boolean isPenaltyChargeApplied() {
         if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
             return true;
@@ -1636,6 +1628,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
     
+    public BigDecimal getEngineerFeeGrossPaid() {
+        if (claim.getInvoice() != null) {
+           if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+                return claim.getInvoice().getEngineerFeeGross();
+            else
+                return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
             if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))

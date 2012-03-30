@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.security.SecurityInfoProvider;
@@ -96,17 +97,31 @@ public class InvoicePaymentLogged extends BaseActivity {
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
-            invoice.setHireGrossPaid(invoice.getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+                invoice.setHireGrossPaid(invoice.getHireGross());
+                invoice.setRepairGrossPaid(invoice.getRepairGross());
+                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());
+                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross());
+                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross());
+                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge());
+                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge());
+                invoice.setChoDiscountFeePaid(invoice.getDiscount());
+                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount());
+                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
+                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
+            } else {
+                invoice.setHireGrossPaid(invoice.getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            }
             if (invoice.getInterimPaymentMade() != null) {
                 invoice.setFinalPayment(invoice.getTotalToPay().subtract(invoice.getInterimPaymentMade()));
             } else {
