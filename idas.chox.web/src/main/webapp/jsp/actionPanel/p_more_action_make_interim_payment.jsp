@@ -90,7 +90,7 @@
             	number:true,
                 messages: {
                     required:"You Must Enter A 'New Total Interim Payment Amount'",
-                	min:"The 'New Total Interim Payment Amount' Must Be >= The Current Interim Amount Received",
+                	min:"The 'New Total Interim Payment Amount' Must Be Greater Than Or Equal To The Current Interim Amount Received",
                 	number:"The 'New Total Interim Payment Amount' Must Be A Monetary Value"}
             });
     	} else if (action == 'newTotal' && !interimPayMade) {
@@ -129,10 +129,10 @@
                 <br/>
             </s:if>
             <div class="chox-form-item" id="radioBox">
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onchange="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" checked="checked" onClick="javascript: setPaymentField()"/> 
                     This interim payment is an addition to the current interim payment.</span>
                 <br/>
-                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onchange="javascript: setPaymentField()"/> 
+                <span class="input-radio"><input type="radio" name="interimPayAdd" id="interimPayAdd" onClick="javascript: setPaymentField()"/> 
                     This interim payment is a new total interim payment.</span>
             </div>
             <div>
