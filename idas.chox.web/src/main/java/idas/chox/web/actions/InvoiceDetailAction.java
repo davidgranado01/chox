@@ -2743,6 +2743,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
+        updateModelInSession(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
         return result;
     }
 
