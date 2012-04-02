@@ -1806,7 +1806,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     public BigDecimal getInterimPaymentReceived() {
-        LOG.debug("getInterimPaymentReceived is being called inside InvoiceRecalculationAction and returning value is {}", invoice.getInterimPaymentReceived());
+        LOG.debug("getInterimPaymentReceived is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPaymentReceived());
         if (invoice.getInterimPaymentReceived() == null) {
             return BigDecimal.ZERO;
         }
@@ -1822,7 +1822,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     public BigDecimal getInterimPaymentMade() {
-        LOG.debug("getInterimPaymentMade() is being called inside InvoiceRecalculationAction and returning value is {}", invoice.getInterimPaymentMade());
+        LOG.debug("getInterimPaymentMade() is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPaymentMade());
         if (invoice.getInterimPaymentMade() == null) {
             return BigDecimal.ZERO;
         }
