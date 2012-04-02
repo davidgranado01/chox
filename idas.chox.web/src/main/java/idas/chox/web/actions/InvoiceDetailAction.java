@@ -327,6 +327,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
         return false;
     }
+    
+    public BigDecimal getFinalPayment() {
+        return invoice.getFinalPayment();
+    }
 
     public boolean getCanShowPenaltyChargesPaidField() {
         if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
