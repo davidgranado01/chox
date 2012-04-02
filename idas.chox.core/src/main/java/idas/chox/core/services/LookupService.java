@@ -18,12 +18,12 @@ public interface LookupService {
     public List getVehicleClasses();
 
     public String getVehicleClassName(int id);
+    
+    public List getClaimRejectionReason(int insurerId);
 
-    public List getClaimRejectionReason();
-
-    public List getClaimRejectionRestrictedReason();
-
-    public List getInvoiceRejectionReason();
+    public List getClaimRejectionRestrictedReason(int insurerId);
+    
+    public List getInvoiceRejectionReason(int insurerId);
 
     public List getNonProvisionReason();
 

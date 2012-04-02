@@ -1,26 +1,16 @@
 package idas.chox.web.actions;
 
-import idas.chox.service.security.ExtraAction;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
-import net.sf.json.JSONArray;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
-import idas.chox.web.ListUtils;
-import idas.chox.service.security.ActionPanel;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
+import idas.chox.core.model.DefaultReasonOfRejection;
 import idas.chox.core.model.EngineerReport;
+import idas.chox.core.model.Entity;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.Incident;
@@ -31,6 +21,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.PenaltyPercentage;
+import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
@@ -47,13 +38,20 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
+import idas.chox.service.security.ActionPanel;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ButtonAccessibility;
+import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+
+import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -62,8 +60,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -1474,28 +1481,54 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return insurers;
     }
-
+    
     public List getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason();
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
         return reasonOfClaimRejections;
     }
-
+    
     public List getReasonOfClaimRejectionsRestricted() {
         if (reasonOfClaimRejectionsRestricted == null) {
-            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason();
+            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
         return reasonOfClaimRejectionsRestricted;
+    }
+    
+    public JSONArray getJsonReasonOfClaimRejectionDesc() {
+    	if (reasonOfClaimRejections == null) {
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+        }
+        return JSONArray.fromObject(getReasonOfRejctionDesc());
     }
 
     public List getReasonOfInvoiceRejections() {
         if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason();
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
         return reasonOfInvoiceRejections;
     }
-
+    
+    public JSONArray getJsonReasonOfInvoiceRejectionDesc() {
+    	if (reasonOfInvoiceRejections == null) {
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+        }
+    	return JSONArray.fromObject(getReasonOfRejctionDesc());
+    }
+    
+    private List<LookupItem> getReasonOfRejctionDesc(){
+    	List<LookupItem> rorItems = new ArrayList<LookupItem>();
+    	for (Object ror : reasonOfClaimRejections) {
+    		if(ror instanceof ReasonOfRejection){
+    			rorItems.add(new LookupItem(((ReasonOfRejection) ror).getId().toString(), ((ReasonOfRejection) ror).getDescription()));
+    		} else {
+    			rorItems.add(new LookupItem(((DefaultReasonOfRejection) ror).getId().toString(), ((DefaultReasonOfRejection) ror).getDescription()));
+    		}
+        }
+    	return rorItems;
+    }
+    
     public String getActionPanel() {
 
         List<String> actions = ActionPanel.getPanelActions();

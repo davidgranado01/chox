@@ -232,9 +232,9 @@ INSERT INTO reason_of_delay (id,description,created_by,created_date,last_modifie
 INSERT INTO reason_of_delay (id,description,created_by,created_date,last_modified_by,last_modified_date,is_active,name,version) VALUES (8,'Other.',999,{ts '2008-12-12 17:59:26'},999,{ts '2008-12-12 17:59:26'},true,'Other',1);
 
 -- reason_of_rejection
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (1,'Indemnity Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (2,'Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (3,'Indemnity and Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted,insurer_id) VALUES (1,'Indemnity Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false,3);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted,insurer_id) VALUES (2,'Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false,3);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted,insurer_id) VALUES (3,'Indemnity and Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false,3);
 
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (4,'Out of Scope','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,true);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (5,'Not our Policyholder','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,true);

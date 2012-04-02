@@ -139,6 +139,12 @@
         eternal="true"
         overflowToDisk="false"
         />
+        
+    <cache name="idas.chox.core.model.DefaultReasonOfRejection"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
     
     <cache name="idas.chox.core.model.InsurerDiscount"
         maxElementsInMemory="200"

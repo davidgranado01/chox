@@ -6,6 +6,8 @@ public class ReasonOfRejection extends Entity implements Serializable {
 
     private String name;
     private String type;
+    private String description;
+    private Insurer insurer;
     private boolean status;
     private boolean restricted;
 
@@ -43,4 +45,20 @@ public class ReasonOfRejection extends Entity implements Serializable {
     public void setRestricted(boolean restricted) {
         this.restricted = restricted;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Insurer getInsurer() {
+		return insurer;
+	}
+
+	public void setInsurer(Insurer insurer) {
+		this.insurer = insurer;
+	}
 }
