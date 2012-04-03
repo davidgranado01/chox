@@ -1500,7 +1500,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     	if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
-        return JSONArray.fromObject(getReasonOfRejctionDesc());
+    	List<LookupItem> rorItems = new ArrayList<LookupItem>();
+    	for (Object ror : reasonOfClaimRejections) {
+    		if(ror instanceof ReasonOfRejection){
+    			rorItems.add(new LookupItem(((ReasonOfRejection) ror).getId().toString(), ((ReasonOfRejection) ror).getDescription()));
+    		} else {
+    			rorItems.add(new LookupItem(((DefaultReasonOfRejection) ror).getId().toString(), ((DefaultReasonOfRejection) ror).getDescription()));
+    		}
+        }
+        return JSONArray.fromObject(rorItems);
     }
 
     public List getReasonOfInvoiceRejections() {
@@ -1514,19 +1522,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     	if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
-    	return JSONArray.fromObject(getReasonOfRejctionDesc());
-    }
-    
-    private List<LookupItem> getReasonOfRejctionDesc(){
     	List<LookupItem> rorItems = new ArrayList<LookupItem>();
-    	for (Object ror : reasonOfClaimRejections) {
+    	for (Object ror : reasonOfInvoiceRejections) {
     		if(ror instanceof ReasonOfRejection){
     			rorItems.add(new LookupItem(((ReasonOfRejection) ror).getId().toString(), ((ReasonOfRejection) ror).getDescription()));
     		} else {
     			rorItems.add(new LookupItem(((DefaultReasonOfRejection) ror).getId().toString(), ((DefaultReasonOfRejection) ror).getDescription()));
     		}
         }
-    	return rorItems;
+    	return JSONArray.fromObject(rorItems);
     }
     
     public String getActionPanel() {

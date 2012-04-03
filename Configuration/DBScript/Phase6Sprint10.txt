@@ -1,0 +1,27 @@
+---------------------------------------------------------------------
+-- 6.10.2 Rejection Reasons & Default Text Modifications
+---------------------------------------------------------------------
+ALTER TABLE reason_of_rejection ADD COLUMN description character varying(255) NOT NULL SET DEFAULT '';
+--UPDATE reason_of_rejection SET description = 'RSA - ' || name, insurer_id = 3; --XXX This is just for testing purposes
+
+SELECT * INTO default_reason_of_rejection FROM reason_of_rejection;
+
+CREATE SEQUENCE default_reason_of_rejection_id_seq INCREMENT BY 1 MINVALUE 1 START WITH 15 OWNED BY default_reason_of_rejection.id;
+
+ALTER TABLE default_reason_of_rejection ADD PRIMARY KEY (id);
+ALTER TABLE default_reason_of_rejection ALTER COLUMN id SET DEFAULT nextval('default_reason_of_rejection_id_seq'::regclass);
+
+ALTER TABLE default_reason_of_rejection DROP COLUMN created_date;
+ALTER TABLE default_reason_of_rejection DROP COLUMN last_modified_date;
+ALTER TABLE default_reason_of_rejection DROP COLUMN last_modified_by;
+ALTER TABLE default_reason_of_rejection DROP COLUMN created_by;
+ALTER TABLE default_reason_of_rejection DROP COLUMN version;
+ALTER TABLE default_reason_of_rejection DROP COLUMN insurer_id;
+--UPDATE default_reason_of_rejection SET description = 'DEF - ' || name; --XXX This is just for testing purposes
+
+ALTER TABLE reason_of_rejection ADD COLUMN insurer_id integer not null;
+ALTER TABLE reason_of_rejection ADD CONSTRAINT insurer_id_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+
+

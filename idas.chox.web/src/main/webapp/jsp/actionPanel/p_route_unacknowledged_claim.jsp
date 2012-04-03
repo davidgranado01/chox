@@ -51,6 +51,14 @@
 
         workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
 
+        var rejectionDescField = new Ext.form.TextArea({
+            name             : 'rejectionDescription',
+            id               : 'rejecDescId',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  false,
+            renderTo         : 'rejectionDescId'
+        });
 
     });
 
@@ -92,6 +100,25 @@
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
         return false;
+    }
+    
+    var reasonOfRejectionDescReader = new Ext.data.JsonReader({
+        fields:[{name:'id'},{name:'description'}]
+    });
+    
+    var reasonOfRejectionDescStore = new Ext.data.Store({
+        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+        reader : reasonOfRejectionDescReader
+    });
+    
+    function refreshDesc(id){
+    	reasonOfRejectionDescStore.each(function(rec) {
+    		if(id == rec.json.text){
+    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
+    		}
+    	});
+    	if(id == -1)
+    		Ext.getCmp('rejecDescId').setValue("N/A");
     }
 
 </script>
@@ -137,6 +164,7 @@
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
                                             listValue="name"
+                                            onchange="refreshDesc(this.value)"
                                             headerKey="-1"
                                             headerValue="N/A"
                                             emptyOption="false">
@@ -149,6 +177,7 @@
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
                                             listValue="name"
+                                            onchange="refreshDesc(this.value)"
                                             headerKey="-1"
                                             disabled="true"
                                             headerValue="N/A"
@@ -160,7 +189,15 @@
                             </td>
                             <td width="70%"></td>
                         </tr>
+                        <s:if test="rejectButtonEnabled">
                         <tr>
+                        <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+	                        <td>
+	                            <div id="rejectionDescId"/>
+	                        </td>
+						</tr>
+						</s:if>
+						<tr>
                             <td colspan="3">
                                 <div class="no-format">
                                     <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>

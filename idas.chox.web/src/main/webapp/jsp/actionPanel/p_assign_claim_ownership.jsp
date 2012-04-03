@@ -260,8 +260,6 @@
     	reasonOfRejectionDescStore.each(function(rec) {
     		if(id == rec.json.text){
     			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    	    	console.log(rec.json.text);
-    	    	console.log(rec.json.value);
     		}
     	});
     	if(id == -1)
@@ -360,12 +358,14 @@
                                     </td>
                                     <td width="70%"></td>
                                 <tr>
+                                <s:if test="rejectButtonEnabled">
                                 <tr>
-                                <td align="right" valign="top"><label class="std-label-ro">Additional Note For Rejection&nbsp;&nbsp;</label></td>
+                                <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
 			                        <td>
 			                            <div id="rejectionDescId"/>
 			                        </td>
                                 </tr>
+                                </s:if>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">
