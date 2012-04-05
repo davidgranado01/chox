@@ -95,6 +95,7 @@
                 <value>hbm/InsurerDiscount.hbm.xml</value>
                 <value>hbm/ChorganisationAlias.hbm.xml</value>
                 <value>hbm/QueuedTicket.hbm.xml</value>
+                <value>hbm/IPWhitelist.hbm.xml</value>
             </list>
         </property>
     </bean>

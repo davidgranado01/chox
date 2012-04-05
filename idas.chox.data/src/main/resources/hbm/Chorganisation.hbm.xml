@@ -37,6 +37,7 @@
         <property column="insurer_upload_only" name="insurerUploadOnly" not-null="true"/>
         <property column="enable_subscriber_claims" name="enableSubscriberClaims" not-null="true"/>
         <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
+        <property column="enable_ip_whitelist" name="enableIPWhitelist" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         

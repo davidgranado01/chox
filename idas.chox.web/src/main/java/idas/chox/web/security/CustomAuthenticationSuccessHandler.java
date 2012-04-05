@@ -1,6 +1,7 @@
 package idas.chox.web.security;
 
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
@@ -25,40 +26,93 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
     private UserService userService;
+    private IPWhitelistService ipWhitelistService;
     private String browserWarningParam;
+    private String failureUrl;
     private Authentication currentAuthentication;
-
-    public String getBrowserWarningParam() {
-        return browserWarningParam;
-    }
 
     public void setBrowserWarningParam(String browserWarningParam) {
         this.browserWarningParam = browserWarningParam;
     }
 
-    public Authentication getCurrentAuthentication() {
-        return currentAuthentication;
+    public void setFailureUrl(String failureUrl) {
+        this.failureUrl = failureUrl;
     }
 
     public void setCurrentAuthentication(Authentication currentAuthentication) {
         this.currentAuthentication = currentAuthentication;
     }
 
-    public UserService getUserService() {
-        return userService;
-    }
-
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    
+    public void setIpWhitelistService(IPWhitelistService ipWhitelistService) {
+        this.ipWhitelistService = ipWhitelistService;
+    }
+
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-        LOG.debug("In onSuccessfulAuthentication...");
-
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                        HttpServletResponse response,
+                        Authentication authentication) throws ServletException, IOException {
         currentAuthentication = authentication;
+        WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
 
+        /*
+         * ToDo item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
+         * NB: This should be refactored to use a custom Spring decision voter
+         */
+        int orgId = -1;
+        if ((user.isAnInsurer() && user.getInsurer().isEnableIPWhitelist()))
+            orgId = user.getInsurer().getId();
+        else if (user.isCHO() && user.getChorganisation().isEnableIPWhitelist())
+            orgId = user.getChorganisation().getId();
+        
+        if (orgId >= 0) {
+            boolean isValid = false;
+            
+            LOG.debug("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
+            // Get client's IP address
+            // First try with the clients remote address - this will return an 
+            // empty string if not defined. If a proxy server is being used, the
+            // address of the proxy server should be returned (if set), which is
+            // what we want.
+            String ipAddress = request.getRemoteAddr();
+            if (!ipAddress.isEmpty()) {
+                if (user.isAnInsurer())
+                    isValid = ipWhitelistService.validateInsurerIP(orgId, ipAddress);
+                else
+                    isValid = ipWhitelistService.validateChoIP(orgId, ipAddress);
+                LOG.debug("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
+            }
+            
+            // If we are still not validated, check the x-forward-for header
+// We'll leave this out for now (not required)
+//            if (!isValid) {
+//                ipAddress = request.getHeader("x-forwarded-for");
+//                if (ipAddress == null)
+//                    ipAddress = request.getHeader("X_FORWARDED_FOR");
+//                if (ipAddress != null) {
+//                    LOG.debug("IP address from request.getHeader(\"x-forwarded-for\") is '{}'", ipAddress);
+//                    if (user.isAnInsurer())
+//                        isValid = ipWhitelistService.validateInsurerIP(orgId, ipAddress);
+//                    else
+//                        isValid = ipWhitelistService.validateChoIP(orgId, ipAddress);
+//                }
+//            }
+
+            if (!isValid) {
+                LOG.error("User '{}' denied access as IP address {} is not white-listed.", user.getFullName(), ipAddress);
+                HttpServletResponse httpResponse = response;
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                request.getSession().invalidate();
+                getRedirectStrategy().sendRedirect(request, response, failureUrl);
+//                super.onAuthenticationSuccess(request, response, authentication);
+                return;
+            }
+        }
+        
         // Add nonce
         HttpSession session = request.getSession();
         byte[] nonce = new byte[16];
@@ -75,10 +129,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         // Update users last login time
         try {
-            userService.updateLastLogin(((PermissionedUser) currentAuthentication.getPrincipal()).getUser().getId());
+            userService.updateLastLogin(user.getId());
         } catch (Exception ex) {
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
-            WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
             LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
         }
         checkBrowserWarning(request, response, getDefaultTargetUrl());
@@ -91,7 +144,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         LOG.debug("checking Browser warning...with targetUrl: {}", targetUrl);
         if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
             getRedirectStrategy().sendRedirect(request, response, targetUrl.concat(browserWarningParam));
-            return;
         }
     }
 
