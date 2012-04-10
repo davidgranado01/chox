@@ -1,22 +1,22 @@
 package idas.chox.service.bre.rules;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.DateHelper;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * John
  */
 public class HireTerminatedAfterRepairCompletionCheck implements IBusinessRule {
-    
     private static final Logger LOG = LoggerFactory.getLogger(HireTerminatedAfterRepairCompletionCheck.class);
 
     private String narrative = "";
@@ -55,6 +55,7 @@ public class HireTerminatedAfterRepairCompletionCheck implements IBusinessRule {
         return res;
     }
 
+
     @Override
     public String getNarrative() {
         return narrative;
@@ -62,12 +63,12 @@ public class HireTerminatedAfterRepairCompletionCheck implements IBusinessRule {
 
     }
 
+
     @Override
     public String getRuleId() {
         return "056";
-
-
     }
+
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
