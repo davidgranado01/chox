@@ -8,7 +8,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
-import idas.chox.core.model.DefaultReasonOfRejection;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.Entity;
 import idas.chox.core.model.HireMonitoringDetail;
@@ -80,9 +79,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private JSONArray jObject;
     public static final String EMPTY = "empty";
     private List vehicleClasses;
-    private List reasonOfClaimRejections;
-    private List reasonOfClaimRejectionsRestricted;
-    private List reasonOfInvoiceRejections;
+    private List<ReasonOfRejection> reasonOfClaimRejections;
+    private List<ReasonOfRejection> reasonOfClaimRejectionsRestricted;
+    private List<ReasonOfRejection> reasonOfInvoiceRejections;
     private List extraActionList;
     private List insurers;
     private List statuses;
@@ -1482,14 +1481,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return insurers;
     }
     
-    public List getReasonOfClaimRejections() {
+    public List<ReasonOfRejection> getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
         return reasonOfClaimRejections;
     }
     
-    public List getReasonOfClaimRejectionsRestricted() {
+    public List<ReasonOfRejection> getReasonOfClaimRejectionsRestricted() {
         if (reasonOfClaimRejectionsRestricted == null) {
             reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
@@ -1501,17 +1500,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
     	List<LookupItem> rorItems = new ArrayList<LookupItem>();
-    	for (Object ror : reasonOfClaimRejections) {
-    		if(ror instanceof ReasonOfRejection){
-    			rorItems.add(new LookupItem(((ReasonOfRejection) ror).getId().toString(), ((ReasonOfRejection) ror).getDescription()));
-    		} else {
-    			rorItems.add(new LookupItem(((DefaultReasonOfRejection) ror).getId().toString(), ((DefaultReasonOfRejection) ror).getDescription()));
-    		}
+    	for (ReasonOfRejection ror : reasonOfClaimRejections) {
+    		rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
         return JSONArray.fromObject(rorItems);
     }
 
-    public List getReasonOfInvoiceRejections() {
+    public List<ReasonOfRejection> getReasonOfInvoiceRejections() {
         if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
@@ -1523,12 +1518,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
         }
     	List<LookupItem> rorItems = new ArrayList<LookupItem>();
-    	for (Object ror : reasonOfInvoiceRejections) {
-    		if(ror instanceof ReasonOfRejection){
-    			rorItems.add(new LookupItem(((ReasonOfRejection) ror).getId().toString(), ((ReasonOfRejection) ror).getDescription()));
-    		} else {
-    			rorItems.add(new LookupItem(((DefaultReasonOfRejection) ror).getId().toString(), ((DefaultReasonOfRejection) ror).getDescription()));
-    		}
+    	for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
+    		rorItems.add(new LookupItem(ror.getId().toString(),  ror.getDescription()));
         }
     	return JSONArray.fromObject(rorItems);
     }

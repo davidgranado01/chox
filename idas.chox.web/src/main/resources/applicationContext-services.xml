@@ -14,7 +14,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService"/>
-        <property name="defaultReasonOfRejectionService" ref="defaultReasonOfRejectionService"/>
     </bean>
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -86,7 +85,7 @@
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="defaultReasonOfRejectionService" class="idas.chox.data.services.DefaultReasonOfRejectionServiceImpl" scope="prototype">
+    <bean id="reasonOfRejectionTemplateService" class="idas.chox.data.services.ReasonOfRejectionTemplateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" scope="prototype">

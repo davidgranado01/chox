@@ -178,7 +178,6 @@ public class Invoice extends Entity implements Serializable {
     private boolean isPaymentMode;
     private boolean isEngineerDecisionApproved;
     private String engineerInvoiceReviewNotes;
-    private String rejectionReason;
     private BigDecimal hireRateChargedPerDay;
     private BigDecimal excessAmountCollected;
     private BigDecimal vatAmountCollected;
@@ -1193,14 +1192,6 @@ public class Invoice extends Entity implements Serializable {
 
     public void setIsPaymentMode(boolean isPaymentMode) {
         this.isPaymentMode = isPaymentMode;
-    }
-
-    public String getRejectionReason() {
-        return rejectionReason;
-    }
-
-    public void setRejectionReason(String rejectionReason) {
-        this.rejectionReason = rejectionReason;
     }
 
     public BigDecimal getHireRateChargedPerDay() {

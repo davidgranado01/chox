@@ -1596,16 +1596,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public String getRejectionReason() {
-        return invoiceAction.model.getRejectionReason();
-    }
-
-    public void setRejectionReason(String rejectionReason) {
-        if (actionSelected != reset && invoiceAction != null && invoiceAction.model != null) {
-            invoiceAction.model.setRejectionReason(rejectionReason);
-        }
-    }
-
     public BigDecimal getHireRateChargedPerDay() {
         return invoiceAction.model.getHireRateChargedPerDay();
     }

@@ -130,7 +130,7 @@
                             <td></td><td></td>
                         </tr>
                         <tr>
-                        <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+                        <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note<span class="mandatory">*</span>&nbsp;&nbsp;</label></td>
 	                        <td>
 	                            <div id="rejectionDescId"/>
 	                        </td>

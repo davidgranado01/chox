@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class DefaultReasonOfRejection extends Entity implements Serializable {
+public class ReasonOfRejectionTemplate extends Entity implements Serializable {
 
     private String name;
     private String type;
@@ -10,7 +10,7 @@ public class DefaultReasonOfRejection extends Entity implements Serializable {
     private boolean restricted;
     private boolean status;
 
-    public DefaultReasonOfRejection() {
+    public ReasonOfRejectionTemplate() {
     }
 
     public String getName() {

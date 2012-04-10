@@ -9,13 +9,14 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.ReasonOfDelay;
+import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.DefaultReasonOfRejectionService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.ReasonOfRejectionTemplateService;
 import idas.chox.core.util.LookupItemTextComparator;
 import idas.chox.core.util.RoleHelper;
 
@@ -37,8 +38,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     private static final Logger LOG = LoggerFactory.getLogger(LookupServiceImpl.class);
     
     private ReasonOfRejectionService reasonOfRejectionService;
-    
-    private DefaultReasonOfRejectionService defaultReasonOfRejectionService;
 
     @Override
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
@@ -100,26 +99,20 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
-    public List getClaimRejectionReason(int insurerId) {
-    	List rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, null);
-    	if(rejectionReasons.size() == 0)
-    		rejectionReasons = defaultReasonOfRejectionService.getAllDefaultReasonOfRejection("Claim", true, null);
+    public List<ReasonOfRejection> getClaimRejectionReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, null);
         return rejectionReasons;
     }
     
     @Override
-    public List getClaimRejectionRestrictedReason(int insurerId) {
-    	List rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, true);
-    	if(rejectionReasons.size() == 0)
-    		rejectionReasons = defaultReasonOfRejectionService.getAllDefaultReasonOfRejection("Claim", true, true);
+    public List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, true);
         return rejectionReasons;
     }
 
     @Override
-    public List getInvoiceRejectionReason(int insurerId) {
-    	List rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Invoice", true, null);
-    	if(rejectionReasons.size() == 0)
-    		rejectionReasons = defaultReasonOfRejectionService.getAllDefaultReasonOfRejection("Invoice", true, null);
+    public List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Invoice", true, null);
         return rejectionReasons;
     }
     
@@ -382,15 +375,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
 	public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
 		this.reasonOfRejectionService = reasonOfRejectionService;
-	}
-
-	public DefaultReasonOfRejectionService getDefaultReasonOfRejectionService() {
-		return defaultReasonOfRejectionService;
-	}
-
-	public void setDefaultReasonOfRejectionService(
-			DefaultReasonOfRejectionService defaultReasonOfRejectionService) {
-		this.defaultReasonOfRejectionService = defaultReasonOfRejectionService;
 	}
 
 }

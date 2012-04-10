@@ -140,7 +140,7 @@
         overflowToDisk="false"
         />
         
-    <cache name="idas.chox.core.model.DefaultReasonOfRejection"
+    <cache name="idas.chox.core.model.ReasonOfRejectionTemplate"
         maxElementsInMemory="100"
         eternal="true"
         overflowToDisk="false"

@@ -76,7 +76,7 @@
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="defaultReasonOfRejectionService" class="idas.chox.data.services.DefaultReasonOfRejectionServiceImpl" scope="prototype">
+    <bean id="reasonOfRejectionTemplateService" class="idas.chox.data.services.ReasonOfRejectionTemplateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" scope="prototype">
