@@ -37,7 +37,7 @@ public class HireTerminatedAfterRepairCompletionCheck implements IBusinessRule {
             Date repairCompletion = claim.getHireMonitoringDetail().getRepairCompletionDate();
             Date hireEnd = claim.getVehicleHire().getHireEnd();
             boolean success = true;
-            int noDays = DateHelper.getNumberOfDaysBetween(hireEnd, repairCompletion);
+            int noDays = DateHelper.getNumberOfDaysBetween(repairCompletion, hireEnd);
 
             if (noDays > 1) {
                 success = false;
