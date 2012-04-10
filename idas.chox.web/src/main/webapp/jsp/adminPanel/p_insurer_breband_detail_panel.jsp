@@ -1049,6 +1049,13 @@
                                 Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
                             </div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireTerminatedAfterRepairCompletionCheck" value="hireTerminatedAfterRepairCompletionCheck" /></div>
+                            <label class="chox-form-check-label">Hire Terminated 1 Day After Repairs Were Complete Check</label>
+                            <div class="chox-form-check-description">
+                                Claim will be flagged for review if the hire was terminated more than 1 day after the repairs were completed.
+                            </div>
+                        </div>
 
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

@@ -91,6 +91,7 @@
                 <bean class="idas.chox.service.bre.rules.SubscriberAdminFeeCheck">
                     <property name="claimService" ref="claimService"/>                    
                 </bean>
+                <bean class="idas.chox.service.bre.rules.HireTerminatedAfterRepairCompletionCheck"></bean>
             </list>
         </property>
     </bean>
