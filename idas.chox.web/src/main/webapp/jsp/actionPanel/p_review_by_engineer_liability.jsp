@@ -9,15 +9,15 @@
         {
             errorLabelContainer: "#formClaimReviewByEngActionMessageBox",
             rules: {
-                indemnityAmount:{
+                indemnityAmount: {
                     required:true,
                     number:true
                 }
             },
             messages: {
                 indemnityAmount: {
-                    required:"You must supply a value for 'Indemnity'",
-                    number:"You must supply a numeric value for 'Indemnity'"
+                    required:"You Must Supply A Valid 'Indemnity Value'",
+                    number:"You Must Supply A Numeric Value For 'Indemnity Value'"
                 }
             }
         });
@@ -25,6 +25,16 @@
 
     function doClaimReviewByEngFormSubmit(action){
         actionPanel.registerAction(action);
+        if (action=='acknowledgeClaim') {
+            $("form#formClaimReviewByEngAction #claimNumber").rules("add", {
+                required: true,
+                messages: {required: "You Must Supply A Valid Claim Number"}
+            });
+
+        } else {
+            $("form#formClaimReviewByEngAction #claimNumber").rules("remove");
+        }
+
         if($("#formClaimReviewByEngAction").valid()){
             $("form#formClaimReviewByEngAction").submit();
         }
@@ -55,13 +65,13 @@
                 <s:hidden id="name" name="name" />
                 <div>
                     <div class="status-info">
-                        Please enter your private notes in the ‘Claim Review Notes’ box and add public notes in the ‘Notes’ tab in order to communicate detailed comments you may have for the CHO. Click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler, use the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made.
+                        Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be private and not visible to the CHO. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be public and visible to the CHO.
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
                             <tr>
                                 <td>
-                                    <label>Claim Number <span class="mandatory">*</span></label>
+                                    <label>Claim Number</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
@@ -74,9 +84,7 @@
 
                             <tr>
                                 <td width="20%">
-                                    <label>Liability Status
-                                        <span class="mandatory">*</span>
-                                    </label>
+                                    <label>Liability Status</label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
                                 <!--
@@ -93,8 +101,7 @@
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Liability Percentage Agreed (<b>Insurer</b>)</label>
+                                    <label>Liability Percentage Agreed (<b>Insurer</b>)</label>
 
                                 </td>
                                 <td>
@@ -119,8 +126,7 @@
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Indemnity Value</label>
+                                    <label>Indemnity Value <span class="mandatory">*</span></label>
                                 </td>
                                 <td>
                                     <input type="text" id="RBELindemnityAmountId" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
@@ -131,8 +137,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label>
-                                        Invoice Review Required?</label>
+                                    <label>Invoice Review Required?</label>
                                 </td>
                                 <td>
                                     <s:checkbox id="RBELisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
