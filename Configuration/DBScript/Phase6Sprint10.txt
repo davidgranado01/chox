@@ -1,4 +1,4 @@
 --
 -- ToDo item:  6.10.10 BRE Modifications
 --
-ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default false;
