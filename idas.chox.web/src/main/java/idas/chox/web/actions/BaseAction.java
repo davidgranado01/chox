@@ -5,12 +5,9 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
-import idas.chox.core.model.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sf.json.JSONObject;
 
@@ -415,6 +412,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    /* This will force update the model in session*/
     public void updateModelInSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (model.getVersion() != null && model.getId() != null) {
@@ -428,6 +426,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
     
+    /* This will put the model in session if it does not already exists or having differnt id than the one already in the session
+     in case of different id in the session for the same class it will replace with the new model*/
     public void addModelToSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (!getSession().containsKey(model.getClass().getSimpleName())) {

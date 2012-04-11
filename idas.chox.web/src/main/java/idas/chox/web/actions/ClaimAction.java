@@ -1,42 +1,30 @@
 package idas.chox.web.actions;
 
-import idas.chox.service.security.ExtraAction;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-import net.sf.json.JSONArray;
+import org.springframework.security.access.annotation.Secured;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.BreBand;
-import idas.chox.web.ListUtils;
-import idas.chox.service.security.ActionPanel;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.Customer;
-import idas.chox.core.model.EngineerReport;
-import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.Incident;
-import idas.chox.core.model.Injury;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.model.Notification;
-import idas.chox.core.model.PenaltyPercentage;
-import idas.chox.core.model.ThirdParty;
-import idas.chox.core.model.VehicleHire;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.model.Witness;
-import idas.chox.core.model.Workgroup;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import idas.chox.core.model.*;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
@@ -47,23 +35,15 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
+import idas.chox.service.security.ActionPanel;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ButtonAccessibility;
+import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import net.sf.json.JSONObject;
-import org.springframework.security.access.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
