@@ -1,6 +1,9 @@
 package idas.chox.service.filters;
 
+import java.util.Arrays;
+
 import idas.chox.core.search.ClaimSearchCriteria;
+import java.util.HashSet;
 
 public class FilterByStatus extends BaseFilter {
 
@@ -11,14 +14,14 @@ public class FilterByStatus extends BaseFilter {
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-        claimSearchCriteria.setStatus(getStatus());
+        claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         if (insurerId > -1)
-            claimSearchCriteria.setInsurerId(insurerId);
+            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
         if (choId > -1)
-            claimSearchCriteria.setSupplierId(choId);
+            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
 
         return claimSearchCriteria;
     }

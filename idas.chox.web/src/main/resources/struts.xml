@@ -296,15 +296,6 @@
         <action name="BreBandDropDownAction" class="idas.chox.web.actions.BreBandDropDownAction">
             <result>/jsp/dropdown/p_dropdown_bre.jsp</result>
         </action>
-        <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
-            <result>/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="WorkgroupDropDownActionByUser" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroup">
-            <result>/jsp/dropdown/p_dropdown_assign_claim_owner_workgroup.jsp</result>
-        </action>
-        <action name="UpdateWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroup">
-            <result>/jsp/dropdown/p_dropdown_update_claim_workgroup.jsp</result>
-        </action>
         <action name="WorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
@@ -321,7 +312,7 @@
         <action name="TeamDropDownActionByInsurer" class="idas.chox.web.actions.TeamDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
+        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
         </action>

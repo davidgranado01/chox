@@ -8,6 +8,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -17,16 +18,18 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(SupplierClaimOwnerDropDownAction.class);
 
     private List<IdLookupItem> claimhandlers = null;
-    private Integer supplierId;
+    private Set<Integer> supplierId;
     private UserService userService;
 
-
-    public Integer getSupplierId() {
+    public Set<Integer> getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplierId(Set<Integer> supplierId) {
+        if (supplierId.contains(null)) 
+            this.supplierId = null;
+        else
+            this.supplierId = supplierId;
     }
 
     public void setUserService(UserService userService) {
@@ -60,12 +63,15 @@ public class SupplierClaimOwnerDropDownAction extends BaseAction {
         claimhandlers = new ArrayList<IdLookupItem>();
 
         if (getIsCHO()) {
-            supplierId = getAuthenticatedUser().getChorganisation().getId();
+            supplierId.clear();
+            supplierId.add(getAuthenticatedUser().getChorganisation().getId());
         }
 
-        if (supplierId > 0) {
-            List<WebUser> users = userService.getOprUsersByChorganisation(supplierId);
-
+        if (supplierId != null) {
+            List<WebUser> users = new ArrayList<WebUser>();
+            for (Integer suppId : supplierId) {
+                users.addAll(userService.getOprUsersByChorganisation(suppId));
+            }
             List items = new ArrayList<IdLookupItem>();
 
             for (WebUser user : users) {

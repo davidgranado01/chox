@@ -2,17 +2,17 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Filter;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.LookupItem;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.*;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
@@ -27,9 +27,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private ClaimService claimService;
     private FilterService filterService;
 //    private ClaimObjectService claimObjectService;
-    private List<LookupItem> statuses;
-    private List<LookupItem> claimTypes;
-    private List<LookupItem> liabilityStatuses;
+    private List<LookupItem> claimStatusesLookupItem;
+    private List<LookupItem> claimTypesLookupItem;
+    private List<LookupItem> liabilityStatusesLookupItem;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private List<Object> results;
@@ -48,43 +48,171 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         this.canLoadData = canLoadData;
     }
 
-    public List<LookupItem> getStatuses() {
-        if (statuses == null) {
-            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
+    public List<LookupItem> getClaimStatusesAsLookupItem() {
+        if (claimStatusesLookupItem == null) {
+            claimStatusesLookupItem = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
                                     getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
                                     getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(),
                                     getInsurerIsUploadEnabled(), getIsSubscriberEnabled());
         }
-        return statuses;
+        return claimStatusesLookupItem;
+    }
+    
+    /*
+     * Please note this method will return only Claim statuses from the
+     * loaded(model) claimSearchCriteria and not from available Claim statuses.
+     */
+    public String getClaimStatusesAsString() {
+
+        if (claimSearchCriteria.getStatuses() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (String c : claimSearchCriteria.getStatuses()) {
+                returnString.append(c).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
     }
 
-    public List<LookupItem> getClaimTypes() {
-        if (claimTypes == null) {
-            claimTypes = this.lookupService.getClaimTypes();
+    /*
+     * Please note this method will return only Insurer Ids from the
+     * loaded(model) claimSearchCriteria and not from available Insurer Id.
+     */
+    public String getInsurerIdsAsString() {
+
+        if (claimSearchCriteria.getInsurerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getInsurerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return claimTypes;
+        return null;
     }
 
-    public List getLiabilityStatuses() {
-        if (liabilityStatuses == null) {
-            liabilityStatuses = this.lookupService.getLiabilityStatuses();
+    /*
+     * Please note this method will return only Supplier Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Id.
+     */
+    public String getSupplierIdsAsString() {
+
+        if (claimSearchCriteria.getSupplierIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getSupplierIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
         }
-        return liabilityStatuses;
+        return null;
+    }
+
+    /*
+     * Please note this method will return only Workgroup Ids from the
+     * loaded(model) claimSearchCriteria and not from available Workgroup Id.
+     */
+    public String getWorkgroupIdsAsString() {
+
+        if (claimSearchCriteria.getWorkgroupIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getWorkgroupIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only Supplier Claim owner Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
+     */
+    public String getSupplierClaimOwnerIdsAsString() {
+
+        if (claimSearchCriteria.getSupplierClaimOwnerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getSupplierClaimOwnerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+     /*
+     * Please note this method will return only Supplier Claim owner Ids from the
+     * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
+     */
+    public String getClaimOwnerIdsAsString() {
+
+        if (claimSearchCriteria.getClaimOwnerIds() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getClaimOwnerIds()) {
+                returnString.append(i.toString()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    public List<LookupItem> getClaimTypesAsLookupItem() {
+        if (claimTypesLookupItem == null) {
+            claimTypesLookupItem = this.lookupService.getClaimTypes();
+        }
+        return claimTypesLookupItem;
+    }
+
+    /*
+     * Please note this method will return only Liability value from the
+     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
+     */
+    public String getClaimTypesValueAsString() {
+
+        if (claimSearchCriteria.getClaimTypes() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (ClaimType c : claimSearchCriteria.getClaimTypes()) {
+                returnString.append(c.getClaimTypeValue()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    public List<LookupItem> getLiabilityStatusesAsLookupItem() {
+        if (liabilityStatusesLookupItem == null) {
+            liabilityStatusesLookupItem = this.lookupService.getLiabilityStatuses();
+        }
+        return liabilityStatusesLookupItem;
+    }
+    
+    /*
+     * Please note this method will return only Liability value from the
+     * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
+     */
+    public String getLiabilityStatusesValueAsString() {
+
+        if (claimSearchCriteria.getLiabilityStatuses() != null) {
+            StringBuilder returnString = new StringBuilder();
+            for (LiabilityStatus s : claimSearchCriteria.getLiabilityStatuses()) {
+                returnString.append(s.getLiablityValue()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
     }
 
     public String getStatusesJsonString() {
-        String statusesJson = JSONArray.fromObject(getStatuses()).toString();
-        return "{totalCount:" + statuses.size() + ", results:" + statusesJson + "}";
+        String statusesJson = JSONArray.fromObject(getClaimStatusesAsLookupItem()).toString();
+        return "{totalCount:" + claimStatusesLookupItem.size() + ", results:" + statusesJson + "}";
     }
 
     public String getClaimTypesJsonString() {
-        String claimTypesJson = JSONArray.fromObject(getClaimTypes()).toString();
-        return "{totalCount:" + claimTypes.size() + ", results:" + claimTypesJson + "}";
+        String claimTypesJson = JSONArray.fromObject(getClaimTypesAsLookupItem()).toString();
+        return "{totalCount:" + claimTypesLookupItem.size() + ", results:" + claimTypesJson + "}";
     }
 
     public String getLiabilityStatusesJsonString() {
-        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatuses()).toString();
-        return "{totalCount:" + liabilityStatuses.size() + ", results:" + liabilityStatusesJson + "}";
+        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem()).toString();
+        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + liabilityStatusesJson + "}";
     }
 
     public String getInsurersJsonString() {

@@ -9,33 +9,41 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.UserService;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHandlerRoleUserDropDownAction.class);
 
     private List<IdLookupItem> claimhandlers = null;
-    private Integer workgroupId;
-    private Integer insurerId;
+    private Set<Integer> workgroupId = new HashSet<Integer>();
+    private Set<Integer> insurerId = new HashSet<Integer>();
     private UserService userService;
     private InsurerService insurerService;
 
-    public Integer getWorkgroupId() {
+    public Set<Integer> getWorkgroupId() {
         return workgroupId;
     }
 
-    public void setWorkgroupId(Integer workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setWorkgroupId(Set<Integer> workgroupIds) {
+        if (workgroupIds.contains(null))
+            this.workgroupId.add(-1);
+        else
+            this.workgroupId = workgroupIds;
     }
 
-    public Integer getInsurerId() {
+    public Set<Integer> getInsurerId() {
         return insurerId;
     }
 
-    public void setInsurerId(Integer insurerId) {
-        this.insurerId = insurerId;
+    public void setInsurerId(Set<Integer> insurerId) {
+        if (insurerId.contains(null))
+            this.insurerId.add(-1);
+        else
+            this.insurerId = insurerId;
     }
-
+    
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -66,51 +74,31 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
         return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
     }
 
-    public String ClaimSearch() throws Exception {
-
-        claimhandlers = new ArrayList<IdLookupItem>();
-
-        if (getIsInsurer()) {
-
-            insurerId = getAuthenticatedUser().getInsurer().getId();
-        }
-
-        if (insurerId > 1) {
-
-            Insurer insurer = insurerService.getInsurer(insurerId);
-            List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
-
-            List items = new ArrayList<IdLookupItem>();
-
-            for (WebUser user : users) {
-                items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
-            }
-
-            claimhandlers = items;
-
-        }
-
-        return SUCCESS;
-    }
-
     @Override
     public String execute() throws Exception {
 
         claimhandlers = new ArrayList<IdLookupItem>();
 
-        if (insurerId > 1) {
+        if (getIsInsurer()) {
+            insurerId.clear();
+            insurerId.add(getAuthenticatedUser().getInsurer().getId());
+        }
 
-            Insurer insurer = insurerService.getInsurer(insurerId);
-
-            List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
-            List items = new ArrayList<IdLookupItem>();
-
-            for (WebUser user : users) {
-                items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
+        if (insurerId != null) {
+            List<WebUser> users = new ArrayList<WebUser>();
+            for (Integer insId : insurerId) {
+                Insurer insurer = insurerService.getInsurer(insId);
+                if (insurer != null) {
+                    if (workgroupId != null) {
+                        for (Integer workgroupId : this.workgroupId) {
+                            users.addAll(userService.getClaimHanldersByInsurerWorkgroup(insId, workgroupId, insurer.isWorkgroupEnable()));
+                        }
+                    }
+                }
             }
-
-            claimhandlers = items;
-
+            for (WebUser user : users) {
+                claimhandlers.add(new IdLookupItem(user.getId(), user.getDisplayName()));
+            }
         }
 
         return SUCCESS;

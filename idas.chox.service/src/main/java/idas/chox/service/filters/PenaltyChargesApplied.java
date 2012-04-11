@@ -1,6 +1,8 @@
 package idas.chox.service.filters;
 
 import idas.chox.core.search.ClaimSearchCriteria;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class PenaltyChargesApplied extends BaseFilter {
 
@@ -15,9 +17,9 @@ public class PenaltyChargesApplied extends BaseFilter {
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         if (insurerId > -1)
-            claimSearchCriteria.setInsurerId(insurerId);
+            claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
         if (choId > -1)
-            claimSearchCriteria.setSupplierId(choId);
+            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
 
         return claimSearchCriteria;
     }
