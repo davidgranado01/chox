@@ -23,7 +23,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.core.util.CalcHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
@@ -357,6 +357,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
+    
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
 

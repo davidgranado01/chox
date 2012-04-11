@@ -48,11 +48,12 @@ public class ClaimFileReport implements Report {
         Claim claim = (Claim)baseDataService.get(Claim.class, claimId);
         LOG.debug("Generating report for claimId={} ('{}')", claimId, claim.getChoReference());
 
-        ClaimFileReportData claimReport = new ClaimFileReportData(claim);
+        WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+        
+        ClaimFileReportData claimReport = new ClaimFileReportData(claim, currentUser);
 
         List<ClaimFileEcdData> claimEcds = ClaimFileEcdData.getClaimFileEcdData(claim);
         
-        WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
         if (currentUser.isAnInsurer() || currentUser.isCHOXAdmin())
             showInsurer = true;
         if (!currentUser.isAnInsurer() || currentUser.isCHOXAdmin())

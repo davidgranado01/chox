@@ -308,8 +308,14 @@
                                 <tr>
                                     <td><label class="std-label-ro">Hire Penalty Percentage</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:property value="hirePenaltyPercentage" /></label></td>
-
+                                    <td>
+                                        <label class="std-data-ro">
+                                            <s:property value="hirePenaltyPercentage" />
+                                            <s:if test="invoice.hirePenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
+                                                &nbsp;[actual: <s:property value="invoice.hirePenaltyPercentageApplied" />]
+                                            </s:if>
+                                        </label>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Hire Penalty Charge</label></td>
@@ -319,7 +325,14 @@
                                 <tr>
                                     <td><label class="std-label-ro">Repair Penalty Percentage</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:property value="repairPenaltyPercentage" /></label></td>
+                                    <td>
+                                        <label class="std-data-ro">
+                                            <s:property value="repairPenaltyPercentage" />
+                                            <s:if test="invoice.repairPenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
+                                              &nbsp;[actual: <s:property value="invoice.repairPenaltyPercentageApplied" />]  
+                                            </s:if>
+                                        </label>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Repair Penalty Charge</label></td>

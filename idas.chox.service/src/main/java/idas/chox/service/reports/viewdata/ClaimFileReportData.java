@@ -15,6 +15,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
 
@@ -196,7 +197,9 @@ public class ClaimFileReportData {
     private BigDecimal invoiceHirePenaltyChargeAmount;
     private BigDecimal invoiceRepairPenaltyChargeAmount;
     private String invoiceHirePenaltyChargePercentage;
+    private String invoiceHirePenaltyChargePercentageApplied;
     private String invoiceRepairPenaltyChargePercentage;
+    private String invoiceRepairPenaltyChargePercentageApplied;
     private BigDecimal invoiceFullTotalToPay;
     private BigDecimal invoiceTotalToPay;
     private BigDecimal invoiceExcessAmountCollected;
@@ -265,9 +268,10 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsChoDiscountFeePaid;
     private BigDecimal paymentDetailsInsurerDiscountFeePaid;
     private BigDecimal paymentDetailsFinalPayment;
+    
     private String claimType;
 
-    public ClaimFileReportData(Claim claim) {
+    public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
         if (claim.getChorganisation() != null)
@@ -543,8 +547,12 @@ public class ClaimFileReportData {
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
+            if (invoice.getHirePenaltyPercentageApplied() != null && !currentUser.isCHO()) 
+                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
+            if (invoice.getRepairPenaltyPercentageApplied() != null && !currentUser.isCHO())
+                invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
             invoiceFullTotalToPay = invoice.getFullTotalToPay();
             invoiceTotalToPay = invoice.getTotalToPay();
@@ -1683,6 +1691,22 @@ public class ClaimFileReportData {
 
     public void setInvoiceRepairPenaltyChargePercentage(String invoiceRepairPenaltyChargePercentage) {
         this.invoiceRepairPenaltyChargePercentage = invoiceRepairPenaltyChargePercentage;
+    }
+
+    public String getInvoiceHirePenaltyChargePercentageApplied() {
+        return invoiceHirePenaltyChargePercentageApplied;
+    }
+
+    public void setInvoiceHirePenaltyChargePercentageApplied(String invoiceHirePenaltyChargePercentageApplied) {
+        this.invoiceHirePenaltyChargePercentageApplied = invoiceHirePenaltyChargePercentageApplied;
+    }
+
+    public String getInvoiceRepairPenaltyChargePercentageApplied() {
+        return invoiceRepairPenaltyChargePercentageApplied;
+    }
+
+    public void setInvoiceRepairPenaltyChargePercentageApplied(String invoiceRepairPenaltyChargePercentageApplied) {
+        this.invoiceRepairPenaltyChargePercentageApplied = invoiceRepairPenaltyChargePercentageApplied;
     }
 
     public BigDecimal getInvoiceTotalPenaltyCharge() {

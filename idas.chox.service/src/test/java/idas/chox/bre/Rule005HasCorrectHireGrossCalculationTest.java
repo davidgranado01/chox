@@ -7,7 +7,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.HasCorrectHireGrossCalculation;
-import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.core.util.CalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
