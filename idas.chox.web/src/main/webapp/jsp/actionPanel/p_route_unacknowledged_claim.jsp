@@ -56,7 +56,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  false,
+            allowBlank       :  true,
             renderTo         : 'rejectionDescId'
         });
 
@@ -117,8 +117,8 @@
     			Ext.getCmp('rejecDescId').setValue(rec.json.value);
     		}
     	});
-    	if(id == -1)
-    		Ext.getCmp('rejecDescId').setValue("N/A");
+    	if(id == -1 || id == '')
+    		Ext.getCmp('rejecDescId').setValue("");
     }
 
 </script>

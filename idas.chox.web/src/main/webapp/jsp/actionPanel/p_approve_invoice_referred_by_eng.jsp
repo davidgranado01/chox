@@ -73,6 +73,7 @@
         }
     }
     
+    
     var reasonOfRejectionDescReader = new Ext.data.JsonReader({
         fields:[{name:'id'},{name:'description'}]
     });
@@ -88,8 +89,8 @@
     			Ext.getCmp('rejecDescId').setValue(rec.json.value);
     		}
     	});
-    	if(id == -1)
-    		Ext.getCmp('rejecDescId').setValue("N/A");
+    	if(id == -1 || id == '')
+    		Ext.getCmp('rejecDescId').setValue("");
     }
 
 </script>
@@ -130,7 +131,7 @@
                             <td></td><td></td>
                         </tr>
                         <tr>
-                        <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note<span class="mandatory">*</span>&nbsp;&nbsp;</label></td>
+                        <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
 	                        <td>
 	                            <div id="rejectionDescId"/>
 	                        </td>

@@ -50,7 +50,7 @@ public class ClaimRejectedReport implements Report {
 
         try {
 
-            List<ClaimRejectionLineItem> reportRows = getReasonOfRejection();
+            List<ClaimRejectionLineItem> reportRows = getReasonOfRejection(currentUser);
 
             Date dataStart = null;
             Date dataEnd = null;
@@ -297,11 +297,15 @@ public class ClaimRejectedReport implements Report {
     }
 
     
-    public List<ClaimRejectionLineItem> getReasonOfRejection() {
+    private List<ClaimRejectionLineItem> getReasonOfRejection(WebUser currentUser) {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
-        String query = "select id, name from reason_of_rejection where type='Claim' order by id asc";
-        List result = baseDataService.externalQuery(query);
+        String query = "select id, name from reason_of_rejection where type='Claim' and insurer_id = :insurerId order by id asc";
+        
+        Map paramMap = new HashMap();
+        paramMap.put("insurerId", currentUser.getInsurer().getId());
+        
+        List result = baseDataService.externalQuery(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;

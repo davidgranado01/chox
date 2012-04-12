@@ -33,7 +33,8 @@ public class InvoiceRejection extends BaseActivity {
 
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
-            claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
+            if(rejectionDescription != null && !rejectionDescription.equals(""))
+            	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
         }
         else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
