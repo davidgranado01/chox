@@ -89,5 +89,5 @@ public interface ClaimService extends DataService {
 
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
     
-    public Claim handleInvalidSessionVersionClaim(Claim claim);
+    public Claim updateClaimWithInvalidSessionVersion(Claim claim);
 }
