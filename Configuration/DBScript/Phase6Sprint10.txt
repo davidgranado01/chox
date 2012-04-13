@@ -1,0 +1,38 @@
+--
+-- ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
+--
+ALTER TABLE insurer ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
+ALTER TABLE chorganisation ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
+
+
+CREATE TABLE ip_whitelist (
+	id serial not null,
+  	"version" integer NOT NULL,
+	insurer_id integer,
+	chorganisation_id integer,
+	ip_address character varying(39) NOT NULL,
+	description character varying(64),
+  	created_by integer NOT NULL,
+  	created_date timestamp without time zone NOT NULL DEFAULT now(),
+  	last_modified_by integer NOT NULL,
+  	last_modified_date timestamp without time zone DEFAULT now(),
+	CONSTRAINT ip_whitelist_pkey PRIMARY KEY (id),
+  	CONSTRAINT ip_whitelist_insurer_fkey FOREIGN KEY (insurer_id)
+      		REFERENCES insurer (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_cho_fkey FOREIGN KEY (chorganisation_id)
+      		REFERENCES chorganisation (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_webuser_created_fkey FOREIGN KEY (created_by)
+      		REFERENCES web_user (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+      		REFERENCES web_user (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT ON TABLE ip_whitelist TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE ip_whitelist_id_seq TO chox_user;
+

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
     <head>
@@ -46,9 +47,12 @@
                                     <input type="submit" id="loginSubmitButtonId" value="Sign In" /><!--<a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>!-->
                                 </p>
                                 
-                                <s:if test="#parameters.size > 1">
+                                <s:if test="#parameters.error[0] == 'true'">
                                     <p><span id="login-error">Incorrect Username and/or Password </span></p>
                                 </s:if>
+                                <s:elseif test="#parameters.iperror[0] == 'true'">
+                                    <p><span id="login-error">Due to your current IP address, you are not authorised to access CHOX.<br/> Please contact CHOX Support on 03333 404327.</span></p>
+                                </s:elseif>
                             </div>
                         </div>
                     </form>

@@ -691,13 +691,13 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
-                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
+                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
-                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onclick="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onclick="doPageLoadCheck()" />
                                     </div>
                                 </td>
 
@@ -706,7 +706,13 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable CHO Discounts</label>
-                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="javascript:doToggleInsurerDiscount();" />
+                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="doToggleInsurerDiscount()" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable IP Whitelist</label>
+                                        <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="doPageLoadCheck()" />
                                     </div>
                                 </td>
                             </tr>

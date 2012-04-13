@@ -4,7 +4,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.core.services.HistoryService;
 import java.util.List;
-import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
@@ -22,7 +21,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
     @Override
     public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic) {
 
-        List histories = new ArrayList<History>();
+        List<History> histories;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));

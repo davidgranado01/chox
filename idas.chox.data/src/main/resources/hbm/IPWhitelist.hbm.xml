@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.IPWhitelist" table="ip_whitelist">
+        <cache usage="nonstrict-read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">ip_whitelist_id_seq</param>
+            </generator>
+        </id>
+        <version column="version" name="version" unsaved-value="null"/>
+        <property column="ip_address" name="ipAddress" not-null="true"/>
+        <property column="description" name="description"/>
+        <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" lazy="false" name="chorganisation"/>
+        <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" lazy="false" name="insurer"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    </class>
+    
+</hibernate-mapping>

@@ -457,6 +457,17 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable IP Whitelist</label>
+                                        <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+
+                            </tr>
                         </table>
                         <div class="chox-form-button">
                             <input type="submit" value="Save Changes" onclick="doInsurerUploadOnlyValidationSetup();"/>
