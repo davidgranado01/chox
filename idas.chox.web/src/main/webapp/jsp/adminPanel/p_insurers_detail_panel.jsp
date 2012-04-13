@@ -611,6 +611,16 @@
                             <label class="chox-form-std-label">Minimum Password Length</label>
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
+                        
+                         <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
+                            <label class="chox-form-std-label">Nr. Of Days Invoice Uploaded</label>
+                            <input type="text" class="chox-ttxt" id="nrOfDaysUploadedId" name="nrOfDaysInvoiceUploaded" value="<s:property value="nrOfDaysInvoiceUploaded" />"/>
+                        </div>
+                        
+                         <div class="chox-form-item" id="timeEnteredToContestedInvDiv">
+                            <label class="chox-form-std-label">Nr. Of Times Entered To Status Contested...</label>
+                            <input type="text" class="chox-ttxt" id="timeEnteredToContId" name="nrOfTimesInvoiceInStatus" value="<s:property value="nrOfTimesInvoiceInStatus" />"/>
+                        </div>
 
                         <table>
                             <tr>

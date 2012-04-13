@@ -52,7 +52,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 && webUser.isCHO() && !webUser.getChorganisation().isEnableSubscriberClaims()) {
                             LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                             continue;
-                        }
+                        } 
                         LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);
                     } else {

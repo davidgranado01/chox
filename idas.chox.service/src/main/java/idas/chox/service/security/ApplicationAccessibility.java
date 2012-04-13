@@ -87,6 +87,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_REF_TO_ENG = "InvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
+    public static final String FILTER_ESCALATED_INVOICE_SUPERVISOR = "InvoiceEscalatedToSupervisor";
     // ***************************************
     // PANEL
     // ***************************************

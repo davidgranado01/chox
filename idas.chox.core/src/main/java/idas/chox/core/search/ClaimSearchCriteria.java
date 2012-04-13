@@ -40,6 +40,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean isAnomalies;
     private boolean isPenaltyChargeApplied;
     private boolean isInterimPaymentMade;
+    private boolean isEscalatedToSupervisor;
     private int start;
     private int limit;
     private String sort;
@@ -444,4 +445,12 @@ public class ClaimSearchCriteria implements Serializable {
     public void setStatusExcludeList(List<String> statusExcludeList) {
         this.statusExcludeList = statusExcludeList;
     }
+
+	public boolean isEscalatedToSupervisor() {
+		return isEscalatedToSupervisor;
+	}
+
+	public void setEscalatedToSupervisor(boolean isEscalatedToSupervisor) {
+		this.isEscalatedToSupervisor = isEscalatedToSupervisor;
+	}
 }
