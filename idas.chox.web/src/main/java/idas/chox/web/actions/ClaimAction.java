@@ -428,6 +428,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateClaimNumber() {
         try {
+            claim.setClaimNumber(claim.getClaimNumber().trim());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the claim number for claim '{}': ", claim.getChoReference(), ex);

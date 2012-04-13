@@ -78,7 +78,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void updateClaim(Claim claim) {
-        claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
         LOG.debug("Claim updated and saved.");
     }
