@@ -94,8 +94,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
+    /*
+     * Use below method in model driven action where checkVersion validation
+     * faild, but model is updated by struts(eg. new value from ui set to model
+     * properties) before checkVersion validation done. This method will evict
+     * the dirty model from hibernate session (to avoid persisting dirty object
+     * to DB by hibernate) and return the model which is loaded from the DB.
+     */
     @Override
-    public Claim handleInvalidSessionVersionClaim(Claim claim) {
+    public Claim updateClaimWithInvalidSessionVersion(Claim claim) {
         evict(claim);
         return (Claim) getSession().load(Claim.class, claim.getId());
     }

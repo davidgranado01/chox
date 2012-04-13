@@ -445,7 +445,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             LOG.error("Exception thrown updating the Invoice Review Required for claim '{}': ", claim.getChoReference(), ex);
-            claim = service.handleInvalidSessionVersionClaim(claim);
+            claim = service.updateClaimWithInvalidSessionVersion(claim);
             setActionError(ex.getMessage());
             return ERROR;
         } 
