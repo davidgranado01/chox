@@ -17,6 +17,7 @@ public class ExtraAction {
     public static final String UPDATE_PENALTY_CHARGES = "updatePenaltyCharges";
     public static final String MARK_SUPPLEMENTARY_INVOICED_CLAIM = "markSupplementaryInvoicedClaim";
     public static final String PENALTY_CHARGE_CONFIGURATION = "penaltyChargeConfiguration";
+    public static final String INVOICE_REVIEW_REQUIRED = "invoiceReviewRequired";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -32,6 +33,7 @@ public class ExtraAction {
         action.add(UPDATE_PENALTY_CHARGES);
         action.add(MARK_SUPPLEMENTARY_INVOICED_CLAIM);
         action.add(PENALTY_CHARGE_CONFIGURATION);
+        action.add(INVOICE_REVIEW_REQUIRED);
 
         return action;
     }
@@ -63,6 +65,8 @@ public class ExtraAction {
             returnStr = "Mark Claim For Supplementary Invoice(s)";
         } else if (extraAction.equalsIgnoreCase(PENALTY_CHARGE_CONFIGURATION)) {
             returnStr = "Penalty Charge Configuration";
+        } else if (extraAction.equalsIgnoreCase(INVOICE_REVIEW_REQUIRED)) {
+            returnStr = "Flag Claim For Review At Invoice Stage";
         }
         return returnStr;
     }

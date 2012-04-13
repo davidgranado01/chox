@@ -1,22 +1,23 @@
 package idas.chox.data.services;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
-import org.hibernate.criterion.Property;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
@@ -24,25 +25,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.BreBandOrganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.Notification;
-import idas.chox.core.model.NotificationType;
+
+import idas.chox.core.common.OrganisationType;
+import idas.chox.core.model.*;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.CommentService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
-import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.QueuedTicket;
-import idas.chox.core.services.CommentService;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -92,7 +84,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
-
+    @Override
+    public Claim handleInvalidSessionVersionClaim(Claim claim) {
+        evict(claim);
+        return (Claim) getSession().load(Claim.class, claim.getId());
+    }
+    
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean revertClaim(int id) {
