@@ -1,15 +1,9 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.service.ActionResponse;
-
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
@@ -20,9 +14,15 @@ import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureExcep
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import net.sf.json.JSONObject;
+
 import idas.chox.core.model.Entity;
-import java.util.Arrays;
-import java.util.List;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.service.ActionResponse;
 
 
 public class BaseAction extends ActionSupport implements SessionAware {

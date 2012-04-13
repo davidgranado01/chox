@@ -8,6 +8,7 @@
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.timer-min.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/ext-base-3.4.0-min.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/ext-all-3.4.0-min.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/SuperBoxSelect-min.js" type="text/javascript"></script>
 
 <script src="<%= request.getContextPath()%>/scripts/general-min.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application-min.js" type="text/javascript"></script>

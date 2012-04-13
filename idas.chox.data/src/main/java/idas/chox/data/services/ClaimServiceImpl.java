@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Arrays;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -27,7 +28,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.*;
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BreBandOrganisation;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.Notification;
+import idas.chox.core.model.NotificationType;
+import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -57,7 +68,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public ClaimServiceImpl() {
         super();
-        return;
     }
 
     @Override
@@ -241,7 +251,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
-        Claim claim = new Claim();
+        Claim claim;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         claim = (Claim) getByCriteria(criteria);
@@ -250,7 +260,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     @Override
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber) {
-        Claim claim = new Claim();
+        Claim claim;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         criteria.add(Restrictions.eq("chorganisation.id", choId));
@@ -375,7 +385,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
-
+        
         criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();
 
@@ -399,17 +409,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
-        Boolean bFlag = false;
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
 
         Integer totalCount = ((Long) result.get(0)).intValue();
-        bFlag = totalCount > 0;
 
-        return bFlag;
+        return totalCount > 0;
     }
 
     @Override
@@ -580,16 +587,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getClaimOwnerId() > 0) {
-            criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
-        } else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
-            criteria.add(Restrictions.isNull("claimOwner.id"));
+        if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
+            ArrayList<Integer> ClaimOwnerIds = new ArrayList<Integer>();
+            if (searchCriteria.getClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
+                ClaimOwnerIds.add(null);
+//               criteria.add(Restrictions.isNull("claimOwner.id")); 
+            }
+            ClaimOwnerIds.addAll(searchCriteria.getClaimOwnerIds());
+            criteria.add(Restrictions.in("claimOwner.id", ClaimOwnerIds.toArray()));
         }
+        
+        if (searchCriteria.getSupplierClaimOwnerIds() != null && !searchCriteria.getSupplierClaimOwnerIds().isEmpty()) {
+            ArrayList<Integer> supplierClaimOwnerIds = new ArrayList<Integer>();
 
-        if (searchCriteria.getSupplierClaimOwnerId() > 0) {
-            criteria.add(Restrictions.eq("supplierClaimOwner.id", searchCriteria.getSupplierClaimOwnerId()));
-        } else if (searchCriteria.getSupplierClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
-            criteria.add(Restrictions.isNull("supplierClaimOwner.id"));
+            if (searchCriteria.getSupplierClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
+                supplierClaimOwnerIds.add(null);
+//               criteria.add(Restrictions.isNull("supplierClaimOwner.id")); 
+            }
+            supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
+            criteria.add(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()));
         }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
@@ -597,11 +613,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.like("choReference", sSupplierRef).ignoreCase());
         }
 
-        if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
-            if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
-                criteria.add(Restrictions.in("status", new Object[]{"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"}));
+        if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
+            if (searchCriteria.getStatuses().contains(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
+                ArrayList<String> handlersActionStatus = new ArrayList<String>();
+                handlersActionStatus.addAll(Arrays.asList("ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"));
+                if (searchCriteria.getStatuses().size() > 1) {
+                    handlersActionStatus.addAll(searchCriteria.getStatuses());
+                }
+                criteria.add(Restrictions.in("status", handlersActionStatus.toArray()));
             } else {
-                criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+                criteria.add(Restrictions.in("status", searchCriteria.getStatuses().toArray()));
             }
         }
 
@@ -610,16 +631,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
-        if (searchCriteria.getInsurerId() > 0) {
-            criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
+        if (searchCriteria.getInsurerIds() != null && !searchCriteria.getInsurerIds().isEmpty()) {
+            criteria.add(Restrictions.in("ins.id", searchCriteria.getInsurerIds().toArray()));
         }
 
-        if (searchCriteria.getSupplierId() > 0) {
-            criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
+        if (searchCriteria.getSupplierIds() != null && !searchCriteria.getSupplierIds().isEmpty()) {
+            criteria.add(Restrictions.in("cho.id", searchCriteria.getSupplierIds().toArray()));
         }
 
-        if (searchCriteria.getWorkgroupId() > 0) {
-            criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
+        if (searchCriteria.getWorkgroupIds() != null && !searchCriteria.getWorkgroupIds().isEmpty()) {
+            criteria.add(Restrictions.in("wg.id", searchCriteria.getWorkgroupIds().toArray()));
         }
 
         if (searchCriteria.getIsAnomalies()) {
@@ -684,11 +705,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.gtProperty("iv.interimPaymentMade", "iv.interimPaymentReceived"));
         }
 
-        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().getLiablityValue() > 0) {
-            criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
-            LOG.debug("Liability Search Criteria: {}", searchCriteria.getLiabilityStatus());
+        if (searchCriteria.getLiabilityStatuses() != null && !searchCriteria.getLiabilityStatuses().isEmpty()) {
+            criteria.add(Restrictions.in("liabilityStatus", searchCriteria.getLiabilityStatuses().toArray()));
+            LOG.debug("Liability Search Criteria: {}", Arrays.toString(searchCriteria.getLiabilityStatuses().toArray()));
         } else {
-            LOG.debug("Liability Search Criteria not present: '{}'", searchCriteria.getLiabilityStatus());
+            LOG.debug("Liability Search Criteria not present");
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
@@ -717,23 +738,34 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getClaimType() != null && searchCriteria.getClaimType().getClaimTypeValue() >= 0) {
-            if (searchCriteria.getClaimType() == ClaimType.GTA) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
-                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
-            } else if (searchCriteria.getClaimType() == ClaimType.INSURER_UPLOAD) {
-                criteria.add(Restrictions.eq("claimType", ClaimType.INSURER_UPLOAD));
-            } else if (searchCriteria.getClaimType() == ClaimType.INSURER_VS_INSURER) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_VS_INSURER,
-                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
-            } else if (searchCriteria.getClaimType() == ClaimType.SUBSCRIBER) {
-                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.SUBSCRIBER,
-                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
-            } else if (searchCriteria.getClaimType() == ClaimType.TPI) {
-                criteria.add(Restrictions.eq("claimType", ClaimType.TPI));
+        if (searchCriteria.getClaimTypes() != null && !searchCriteria.getClaimTypes().isEmpty()) {
+            ArrayList<ClaimType> ClaimTypes = new ArrayList<ClaimType>();
+            if (searchCriteria.getClaimTypes().contains(ClaimType.GTA)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,ClaimType.GTA_SUPPLEMENTARY_INVOICE));
+//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
+//                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_UPLOAD)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_UPLOAD));
+//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_UPLOAD}));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_VS_INSURER)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_VS_INSURER,ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE));
+//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_VS_INSURER,
+//                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+//                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.SUBSCRIBER)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.SUBSCRIBER,ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE));
+//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.SUBSCRIBER,
+//                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+//                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.TPI)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.TPI));
+//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.TPI}));
             }
+            criteria.add(Restrictions.in("claimType", ClaimTypes.toArray()));
         }
 
         if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
