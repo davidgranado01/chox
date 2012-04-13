@@ -58,6 +58,7 @@
                 <value>hbm/HireMonitoringEcd.hbm.xml</value>
                 <value>hbm/AuditTrail.hbm.xml</value>
                 <value>hbm/ReasonOfRejection.hbm.xml</value>
+                <value>hbm/ReasonOfRejectionTemplate.hbm.xml</value>
                 <value>hbm/WebUserUserRole.hbm.xml</value>
                 <value>hbm/InsurerChorganisation.hbm.xml</value>
                 <value>hbm/ReasonOfDelay.hbm.xml</value>
@@ -80,7 +81,9 @@
                 <value>hbm/WebBordereau.hbm.xml</value>
                 <value>hbm/PasswordHistory.hbm.xml</value>
                 <value>hbm/InsurerDiscount.hbm.xml</value>
-
+                <value>hbm/ChorganisationAlias.hbm.xml</value>
+                <value>hbm/QueuedTicket.hbm.xml</value>
+                <value>hbm/IPWhitelist.hbm.xml</value>
             </list>
         </property>
     </bean>
