@@ -44,6 +44,8 @@ import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -411,6 +413,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
     
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public String updateInvoiceReviewRequired() {
+        try {
+            checkVersion(Arrays.asList(claim));
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown updating the Invoice Review Required for claim '{}': ", claim.getChoReference(), ex);
+            claim = service.handleInvalidSessionVersionClaim(claim);
+            setActionError(ex.getMessage());
+            return ERROR;
+        } 
+        return SUCCESS;
+    }
+    
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -582,6 +598,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getInvoiceReviewRequiredPanel() {
+        return SUCCESS;
+    }
+    
     public String getUpdateLiability() {
         LOG.debug("Id " + id + " " + claim.getChoReference());
         if (claim != null) {

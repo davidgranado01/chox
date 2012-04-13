@@ -55,6 +55,80 @@ INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_b
 -- End of ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
 ---------------------------------------------------------------------
 
+
+----------------------------------------------------------------------------
+-- 6.10.9 Invoice Review Required? added to 'More Actions' drop down --
+----------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimReferredToFNOL',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.AwaitingCarHireInfo',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.AwaitingInvoiceData',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimReferredToEngineer',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+
+----------------------------------------------------------------------------
+-- End of 6.10.9 Invoice Review Required? added to 'More Actions' drop down --
+----------------------------------------------------------------------------
+
 ---------------------------------------------------------------------
 -- ToDo item:  6.10.10 BRE Modifications
 ---------------------------------------------------------------------
