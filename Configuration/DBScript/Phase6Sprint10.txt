@@ -1,6 +1,6 @@
---
+---------------------------------------------------------------------
 -- ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
---
+---------------------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
 ALTER TABLE chorganisation ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
 
@@ -36,3 +36,30 @@ WITH (
 GRANT SELECT ON TABLE ip_whitelist TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE ip_whitelist_id_seq TO chox_user;
 
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.16", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.17", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.18", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.19", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.20", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "129.35.81.21", "Provided by RSA", 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, "81.187.110", "Sherwood (Talbot House)", 999, now(), 999, now();
+
+---------------------------------------------------------------------
+-- End of ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
+---------------------------------------------------------------------
+
+---------------------------------------------------------------------
+-- ToDo item:  6.10.10 BRE Modifications
+---------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default false;
+
+---------------------------------------------------------------------
+-- End of ToDo item:  6.10.10 BRE Modifications
+---------------------------------------------------------------------
