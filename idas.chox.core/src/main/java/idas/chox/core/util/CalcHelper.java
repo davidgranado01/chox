@@ -1,12 +1,12 @@
-package idas.chox.service.bre.util;
+package idas.chox.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CalcHelper {
 

@@ -9,7 +9,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
-import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.core.util.CalcHelper;
 import java.math.BigDecimal;
 
 public class HasCorrectDiscountForNonDA implements IBusinessRule {

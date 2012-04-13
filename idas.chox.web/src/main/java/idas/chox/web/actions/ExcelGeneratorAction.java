@@ -3,6 +3,7 @@ package idas.chox.web.actions;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.Invoice;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -215,7 +216,21 @@ public class ExcelGeneratorAction extends BaseAction {
             excelClaim.setClaim(claim);
 
             if (claim.getInvoice() != null) {
-                excelInvoice.setInvoice(claim.getInvoice());
+                Invoice inv = claim.getInvoice();
+                excelInvoice.setInvoice(inv);
+                if (getIsCHO()) {
+                    excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
+                    excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
+                } else {
+                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() && inv.getHirePenaltyPercentageApplied() != null)
+                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [").concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
+                    else
+                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
+                    if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
+                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
+                    else
+                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
+                }
                 excelInvoice.setChoReference(claim.getChoReference());
                 excelInvoice.setClaimStatus(claim.getStatus());
                 if (claim.getThirdParty() != null) {

@@ -1,5 +1,6 @@
 package idas.chox.service.bre.util;
 
+import idas.chox.core.util.CalcHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;

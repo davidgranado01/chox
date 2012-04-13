@@ -1,13 +1,15 @@
 package idas.chox.core.model;
 
-import idas.chox.core.util.DateHelper;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.util.CalcHelper;
+import idas.chox.core.util.DateHelper;
 
 public class Invoice extends Entity implements Serializable {
 
@@ -49,19 +51,23 @@ public class Invoice extends Entity implements Serializable {
      */
     private BigDecimal engineerFeeVat;
     /**
-     * This attribute maps to the column engineer_fee_gross in the invoice table.
+     * This attribute maps to the column engineer_fee_gross in the invoice
+     * table.
      */
     private BigDecimal engineerFeeGross;
     /**
-     * This attribute maps to the column storage_recovery_net in the invoice table.
+     * This attribute maps to the column storage_recovery_net in the invoice
+     * table.
      */
     private BigDecimal storageRecoveryNet;
     /**
-     * This attribute maps to the column storage_recovery_vat in the invoice table.
+     * This attribute maps to the column storage_recovery_vat in the invoice
+     * table.
      */
     private BigDecimal storageRecoveryVat;
     /**
-     * This attribute maps to the column storage_recovery_gross in the invoice table.
+     * This attribute maps to the column storage_recovery_gross in the invoice
+     * table.
      */
     private BigDecimal storageRecoveryGross;
     /**
@@ -77,25 +83,27 @@ public class Invoice extends Entity implements Serializable {
      */
     private BigDecimal totalGross;
     /**
-     * This attribute maps to the column claims_handling_invoice_amount in the invoice table.
+     * This attribute maps to the column claims_handling_invoice_amount in the
+     * invoice table.
      */
     private BigDecimal claimsHandlingInvoiceAmount;
     /**
-     * This attribute maps to the column deduction_for_claims_handling_fee in the invoice table.
+     * This attribute maps to the column deduction_for_claims_handling_fee in
+     * the invoice table.
      */
     private BigDecimal deductionForClaimsHandlingFee;
     /**
      * This attribute maps to the column discount in the invoice table.
      */
     private BigDecimal discount;
-    
     private BigDecimal insurerDiscount;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
     private BigDecimal fullTotalToPay;
     /**
-     * This attribute maps to the column handling_invoice_no in the invoice table.
+     * This attribute maps to the column handling_invoice_no in the invoice
+     * table.
      */
     private String handlingInvoiceNo;
     /**
@@ -119,11 +127,13 @@ public class Invoice extends Entity implements Serializable {
      */
     private Integer automaticQty;
     /**
-     * This attribute maps to the column additional_driver_fee in the invoice table.
+     * This attribute maps to the column additional_driver_fee in the invoice
+     * table.
      */
     private BigDecimal additionalDriverFee;
     /**
-     * This attribute maps to the column additional_driver_qty in the invoice table.
+     * This attribute maps to the column additional_driver_qty in the invoice
+     * table.
      */
     private Integer additionalDriverQty;
     /**
@@ -159,11 +169,13 @@ public class Invoice extends Entity implements Serializable {
      */
     private Integer towBarsQty;
     /**
-     * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
+     * This attribute maps to the column non_standard_insurance_premium_fee in
+     * the invoice table.
      */
     private BigDecimal nonStandardInsurancePremiumFee;
     /**
-     * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
+     * This attribute maps to the column non_standard_insurance_premium_qty in
+     * the invoice table.
      */
     private Integer nonStandardInsurancePremiumQty;
     private Boolean coverNoteRequired;
@@ -294,7 +306,7 @@ public class Invoice extends Entity implements Serializable {
     public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
         this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
     }
-    
+
     public Boolean isInterimPaymentReceivedFullAndFinal() {
         return interimPaymentReceivedFullAndFinal == null ? Boolean.FALSE : interimPaymentReceivedFullAndFinal;
     }
@@ -1392,7 +1404,6 @@ public class Invoice extends Entity implements Serializable {
         }
         return interimPaymentMade.compareTo(interimPaymentReceived) > 0;
     }
-	
 
     public BigDecimal getTotalPenaltyCharge() {
         return totalPenaltyCharge;
@@ -1402,19 +1413,65 @@ public class Invoice extends Entity implements Serializable {
         this.totalPenaltyCharge = totalPenaltyCharge;
     }
 
-	public BigDecimal getInterimPaymentReceived() {
-		return interimPaymentReceived;
-	}
+    public BigDecimal getInterimPaymentReceived() {
+        return interimPaymentReceived;
+    }
 
-	public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
-		this.interimPaymentReceived = interimPaymentReceived;
-	}
+    public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
+        this.interimPaymentReceived = interimPaymentReceived;
+    }
 
-	public BigDecimal getFinalPayment() {
-		return finalPayment;
-	}
+    public BigDecimal getFinalPayment() {
+        return finalPayment;
+    }
 
-	public void setFinalPayment(BigDecimal finalPayment) {
-		this.finalPayment = finalPayment;
-	}
+    public void setFinalPayment(BigDecimal finalPayment) {
+        this.finalPayment = finalPayment;
+    }
+
+    public String getRepairPenaltyPercentageApplied() {
+        if (getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
+            for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentage()) {
+                if (getRepairPenaltyPercentage().equals(repairPenaltyPercentageValue.getPercentage())) {
+                    /*
+                     * Calculate the appliedRepairPenaltyPercentage using the
+                     * same vat rate used originaly to calculate
+                     * RepairPenaltyPercentageCharge formula
+                     * appliedRepairPenaltyPercentage = (RepairPenaltyCharge * 100)/(RepairNet * (1 + vat_rate_used))
+                     */
+                    BigDecimal appliedRepairPenaltyPercentage = getRepairPenaltyCharge().multiply(BigDecimal.valueOf(100))
+                            .divide((getRepairNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getRepairPenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+//                    BigDecimal appliedRepairPenaltyPercentage = (invoice.getRepairPenaltyCharge().multiply(new BigDecimal(100))).divide(invoice.getRepairGross(), 2, RoundingMode.HALF_UP);
+                    if (appliedRepairPenaltyPercentage.compareTo(repairPenaltyPercentageValue.getPercentageValue()) != 0) {
+                        LOG.debug("actualRepairPenaltyPercentage : {}, appliedRepairPenaltyPercentage : {}", getRepairPenaltyPercentage(), appliedRepairPenaltyPercentage);
+                        return appliedRepairPenaltyPercentage.toString().concat("%");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getHirePenaltyPercentageApplied() {
+        if (getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
+            for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentage()) {
+                if (getHirePenaltyPercentage().equals(hirePenaltyPercentageValue.getPercentage())) {
+                    /*
+                     * Calculate the appliedHirePenaltyPercentage using the same
+                     * vat rate used originaly to calculate
+                     * HirePenaltyPercentageCharge formula
+                     * appliedHirePenaltyPercentage = (HirePenaltyCharge * 100)/(hireNet * (1 + vat_rate_used))
+                     */
+                    BigDecimal appliedHirePenaltyPercentage = getHirePenaltyCharge().multiply(BigDecimal.valueOf(100))
+                            .divide((getHireNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getHirePenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+//                    BigDecimal appliedHirePenaltyPercentage = (invoice.getHirePenaltyCharge().multiply(new BigDecimal(100))).divide(invoice.getHireGross(), 2, RoundingMode.HALF_UP);
+                    if (appliedHirePenaltyPercentage.compareTo(hirePenaltyPercentageValue.getPercentageValue()) != 0) {
+                        LOG.debug("actualHirePenaltyPercentage : {}, appliedHirePenaltyPercentage : {}", getHirePenaltyPercentage(), appliedHirePenaltyPercentage);
+                        return appliedHirePenaltyPercentage.toString().concat("%");
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
