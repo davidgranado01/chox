@@ -42,7 +42,7 @@ public class HireVatLimitCheck implements IBusinessRule {
                 expected = expected.add(claim.getBreBand().getHireVatTolerance());
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {
                 narrative = "";
@@ -54,7 +54,7 @@ public class HireVatLimitCheck implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

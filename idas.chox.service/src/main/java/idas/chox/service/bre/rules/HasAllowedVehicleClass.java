@@ -70,7 +70,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     }
                     LOG.debug("Comparing vehicleHireClassPrice={} to vehicleClassPrice={}", vehicleHireClassPrice, customerVehicleClassPrice);
                     boolean success = vehicleHireClassPrice.compareTo(customerVehicleClassPrice) <= 0;
-                    res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                    res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                     if (success) {
                         LOG.debug("Rule passed: Vehicle class allocated for hire is a like for like match on the customer's vehicle class.");
                         narrative = "";
@@ -82,18 +82,18 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 } else {
                     narrative = "The calculated daily rate charged is less than or equal to the allowed daily rate based upon the customers vehicle class.";
                     LOG.debug("Rule skipped: {}", narrative);
-                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                    res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 }
             } else {
                 narrative = "Customer vehicle class is not specified.";
                 LOG.debug("Rule skipped: {}", narrative);
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
             }
 
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

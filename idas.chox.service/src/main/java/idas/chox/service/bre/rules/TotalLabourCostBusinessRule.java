@@ -55,12 +55,12 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
                 LOG.debug("TotalLabourCostBusinessRule passed.");
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
             LOG.debug("TotalLabourCostBusinessRule skipped.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

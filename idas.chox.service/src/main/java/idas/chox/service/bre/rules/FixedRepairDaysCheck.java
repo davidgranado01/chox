@@ -49,12 +49,12 @@ public class FixedRepairDaysCheck implements IBusinessRule {
                         + nameOfRepairer + "' repairs (" + noDaysAllowed + " days)";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
         LOG.debug(" Auto restore One Day Repair Check  is End");

@@ -56,7 +56,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
         claim.getBreBand().setHasCorrectRepairGrossCalculation(false);
         RuleEvaluation rv = new HasCorrectRepairGrossCalculation().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -80,7 +80,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
 
         RuleEvaluation rv = new HasCorrectRepairGrossCalculation().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -98,7 +98,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
 
         RuleEvaluation rv = new HasCorrectRepairGrossCalculation().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair Gross calculation is incorrect."));
 
     }

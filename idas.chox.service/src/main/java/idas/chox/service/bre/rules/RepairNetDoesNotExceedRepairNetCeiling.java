@@ -29,7 +29,7 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
             BigDecimal repairNetCeiling = claim.getBreBand().getRepairNetCeiling();
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (!success) {
                 narrative = String.format(narrativeTemplate,
@@ -40,7 +40,7 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

@@ -68,7 +68,7 @@ public class Rule017ClaimHasZeroDiscountForDATest extends TestCase {
         claim.getBreBand().setClaimHasZeroDiscountForDA(false);
         RuleEvaluation rv = new ClaimHasZeroDiscountForDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -90,7 +90,7 @@ public class Rule017ClaimHasZeroDiscountForDATest extends TestCase {
 
         RuleEvaluation rv = new ClaimHasZeroDiscountForDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule does not apply to CHOs not in the DA scheme"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -108,7 +108,7 @@ public class Rule017ClaimHasZeroDiscountForDATest extends TestCase {
 
         RuleEvaluation rv = new ClaimHasZeroDiscountForDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -124,7 +124,7 @@ public class Rule017ClaimHasZeroDiscountForDATest extends TestCase {
 
         RuleEvaluation rv = new ClaimHasZeroDiscountForDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("CHO is on DA scheme. Discount should be 0."));
 
     }

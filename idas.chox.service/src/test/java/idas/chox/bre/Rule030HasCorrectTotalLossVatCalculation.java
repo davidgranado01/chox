@@ -63,7 +63,7 @@ public class Rule030HasCorrectTotalLossVatCalculation extends BaseTest {
         claim.getBreBand().setHasCorrectTotalLossVatCalculation(false);
         HasCorrectTotalLossVatCalculation rule = new HasCorrectTotalLossVatCalculation();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getIsVisibleToCHO());
 
@@ -80,7 +80,7 @@ public class Rule030HasCorrectTotalLossVatCalculation extends BaseTest {
 
         HasCorrectTotalLossVatCalculation rule = new HasCorrectTotalLossVatCalculation();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class Rule030HasCorrectTotalLossVatCalculation extends BaseTest {
 
         HasCorrectTotalLossVatCalculation rule = new HasCorrectTotalLossVatCalculation();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Loss Fee VAT calculation is incorrect."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));

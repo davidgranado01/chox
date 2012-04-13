@@ -5,22 +5,28 @@ package idas.chox.core.model;
  * @author John
  */
 public enum ClaimType {
-    GTA                                         ("GTA"),
-    GTA_ORIGINAL_INVOICE                        ("GTA (Orig. Invoice)"),
-    GTA_SUPPLEMENTARY_INVOICE                   ("GTA (Supp. Invoice)"),
-    TPI                                         ("Third Party Intervention (TPI)"),
-    INSURER_VS_INSURER                          ("Insurer vs. Insurer"),
-    INSURER_VS_INSURER_ORIGINAL_INVOICE         ("Insurer vs. Insurer (Orig. Invoice)"),
-    INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE    ("Insurer vs. Insurer (Supp. Invoice)"),
-    SUBSCRIBER                                  ("Subscriber"),
-    SUBSCRIBER_ORIGINAL_INVOICE                 ("Subscriber (Orig. Invoice)"),
-    SUBSCRIBER_SUPPLEMENTARY_INVOICE            ("Subscriber (Supp. Invoice)"),
-    INSURER_UPLOAD                              ("Insurer Manual Invoice");
+    GTA                                         (0, "GTA"),
+    GTA_ORIGINAL_INVOICE                        (1, "GTA (Orig. Invoice)"),
+    GTA_SUPPLEMENTARY_INVOICE                   (2, "GTA (Supp. Invoice)"),
+    TPI                                         (3, "Third Party Intervention (TPI)"),
+    INSURER_VS_INSURER                          (4, "Insurer vs. Insurer"),
+    INSURER_VS_INSURER_ORIGINAL_INVOICE         (5, "Insurer vs. Insurer (Orig. Invoice)"),
+    INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE    (6, "Insurer vs. Insurer (Supp. Invoice)"),
+    SUBSCRIBER                                  (7, "Subscriber"),
+    SUBSCRIBER_ORIGINAL_INVOICE                 (8, "Subscriber (Orig. Invoice)"),
+    SUBSCRIBER_SUPPLEMENTARY_INVOICE            (9, "Subscriber (Supp. Invoice)"),
+    INSURER_UPLOAD                              (10, "Insurer Manual Invoice");
 
-    private String description;
+    private final String description;
+    private final int claimTypeValue;
 
-    ClaimType(String description) {
+    ClaimType(int claimTypeValue, String description) {
+        this.claimTypeValue = claimTypeValue;
         this.description = description;
+    }
+
+    public int getClaimTypeValue() {
+        return claimTypeValue;
     }
     
     @Override
@@ -88,9 +94,9 @@ public enum ClaimType {
     }
     
     public static String getSupplementaryInvoiceTypeOrdinals() {
-        return "(" + ClaimType.GTA_SUPPLEMENTARY_INVOICE.ordinal() + ","
-                   + ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.ordinal() + ","
-                   + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.ordinal() + ")";
+        return "(" + ClaimType.GTA_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
     }
     
     public static ClaimType[] getOriginalSupplementaryInvoiceTypes() {

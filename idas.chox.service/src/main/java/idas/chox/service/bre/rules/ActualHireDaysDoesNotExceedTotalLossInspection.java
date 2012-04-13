@@ -30,7 +30,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                 if (success) {
                     narrative = "";
                 }else{
@@ -39,14 +39,14 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 }
 
             } else {
-                res.setResult(RuleEvaluationResult.RuleSkipped);
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 narrative = "Rule only applies when the clam is a total loss";
             }
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

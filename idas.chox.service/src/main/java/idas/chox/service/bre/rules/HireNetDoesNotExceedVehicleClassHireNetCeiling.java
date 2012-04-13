@@ -31,7 +31,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
             BigDecimal hireNetCeiling = claim.getBreBand().getMaxHireNetCeiling();
             boolean success = hireNet.compareTo(hireNetCeiling) <= 0;
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (!success) {
 
@@ -49,7 +49,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

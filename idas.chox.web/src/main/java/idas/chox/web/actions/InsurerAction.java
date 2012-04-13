@@ -83,7 +83,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     @Override
-    public void prepare() throws Exception {
+    public void prepare() {
         try {
             model = new Insurer();
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
@@ -159,6 +159,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
                 model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
             }
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
+            updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
             updateModelInSession(Arrays.asList(model));
         } catch (Exception ex) {

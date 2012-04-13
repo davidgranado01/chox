@@ -82,14 +82,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public void prepare() throws Exception {
 
         if (getModelIdFromSession(Claim.class) != null) {
-           claim = claimService.getClaim(getModelIdFromSession(Claim.class));
+            claim = claimService.getClaim(getModelIdFromSession(Claim.class));
             addModelToSession(Arrays.asList(claim));
         } else if (selectedClaimIdList == null || selectedClaimIdList.isEmpty()) {
             LOG.error("No claimId in session");
         }
 
         // Make sure we have a BRE Band (for non-batch requests)
-        if ((selectedClaimIdList == null ||  selectedClaimIdList.isEmpty())&& claim != null && claim.getBreBand() == null) {
+        if ((selectedClaimIdList == null || selectedClaimIdList.isEmpty()) && claim != null && claim.getBreBand() == null) {
             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
         }
@@ -97,7 +97,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         // Skip version checking if we are processing multiple claims
 //        if (selectedClaimIdList == null || selectedClaimIdList.isEmpty())
 //            checkVersion();
-        
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
@@ -123,6 +122,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                         throw new AccessDeniedException("Attempt to access a claim that you do not own.");
                     }
                     activity.process(claim);
+//                    updateModelInSession(Arrays.asList(claim));
                 }
             } catch(AccessDeniedException ex) {
                 throw(ex);
@@ -148,7 +148,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 checkVersion(Arrays.asList(claim));
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
-                
                 setMessage(activity.getMessage());
             } catch(AccessDeniedException ex) {
                 throw(ex);
@@ -207,7 +206,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         
         return null;
     }
-    
+
     public void setSelectedClaimIds(String ids) {
         String[] list = ids.split(",");
         selectedClaimIdList = new ArrayList<Integer>();

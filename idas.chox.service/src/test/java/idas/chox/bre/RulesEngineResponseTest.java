@@ -37,7 +37,7 @@ public class RulesEngineResponseTest extends TestCase {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(new EngineRuleMock(RuleId.toString(), claimFailedStatus));
-        res.setResult(RuleEvaluationResult.RulePassed);
+        res.setResult(RuleEvaluationResult.RULE_PASSED);
 
         return res;
         
@@ -59,7 +59,7 @@ public class RulesEngineResponseTest extends TestCase {
         RulesEngineResponse response = setDefaultRulesEngineResponse();
 
         RuleEvaluation rev = response.getResults().get(5);
-        rev.setResult(RuleEvaluationResult.RuleFailed);
+        rev.setResult(RuleEvaluationResult.RULE_FAILED);
         rev.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
         rev.setIsTPIClaim(Boolean.TRUE);
 
@@ -75,12 +75,12 @@ public class RulesEngineResponseTest extends TestCase {
         RulesEngineResponse response = setDefaultRulesEngineResponse();
 
         RuleEvaluation rev_5 = response.getResults().get(5);
-        rev_5.setResult(RuleEvaluationResult.RuleFailed);
+        rev_5.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_5.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
         rev_5.setIsTPIClaim(Boolean.TRUE);
 
         RuleEvaluation rev_6 = response.getResults().get(6);
-        rev_6.setResult(RuleEvaluationResult.RuleFailed);
+        rev_6.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_6.setRelatedRule(new EngineRuleMock("6", ClaimStatus.INVOICE_ESCALATED));
         rev_6.setIsTPIClaim(Boolean.TRUE);
         
@@ -94,17 +94,17 @@ public class RulesEngineResponseTest extends TestCase {
         RulesEngineResponse response = setDefaultRulesEngineResponse();
 
         RuleEvaluation rev_5 = response.getResults().get(5);
-        rev_5.setResult(RuleEvaluationResult.RuleFailed);
+        rev_5.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_5.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
         rev_5.setIsTPIClaim(Boolean.TRUE);
 
         RuleEvaluation rev_6 = response.getResults().get(6);
-        rev_6.setResult(RuleEvaluationResult.RuleFailed);
+        rev_6.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_6.setRelatedRule(new EngineRuleMock("6", ClaimStatus.INVOICE_ESCALATED));
         rev_6.setIsTPIClaim(Boolean.TRUE);
 
         RuleEvaluation rev_7 = response.getResults().get(7);
-        rev_7.setResult(RuleEvaluationResult.RuleFailed);
+        rev_7.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_7.setRelatedRule(new EngineRuleMock("7", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         rev_7.setIsTPIClaim(Boolean.TRUE);
         

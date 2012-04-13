@@ -145,7 +145,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         for (int iCount = 0; iCount < results.size(); iCount++) {
 
             RuleEvaluation rv = results.get(iCount);
-            if (rv.getIsVisibleToCHO() && rv.getResult() == RuleEvaluationResult.RuleFailed) {
+            if (rv.getIsVisibleToCHO() && rv.getResult() == RuleEvaluationResult.RULE_FAILED) {
                 claimResult.getMessage().add(rv.toString());
             }
 

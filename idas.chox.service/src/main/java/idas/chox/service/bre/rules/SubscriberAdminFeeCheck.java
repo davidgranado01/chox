@@ -43,22 +43,22 @@ public class SubscriberAdminFeeCheck implements IBusinessRule {
                     success = false;
                     narrative = "The CHO is charging an Admin Fee however the Subscriber rejection was accepted and therefore this charge should not be made.";
                 }
-                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else if (claim.getInvoice().getAdminFee() != null && !managingRepair && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingSubscriber()) > 0) {
                     success = false;
                     narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is £" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
-                    res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                    res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else if (claim.getInvoice().getAdminFee() != null && managingRepair && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingSubscriberManagingRepair()) > 0) {
                     success = false;
                     narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is £" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
-                    res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                    res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else {
                 narrative = "";
-                res.setResult(RuleEvaluationResult.RulePassed);                
+                res.setResult(RuleEvaluationResult.RULE_PASSED);                
             }
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 

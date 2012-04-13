@@ -120,8 +120,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             handleException(ex);
             return ERROR;
         }
-
-        
     }
     
     @Override

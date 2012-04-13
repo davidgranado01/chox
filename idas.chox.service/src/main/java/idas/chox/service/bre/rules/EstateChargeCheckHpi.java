@@ -35,10 +35,10 @@ public class EstateChargeCheckHpi implements IBusinessRule {
                 narrative = "The CHO is charging an estate fee for hire and the HPI lookup did not identify the hire vehicle to be an estate, please review need.";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

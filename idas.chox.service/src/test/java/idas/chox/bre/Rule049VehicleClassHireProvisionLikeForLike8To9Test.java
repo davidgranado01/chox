@@ -60,7 +60,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -80,7 +80,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle class is not specified."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -100,7 +100,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         claim.getVehicleHire().setHireStart(null);
         VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer hire start date not available."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -123,7 +123,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         VehicleClassHireProvisionLikeForLike8To9 rule = new VehicleClassHireProvisionLikeForLike8To9();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle not prestige."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -147,7 +147,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle registration date not available."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -177,7 +177,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle registration date not available."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -206,7 +206,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -233,7 +233,7 @@ public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTes
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO's customer's vehicle is 8 years old and vehicle class P1, the replacement vehicle class of P1 is not acceptable as the replacement vehicle class should be two classes less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());

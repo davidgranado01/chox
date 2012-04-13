@@ -52,7 +52,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(false);
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -75,7 +75,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the clam is a total loss"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
@@ -99,7 +99,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
         
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -124,7 +124,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
         // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -149,7 +149,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
         // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
         
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (10 days) exceeds the allowable days threshold (9 days) for total loss hires."));
 
     }

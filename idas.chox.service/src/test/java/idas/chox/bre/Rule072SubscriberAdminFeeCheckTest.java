@@ -57,7 +57,7 @@ public class Rule072SubscriberAdminFeeCheckTest extends BaseTest {
         claim.getBreBand().setSubscriberAdminFeeCheck(false);
         SubscriberAdminFeeCheck rule = new SubscriberAdminFeeCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -70,7 +70,7 @@ public class Rule072SubscriberAdminFeeCheckTest extends BaseTest {
         claim.getBreBand().setSubscriberAdminFeeCheck(true);
         SubscriberAdminFeeCheck rule = new SubscriberAdminFeeCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -96,7 +96,7 @@ public class Rule072SubscriberAdminFeeCheckTest extends BaseTest {
         SubscriberAdminFeeCheck rule = new SubscriberAdminFeeCheck();
         rule.setClaimService(claimService);
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -122,7 +122,7 @@ public class Rule072SubscriberAdminFeeCheckTest extends BaseTest {
         SubscriberAdminFeeCheck rule = new SubscriberAdminFeeCheck();
         rule.setClaimService(claimService);
         RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an Admin Fee however the Subscriber rejection was accepted and therefore this charge should not be made."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());

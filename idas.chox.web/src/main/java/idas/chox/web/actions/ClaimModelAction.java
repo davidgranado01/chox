@@ -6,7 +6,6 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     @Override
     public void prepare() throws Exception {
         LOG.debug("Preparing...");
-
         if (claimId <= 0) {
             if (getModelIdFromSession(Claim.class) != null) {
                 claim = claimService.getClaim(getModelIdFromSession(Claim.class));
@@ -63,7 +61,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         if (claim == null) {
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
-
         model = loadModel();
         addModelToSession(Arrays.asList(claim,model));
     }
@@ -77,7 +74,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
                 || (getUserOrganisationType() == 2 && getUserOrganisationId() != claim.getInsurer().getId().intValue())) {
             throw new AccessDeniedException("Illegal claim access detected.");
         }
-        //Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 

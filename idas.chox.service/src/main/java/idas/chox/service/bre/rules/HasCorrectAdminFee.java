@@ -60,15 +60,15 @@ public class HasCorrectAdminFee implements IBusinessRule {
                 narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee is £" + adminFee + ".";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
           } catch (Exception ex) {
               LOG.error("Exception thrown: {}", ex.getMessage());
               narrative="An error occurred applying this rule and the rule was skipped.";
-              res.setResult(RuleEvaluationResult.RuleSkipped);
+              res.setResult(RuleEvaluationResult.RULE_SKIPPED);
           }
         } else {
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

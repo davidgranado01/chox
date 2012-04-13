@@ -8,754 +8,564 @@ import org.slf4j.LoggerFactory;
 
 public class InvoiceOriginal extends Entity implements Serializable {
 
-    private Date dateInvoiced_original;
+    private Date dateInvoicedOriginal;
+    private BigDecimal hireVatOriginal;
+    private BigDecimal hireGrossOriginal;
+    private BigDecimal repairNetOriginal;
+    private BigDecimal repairVatOriginal;
+    private BigDecimal repairGrossOriginal;
+    private BigDecimal engineerFeeNetOriginal;
+    private BigDecimal engineerFeeVatOriginal;
+    private BigDecimal engineerFeeGrossOriginal;
+    private BigDecimal storageRecoveryNetOriginal;
+    private BigDecimal storageRecoveryVatOriginal;
+    private BigDecimal storageRecoveryGrossOriginal;
+    private BigDecimal totalNetOriginal;
+    private BigDecimal totalVatOriginal;
+    private BigDecimal totalGrossOriginal;
+    private BigDecimal claimsHandlingInvoiceAmountOriginal;
+    private BigDecimal deductionForClaimsHandlingFeeOriginal;
+    private BigDecimal discountOriginal;
+    private BigDecimal insurerDiscountOriginal;
+    private BigDecimal fullTotalToPayOriginal;
+    private BigDecimal miscellaneousFeeOriginal;
+    private Integer miscellaneousQtyOriginal;
+    private BigDecimal automaticFeeOriginal;
+    private Integer automaticQtyOriginal;
+    private BigDecimal additionalDriverFeeOriginal;
+    private Integer additionalDriverQtyOriginal;
+    private BigDecimal satNavFeeOriginal;
+    private Integer satNavQtyOriginal;
+    private BigDecimal estateFeeOriginal;
+    private Integer estateQtyOriginal;
+    private BigDecimal babySeatFeeOriginal;
+    private Integer babySeatQtyOriginal;
+    private BigDecimal towBarsFeeOriginal;
+    private Integer towBarsQtyOriginal;
+    private BigDecimal nonStandardInsurancePremiumFeeOriginal;
+    private Integer nonStandardInsurancePremiumQtyOriginal;
+    private BigDecimal adminFeeOriginal;
+    private Integer adminQtyOriginal;
+    private BigDecimal roofRackFeeOriginal;
+    private Integer roofRackQtyOriginal;
+    private BigDecimal dualControlFeeOriginal;
+    private Integer dualControlQtyOriginal;
+    private BigDecimal deliveryCollectionFeeOriginal;
+    private Integer deliveryCollectionQtyOriginal;
+    private BigDecimal hireRateChargedPerDayOriginal;
+    private BigDecimal excessAmountCollectedOriginal;
+    private BigDecimal vatAmountCollectedOriginal;
+    private BigDecimal hirePenaltyChargeOriginal;
+    private String hirePenaltyPercentageOriginal;
+    private Date hirePenaltyChargeAppliedDateOriginal;
+    private BigDecimal repairPenaltyChargeOriginal;
+    private String repairPenaltyPercentageOriginal;
+    private Date repairPenaltyChargeAppliedDateOriginal;
+    private Integer penaltyAlertQtyOriginal;
+    private BigDecimal totalPenaltyChargeOriginal;
+    private BigDecimal originalFullTotalToPayOriginal;
+    private BigDecimal totalToPayOriginal;
+    private BigDecimal originalTotalToPayOriginal;
+    private BigDecimal totalLossFeeNetOriginal;
+    private BigDecimal totalLossFeeVatOriginal;
+    private BigDecimal totalLossFeeGrossOriginal;
+    private BigDecimal interimPaymentOriginal;
 
-    public Date getDateInvoiced_original() {
-        return dateInvoiced_original;
+    public Date getDateInvoicedOriginal() {
+        return dateInvoicedOriginal;
     }
 
-    public void setDateInvoiced_original(Date dateInvoiced) {
-        this.dateInvoiced_original = dateInvoiced;
+    public void setDateInvoicedOriginal(Date dateInvoiced) {
+        this.dateInvoicedOriginal = dateInvoiced;
     }
-    private BigDecimal hireNet_original;
+    private BigDecimal hireNetOriginal;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceOriginal.class);
 
-    public BigDecimal getAdditionalDriverFee_original() {
-        return additionalDriverFee_original;
+    public BigDecimal getAdditionalDriverFeeOriginal() {
+        return additionalDriverFeeOriginal;
     }
 
-    public void setAdditionalDriverFee_original(BigDecimal additionalDriverFee_original) {
-        
-            this.additionalDriverFee_original = additionalDriverFee_original;
-        
+    public void setAdditionalDriverFeeOriginal(BigDecimal additionalDriverFeeOriginal) {
+            this.additionalDriverFeeOriginal = additionalDriverFeeOriginal;
     }
 
-    public Integer getAdditionalDriverQty_original() {
-        return additionalDriverQty_original;
+    public Integer getAdditionalDriverQtyOriginal() {
+        return additionalDriverQtyOriginal;
     }
 
-    public void setAdditionalDriverQty_original(Integer additionalDriverQty_original) {
-        
-            this.additionalDriverQty_original = additionalDriverQty_original;
-        
-
+    public void setAdditionalDriverQtyOriginal(Integer additionalDriverQtyOriginal) {
+            this.additionalDriverQtyOriginal = additionalDriverQtyOriginal;
     }
 
-    public BigDecimal getAdminFee_original() {
-        return adminFee_original;
+    public BigDecimal getAdminFeeOriginal() {
+        return adminFeeOriginal;
     }
 
-    public void setAdminFee_original(BigDecimal adminFee_original) {
-        
-            this.adminFee_original = adminFee_original;
-       
-
+    public void setAdminFeeOriginal(BigDecimal adminFeeOriginal) {
+            this.adminFeeOriginal = adminFeeOriginal;
     }
 
-    public Integer getAdminQty_original() {
-        return adminQty_original;
+    public Integer getAdminQtyOriginal() {
+        return adminQtyOriginal;
     }
 
-    public void setAdminQty_original(Integer adminQty_original) {
-       
-            this.adminQty_original = adminQty_original;
-       
-
+    public void setAdminQtyOriginal(Integer adminQtyOriginal) {
+            this.adminQtyOriginal = adminQtyOriginal;
     }
 
-    public BigDecimal getAutomaticFee_original() {
-        return automaticFee_original;
+    public BigDecimal getAutomaticFeeOriginal() {
+        return automaticFeeOriginal;
     }
 
-    public void setAutomaticFee_original(BigDecimal automaticFee_original) {
-        
-            this.automaticFee_original = automaticFee_original;
-       
-
+    public void setAutomaticFeeOriginal(BigDecimal automaticFeeOriginal) {
+            this.automaticFeeOriginal = automaticFeeOriginal;
     }
 
-    public Integer getAutomaticQty_original() {
-        return automaticQty_original;
+    public Integer getAutomaticQtyOriginal() {
+        return automaticQtyOriginal;
     }
 
-    public void setAutomaticQty_original(Integer automaticQty_original) {
-       
-            this.automaticQty_original = automaticQty_original;
-        
-
+    public void setAutomaticQtyOriginal(Integer automaticQtyOriginal) {
+            this.automaticQtyOriginal = automaticQtyOriginal;
     }
 
-    public BigDecimal getBabySeatFee_original() {
-        return babySeatFee_original;
+    public BigDecimal getBabySeatFeeOriginal() {
+        return babySeatFeeOriginal;
     }
 
-    public void setBabySeatFee_original(BigDecimal babySeatFee_original) {
-       
-            this.babySeatFee_original = babySeatFee_original;
-       
-
+    public void setBabySeatFeeOriginal(BigDecimal babySeatFeeOriginal) {
+            this.babySeatFeeOriginal = babySeatFeeOriginal;
     }
 
-    public Integer getBabySeatQty_original() {
-        return babySeatQty_original;
+    public Integer getBabySeatQtyOriginal() {
+        return babySeatQtyOriginal;
     }
 
-    public void setBabySeatQty_original(Integer babySeatQty_original) {
-       
-            this.babySeatQty_original = babySeatQty_original;
-       
-
+    public void setBabySeatQtyOriginal(Integer babySeatQtyOriginal) {
+            this.babySeatQtyOriginal = babySeatQtyOriginal;
     }
 
-    public BigDecimal getMiscellaneousFee_original() {
-        return miscellaneousFee_original;
+    public BigDecimal getMiscellaneousFeeOriginal() {
+        return miscellaneousFeeOriginal;
     }
 
-    public void setMiscellaneousFee_original(BigDecimal MiscellaneousFee_original) {
-            this.miscellaneousFee_original = MiscellaneousFee_original;
-
+    public void setMiscellaneousFeeOriginal(BigDecimal miscellaneousFeeOriginal) {
+            this.miscellaneousFeeOriginal = miscellaneousFeeOriginal;
     }
 
-    public Integer getMiscellaneousQty_original() {
-        return miscellaneousQty_original;
+    public Integer getMiscellaneousQtyOriginal() {
+        return miscellaneousQtyOriginal;
     }
 
-    public void setMiscellaneousQty_original(Integer MiscellaneousQty_original) {
-            this.miscellaneousQty_original = MiscellaneousQty_original;
-
+    public void setMiscellaneousQtyOriginal(Integer miscellaneousQtyOriginal) {
+            this.miscellaneousQtyOriginal = miscellaneousQtyOriginal;
     }
 
-    public BigDecimal getClaimsHandlingInvoiceAmount_original() {
-        return claimsHandlingInvoiceAmount_original;
+    public BigDecimal getClaimsHandlingInvoiceAmountOriginal() {
+        return claimsHandlingInvoiceAmountOriginal;
     }
 
-    public void setClaimsHandlingInvoiceAmount_original(BigDecimal claimsHandlingInvoiceAmount_original) {
-            this.claimsHandlingInvoiceAmount_original = claimsHandlingInvoiceAmount_original;
-
+    public void setClaimsHandlingInvoiceAmountOriginal(BigDecimal claimsHandlingInvoiceAmountOriginal) {
+            this.claimsHandlingInvoiceAmountOriginal = claimsHandlingInvoiceAmountOriginal;
     }
 
-    public BigDecimal getDeductionForClaimsHandlingFee_original() {
-        return deductionForClaimsHandlingFee_original;
+    public BigDecimal getDeductionForClaimsHandlingFeeOriginal() {
+        return deductionForClaimsHandlingFeeOriginal;
     }
 
-    public void setDeductionForClaimsHandlingFee_original(BigDecimal deductionForClaimsHandlingFee_original) {
-            this.deductionForClaimsHandlingFee_original = deductionForClaimsHandlingFee_original;
-
+    public void setDeductionForClaimsHandlingFeeOriginal(BigDecimal deductionForClaimsHandlingFeeOriginal) {
+            this.deductionForClaimsHandlingFeeOriginal = deductionForClaimsHandlingFeeOriginal;
     }
 
-    public BigDecimal getDeliveryCollectionFee_original() {
-        return deliveryCollectionFee_original;
+    public BigDecimal getDeliveryCollectionFeeOriginal() {
+        return deliveryCollectionFeeOriginal;
     }
 
-    public void setDeliveryCollectionFee_original(BigDecimal deliveryCollectionFee_original) {
-            this.deliveryCollectionFee_original = deliveryCollectionFee_original;
-
+    public void setDeliveryCollectionFeeOriginal(BigDecimal deliveryCollectionFeeOriginal) {
+            this.deliveryCollectionFeeOriginal = deliveryCollectionFeeOriginal;
     }
 
-    public Integer getDeliveryCollectionQty_original() {
-        return deliveryCollectionQty_original;
+    public Integer getDeliveryCollectionQtyOriginal() {
+        return deliveryCollectionQtyOriginal;
     }
 
-    public void setDeliveryCollectionQty_original(Integer deliveryCollectionQty_original) {
-            this.deliveryCollectionQty_original = deliveryCollectionQty_original;
-
+    public void setDeliveryCollectionQtyOriginal(Integer deliveryCollectionQtyOriginal) {
+            this.deliveryCollectionQtyOriginal = deliveryCollectionQtyOriginal;
     }
 
-    public BigDecimal getInsurer_discount_original() {
-        return insurer_discount_original;
+    public BigDecimal getInsurerDiscountOriginal() {
+        return insurerDiscountOriginal;
     }
 
-    public void setInsurer_discount_original(BigDecimal insurer_discount_original) {
-        this.insurer_discount_original = insurer_discount_original;
+    public void setInsurerDiscountOriginal(BigDecimal insurerDiscountOriginal) {
+        this.insurerDiscountOriginal = insurerDiscountOriginal;
     }
 
-    public BigDecimal getDiscount_original() {
-        return discount_original;
+    public BigDecimal getDiscountOriginal() {
+        return discountOriginal;
     }
 
-    public void setDiscount_original(BigDecimal discount_original) {
-            this.discount_original = discount_original;
-
+    public void setDiscountOriginal(BigDecimal discountOriginal) {
+            this.discountOriginal = discountOriginal;
     }
 
-    public BigDecimal getDualControlFee_original() {
-        return dualControlFee_original;
+    public BigDecimal getDualControlFeeOriginal() {
+        return dualControlFeeOriginal;
     }
 
-    public void setDualControlFee_original(BigDecimal dualControlFee_original) {
-            this.dualControlFee_original = dualControlFee_original;
-
+    public void setDualControlFeeOriginal(BigDecimal dualControlFeeOriginal) {
+            this.dualControlFeeOriginal = dualControlFeeOriginal;
     }
 
-    public Integer getDualControlQty_original() {
-        return dualControlQty_original;
+    public Integer getDualControlQtyOriginal() {
+        return dualControlQtyOriginal;
     }
 
-    public void setDualControlQty_original(Integer dualControlQty_original) {
-            this.dualControlQty_original = dualControlQty_original;
-
+    public void setDualControlQtyOriginal(Integer dualControlQtyOriginal) {
+            this.dualControlQtyOriginal = dualControlQtyOriginal;
     }
 
-    public BigDecimal getEngineerFeeGross_original() {
-        return engineerFeeGross_original;
+    public BigDecimal getEngineerFeeGrossOriginal() {
+        return engineerFeeGrossOriginal;
     }
 
-    public void setEngineerFeeGross_original(BigDecimal engineerFeeGross_original) {
-            this.engineerFeeGross_original = engineerFeeGross_original;
-
+    public void setEngineerFeeGrossOriginal(BigDecimal engineerFeeGrossOriginal) {
+            this.engineerFeeGrossOriginal = engineerFeeGrossOriginal;
     }
 
-    public BigDecimal getEngineerFeeNet_original() {
-        return engineerFeeNet_original;
+    public BigDecimal getEngineerFeeNetOriginal() {
+        return engineerFeeNetOriginal;
     }
 
-    public void setEngineerFeeNet_original(BigDecimal engineerFeeNet_original) {
-            this.engineerFeeNet_original = engineerFeeNet_original;
-
+    public void setEngineerFeeNetOriginal(BigDecimal engineerFeeNetOriginal) {
+            this.engineerFeeNetOriginal = engineerFeeNetOriginal;
     }
 
-    public BigDecimal getEngineerFeeVat_original() {
-        return engineerFeeVat_original;
+    public BigDecimal getEngineerFeeVatOriginal() {
+        return engineerFeeVatOriginal;
     }
 
-    public void setEngineerFeeVat_original(BigDecimal engineerFeeVat_original) {
-            this.engineerFeeVat_original = engineerFeeVat_original;
-
+    public void setEngineerFeeVatOriginal(BigDecimal engineerFeeVatOriginal) {
+            this.engineerFeeVatOriginal = engineerFeeVatOriginal;
     }
 
-    public BigDecimal getEstateFee_original() {
-        return estateFee_original;
+    public BigDecimal getEstateFeeOriginal() {
+        return estateFeeOriginal;
     }
 
-    public void setEstateFee_original(BigDecimal estateFee_original) {
-            this.estateFee_original = estateFee_original;
-
+    public void setEstateFeeOriginal(BigDecimal estateFeeOriginal) {
+            this.estateFeeOriginal = estateFeeOriginal;
     }
 
-    public Integer getEstateQty_original() {
-        return estateQty_original;
+    public Integer getEstateQtyOriginal() {
+        return estateQtyOriginal;
     }
 
-    public void setEstateQty_original(Integer estateQty_original) {
-            this.estateQty_original = estateQty_original;
-
+    public void setEstateQtyOriginal(Integer estateQtyOriginal) {
+            this.estateQtyOriginal = estateQtyOriginal;
     }
 
-    public BigDecimal getExcessAmountCollected_original() {
-        return excessAmountCollected_original;
+    public BigDecimal getExcessAmountCollectedOriginal() {
+        return excessAmountCollectedOriginal;
     }
 
-    public void setExcessAmountCollected_original(BigDecimal excessAmountCollected_original) {
-            this.excessAmountCollected_original = excessAmountCollected_original;
-
+    public void setExcessAmountCollectedOriginal(BigDecimal excessAmountCollectedOriginal) {
+            this.excessAmountCollectedOriginal = excessAmountCollectedOriginal;
     }
 
-    public BigDecimal getFullTotalToPay_original() {
-        return fullTotalToPay_original;
+    public BigDecimal getFullTotalToPayOriginal() {
+        return fullTotalToPayOriginal;
     }
 
-    public void setFullTotalToPay_original(BigDecimal fullTotalToPay_original) {
-            this.fullTotalToPay_original = fullTotalToPay_original;
-
+    public void setFullTotalToPayOriginal(BigDecimal fullTotalToPayOriginal) {
+            this.fullTotalToPayOriginal = fullTotalToPayOriginal;
     }
 
-    public BigDecimal getHireGross_original() {
-        return hireGross_original;
+    public BigDecimal getHireGrossOriginal() {
+        return hireGrossOriginal;
     }
 
-    public void setHireGross_original(BigDecimal hireGross_original) {
-            this.hireGross_original = hireGross_original;
-
+    public void setHireGrossOriginal(BigDecimal hireGrossOriginal) {
+            this.hireGrossOriginal = hireGrossOriginal;
     }
 
-    public BigDecimal getHireNet_original() {
-        LOG.debug("getHireNet_original is being called");
-        return hireNet_original;
+    public BigDecimal getHireNetOriginal() {
+        return hireNetOriginal;
     }
 
-    public void setHireNet_original(BigDecimal hireNet_original) {
-        LOG.debug("setHireNet_original is being called");
-            this.hireNet_original = hireNet_original;
-        
-
+    public void setHireNetOriginal(BigDecimal hireNetOriginal) {
+            this.hireNetOriginal = hireNetOriginal;
     }
 
-    public Date getHirePenaltyChargeAppliedDate_original() {
-        return hirePenaltyChargeAppliedDate_original;
+    public Date getHirePenaltyChargeAppliedDateOriginal() {
+        return hirePenaltyChargeAppliedDateOriginal;
     }
-
     
-
-    public BigDecimal getHirePenaltyCharge_original() {
-        return hirePenaltyCharge_original;
-    }
-
-    public void setHirePenaltyCharge_original(BigDecimal hirePenaltyCharge_original) {
-            this.hirePenaltyCharge_original = hirePenaltyCharge_original;
-
+    public BigDecimal getHirePenaltyChargeOriginal() {
+        return hirePenaltyChargeOriginal;
     }
 
-    public String getHirePenaltyPercentage_original() {
-        return hirePenaltyPercentage_original;
+    public void setHirePenaltyChargeOriginal(BigDecimal hirePenaltyChargeOriginal) {
+            this.hirePenaltyChargeOriginal = hirePenaltyChargeOriginal;
     }
-
-    public void setHirePenaltyPercentage_original(String hirePenaltyPercentage_original) {
-            this.hirePenaltyPercentage_original = hirePenaltyPercentage_original;
 
+    public String getHirePenaltyPercentageOriginal() {
+        return hirePenaltyPercentageOriginal;
     }
 
-    public BigDecimal getHireRateChargedPerDay_original() {
-        return hireRateChargedPerDay_original;
+    public void setHirePenaltyPercentageOriginal(String hirePenaltyPercentageOriginal) {
+            this.hirePenaltyPercentageOriginal = hirePenaltyPercentageOriginal;
     }
 
-    public void setHireRateChargedPerDay_original(BigDecimal hireRateChargedPerDay_original) {
-            this.hireRateChargedPerDay_original = hireRateChargedPerDay_original;
-
+    public BigDecimal getHireRateChargedPerDayOriginal() {
+        return hireRateChargedPerDayOriginal;
     }
-
-    public BigDecimal getHireVat_original() {
 
-        return hireVat_original;
+    public void setHireRateChargedPerDayOriginal(BigDecimal hireRateChargedPerDayOriginal) {
+            this.hireRateChargedPerDayOriginal = hireRateChargedPerDayOriginal;
     }
 
-    public void setHireVat_original(BigDecimal hireVat_original) {
-            this.hireVat_original = hireVat_original;
-
-
+    public BigDecimal getHireVatOriginal() {
+        return hireVatOriginal;
     }
 
-    public BigDecimal getInterimPayment_original() {
-        return interimPayment_original;
+    public void setHireVatOriginal(BigDecimal hireVatOriginal) {
+            this.hireVatOriginal = hireVatOriginal;
     }
-
-    public void setInterimPayment_original(BigDecimal interimPayment_original) {
-            this.interimPayment_original = interimPayment_original;
 
+    public BigDecimal getInterimPaymentOriginal() {
+        return interimPaymentOriginal;
     }
 
-    public BigDecimal getNonStandardInsurancePremiumFee_original() {
-        return nonStandardInsurancePremiumFee_original;
+    public void setInterimPaymentOriginal(BigDecimal interimPaymentOriginal) {
+            this.interimPaymentOriginal = interimPaymentOriginal;
     }
 
-    public void setNonStandardInsurancePremiumFee_original(BigDecimal nonStandardInsurancePremiumFee_original) {
-            this.nonStandardInsurancePremiumFee_original = nonStandardInsurancePremiumFee_original;
-
+    public BigDecimal getNonStandardInsurancePremiumFeeOriginal() {
+        return nonStandardInsurancePremiumFeeOriginal;
     }
 
-    public Integer getNonStandardInsurancePremiumQty_original() {
-        return nonStandardInsurancePremiumQty_original;
+    public void setNonStandardInsurancePremiumFeeOriginal(BigDecimal nonStandardInsurancePremiumFeeOriginal) {
+            this.nonStandardInsurancePremiumFeeOriginal = nonStandardInsurancePremiumFeeOriginal;
     }
-
-    public void setNonStandardInsurancePremiumQty_original(Integer nonStandardInsurancePremiumQty_original) {
-            this.nonStandardInsurancePremiumQty_original = nonStandardInsurancePremiumQty_original;
 
+    public Integer getNonStandardInsurancePremiumQtyOriginal() {
+        return nonStandardInsurancePremiumQtyOriginal;
     }
 
-    public BigDecimal getOriginalFullTotalToPay_original() {
-        return originalFullTotalToPay_original;
+    public void setNonStandardInsurancePremiumQtyOriginal(Integer nonStandardInsurancePremiumQtyOriginal) {
+            this.nonStandardInsurancePremiumQtyOriginal = nonStandardInsurancePremiumQtyOriginal;
     }
 
-    public void setOriginalFullTotalToPay_original(BigDecimal originalFullTotalToPay_original) {
-            this.originalFullTotalToPay_original = originalFullTotalToPay_original;
-
+    public BigDecimal getOriginalFullTotalToPayOriginal() {
+        return originalFullTotalToPayOriginal;
     }
 
-    public BigDecimal getOriginalTotalToPay_original() {
-        return originalTotalToPay_original;
+    public void setOriginalFullTotalToPayOriginal(BigDecimal originalFullTotalToPayOriginal) {
+            this.originalFullTotalToPayOriginal = originalFullTotalToPayOriginal;
     }
 
-    public void setOriginalTotalToPay_original(BigDecimal originalTotalToPay_original) {
-            this.originalTotalToPay_original = originalTotalToPay_original;
-
+    public BigDecimal getOriginalTotalToPayOriginal() {
+        return originalTotalToPayOriginal;
     }
 
-    public Integer getPenaltyAlertQty_original() {
-        return penaltyAlertQty_original;
+    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPayOriginal) {
+            this.originalTotalToPayOriginal = originalTotalToPayOriginal;
     }
-
-    public void setPenaltyAlertQty_original(Integer penaltyAlertQty_original) {
-            this.penaltyAlertQty_original = penaltyAlertQty_original;
 
+    public Integer getPenaltyAlertQtyOriginal() {
+        return penaltyAlertQtyOriginal;
     }
 
-    public BigDecimal getRepairGross_original() {
-        return repairGross_original;
+    public void setPenaltyAlertQtyOriginal(Integer penaltyAlertQtyOriginal) {
+            this.penaltyAlertQtyOriginal = penaltyAlertQtyOriginal;
     }
 
-    public void setRepairGross_original(BigDecimal repairGross_original) {
-            this.repairGross_original = repairGross_original;
-
+    public BigDecimal getRepairGrossOriginal() {
+        return repairGrossOriginal;
     }
-
-    public BigDecimal getRepairNet_original() {
 
-        return repairNet_original;
+    public void setRepairGrossOriginal(BigDecimal repairGrossOriginal) {
+            this.repairGrossOriginal = repairGrossOriginal;
     }
 
-    public void setRepairNet_original(BigDecimal repairNet_original) {
-            this.repairNet_original = repairNet_original;
-
+    public BigDecimal getRepairNetOriginal() {
+        return repairNetOriginal;
     }
 
-    public Date getRepairPenaltyChargeAppliedDate_original() {
-        return repairPenaltyChargeAppliedDate_original;
+    public void setRepairNetOriginal(BigDecimal repairNetOriginal) {
+            this.repairNetOriginal = repairNetOriginal;
     }
 
-    
-
-    public BigDecimal getRepairPenaltyCharge_original() {
-        return repairPenaltyCharge_original;
+    public Date getRepairPenaltyChargeAppliedDateOriginal() {
+        return repairPenaltyChargeAppliedDateOriginal;
     }
-
-    public void setRepairPenaltyCharge_original(BigDecimal repairPenaltyCharge_original) {
-            this.repairPenaltyCharge_original = repairPenaltyCharge_original;
 
+    public BigDecimal getRepairPenaltyChargeOriginal() {
+        return repairPenaltyChargeOriginal;
     }
 
-    public String getRepairPenaltyPercentage_original() {
-        return repairPenaltyPercentage_original;
+    public void setRepairPenaltyChargeOriginal(BigDecimal repairPenaltyChargeOriginal) {
+            this.repairPenaltyChargeOriginal = repairPenaltyChargeOriginal;
     }
 
-    public void setRepairPenaltyPercentage_original(String repairPenaltyPercentage_original) {
-            this.repairPenaltyPercentage_original = repairPenaltyPercentage_original;
-
+    public String getRepairPenaltyPercentageOriginal() {
+        return repairPenaltyPercentageOriginal;
     }
 
-    public BigDecimal getRepairVat_original() {
-        return repairVat_original;
+    public void setRepairPenaltyPercentageOriginal(String repairPenaltyPercentageOriginal) {
+            this.repairPenaltyPercentageOriginal = repairPenaltyPercentageOriginal;
     }
-
-    public void setRepairVat_original(BigDecimal repairVat_original) {
-            this.repairVat_original = repairVat_original;
 
+    public BigDecimal getRepairVatOriginal() {
+        return repairVatOriginal;
     }
 
-    public BigDecimal getRoofRackFee_original() {
-        return roofRackFee_original;
+    public void setRepairVatOriginal(BigDecimal repairVatOriginal) {
+            this.repairVatOriginal = repairVatOriginal;
     }
 
-    public void setRoofRackFee_original(BigDecimal roofRackFee_original) {
-            this.roofRackFee_original = roofRackFee_original;
-
+    public BigDecimal getRoofRackFeeOriginal() {
+        return roofRackFeeOriginal;
     }
 
-    public Integer getRoofRackQty_original() {
-        return roofRackQty_original;
+    public void setRoofRackFeeOriginal(BigDecimal roofRackFeeOriginal) {
+            this.roofRackFeeOriginal = roofRackFeeOriginal;
     }
 
-    public void setRoofRackQty_original(Integer roofRackQty_original) {
-            this.roofRackQty_original = roofRackQty_original;
-
+    public Integer getRoofRackQtyOriginal() {
+        return roofRackQtyOriginal;
     }
 
-    public BigDecimal getSatNavFee_original() {
-        return satNavFee_original;
+    public void setRoofRackQtyOriginal(Integer roofRackQtyOriginal) {
+            this.roofRackQtyOriginal = roofRackQtyOriginal;
     }
-
-    public void setSatNavFee_original(BigDecimal satNavFee_original) {
-            this.satNavFee_original = satNavFee_original;
 
+    public BigDecimal getSatNavFeeOriginal() {
+        return satNavFeeOriginal;
     }
 
-    public Integer getSatNavQty_original() {
-        return satNavQty_original;
+    public void setSatNavFeeOriginal(BigDecimal satNavFeeOriginal) {
+            this.satNavFeeOriginal = satNavFeeOriginal;
     }
 
-    public void setSatNavQty_original(Integer satNavQty_original) {
-            this.satNavQty_original = satNavQty_original;
-
+    public Integer getSatNavQtyOriginal() {
+        return satNavQtyOriginal;
     }
 
-    public BigDecimal getStorageRecoveryGross_original() {
-        return storageRecoveryGross_original;
+    public void setSatNavQtyOriginal(Integer satNavQtyOriginal) {
+            this.satNavQtyOriginal = satNavQtyOriginal;
     }
-
-    public void setStorageRecoveryGross_original(BigDecimal storageRecoveryGross_original) {
-            this.storageRecoveryGross_original = storageRecoveryGross_original;
 
+    public BigDecimal getStorageRecoveryGrossOriginal() {
+        return storageRecoveryGrossOriginal;
     }
 
-    public BigDecimal getStorageRecoveryNet_original() {
-        return storageRecoveryNet_original;
+    public void setStorageRecoveryGrossOriginal(BigDecimal storageRecoveryGrossOriginal) {
+            this.storageRecoveryGrossOriginal = storageRecoveryGrossOriginal;
     }
 
-    public void setStorageRecoveryNet_original(BigDecimal storageRecoveryNet_original) {
-            this.storageRecoveryNet_original = storageRecoveryNet_original;
-
+    public BigDecimal getStorageRecoveryNetOriginal() {
+        return storageRecoveryNetOriginal;
     }
 
-    public BigDecimal getStorageRecoveryVat_original() {
-        return storageRecoveryVat_original;
+    public void setStorageRecoveryNetOriginal(BigDecimal storageRecoveryNetOriginal) {
+            this.storageRecoveryNetOriginal = storageRecoveryNetOriginal;
     }
 
-    public void setStorageRecoveryVat_original(BigDecimal storageRecoveryVat_original) {
-            this.storageRecoveryVat_original = storageRecoveryVat_original;
-
+    public BigDecimal getStorageRecoveryVatOriginal() {
+        return storageRecoveryVatOriginal;
     }
 
-    public BigDecimal getTotalGross_original() {
-        return totalGross_original;
+    public void setStorageRecoveryVatOriginal(BigDecimal storageRecoveryVatOriginal) {
+            this.storageRecoveryVatOriginal = storageRecoveryVatOriginal;
     }
-
-    public void setTotalGross_original(BigDecimal totalGross_original) {
-            this.totalGross_original = totalGross_original;
 
+    public BigDecimal getTotalGrossOriginal() {
+        return totalGrossOriginal;
     }
 
-    public BigDecimal getTotalLossFeeGross_original() {
-        return totalLossFeeGross_original;
+    public void setTotalGrossOriginal(BigDecimal totalGrossOriginal) {
+            this.totalGrossOriginal = totalGrossOriginal;
     }
 
-    public void setTotalLossFeeGross_original(BigDecimal totalLossFeeGross_original) {
-            this.totalLossFeeGross_original = totalLossFeeGross_original;
-
+    public BigDecimal getTotalLossFeeGrossOriginal() {
+        return totalLossFeeGrossOriginal;
     }
 
-    public BigDecimal getTotalLossFeeNet_original() {
-        return totalLossFeeNet_original;
+    public void setTotalLossFeeGrossOriginal(BigDecimal totalLossFeeGrossOriginal) {
+            this.totalLossFeeGrossOriginal = totalLossFeeGrossOriginal;
     }
-
-    public void setTotalLossFeeNet_original(BigDecimal totalLossFeeNet_original) {
-            this.totalLossFeeNet_original = totalLossFeeNet_original;
 
+    public BigDecimal getTotalLossFeeNetOriginal() {
+        return totalLossFeeNetOriginal;
     }
 
-    public BigDecimal getTotalLossFeeVat_original() {
-        return totalLossFeeVat_original;
+    public void setTotalLossFeeNetOriginal(BigDecimal totalLossFeeNetOriginal) {
+            this.totalLossFeeNetOriginal = totalLossFeeNetOriginal;
     }
 
-    public void setTotalLossFeeVat_original(BigDecimal totalLossFeeVat_original) {
-            this.totalLossFeeVat_original = totalLossFeeVat_original;
-
+    public BigDecimal getTotalLossFeeVatOriginal() {
+        return totalLossFeeVatOriginal;
     }
 
-    public BigDecimal getTotalNet_original() {
-        return totalNet_original;
+    public void setTotalLossFeeVatOriginal(BigDecimal totalLossFeeVatOriginal) {
+            this.totalLossFeeVatOriginal = totalLossFeeVatOriginal;
     }
 
-    public void setTotalNet_original(BigDecimal totalNet_original) {
-            this.totalNet_original = totalNet_original;
-
+    public BigDecimal getTotalNetOriginal() {
+        return totalNetOriginal;
     }
 
-    public BigDecimal getTotalPenaltyCharge_original() {
-        return totalPenaltyCharge_original;
+    public void setTotalNetOriginal(BigDecimal totalNetOriginal) {
+            this.totalNetOriginal = totalNetOriginal;
     }
-
-    public void setTotalPenaltyCharge_original(BigDecimal totalPenaltyCharge_original) {
-            this.totalPenaltyCharge_original = totalPenaltyCharge_original;
 
+    public BigDecimal getTotalPenaltyChargeOriginal() {
+        return totalPenaltyChargeOriginal;
     }
 
-    public BigDecimal getTotalToPay_original() {
-        return totalToPay_original;
+    public void setTotalPenaltyChargeOriginal(BigDecimal totalPenaltyChargeOriginal) {
+            this.totalPenaltyChargeOriginal = totalPenaltyChargeOriginal;
     }
 
-    public void setTotalToPay_original(BigDecimal totalToPay_original) {
-            this.totalToPay_original = totalToPay_original;
-
+    public BigDecimal getTotalToPayOriginal() {
+        return totalToPayOriginal;
     }
 
-    public BigDecimal getTotalVat_original() {
-        return totalVat_original;
+    public void setTotalToPayOriginal(BigDecimal totalToPayOriginal) {
+            this.totalToPayOriginal = totalToPayOriginal;
     }
-
-    public void setTotalVat_original(BigDecimal totalVat_original) {
-            this.totalVat_original = totalVat_original;
 
+    public BigDecimal getTotalVatOriginal() {
+        return totalVatOriginal;
     }
 
-    public BigDecimal getTowBarsFee_original() {
-        return towBarsFee_original;
+    public void setTotalVatOriginal(BigDecimal totalVatOriginal) {
+            this.totalVatOriginal = totalVatOriginal;
     }
 
-    public void setTowBarsFee_original(BigDecimal towBarsFee_original) {
-            this.towBarsFee_original = towBarsFee_original;
-
+    public BigDecimal getTowBarsFeeOriginal() {
+        return towBarsFeeOriginal;
     }
 
-    public Integer getTowBarsQty_original() {
-        return towBarsQty_original;
+    public void setTowBarsFeeOriginal(BigDecimal towBarsFeeOriginal) {
+            this.towBarsFeeOriginal = towBarsFeeOriginal;
     }
 
-    public void setTowBarsQty_original(Integer towBarsQty_original) {
-            this.towBarsQty_original = towBarsQty_original;
-
+    public Integer getTowBarsQtyOriginal() {
+        return towBarsQtyOriginal;
     }
 
-    public BigDecimal getVatAmountCollected_original() {
-        return vatAmountCollected_original;
+    public void setTowBarsQtyOriginal(Integer towBarsQtyOriginal) {
+            this.towBarsQtyOriginal = towBarsQtyOriginal;
     }
-
-    public void setVatAmountCollected_original(BigDecimal vatAmountCollected_original) {
-            this.vatAmountCollected_original = vatAmountCollected_original;
 
+    public BigDecimal getVatAmountCollectedOriginal() {
+        return vatAmountCollectedOriginal;
     }
-    /**
-     * This attribute maps to the column hire_vat in the invoice table.
-     */
-    private BigDecimal hireVat_original;
-    /**
-     * This attribute maps to the column hire_gross in the invoice table.
-     */
-    private BigDecimal hireGross_original;
-    /**
-     * This attribute maps to the column repair_net in the invoice table.
-     */
-    private BigDecimal repairNet_original;
-    /**
-     * This attribute maps to the column repair_vat in the invoice table.
-     */
-    private BigDecimal repairVat_original;
-    /**
-     * This attribute maps to the column repair_gross in the invoice table.
-     */
-    private BigDecimal repairGross_original;
-    /**
-     * This attribute maps to the column engineer_fee_net in the invoice table.
-     */
-    private BigDecimal engineerFeeNet_original;
-    /**
-     * This attribute maps to the column engineer_fee_vat in the invoice table.
-     */
-    private BigDecimal engineerFeeVat_original;
-    /**
-     * This attribute maps to the column engineer_fee_gross in the invoice table.
-     */
-    private BigDecimal engineerFeeGross_original;
-    /**
-     * This attribute maps to the column storage_recovery_net in the invoice table.
-     */
-    private BigDecimal storageRecoveryNet_original;
-    /**
-     * This attribute maps to the column storage_recovery_vat in the invoice table.
-     */
-    private BigDecimal storageRecoveryVat_original;
-    /**
-     * This attribute maps to the column storage_recovery_gross in the invoice table.
-     */
-    private BigDecimal storageRecoveryGross_original;
-    /**
-     * This attribute maps to the column total_net in the invoice table.
-     */
-    private BigDecimal totalNet_original;
-    /**
-     * This attribute maps to the column total_vat in the invoice table.
-     */
-    private BigDecimal totalVat_original;
-    /**
-     * This attribute maps to the column total_gross in the invoice table.
-     */
-    private BigDecimal totalGross_original;
-    /**
-     * This attribute maps to the column claims_handling_invoice_amount in the invoice table.
-     */
-    private BigDecimal claimsHandlingInvoiceAmount_original;
-    /**
-     * This attribute maps to the column deduction_for_claims_handling_fee in the invoice table.
-     */
-    private BigDecimal deductionForClaimsHandlingFee_original;
-    /**
-     * This attribute maps to the column discount in the invoice table.
-     */
-    private BigDecimal discount_original;
-    
-    private BigDecimal insurer_discount_original;
-    /**
-     * This attribute maps to the column total_to_pay in the invoice table.
-     */
-    private BigDecimal fullTotalToPay_original;
-    /**
-     * This attribute maps to the column handling_invoice_no in the invoice table.
-     */
-    private BigDecimal miscellaneousFee_original;
-    /**
-     * This attribute maps to the column cdw_qty in the invoice table.
-     */
-    private Integer miscellaneousQty_original;
-    /**
-     * This attribute maps to the column automatic_fee in the invoice table.
-     */
-    private BigDecimal automaticFee_original;
-    /**
-     * This attribute maps to the column automatic_qty in the invoice table.
-     */
-    private Integer automaticQty_original;
-    /**
-     * This attribute maps to the column additional_driver_fee in the invoice table.
-     */
-    private BigDecimal additionalDriverFee_original;
-    /**
-     * This attribute maps to the column additional_driver_qty in the invoice table.
-     */
-    private Integer additionalDriverQty_original;
-    /**
-     * This attribute maps to the column sat_nav_fee in the invoice table.
-     */
-    private BigDecimal satNavFee_original;
-    /**
-     * This attribute maps to the column sat_nav_qty in the invoice table.
-     */
-    private Integer satNavQty_original;
-    /**
-     * This attribute maps to the column estate_fee in the invoice table.
-     */
-    private BigDecimal estateFee_original;
-    /**
-     * This attribute maps to the column estate_qty in the invoice table.
-     */
-    private Integer estateQty_original;
-    /**
-     * This attribute maps to the column baby_seat_fee in the invoice table.
-     */
-    private BigDecimal babySeatFee_original;
-    /**
-     * This attribute maps to the column baby_seat_qty in the invoice table.
-     */
-    private Integer babySeatQty_original;
-    /**
-     * This attribute maps to the column tow_bars_fee in the invoice table.
-     */
-    private BigDecimal towBarsFee_original;
-    /**
-     * This attribute maps to the column tow_bars_qty in the invoice table.
-     */
-    private Integer towBarsQty_original;
-    /**
-     * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
-     */
-    private BigDecimal nonStandardInsurancePremiumFee_original;
-    /**
-     * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
-     */
-    private Integer nonStandardInsurancePremiumQty_original;
-    private BigDecimal adminFee_original;
-    private Integer adminQty_original;
-    private BigDecimal roofRackFee_original;
-    private Integer roofRackQty_original;
-    private BigDecimal dualControlFee_original;
-    private Integer dualControlQty_original;
-    private BigDecimal deliveryCollectionFee_original;
-    private Integer deliveryCollectionQty_original;
-    private BigDecimal hireRateChargedPerDay_original;
-    private BigDecimal excessAmountCollected_original;
-    private BigDecimal vatAmountCollected_original;
-    private BigDecimal hirePenaltyCharge_original;
-    private String hirePenaltyPercentage_original;
-    private Date hirePenaltyChargeAppliedDate_original;
-    private BigDecimal repairPenaltyCharge_original;
-    private String repairPenaltyPercentage_original;
-    private Date repairPenaltyChargeAppliedDate_original;
-    private Integer penaltyAlertQty_original;
-    private BigDecimal totalPenaltyCharge_original;
-    private BigDecimal originalFullTotalToPay_original;
-    private BigDecimal totalToPay_original;
-    private BigDecimal originalTotalToPay_original;
-    private BigDecimal totalLossFeeNet_original;
-    private BigDecimal totalLossFeeVat_original;
-    private BigDecimal totalLossFeeGross_original;
-    private BigDecimal interimPayment_original;
 
-    public InvoiceOriginal() {
+    public void setVatAmountCollectedOriginal(BigDecimal vatAmountCollectedOriginal) {
+            this.vatAmountCollectedOriginal = vatAmountCollectedOriginal;
     }
 }

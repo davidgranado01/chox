@@ -190,7 +190,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             checkVersion(Arrays.asList(model));
             model = adminChorganisationService.updateChorganisation(model);
             updateModelInSession(Arrays.asList(model));
-            
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
                 chorganisationAliasService.createDefaultRecord(model);

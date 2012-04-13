@@ -61,7 +61,7 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
         claim.getBreBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(false);
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -77,7 +77,7 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
 
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -93,7 +93,7 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
 
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -118,7 +118,7 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
         System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
         System.out.println("RESULT: "+rv.getRelatedRule().getStatusAfterFailure());
          */
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £200.50 exceeds the Repair Net ceiling of £200.00 for vehicle class SP1."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());

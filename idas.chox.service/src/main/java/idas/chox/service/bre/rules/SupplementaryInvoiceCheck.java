@@ -34,7 +34,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
 
         if (ClaimType.isSupplementaryInvoice(claim.getClaimType())
             && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
-            res.setResult(RuleEvaluationResult.RuleFailed);
+            res.setResult(RuleEvaluationResult.RULE_FAILED);
             Claim originalSuppInv = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             if (originalSuppInv != null) {
                 String originalSuppInvChoRef = originalSuppInv.getChoReference();
@@ -48,7 +48,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
 
         return res;

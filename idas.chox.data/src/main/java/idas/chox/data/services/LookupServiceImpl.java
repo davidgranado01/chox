@@ -56,7 +56,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getLiabilityStatuses() {
         List<LookupItem> items = new ArrayList<LookupItem>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
-            items.add(new LookupItem(s.toString(), Integer.toString(s.ordinal())));
+            items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
         }
         return items;
     }
@@ -65,11 +65,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getClaimTypes() {
         List<LookupItem> items = new ArrayList<LookupItem>();
         
-        items.add(new LookupItem(ClaimType.GTA.toString(), Integer.toString(ClaimType.GTA.ordinal())));
-        items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.ordinal())));
-        items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.ordinal())));
-        items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.ordinal())));
-        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.ordinal())));
+        items.add(new LookupItem(ClaimType.GTA.toString(), Integer.toString(ClaimType.GTA.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.SUBSCRIBER.toString(), Integer.toString(ClaimType.SUBSCRIBER.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
         
         return items;
     }

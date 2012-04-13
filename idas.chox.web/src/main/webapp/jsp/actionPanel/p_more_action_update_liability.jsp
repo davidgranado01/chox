@@ -159,7 +159,7 @@
                                     id="fLiabilityStatus"
                                     name="fLiabilityStatus"
                                     list="liabilityStatusDropDownMap"                                        
-                                    value="fLiabilityStatus.ordinal()"
+                                    value="fLiabilityStatus.getLiablityValue()"
                                     emptyOption="false"
                                     onchange="javascript:onLiabilityStatusSelectionChange()"
                                     >

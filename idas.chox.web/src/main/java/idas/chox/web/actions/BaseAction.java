@@ -24,6 +24,7 @@ import idas.chox.core.model.Entity;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class BaseAction extends ActionSupport implements SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
@@ -386,7 +387,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public String getDevelopment() {
         return ServletActionContext.getServletContext().getInitParameter("development");
     }
-
+    
     public void checkVersion(List<? extends Entity> models) throws Exception {
         for (Entity model : models) {
             if (getSession().containsKey(model.getClass().getSimpleName())) {
@@ -411,6 +412,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    /* This will force update the model in session*/
     public void updateModelInSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (model.getVersion() != null && model.getId() != null) {
@@ -424,6 +426,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
     
+    /* This will put the model in session if it does not already exists or having differnt id than the one already in the session
+     in case of different id in the session for the same class it will replace with the new model*/
     public void addModelToSession(List<? extends Entity> models) {
         for (Entity model : models) {
             if (!getSession().containsKey(model.getClass().getSimpleName())) {
@@ -431,6 +435,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
                 updateModelInSession(Arrays.asList(model));
             } else {
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
+
                 if (model.getId() != null && map.get("id").compareTo(model.getId()) != 0) {
                     LOG.debug("model with same name exists but different Id, replacing with new model");
                     updateModelInSession(Arrays.asList(model));
@@ -438,6 +443,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             }
         }
     }
+
 
     public Integer getModelIdFromSession(Class model) {
         if (getSession().containsKey(model.getSimpleName())) {
@@ -449,5 +455,4 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
     }
-
 }

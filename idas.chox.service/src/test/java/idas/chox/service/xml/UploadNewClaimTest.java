@@ -51,7 +51,7 @@ public class UploadNewClaimTest extends BaseTest {
         for (ClaimResult claimResult : claimResults) {
             bordereauReader.execute(claimResult);
 //            Claim claim = claimResult.getClaim();
-            Assert.assertEquals(ClaimParseStatus.newClaim, claimResult.getClaimParseStatus());
+            Assert.assertEquals(ClaimParseStatus.NEW_CLAIM, claimResult.getClaimParseStatus());
             uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences);
         }
        
@@ -88,12 +88,12 @@ public class UploadNewClaimTest extends BaseTest {
         for (ClaimResult claimResult : claimResults) {
              bordereauReader.execute(claimResult);
              Claim claim = claimResult.getClaim();
-            Assert.assertEquals(ClaimParseStatus.ClaimNotEditable,claimResult.getClaimParseStatus());
+            Assert.assertEquals(ClaimParseStatus.CLAIM_NOT_EDITABLE,claimResult.getClaimParseStatus());
 //            Assert.assertNotSame(claim1EngineerReportName, claim.getEngineerReport().getName());
 //            Assert.assertNotSame(claim1EngineerReportCompany, claim.getEngineerReport().getCompany());
 
             //Claim 2 [UT-CLAIM002], exist in CHOX, but edit not allowed
-//             Assert.assertEquals(ClaimParseStatus.existClaim, claimResult.getClaimParseStatus());
+//             Assert.assertEquals(ClaimParseStatus.EXIST_CLAIM, claimResult.getClaimParseStatus());
 
             //Claim 3, Invalid claim due to mandatory fields not provided
 //            Assert.assertFalse(result.getClaimResult().get(2).isValid());

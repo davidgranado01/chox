@@ -25,7 +25,7 @@ public class LiabilityStatusDropDownAction extends BaseAction{
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 0; i < arr.length; i++) {
-                dropDownMap.put(arr[i].ordinal(),arr[i]);
+                dropDownMap.put(arr[i].getLiablityValue(),arr[i]);
             }            
         }
         return dropDownMap;

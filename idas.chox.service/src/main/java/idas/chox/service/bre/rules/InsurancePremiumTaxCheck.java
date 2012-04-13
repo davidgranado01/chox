@@ -57,12 +57,12 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
                 narrative = "The CHO is charging £" + nonStandPremiumFeePerDay + " per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review.";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
         LOG.debug("Insurance Premium Tax Check  is end");

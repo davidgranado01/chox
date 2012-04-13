@@ -73,7 +73,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
         claim.getBreBand().setHasCorrectDiscountForNonDA(false);
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -95,7 +95,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
 
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule does not apply to CHOs in the DA scheme"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
@@ -116,7 +116,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
         // System.out.println((claim.getInsurer().getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate());
         // System.out.println((CalcHelper.EqualTo(claim.getInvoice().getDiscount(), (claim.getInsurer().getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate())));
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
@@ -131,7 +131,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
 
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Discount calculation is incorrect"));
 
     }

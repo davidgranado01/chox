@@ -35,12 +35,12 @@ public class NumberOfHireDaysReconcile implements IBusinessRule {
                 narrative = "The number of Hire Days billed does not reconcile with the Hire Start and Hire End dates provided";
             }
 
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
         } else {
 
             narrative = "";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
         }
 
