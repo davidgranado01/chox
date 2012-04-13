@@ -23,6 +23,7 @@ public class ClaimRejection extends BaseActivity {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
+    private String rejectionDescription;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isQuantumDispute;
@@ -170,7 +171,7 @@ public class ClaimRejection extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-
+    	
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
@@ -181,6 +182,8 @@ public class ClaimRejection extends BaseActivity {
         
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+            if(rejectionDescription != null && !rejectionDescription.equals(""))
+            	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
         }
         else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
@@ -236,4 +239,12 @@ public class ClaimRejection extends BaseActivity {
     public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
+
+	public String getRejectionDescription() {
+		return rejectionDescription;
+	}
+
+	public void setRejectionDescription(String rejectionDescription) {
+		this.rejectionDescription = rejectionDescription;
+	}
 }

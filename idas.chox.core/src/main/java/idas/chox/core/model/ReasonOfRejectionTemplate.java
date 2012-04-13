@@ -2,16 +2,15 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class ReasonOfRejection extends Entity implements Serializable {
+public class ReasonOfRejectionTemplate extends Entity implements Serializable {
 
     private String name;
     private String type;
     private String description;
-    private Insurer insurer;
-    private boolean status;
     private boolean restricted;
+    private boolean status;
 
-    public ReasonOfRejection() {
+    public ReasonOfRejectionTemplate() {
     }
 
     public String getName() {
@@ -38,14 +37,6 @@ public class ReasonOfRejection extends Entity implements Serializable {
         this.type = type;
     }
 
-    public boolean isRestricted() {
-        return restricted;
-    }
-
-    public void setRestricted(boolean restricted) {
-        this.restricted = restricted;
-    }
-
 	public String getDescription() {
 		return description;
 	}
@@ -54,11 +45,11 @@ public class ReasonOfRejection extends Entity implements Serializable {
 		this.description = description;
 	}
 
-	public Insurer getInsurer() {
-		return insurer;
+	public boolean isRestricted() {
+		return restricted;
 	}
 
-	public void setInsurer(Insurer insurer) {
-		this.insurer = insurer;
+	public void setRestricted(boolean restricted) {
+		this.restricted = restricted;
 	}
 }

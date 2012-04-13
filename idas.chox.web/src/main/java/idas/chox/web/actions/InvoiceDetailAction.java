@@ -1557,16 +1557,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public String getRejectionReason() {
-        return invoice.getRejectionReason();
-    }
-
-    public void setRejectionReason(String rejectionReason) {
-        if (actionSelected != reset && invoice != null) {
-            invoice.setRejectionReason(rejectionReason);
-        }
-    }
-
     public BigDecimal getHireRateChargedPerDay() {
         return invoice.getHireRateChargedPerDay();
     }

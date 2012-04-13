@@ -10,28 +10,34 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.ReasonOfRejectionTemplateService;
+import idas.chox.core.util.LookupItemTextComparator;
 import idas.chox.core.util.RoleHelper;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.util.LookupItemTextComparator;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(LookupServiceImpl.class);
+    
+    private ReasonOfRejectionService reasonOfRejectionService;
 
     @Override
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
@@ -93,33 +99,27 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
-    public List getClaimRejectionReason() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
-        criteria.add(Restrictions.eq("type", "Claim"));
-        criteria.add(Restrictions.eq("status", true));
-        return findByCriteria(criteria, true);
+    public List<ReasonOfRejection> getClaimRejectionReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, null);
+        return rejectionReasons;
+    }
+    
+    @Override
+    public List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, true);
+        return rejectionReasons;
     }
 
     @Override
-    public List getClaimRejectionRestrictedReason() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
-        criteria.add(Restrictions.eq("type", "Claim"));
-        criteria.add(Restrictions.eq("restricted", true));
-        return findByCriteria(criteria, true);
+    public List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Invoice", true, null);
+        return rejectionReasons;
     }
-
+    
     @Override
     public List getInsurerChoBand(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        return findByCriteria(criteria, true);
-    }
-
-    @Override
-    public List getInvoiceRejectionReason() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
-        criteria.add(Restrictions.eq("type", "Invoice"));
-        criteria.add(Restrictions.eq("status", true));
         return findByCriteria(criteria, true);
     }
 
@@ -368,4 +368,13 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
         return teams;
     }
+
+	public ReasonOfRejectionService getReasonOfRejectionService() {
+		return reasonOfRejectionService;
+	}
+
+	public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
+		this.reasonOfRejectionService = reasonOfRejectionService;
+	}
+
 }

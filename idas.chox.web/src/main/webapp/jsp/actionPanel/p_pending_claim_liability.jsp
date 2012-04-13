@@ -147,6 +147,7 @@
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
                                                 listValue="name"
+                                                onchange="refreshDesc(this.value)"
                                                 headerKey=""
                                                 headerValue="N/A"
                                                 emptyOption="false">
@@ -159,6 +160,7 @@
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
                                                 listValue="name"
+                                                onchange="refreshDesc(this.value)"
                                                 headerKey=""
                                                 disabled="true"
                                                 headerValue="N/A"
@@ -168,6 +170,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <s:if test="rejectButtonEnabled">
+                            <tr>
+                            <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+			                        <td>
+			                            <div id="rejectionDescId"/>
+			                        </td>
+                            </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">

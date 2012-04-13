@@ -20,6 +20,15 @@
             }
         });
 
+        var rejectionDescField = new Ext.form.TextArea({
+            name             : 'rejectionDescription',
+            id               : 'rejecDescId',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  false,
+            renderTo         : 'rejectionDescId'
+        });
+        
     });
 
 
@@ -28,20 +37,20 @@
 //        actionPanel.registerAction(action);
         $("#invoiceExcalatedFormName").val(action);
         
-        $("form#invoiceExcalatedForm #supportingRejectionNotesId").rules("remove");
+        $("form#invoiceExcalatedForm #rejecDescId").rules("remove");
         $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("remove");
         if(action=="rejectInvoice"){
             $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
-            $("form#invoiceExcalatedForm #supportingRejectionNotesId").rules("add", {
+            $("form#invoiceExcalatedForm #rejecDescId").rules("add", {
                 required: true,
                 messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
         }else{
             $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").val("");
-            $("form#invoiceExcalatedForm #supportingRejectionNotesId").val("");
+            $("form#invoiceExcalatedForm #rejecDescId").val("");
         }
 
         if($("#invoiceExcalatedForm").valid()){
@@ -62,6 +71,25 @@
         }
     }
 
+    var reasonOfRejectionDescReader = new Ext.data.JsonReader({
+        fields:[{name:'id'},{name:'description'}]
+    });
+    
+    var reasonOfRejectionDescStore = new Ext.data.Store({
+        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfInvoiceRejectionDesc" escape="false"/>'),
+        reader : reasonOfRejectionDescReader
+    });
+    
+    function refreshDesc(id){
+    	reasonOfRejectionDescStore.each(function(rec) {
+    		if(id == rec.json.text){
+    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
+    		}
+    	});
+    	if(id == -1 || id == '')
+    		Ext.getCmp('rejecDescId').setValue("");
+    }
+    
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -88,18 +116,18 @@
                                           list="reasonOfInvoiceRejections"
                                           listKey="id"
                                           listValue="name"
+                                          onchange="refreshDesc(this.value)"
                                           headerKey=""
                                           headerValue="N/A"
                                           emptyOption="false"></s:select>
                             </td>
                             <td></td><td></td>
                         </tr>
-                        <tr valign="top" >
-                            <td width="30%" nowrap>
-                                <label>Supporting Rejection Notes</label></td>
-                            <td>
-                                <textarea  cols="40" rows="5"name="supportingRejectionNotes" id="supportingRejectionNotesId"></textarea>
-                            </td>
+                        <tr>
+                        <td align="left" valign="top"><label >Supporting Rejection Note&nbsp;&nbsp;</label></td>
+	                        <td>
+	                            <div id="rejectionDescId"/>
+	                        </td>
                         </tr>
                         <tr>
                             <td colspan="4">

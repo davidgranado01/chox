@@ -15,7 +15,7 @@ public class InvoiceRejection extends BaseActivity {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int reasonOfRejectionId;
-    private String supportingRejectionNotes;
+    private String rejectionDescription;
     // </editor-fold>
 
     @Override
@@ -33,7 +33,8 @@ public class InvoiceRejection extends BaseActivity {
 
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
-            claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + getSupportingRejectionNotes()));
+            if(rejectionDescription != null && !rejectionDescription.equals(""))
+            	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
         }
         else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
@@ -75,19 +76,7 @@ public class InvoiceRejection extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
     }
 
-    /**
-     * @return the supportingRejectionNotes
-     */
-    public String getSupportingRejectionNotes() {
-        return supportingRejectionNotes;
-    }
 
-    /**
-     * @param supportingRejectionNotes the supportingRejectionNotes to set
-     */
-    public void setSupportingRejectionNotes(String supportingRejectionNotes) {
-        this.supportingRejectionNotes = supportingRejectionNotes;
-    }
 
     public int getReasonOfRejectionId() {
         return reasonOfRejectionId;
@@ -97,5 +86,9 @@ public class InvoiceRejection extends BaseActivity {
     public void setReasonOfRejectionId(int reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+
+	public void setRejectionDescription(String rejectionDescription) {
+		this.rejectionDescription = rejectionDescription;
+	}
 
 }

@@ -31,6 +31,15 @@
                 }
             }
         });
+        
+        var rejectionDescField = new Ext.form.TextArea({
+            name             : 'rejectionDescription',
+            id               : 'rejecDescId',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  true,
+            renderTo         : 'rejectionDescId'
+        });
     });
 
     function doProcessRejectedClaimFormSubmit(action){
@@ -146,6 +155,25 @@
             else form.submit();
         });
     }
+    
+    var reasonOfRejectionDescReader = new Ext.data.JsonReader({
+        fields:[{name:'id'},{name:'description'}]
+    });
+    
+    var reasonOfRejectionDescStore = new Ext.data.Store({
+        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+        reader : reasonOfRejectionDescReader
+    });
+    
+    function refreshDesc(id){
+    	reasonOfRejectionDescStore.each(function(rec) {
+    		if(id == rec.json.text){
+    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
+    		}
+    	});
+    	if(id == -1 || id == '')
+    		Ext.getCmp('rejecDescId').setValue("");
+    }
 
 </script>
 
@@ -230,6 +258,7 @@
                                                       list="reasonOfClaimRejections"
                                                       listKey="id"
                                                       listValue="name"
+                                                      onchange="refreshDesc(this.value)"
                                                       headerKey=""
                                                       headerValue="N/A"
                                                       emptyOption="false"></s:select>
@@ -239,6 +268,7 @@
                                                       list="reasonOfClaimRejections"
                                                       listKey="id"
                                                       listValue="name"
+                                                      onchange="refreshDesc(this.value)"
                                                       headerKey=""
                                                       disabled="true"
                                                       headerValue="N/A"
@@ -248,7 +278,15 @@
                                     </div>
                                 </td>
                             </tr>
+                            <s:if test="rejectButtonEnabled">
                             <tr>
+                            <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+		                        <td>
+		                            <div id="rejectionDescId"/>
+		                        </td>
+                           </tr>
+                           </s:if>
+                           <tr>
                                 <td colspan="4">
                                     <div class="no-format">
                                         <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
