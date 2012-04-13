@@ -4,10 +4,12 @@ import idas.chox.core.model.Invoice;
 
 
 public class ExcelInvoice {
-    protected String claimStatus;
-    protected String choReference;
-    protected String thirdPartyClaimReference;
-    protected Invoice invoice;
+    private String claimStatus;
+    private String choReference;
+    private String thirdPartyClaimReference;
+    private Invoice invoice;
+    private String hirePenaltyPercentageString;
+    private String repairPenaltyPercentageString;
 
     public String getChoReference() {
         return choReference;
@@ -41,5 +43,19 @@ public class ExcelInvoice {
         this.thirdPartyClaimReference = thirdPartyClaimReference;
     }
 
+    public String getHirePenaltyPercentageString() {
+        return hirePenaltyPercentageString;
+    }
 
+    public void setHirePenaltyPercentageString(String hirePenaltyPercentageString) {
+        this.hirePenaltyPercentageString = hirePenaltyPercentageString;
+    }
+
+    public String getRepairPenaltyPercentageString() {
+        return repairPenaltyPercentageString;
+    }
+
+    public void setRepairPenaltyPercentageString(String repairPenaltyPercentageString) {
+        this.repairPenaltyPercentageString = repairPenaltyPercentageString;
+    }
 }
