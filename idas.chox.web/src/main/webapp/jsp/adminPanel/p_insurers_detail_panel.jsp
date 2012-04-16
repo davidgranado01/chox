@@ -613,13 +613,13 @@
                         </div>
                         
                          <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
-                            <label class="chox-form-std-label">Nr. Of Days Invoice Uploaded</label>
-                            <input type="text" class="chox-ttxt" id="nrOfDaysUploadedId" name="nrOfDaysInvoiceUploaded" value="<s:property value="nrOfDaysInvoiceUploaded" />"/>
+                            <label class="chox-form-std-label">Days Before Escalated</label>
+                            <input type="text" class="chox-ttxt" id="nrOfDaysUploadedId" name="daysBeforeEscalated" value="<s:property value="daysBeforeEscalated" />"/>
                         </div>
                         
                          <div class="chox-form-item" id="timeEnteredToContestedInvDiv">
-                            <label class="chox-form-std-label">Nr. Of Times Entered To Status Contested...</label>
-                            <input type="text" class="chox-ttxt" id="timeEnteredToContId" name="nrOfTimesInvoiceInStatus" value="<s:property value="nrOfTimesInvoiceInStatus" />"/>
+                            <label class="chox-form-std-label">Times In Status: Contested Invoice ...</label>
+                            <input type="text" class="chox-ttxt" id="timeEnteredToContId" name="timesInStatusContested" value="<s:property value="timesInStatusContested" />"/>
                         </div>
 
                         <table>

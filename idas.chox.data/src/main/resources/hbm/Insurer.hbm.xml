@@ -46,8 +46,8 @@
     <property column="is_insurer_discount_enable" name="insurerDiscountEnable"/>
     <property column="is_upload_enabled" name="uploadEnabled"/>
     <property column="allow_subscriber_claims" name="allowSubscriberClaims" not-null="true"/>
-    <property column="nr_of_days_invoice_uploaded" name="nrOfDaysInvoiceUploaded"/>
-    <property column="nr_of_times_invoice_in_status" name="nrOfTimesInvoiceInStatus"/>
+    <property column="days_before_escalated" name="daysBeforeEscalated"/>
+    <property column="times_in_status_contested" name="timesInStatusContested"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

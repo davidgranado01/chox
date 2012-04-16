@@ -51,8 +51,8 @@ public class Insurer extends Entity implements Serializable {
     private int minimumPasswordLength;
     private boolean uploadEnabled;
     private boolean allowSubscriberClaims;
-    private Integer nrOfTimesInvoiceInStatus;
-    private Integer nrOfDaysInvoiceUploaded;
+    private Integer timesInStatusContested;
+    private Integer daysBeforeEscalated;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -467,20 +467,20 @@ public class Insurer extends Entity implements Serializable {
         this.allowSubscriberClaims = allowSubscriberClaims;
     }
 
-	public Integer getNrOfTimesInvoiceInStatus() {
-		return nrOfTimesInvoiceInStatus;
+	public Integer getTimesInStatusContested() {
+		return timesInStatusContested;
 	}
 
-	public void setNrOfTimesInvoiceInStatus(Integer nrOfTimesInvoiceInStatus) {
-		this.nrOfTimesInvoiceInStatus = nrOfTimesInvoiceInStatus;
+	public void setTimesInStatusContested(Integer timesInStatusContested) {
+		this.timesInStatusContested = timesInStatusContested;
 	}
 
-	public Integer getNrOfDaysInvoiceUploaded() {
-		return nrOfDaysInvoiceUploaded;
+	public Integer getDaysBeforeEscalated() {
+		return daysBeforeEscalated;
 	}
 
-	public void setNrOfDaysInvoiceUploaded(Integer nrOfDaysInvoiceUploaded) {
-		this.nrOfDaysInvoiceUploaded = nrOfDaysInvoiceUploaded;
+	public void setDaysBeforeEscalated(Integer daysBeforeEscalated) {
+		this.daysBeforeEscalated = daysBeforeEscalated;
 	}
 
 }
