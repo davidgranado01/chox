@@ -7,13 +7,15 @@ import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorkgroupDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupDropDownAction.class);
 
-    private List<Workgroup> workgroups = null;
-    private Integer orgId;
+    private List<Workgroup> workgroups = new ArrayList<Workgroup>();
+    private Set<Integer> orgId = new HashSet<Integer>();
     private LookupService service;
     private int claimId;
 
@@ -33,16 +35,18 @@ public class WorkgroupDropDownAction extends BaseAction {
         this.service = service;
     }
 
-    public Integer getOrgId() {
+    public Set<Integer> getOrgId() {
         if (getIsInsurer()) {
-            orgId = getAuthenticatedUser().getInsurer().getId();
+            orgId.add(getAuthenticatedUser().getInsurer().getId());
         }
         return orgId;
     }
 
-    public void setOrgId(Integer orgId) {
-        LOG.debug("orgID set: {}", orgId);
-        this.orgId = orgId;
+    public void setOrgId(Set<Integer> orgId) {
+        if (orgId.contains(null)) 
+            this.orgId = null;
+        else
+            this.orgId = orgId;
     }
 
     public void setLookupService(LookupService service) {
@@ -77,16 +81,14 @@ public class WorkgroupDropDownAction extends BaseAction {
         return "{totalCount:" + workgroups.size() + ",results:" + jsonArray.toString() + "}";
     }
 
-    public String ClaimSearch() throws Exception {
-        LOG.debug("ClaimSearchCombo action called.");
-        workgroups = service.getWorkgroupsByInsurerId(getOrgId(), false);
-        LOG.debug("Workgroups retrieved: {}", workgroups.size());
-        return SUCCESS;
-    }
-
     public String getInsurerWorkgroup() throws Exception {
-//        workgroups = new ArrayList<LookupItem>();
-        workgroups = service.getWorkgroupsByInsurerId(getOrgId(), true);
+        LOG.debug("ClaimSearchCombo action called.");
+        if (getOrgId() != null) {
+            for (Integer insId : getOrgId()) {
+               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false)); 
+            }
+        }
+        LOG.debug("Workgroups retrieved: {}", workgroups.size());
         return SUCCESS;
     }
 

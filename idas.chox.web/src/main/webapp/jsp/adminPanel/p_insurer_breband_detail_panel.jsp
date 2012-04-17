@@ -1001,6 +1001,13 @@
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for un-driveable/non-usable/non-mobile vehicles.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireTerminatedAfterRepairCompletionCheck" value="hireTerminatedAfterRepairCompletionCheck" /></div>
+                            <label class="chox-form-check-label">Hire Terminated 1 Day After Repairs Were Complete Check</label>
+                            <div class="chox-form-check-description">
+                                Claim will be flagged for review if the hire was terminated more than 1 day after the repairs were completed.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div>
                             <label class="chox-form-check-label">Correct Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only. Subscriber claims omitted.</div>
@@ -1049,7 +1056,6 @@
                                 Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
                             </div>
                         </div>
-
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>

@@ -13,6 +13,7 @@
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="reasonOfRejectionService" ref="reasonOfRejectionService"/>
     </bean>
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -82,6 +83,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfRejectionTemplateService" class="idas.chox.data.services.ReasonOfRejectionTemplateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" scope="prototype">
@@ -240,5 +244,9 @@
     <bean id="commentService" class="idas.chox.data.services.CommentServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+
+    <bean id="ipWhitelistService" class="idas.chox.data.services.IPWhitelistServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>

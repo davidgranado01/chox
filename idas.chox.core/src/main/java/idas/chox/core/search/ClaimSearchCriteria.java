@@ -1,12 +1,15 @@
 package idas.chox.core.search;
 
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.LiabilityStatus;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.LiabilityStatus;
+import java.util.*;
 
 /**
  *
@@ -18,11 +21,11 @@ public class ClaimSearchCriteria implements Serializable {
     public final static int CLAIM_OWNER_NOT_ASSIGNED = -9;
     public final static String STATUS_ACTIONS_FOR_HANDLERS = "ActionsForHandlers";
     private String supplierReference;
-    private int supplierId;
+    private Set<Integer> supplierIds;
     private String claimNumber;
-    private String status;
-    private List<String> statusExcludeList;
-    private int insurerId;
+    private Set<String> statuses;
+    private Set<String> statusExcludeList;
+    private Set<Integer> insurerIds;
     private String thirdPartyVrn;
     private String customerVrn;
     private String invoiceNumber;
@@ -36,7 +39,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Date hireDateTo;
     private Date lastModifiedDateFrom;
     private Date lastModifiedDateTo;
-    private int workgroupId;
+    private Set<Integer> workgroupIds;
     private boolean isAnomalies;
     private boolean isPenaltyChargeApplied;
     private boolean isInterimPaymentMade;
@@ -50,46 +53,73 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean isOpenClaim = true;
     private boolean isSupplementaryInvoiceOnly;
     private boolean penaltyChargesAppliedOnly;
-    private int claimOwnerId;
-    private int supplierClaimOwnerId;
+    private Set<Integer> claimOwnerIds;;
+    private Set<Integer> supplierClaimOwnerIds;
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
     private boolean isSupplierOwnerShipCheck;
-    private LiabilityStatus liabilityStatus;
+    private Set<LiabilityStatus> liabilityStatuses;
     private boolean isLiabilityStatusUpdated;
-    private ClaimType claimType;
+    private Set<ClaimType> claimTypes;
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("supplierReference=").append(supplierReference).append("\n").append("supplierId=").append(supplierId)
-                .append("\n").append("claimNumber=").append(claimNumber).append("\n").append("status=").append(status)
-                .append("\n").append("insurerId=").append(insurerId).append("\n").append("thirdPartyVrn=").append(thirdPartyVrn)
-                .append("\n").append("customerVrn=").append(customerVrn).append("\n").append("invoiceNumber=").append(invoiceNumber)
-                .append("\n").append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n").append("claimUploadDateTo=").append(claimUploadDateTo)
-                .append("\n").append("statusModifiedDateFrom=").append(statusModifiedDateFrom).append("\n").append("statusModifiedDateTo=").append(statusModifiedDateTo)
-                .append("\n").append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n").append("invoiceUploadDateTo=").append(invoiceUploadDateTo)
-                .append("\n").append("hireDateFrom=").append(hireDateFrom).append("\n").append("hireDateTo=").append(hireDateTo)
-                .append("\n").append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n").append("lastModifiedDateTo=").append(lastModifiedDateTo)
-                .append("\n").append("workgroupId=").append(workgroupId).append("\n").append("isAnomalies=").append(isAnomalies)
-                .append("\n").append("ispenaltyChargeApplied=").append(isPenaltyChargeApplied).append("\n").append("isInterimPaymentMade=").append(isInterimPaymentMade)
-                .append("\n").append("start=").append(start).append("\n").append("limit=").append(limit).append("\n").append("sort=").append(sort)
-                .append("\n").append("dir=").append(dir).append("\n").append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom)
-                .append("\n").append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n").append("isOpenClaim=").append(isOpenClaim)
-                .append("\n").append("claimOwnerId=").append(claimOwnerId).append("\n").append("supplierClaimOwnerId=").append(supplierClaimOwnerId)
-                .append("\n").append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n").append("isOwnerShipCheck=").append(isOwnerShipCheck)
-                .append("\n").append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n").append("liabilityStatus=").append(liabilityStatus)
-                .append("\n").append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n").append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n")
-                .append("penaltyChargesAppliedOnly=").append(penaltyChargesAppliedOnly).append("\n")
-                .append("claimType=").append(claimType).append("\n");
-        return sb.toString();
+        sb.append("supplierReference=").append(supplierReference).append("\n");
+        if (supplierIds != null)
+                sb.append("supplierIds=").append(Arrays.toString(supplierIds.toArray())).append("\n");
+                sb.append("claimNumber=").append(claimNumber).append("\n");
+        if (statuses != null)
+                sb.append("statuses=").append(Arrays.toString(statuses.toArray())).append("\n");
+        if (insurerIds != null)
+                sb.append("insurerIds=").append(Arrays.toString(insurerIds.toArray())).append("\n");
+                sb.append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
+                .append("customerVrn=").append(customerVrn).append("\n")
+                .append("invoiceNumber=").append(invoiceNumber).append("\n")
+                .append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n")
+                .append("claimUploadDateTo=").append(claimUploadDateTo).append("\n")
+                .append("statusModifiedDateFrom=").append(statusModifiedDateFrom).append("\n")
+                .append("statusModifiedDateTo=").append(statusModifiedDateTo).append("\n")
+                .append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n")
+                .append("invoiceUploadDateTo=").append(invoiceUploadDateTo).append("\n")
+                .append("hireDateFrom=").append(hireDateFrom).append("\n")
+                .append("hireDateTo=").append(hireDateTo).append("\n")
+                .append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n")
+                .append("lastModifiedDateTo=").append(lastModifiedDateTo).append("\n");
+        if (workgroupIds != null)
+                sb.append("workgroupIds=").append(Arrays.toString(workgroupIds.toArray())).append("\n");
+                sb.append("isAnomalies=").append(isAnomalies).append("\n")
+                .append("ispenaltyChargeApplied=").append(isPenaltyChargeApplied).append("\n")
+                .append("isInterimPaymentMade=").append(isInterimPaymentMade).append("\n")
+                .append("start=").append(start).append("\n")
+                .append("limit=").append(limit).append("\n")
+                .append("sort=").append(sort).append("\n")
+                .append("dir=").append(dir).append("\n")
+                .append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom).append("\n")
+                .append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n")
+                .append("isOpenClaim=").append(isOpenClaim).append("\n");
+       if (claimOwnerIds != null)
+                sb.append("claimOwnerIds=").append(Arrays.toString(claimOwnerIds.toArray())).append("\n");
+       if (supplierClaimOwnerIds != null)                 
+                sb.append("supplierClaimOwnerIds=").append(Arrays.toString(supplierClaimOwnerIds.toArray())).append("\n");
+                sb.append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
+                .append("isOwnerShipCheck=").append(isOwnerShipCheck).append("\n")
+                .append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n");
+       if (liabilityStatuses != null)
+                sb.append("liabilityStatuses =").append(Arrays.toString(liabilityStatuses.toArray())).append("\n");
+                sb.append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n")
+                .append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n")
+                .append("penaltyChargesAppliedOnly=").append(penaltyChargesAppliedOnly).append("\n");
+       if (claimTypes != null)
+                sb.append("claimTypes=").append(Arrays.toString(claimTypes.toArray())).append("\n");
+       return sb.toString();
     }
 
     public boolean validate() {
         LOG.debug("Validating Claim Search Criteria.");
         if (!isValidString(supplierReference) || !isValidString(claimNumber)
-                || !isValidString(status) || !isValidString(thirdPartyVrn) || !isValidString(customerVrn)
+                || !isValidString(thirdPartyVrn) || !isValidString(customerVrn)
                 || !isValidString(invoiceNumber)) {
             LOG.debug("Claim Search Criteria is invalid.");
             return false;
@@ -112,14 +142,15 @@ public class ClaimSearchCriteria implements Serializable {
         return true;
     }
 
-
-    public ClaimType getClaimType() {
-        return claimType;
+    public Set<ClaimType> getClaimTypes() {
+        return claimTypes;
     }
 
-
-    public void setClaimType(ClaimType claimType) {
-        this.claimType = claimType;
+    public void setClaimTypes(Set<ClaimType> claimTypes) {
+        if (claimTypes.contains(null))
+            this.claimTypes = null;
+        else
+            this.claimTypes = claimTypes;
     }
 
     public boolean isIsSupplementaryInvoiceOnly() {
@@ -146,14 +177,17 @@ public class ClaimSearchCriteria implements Serializable {
         this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
     }
 
-    public LiabilityStatus getLiabilityStatus() {
-        return liabilityStatus;
+    public Set<LiabilityStatus> getLiabilityStatuses() {
+        return liabilityStatuses;
     }
 
-    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
-        this.liabilityStatus = liabilityStatus;
+    public void setLiabilityStatuses(Set<LiabilityStatus> liabilityStatuses) {
+        if (liabilityStatuses.contains(null)) 
+            this.liabilityStatuses = null;
+        else
+            this.liabilityStatuses = liabilityStatuses;
     }
-
+    
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;
     }
@@ -170,14 +204,17 @@ public class ClaimSearchCriteria implements Serializable {
         this.reviewRequiredDateTo = reviewRequiredDateTo;
     }
 
-    public int getWorkgroupId() {
-        return workgroupId;
+    public Set<Integer> getWorkgroupIds() {
+        return workgroupIds;
     }
 
-    public void setWorkgroupId(int workgroupId) {
-        this.workgroupId = workgroupId;
+    public void setWorkgroupIds(Set<Integer> workgroupIds) {
+        if (workgroupIds.contains(null))
+            this.workgroupIds = null;
+        else
+            this.workgroupIds = workgroupIds;
     }
-
+    
     public String getSupplierReference() {
         return supplierReference;
     }
@@ -186,14 +223,17 @@ public class ClaimSearchCriteria implements Serializable {
         this.supplierReference = supplierReference;
     }
 
-    public int getSupplierId() {
-        return supplierId;
+    public Set<Integer> getSupplierIds() {
+        return supplierIds;
     }
 
-    public void setSupplierId(int gesupplierId) {
-        this.supplierId = gesupplierId;
+    public void setSupplierIds(Set<Integer> supplierIds) {
+        if (supplierIds.contains(null) || supplierIds.contains(0))
+            this.supplierIds = null;
+        else
+            this.supplierIds = supplierIds;
     }
-
+    
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -202,20 +242,26 @@ public class ClaimSearchCriteria implements Serializable {
         this.claimNumber = claimNumber;
     }
 
-    public String getStatus() {
-        return status;
+    public Set<String> getStatuses() {
+        return statuses;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatuses(Set<String> statuses) {
+        if (statuses.contains(null) || statuses.contains("")) 
+            this.statuses = null;
+        else
+            this.statuses = statuses;
     }
 
-    public int getInsurerId() {
-        return insurerId;
+    public Set<Integer> getInsurerIds() {
+        return insurerIds;
     }
 
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
+    public void setInsurerIds(Set<Integer> insurerIds) {
+        if (insurerIds.contains(null) || insurerIds.contains(0))
+            this.insurerIds = null;
+        else
+            this.insurerIds = insurerIds;
     }
 
     public String getCustomerVrn() {
@@ -386,22 +432,28 @@ public class ClaimSearchCriteria implements Serializable {
         this.isWorkgroupCheck = isWorkgroupCheck;
     }
 
-    public int getClaimOwnerId() {
-        return claimOwnerId;
+    public Set<Integer> getClaimOwnerIds() {
+        return claimOwnerIds;
     }
 
-    public void setClaimOwnerId(int claimOwnerId) {
-        this.claimOwnerId = claimOwnerId;
+    public void setClaimOwnerIds(Set<Integer> claimOwnerIds) {
+        if (claimOwnerIds.contains(null))
+            this.claimOwnerIds = null;
+        else
+            this.claimOwnerIds = claimOwnerIds;
     }
 
-    public int getSupplierClaimOwnerId() {
-        return supplierClaimOwnerId;
+    public Set<Integer> getSupplierClaimOwnerIds() {
+        return supplierClaimOwnerIds;
     }
 
-    public void setSupplierClaimOwnerId(int supplierClaimOwnerId) {
-        this.supplierClaimOwnerId = supplierClaimOwnerId;
+    public void setSupplierClaimOwnerIds(Set<Integer> supplierClaimOwnerIds) {
+        if (supplierClaimOwnerIds.contains(null))
+            this.supplierClaimOwnerIds = null;
+        else
+            this.supplierClaimOwnerIds = supplierClaimOwnerIds;
     }
-
+    
     public boolean getIsOpenClaim() {
         return isOpenClaim;
     }
@@ -438,11 +490,11 @@ public class ClaimSearchCriteria implements Serializable {
         this.statusModifiedDateTo = statusModifiedDateTo;
     }
 
-    public List<String> getStatusExcludeList() {
+    public Set<String> getStatusExcludeList() {
         return statusExcludeList;
     }
 
-    public void setStatusExcludeList(List<String> statusExcludeList) {
+    public void setStatusExcludeList(Set<String> statusExcludeList) {
         this.statusExcludeList = statusExcludeList;
     }
 

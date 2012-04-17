@@ -245,7 +245,6 @@ public class MockObjects {
         invoice.setIsPaymentMode(true);
         invoice.setHirePenaltyChargeAppliedDate(null);
         invoice.setReasonOfRejection(getTestReasonOfRejection());
-        invoice.setRejectionReason(null);
         
         invoice.setClaimsHandlingInvoiceAmount(new BigDecimal(0));
         invoice.setDeductionForClaimsHandlingFee(new BigDecimal(0));

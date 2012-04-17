@@ -1,11 +1,11 @@
 package idas.chox.core.services;
 
-import idas.chox.core.search.*;
-import idas.chox.core.model.*;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import idas.chox.core.model.*;
+import idas.chox.core.search.*;
 
 public interface ClaimService extends DataService {
 
@@ -88,4 +88,6 @@ public interface ClaimService extends DataService {
     public boolean setPenaltyStartToDateInvoiced(String choReference);
 
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
+    
+    public Claim updateClaimWithInvalidSessionVersion(Claim claim);
 }

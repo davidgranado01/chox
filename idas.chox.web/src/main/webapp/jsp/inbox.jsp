@@ -274,20 +274,13 @@
             function searchClaim(canSearchForData){
 
                 var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-                //            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
-                var supplierId = -1;
+;
                 if (Ext.getCmp('searchScreenSupplierComboId'))
-                    supplierId = Ext.getCmp('searchScreenSupplierComboId').getValue();
-                if (supplierId==='') {
-                    supplierId=-1;
-                }
-                //           var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
-                var insurerId = -1;
+                    var supplierIds = Ext.getCmp('searchScreenSupplierComboId').getValue().split(",");
+
                 if (Ext.getCmp('searchScreenInsurerComboId'))
-                    insurerId = Ext.getCmp('searchScreenInsurerComboId').getValue();
-                if (insurerId==='') {
-                    insurerId=-1;
-                }
+                    var insurerIds = Ext.getCmp('searchScreenInsurerComboId').getValue().split(",");
+
                 var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
                 var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
                 var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
@@ -301,36 +294,26 @@
                 var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
                 var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
                 var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
-                //            var status = Ext.query('*[name$=status]')[0].value;
-                var status = Ext.getCmp('statusSearchScreenComboId').getValue();
-                //            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
-                var workgroupId = -1;
+                var statuses = Ext.getCmp('statusSearchScreenComboId').getValue().split(",");
+
                 if (Ext.getCmp('searchScreenWorkgroupComboId'))
-                    workgroupId = Ext.getCmp('searchScreenWorkgroupComboId').getValue();
-                if (workgroupId==='') {
-                    workgroupId=-1;
-                }
+                    var workgroupIds = Ext.getCmp('searchScreenWorkgroupComboId').getValue().split(",");
+
                 var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
                 var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
-                //           var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
-                var claimOwnerId = -1;
+
                 if (Ext.getCmp('searchScreenClaimOwnerComboId'))
-                    claimOwnerId = Ext.getCmp('searchScreenClaimOwnerComboId').getValue();
-                if (claimOwnerId==='') {
-                    claimOwnerId=-1;
-                }
-                var supplierClaimOwnerId = -1;
+                    var claimOwnerIds = Ext.getCmp('searchScreenClaimOwnerComboId').getValue().split(",");
+
                 if (Ext.getCmp('searchScreenSupplierClaimOwnerComboId'))
-                    supplierClaimOwnerId = Ext.getCmp('searchScreenSupplierClaimOwnerComboId').getValue();
-                if (supplierClaimOwnerId==='') {
-                    supplierClaimOwnerId=-1;
-                }
+                    var supplierClaimOwnerIds = Ext.getCmp('searchScreenSupplierClaimOwnerComboId').getValue().split(",");
+
                 var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
                 var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
                 var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
                 var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
-                var liabilityStatus = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue();
-                var claimType = Ext.getCmp('claimTypesSearchScreenComboId').getValue();
+                var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
+                var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
 
                 ds.baseParams = {
                     /*
@@ -340,8 +323,8 @@
                     searchHistory : true,
                     filterName : '',
                     supplierReference : supplierReference,
-                    supplierId : supplierId,
-                    insurerId : insurerId,
+                    supplierIds : supplierIds,
+                    insurerIds : insurerIds,
                     invoiceNumber : invoiceNumber,
                     claimNumber : claimNumber,
                     thirdPartyVrn : thirdPartyVrn,
@@ -353,17 +336,17 @@
                     invoiceUploadDateTo : invoiceUploadDateTo,
                     hireDateFrom : hireDateFrom,
                     hireDateTo : hireDateTo,
-                    status : status,
-                    workgroupId: workgroupId,
+                    statuses : statuses,
+                    workgroupIds : workgroupIds,
                     reviewRequiredDateFrom : reviewRequiredDateFrom,
                     reviewRequiredDateTo : reviewRequiredDateTo,
-                    claimOwnerId : claimOwnerId,
-                    supplierClaimOwnerId : supplierClaimOwnerId,
+                    claimOwnerIds : claimOwnerIds,
+                    supplierClaimOwnerIds : supplierClaimOwnerIds,
                     customerVrn : customerVrn,
                     isOpenClaim : isOpenClaim,
                     penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
-                    liabilityStatus : liabilityStatus,
-                    claimType : claimType,
+                    liabilityStatuses : liabilityStatuses,
+                    claimTypes : claimTypes,
                     isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
                 }
                 if(canSearchForData){
@@ -1401,7 +1384,7 @@
 
                                 function generateWorkgroup(){
                                     var target = "#couWorkgroupDropDownDiv";
-                                    var url = "<%=request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action";
+                                    var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action";
                                     var param = {};
                                     ajax.loadHtml2(url, param, function(data){
                                         $(target).html(data);
@@ -1546,8 +1529,8 @@
                     autoheight:true,
                     activeTab: selectedIndex,
                     items:[
-                        {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
-                        {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
+                        {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
@@ -1569,7 +1552,7 @@
                         items:[
                             {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
                             {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
-                            {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
+                            {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'Claim/Invoice Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
@@ -1610,7 +1593,13 @@
 
                     grid.show();
                     Ext.fly('gridPanel').removeClass('x-hide-display');
-
+                    // below code is hack to clear search screen size being set up by extjs when switch between other tabs. (to-do item 6.10.5).
+                    if (tab.title == 'Search') {
+                        if(tabs) {
+                            $($($('#searchPanelTabId').children()[0]).children()[0]).removeAttr("style");
+                        }
+                    }
+                    
                     if(tab.title == 'Inbox' && isInboxShowHistory){
 
                         ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName")};

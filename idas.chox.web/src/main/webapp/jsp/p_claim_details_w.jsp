@@ -23,22 +23,18 @@ $(document).ready(function(){
             errorLabelContainer: "#claimDetailsMsgBox",
             rules: {
                 gtaNoticeDate: {
-                    required:false,
-                    dateITA:true
+                    date:true
                 },
                 creditAgreementDate: {
-                    required:false,
-                    dateITA:true
+                    date:true
                 }
             },
             messages: {
                 noticeDate: {
-                    required:"You must supply a value for 'GTA 4.1 Notice Date'",
-                    dateITA:"Invalid date format for 'GTA 4.1 Notice Date'"
+                    date:"Invalid date format for 'GTA 4.1 Notice Date'"
                 },
                 signedByDate: {
-                    required:"You must supply a value for 'Credit Agreement Signed by Customer Date'",
-                    dateITA:"Invalid date format for 'Date'"
+                    date:"Invalid date format for 'Credit Agreement Signed by Customer Date'"
                 }
             }
         });
@@ -50,19 +46,12 @@ $(document).ready(function(){
 
 function saveChanges(){
 		
-   	var msgBox = $("#claimDetailsMsgBox");
-   	if(noticeDatePicker.getValue() == "" || signedByDatePicker.getValue() == ""){
-   		msgBox.empty()
-   		if(noticeDatePicker.getValue() == "")
-   			msgBox.append("You must supply a propper value for 'GTA 4.1 Notice Date'\n<br/>").show();
-   		if(signedByDatePicker.getValue() == "")
-   			msgBox.append("You must supply a propper value for 'Credit Agreement Signed by Customer Date'\n<br/>").show();
-            return false;
-   	} else {
-   		msgBox.text("").show();
-   		$("#formUpdateClaimDetailsForm").submit();
-   	}
-   
+//   	var msgBox = $("#claimDetailsMsgBox");
+   	var resultMsgBox = $("#claimDetailsResultMsgBox");
+    resultMsgBox.empty();
+   		
+    if ($("form#formUpdateClaimDetailsForm").valid())
+        $("#formUpdateClaimDetailsForm").submit();
 }
 
 </script>
@@ -74,27 +63,23 @@ function saveChanges(){
         <legend>Claim Details</legend>
         <div class="form-container" id="claimDetailsWId">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                    Managing Repair?</label>
-                    <s:checkbox name="managingRepair" />
+                <label class="chox-form-std-label">Managing Repair?</label>
+                <s:checkbox name="managingRepair" />
             </div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                    GTA 4.1 Notice Date</label>
+                <label class="chox-form-std-label">GTA 4.1 Notice Date</label>
                 <span id="noticeDatePH"></span>
             </div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                    Credit Agreement Signed<br/>by Customer Date</label>
+                <label class="chox-form-std-label">Credit Agreement Signed<br/>by Customer Date</label>
                 <span id="signedByDatePH"></span>
             </div>
         <div class="chox-form-button">
             <input type="button" id="claimDetailsSubmitButtonId" value="Save Changes" onclick="return saveChanges();"/>
         </div>
         <div id="claimDetailsMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-        <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+        <div id="claimDetailsResultMsgBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
 </form>

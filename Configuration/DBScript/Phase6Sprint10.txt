@@ -1,3 +1,244 @@
+---------------------------------------------------------------------
+-- 6.10.2 Rejection Reasons & Default Text Modifications
+---------------------------------------------------------------------
+
+---------------------------------------------------------------------
+--CREATES A NEW DUPLICATE TABLE (REASON_OF_REJECTION_TEMPLATE) FROM REASON_OF_REJECTION 
+----------------------------------------------------------------
+ALTER TABLE reason_of_rejection ADD COLUMN description character varying(255) NOT NULL DEFAULT '';
+
+SELECT * INTO reason_of_rejection_template FROM reason_of_rejection;
+
+CREATE SEQUENCE reason_of_rejection_template_id_seq INCREMENT BY 1 MINVALUE 1 START WITH 15 OWNED BY reason_of_rejection_template.id;
+
+ALTER TABLE reason_of_rejection_template ADD PRIMARY KEY (id);
+ALTER TABLE reason_of_rejection_template ALTER COLUMN id SET DEFAULT nextval('reason_of_rejection_template_id_seq'::regclass);
+
+ALTER TABLE reason_of_rejection_template DROP COLUMN created_date;
+ALTER TABLE reason_of_rejection_template DROP COLUMN last_modified_date;
+ALTER TABLE reason_of_rejection_template DROP COLUMN last_modified_by;
+ALTER TABLE reason_of_rejection_template DROP COLUMN created_by;
+ALTER TABLE reason_of_rejection_template DROP COLUMN version;
+
+ALTER TABLE reason_of_rejection ADD COLUMN insurer_id integer;
+ALTER TABLE reason_of_rejection ADD CONSTRAINT insurer_id_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+----------------------------------------------------------------
+--POPULATES THE REASON_OF_REJECTION TABLE FOR EACH INSURER
+----------------------------------------------------------------
+CREATE OR REPLACE FUNCTION populate_desc() RETURNS integer AS $$
+DECLARE
+ins insurer%ROWTYPE;
+def_res reason_of_rejection_template%ROWTYPE;
+BEGIN 
+	for ins in select * from insurer loop
+		for def_res in select * from reason_of_rejection_template loop
+		 	insert into reason_of_rejection (description , insurer_id , name, type, status, restricted, version, created_date, last_modified_date) 
+		 	--values (ins.name || ' - ' || def_res.description, ins.id, def_res.name, def_res.type, def_res.status, def_res.restricted);--XXX This is just for testing purposes
+	 		values ('', ins.id, def_res.name, def_res.type, def_res.status, def_res.restricted , 0 , now(), now());
+	 	end loop;
+	 end loop;
+	RETURN 1;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM populate_desc();
+DROP FUNCTION populate_desc();
+
+----------------------------------------------------------------
+--UPDATES THE EXISTING REFERENCES TO THE REASON_OF_REJECTION_TABLE
+----------------------------------------------------------------
+UPDATE claim c
+SET reason_of_rejection_id = (SELECT id FROM reason_of_rejection WHERE insurer_id = c.insurer_id 
+AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = c.reason_of_rejection_id)
+ and type = 'Claim');
+
+UPDATE invoice i
+SET reason_of_rejection_id = (SELECT id FROM reason_of_rejection WHERE insurer_id = (SELECT insurer_id FROM claim WHERE invoice_id = i.id)
+ AND name = (select name FROM reason_of_rejection_template WHERE  id = i.reason_of_rejection_id)
+ AND type = 'Invoice');
+
+UPDATE audit_trail au
+SET invoice_reason_of_rejection = (SELECT id FROM reason_of_rejection WHERE insurer_id = (SELECT insurer_id FROM claim WHERE id = au.claim_id)
+ AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = au.invoice_reason_of_rejection)
+ AND type = 'Invoice');
+ 
+UPDATE audit_trail au
+SET claim_reason_of_rejection = (SELECT id FROM reason_of_rejection WHERE insurer_id = (SELECT insurer_id FROM claim WHERE id = au.claim_id)
+ AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = au.invoice_reason_of_rejection)
+ AND type = 'Claim');
+ 
+DELETE FROM reason_of_rejection WHERE insurer_id IS null;
+
+----------------------------------------------------------------
+--DELETES THE INVOICE.REASON_OF_REJECTION COLUMN WHICH IS NOT USED AND ITS REFERENCES
+----------------------------------------------------------------
+DROP VIEW rpt_all_claim_with_invoice;
+
+CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
+ SELECT claim.id AS claim_id, claim.workgroup_id, claim.claim_owner_id as owner, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, claim.created_date as claim_created_date, claim.claim_type, invoice.id as invoice_id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty as cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date as invoice_created_date, invoice.last_modified_by as last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.full_total_to_pay as total_to_pay, invoice.miscellaneous_fee as cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.hire_penalty_charge as panalty_charge, invoice.penalty_alert_qty as panalty_alert_qty, invoice.hire_penalty_charge_applied_date as penalty_charge_applied_date
+   FROM claim claim
+   LEFT JOIN invoice invoice on claim.invoice_id = invoice.id;
+
+GRANT SELECT ON rpt_all_claim_with_invoice TO chox_user;
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty AS cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_modified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.total_penalty_charge, invoice.penalty_alert_qty, invoice.hire_penalty_charge_applied_date, invoice.repair_penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, third_party.vehicle_registration AS vehicle_registration_number, claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner, invoice.original_total_to_pay, claim.percentage_liability_accepted, claim.percentage_liability_cho, invoice.original_full_total_to_pay 
+ FROM claim claim 
+ JOIN invoice invoice ON claim.invoice_id = invoice.id 
+ LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id 
+ LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+
+GRANT SELECT ON rpt_claim_invoice TO chox_user;
+
+ALTER TABLE invoice DROP COLUMN rejection_reason;
+ 
+---------------------------------------------------------------------
+-- End of 6.10.2 Rejection Reasons & Default Text Modifications
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+-- ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
+---------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
+ALTER TABLE chorganisation ADD COLUMN enable_ip_whitelist boolean NOT NULL DEFAULT false;
+
+
+CREATE TABLE ip_whitelist (
+	id serial not null,
+  	"version" integer NOT NULL,
+	insurer_id integer,
+	chorganisation_id integer,
+	ip_address character varying(39) NOT NULL,
+	description character varying(64),
+  	created_by integer NOT NULL,
+  	created_date timestamp without time zone NOT NULL DEFAULT now(),
+  	last_modified_by integer NOT NULL,
+  	last_modified_date timestamp without time zone DEFAULT now(),
+	CONSTRAINT ip_whitelist_pkey PRIMARY KEY (id),
+  	CONSTRAINT ip_whitelist_insurer_fkey FOREIGN KEY (insurer_id)
+      		REFERENCES insurer (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_cho_fkey FOREIGN KEY (chorganisation_id)
+      		REFERENCES chorganisation (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_webuser_created_fkey FOREIGN KEY (created_by)
+      		REFERENCES web_user (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION,
+  	CONSTRAINT ip_whitelist_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+      		REFERENCES web_user (id) MATCH SIMPLE
+      		ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT ON TABLE ip_whitelist TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE ip_whitelist_id_seq TO chox_user;
+
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.16', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.17', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.18', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.19', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.20', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '129.35.81.21', 'Provided by RSA', 999, now(), 999, now();
+INSERT INTO ip_whitelist(version, insurer_id, ip_address, description, created_by, created_date, last_modified_by, last_modified_date)
+	select 0, 3, '81.187.110', 'Sherwood (Talbot House)', 999, now(), 999, now();
+
+---------------------------------------------------------------------
+-- End of ToDo Item: 6.10.3 Enable (optional) IP white-listing for both CHO and Insurers
+---------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------
+-- 6.10.9 Invoice Review Required? added to 'More Actions' drop down --
+----------------------------------------------------------------------------
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimReferredToFNOL',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.AwaitingCarHireInfo',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.AwaitingInvoiceData',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.invoiceReviewRequired.ClaimReferredToEngineer',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnrouted';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimUnacknowledgedUnassigned';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToFNOL';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.SubscriberClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingCarHireInfo';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.AwaitingInvoiceData';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_SCR',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.invoiceReviewRequired.ClaimReferredToEngineer';
+
+----------------------------------------------------------------------------
+-- End of 6.10.9 Invoice Review Required? added to 'More Actions' drop down --
+----------------------------------------------------------------------------
+
+---------------------------------------------------------------------
+-- ToDo item:  6.10.10 BRE Modifications
+---------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default false;
+
+---------------------------------------------------------------------
+-- End of ToDo item:  6.10.10 BRE Modifications
+---------------------------------------------------------------------
 ----------------------------------------------------------------------
 -- 6.10.4 Escalation Of Invoices (Supervisor)
 ----------------------------------------------------------------------
@@ -11,3 +252,6 @@ insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('f
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_SUP', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MI', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
+---------------------------------------------------------------------
+-- End of ToDo item:  6.10.4 Escalation Of Invoices (Supervisor)
+---------------------------------------------------------------------

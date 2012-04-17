@@ -207,7 +207,15 @@
             </result>
             <result name="error">/jsp/p_blank.jsp</result>
         </action>
-       
+       <action name="updateInvoiceReviewRequired" class="idas.chox.web.actions.ClaimAction" method="updateInvoiceReviewRequired">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success" type="redirectAction">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
        <!-- End Claim Detail -->
        <!--Start Support-->
         <action name="onlineSupport" class="idas.chox.web.actions.OnlineSupportAction">
@@ -296,15 +304,6 @@
         <action name="BreBandDropDownAction" class="idas.chox.web.actions.BreBandDropDownAction">
             <result>/jsp/dropdown/p_dropdown_bre.jsp</result>
         </action>
-        <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
-            <result>/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="WorkgroupDropDownActionByUser" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroup">
-            <result>/jsp/dropdown/p_dropdown_assign_claim_owner_workgroup.jsp</result>
-        </action>
-        <action name="UpdateWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="getInsurerWorkgroup">
-            <result>/jsp/dropdown/p_dropdown_update_claim_workgroup.jsp</result>
-        </action>
         <action name="WorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
@@ -321,7 +320,7 @@
         <action name="TeamDropDownActionByInsurer" class="idas.chox.web.actions.TeamDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
+        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
         </action>
@@ -460,7 +459,10 @@
             <result name="success">/jsp/actionPanel/p_more_action_update_claim_workgroup_and_owner.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
-        
+        <action name="invoiceReviewRequired" class="idas.chox.web.actions.ClaimAction" method="getInvoiceReviewRequiredPanel">
+            <result name="success">/jsp/actionPanel/p_more_action_update_invoice_review_required.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
 
        <!-- BATCH UPDATE !-->
         <action name="doClaimOwnershipUpdateAction" class="idas.chox.web.actions.BatchUpdateAction" method="doClaimOwnershipUpdateAction">
@@ -685,8 +687,8 @@
 
 
         <action name="getInvoiceRecalculation" class="idas.chox.web.actions.InvoiceDetailAction">
-            <result name="w">/jsp/p_invoice_recalculate_w.jsp</result>
-            <result name="r">/jsp/p_invoice_recalculate_r.jsp</result>
+            <result name="w">/jsp/p_invoice_detail_w.jsp</result>
+            <result name="r">/jsp/p_invoice_detail_r.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
 
@@ -694,7 +696,7 @@
         <action name="updateInvoiceRecalculation" class="idas.chox.web.actions.InvoiceDetailAction" method="updateModel">
             <interceptor-ref name="authenticatedNonce"/>
             
-            <result name="success">/jsp/p_invoice_recalculate_w.jsp</result>
+            <result name="success">/jsp/p_invoice_detail_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirectAction">
                 <param name="actionName">getInvoiceRecalculation</param>

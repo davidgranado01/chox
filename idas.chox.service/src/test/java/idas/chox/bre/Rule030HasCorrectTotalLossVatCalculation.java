@@ -1,6 +1,6 @@
 package idas.chox.bre;
 
-import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.core.util.CalcHelper;
 import idas.chox.service.bre.rules.HasCorrectTotalLossVatCalculation;
 import idas.chox.test.BaseTest;
 import idas.chox.bre.mock.MockObjects;

@@ -70,7 +70,6 @@
         <property column="is_payment_mode" name="isPaymentMode"/>
         <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
         <property column="engineer_invoice_review_notes" name="engineerInvoiceReviewNotes"/>
-        <property column="rejection_reason" name="rejectionReason"/>
         <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay"/>
         <property column="excess_amount_collected" name="excessAmountCollected"/>
         <property column="vat_amount_collected" name="vatAmountCollected"/>

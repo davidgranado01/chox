@@ -29,7 +29,7 @@ import idas.chox.core.services.BillingInsurerService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
-import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.core.util.CalcHelper;
 import java.math.BigInteger;
 
 public class BillingService {

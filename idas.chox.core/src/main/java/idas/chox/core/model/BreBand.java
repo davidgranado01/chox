@@ -113,6 +113,7 @@ public class BreBand extends Entity implements Serializable {
     private boolean subscriberCheckRejectedClaims;
     private boolean subscriberAcquisitionFeeCheck;
     private boolean subscriberAdminFeeCheck;
+    private boolean hireTerminatedAfterRepairCompletionCheck;
     
     public BreBand() {
     }
@@ -1112,5 +1113,13 @@ public class BreBand extends Entity implements Serializable {
 
     public void setSubscriberAdminFeeCheck(boolean subscriberAdminFeeCheck) {
         this.subscriberAdminFeeCheck = subscriberAdminFeeCheck;
+    }
+
+    public boolean isHireTerminatedAfterRepairCompletionCheck() {
+        return hireTerminatedAfterRepairCompletionCheck;
+    }
+
+    public void setHireTerminatedAfterRepairCompletionCheck(boolean hireTerminatedAfterRepairCompletionCheck) {
+        this.hireTerminatedAfterRepairCompletionCheck = hireTerminatedAfterRepairCompletionCheck;
     }
 }

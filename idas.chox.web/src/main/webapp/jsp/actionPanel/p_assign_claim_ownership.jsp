@@ -88,6 +88,15 @@
             }
         });
 
+        var rejectionDescField = new Ext.form.TextArea({
+            name             : 'rejectionDescription',
+            id               : 'rejecDescId',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  true,
+            renderTo         : 'rejectionDescId'
+        });
+        
         if(isWorkgroupEnable) {
             selectedWorkgroupId = '<s:property value="workgroup.id"/>';
             var wgrpJsonReader = new Ext.data.JsonReader({
@@ -138,8 +147,7 @@
             workgroupStore.load({ params : {"orgId":insurerId}});
             workgroupCombo.setValue(selectedWorkgroupId);
         }
-        //        doRenderClaimHandlerDropDown(selectedWorkgroupId);
-
+ 	
         // PREPARE RECORDS
         if ($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
             claimOwnerId = $("#claimClaimOwnerId").val();
@@ -238,7 +246,25 @@
 			$("#formOwnershipAssignmentAction").submit();
     	}
 	}
-
+    
+    var reasonOfRejectionDescReader = new Ext.data.JsonReader({
+        fields:[{name:'id'},{name:'description'}]
+    });
+    
+    var reasonOfRejectionDescStore = new Ext.data.Store({
+        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+        reader : reasonOfRejectionDescReader
+    });
+    
+    function refreshDesc(id){
+    	reasonOfRejectionDescStore.each(function(rec) {
+    		if(id == rec.json.text){
+    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
+    		}
+    	});
+    	if(id == -1 || id == '')
+    		Ext.getCmp('rejecDescId').setValue("");
+    }
 
 </script>
 
@@ -309,6 +335,7 @@
                                                     listKey="id"
                                                     listValue="name"
                                                     headerKey="-1"
+                                                    onchange="refreshDesc(this.value)"
                                                     headerValue="N/A"
                                                     emptyOption="false">
                                                 </s:select>
@@ -322,6 +349,7 @@
                                                     listValue="name"
                                                     headerKey="-1"
                                                     headerValue="N/A"
+                                                    onchange="refreshDesc(this.value)"
                                                     disabled="true"
                                                     emptyOption="false">
                                                 </s:select>
@@ -330,6 +358,14 @@
                                     </td>
                                     <td width="70%"></td>
                                 <tr>
+                                <s:if test="rejectButtonEnabled">
+                                <tr>
+                                <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+			                        <td>
+			                            <div id="rejectionDescId"/>
+			                        </td>
+                                </tr>
+                                </s:if>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">
