@@ -1,14 +1,15 @@
 package idas.chox.core.xmlValidation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.w3c.dom.Element;
+
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.History;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.Witness;
-import java.util.ArrayList;
-import java.util.List;
-import org.w3c.dom.Element;
 
 public class ClaimResult {
 
@@ -24,7 +25,6 @@ public class ClaimResult {
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
-    private List<History> history;
 
     public boolean isDuplicateClaimInSameXmlFile() {
         return duplicateClaimInSameXmlFile;
@@ -146,22 +146,6 @@ public class ClaimResult {
         if (this.claim != null && this.claim.getStatus() != null) {
             sReturn = this.claim.getStatus();
         }
-
-//        if(this.claimParseStatus.equals(ClaimParseStatus.NEW_CLAIM)
-//            && (!this.dataValid || !this.valid)
-//        ){
-//            sReturn = "N/A";
-//        }
-//
-//        if(this.claimParseStatus.equals(ClaimParseStatus.INVALID_SCHEMA)){
-//            sReturn = "N/A";
-//        }
-//
-//        if(this.claimParseStatus.equals(ClaimParseStatus.TPI_NOT_RECOGNIZED)){
-//            sReturn = "N/A";
-//        }
-
-        // System.out.println(">>>>>> ClaimStatus : " + sReturn);
 
         return sReturn;
     }

@@ -1,30 +1,33 @@
 package idas.chox.web.actions;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+
+import net.sf.json.JSONArray;
+import net.sf.jxls.transformer.XLSTransformer;
+
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.util.FileHelper;
-import idas.chox.web.viewdata.BordereauViewData;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import net.sf.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
+import idas.chox.core.util.FileHelper;
+import idas.chox.web.viewdata.BordereauViewData;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import org.springframework.core.io.ClassPathResource;
-import java.io.InputStream;
-import java.util.HashMap;
-import net.sf.jxls.transformer.XLSTransformer;
 
 /**
  *
@@ -244,20 +247,20 @@ public class XmlUploadAction extends BaseAction {
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String processUploadedXmlFile() {
-        LOG.info("Process bordereau request for file with id={}", bordereauId);
-        if (getSession().get("claimsDetails") != null) {
-            this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
-            return ERROR;
-        }
-        if (this.service.processFile(bordereauId, getSession())) {
-            this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
-            getSession().put("claimsDetails", null);
-            return SUCCESS;
-        } else {
-            this.getActionResponse().AddError(this.service.getErrorMessage());
-            getSession().put("claimsDetails", null);
-            return ERROR;
-        }
+            LOG.info("Process bordereau request for file with id={}", bordereauId);
+            if (getSession().get("claimsDetails") != null) {
+                this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
+                return ERROR;
+            }
+            if (this.service.processFile(bordereauId, getSession())) {
+                this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
+                getSession().put("claimsDetails", null);
+                return SUCCESS;
+            } else {
+                this.getActionResponse().AddError(this.service.getErrorMessage());
+                getSession().put("claimsDetails", null);
+                return ERROR;
+            }
 
 
     }
@@ -274,26 +277,26 @@ public class XmlUploadAction extends BaseAction {
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
             if (userOrgId.equals(bordereauOrgId)) {
-                List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
-                if (bordereau.isProcessed()) {
-                    claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
-                    LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
-                } else {
-                    LOG.debug("Synchronizing on session");
-                    synchronized (getSession()) {
-                        if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
-                            claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
+                    List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
+                    if (bordereau.isProcessed()) {
+                        claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
+                        LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
+                    } else {
+                        LOG.debug("Synchronizing on session");
+                        synchronized (getSession()) {
+                            if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
+                                claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
 //                            LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
+                            }
                         }
+                        LOG.debug("Finished synchronizing on session");
                     }
-                LOG.debug("Finished synchronizing on session");
-                }
-                for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
-                    claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
-                }
-                this.jObject = JSONArray.fromObject(claimsDetailsViewData);
-                totalCount = this.jObject.size();
-                return SUCCESS;
+                    for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
+                        claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
+                    }
+                    this.jObject = JSONArray.fromObject(claimsDetailsViewData);
+                    totalCount = this.jObject.size();
+                    return SUCCESS;
             } else {
                 LOG.error("Un authorised user trying to access the uploaded claims detail : file name : {}, user name : {}", bordereau.getFileName(), getAuthenticatedUser().getUserName());
                 this.getActionResponse().AddError("You do not have permission to get details of this file. Please contact CHOX support.");

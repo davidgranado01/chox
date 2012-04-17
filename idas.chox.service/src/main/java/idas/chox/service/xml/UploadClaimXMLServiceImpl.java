@@ -1,26 +1,5 @@
 package idas.chox.service.xml;
 
-import idas.chox.core.model.Bordereau;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.History;
-import idas.chox.core.model.UploadedXMLClaimsDetail;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.BordereauService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.data.services.*;
-import idas.chox.core.services.UploadClaimXMLService;
-import idas.chox.core.services.UploadedXMLClaimsDetailService;
-import idas.chox.core.util.DocumentHelper;
-import idas.chox.core.util.XMLUtils;
-import idas.chox.core.workflow.Activity;
-import idas.chox.core.xmlValidation.BordereauParseStatus;
-import idas.chox.service.workflow.ActivityFactory;
-import idas.chox.core.xmlValidation.ClaimParseStatus;
-import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.readers.BordereauReader;
-import idas.chox.service.xml.validations.BordereauSchemaValidation;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,8 +9,34 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.History;
+import idas.chox.core.model.UploadedXMLClaimsDetail;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.BordereauService;
+import idas.chox.core.services.UploadClaimXMLService;
+import idas.chox.core.services.UploadedXMLClaimsDetailService;
+import idas.chox.core.util.DocumentHelper;
+import idas.chox.core.util.XMLUtils;
+import idas.chox.core.workflow.Activity;
+import idas.chox.core.xmlValidation.BordereauParseStatus;
+import idas.chox.core.xmlValidation.ClaimParseStatus;
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.data.services.*;
+import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.xml.readers.BordereauReader;
+import idas.chox.service.xml.validations.BordereauSchemaValidation;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -42,8 +47,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private String successMessage;
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
     private BordereauSchemaValidation bordereauSchemaValidation;
-    protected static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
-    protected static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
+    private static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
+    private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
 
     @Override
@@ -78,7 +83,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     @Override
 
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
         try {
@@ -181,12 +186,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 claimResult.setValid(false);
                 claimResult.setDataValid(false);
 
-                if (ex.getMessage() != null)
+                if (ex instanceof DataIntegrityViolationException) {
+                    claimResult.getMessage().add("Some of the value provided for this claim/invoice is incorrect. Please contact Chox support.");
+                    claimResult.getClaim().setId(0);
+                } else if (ex.getMessage() != null) {
                     claimResult.getMessage().add(ex.getMessage());
-                else if (ex.getCause() != null && ex.getCause().getMessage() != null)
+                } else if (ex.getCause() != null && ex.getCause().getMessage() != null) {
                     claimResult.getMessage().add(ex.getCause().getMessage());
-                else
+                } else {
                     claimResult.getMessage().add("No error message available.");
+                }
                 return false;
             }
         } else {
@@ -314,7 +323,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
 
-        if (bordereau.isProcessed() && !bordereau.isValid()) {
+        if (bordereau.isProcessed() || !bordereau.isValid()) {
             if (!bordereau.isValid()) {
                 LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
                 setErrorMessage("Invalid Schema.");
@@ -340,7 +349,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             claimResults = formClaimResults(document);
-            totalRecord = claimResults.size();
+            totalRecord = claimResults.size(); // (or) bordereau.getTotalClaims();
         } catch (Exception ex) {
             LOG.error("Error thrown while getting claims from brodereau with id={} ", bordereau.getId(), ex);
             setErrorMessage("An unexpected error occurred while processing this Bordereau.");
@@ -348,9 +357,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
         /*
-         * processing claims begin here
-         * each claim in claimResults is processed , saved then evicted from cache one by one.
-         * xmlClaimsDetail is used to give live update to the front end by putting these details in session and for future reference it is saved in DB.
+         * processing claims begin here each claim in claimResults is processed
+         * , saved then evicted from cache one by one. xmlClaimsDetail is used
+         * to give live update to the front end by putting these details in
+         * session and for future reference it is saved in DB.
          */
         try {
             for (ClaimResult claimResult : claimResults) {
@@ -362,49 +372,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 } else {
                     xmlClaimsDetail.setValid(false);
                 }
-
-                xmlClaimsDetail.setBordereauId(bordereau.getId());
-                xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
-
-                if (!claimResult.getMessage().isEmpty()) {
-                    xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
-                } else {
-                    xmlClaimsDetail.setMessage("");
-                }
-              
-                if (claimResult.getClaim() != null && claimResult.getClaim().getHistories() != null) {
-                    LOG.debug("claim and histories is not null");
-                    String historiesMessage = "";
-
-                    for (History h : claimResult.getClaim().getHistories()) {
-
-                        if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
-                            historiesMessage += h.getNarrative() + ".,";
-                        }
-                    }
-                    xmlClaimsDetail.setBreFailureMessages(historiesMessage);
-                }else{
-                    LOG.debug("claim and histories is null");
-                    xmlClaimsDetail.setBreFailureMessages("");
-                }
-                
-                xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
-                if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
-                    xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-                    if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
-                        if (claimResult.isDuplicateClaimInSameXmlFile()) {
-                            xmlClaimsDetail.setClaimId(0);
-                            xmlClaimsDetail.setClaimStatus("N/A");
-                        } else {
-                            xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
-                            xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
-                        }
-                        evictClaim(claimResult.getClaim());
-                        LOG.debug("Claim evicted.");
-                    } else {
-                        xmlClaimsDetail.setClaimStatus("N/A");
-                    }
-                }
+                setXmlClaimDetailsProperties(xmlClaimsDetail,bordereau,claimResult);
                 claimsDetails.add(0, xmlClaimsDetail);
                 LOG.debug("Synchronizing on session");
                 synchronized (session) {
@@ -428,6 +396,35 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
          * end of processing claim.
          */
         LOG.debug("Finished processing bordereau.");
+        
+        try {
+            setBordereauProperties(totalProcessed, totalRecord, bordereau);
+            setSuccessMessage("The Bordereau has been processed successfully.");
+            uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
+            bordereauService.saveBordereau(bordereau);
+            LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
+            return true;
+        } catch (Exception ex) {
+            /*
+             * clearing session to save object(bordereau) in DB(Data Base) after
+             * spring throws DataIntegrityViolationException. Eventhough this
+             * method is not in transaction unit saving to DB(any objects) after
+             * DataIntegrityViolationException gets failed. clearing session is the
+             * only hack which i found. This need to be investigated throughly
+             * and implemented the correct functionality.
+             */
+            
+            getCurrentSession().clear();
+            bordereau = (Bordereau) getSession().load(Bordereau.class, bordereau.getId());
+            setBordereauProperties(totalProcessed, totalRecord, bordereau);
+            bordereauService.saveBordereau(bordereau);
+            LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);
+            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
+            return false;
+        }
+    }
+
+    private void setBordereauProperties(int totalProcessed, int totalRecord, Bordereau bordereau) {
         if (totalProcessed >= totalRecord) {
             bordereau.setStatus(BordereauParseStatus.ALL_UPLOADED.getDescription());
             bordereau.setDescription("All claims have been uploaded successfully");
@@ -438,18 +435,52 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereau.setStatus(BordereauParseStatus.ALL_REJECTED.getDescription());
             bordereau.setDescription("All " + totalRecord + " claims have been rejected");
         }
-        try {
-            bordereau.setProcessed(true);
-            setSuccessMessage("The Bordereau has been processed successfully.");
-            uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
-            bordereauService.saveBordereau(bordereau);
-            bordereau.setBeingProcessed(false);
-            LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
-            return true;
-        } catch (Throwable ex) {
-            LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);
-            setErrorMessage("An unexpected error has occured - please report to CHOX support.");
-            return false;
+        bordereau.setProcessed(true);
+        bordereau.setBeingProcessed(false);
+    }
+    
+    private void setXmlClaimDetailsProperties(UploadedXMLClaimsDetail xmlClaimsDetail, Bordereau bordereau, ClaimResult claimResult) {
+        xmlClaimsDetail.setBordereauId(bordereau.getId());
+        xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+
+        if (!claimResult.getMessage().isEmpty()) {
+            xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
+        } else {
+            xmlClaimsDetail.setMessage("");
+        }
+
+        if (claimResult.getClaim() != null && claimResult.getClaim().getHistories() != null) {
+            LOG.debug("claim and histories is not null");
+            String historiesMessage = "";
+
+            for (History h : claimResult.getClaim().getHistories()) {
+
+                if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
+                    historiesMessage += h.getNarrative() + ".,";
+                }
+            }
+            xmlClaimsDetail.setBreFailureMessages(historiesMessage);
+        } else {
+            LOG.debug("claim and histories is null");
+            xmlClaimsDetail.setBreFailureMessages("");
+        }
+
+        xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
+        if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+            xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+            if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                    xmlClaimsDetail.setClaimId(0);
+                    xmlClaimsDetail.setClaimStatus("N/A");
+                } else {
+                    xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                    xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                }
+                evictClaim(claimResult.getClaim());
+                LOG.debug("Claim evicted.");
+            } else {
+                xmlClaimsDetail.setClaimStatus("N/A");
+            }
         }
     }
 
@@ -572,11 +603,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setDescription("File is being processed on the server");
         bordereauService.saveBordereau(bordereau);
     }
-
+    
     private void setBordreauProcessFilureStatus(Bordereau bordereau) {
-        bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
-        bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+        bordereau.setStatus("Error");
         bordereau.setBeingProcessed(false);
+        bordereau.setProcessed(true);
+        bordereau.setDescription("Error");
         bordereauService.saveBordereau(bordereau);
     }
 

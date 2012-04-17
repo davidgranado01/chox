@@ -1,12 +1,14 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.UploadedXMLClaimsDetail;
-import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.UploadedXMLClaimsDetail;
+import idas.chox.core.services.UploadedXMLClaimsDetailService;
 
 /**
  *
@@ -28,7 +30,7 @@ public class UploadedXMLClaimsDetailServiceImpl extends SecureDataService implem
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveUploadedXMLClaimsDetails(List<? extends Object> objects) {
+    public void saveUploadedXMLClaimsDetails(List<UploadedXMLClaimsDetail> objects) {
         saveCollections(objects);
     }
 }

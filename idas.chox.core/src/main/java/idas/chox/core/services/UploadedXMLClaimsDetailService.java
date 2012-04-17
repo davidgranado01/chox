@@ -1,7 +1,8 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.UploadedXMLClaimsDetail;
 import java.util.List;
+
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 
 /**
  *
@@ -13,5 +14,5 @@ public interface UploadedXMLClaimsDetailService {
 
     public void saveUploadedXMLClaimsDetail(UploadedXMLClaimsDetail claimsDetail);
     
-    public void saveUploadedXMLClaimsDetails(List<? extends Object> objects);
+    public void saveUploadedXMLClaimsDetails(List<UploadedXMLClaimsDetail> objects);
 }

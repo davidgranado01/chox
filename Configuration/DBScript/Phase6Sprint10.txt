@@ -236,3 +236,9 @@ ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default false;
 -- End of ToDo item:  6.10.10 BRE Modifications
 ---------------------------------------------------------------------
 
+---------------------------------------------------------------------
+-- BUG#1411 Exception thrown during xml upload not propagated to UI
+---------------------------------------------------------------------
+
+ALTER TABLE uploaded_claims_detail ALTER COLUMN choreference TYPE VARCHAR; 
+
