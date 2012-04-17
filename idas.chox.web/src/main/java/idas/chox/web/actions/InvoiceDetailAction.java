@@ -1958,11 +1958,17 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
         return DateHelper.getTimeFormat().format(vehicleHire.getHireStart());
     }
-
+    
     public void setRentalStartTime(String time) {
-        if (actionSelected != reset) {
+        if (actionSelected != reset && vehicleHire != null) {
             setRentalStartTimeOriginal(getRentalStartTime());
-            setRentalStartTime(time);
+            try {
+                Date a = vehicleHire.getHireStart();
+                Date b = DateHelper.getTimeFormat().parse(time);
+                vehicleHire.setHireStart(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                LOG.error("Error setting Rental Start-time to '{}': {}", time, ex.getMessage());
+            }
         }
     }
 
@@ -1993,11 +1999,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRentalStartTimeOriginal(String time) {
         if (time != null && !time.equals(getRentalStartTimeOriginal()) && (getRentalStartTimeOriginal() == null)) {
-            if (time != null && !time.equals(getRentalStartTimeOriginal()) && (getRentalStartTimeOriginal() == null)) {
-
-                setRentalStartTimeOriginal(time);
-
+            if (vehicleHire != null) {
+                try {
+                    Date a = vehicleHire.getHireStartOriginal();
+                    Date b = DateHelper.getTimeFormat().parse(time);
+                    vehicleHire.setHireStartOriginal(DateHelper.mergeTimeToDate(a, b));
+                } catch (Exception ex) {
+                    LOG.error("Error setting Rental Start-time-original to '{}': {}", time, ex.getMessage());
+                }
             }
+
         }
 
     }
