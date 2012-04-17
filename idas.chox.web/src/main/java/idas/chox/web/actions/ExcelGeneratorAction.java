@@ -223,11 +223,11 @@ public class ExcelGeneratorAction extends BaseAction {
                     excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
                 } else {
                     if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() && inv.getHirePenaltyPercentageApplied() != null)
-                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [").concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
+                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:").concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
                     else
                         excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
                     if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
-                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
+                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [actual:").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
                     else
                         excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
                 }
