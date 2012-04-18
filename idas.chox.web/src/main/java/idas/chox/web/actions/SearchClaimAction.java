@@ -325,7 +325,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             }
 
 
-            getSession().put("searchReportCriteria", null);
+            getSession().put("searchReportCriteria", null); // why is this needed ?!?
             getSession().put("searchReportCriteria", claimSearchCriteria);
 
             LOG.debug("Calling search claim service");

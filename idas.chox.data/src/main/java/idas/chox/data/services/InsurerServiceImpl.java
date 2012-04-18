@@ -45,15 +45,13 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     }
 
     public List<Insurer> getInsurers() {
-
-        List<Insurer> insurer = new ArrayList<Insurer>();
-
+        List<Insurer> insurers = new ArrayList<Insurer>();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         criteria.addOrder(Order.asc("name"));
-        insurer = findByCriteria(criteria);
+        insurers = findByCriteria(criteria);
 
-        return insurer;
+        return insurers;
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

@@ -37,6 +37,7 @@ public interface Filter {
     public static final String FILTER_MANUAL_INVOICE_APPROVED = "ManualInvoiceBREApproved";
     public static final String FILTER_MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
     public static final String FILTER_MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
+    public static final String FILTER_ESCALATED_INVOICES_TO_SUPERVISOR = "EscalatedInvoicesToSupervisor";
 
     String getKey();
 

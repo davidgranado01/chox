@@ -1,32 +1,5 @@
 package idas.chox.data.services;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Arrays;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
-import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
@@ -46,6 +19,33 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -571,8 +571,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN) //                .createAlias("this.choband", "choband", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class)
+    		.createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
+    		.createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getIsWorkgroupCheck()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
@@ -706,6 +716,28 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
             }
         }
+        
+        if (searchCriteria.isEscalatedToSupervisor()) {
+			DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
+			auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+			auditTrail.add(Restrictions.eq("aut.reverted", false));
+			auditTrail.setProjection(Property.forName("aut.claim.id"));
+
+			criteria.add(Restrictions.conjunction()
+					.add(Restrictions.isNotNull("invoice.id"))
+					.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
+					.add(Property.forName("this.id").notIn(auditTrail)));
+
+			DetachedCriteria innerQuery = DetachedCriteria.forClass(Claim.class, "cl1");
+			innerQuery.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(c.id) as nr, c.id as id from claim c, audit_trail a "
+									+ "where c.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToInsurer' and c.insurer_id = "
+									+ getCurrentUser().getInsurer().getId()
+									+ " and a.reverted = false group by c.id ) as temp where nr >= "
+									+ getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
+			innerQuery.setProjection(Property.forName("cl1.id"));
+
+			criteria.add(Property.forName("this.id").in(innerQuery));
+        }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
             criteria.add(Restrictions.gtProperty("iv.interimPaymentMade", "iv.interimPaymentReceived"));
@@ -738,7 +770,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.like("tp.vehicleRegistration", sThirdPartyVrn).ignoreCase());
         }
 
-        if (searchCriteria.getIsOpenClaim()) {
+        if (searchCriteria.getIsOpenClaim() && !searchCriteria.isEscalatedToSupervisor() ) {
             for (String status : ClaimStatus.getCompletedStatus(true)) {
                 criteria.add(Restrictions.ne("status", status));
             }
@@ -918,7 +950,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public String getDaysWithCHOForReview(int id) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
         LOG.debug("Getting number of days claim was with CHO for review");
         double days = auditTrailService.getTimeInvoiceWithCHO(id);
         return doubleToTime(days);
@@ -926,7 +957,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public String getDaysWithInsurerForReview(int id) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
         LOG.debug("Getting number of days claim was with Insurer for review");
         double days = auditTrailService.getTimeInvoiceWithInsurer(id);
         return doubleToTime(days);
@@ -934,12 +964,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public String getDaysAwaitingLiabilityResolution(int id) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
         LOG.debug("Getting number of days claim was awaiting liability resolution");
         double days = auditTrailService.getTimeAwaitingLiabilityResolution(id);
         return doubleToTime(days);
     }
-
+    
     private String doubleToTime(double days) {
         String time = "";
 

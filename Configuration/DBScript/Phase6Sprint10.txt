@@ -239,6 +239,22 @@ ALTER TABLE bre_band ADD COLUMN hire_end_check boolean not null default false;
 ---------------------------------------------------------------------
 -- End of ToDo item:  6.10.10 BRE Modifications
 ---------------------------------------------------------------------
+----------------------------------------------------------------------
+-- 6.10.4 Escalation Of Invoices (Supervisor)
+----------------------------------------------------------------------
+insert into web_user_role (name, created_by, last_modified_by, description,type_id, is_workgroup_related, is_ownership_related, version )  
+values ('ROLE_INS_SUP',999, 999, 'Supervisor',2, true, false ,0);
+
+alter table insurer add column days_before_escalated integer;
+alter table insurer add column times_in_status_contested integer;
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('filter.EscalatedInvoicesToSupervisor',false,false);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_SUP', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MI', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
+---------------------------------------------------------------------
+-- End of ToDo item:  6.10.4 Escalation Of Invoices (Supervisor)
+---------------------------------------------------------------------
 
 ---------------------------------------------------------------------
 -- BUG#1411 Exception thrown during xml upload not propagated to UI

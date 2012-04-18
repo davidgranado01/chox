@@ -51,6 +51,8 @@ public class Insurer extends Entity implements Serializable {
     private int minimumPasswordLength;
     private boolean uploadEnabled;
     private boolean allowSubscriberClaims;
+    private Integer timesInStatusContested;
+    private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
 
     public int getMinimumPasswordLength() {
@@ -466,7 +468,23 @@ public class Insurer extends Entity implements Serializable {
         this.allowSubscriberClaims = allowSubscriberClaims;
     }
 
-    public boolean isEnableIPWhitelist() {
+	public Integer getTimesInStatusContested() {
+		return timesInStatusContested;
+	}
+
+	public void setTimesInStatusContested(Integer timesInStatusContested) {
+		this.timesInStatusContested = timesInStatusContested;
+	}
+
+	public Integer getDaysBeforeEscalated() {
+		return daysBeforeEscalated;
+	}
+
+	public void setDaysBeforeEscalated(Integer daysBeforeEscalated) {
+		this.daysBeforeEscalated = daysBeforeEscalated;
+	}
+
+	public boolean isEnableIPWhitelist() {
         return enableIPWhitelist;
     }
 

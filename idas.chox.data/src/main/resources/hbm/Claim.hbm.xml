@@ -22,8 +22,6 @@
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
-    <!--property column="is_tpi_claim" name="tpiClaim" not-null="true"/-->
-    <!--property column="is_insurer_vs_insurer_claim" name="insurerVsInsurerClaim" not-null="true"/-->
     <property column="is_tpi_claim_special_routed" name="specialRoutedTpiClaim" not-null="false"/>
     <property column="tpi_claim_status" name="tpiClaimStatus"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
@@ -31,8 +29,6 @@
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
-    <!--property column="supplementary_invoiced_claim" name="supplementaryInvoicedClaim"/-->
-    <!--property column="original_supp_inv" name="originalSupplementaryInvoicedClaim"/-->
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
