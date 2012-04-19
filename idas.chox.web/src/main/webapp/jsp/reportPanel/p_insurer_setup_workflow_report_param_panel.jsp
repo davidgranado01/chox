@@ -58,7 +58,7 @@
             <div class="form-container">
 
                 <div class="instruction-message">
-                    This report provides an insight into the outstanding work at all the various statuses that are the responsibility of the Insurer.  The report also displays the number of processed tasks during the selected period.  The dates below determine the number of tasks processed during the selected period and all the outstanding task columns are based on outstanding work as at the date selected in the 'Period To' field, the 'Period From' selection does not have an influence on the outstanding task figures.
+                    This report provides an insight into the outstanding work at all the various statuses that are the responsibility of the Insurer.  The report also displays the number of processed actions during the selected period.  The dates below determine the number of actions processed during the selected period and all the outstanding action columns are based on outstanding work as at the date selected in the 'Period To' field, the 'Period From' selection does not have an influence on the outstanding action figures.
                 </div>
 
                 <table class="report-form">

@@ -156,7 +156,7 @@
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report provides an insight into the performance of individual handlers in completing outstanding tasks at all the various statuses that are the responsibility of the Insurer. The report also displays the average invoice payment time for each handler. The dates below determine the  tasks processed during the selected period as well as the invoices that have been paid in order to determine the average invoice payment time.</div>
+                <div class="instruction-message">This report provides an insight into the performance of individual handlers in completing outstanding actions at all the various statuses that are the responsibility of the Insurer. The report also displays the average invoice payment time for each handler. The dates below determine the  actions processed during the selected period as well as the invoices that have been paid in order to determine the average invoice payment time.</div>
 
                 <table class="report-form">
 
