@@ -87,6 +87,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         object.setWeekendBufferDays(2);
         object.setAverageLabourHoursPerHireDay(4);
         object.setAverageLabourRate(40);
+        object.setNonStandardInsurancePremiumCeilingTolerance(BigDecimal.ZERO);
         return object;
     }
 
