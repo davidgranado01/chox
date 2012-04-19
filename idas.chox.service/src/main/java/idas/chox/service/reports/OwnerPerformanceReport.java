@@ -20,8 +20,7 @@ import java.io.ByteArrayOutputStream;
 public class OwnerPerformanceReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(OwnerPerformanceReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
 
@@ -150,18 +149,18 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("select ");
 
 
-                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
-                    sb.append(")  a ) as taskProcessedBetweenGivenPeriod, ");
+                    sb.append(") as taskProcessedBetweenGivenPeriod, ");
 
 
 
-                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -169,11 +168,11 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate");
                     sb.append(" and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 2 ");
-                    sb.append(")  a ) as taskCompleted0_2days, ");
+                    sb.append(") as taskCompleted0_2days, ");
 
 
 
-                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -181,11 +180,11 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
                     sb.append(" and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 5 and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 2 ");
-                    sb.append(")  a ) as taskCompleted2_5days, ");
+                    sb.append(") as taskCompleted2_5days, ");
 
 
 
-                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -193,10 +192,10 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
                     sb.append(" and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 15 and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 5 ");
-                    sb.append(")  a ) as taskCompleted5_15days, ");
+                    sb.append(") as taskCompleted5_15days, ");
 
 
-                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -204,7 +203,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
                     sb.append(" and (EXTRACT(DAY FROM(a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 15 ");
-                    sb.append(")  a ) as taskCompletedAfter15days, ");
+                    sb.append(") as taskCompletedAfter15days, ");
 
 
 
