@@ -114,6 +114,14 @@
                                                 <li><a href="javascript:renderParameterPanel('OwnerPerformanceReport-Excel');">Claim Owner Performance Report</a></li>
                                             </s:else>
                                         </s:if>
+                                        <s:if test="reportAccessibility.handlerPerformanceReportAccessibility">
+                                            <s:if test="insurerIsWorkgroupEnabled">
+                                                <li><a href="javascript:renderParameterPanel('HandlerPerformanceReport-Excel');">Workgroup and Handler Performance Report</a></li>
+                                            </s:if>
+                                            <s:else>
+                                                <li><a href="javascript:renderParameterPanel('HandlerPerformanceReport-Excel');">Handler Performance Report</a></li>
+                                            </s:else>
+                                        </s:if>
                                     </s:if>
 
                                 </ul>

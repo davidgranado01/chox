@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    var reportName = 'OwnerPerformanceReport-Excel';
+    var reportName = 'HandlerPerformanceReport-Excel';
 
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
@@ -12,7 +12,7 @@
 
         
 
-        var claimOwnerPerformanceReader = new Ext.data.JsonReader({
+        var claimHandlerPerformanceReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
                             fields:
@@ -22,10 +22,10 @@
                             ]
         });
 
-        var claimOwnerPerformanceStore = new Ext.data.Store({
+        var claimHandlerPerformanceStore = new Ext.data.Store({
                             proxy : new Ext.data.HttpProxy
                             ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
-                            reader : claimOwnerPerformanceReader,
+                            reader : claimHandlerPerformanceReader,
                             listeners: {load: function() {
 
                                           var  defaultName={'name':'--- All ---','id':-1}
@@ -34,10 +34,10 @@
             }
         });
 
-        var claimOwnerPerformanceCombo = new Ext.form.ComboBox({
-                            store : claimOwnerPerformanceStore,
+        var claimHandlerPerformanceCombo = new Ext.form.ComboBox({
+                            store : claimHandlerPerformanceStore,
                             width: 250,
-                            renderTo: 'rptOwnerPerformanceOwnerSelectionHolder',
+                            renderTo: 'rptHandlerPerformanceOwnerSelectionHolder',
                             valueField : 'id',
                             displayField :'name',
                             hiddenName: 'ownerId',
@@ -54,7 +54,7 @@
         });
 
         <s:if test="insurerIsWorkgroupEnabled">
-            var ownerPerformanceWorkgroupJsonReader = new Ext.data.JsonReader({
+            var handlerPerformanceWorkgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
                                 root: 'results',
                                 fields:
@@ -64,10 +64,10 @@
                                 ]
             });
 
-            var  ownerPerformanceWorkgroupStore = new Ext.data.Store({
+            var  handlerPerformanceWorkgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
                                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
-                                reader :  ownerPerformanceWorkgroupJsonReader,
+                                reader :  handlerPerformanceWorkgroupJsonReader,
                                 listeners: {load: function() {
 
                                           var  defaultValue={'value':'--- All ---','id':1}
@@ -76,9 +76,9 @@
             }
             });
 
-            var  ownerPerformanceWorkgroupCombo = new Ext.form.ComboBox({
-                                store:  ownerPerformanceWorkgroupStore,
-                                renderTo: 'rptOwnerPerformanceWrkgroupSelectionHolder',
+            var  handlerPerformanceWorkgroupCombo = new Ext.form.ComboBox({
+                                store:  handlerPerformanceWorkgroupStore,
+                                renderTo: 'rptHandlerPerformanceWrkgroupSelectionHolder',
                                 valueField: 'text',
                                 hiddenName: 'workgroupId',
                                 displayField:'value',
@@ -91,28 +91,28 @@
                                 forceSelection : true,
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
-                                                        if (ownerPerformanceWorkgroupCombo.getValue() != null) {
-                                                            workgroupId = ownerPerformanceWorkgroupCombo.getValue();
+                                                        if (handlerPerformanceWorkgroupCombo.getValue() != null) {
+                                                            workgroupId = handlerPerformanceWorkgroupCombo.getValue();
                                                         }
 //                                                        var insurerId = $("#userInsurerId").val();
-                                                        claimOwnerPerformanceCombo.reset();
-                                                        claimOwnerPerformanceStore.removeAll();
-                                                        claimOwnerPerformanceStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                                        claimHandlerPerformanceCombo.reset();
+                                                        claimHandlerPerformanceStore.removeAll();
+                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                                                     },
                                             blur: function () {
                                                     if(this.getRawValue() == "" ) {
                                                         this.clearValue(); this.reset();
-                                                        claimOwnerPerformanceCombo.reset();
-                                                        claimOwnerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                                        claimHandlerPerformanceCombo.reset();
+                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                                                   }
                                 }}
                         });
-            ownerPerformanceWorkgroupStore.load();
+            handlerPerformanceWorkgroupStore.load();
         </s:if>
-        claimOwnerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
-        $("form#formReportParam").validate(
+        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+        $("form#formHandlerPerformanceReportParam").validate(
         {
-            errorLabelContainer: "#formReportParamMessageBox",
+            errorLabelContainer: "#formHandlerPerformanceReportParamMessageBox",
             rules: {
                 startDate:{
                     required:true,
@@ -138,8 +138,8 @@
 
     function openReport()
     {
-//        if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
+//        if($("form#formHandlerPerformanceReportParam").valid()){
+            var queryString = $('#formHandlerPerformanceReportParam').formSerialize();
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.indexOf('workgroupId=&') >= 0)
                 queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
@@ -149,14 +149,14 @@
 
 </script>
 <fieldset class="x-fieldset">
-    <legend>Claim Owner Performance Report</legend>
-    <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+    <legend>Handler Performance Report</legend>
+    <form id="formHandlerPerformanceReportParam" class="XXentity-form" name="formHandlerPerformanceReportParam" action="POST">
 
 
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report provides an insight into the performance of individual handlers in completing outstanding actions at all the various statuses that are the responsibility of the Insurer. The report also displays the average invoice payment time for each handler. The dates below determine the  actions processed during the selected period as well as the invoices that have been paid in order to determine the average invoice payment time.</div>
+                <div class="instruction-message">This report provides an insight into the performance of individual handlers in completing outstanding actions at all the various statuses that are the responsibility of the Insurer.  This report looks at the handler who processed the action and not necessarily the owner of the claim. The report also displays the average invoice payment time for each handler. The dates below determine the actions processed during the selected period as well as the invoices that have been paid in order to determine the average invoice payment time.</div>
 
                 <table class="report-form">
 
@@ -164,7 +164,7 @@
                         <tr>
                             <td nowrap><label>Workgroup</label></td>
                             <td>
-                                <div id="rptOwnerPerformanceWrkgroupSelectionHolder"></div>
+                                <div id="rptHandlerPerformanceWrkgroupSelectionHolder"></div>
                             </td>
                         </tr>
                     </s:if>
@@ -174,7 +174,7 @@
                         <tr>
                             <td nowrap><label>Claim Owner</label></td>
                             <td>
-                                <div id="rptOwnerPerformanceOwnerSelectionHolder"></div>
+                                <div id="rptHandlerPerformanceOwnerSelectionHolder"></div>
                             </td>
                         </tr>
                     <tr>
@@ -187,10 +187,10 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" id="OPRPPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="HPRPPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
                 </div>
 
             </div>
-            <div id="formReportParamMessageBox" class="action-error-msg"></div>
+            <div id="formHandlerPerformanceReportParamMessageBox" class="action-error-msg"></div>
         </div></form>
 </fieldset>

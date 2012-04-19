@@ -1,25 +1,27 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimStatus;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.OwnerPerformanceLineItem;
-import idas.chox.service.reports.viewdata.OwnerPerformanceReportObject;
-import java.io.ByteArrayOutputStream;
+import idas.chox.service.reports.viewdata.HandlerPerformanceLineItem;
+import idas.chox.service.reports.viewdata.HandlerPerformanceReportObject;
 
-public class OwnerPerformanceReport implements Report {
+public class HandlerPerformanceReport implements Report {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OwnerPerformanceReport.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HandlerPerformanceReport.class);
     private Map externalParameter;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
@@ -78,7 +80,7 @@ public class OwnerPerformanceReport implements Report {
             }
 
 
-            List<OwnerPerformanceReportObject> performanceReportObjects = new ArrayList<OwnerPerformanceReportObject>();
+            List<HandlerPerformanceReportObject> performanceReportObjects = new ArrayList<HandlerPerformanceReportObject>();
             if (isWorkgroupEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
@@ -96,19 +98,19 @@ public class OwnerPerformanceReport implements Report {
                 List result = baseDataService.externalQuery(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
-                    OwnerPerformanceReportObject performanceReportObject = new OwnerPerformanceReportObject();
+                    HandlerPerformanceReportObject performanceReportObject = new HandlerPerformanceReportObject();
                     performanceReportObject.setWorkgroup(data.get("name").toString());
                     performanceReportObject.setId((Integer) data.get("id"));
                     performanceReportObjects.add(performanceReportObject);
                     LOG.debug("Workgroup added: {}", performanceReportObject.getWorkgroup());
                 }
             } else {
-                OwnerPerformanceReportObject performanceReportObject = new OwnerPerformanceReportObject();
+                HandlerPerformanceReportObject performanceReportObject = new HandlerPerformanceReportObject();
                 performanceReportObjects.add(performanceReportObject);
                 LOG.debug("Empty Workgroup added.");
             }
 
-            for (OwnerPerformanceReportObject obj : performanceReportObjects) {
+            for (HandlerPerformanceReportObject obj : performanceReportObjects) {
                 LOG.debug("Getting members of workgroup: {}", obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
                 StringBuffer sb = new StringBuffer();
@@ -142,14 +144,14 @@ public class OwnerPerformanceReport implements Report {
                     } else {
                         first = false;
                     }
-                    OwnerPerformanceLineItem performanceLineItem = OwnerPerformanceLineItem.getObject(data);
+                    HandlerPerformanceLineItem performanceLineItem = HandlerPerformanceLineItem.getObject(data);
                     LOG.debug("Getting stats for user: {}", performanceLineItem.getName());
                     // Now construct query to get claim owner stats
                     sb = new StringBuffer();
                     sb.append("select ");
 
 
-                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -160,7 +162,7 @@ public class OwnerPerformanceReport implements Report {
 
 
 
-                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -172,7 +174,7 @@ public class OwnerPerformanceReport implements Report {
 
 
 
-                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -184,7 +186,7 @@ public class OwnerPerformanceReport implements Report {
 
 
 
-                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -195,7 +197,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append(") as taskCompleted5_15days, ");
 
 
-                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select count(*) from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -207,7 +209,7 @@ public class OwnerPerformanceReport implements Report {
 
 
 
-                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select (EXTRACT(DAY FROM(a1.update_date - i.created_date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))) as total_day  from claim c, audit_trail a1, invoice i where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select (EXTRACT(DAY FROM(a1.update_date - i.created_date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))) as total_day  from claim c, audit_trail a1, invoice i where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -219,7 +221,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append(")  a ) as avgInvoicePaymentDay, ");
 
 
-                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select (EXTRACT(DAY FROM(a1.update_date - a2.update_date))- COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) as avg_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select (EXTRACT(DAY FROM(a1.update_date - a2.update_date))- COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) as avg_day from claim c, audit_trail a1, audit_trail a2 where a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -230,7 +232,7 @@ public class OwnerPerformanceReport implements Report {
 
 
                     sb.append("(select avg(original_total_to_pay) from (select i.original_full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -243,7 +245,7 @@ public class OwnerPerformanceReport implements Report {
 
 
                     sb.append("(select avg(total_to_pay) from (select i.total_to_pay as total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -260,6 +262,7 @@ public class OwnerPerformanceReport implements Report {
                     if (isWorkgroupEnabled) {
                         queryParameters.put("pWorkgroupId", obj.getId());
                     }
+                    queryParameters.put("pInsurerId", insurerId);
                     queryParameters.put("pOwnerId", performanceLineItem.getId());
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
@@ -288,7 +291,7 @@ public class OwnerPerformanceReport implements Report {
             reportParameters.put("endDate", endDate);
             reportParameters.put("performanceLineItems", performanceReportObjects);
         } catch (Exception ex) {
-            LOG.error("Error thrown generating owner-performance report: {}", ex.getMessage());
+            LOG.error("Error thrown generating handler-performance report: {}", ex.getMessage());
 //            ex.printStackTrace();
         }
 
@@ -303,9 +306,9 @@ public class OwnerPerformanceReport implements Report {
     public String getReportTemplateFileName() {
         user = ((WebUser) externalParameter.get("CurrentUser"));
         if (user.getInsurer().isWorkgroupEnable()) {
-            return "template_WorkgroupOwnerPerformanceReport.xls";
+            return "template_WorkgroupHandlerPerformanceReport.xls";
         } else {
-            return "template_OwnerPerformanceReport.xls";
+            return "template_HandlerPerformanceReport.xls";
         }
     }
 
@@ -317,6 +320,6 @@ public class OwnerPerformanceReport implements Report {
 
     @Override
     public String getReportCode() {
-        return "RPT056";
+        return "RPT057";
     }
 }
