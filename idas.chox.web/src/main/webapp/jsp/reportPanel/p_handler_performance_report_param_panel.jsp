@@ -1,0 +1,196 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+
+    var reportName = 'HandlerPerformanceReport-Excel';
+
+    Ext.onReady(function(){
+        var insurerId = <s:property value="userOrganisationId"/>;
+        ui.dateField('startDate',getTodayDate(),'dateFromDiv');
+        ui.dateField('endDate',getTodayDate(),'dateToDiv');
+
+        
+
+        var claimHandlerPerformanceReader = new Ext.data.JsonReader({
+                            totalProperty: 'totalCount',
+                            root: 'results',
+                            fields:
+                            [
+                                {name:'id'},
+                                {name:'name'}
+                            ]
+        });
+
+        var claimHandlerPerformanceStore = new Ext.data.Store({
+                            proxy : new Ext.data.HttpProxy
+                            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+                            reader : claimHandlerPerformanceReader,
+                            listeners: {load: function() {
+
+                                          var  defaultName={'name':'--- All ---','id':-1}
+                                          this.insert(0, new Ext.data.Record(defaultName));
+                }
+            }
+        });
+
+        var claimHandlerPerformanceCombo = new Ext.form.ComboBox({
+                            store : claimHandlerPerformanceStore,
+                            width: 250,
+                            renderTo: 'rptHandlerPerformanceOwnerSelectionHolder',
+                            valueField : 'id',
+                            displayField :'name',
+                            hiddenName: 'ownerId',
+                            typeAhead : true,
+                            mode : 'local',
+                            triggerAction: 'all',
+                            emptyText : '--- All ---',
+                            forceSelection : true,
+                            listeners: { blur: function () {
+                                            if(this.getRawValue() == "" ) {
+                                                this.clearValue(); this.reset();
+                                               }
+                               }}
+        });
+
+        <s:if test="insurerIsWorkgroupEnabled">
+            var handlerPerformanceWorkgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
+            });
+
+            var  handlerPerformanceWorkgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                                reader :  handlerPerformanceWorkgroupJsonReader,
+                                listeners: {load: function() {
+
+                                          var  defaultValue={'value':'--- All ---','id':1}
+                                          this.insert(0, new Ext.data.Record(defaultValue));
+                }
+            }
+            });
+
+            var  handlerPerformanceWorkgroupCombo = new Ext.form.ComboBox({
+                                store:  handlerPerformanceWorkgroupStore,
+                                renderTo: 'rptHandlerPerformanceWrkgroupSelectionHolder',
+                                valueField: 'text',
+                                hiddenName: 'workgroupId',
+                                displayField:'value',
+                                width: 250,
+                                typeAhead: true,
+//                                autoWidth: true,
+                                mode: 'local',
+                                triggerAction: 'all',
+                                emptyText: '--- All ---',
+                                forceSelection : true,
+                                listeners: {select: function () {
+                                                        var workgroupId = -1;
+                                                        if (handlerPerformanceWorkgroupCombo.getValue() != null) {
+                                                            workgroupId = handlerPerformanceWorkgroupCombo.getValue();
+                                                        }
+//                                                        var insurerId = $("#userInsurerId").val();
+                                                        claimHandlerPerformanceCombo.reset();
+                                                        claimHandlerPerformanceStore.removeAll();
+                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                                    },
+                                            blur: function () {
+                                                    if(this.getRawValue() == "" ) {
+                                                        this.clearValue(); this.reset();
+                                                        claimHandlerPerformanceCombo.reset();
+                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                                  }
+                                }}
+                        });
+            handlerPerformanceWorkgroupStore.load();
+        </s:if>
+        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+        $("form#formHandlerPerformanceReportParam").validate(
+        {
+            errorLabelContainer: "#formHandlerPerformanceReportParamMessageBox",
+            rules: {
+                startDate:{
+                    required:true,
+                    dateITA: true
+                },
+                endDate:{
+                    required:true,
+                    dateITA: true
+                }
+            },
+            messages: {
+                startDate: {
+                    required:"A value must be supplied for 'Date From'",
+                    dateITA:"You must supply a date value 'Date From'"
+                },
+                endDate: {
+                    required:"A value must be supplied for 'Date To'",
+                    dateITA:"You must supply a date value 'Date To'"
+                }
+            }
+        });
+    });
+
+    function openReport()
+    {
+//        if($("form#formHandlerPerformanceReportParam").valid()){
+            var queryString = $('#formHandlerPerformanceReportParam').formSerialize();
+            // If no workgroup selected, insert a '-1' into the query string
+            if (queryString.indexOf('workgroupId=&') >= 0)
+                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+            generateReport(queryString);
+//        }
+    }
+
+</script>
+<fieldset class="x-fieldset">
+    <legend>Handler Performance Report</legend>
+    <form id="formHandlerPerformanceReportParam" class="XXentity-form" name="formHandlerPerformanceReportParam" action="POST">
+
+
+        <div class="x-panel-bwrap chox-form-container">
+            <div class="form-container">
+
+                <div class="instruction-message">This report provides an insight into the performance of individual handlers in completing outstanding actions at all the various statuses that are the responsibility of the Insurer.  This report looks at the handler who processed the action and not necessarily the owner of the claim. The report also displays the average invoice payment time for each handler. The dates below determine the actions processed during the selected period as well as the invoices that have been paid in order to determine the average invoice payment time.</div>
+
+                <table class="report-form">
+
+                    <s:if test="insurerIsWorkgroupEnabled">
+                        <tr>
+                            <td nowrap><label>Workgroup</label></td>
+                            <td>
+                                <div id="rptHandlerPerformanceWrkgroupSelectionHolder"></div>
+                            </td>
+                        </tr>
+                    </s:if>
+                    <s:else>
+                        <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
+                    </s:else>
+                        <tr>
+                            <td nowrap><label>Claim Owner</label></td>
+                            <td>
+                                <div id="rptHandlerPerformanceOwnerSelectionHolder"></div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                    </tr>
+                    <tr>
+                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                    </tr>
+
+                </table>
+
+                <div class="chox-report-button">
+                    <button type="button" id="HPRPPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
+                </div>
+
+            </div>
+            <div id="formHandlerPerformanceReportParamMessageBox" class="action-error-msg"></div>
+        </div></form>
+</fieldset>

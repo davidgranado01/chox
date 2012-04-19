@@ -29,6 +29,7 @@ public class ReportAccessibility {
     private short teamPerformanceReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
     private short invoiceStatusReportAccessibility;
+    private short handlerPerformanceReportAccessibility;
 
 
     //BRE Invoice Approval Dispute Report
@@ -59,6 +60,7 @@ public class ReportAccessibility {
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
         breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
         invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
+        handlerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_PERFORMANCE_REPORT, user);
 
 
 
@@ -99,6 +101,8 @@ public class ReportAccessibility {
             accessibility = getOwnerWorkflowReportAccessibility();
         else if (reportCode.equals("RPT056"))
             accessibility = getOwnerPerformanceReportAccessibility();
+        else if (reportCode.equals("RPT057"))
+            accessibility = getHandlerPerformanceReportAccessibility();
         else if (reportCode.equals("RPT022"))
             accessibility = getTeamWorkflowReportAccessibility();
         else if (reportCode.equals("RPT055"))
@@ -180,6 +184,14 @@ public class ReportAccessibility {
         return ownerPerformanceReportAccessibility;
     }
 
+    public short getHandlerPerformanceReportAccessibility() {
+        return handlerPerformanceReportAccessibility;
+    }
+
+    public void setHandlerPerformanceReportAccessibility(short handlerPerformanceReportAccessibility) {
+        this.handlerPerformanceReportAccessibility = handlerPerformanceReportAccessibility;
+    }
+    
     public short getTeamWorkflowReportAccessibility() {
         return teamWorkflowReportAccessibility;
     }

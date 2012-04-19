@@ -118,6 +118,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
     public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
     public static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
+    public static final String REPORT_HANDLER_PERFORMANCE_REPORT = "HandlerPerformanceReport";
     //BRE Invoice Approval Report
     public static final String REPORT_BRE_INVOICE_APPROVAL_DISPUTE = "BreInvoiceApprovalDisputeReport";
     public static final String REPORT_TEAM_SITE_BRE_REPORT = "TeamSiteBreWorkflowReport";
