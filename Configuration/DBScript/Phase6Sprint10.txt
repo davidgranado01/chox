@@ -262,11 +262,9 @@ insert into accessibility_item (role, access_right, accessibility_id) values ('R
 
 ALTER TABLE uploaded_claims_detail ALTER COLUMN choreference TYPE VARCHAR; 
 
-
 --------------------------------------------------------------------------
 -- ToDo item:  6.10.8 Performance Reports To Show Who Processed The Task
 --------------------------------------------------------------------------
-
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('report.HandlerPerformanceReport',false,false,false,true);
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'report.HandlerPerformanceReport';
@@ -274,3 +272,14 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'report.HandlerPerformanceReport';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'report.HandlerPerformanceReport';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.HandlerPerformanceReport';
+---------------------------------------------------------------------
+-- 6.10.6 New Handler Task Report
+---------------------------------------------------------------------
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)values('report.IncomingHandlerActionsReport',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'report.IncomingHandlerActionsReport';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'report.IncomingHandlerActionsReport';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'report.IncomingHandlerActionsReport';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'report.IncomingHandlerActionsReport';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.IncomingHandlerActionsReport';
+
