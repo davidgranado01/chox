@@ -1500,21 +1500,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     public List<ReasonOfRejection> getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
         }
         return reasonOfClaimRejections;
     }
     
     public List<ReasonOfRejection> getReasonOfClaimRejectionsRestricted() {
         if (reasonOfClaimRejectionsRestricted == null) {
-            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getAuthenticatedUser().getInsurer().getId().intValue());
+            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getInsurerIdForReasonOfRejection());
         }
         return reasonOfClaimRejectionsRestricted;
     }
     
     public JSONArray getJsonReasonOfClaimRejectionDesc() {
     	if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
         }
     	List<LookupItem> rorItems = new ArrayList<LookupItem>();
     	for (ReasonOfRejection ror : reasonOfClaimRejections) {
@@ -1525,14 +1525,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List<ReasonOfRejection> getReasonOfInvoiceRejections() {
         if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection());
         }
         return reasonOfInvoiceRejections;
     }
     
     public JSONArray getJsonReasonOfInvoiceRejectionDesc() {
     	if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getAuthenticatedUser().getInsurer().getId().intValue());
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection());
         }
     	List<LookupItem> rorItems = new ArrayList<LookupItem>();
     	for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
@@ -2137,5 +2137,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 		if(interimPaymentMade == null)
 			interimPaymentMade = BigDecimal.ZERO;
 		return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
+	}
+	
+	/**
+	 * Returns Insurer's id (in case of chox admin we get Insurer's id from claim)
+	 * return int id
+	 */
+	private int getInsurerIdForReasonOfRejection(){
+	    int id = -1;
+	    if(getAuthenticatedUser().getInsurer() != null)
+	        id = getAuthenticatedUser().getInsurer().getId().intValue();
+	    if(claim.getInsurer() != null)
+	        id = claim.getInsurer().getId().intValue();
+	    return id;
 	}
 }
