@@ -721,6 +721,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 			DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
 			auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
 			auditTrail.add(Restrictions.eq("aut.reverted", false));
+			auditTrail.add(Restrictions.eqProperty("aut.claim.id", "this.id"));
 			auditTrail.setProjection(Property.forName("aut.claim.id"));
 
 			criteria.add(Restrictions.conjunction()
