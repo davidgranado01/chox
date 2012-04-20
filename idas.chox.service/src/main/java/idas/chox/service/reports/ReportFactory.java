@@ -22,6 +22,7 @@ public class ReportFactory {
     private static String INVOICE_STATUS_RPT = "InvoiceStatusReport-Excel";
     private static String WORKGROUP_OWNER_BRE_RPT = "WorkgroupOwnerBreInvoiceReport-Excel";
     private static String TEAM_SITE_BRE_INVOICE_RPT = "TeamSiteBreInvoiceReport-Excel";
+    private static String NEW_INCOMING_HANDLER_ACTIONS_RPT = "NewIncomingHandlerActionsReport-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -59,13 +60,14 @@ public class ReportFactory {
             report = new InsurerSetupWorkflowReport();
         } else if (name.equalsIgnoreCase(BRE_INVOICE_APPROVAL_DISPUTE_RPT)){
             report = new BreInvoiceApprovalDisputeReport();
-        }
-        else if (name.equalsIgnoreCase(INVOICE_STATUS_RPT)){
+        } else if (name.equalsIgnoreCase(INVOICE_STATUS_RPT)){
             report = new InvoiceStatusReport();
-        }else if (name.equalsIgnoreCase(WORKGROUP_OWNER_BRE_RPT)){
+        } else if (name.equalsIgnoreCase(WORKGROUP_OWNER_BRE_RPT)){
             report = new WorkgroupOwnerBreInvoiceReport();
-        }else if (name.equalsIgnoreCase(TEAM_SITE_BRE_INVOICE_RPT)){
+        } else if (name.equalsIgnoreCase(TEAM_SITE_BRE_INVOICE_RPT)){
             report = new TeamSiteBreInvoiceReport();
+        } else if (name.equalsIgnoreCase(NEW_INCOMING_HANDLER_ACTIONS_RPT)){
+            report = new NewIncomingHandlerActionsReport();
         }
 
         return report;

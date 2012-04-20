@@ -772,7 +772,7 @@
             <result name="InvoiceStatusReport-Excel">/jsp/reportPanel/p_invoice_status_report_panel.jsp</result>
             <result name="TeamSiteBreInvoiceReport-Excel">/jsp/reportPanel/p_team_site_bre_report_panel.jsp</result>
             <result name="WorkgroupOwnerBreInvoiceReport-Excel">/jsp/reportPanel/p_workgroup_owner_bre_invoice_report.jsp</result>
-            
+            <result name="NewIncomingHandlerActionsReport-Excel">/jsp/reportPanel/p_new_incoming_handler_action_report.jsp</result>
         </action>
         <action name="downloadExcelReport" class="idas.chox.web.actions.ReportAction" method="downloadReport">
             <result name="success" type="stream">

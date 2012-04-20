@@ -11,7 +11,6 @@ import idas.chox.core.model.WebUser;
 public class ReportAccessibility {
     private static final Logger LOG = LoggerFactory.getLogger(ReportAccessibility.class);
 
-//    private short weeklyOverviewAccessibility;
     private short invoiceSummaryAccessibility;
     private short insurerWeeklySummaryAccessibility;
     private short claimRejectionAccessibility;
@@ -29,10 +28,9 @@ public class ReportAccessibility {
     private short teamPerformanceReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
     private short invoiceStatusReportAccessibility;
-
+    private short newIncomingHandlerActionsAccessibility;
 
     //BRE Invoice Approval Dispute Report
-
     private short breInvoiceApprovalDisputeReportAccessibility;
     
     private short teamSiteBreReportAccessibility;
@@ -40,7 +38,6 @@ public class ReportAccessibility {
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
-//        weeklyOverviewAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WEEKLY_OVERVIEW, user);
         invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, user);
         insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY, user);
         claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, user);
@@ -59,11 +56,9 @@ public class ReportAccessibility {
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
         breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
         invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
-
-
-
         teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
         workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
+        newIncomingHandlerActionsAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_ACTIONS_REPORT, user);
         
     }
 
@@ -85,8 +80,8 @@ public class ReportAccessibility {
             accessibility = getOverviewSummaryAccessibility();
         else if (reportCode.equals("RPT006"))
             accessibility = getInsurerAverageClaimSettlementReportAccessibility();
-//        else if (reportName.equals("RPT018"))
-//            accessibility = getWeeklyOverviewAccessibility();
+        else if (reportCode.equals("RPT058"))
+            accessibility = getNewIncomingHandlerActionsAccessibility();
         else if (reportCode.equals("RPT010"))
             accessibility = getBillingChoReportAccessibility();
         else if (reportCode.equals("RPT009"))
@@ -109,7 +104,6 @@ public class ReportAccessibility {
             accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
         else if (reportCode.equals("RPT025"))
             accessibility = getInvoiceStatusReportAccessibility();
-
         else if(reportCode.equals("RPT031"))
             accessibility = getTeamSiteBreReportAccessibility();
         else if(reportCode.equals("RPT032"))
@@ -147,10 +141,6 @@ public class ReportAccessibility {
     public short getInvoiceSummaryAccessibility() {
         return invoiceSummaryAccessibility;
     }
-
-//    public short getWeeklyOverviewAccessibility() {
-//        return weeklyOverviewAccessibility;
-//    }
 
     public short getInsurerWeeklySummaryAccessibility() {
         return insurerWeeklySummaryAccessibility;
@@ -214,4 +204,9 @@ public class ReportAccessibility {
     public short getWorkgroupOwnerBreReportAccessibility() {
         return workgroupOwnerBreReportAccessibility;
     }
+
+    public short getNewIncomingHandlerActionsAccessibility() {
+        return newIncomingHandlerActionsAccessibility;
+    }
+
 }
