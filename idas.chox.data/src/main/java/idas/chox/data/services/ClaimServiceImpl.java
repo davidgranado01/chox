@@ -772,7 +772,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.like("tp.vehicleRegistration", sThirdPartyVrn).ignoreCase());
         }
 
-        if (searchCriteria.getIsOpenClaim() && !searchCriteria.isEscalatedToSupervisor() ) {
+        if (searchCriteria.getIsOpenClaim()) {
             for (String status : ClaimStatus.getCompletedStatus(true)) {
                 criteria.add(Restrictions.ne("status", status));
             }
