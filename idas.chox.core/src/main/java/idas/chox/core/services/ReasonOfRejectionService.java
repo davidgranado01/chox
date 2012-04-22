@@ -1,5 +1,6 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.ReasonOfRejection;
 import java.util.List;
 
@@ -10,5 +11,9 @@ public interface ReasonOfRejectionService {
     public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, Boolean status, Boolean restricted);
 
     public int getInvoiceLiabilityDisputeReasonId(int insurerId);
+
+    public void createDefaultRecord(Insurer insurer);
+    
+    public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection);
 
 }

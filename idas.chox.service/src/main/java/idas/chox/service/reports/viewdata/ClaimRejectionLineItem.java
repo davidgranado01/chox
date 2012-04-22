@@ -10,7 +10,7 @@ public class ClaimRejectionLineItem {
     private Integer id;
     private String name;
     private String displayName;
-    private List<ClaimRejectionLineItemDetail> ReportColumns = new ArrayList<ClaimRejectionLineItemDetail>();
+    private List<ClaimRejectionLineItemDetail> reportColumns = new ArrayList<ClaimRejectionLineItemDetail>();
     private Integer allOrgClaimCount;
     private BigDecimal allOrgClaimCountPerc;
 
@@ -31,11 +31,11 @@ public class ClaimRejectionLineItem {
     }
 
     public List<ClaimRejectionLineItemDetail> getReportColumns() {
-        return ReportColumns;
+        return reportColumns;
     }
 
-    public void setReportColumns(List<ClaimRejectionLineItemDetail> ReportColumns) {
-        this.ReportColumns = ReportColumns;
+    public void setReportColumns(List<ClaimRejectionLineItemDetail> reportColumns) {
+        this.reportColumns = reportColumns;
     }
 
     public String getDisplayName() {

@@ -11,4 +11,6 @@ public interface ReasonOfRejectionTemplateService {
     public List<ReasonOfRejectionTemplate> getAllReasonOfRejectionTemplate(String type, Boolean status, Boolean restricted);
 
     public int getDefaultInvoiceLiabilityDisputeReasonId();
+
+    public List<ReasonOfRejectionTemplate> getReasonOfRejectionTemplates();
 }

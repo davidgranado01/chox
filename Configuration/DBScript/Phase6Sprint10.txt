@@ -49,9 +49,9 @@ DROP FUNCTION populate_desc();
 --UPDATES THE EXISTING REFERENCES TO THE REASON_OF_REJECTION_TABLE
 ----------------------------------------------------------------
 UPDATE claim c
-SET reason_of_rejection_id = (SELECT id FROM reason_of_rejection WHERE insurer_id = c.insurer_id 
-AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = c.reason_of_rejection_id)
- and type = 'Claim');
+SET reason_of_rejection_id = (SELECT id FROM reason_of_rejection WHERE insurer_id = c.insurer_id
+ AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = c.reason_of_rejection_id)
+ AND type = 'Claim');
 
 UPDATE invoice i
 SET reason_of_rejection_id = (SELECT id FROM reason_of_rejection WHERE insurer_id = (SELECT insurer_id FROM claim WHERE invoice_id = i.id)
@@ -65,7 +65,7 @@ SET invoice_reason_of_rejection = (SELECT id FROM reason_of_rejection WHERE insu
  
 UPDATE audit_trail au
 SET claim_reason_of_rejection = (SELECT id FROM reason_of_rejection WHERE insurer_id = (SELECT insurer_id FROM claim WHERE id = au.claim_id)
- AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = au.invoice_reason_of_rejection)
+ AND name = (SELECT name FROM reason_of_rejection_template WHERE  id = au.claim_reason_of_rejection)
  AND type = 'Claim');
  
 DELETE FROM reason_of_rejection WHERE insurer_id IS null;

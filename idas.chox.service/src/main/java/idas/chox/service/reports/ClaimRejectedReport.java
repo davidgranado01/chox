@@ -105,7 +105,6 @@ public class ClaimRejectedReport implements Report {
 
         } catch (Exception ex) {
             LOG.error("Exception thrown: {}", ex.getMessage());
-//            ex.printStackTrace();
         }
 
         return reportParameters;
