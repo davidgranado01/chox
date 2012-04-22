@@ -572,14 +572,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = getSession().createCriteria(Claim.class)
-    		.createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-    		.createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
@@ -718,26 +718,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.isEscalatedToSupervisor()) {
-			DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-			auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-			auditTrail.add(Restrictions.eq("aut.reverted", false));
-			auditTrail.add(Restrictions.eqProperty("aut.claim.id", "this.id"));
-			auditTrail.setProjection(Property.forName("aut.claim.id"));
+            DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
+            auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+            auditTrail.add(Restrictions.eq("aut.reverted", false));
+            auditTrail.add(Restrictions.eqProperty("aut.claim.id", "this.id"));
+            auditTrail.setProjection(Property.forName("aut.claim.id"));
 
-			criteria.add(Restrictions.conjunction()
-					.add(Restrictions.isNotNull("invoice.id"))
-					.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-					.add(Property.forName("this.id").notIn(auditTrail)));
-
-			DetachedCriteria innerQuery = DetachedCriteria.forClass(Claim.class, "cl1");
-			innerQuery.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(c.id) as nr, c.id as id from claim c, audit_trail a "
-									+ "where c.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToInsurer' and c.insurer_id = "
-									+ getCurrentUser().getInsurer().getId()
-									+ " and a.reverted = false group by c.id ) as temp where nr >= "
-									+ getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
-			innerQuery.setProjection(Property.forName("cl1.id"));
-
-			criteria.add(Property.forName("this.id").in(innerQuery));
+            DetachedCriteria innerQuery = DetachedCriteria.forClass(Claim.class, "cl1");
+            innerQuery.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(c.id) as nr, c.id as id from claim c, audit_trail a "
+                                    + "where c.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToInsurer' and c.insurer_id = "
+                                    + getCurrentUser().getInsurer().getId()
+                                    + " and a.reverted = false group by c.id ) as temp where nr >= "
+                                    + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
+            innerQuery.setProjection(Property.forName("cl1.id"));
+            
+            criteria.add(Restrictions.disjunction()
+                    .add(Restrictions.conjunction()
+                            .add(Restrictions.eqProperty("this.invoice.id","iv.id"))
+                            .add(Restrictions.isNotNull("invoice.id"))
+                            .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
+                            .add(Property.forName("this.id").notIn(auditTrail)))
+                    .add(Property.forName("this.id").in(innerQuery)));
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
