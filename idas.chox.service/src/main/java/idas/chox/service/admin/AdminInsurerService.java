@@ -20,6 +20,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
@@ -48,6 +49,7 @@ public class AdminInsurerService extends SecureDataService {
     private VehicleClassService vehicleClassService;
     private UserService userService;
     private ClaimService claimService;
+    private ReasonOfRejectionService reasonOfRejectionService;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -102,6 +104,7 @@ public class AdminInsurerService extends SecureDataService {
                 }
                 insurerAliasService.createDefaultRecord(insurer);
                 breBandService.createDefaultRecord(insurer);
+                reasonOfRejectionService.createDefaultRecord(insurer);
 
                 this.actionResponse.AssignNewIdResult(insurer.getId());
             }
@@ -504,4 +507,9 @@ public class AdminInsurerService extends SecureDataService {
         this.userService = userService;
     }
     // </editor-fold>
+
+    public void setReasonOfRejectionService(
+            ReasonOfRejectionService reasonOfRejectionService) {
+        this.reasonOfRejectionService = reasonOfRejectionService;
+    }
 }

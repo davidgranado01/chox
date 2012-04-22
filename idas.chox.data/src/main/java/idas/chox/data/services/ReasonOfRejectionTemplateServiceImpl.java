@@ -1,8 +1,10 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.ReasonOfRejectionTemplate;
 import idas.chox.core.services.ReasonOfRejectionTemplateService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -35,5 +37,16 @@ public class ReasonOfRejectionTemplateServiceImpl extends SecureDataService impl
         criteria.add(Restrictions.eq("name", "Liability Dispute")).add(Restrictions.eq("type", "Invoice"));
         ReasonOfRejectionTemplate reason = (ReasonOfRejectionTemplate)getByCriteria(criteria);
         return reason.getId();
+    }
+
+    @Override
+    public List<ReasonOfRejectionTemplate> getReasonOfRejectionTemplates() {
+        List<ReasonOfRejectionTemplate> reasonOfRejectionTemplates = new ArrayList<ReasonOfRejectionTemplate>();
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejectionTemplate.class);
+        criteria.addOrder(Order.asc("name"));
+        reasonOfRejectionTemplates = findByCriteria(criteria);
+
+        return reasonOfRejectionTemplates;
     }
 }

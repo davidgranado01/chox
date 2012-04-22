@@ -10,11 +10,6 @@ public class WeekSummary {
     private Integer claimsBFwd = 0;
     private Integer claimsCFwd = 0;
     private Integer claimsNotification = 0;
-    private Integer reopenClaims = 0;
-    private Integer claimsOutOfScope = 0;
-    private Integer rejectedClaims = 0;
-    private Integer nonThisInsurerClaims = 0;
-    private Integer insurerClaimsClosed = 0;
     private Integer claimsPaid = 0;
     private Integer claimsNotificationContestedByInsurer = 0;
     private BigDecimal claimsContestedAsPercentageOfChox = new BigDecimal(0.00);
@@ -40,11 +35,6 @@ public class WeekSummary {
         result.setClaimsBFwd(getIntegerValue(data.get("claimsBFwd".toLowerCase())));
         result.setClaimsCFwd(getIntegerValue(data.get("claimsCFwd".toLowerCase())));
         result.setClaimsNotification(getIntegerValue(data.get("claimsNotification".toLowerCase())));
-        result.setReopenClaims(getIntegerValue(data.get("reopenClaims".toLowerCase())));
-        result.setClaimsOutOfScope(getIntegerValue(data.get("claimsOutOfScope".toLowerCase())));
-        result.setRejectedClaims(getIntegerValue(data.get("rejectedClaims".toLowerCase())));
-        result.setNonThisInsurerClaims(getIntegerValue(data.get("nonThisInsurerClaims".toLowerCase())));
-        result.setInsurerClaimsClosed(getIntegerValue(data.get("insurerClaimsClosed".toLowerCase())));
         result.setClaimsPaid(getIntegerValue(data.get("claimsPaid".toLowerCase())));
         result.setClaimsNotificationContestedByInsurer(getIntegerValue(data.get("claimsNotificationContestedByInsurer".toLowerCase())));
         result.setClaimsPendingByInsurer(getIntegerValue(data.get("claimsPendingByInsurer".toLowerCase())));
@@ -71,30 +61,7 @@ public class WeekSummary {
         }
     }
 
-    public Integer getReopenClaims() {
-        return reopenClaims;
-    }
-
-    public void setReopenClaims(Integer reopenClaims) {
-        this.reopenClaims = reopenClaims;
-    }
-
-    public Integer getRejectedClaims() {
-        return rejectedClaims;
-    }
-
-    public void setRejectedClaims(Integer rejectedClaims) {
-        this.rejectedClaims = rejectedClaims;
-    }
-
-    public Integer getInsurerClaimsClosed() {
-        return insurerClaimsClosed;
-    }
-
-    public void setInsurerClaimsClosed(Integer insurerClaimsClosed) {
-        this.insurerClaimsClosed = insurerClaimsClosed;
-    }
-
+  
     public Integer getClaimsBFwd() {
         return claimsBFwd;
     }
@@ -110,10 +77,6 @@ public class WeekSummary {
     public void setClaimsCFwd(Integer claimsCFwd) {
         this.claimsCFwd = claimsCFwd;
     }
-
-//    public Integer getClaimsCFwd() {
-//        return claimsBFwd + claimsNotification + reopenClaims - claimsOutOfScope - rejectedClaims - nonThisInsurerClaims - insurerClaimsClosed - claimsPaid;
-//    }
     
     public void setClaimsContestedAsPercentageOfChox(BigDecimal claimsContestedAsPercentageOfChox) {
         this.claimsContestedAsPercentageOfChox = claimsContestedAsPercentageOfChox;
@@ -181,14 +144,6 @@ public class WeekSummary {
 
     public void setClaimsNotificationContestedByInsurer(Integer claimsNotificationContestedByInsurer) {
         this.claimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer;
-    }
-
-    public Integer getClaimsOutOfScope() {
-        return claimsOutOfScope;
-    }
-
-    public void setClaimsOutOfScope(Integer claimsOutOfScope) {
-        this.claimsOutOfScope = claimsOutOfScope;
     }
 
     public Integer getClaimsPaid() {
@@ -262,14 +217,6 @@ public class WeekSummary {
 
     public void setInvoicePendingByInsurer(Integer invoicePendingByInsurer) {
         this.invoicePendingByInsurer = invoicePendingByInsurer;
-    }
-
-    public Integer getNonThisInsurerClaims() {
-        return nonThisInsurerClaims;
-    }
-
-    public void setNonThisInsurerClaims(Integer nonThisInsurerClaims) {
-        this.nonThisInsurerClaims = nonThisInsurerClaims;
     }
 
     public String getWeekCycleDate() {
