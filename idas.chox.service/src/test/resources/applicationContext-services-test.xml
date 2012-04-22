@@ -80,6 +80,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
+          <property name="reasonOfRejectionTemplateService" ref="reasonOfRejectionTemplateService"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfRejectionTemplateService" class="idas.chox.data.services.ReasonOfRejectionTemplateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" scope="prototype">
@@ -168,6 +172,7 @@
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="breBandOrganisationService" ref="breBandOrganisationService" />
         <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+        <property name="reasonOfRejectionService" ref="reasonOfRejectionService"/>
         <property name="insurerAliasService" ref="insurerAliasService" />
         <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
         <property name="sessionFactory" ref="sessionFactory"/>
