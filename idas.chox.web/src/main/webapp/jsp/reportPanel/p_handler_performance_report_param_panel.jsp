@@ -172,7 +172,7 @@
                         <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
                     </s:else>
                         <tr>
-                            <td nowrap><label>Claim Owner</label></td>
+                            <td nowrap><label>Claim Handler</label></td>
                             <td>
                                 <div id="rptHandlerPerformanceOwnerSelectionHolder"></div>
                             </td>
