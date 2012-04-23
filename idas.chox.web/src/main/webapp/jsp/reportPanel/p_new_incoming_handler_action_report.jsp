@@ -47,12 +47,11 @@
 		
 		 var invSumRepClaimOwnerStore = new Ext.data.Store({
 		     proxy : new Ext.data.HttpProxy
-		     ({url : "<%=request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+		     ({url : "<%=request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"handlerWorkgroupId":-1,"insurerId":insurerId}}),
 		        reader : invSumRepClaimOwnerReader,
 		        listeners: {load: function() {
-		
 		                var  defaultName={'name':'--- ALL ---','id':-1}
-		                                      this.insert(0, new Ext.data.Record(defaultName));
+		                this.insert(0, new Ext.data.Record(defaultName));
 		            }
 		        }
 		                    
@@ -61,10 +60,11 @@
 		    var invSumRepClaimOwnerCombo = new Ext.form.ComboBox({
 		        store : invSumRepClaimOwnerStore,
 		        width: 250,
-		        renderTo: 'rptInvSumOwnerSelectionHolder',
+		        renderTo: 'nhrInvSumOwnerSelectionHolder',
+		        id : 'nhRepOwnerCombo',
 		        valueField : 'id',
 		        displayField :'name',
-		        hiddenName: 'ownerId',
+		        hiddenName: 'nhrOwnerId',
 		        valueNotFoundText : '--- ALL ---',
 		        typeAhead : true,
 		        mode : 'local',
@@ -97,43 +97,40 @@
 		            ({url : "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
 		            reader :  invSumRepWorkgroupJsonReader,
 		            listeners: {load: function() {
-		
 		                    var  defaultValue={'value':'--- ALL ---','id':1}
-		                                          this.insert(0, new Ext.data.Record(defaultValue));
+		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
 		        });
 		
 		        var  invSumRepWorkgroupCombo = new Ext.form.ComboBox({
 		            store:  invSumRepWorkgroupStore,
-		            renderTo: 'wrkgroupSelectionHolder',
+		            renderTo: 'nhrWrkgroupHolder',
 		            valueField: 'text',
-		            id: 'invSumRepWorkgroupComboId',
-		            hiddenName: 'workgroupId',
+		            id: 'nhRepWorkgroupComboId',
+		            hiddenName: 'handlerWorkgroupId',
 		            displayField:'value',
 		            width: 250,
 		            valueNotFoundText : '--- ALL ---',
 		            typeAhead: true,
-		            //                                autoWidth: true,
 		            mode: 'local',
 		            triggerAction : 'all',
 		            forceSelection : true,
 		            listeners: {select: function () {
-		                    var workgroupId = -1;
+		                    var handlerWorkgroupId = -1;
 		                    if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
-		                        workgroupId = invSumRepWorkgroupCombo.getValue();
+		                        handlerWorkgroupId = invSumRepWorkgroupCombo.getValue();
 		                    }
-		                    //                                                        var insurerId = $("#userInsurerId").val();
 		                    invSumRepClaimOwnerCombo.reset();
 		                    invSumRepClaimOwnerCombo.setValue('--- ALL ---');
 		                    invSumRepClaimOwnerStore.removeAll();
-		                    invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+		                    invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":handlerWorkgroupId,"insurerId":insurerId}});
 		                },
 		                blur: function () {
 		                    if(this.getRawValue() == "" ) {
 		                        this.clearValue(); this.reset();
 		                        invSumRepClaimOwnerCombo.reset();
-		                        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+		                        invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":-1,"insurerId":insurerId}});
 		                    }
 		                },
 		                afterrender : function(){
@@ -143,7 +140,7 @@
 		        });
 		        invSumRepWorkgroupStore.load();
 		</s:if>
-		        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+		        invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":-1,"insurerId":insurerId}});
 		
 		        var suppliersJsonReader = new Ext.data.JsonReader({
 		            totalProperty: 'totalCount',
@@ -160,20 +157,19 @@
 		            data : mysuppliers,
 		            reader : suppliersJsonReader,
 		            listeners: {load: function() {
-		
 		                    var  defaultValue={'value':'--- ALL ---','id':1}
-		                                          this.insert(0, new Ext.data.Record(defaultValue));
+		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
 		        });
 		
 		        var supplierCombo = new Ext.form.ComboBox({
 		            store : suppliersStore,
-		            id : 'ISRPPSupplierCombo',
-		            renderTo: 'choDropDownDiv',
+		            id : 'nhRepPSupplierCombo',
+		            renderTo: 'nhrChoDropDownDiv',
 		            width: 250,
 		            valueField : 'text',
-		            hiddenName: 'supplierId',
+		            hiddenName: 'nhrSuppliserId',
 		            displayField :'value',
 		            typeAhead : true,
 		            mode : 'local',
@@ -203,7 +199,6 @@
             }
         }
     
-    
 </script>
 
 <fieldset class="x-fieldset">
@@ -228,19 +223,21 @@
                         <td nowrap><label>Credit Hire Organisation</label></td>
 
                         <td>
-                            <div id="choDropDownDiv"></div>
+                            <div id="nhrChoDropDownDiv"></div>
                         </td>
                     </tr>
+                    <s:if test="insurerIsWorkgroupEnabled">
 					<tr>
 						<td nowrap><label>Workgroup</label></td>
 						<td>
-							<div id="wrkgroupSelectionHolder"></div>
+							<div id="nhrWrkgroupHolder"></div>
 						</td>
 					</tr>
+					</s:if>
 					<tr>
 						<td nowrap><label>Claim Owner</label></td>
 						<td>
-							<div id="rptInvSumOwnerSelectionHolder"></div>
+							<div id="nhrInvSumOwnerSelectionHolder"></div>
 						</td>
 					</tr>
 					<tr>
