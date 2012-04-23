@@ -309,7 +309,7 @@
                     var supplierClaimOwnerIds = Ext.getCmp('searchScreenSupplierClaimOwnerComboId').getValue().split(",");
 
                 var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
-                var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
+                var showOpenClaimsOnly = Ext.query('*[name$=showOpenClaimsOnly]')[0].checked;
                 var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
                 var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
                 var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
@@ -343,7 +343,7 @@
                     claimOwnerIds : claimOwnerIds,
                     supplierClaimOwnerIds : supplierClaimOwnerIds,
                     customerVrn : customerVrn,
-                    isOpenClaim : isOpenClaim,
+                    showOpenClaimsOnly : showOpenClaimsOnly,
                     penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                     liabilityStatuses : liabilityStatuses,
                     claimTypes : claimTypes,

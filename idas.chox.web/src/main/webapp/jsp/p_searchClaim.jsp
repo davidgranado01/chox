@@ -164,11 +164,11 @@
             });
 
             var openClaimsCheckBox = new Ext.form.Checkbox({
-                name:'isOpenClaim',
-                id:'isOpenClaimId',
-                value:'<s:property value="isOpenClaim"/>',
+                name:'showOpenClaimsOnly',
+                id:'showOpenClaimsOnlyId',
+                value:'<s:property value="showOpenClaimsOnly"/>',
                 renderTo:'showOpenClaimsFieldId',
-                checked: <s:property value="isOpenClaim"/>,
+                checked: <s:property value="showOpenClaimsOnly"/>,
                 listeners:{
                     check:function (el, e) {
                         if(e.keyCode == e.ENTER) {
@@ -1210,7 +1210,7 @@
             });
 
             $('#searchForm').contents().find(':checkbox').each(function() {
-                if(this.id=='isOpenClaimId'){
+                if(this.id=='showOpenClaimsOnlyId'){
                     this.checked = true;
                 }else {
                     this.checked = false;

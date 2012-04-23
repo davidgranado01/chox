@@ -15,6 +15,7 @@ public class FilterInterimPayment extends BaseFilter {
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
+        claimSearchCriteria.setIsShowOpenClaimsOnly(true);
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
