@@ -101,7 +101,7 @@
                                             <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
                                         </s:if>
                                          <s:if test="reportAccessibility.newIncomingHandlerActionsAccessibility">
-                                            <li><a href="javascript:renderParameterPanel('NewIncomingHandlerActionsReport-Excel');">New Incoming Handler Task Report</a></li>
+                                            <li><a href="javascript:renderParameterPanel('NewIncomingHandlerActionsReport-Excel');">New Incoming Actions Report</a></li>
                                         </s:if>
                                     </s:if>
                                     <s:if test="reportAccessibility.teamPerformanceReportAccessibility || reportAccessibility.ownerPerformanceReportAccessibility ">

@@ -208,7 +208,7 @@
 
 <fieldset class="x-fieldset">
 
-    <legend>New Handler Task Report</legend>
+    <legend>New Incoming Actions Report</legend>
 
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
@@ -216,16 +216,21 @@
 
             <div class="form-container">
 
-				<div class="instruction-message">
-				    This report looks at new
-					work/tasks that are coming into handlers and will be run over a
-					specific period. It will simply show the number of claims that
-					moved into one of the below statuses during the selected period and
-					will count reverted claims and if the same claim has come in to the
-					same status one or more times.
+				<div class="instruction-message">This report provides details
+					on the number of new handler actions across a specified period,
+					this allows an assessment of the volume of new work coming into
+					handlers. The dates below determine the period from which the
+					incoming work was received.
 				</div>
 
 				<table class="report-form">
+				    <tr>
+                        <td nowrap><label>Credit Hire Organisation</label></td>
+
+                        <td>
+                            <div id="choDropDownDiv"></div>
+                        </td>
+                    </tr>
 					<tr>
 						<td nowrap><label>Workgroup</label></td>
 						<td>
@@ -239,18 +244,11 @@
 						</td>
 					</tr>
 					<tr>
-						<td nowrap><label>Credit Hire Organisation</label></td>
-
-						<td>
-							<div id="choDropDownDiv"></div>
-						</td>
-					</tr>
-					<tr>
-						<td nowrap width="30%"><label>Handler Task Created From</label></td>
+						<td nowrap width="30%"><label>Period From</label></td>
 						<td><div id="dateFromDiv" /></td>
 					</tr>
 					<tr>
-						<td nowrap><label>Handler Task Created To</label></td>
+						<td nowrap><label>Period To</label></td>
 						<td><div id="dateToDiv" /></td>
 					</tr>
 				</table>
