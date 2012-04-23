@@ -20,6 +20,7 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
     public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
 
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
+        claimSearchCriteria.setIsShowOpenClaimsOnly(true);
         claimSearchCriteria.setLiabilityStatusUpdated(true);
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());

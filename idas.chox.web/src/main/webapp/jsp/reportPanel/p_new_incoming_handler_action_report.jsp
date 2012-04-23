@@ -208,7 +208,7 @@
 
 <fieldset class="x-fieldset">
 
-    <legend>New Handler Task Report</legend>
+    <legend>New Incoming Actions Report</legend>
 
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 

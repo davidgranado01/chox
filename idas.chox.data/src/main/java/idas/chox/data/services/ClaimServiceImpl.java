@@ -689,14 +689,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getIsPenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_CONTESTED));
+// The below statuses can be removed as they are covered by the the 'showOpenClaimsOnly' flag
+// However, we'll keep them in for now as this will be faster
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_CONTESTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_alert_qty+1)*30"));
             criteria.add(Restrictions.disjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE)).add(Restrictions.conjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE)).add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
@@ -717,6 +719,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
+        
         if (searchCriteria.isEscalatedToSupervisor()) {
             DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
             auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
@@ -734,8 +737,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             
             criteria.add(Restrictions.disjunction()
                     .add(Restrictions.conjunction()
-                            .add(Restrictions.eqProperty("this.invoice.id","iv.id"))
-                            .add(Restrictions.isNotNull("invoice.id"))
                             .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
                             .add(Property.forName("this.id").notIn(auditTrail)))
                     .add(Property.forName("this.id").in(innerQuery)));
@@ -772,7 +773,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.like("tp.vehicleRegistration", sThirdPartyVrn).ignoreCase());
         }
 
-        if (searchCriteria.getIsOpenClaim()) {
+        if (searchCriteria.isShowOpenClaimsOnly()) {
             for (String status : ClaimStatus.getCompletedStatus(true)) {
                 criteria.add(Restrictions.ne("status", status));
             }

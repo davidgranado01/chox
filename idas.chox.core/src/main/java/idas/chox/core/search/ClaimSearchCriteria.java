@@ -50,7 +50,7 @@ public class ClaimSearchCriteria implements Serializable {
     private String dir;
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
-    private boolean isOpenClaim = true;
+    private boolean showOpenClaimsOnly = true;
     private boolean isSupplementaryInvoiceOnly;
     private boolean penaltyChargesAppliedOnly;
     private Set<Integer> claimOwnerIds;;
@@ -98,7 +98,7 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("dir=").append(dir).append("\n")
                 .append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom).append("\n")
                 .append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n")
-                .append("isOpenClaim=").append(isOpenClaim).append("\n");
+                .append("isOpenClaim=").append(showOpenClaimsOnly).append("\n");
        if (claimOwnerIds != null)
                 sb.append("claimOwnerIds=").append(Arrays.toString(claimOwnerIds.toArray())).append("\n");
        if (supplierClaimOwnerIds != null)                 
@@ -454,12 +454,13 @@ public class ClaimSearchCriteria implements Serializable {
             this.supplierClaimOwnerIds = supplierClaimOwnerIds;
     }
     
-    public boolean getIsOpenClaim() {
-        return isOpenClaim;
+    public boolean isShowOpenClaimsOnly() {
+        return showOpenClaimsOnly;
     }
 
-    public void setIsOpenClaim(boolean isOpenClaim) {
-        this.isOpenClaim = isOpenClaim;
+    
+    public void setIsShowOpenClaimsOnly(boolean showOpenClaimsOnly) {
+        this.showOpenClaimsOnly = showOpenClaimsOnly;
     }
 
     /**
