@@ -23,6 +23,9 @@ ALTER TABLE reason_of_rejection_template DROP COLUMN version;
 ALTER TABLE reason_of_rejection ADD COLUMN insurer_id integer;
 ALTER TABLE reason_of_rejection ADD CONSTRAINT insurer_id_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+GRANT SELECT ON TABLE reason_of_rejection_template TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE reason_of_rejection_template_id_seq TO chox_user;
+
 ----------------------------------------------------------------
 --POPULATES THE REASON_OF_REJECTION TABLE FOR EACH INSURER
 ----------------------------------------------------------------
