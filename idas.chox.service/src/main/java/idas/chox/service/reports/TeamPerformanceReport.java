@@ -56,13 +56,13 @@ public class TeamPerformanceReport implements Report{
             LOG.debug("rptInsurerName={}", rptInsurerName);
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equals("--- ALL ---"))
+                    if (selectedSite.equals("--- ALL ---") || selectedSite.equals("") || selectedSite.equals("undefined"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equals("--- ALL ---"))
+                    if (selectedTeam.equals("--- ALL ---") || selectedTeam.equals("") || selectedTeam.equals("undefined"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
@@ -78,6 +78,9 @@ public class TeamPerformanceReport implements Report{
                 LOG.debug("endDate={}", endDate.toString());
             }
 
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
 
             // First, update user service stats for Workgroup
            // baseDataService.query("select update_user_service(" + insurerId + ")");

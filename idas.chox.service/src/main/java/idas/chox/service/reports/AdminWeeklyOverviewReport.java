@@ -91,6 +91,9 @@ public class AdminWeeklyOverviewReport implements Report {
 
             if(((String[]) externalParameter.get("DateStart"))!=null){
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            } 
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
             String userOrgLabel = "";

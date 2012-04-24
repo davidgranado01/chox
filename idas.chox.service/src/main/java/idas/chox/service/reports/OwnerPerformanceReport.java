@@ -77,6 +77,9 @@ public class OwnerPerformanceReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
 
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
 
             List<OwnerPerformanceReportObject> performanceReportObjects = new ArrayList<OwnerPerformanceReportObject>();
             if (isWorkgroupEnabled) {

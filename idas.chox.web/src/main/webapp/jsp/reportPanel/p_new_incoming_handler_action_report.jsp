@@ -15,6 +15,13 @@
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
                 DateStart:{
+                	max:function(){
+                        var sd = Ext.get('DateStart').getValue().split("/");
+                        var ed = Ext.get('DateEnd').getValue().split("/");
+                        var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+                        if(time > 0)
+                            return true;
+                    },
                     required:true,
                     dateITA: true
                 },
@@ -25,6 +32,7 @@
             },
             messages: {
                 DateStart: {
+                	max:"'Date to' can't be before 'Date From'",
                     required:"A value must be supplied for 'Handler Task Created From'",
                     dateITA:"You must supply a date value 'Handler Task Created From'"
                 },
@@ -47,7 +55,7 @@
 		
 		 var invSumRepClaimOwnerStore = new Ext.data.Store({
 		     proxy : new Ext.data.HttpProxy
-		     ({url : "<%=request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"handlerWorkgroupId":-1,"insurerId":insurerId}}),
+		     ({url : "<%=request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
 		        reader : invSumRepClaimOwnerReader,
 		        listeners: {load: function() {
 		                var  defaultName={'name':'--- ALL ---','id':-1}
@@ -64,7 +72,7 @@
 		        id : 'nhRepOwnerCombo',
 		        valueField : 'id',
 		        displayField :'name',
-		        hiddenName: 'nhrOwnerId',
+		        hiddenName: 'ownerId',
 		        valueNotFoundText : '--- ALL ---',
 		        typeAhead : true,
 		        mode : 'local',
@@ -108,7 +116,7 @@
 		            renderTo: 'nhrWrkgroupHolder',
 		            valueField: 'text',
 		            id: 'nhRepWorkgroupComboId',
-		            hiddenName: 'handlerWorkgroupId',
+		            hiddenName: 'workgroupId',
 		            displayField:'value',
 		            width: 250,
 		            valueNotFoundText : '--- ALL ---',
@@ -117,20 +125,20 @@
 		            triggerAction : 'all',
 		            forceSelection : true,
 		            listeners: {select: function () {
-		                    var handlerWorkgroupId = -1;
+		                    var workgroupId = -1;
 		                    if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
-		                        handlerWorkgroupId = invSumRepWorkgroupCombo.getValue();
+		                        workgroupId = invSumRepWorkgroupCombo.getValue();
 		                    }
 		                    invSumRepClaimOwnerCombo.reset();
 		                    invSumRepClaimOwnerCombo.setValue('--- ALL ---');
 		                    invSumRepClaimOwnerStore.removeAll();
-		                    invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":handlerWorkgroupId,"insurerId":insurerId}});
+		                    invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
 		                },
 		                blur: function () {
 		                    if(this.getRawValue() == "" ) {
 		                        this.clearValue(); this.reset();
 		                        invSumRepClaimOwnerCombo.reset();
-		                        invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":-1,"insurerId":insurerId}});
+		                        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
 		                    }
 		                },
 		                afterrender : function(){
@@ -140,7 +148,7 @@
 		        });
 		        invSumRepWorkgroupStore.load();
 		</s:if>
-		        invSumRepClaimOwnerStore.load({ params : {"handlerWorkgroupId":-1,"insurerId":insurerId}});
+		        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
 		
 		        var suppliersJsonReader = new Ext.data.JsonReader({
 		            totalProperty: 'totalCount',
@@ -169,7 +177,7 @@
 		            renderTo: 'nhrChoDropDownDiv',
 		            width: 250,
 		            valueField : 'text',
-		            hiddenName: 'nhrSuppliserId',
+		            hiddenName: 'nhrSupplierId',
 		            displayField :'value',
 		            typeAhead : true,
 		            mode : 'local',

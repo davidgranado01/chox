@@ -68,7 +68,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             if ((externalParameter.get("supplierId")) != null) {
                 supplierId = ((String[]) externalParameter.get("supplierId"))[0];
                 LOG.debug("Team site bre invoice report supplieriD ={}", supplierId);
-                if (!supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
+                if (!supplierId.equalsIgnoreCase("undefined") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("Team site bre invoice report selectedChoId ={}", selectedCHOId);
 //                    selectedOrgId = iSupplierId;
@@ -78,13 +78,13 @@ public class TeamSiteBreInvoiceReport implements Report {
 
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equalsIgnoreCase("--- ALL ---"))
+                    if (selectedSite.equalsIgnoreCase("--- ALL ---") || selectedSite.equalsIgnoreCase("") || selectedSite.equalsIgnoreCase("undefined"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equalsIgnoreCase("--- ALL ---"))
+                    if (selectedTeam.equalsIgnoreCase("--- ALL ---") || selectedTeam.equalsIgnoreCase("") || selectedTeam.equalsIgnoreCase("undefined"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
@@ -100,6 +100,9 @@ public class TeamSiteBreInvoiceReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
 
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
            
             // First, update user service stats for Workgroup
 //            baseDataService.query("select update_user_service(" + insurerId + ")");
@@ -110,11 +113,11 @@ public class TeamSiteBreInvoiceReport implements Report {
             queryParameters.put("pInsurerId", insurerId);
             StringBuilder sb = new StringBuilder();
             sb.append("select distinct site from workgroup where insurer_id = :pInsurerId and status = true ");
-            if (selectedSite != null && selectedSite.length() > 0) {
+            if (selectedSite != null) {
                 sb.append("and site = :pSite ");
                 queryParameters.put("pSite", selectedSite);
             }
-            if (selectedTeam != null && selectedTeam.length() > 0) {
+            if (selectedTeam != null) {
                     queryParameters.put("pTeam", selectedTeam);
                     sb.append("and team = :pTeam ");
             }

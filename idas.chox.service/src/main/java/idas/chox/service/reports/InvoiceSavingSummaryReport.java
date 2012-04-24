@@ -52,6 +52,10 @@ public class InvoiceSavingSummaryReport implements Report {
             final Date dataStart = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateStart"))[0]);
             Date dataEnd = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
+            
+            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+                throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
+            }
 
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
             final String chOrganisationId = ((String[]) externalParameter.get("chOrganisationId"))[0];

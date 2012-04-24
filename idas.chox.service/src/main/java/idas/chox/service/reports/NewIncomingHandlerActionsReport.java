@@ -65,25 +65,28 @@ public class NewIncomingHandlerActionsReport implements Report {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 endDate = DateHelper.setEndOfDay(endDate);
             }
-            if (((String[]) externalParameter.get("nhrOwnerId")) != null) {
-                String ownerId = ((String[]) externalParameter.get("nhrOwnerId"))[0];
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
+            if (((String[]) externalParameter.get("ownerId")) != null) {
+                String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
                 if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
-                    selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("nhrOwnerId"))[0]);
+                    selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                     LOG.debug("selectedOwnerId={}", selectedOwnerId);
                 }
             }
-            if (((String[]) externalParameter.get("nhrSuppliserId")) != null) {
-                String selectedCHO = ((String[]) externalParameter.get("nhrSuppliserId"))[0];
+            if (((String[]) externalParameter.get("nhrSupplierId")) != null) {
+                String selectedCHO = ((String[]) externalParameter.get("nhrSupplierId"))[0];
                 if (!selectedCHO.equalsIgnoreCase("undefined") && !selectedCHO.equalsIgnoreCase("") && !selectedCHO.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(selectedCHO);
                     LOG.debug("selectedCHOId={}", selectedOwnerId);
                 }
             }
             if (isWorkgroupEnabled) {
-                if (((String[]) externalParameter.get("handlerWorkgroupId")) != null) {
-                    String workgropId = ((String[]) externalParameter.get("handlerWorkgroupId"))[0];
+                if (((String[]) externalParameter.get("workgroupId")) != null) {
+                    String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
                     if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
-                        selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("handlerWorkgroupId"))[0]);
+                        selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                         LOG.debug("selectedWorkgroupId={}", selectedWorkgroupId);
                     }
                 }
