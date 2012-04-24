@@ -58,13 +58,13 @@ public class TeamWorkflowReport implements Report {
             LOG.debug("rptInsurerName={}", rptInsurerName);
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equals("--- ALL ---"))
+                    if (selectedSite.equals("--- ALL ---") || selectedSite.equals("") || selectedSite.equals("undefined"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equals("--- ALL ---"))
+                    if (selectedTeam.equals("--- ALL ---") || selectedTeam.equals("") || selectedTeam.equals("undefined"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
@@ -78,6 +78,10 @@ public class TeamWorkflowReport implements Report {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
                 endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
+            }
+            
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
             if(((String[]) externalParameter.get("serviceCommencingDate"))!=null){
@@ -94,11 +98,11 @@ public class TeamWorkflowReport implements Report {
             queryParameters.put("pInsurerId", insurerId);
             StringBuffer sb = new StringBuffer();
             sb.append("select distinct site from workgroup where insurer_id = :pInsurerId and status = true ");
-            if (selectedSite != null && selectedSite.length() > 0) {
+            if (selectedSite != null) {
                 sb.append("and site = :pSite ");
                 queryParameters.put("pSite", selectedSite);
             }
-            if (selectedTeam != null && selectedTeam.length() > 0) {
+            if (selectedTeam != null) {
                     queryParameters.put("pTeam", selectedTeam);
                     sb.append("and team = :pTeam ");
             }

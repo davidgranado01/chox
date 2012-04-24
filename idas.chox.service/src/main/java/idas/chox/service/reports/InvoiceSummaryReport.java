@@ -127,6 +127,10 @@ public class InvoiceSummaryReport implements Report {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
+            
+            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+                throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
+            }
 
             String supplierId = "";
             String insurerId = "";
@@ -161,7 +165,7 @@ public class InvoiceSummaryReport implements Report {
 
                 if ((externalParameter.get("supplierId")) != null) {
                     supplierId = ((String[]) externalParameter.get("supplierId"))[0];
-                    if (!supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!supplierId.equalsIgnoreCase("undefined") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                         iSupplierId = TextHelper.getId(supplierId);
                         selectedOrgId = iSupplierId;
                         selectedOrgName = getChorganisation(iSupplierId).getName();
@@ -171,7 +175,7 @@ public class InvoiceSummaryReport implements Report {
                 if (isWorkgroupEnabled) {
                     if (((String[]) externalParameter.get("workgroupId")) != null) {
                         String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
-                        if (!workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                        if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
                             selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                             if(getWorkgroup(selectedWorkgroupId).getName()!=null){
                               selectedWorkgroupName = getWorkgroup(selectedWorkgroupId).getName();  
@@ -187,7 +191,7 @@ public class InvoiceSummaryReport implements Report {
 
                 if (((String[]) externalParameter.get("ownerId")) != null) {
                     String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                    if (!ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
                         selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                         if(getClaimOwner(selectedOwnerId).getDisplayName()!=null && getClaimOwner(selectedOwnerId).getInsurer().getId().compareTo(currentUser.getInsurer().getId())==0){
                            selectedClaimOwnerName = getClaimOwner(selectedOwnerId).getDisplayName();
@@ -212,7 +216,7 @@ public class InvoiceSummaryReport implements Report {
 
                 if ((externalParameter.get("insurerId")) != null) {
                     insurerId = ((String[]) externalParameter.get("insurerId"))[0];
-                    if (!insurerId.equalsIgnoreCase("") && !insurerId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!insurerId.equalsIgnoreCase("undefined") && !insurerId.equalsIgnoreCase("") && !insurerId.equalsIgnoreCase("--- ALL ---")) {
                         iInsurerId = TextHelper.getId(insurerId);
                         selectedOrgId = iInsurerId;
                         selectedOrgName = getInsurer(iInsurerId).getName();

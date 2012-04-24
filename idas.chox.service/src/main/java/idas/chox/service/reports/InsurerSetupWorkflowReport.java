@@ -61,9 +61,6 @@ public class InsurerSetupWorkflowReport implements Report {
 
             if (((String[]) externalParameter.get("startDate")) != null) {
                 startDate = DateHelper.Parse(((String[]) externalParameter.get("startDate"))[0]);
-//                startDate.setHours(0);
-//                startDate.setMinutes(0);
-//                startDate.setSeconds(0);
                 LOG.debug("startDate={}", startDate.toString());
             }
 
@@ -73,6 +70,10 @@ public class InsurerSetupWorkflowReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
 
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
+            
             List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
 
             List<String> statuses = ClaimStatus.getInsurerOutstandingStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),

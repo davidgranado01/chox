@@ -86,6 +86,10 @@ public class OwnerWorkflowReport implements Report {
                 endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
             }
+            
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
+            }
 
             // First, update user service stats for Insurer
 //            baseDataService.query("select update_user_service(" + insurerId + ")");
