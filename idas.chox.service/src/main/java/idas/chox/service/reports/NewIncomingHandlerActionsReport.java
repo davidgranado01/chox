@@ -322,7 +322,12 @@ public class NewIncomingHandlerActionsReport implements Report {
 
     @Override
     public String getReportTemplateFileName() {
-        return "template_NewIncomingHandlerActionsReport.xls";
+        WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
+        if (user.getInsurer().isWorkgroupEnable()) {
+            return "template_NewIncomingHandlerActionsReport.xls";
+        } else {
+            return "template_NewIncomingOwnerActionsReport.xls";
+        }
     }
 
     @Override
