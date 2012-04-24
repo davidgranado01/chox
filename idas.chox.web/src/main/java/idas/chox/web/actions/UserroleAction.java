@@ -6,6 +6,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
+import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserroleViewData;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import net.sf.json.JSONArray;
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,6 +32,7 @@ public class UserroleAction extends BaseAction {
     private int objectId;
     private String webUserRoleCode;
     private AdminUserService adminUserService;
+    private WebUserUserRoleService webUserUserRoleService;
 
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String doRenderActionPage() {
@@ -91,6 +94,15 @@ public class UserroleAction extends BaseAction {
     public void setWebUserId(int webUserId) {
         this.webUserId = webUserId;
     }
+
+    public WebUserUserRoleService getWebUserUserRoleService() {
+        return webUserUserRoleService;
+    }
+
+    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
+        this.webUserUserRoleService = webUserUserRoleService;
+    }
+    
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
@@ -186,7 +198,9 @@ public class UserroleAction extends BaseAction {
                 }
                 // Check that the role is one we can add
                 if (!isRoleAvailable(webUserRoleId, OrganisationType.getOrganisationTypeId(user.getOrganisationType()))) {
-                    throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
+//                    throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
+                    throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
                 }
                 ActionResponse response = adminUserService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
                 setActionResponse(response);
@@ -236,8 +250,12 @@ public class UserroleAction extends BaseAction {
                      LOG.debug("Throwing AccessDeniedException");
                      throw new AccessDeniedException("Trying to remove a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                  }
-                 ActionResponse response = adminUserService.deleteWebUserRoleMapping(this.webUserUserRoleId);
-                 setActionResponse(response);
+                 WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
+                 if (webUserUserRole != null)
+                    webUserUserRoleService.deleteWebUserUserRole(webUserUserRole);
+                 else
+                    throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0)); 
             } catch (Exception ex) {
                 LOG.debug("Handling exception: '{}'", ex.getMessage());
                 handleException(ex);
@@ -253,10 +271,11 @@ public class UserroleAction extends BaseAction {
     public String checkRoleAllowToDelete() {
 
         try {
-
-            ActionResponse response = adminUserService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
-            setActionResponse(response);
-
+            WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
+            if (webUserUserRole != null) {
+                ActionResponse response = adminUserService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
+                setActionResponse(response);
+            }
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;

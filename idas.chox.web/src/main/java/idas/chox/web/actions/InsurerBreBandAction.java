@@ -1,18 +1,23 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import net.sf.json.JSONArray;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import org.springframework.security.access.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
-import org.springframework.security.access.annotation.Secured;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
 
@@ -25,6 +30,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String doRenderActionPage() {
+        updateModelInSession(Arrays.asList(model));
         return SUCCESS;
     }
 
@@ -78,6 +84,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getBreBand(Integer.valueOf(this.objectId));
+                    addModelToSession(Arrays.asList(model));
                 }
             }
 
@@ -114,11 +121,11 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
-
+            checkVersion(Arrays.asList(model));
             ActionResponse response;
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
+            updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
-
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -133,11 +140,12 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to delete an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
-
-            ActionResponse response;
-            response = adminInsurerService.deleteInsurerBreBand(model);
-            setActionResponse(response);
-
+            if (model != null) {
+                checkVersion(Arrays.asList(model));
+                ActionResponse response;
+                response = adminInsurerService.deleteInsurerBreBand(model);
+                setActionResponse(response);
+            }
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;

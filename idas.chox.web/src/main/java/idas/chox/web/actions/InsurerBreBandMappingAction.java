@@ -1,19 +1,24 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.BreBand;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import net.sf.json.JSONArray;
-import org.springframework.security.access.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BreBandChorganisationViewData;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import java.util.Iterator;
-import org.springframework.security.access.annotation.Secured;
+import org.hibernate.StaleObjectStateException;
 
 public class InsurerBreBandMappingAction extends BaseAction {
 
@@ -24,6 +29,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
     private int breBandChorganisationId = -1;
     private String jsonRecords;
     private AdminInsurerService adminInsurerService;
+    private BreBandOrganisationService breBandOrganisationService;
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String doRenderActionPage() {
@@ -46,6 +52,14 @@ public class InsurerBreBandMappingAction extends BaseAction {
 
     public void setBreBandChorganisationId(int breBandChorganisationId) {
         this.breBandChorganisationId = breBandChorganisationId;
+    }
+
+    public BreBandOrganisationService getBreBandOrganisationService() {
+        return breBandOrganisationService;
+    }
+
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
+        this.breBandOrganisationService = breBandOrganisationService;
     }
 
     public int getInsurerId() {
@@ -137,6 +151,17 @@ public class InsurerBreBandMappingAction extends BaseAction {
             if (band == null || (getUserOrganisationType() == 2 && band.getInsurer().getId().intValue() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to add BRE Band mapping to an insurer that doen't own the band (POSSIBLE HACK ATTEMPT)");
             }
+            // check the breband organisation already added by another concurrent user.
+            List<BreBandOrganisation> brebandorganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId);
+            if (brebandorganisations.size() > 0) {
+                for (BreBandOrganisation breBandOrganisation : brebandorganisations) {
+                    if (breBandOrganisation.getChorganisation().getId().compareTo(this.chorganisationId) == 0) {
+                        throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(breBandOrganisation.getClass().getSimpleName().concat("Version"), breBandOrganisation.getId()));
+                    }
+                }
+            }
+
             adminInsurerService.addBreBandChorganisation(this.breBandId, this.chorganisationId);
         } catch (Exception ex) {
             handleException(ex);
@@ -182,7 +207,15 @@ public class InsurerBreBandMappingAction extends BaseAction {
             }
 
             if (this.breBandChorganisationId > 0) {
-                adminInsurerService.deleteBreBandChorganisation(this.breBandChorganisationId);
+                // check breband organisation exists before remove because concurrent user might have removed. 
+                BreBandOrganisation breBandOrganisation = breBandOrganisationService.getBreBandOrganisation(breBandChorganisationId);
+                if (breBandOrganisation != null) {
+                    breBandOrganisationService.deleteBreBandOrganisation(breBandOrganisation);
+                } else {
+                    throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(BreBandOrganisation.class.getSimpleName().concat("Version"), 0));
+                }
+                    
             }
 
         } catch (Exception ex) {

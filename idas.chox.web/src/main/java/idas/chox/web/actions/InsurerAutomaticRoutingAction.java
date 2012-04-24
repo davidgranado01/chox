@@ -2,18 +2,24 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.AutomaticRouting;
-import idas.chox.core.model.IdLookupItem;
-import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminInsurerService;
-import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.services.AutomaticRoutingService;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
+import org.hibernate.StaleObjectStateException;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
 
@@ -24,6 +30,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private int automaticRoutingId = -1;
     private String objectId;
     private AutomaticRouting model;
+    private AutomaticRoutingService automaticRoutingService;
     
     private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
     private AdminInsurerService adminInsurerService;
@@ -42,8 +49,14 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         this.model = model;
     }
 
+    public AutomaticRoutingService getAutomaticRoutingService() {
+        return automaticRoutingService;
+    }
 
-   
+    public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
+        this.automaticRoutingService = automaticRoutingService;
+    }
+
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.insurerAutomaticRoutings);
         return "{totalCount:" + this.insurerAutomaticRoutings.size() + ",results:" + jObject.toString() + "}";
@@ -141,10 +154,14 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     public String editAutomaticRoutingDetail() {
 
         try {
-
-            AutomaticRouting automaticRouting = adminInsurerService.getInsurerAutomaticRouting(this.automaticRoutingId);
-            automaticRouting.setExpression(model.getExpression());
-            adminInsurerService.updateAutomaticRouting(automaticRouting);
+            if (automaticRoutingService.getAutomaticRouting(automaticRoutingId) != null) {
+                AutomaticRouting automaticRouting = adminInsurerService.getInsurerAutomaticRouting(this.automaticRoutingId);
+                automaticRouting.setExpression(model.getExpression());
+                adminInsurerService.updateAutomaticRouting(automaticRouting);
+            } else {
+                throw new Exception("Record was updated by another transaction/user, please try again.",
+                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+            }
 
         } catch (Exception ex) {
             handleException(ex);
@@ -171,17 +188,36 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String deleteAutomaticRoutingDetail() {
-        ActionResponse response;
-        response = adminInsurerService.deleteAutomaticRouting(this.automaticRoutingId);
-        setActionResponse(response);
+        try {
+            if (automaticRoutingService.getAutomaticRouting(automaticRoutingId) != null) {
+                ActionResponse response;
+                response = adminInsurerService.deleteAutomaticRouting(this.automaticRoutingId);
+                setActionResponse(response);
+            } else {
+                throw new Exception("Record was updated by another transaction/user, please try again.",
+                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
         return SUCCESS;
     }
 
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String addNewAutomaticRoutingDetail() {
-        ActionResponse response;
-        response = adminInsurerService.addNewAutomaticRouting(this.insurerId, this.workgroupId, model.getExpression());
-        setActionResponse(response);
+        try {
+            if (automaticRoutingService.getAutomaticRouting(insurerId, workgroupId) == null) {
+                ActionResponse response = adminInsurerService.addNewAutomaticRouting(this.insurerId, this.workgroupId, model.getExpression());
+                setActionResponse(response);
+            } else {
+                throw new Exception("Record was updated by another transaction/user, please try again.",
+                        new StaleObjectStateException(AutomaticRouting.class.getSimpleName().concat("Version"), 0));
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
         return SUCCESS;
     }
     // </editor-fold>

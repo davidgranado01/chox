@@ -124,7 +124,7 @@
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doAddNewBandChorganisationMapping.action";
             var param = {"chorganisationId":gridViewId, "breBandId":$("#breBandId").val()};
-            ajax.loadHtml2(url, param, brebandMapping_loadGridViewList);
+            ajax.loadHtml2(url, param, afterBreBandMappingSubmit);
         }
     }
 
@@ -135,7 +135,7 @@
             var breBandChorganisationId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doRemoveBandChorganisationMapping.action";
             var param = {"breBandChorganisationId":breBandChorganisationId};
-            ajax.loadHtml2(url, param, brebandMapping_loadGridViewList);
+            ajax.loadHtml2(url, param, afterBreBandMappingSubmit);
         }
 
     }
@@ -152,6 +152,27 @@
             $(target).html(data);
            
         });
+    }
+    
+    function afterBreBandMappingSubmit(responseText, statusText) {
+       var response = eval('(' + responseText.trim() + ')');
+       
+       if(response)
+        {
+            if(!response.isValid){
+               $.each(response.errors, function() {
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }); 
+            } 
+            
+        }
+        brebandMapping_loadGridViewList();
     }
 
 </script>

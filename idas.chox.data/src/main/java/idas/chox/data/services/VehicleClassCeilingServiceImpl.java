@@ -1,9 +1,7 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.VehicleClassCeiling;
-import idas.chox.core.services.VehicleClassCeilingService;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
@@ -11,8 +9,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.services.VehicleClassCeilingService;
+
 public class VehicleClassCeilingServiceImpl extends SecureDataService implements VehicleClassCeilingService {
 
+    @Override
     public List<VehicleClass> getAvailableVehicleClassCeilingByInsurer(int insurerId) {
 
         // GET ALL VEHICLE CLASS
@@ -33,6 +36,7 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
 
     }
 
+    @Override
     public List<VehicleClassCeiling> getSelectedVehicleClassCeilingByInsurer(int insurerId) {
         DetachedCriteria vehicleClassCeilingCirteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
         vehicleClassCeilingCirteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -41,15 +45,18 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         save(vehicleClassCeiling);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         delete(vehicleClassCeiling);
     }
 
+    @Override
     public VehicleClassCeiling getVehicleClassCeiling(int vehicleClassCeilingId) {
         return (VehicleClassCeiling) get(VehicleClassCeiling.class, vehicleClassCeilingId);
     }

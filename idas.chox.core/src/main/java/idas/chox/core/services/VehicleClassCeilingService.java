@@ -1,8 +1,9 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassCeiling;
-import java.util.List;
 
 public interface VehicleClassCeilingService {
 

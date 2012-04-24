@@ -457,51 +457,43 @@
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
-        //var outputDiv = $('div.chox-form-submit-result');
   
         if(response && response.isValid)
         {
-
             if(response.resultType && response.resultType == 'New'){
 
-
-                //Ext.getCom('insurerAutoRoutingTab').disable();
-                //                alert("New Insurer has been created");
                 Ext.Msg.minWidth = 300;
                 Ext.Msg.alert('New Insurer Created','A new Insurer has been created.');
 
-                var newObjectId = parseInt(response.result);
-                var target = "#admin_param_panel";
-                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-                var param = {"objectId":newObjectId};
-
-                ajax.loadHtml2(url,param, function(data){
-                    $(target).html(data);
-                });
+                updateInsurerDetailPanel(response.result);
             }else{
                 
-
-                var dropDownVal = $('#autoRoutingEnableDropDownId').val();
-
-                
-
-                var objectId = '<s:property value="objectId"/>';
-                var target = "#admin_param_panel";
-                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-                var param = {"objectId":objectId};
-
-                ajax.loadHtml2(url,param, function(data){
-                    $(target).html(data);
-                });
-                //outputDiv.append("<p>Your changes have been saved.</p>");
+                updateInsurerDetailPanel('<s:property value="objectId"/>');
 
                 Ext.Msg.minWidth = 300;
                 Ext.Msg.alert('Save Changes','Your changes have been saved.');
                 
-            }
-            
-
+            } // end of if else inner loop
+        } else {
+            updateInsurerDetailPanel('<s:property value="objectId"/>');
+            Ext.MessageBox.show({
+                title: '',
+                msg: response.errors,
+                width:300,
+                buttons: Ext.MessageBox.OK,
+                icon : Ext.MessageBox.ERROR
+            });
         }
+    }
+    
+    function updateInsurerDetailPanel(objectId) {
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var param = {"objectId":objectId};
+
+        ajax.loadHtml2(url,param, function(data){
+            $(target).html(data);
+        });
     }
 
 </script>

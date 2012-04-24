@@ -41,6 +41,15 @@
 //                        alert("Your changes have been saved");
                         onVehicleClassPageRefresh();
                     }
+                } else {
+                    Ext.Msg.show({
+                        title: 'Error',
+                        msg:response.errors,
+                        icon:Ext.Msg.ERROR,
+                        buttons:Ext.Msg.OK,
+                        width : 400
+                    });
+                    onVehicleClassPageRefresh();
                 }
             }
         });

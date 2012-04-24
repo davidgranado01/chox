@@ -107,33 +107,38 @@
 
                 if(response && response.isValid)
                 {
-
                     if(response.resultType && response.resultType == 'New'){
                         //                    alert("New Credit hire has been created");
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('New CHO','A new CHO has been created.');
-                        var newObjectId = parseInt(response.result);
-                        var target = "#admin_param_panel";
-                        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
-                        var param = {"objectId":newObjectId};
-                        ajax.loadHtml2(url,param,function(data){
-                            $(target).html(data);
-                        });
+                        updateCHODetailPanel(parseInt(response.result));
                     }
                     else if('<s:property value="id" />'!=''){
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('Save Changes','Your changes have been saved.');
-                        var newObjectId = '<s:property value="id" />';
-                        var target = "#admin_param_panel";
-                        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
-                        var param = {"objectId":newObjectId};
-                        ajax.loadHtml2(url,param,function(data){
-                            $(target).html(data);
-                        });
+                        updateCHODetailPanel('<s:property value="id" />');
                     }
+                } else {
+                    updateCHODetailPanel('<s:property value="id" />');
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: response.errors,
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 }
             });
         });
+        
+        function updateCHODetailPanel(objectId) {
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+            var param = {"objectId":objectId};
+            ajax.loadHtml2(url,param, function(data){
+                $(target).html(data);
+            });
+        }
 
         function choHandleActivate(tab){
             choAdminTabIndex = 0;

@@ -22,6 +22,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
 
 
@@ -34,6 +35,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private SecurityInfoProvider securityInfoProvider;
     private Map<String,Object> session;
     private String VALID_SESSION = "validSession";
+    private BaseDataService baseDataService;
 
     public Map<String,Object> getSession() {
     	if(session == null)
@@ -349,6 +351,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         this.actionError = actionError;
     }
 
+    public BaseDataService getBaseDataService() {
+        return baseDataService;
+    }
+
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException)) {
@@ -390,7 +400,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     
     public void checkVersion(List<? extends Entity> models) throws Exception {
         for (Entity model : models) {
-            if (getSession().containsKey(model.getClass().getSimpleName())) {
+            if (model != null && getSession().containsKey(model.getClass().getSimpleName())) {
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
                 if (map != null && map.get("version") != null && map.get("id") != null && model.getVersion() != null) {
                     Integer sessionModelVersion = map.get("version");
@@ -412,10 +422,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
-    /* This will force update the model in session*/
+    /* This will do force update the model in session*/
     public void updateModelInSession(List<? extends Entity> models) {
         for (Entity model : models) {
-            if (model.getVersion() != null && model.getId() != null) {
+            if (model != null &&  model.getVersion() != null && model.getId() != null) {
                 HashMap<String, Integer> map = new HashMap<String, Integer>();
                 map.put("version", model.getVersion());
                 map.put("id", model.getId());
@@ -430,10 +440,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
      in case of different id in the session for the same class it will replace with the new model*/
     public void addModelToSession(List<? extends Entity> models) {
         for (Entity model : models) {
-            if (!getSession().containsKey(model.getClass().getSimpleName())) {
+            if (model != null && !getSession().containsKey(model.getClass().getSimpleName())) {
                 LOG.debug("model is not in session and will be added to session");
                 updateModelInSession(Arrays.asList(model));
-            } else {
+            } else if (model != null){
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
 
                 if (model.getId() != null && map.get("id").compareTo(model.getId()) != 0) {
@@ -455,4 +465,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
     }
+//    
+//    public Entity getModel(Class model, int id) {
+//        return (Entity)baseDataService.get(model, id);
+//    }
 }

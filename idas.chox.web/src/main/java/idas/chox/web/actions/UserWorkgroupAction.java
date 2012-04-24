@@ -2,12 +2,14 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.WebUserWorkgroup;
+import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.security.access.annotation.Secured;
 
 public class UserWorkgroupAction extends BaseAction {
@@ -18,6 +20,7 @@ public class UserWorkgroupAction extends BaseAction {
     private int userWorkgroupId;
     private int workgroupId;
     private AdminUserService adminUserService;
+    private UserWorkgroupService userWorkgroupService;
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -68,6 +71,15 @@ public class UserWorkgroupAction extends BaseAction {
     public void setWebUserId(int webUserId) {
         this.webUserId = webUserId;
     }
+
+    public UserWorkgroupService getUserWorkgroupService() {
+        return userWorkgroupService;
+    }
+
+    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
+        this.userWorkgroupService = userWorkgroupService;
+    }
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
@@ -102,15 +114,14 @@ public class UserWorkgroupAction extends BaseAction {
     public String checkUserWorkgroupAllowToDelete() {
 
         try {
-
-            ActionResponse response = adminUserService.checkUserWorkgroupAllowToDelete(this.userWorkgroupId);
-            setActionResponse(response);
-
+            if (userWorkgroupService.getUserWorkgroup(userWorkgroupId) != null) {
+                ActionResponse response = adminUserService.checkUserWorkgroupAllowToDelete(this.userWorkgroupId);
+                setActionResponse(response);
+            }
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
         }
-
         return SUCCESS;
     }
 
@@ -118,9 +129,13 @@ public class UserWorkgroupAction extends BaseAction {
     public String removeWebUserWorkgroupMapping() {
 
         try {
-
-            ActionResponse response = adminUserService.removeWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
-            setActionResponse(response);
+            if (userWorkgroupService.isUserWorkgroupExist(workgroupId, webUserId)) {
+                ActionResponse response = adminUserService.removeWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
+                setActionResponse(response);
+            } else {
+                throw new Exception("Record was updated by another transaction/user, please try again.",
+                        new StaleObjectStateException(WebUserWorkgroup.class.getSimpleName().concat("Version"), 0));
+            }
 
         } catch (Exception ex) {
             handleException(ex);
@@ -135,9 +150,13 @@ public class UserWorkgroupAction extends BaseAction {
     public String addNewWebUserWorkgroupMapping() {
 
         try {
-
-            ActionResponse response = adminUserService.addNewWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
-            setActionResponse(response);
+            if (!userWorkgroupService.isUserWorkgroupExist(workgroupId, webUserId)) {
+                ActionResponse response = adminUserService.addNewWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
+                setActionResponse(response);
+            } else {
+                throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(WebUserWorkgroup.class.getSimpleName().concat("Version"), 0));
+            }
 
         } catch (Exception ex) {
             handleException(ex);

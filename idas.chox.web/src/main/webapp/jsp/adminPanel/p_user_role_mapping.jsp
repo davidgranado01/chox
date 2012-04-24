@@ -191,8 +191,15 @@
             {
                 triggerCss("div#CDUserroleMessageBox", true);
                 $.each(response.errors, function() {
-                    outputDiv.append(this.toString());
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 });
+                userrole_doRefreshPage();
             }
         }
         else

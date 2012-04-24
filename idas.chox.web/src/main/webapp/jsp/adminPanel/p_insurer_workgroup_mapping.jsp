@@ -163,6 +163,7 @@
                     });
                     //                    outputDiv.append(this.toString());
                 });
+                insurerWorkgroup_doRefreshPage();
             }
         }
         else

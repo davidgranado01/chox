@@ -286,13 +286,33 @@
         $("form#editAutoRoutingDetail input[name$='expression']").val(gridView.get("expression"));
     }
 
-    function doAutoRoutingPageRefresh(){
+    function doAutoRoutingPageRefresh(responseText, statusText){
 
+       var response = eval('(' + responseText.trim() + ')');
        
-       
+       if(response)
+        {
+            if(!response.isValid){
+                $.each(response.errors, function() {
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                });
+            } 
+        }
+        refereshAutomaticRoutingGrid();
         automaticRoutingEditSelectionDlg.hide();
         automaticRoutingEditSelectionDlg = null;
 
+        
+
+    }
+    
+    function refereshAutomaticRoutingGrid() {
         var tabIndex = 0;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
@@ -312,7 +332,6 @@
                 InsurerMainPanelTabs.activate(tabIndex);
             </s:else>
         });
-
     }
 
 </script>

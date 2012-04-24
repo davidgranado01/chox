@@ -1,19 +1,23 @@
 package idas.chox.web.actions;
 
-import idas.chox.web.viewdata.InsurerViewData;
 import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Insurer;
-import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminInsurerService;
 import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.Insurer;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.InsurerViewData;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerAction.class);
@@ -74,6 +78,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
+        updateModelInSession(Arrays.asList(model));
         return SUCCESS;
     }
 
@@ -161,7 +166,6 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
-            updateModelInSession(Arrays.asList(model));
         } catch (Exception ex) {
             handleException(ex);
             return SUCCESS;

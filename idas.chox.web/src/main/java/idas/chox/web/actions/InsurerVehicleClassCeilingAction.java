@@ -1,22 +1,28 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
 import net.sf.json.JSONArray;
+
 import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
-import java.util.Iterator;
-import org.springframework.security.access.annotation.Secured;
+import org.hibernate.StaleObjectStateException;
 
-public class InsurerVehicleClassCeiling extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
-    private static final Logger LOG = LoggerFactory.getLogger(InsurerVehicleClassCeiling.class);
+public class InsurerVehicleClassCeilingAction extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerVehicleClassCeilingAction.class);
 
     private int insurerId = -1;
     private int vehicleClassId = -1;
@@ -27,6 +33,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     private VehicleClassCeiling model;
     private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
     private AdminInsurerService adminInsurerService;
+    private VehicleClassCeilingService vehicleClassCeilingService;
 
     public boolean getIsNew() {
 
@@ -140,6 +147,17 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
                         || (getUserOrganisationType() == 2 && this.insurerId == -1 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to add a new Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
+            List<VehicleClassCeiling> vehicleClassCeilings = adminInsurerService.getVehicleClassCeilingByInsurer(this.insurerId);
+            if (vehicleClassCeilings.size() > 0) {
+                for (VehicleClassCeiling vcc : vehicleClassCeilings) {
+                    if (vcc.getVehicleClass().getId().compareTo(this.vehicleClassId) == 0) {
+                        this.model = vcc;
+                        throw new Exception("Record was updated by another transaction/user, please try again.",
+                                new StaleObjectStateException(vcc.getClass().getSimpleName().concat("Version"), vcc.getId()));
+                    }
+                }
+            }
+
             ActionResponse response;
             response = adminInsurerService.addNewVehicleClassCeiling(this.model, this.vehicleClassId, this.insurerId);
             setActionResponse(response);
@@ -160,9 +178,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
                 throw new AccessDeniedException("Trying to delete a Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             if (this.vehicleClassCeilingId > 0) {
-                ActionResponse response;
-                response = adminInsurerService.removeVehicleClassCeiling(this.vehicleClassCeilingId);
-                setActionResponse(response);
+                VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getVehicleClassCeiling(vehicleClassCeilingId);
+                if (vehicleClassCeiling != null)
+                    vehicleClassCeilingService.deleteVehicleClassCeiling(vehicleClassCeiling);
             }
 
         } catch (Exception ex) {
@@ -220,5 +238,15 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
+
+    public VehicleClassCeilingService getVehicleClassCeilingService() {
+        return vehicleClassCeilingService;
+    }
+
+    public void setVehicleClassCeilingService(VehicleClassCeilingService vehicleClassCeilingService) {
+        this.vehicleClassCeilingService = vehicleClassCeilingService;
+    }
     // </editor-fold>
+
+
 }

@@ -1,20 +1,24 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import java.util.Arrays;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 
 public class ChorganisationAction extends BaseAction implements ModelDriven<Chorganisation>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAction.class);
@@ -91,6 +95,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
+        updateModelInSession(Arrays.asList(model));
         return SUCCESS;
     }
 
