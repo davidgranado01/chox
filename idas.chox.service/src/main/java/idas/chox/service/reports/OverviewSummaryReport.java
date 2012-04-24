@@ -59,7 +59,7 @@ public class OverviewSummaryReport implements Report {
             if (isWorkgroupEnabled) {
                     if (((String[]) externalParameter.get("workgroupId")) != null) {
                         String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
-                        if (!workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                        if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
                             selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                             if(getWorkgroup(selectedWorkgroupId).getName()!=null){
                               selectedWorkgroupName = getWorkgroup(selectedWorkgroupId).getName();  
@@ -75,7 +75,7 @@ public class OverviewSummaryReport implements Report {
 
                 if (((String[]) externalParameter.get("ownerId")) != null) {
                     String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                    if (!ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
                         selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                         if(getClaimOwner(selectedOwnerId).getDisplayName()!=null && getClaimOwner(selectedOwnerId).getInsurer().getId().compareTo(currentUser.getInsurer().getId())==0){
                            selectedClaimOwnerName = getClaimOwner(selectedOwnerId).getDisplayName();
@@ -93,12 +93,6 @@ public class OverviewSummaryReport implements Report {
 
         try {
 
-
-            /*
-            dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
-            */
-
             if(((String[]) externalParameter.get("DateStart"))!=null){
                 dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
@@ -106,6 +100,10 @@ public class OverviewSummaryReport implements Report {
             if(((String[]) externalParameter.get("DateStart"))!=null){
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
+            }
+            
+            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+                throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
             }
 
             StringBuilder sb = new StringBuilder();

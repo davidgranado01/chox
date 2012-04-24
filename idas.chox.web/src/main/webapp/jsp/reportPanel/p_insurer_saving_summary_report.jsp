@@ -27,10 +27,18 @@
             messages: {
                 chOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
                 DateStart: {
+                	max:function(){
+                		var sd = Ext.get('DateStart').getValue().split("/");
+                        var ed = Ext.get('DateEnd').getValue().split("/");
+                        var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+                        if(time > 0)
+                            return true;
+                    },
                     required:"A value must be supplied for 'Date From'",
                     dateITA:"You must supply a date value 'Date From'"
                 },
                 DateEnd: {
+                	max:"'Date to' can't be before 'Date From'",
                     required:"A value must be supplied for 'Date To'",
                     dateITA:"You must supply a date value 'Date To'"
                 }

@@ -43,11 +43,19 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
-                DateStart:{required:true, dateITA:true},
+            	
+                DateStart:{required:true, dateITA:true, max:function(){
+                	var sd = Ext.get('DateStartAWRId').getValue().split("/");
+                    var ed = Ext.get('DateEndAWRId').getValue().split("/");
+                    var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+	                if(time > 0)
+                        return true;
+	                }
+                },
                 DateEnd:{required:true, dateITA:true}
             },
             messages: {
-                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'"},
+                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'",},
                 DateEnd: {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"
                 }
             }
@@ -55,7 +63,6 @@
 
 
     <s:if test="isCHO" >
-
 
             var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -101,8 +108,6 @@
     </s:if>
 
     <s:if test="isInsurer" > 
-
-
 
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',

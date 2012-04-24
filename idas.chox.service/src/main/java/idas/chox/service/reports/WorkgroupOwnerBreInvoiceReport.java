@@ -74,7 +74,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             if ((externalParameter.get("supplierId")) != null) {
                 supplierId = ((String[]) externalParameter.get("supplierId"))[0];
                 LOG.debug("SUPPLIER ID IS ={}", supplierId);
-                if (!supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
+                if (!supplierId.equalsIgnoreCase("undefined") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("selectedChoId ={}", selectedCHOId);
 //                    selectedOrgId = iSupplierId;
@@ -85,7 +85,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             if (isWorkgroupEnabled) {
                 if (((String[]) externalParameter.get("workgroupId")) != null) {
                     String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
-                    if (!workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
                         selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                         LOG.debug("selectedWorkgroupId={}", selectedWorkgroupId);
                     }
@@ -94,7 +94,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
 
             if (((String[]) externalParameter.get("ownerId")) != null) {
                 String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                if (!ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
                     selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                     LOG.debug("selectedOwnerId={}", selectedOwnerId);
                 }
@@ -110,6 +110,10 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
                 endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
+            }
+            
+            if(endDate != null && startDate != null && endDate.before(startDate)){
+                throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
             // First, update user service stats for Insurer

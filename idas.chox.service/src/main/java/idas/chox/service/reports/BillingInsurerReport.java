@@ -50,6 +50,9 @@ public class BillingInsurerReport implements Report {
             LOG.debug("Data Start " + bi.getDateFrom());
             LOG.debug("Data End " + bi.getDateTo());
 
+            if(bi.getDateTo() != null && bi.getDateFrom() != null && bi.getDateTo().before(bi.getDateFrom())){
+                throw new Exception("End date (" + bi.getDateTo().toString() + ") is before start date (" + bi.getDateFrom().toString() +  ") ");
+            }
 
             List<BillingInsurerReportViewData> reportRows = new ArrayList<BillingInsurerReportViewData>();
 
@@ -128,6 +131,8 @@ public class BillingInsurerReport implements Report {
         } catch (RuntimeException ex) {
             LOG.error(ex.getMessage(),ex);
             throw ex;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(),e);
         } 
 
         return reportParameters;

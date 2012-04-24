@@ -121,6 +121,13 @@
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
                 startDate:{
+                	max:function(){
+                        var sd = Ext.get('startDate').getValue().split("/");
+                        var ed = Ext.get('endDate').getValue().split("/");
+                        var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+                        if(time > 0)
+                            return true;
+                    },
                     required:true,
                     dateITA: true
                 },
@@ -131,6 +138,7 @@
             },
             messages: {
                 startDate: {
+                	max:"'Date to' can't be before 'Date From'",
                     required:"A value must be supplied for 'Date From'",
                     dateITA:"You must supply a date value 'Date From'"
                 },
@@ -145,8 +153,10 @@
 
     function openReport()
     {
-        var queryString = $('#formReportParam').formSerialize();
-        generateReport(queryString);
+    	if($("form#formReportParam").valid()){
+	        var queryString = $('#formReportParam').formSerialize();
+	        generateReport(queryString);
+    	}
     }
 
 </script>

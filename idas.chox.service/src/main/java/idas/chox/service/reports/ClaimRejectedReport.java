@@ -63,6 +63,10 @@ public class ClaimRejectedReport implements Report {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
+            
+            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+                throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
+            }
 
             boolean isInsReport = (currentUser.getInsurer() != null);
 

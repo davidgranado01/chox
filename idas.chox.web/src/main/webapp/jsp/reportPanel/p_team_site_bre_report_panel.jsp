@@ -4,7 +4,6 @@
 <script type="text/javascript">
 
     var reportName = 'TeamSiteBreInvoiceReport-Excel';
-    //TeamSiteBreWorkflowReport
 
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
@@ -156,14 +155,19 @@
                 }
             }
         });
-
-        
         
         $("form#formReportParam").validate(
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
                 startDate:{
+                	max:function(){
+                        var sd = Ext.get('startDate').getValue().split("/");
+                        var ed = Ext.get('endDate').getValue().split("/");
+                        var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+                		if(time > 0)
+                			return true;
+                	},
                     required:true,
                     dateITA: true
                 },
@@ -174,6 +178,7 @@
             },
             messages: {
                 startDate: {
+                	max:"'Date to' can't be before 'Date From'",
                     required:"A value must be supplied for 'Date From'",
                     dateITA:"You must supply a date value 'Date From'"
                 },
@@ -186,10 +191,12 @@
 
     });
 
-    function openReport()
+    function openBreReport()
     {
-        var queryString = $('#formReportParam').formSerialize();
-        generateReport(queryString);
+        if($("form#formReportParam").valid()){
+            var queryString = $('#formReportParam').formSerialize();
+            generateReport(queryString);
+        }
     }
 
 </script>
@@ -201,7 +208,16 @@
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report provides an insight into the number of invoices that pass the business rules and the resulting action taken, looking at whether the invoices are being paid or disputed, broken down by site and team.  This report also provides a breakdown of why invoices are being disputed after being approved by the business rules.  The report will look at all invoices that were uploaded during the selected period from and to dates.</div>
+                <div class="instruction-message">
+                    This report provides an
+                    insight into the number of invoices that pass the business rules
+                    and the resulting action taken, looking at whether the invoices are
+                    being paid or disputed, broken down by site and team. This report
+                    also provides a breakdown of why invoices are being disputed after
+                    being approved by the business rules. The report will look at all
+                    invoices that were uploaded during the selected period from and to
+                    dates.
+                </div>
 
                 <table class="report-form">
                     <tr>
@@ -232,7 +248,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" id="TSBRPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="TSBRPGenerateReportId"onclick="javascript:openBreReport();">Generate Report</button>
                 </div>
 
             </div>

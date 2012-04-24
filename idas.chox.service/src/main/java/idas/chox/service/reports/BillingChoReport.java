@@ -59,6 +59,10 @@ public class BillingChoReport implements Report {
 
             LOG.debug("Data Start: {}", bc.getDateFrom());
             LOG.debug("Data End: {}", bc.getDateTo());
+            
+            if(bc.getDateTo() != null && bc.getDateFrom() != null && bc.getDateTo().before(bc.getDateFrom())){
+                throw new Exception("End date (" + bc.getDateTo().toString() + ") is before start date (" + bc.getDateFrom().toString() +  ") ");
+            }
 
             StringBuffer sb = new StringBuffer();
             sb.append("select ");

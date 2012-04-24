@@ -52,6 +52,9 @@ public class AverageSettlementAmountReport implements Report {
             // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
             final Date dataStart = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateStart"))[0]);
             Date dataEnd = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            if(dataStart != null && dataEnd != null && dataEnd.before(dataStart)){
+                throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
+            }
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
 

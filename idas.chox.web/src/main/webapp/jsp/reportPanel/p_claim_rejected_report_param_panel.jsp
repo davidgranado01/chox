@@ -15,6 +15,13 @@
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
                 DateStart:{
+                	max:function(){
+                		var sd = Ext.get('DateStart').getValue().split("/");
+                        var ed = Ext.get('DateEnd').getValue().split("/");
+                        var time = new Date(sd[0],sd[1],sd[2]).getTime() - new Date(ed[0],ed[1],ed[2]).getTime();
+                        if(time > 0)
+                            return true;
+                    },
                     required:true,
                     dateITA: true
                 },
@@ -25,6 +32,7 @@
             },
             messages: {
                 DateStart: {
+                	max:"'Date To' can't be before 'Date From'",
                     required:"A value must be supplied for 'Created Date From'",
                     dateITA:"You must supply a date value 'Created Date From'"
                 },
@@ -36,7 +44,6 @@
         });
 
     });
-    
     
     function openReport()
     {
@@ -58,11 +65,14 @@
 
             <div class="form-container">
 
-                <div class="instruction-message">
-                    This report provides information on why claims have been rejected in CHOX at the claim notification stage. The dates that require selection below refer to the date the claim was uploaded onto CHOX.
-                </div>
+				<div class="instruction-message">
+				    This report provides
+					information on why claims have been rejected in CHOX at the claim
+					notification stage. The dates that require selection below refer to
+					the date the claim was uploaded onto CHOX.
+				</div>
 
-                <table class="report-form">
+				<table class="report-form">
                     <tr>
                         <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>
                     </tr>
