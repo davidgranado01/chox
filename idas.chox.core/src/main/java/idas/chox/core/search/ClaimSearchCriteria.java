@@ -453,16 +453,15 @@ public class ClaimSearchCriteria implements Serializable {
         else
             this.supplierClaimOwnerIds = supplierClaimOwnerIds;
     }
-    
+
     public boolean isShowOpenClaimsOnly() {
         return showOpenClaimsOnly;
     }
 
-    
-    public void setIsShowOpenClaimsOnly(boolean showOpenClaimsOnly) {
+    public void setShowOpenClaimsOnly(boolean showOpenClaimsOnly) {
         this.showOpenClaimsOnly = showOpenClaimsOnly;
     }
-
+    
     /**
      * @return the statusModifiedDateFrom
      */

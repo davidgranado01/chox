@@ -14,7 +14,7 @@ public class FilterByStatus extends BaseFilter {
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-        claimSearchCriteria.setIsShowOpenClaimsOnly(false);
+        claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());

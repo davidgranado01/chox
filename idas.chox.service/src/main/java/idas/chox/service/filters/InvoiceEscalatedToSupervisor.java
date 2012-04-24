@@ -14,7 +14,7 @@ public class InvoiceEscalatedToSupervisor extends BaseFilter {
 	public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
 
 		ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-        claimSearchCriteria.setIsShowOpenClaimsOnly(true);
+        claimSearchCriteria.setShowOpenClaimsOnly(true);
 		claimSearchCriteria.setEscalatedToSupervisor(true);
 		claimSearchCriteria.setIsWorkgroupCheck(getIsCheckWorkGroup());
 		claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
