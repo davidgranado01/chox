@@ -55,7 +55,7 @@
                 DateEnd:{required:true, dateITA:true}
             },
             messages: {
-                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'",},
+                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'"},
                 DateEnd: {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"
                 }
             }
