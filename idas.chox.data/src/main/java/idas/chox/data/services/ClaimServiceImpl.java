@@ -723,6 +723,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                                     + getCurrentUser().getInsurer().getId()
                                     + " and a.reverted = false group by c.id ) as temp where nr >= "
                                     + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
+            innerQuery.add(Restrictions.ne("cl1.status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             innerQuery.setProjection(Property.forName("cl1.id"));
             
             criteria.add(Restrictions.disjunction()
