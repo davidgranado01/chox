@@ -2695,7 +2695,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 claim.setInvoiceOriginal(invoiceOriginal);
                 claim.setVehicleHire(vehicleHire);
                 claim.setInvoice(invoice);
-                claim.updateLiabilityPayment();
+                claimService.updateLiabilityPayment(claim);
                 updateHpi();
                 BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
                 /*
@@ -3069,10 +3069,18 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
 
+        /*
+         * The beleow code has been removed because it duplicate the same code
+         * used in updateLiabilityPayment() in Claim class and it make problem
+         * when you change in one place and not in another. now the
+         * updateLiabilityPayment() method moved to ClaimService modified to
+         * updateLiabilityPayment(Claim claim).
+         * The problem found in bug#1668 and this code change is part of bug#1668.
+         
         liablitityPercentage = liablitityPercentage.add(getPercentageLiabilityAccepted());
         LOG.debug(" liablitityPercentage() value{} ", liablitityPercentage);
         liablitityPercentage = liablitityPercentage.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-
+        
         fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
 
         if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
@@ -3084,8 +3092,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         } else {
             setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
         }
+        
+        * 
+        */
+        claimService.updateLiabilityPayment(claim);
+        
 //        invoiceOriginalAction.model.setTotalToPayOriginal(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
+//        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
     }
     // </editor-fold>
 }

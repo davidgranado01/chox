@@ -29,7 +29,7 @@ public class UpdateLiability extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     private String claimReviewNotes;
     // </editor-fold>
-    
+
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -77,7 +77,7 @@ public class UpdateLiability extends BaseActivity {
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.updateLiabilityPayment();
+        getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
 
     }
 

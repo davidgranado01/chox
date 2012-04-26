@@ -1,12 +1,25 @@
 package idas.chox.data.services;
 
 import idas.chox.core.model.Invoice;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+// This class is used nowhere please make sure this class is declared in 
+// applicationContext-service.xml and injected required services before use.
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
+    
+    private ClaimService claimService;
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -14,7 +27,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
         if ((claimResult.getClaim().getInvoice()) != null) {
             
-            claimResult.getClaim().updateLiabilityPayment();
+            claimService.updateLiabilityPayment(claimResult.getClaim());
             
             
             getHibernateTemplate().saveOrUpdate((claimResult.getClaim().getInvoice()));

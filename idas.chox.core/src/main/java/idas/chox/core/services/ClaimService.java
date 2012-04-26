@@ -90,4 +90,6 @@ public interface ClaimService extends DataService {
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
     
     public Claim updateClaimWithInvalidSessionVersion(Claim claim);
+    
+    public void updateLiabilityPayment(Claim claim);
 }

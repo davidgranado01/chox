@@ -405,6 +405,9 @@ public class Claim extends Entity implements Serializable {
         return DateHelper.getNumberOf24HourPeriodsBetween(lastStatusModified, now);
     }
 
+    /*
+     * The below method moved to ClaimService. Code change for bug#1668.
+     
     public void updateLiabilityPayment() {
 
         LiabilityStatus l = getLiabilityStatus();
@@ -425,6 +428,8 @@ public class Claim extends Entity implements Serializable {
             }
         }
     }
+    
+    */
 
     public long getLiabilityAgreedDays() {
 

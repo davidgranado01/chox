@@ -60,7 +60,7 @@ public class NewTpiClaim extends BaseActivity {
         claim.setLiabilityAgreedDate(new Date());
         claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
-        claim.updateLiabilityPayment();
+        getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
 
         if (claim.getStatus() == null) {
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);

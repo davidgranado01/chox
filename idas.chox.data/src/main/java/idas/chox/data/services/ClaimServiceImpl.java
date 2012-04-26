@@ -1,17 +1,7 @@
 package idas.chox.data.services;
 
 import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.BreBandOrganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.Notification;
-import idas.chox.core.model.NotificationType;
-import idas.chox.core.model.QueuedTicket;
+import idas.chox.core.model.*;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -89,7 +79,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public void save(Claim object) {
-        object.updateLiabilityPayment();
+        updateLiabilityPayment(object);
         super.save(object);
     }
 
@@ -1262,6 +1252,30 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             delete(queuedTicket);
         } catch (Exception ex) {
             LOG.error("Exception thrown while deleting QueuedTicket: sender:{} old_cho_ref:{} new_cho_ref:{}", new Object[]{queuedTicket.getSender(), queuedTicket.getOldReference(), queuedTicket.getNewReference()}, ex);
+        }
+    }
+    
+    @Override
+    public void updateLiabilityPayment(Claim claim) {
+
+        LiabilityStatus l = claim.getLiabilityStatus();
+        Invoice invoice = claim.getInvoice();
+        ClaimType claimType = claim.getClaimType();
+        if (invoice != null) {
+            if (!claim.getClaimType().isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+                BigDecimal ttp = invoice.getFullTotalToPay();
+                BigDecimal insper = claim.getPercentageLiabilityAccepted();
+                invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                BigDecimal ofttp = invoice.getOriginalFullTotalToPay();
+                invoice.setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                LOG.debug("liability updated " + invoice.getTotalToPay());
+            } else if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
+                invoice.setTotalToPay(BigDecimal.ZERO);
+                invoice.setOriginalTotalToPay(BigDecimal.ZERO);
+            } else {
+                invoice.setTotalToPay(invoice.getFullTotalToPay());
+                LOG.debug("liablity not updated");
+            }
         }
     }
 }

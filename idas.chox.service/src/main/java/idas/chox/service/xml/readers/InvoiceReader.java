@@ -134,7 +134,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setAutoPenaltyStart(new Date());
 
         claimResult.getClaim().setInvoice(invoice);
-        claimResult.getClaim().updateLiabilityPayment();
+        getBordereauReaderContext().getClaimService().updateLiabilityPayment(claimResult.getClaim());
         // Now remove from invoice. This is necessary as some of the invoice sub-sections may not be valid.
         // We'll therefore store the invoice in the claimResult for now and add it back into the claim
         // once all subsections have been validated (and before the activity processing)
