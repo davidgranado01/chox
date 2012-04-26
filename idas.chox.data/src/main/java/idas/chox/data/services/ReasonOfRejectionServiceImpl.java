@@ -34,7 +34,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
         if(restricted != null)
         	criteria.add(Restrictions.eq("restricted", restricted));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.addOrder(Order.asc("id"));
+        criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria);
     }
 

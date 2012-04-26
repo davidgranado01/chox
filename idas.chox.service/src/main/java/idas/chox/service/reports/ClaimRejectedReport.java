@@ -1,12 +1,5 @@
 package idas.chox.service.reports;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
@@ -18,7 +11,16 @@ import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
 import idas.chox.service.reports.viewdata.ClaimRejection;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
+
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimRejectedReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejectedReport.class);
@@ -122,24 +124,27 @@ public class ClaimRejectedReport implements Report {
         sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
         sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
 
-        for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
-
-            if (cRejected.getId() != null) {
-                sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
+            for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
+                if (cRejected.getId() != null) {
+                    if(isIns){
+                        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
                         .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
                         .append(cRejected.getId()).append(", ");
-
-                if (isIns) {
-                    sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
-                            .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_")
-                            .append(cRejected.getId()).append(", ");
-                } else {
-                    sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
-                            .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
-                            .append(cRejected.getId()).append(", ");
+                        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection=")
+                        .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_")
+                        .append(cRejected.getId()).append(", ");
+                    } else {
+                        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection in ")
+                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :pOrgId)) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
+                        .append(cRejected.getId()).append(", ");
+                        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection in")
+                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :pOrgId)) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
+                        .append(cRejected.getId()).append(", ");
+                    }
+                        
                 }
+                
             }
-        }
 
         if (isIns) {
             sb.append("chorganisation.id, chorganisation.name ");
@@ -165,27 +170,19 @@ public class ClaimRejectedReport implements Report {
         List result = baseDataService.externalQuery(query, paramMap);
 
         for (Object o : result) {
-
             Map data = (Map) o;
-
             Integer iTotalClaimRejected = MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase()));
-
             for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
-
                 if (cRejected.getId() != null) {
-
                     String keyName = ("REJ_" + cRejected.getId()).toLowerCase();
-
-                    ClaimRejectionLineItemDetail ReportColumn = new ClaimRejectionLineItemDetail();
-                    ReportColumn.setNumberOfClaim(MathHelper.getIntegerValue(data.get(keyName)));
-                    ReportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumn.getNumberOfClaim(), iTotalClaimRejected));
-                    cRejected.getReportColumns().add(ReportColumn);
+                    ClaimRejectionLineItemDetail reportColumn = new ClaimRejectionLineItemDetail();
+                    reportColumn.setNumberOfClaim(MathHelper.getIntegerValue(data.get(keyName)));
+                    reportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(reportColumn.getNumberOfClaim(), iTotalClaimRejected));
+                    cRejected.getReportColumns().add(reportColumn);
                 }
             }
         }
-
         claimRejection = getAllOrgCount(claimRejection);
-
         return claimRejection;
     }
 
@@ -303,17 +300,29 @@ public class ClaimRejectedReport implements Report {
     private List<ClaimRejectionLineItem> getReasonOfRejection(WebUser currentUser) {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
-        String query = "select id, name from reason_of_rejection where type='Claim' and insurer_id = :insurerId order by id asc";
-        
-        Map paramMap = new HashMap();
-        paramMap.put("insurerId", currentUser.getInsurer().getId());
-        
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = null;
+        if(currentUser.getInsurer() != null){
+            String query = "select id, name from reason_of_rejection where type='Claim' and insurer_id = :insurerId order by id asc";
+            Map paramMap = new HashMap();
+            paramMap.put("insurerId", currentUser.getInsurer().getId());
+            result = baseDataService.externalQuery(query, paramMap);
+        } else {
+            String query = "select distinct(name) from reason_of_rejection where type='Claim' and insurer_id  in " +
+            		"(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc";
+            Map paramMap = new HashMap();
+            paramMap.put("choId", currentUser.getChorganisation().getId());
+            result = baseDataService.externalQuery(query, paramMap);
+        }
 
+        int i = 0;
         for (Object o : result) {
             Map data = (Map) o;
             ClaimRejectionLineItem reportRow = new ClaimRejectionLineItem();
-            reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
+            if(currentUser.getInsurer() != null) { 
+                reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
+            } else {
+                reportRow.setId(i++); // in case of cho we need only unique reason of rejection name
+            }
             reportRow.setName(data.get("name").toString());
             reportRow.setDisplayName(ClaimRejectionLineItem.getDisplayNameMap(data.get("name").toString()));
             reportRows.add(reportRow);
