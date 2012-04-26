@@ -11,7 +11,7 @@
         ui.dateField('endDate',getTodayDate(),'dateToDiv');
 
         
-
+        
         var claimHandlerPerformanceReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
@@ -53,63 +53,8 @@
                                }}
         });
 
-        <s:if test="insurerIsWorkgroupEnabled">
-            var handlerPerformanceWorkgroupJsonReader = new Ext.data.JsonReader({
-                                totalProperty: 'totalCount',
-                                root: 'results',
-                                fields:
-                                [
-                                    {name:'text'},
-                                    {name:'value'}
-                                ]
-            });
-
-            var  handlerPerformanceWorkgroupStore = new Ext.data.Store({
-                                proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
-                                reader :  handlerPerformanceWorkgroupJsonReader,
-                                listeners: {load: function() {
-
-                                          var  defaultValue={'value':'--- All ---','id':1}
-                                          this.insert(0, new Ext.data.Record(defaultValue));
-                }
-            }
-            });
-
-            var  handlerPerformanceWorkgroupCombo = new Ext.form.ComboBox({
-                                store:  handlerPerformanceWorkgroupStore,
-                                renderTo: 'rptHandlerPerformanceWrkgroupSelectionHolder',
-                                valueField: 'text',
-                                hiddenName: 'workgroupId',
-                                displayField:'value',
-                                width: 250,
-                                typeAhead: true,
-//                                autoWidth: true,
-                                mode: 'local',
-                                triggerAction: 'all',
-                                emptyText: '--- All ---',
-                                forceSelection : true,
-                                listeners: {select: function () {
-                                                        var workgroupId = -1;
-                                                        if (handlerPerformanceWorkgroupCombo.getValue() != null) {
-                                                            workgroupId = handlerPerformanceWorkgroupCombo.getValue();
-                                                        }
-//                                                        var insurerId = $("#userInsurerId").val();
-                                                        claimHandlerPerformanceCombo.reset();
-                                                        claimHandlerPerformanceStore.removeAll();
-                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
-                                                    },
-                                            blur: function () {
-                                                    if(this.getRawValue() == "" ) {
-                                                        this.clearValue(); this.reset();
-                                                        claimHandlerPerformanceCombo.reset();
-                                                        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
-                                                  }
-                                }}
-                        });
-            handlerPerformanceWorkgroupStore.load();
-        </s:if>
-        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+        
+        claimHandlerPerformanceStore.load({ params : {"workgroupId":-1, "insurerId":insurerId}});
         $("form#formHandlerPerformanceReportParam").validate(
         {
             errorLabelContainer: "#formHandlerPerformanceReportParamMessageBox",
@@ -148,9 +93,6 @@
     {
         if($("form#formHandlerPerformanceReportParam").valid()){
             var queryString = $('#formHandlerPerformanceReportParam').formSerialize();
-            // If no workgroup selected, insert a '-1' into the query string
-            if (queryString.indexOf('workgroupId=&') >= 0)
-                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
         }
     }
@@ -168,30 +110,20 @@
 
                 <table class="report-form">
 
-                    <s:if test="insurerIsWorkgroupEnabled">
-                        <tr>
-                            <td nowrap><label>Workgroup</label></td>
-                            <td>
-                                <div id="rptHandlerPerformanceWrkgroupSelectionHolder"></div>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:else>
-                        <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
-                    </s:else>
-                        <tr>
-                            <td nowrap><label>Claim Handler</label></td>
-                            <td>
-                                <div id="rptHandlerPerformanceOwnerSelectionHolder"></div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td nowrap><label>Claim Handler</label></td>
+                        <td>
+                            <div id="rptHandlerPerformanceOwnerSelectionHolder"></div>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
                     </tr>
                     <tr>
                         <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
                     </tr>
-
+                    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
                 </table>
 
                 <div class="chox-report-button">
@@ -200,5 +132,6 @@
 
             </div>
             <div id="formHandlerPerformanceReportParamMessageBox" class="action-error-msg"></div>
-        </div></form>
+        </div>
+      </form>
 </fieldset>

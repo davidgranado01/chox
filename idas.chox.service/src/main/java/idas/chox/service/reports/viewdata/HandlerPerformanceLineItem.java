@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 public class HandlerPerformanceLineItem {
 
     private static final Logger LOG = LoggerFactory.getLogger(HandlerPerformanceLineItem.class);
-    private String workgroup;
     private String name;
     private Integer id;
     private Integer taskProcessedBetweenGivenPeriod;
@@ -98,23 +97,10 @@ public class HandlerPerformanceLineItem {
     public static HandlerPerformanceLineItem getObject(Map data) {
 
         HandlerPerformanceLineItem result = new HandlerPerformanceLineItem();
-        if (data.get("workgroup") == null) {
-            result.setWorkgroup("");
-        } else {
-            result.setWorkgroup(data.get("workgroup").toString());
-        }
         result.setName(data.get("name").toString());
         result.setId((Integer) data.get("id"));
         LOG.debug("Creating stats for: {}", result.getName());
         return result;
-    }
-
-    public String getWorkgroup() {
-        return workgroup;
-    }
-
-    public void setWorkgroup(String workgroup) {
-        this.workgroup = workgroup;
     }
 
     public String getName() {
