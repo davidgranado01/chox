@@ -420,10 +420,10 @@
     <bean id="EscalatedInvoicesToSupervisor" class="idas.chox.service.filters.InvoiceEscalatedToSupervisor" >
         <property name="name" value="Escalated Invoices to Supervisor"/>
         <property name="key" value="EscalatedInvoicesToSupervisor"/>
-        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
