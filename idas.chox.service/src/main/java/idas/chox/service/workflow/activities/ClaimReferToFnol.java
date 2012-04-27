@@ -16,7 +16,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
-import java.util.ArrayList;
 
 public class ClaimReferToFnol extends BaseActivity {
 
@@ -109,9 +108,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
 
-            if (oasWorkgroupId <= 0) {
-                throw new Exception("Invalid workgroup id");
-            } else {
+            if (oasWorkgroupId > 0) {
                 workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
                 if (workgroup == null) {
                     throw new Exception("Invalid workgroup id");
@@ -154,7 +151,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
 
-            if (claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
+            if (workgroup != null && claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
                 claim.setWorkgroup(workgroup);
             }
             if (claimOwner != null) {
@@ -170,6 +167,7 @@ public class ClaimReferToFnol extends BaseActivity {
             }
 
 
+            
         } else {
             if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
