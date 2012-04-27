@@ -56,7 +56,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  true,
+            allowBlank       :  false,
             renderTo         : 'rejectionDescId'
         });
 
@@ -84,9 +84,20 @@
     	}
     }
     
+    $(function(){
+        $("form#routeUnacknowledgedUnroutedClaim").validate({
+            errorLabelContainer: "#RouteUnacknowledgedUnroutedClaimMessageBox",
+       });
+    });
+    
     function doClaimUnacknowledgedFormSubmit(action){
         actionPanel.registerAction(action);
+        $("form#routeUnacknowledgedUnroutedClaim #rejecDescId").rules("remove");
         if(action === 'rejectClaim' && validateRejectionComboBox()){
+        	 $("form#routeUnacknowledgedUnroutedClaim #rejecDescId").rules("add", {
+                 required: true,
+                 messages: {required: "You must enter  'Supporting Rejection Notes'"}
+             });
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
         }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
