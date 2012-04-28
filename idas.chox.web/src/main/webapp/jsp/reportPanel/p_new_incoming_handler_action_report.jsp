@@ -4,7 +4,7 @@
 <script type="text/javascript">
         
     var reportName = 'NewIncomingHandlerActionsReport-Excel';
-    
+    var isClaimOwnerShipEnabled = <s:property value="insurerIsClaimOwnershipEnabled"/>;
     Ext.onReady(function(){
         var insurerId = <s:property value="userOrganisationId"/>;
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
@@ -42,8 +42,9 @@
                 }
             }
         });
-
-		 var invSumRepClaimOwnerReader = new Ext.data.JsonReader({
+        
+        <s:if test="insurerIsClaimOwnershipEnabled">
+		 var incmgHnderRepClaimOwnerReader = new Ext.data.JsonReader({
 		     totalProperty: 'totalCount',
 		     root: 'results',
 		     fields:
@@ -53,10 +54,10 @@
 		     ]
 		 });
 		
-		 var invSumRepClaimOwnerStore = new Ext.data.Store({
+		 var incmgHnderRepClaimOwnerStore = new Ext.data.Store({
 		     proxy : new Ext.data.HttpProxy
 		     ({url : "<%=request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
-		        reader : invSumRepClaimOwnerReader,
+		        reader : incmgHnderRepClaimOwnerReader,
 		        listeners: {load: function() {
 		                var  defaultName={'name':'--- ALL ---','id':-1}
 		                this.insert(0, new Ext.data.Record(defaultName));
@@ -65,8 +66,8 @@
 		                    
 		    });
 		
-		    var invSumRepClaimOwnerCombo = new Ext.form.ComboBox({
-		        store : invSumRepClaimOwnerStore,
+		    var incmgHnderRepClaimOwnerCombo = new Ext.form.ComboBox({
+		        store : incmgHnderRepClaimOwnerStore,
 		        width: 250,
 		        renderTo: 'nhrInvSumOwnerSelectionHolder',
 		        id : 'nhRepOwnerCombo',
@@ -88,9 +89,10 @@
 		            }
 		        }
 		    });
-		
-		<s:if test="insurerIsWorkgroupEnabled">
-		        var invSumRepWorkgroupJsonReader = new Ext.data.JsonReader({
+                    incmgHnderRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+	 </s:if>
+	 <s:if test="insurerIsWorkgroupEnabled">
+		        var incmgHnderRepWorkgroupJsonReader = new Ext.data.JsonReader({
 		            totalProperty: 'totalCount',
 		            root: 'results',
 		            fields:
@@ -100,10 +102,10 @@
 		            ]
 		        });
 		
-		        var  invSumRepWorkgroupStore = new Ext.data.Store({
+		        var  incmgHnderRepWorkgroupStore = new Ext.data.Store({
 		            proxy : new Ext.data.HttpProxy
 		            ({url : "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
-		            reader :  invSumRepWorkgroupJsonReader,
+		            reader :  incmgHnderRepWorkgroupJsonReader,
 		            listeners: {load: function() {
 		                    var  defaultValue={'value':'--- ALL ---','id':1}
 		                    this.insert(0, new Ext.data.Record(defaultValue));
@@ -111,8 +113,8 @@
 		            }
 		        });
 		
-		        var  invSumRepWorkgroupCombo = new Ext.form.ComboBox({
-		            store:  invSumRepWorkgroupStore,
+		        var  incmgHnderRepWorkgroupCombo = new Ext.form.ComboBox({
+		            store:  incmgHnderRepWorkgroupStore,
 		            renderTo: 'nhrWrkgroupHolder',
 		            valueField: 'text',
 		            id: 'nhRepWorkgroupComboId',
@@ -126,19 +128,23 @@
 		            forceSelection : true,
 		            listeners: {select: function () {
 		                    var workgroupId = -1;
-		                    if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
-		                        workgroupId = invSumRepWorkgroupCombo.getValue();
+		                    if (incmgHnderRepWorkgroupCombo.getValue() != null && incmgHnderRepWorkgroupCombo.getValue() != '--- ALL ---' && incmgHnderRepWorkgroupCombo.getValue() != "") {
+		                        workgroupId = incmgHnderRepWorkgroupCombo.getValue();
 		                    }
-		                    invSumRepClaimOwnerCombo.reset();
-		                    invSumRepClaimOwnerCombo.setValue('--- ALL ---');
-		                    invSumRepClaimOwnerStore.removeAll();
-		                    invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                    if (isClaimOwnerShipEnabled) {
+                                        incmgHnderRepClaimOwnerCombo.reset();
+                                        incmgHnderRepClaimOwnerCombo.setValue('--- ALL ---');
+                                        incmgHnderRepClaimOwnerStore.removeAll();
+                                        incmgHnderRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                    }
 		                },
 		                blur: function () {
 		                    if(this.getRawValue() == "" ) {
 		                        this.clearValue(); this.reset();
-		                        invSumRepClaimOwnerCombo.reset();
-		                        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                        if (isClaimOwnerShipEnabled) {
+                                            incmgHnderRepClaimOwnerCombo.reset();
+                                            incmgHnderRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                        }
 		                    }
 		                },
 		                afterrender : function(){
@@ -146,9 +152,8 @@
 		                }
 		            }
 		        });
-		        invSumRepWorkgroupStore.load();
-		</s:if>
-		        invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+		        incmgHnderRepWorkgroupStore.load();
+	  </s:if>
 		
 		        var suppliersJsonReader = new Ext.data.JsonReader({
 		            totalProperty: 'totalCount',
@@ -234,7 +239,7 @@
                             <div id="nhrChoDropDownDiv"></div>
                         </td>
                     </tr>
-                    <s:if test="insurerIsWorkgroupEnabled">
+                                        <s:if test="insurerIsWorkgroupEnabled">
 					<tr>
 						<td nowrap><label>Workgroup</label></td>
 						<td>
@@ -242,12 +247,14 @@
 						</td>
 					</tr>
 					</s:if>
+                                        <s:if test="insurerIsClaimOwnershipEnabled">
 					<tr>
 						<td nowrap><label>Claim Owner</label></td>
 						<td>
 							<div id="nhrInvSumOwnerSelectionHolder"></div>
 						</td>
 					</tr>
+                                        </s:if>
 					<tr>
 						<td nowrap width="30%"><label>Period From</label></td>
 						<td><div id="dateFromDiv" /></td>

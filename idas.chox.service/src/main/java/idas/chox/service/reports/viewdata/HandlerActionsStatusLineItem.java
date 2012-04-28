@@ -28,10 +28,16 @@ public class HandlerActionsStatusLineItem {
             result.setWorkgroup("");
         else
             result.setWorkgroup(data.get("workgroup").toString());
-        result.setName(data.get("name").toString());
-        result.setId((Integer)data.get("id"));
-        LOG.debug("Creating stats for: {}", result.getName());
-        LOG.debug("Creating stats for ID : {}", result.getId());
+        if (data.get("name") == null) {
+            result.setName("");
+            result.setId(0);
+        } else {
+            result.setName(data.get("name").toString());
+            result.setId((Integer)data.get("id"));
+        }
+        
+//        LOG.debug("Creating stats for: {}", result.getName());
+//        LOG.debug("Creating stats for ID : {}", result.getId());
 
         return result;
     }
