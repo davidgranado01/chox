@@ -190,6 +190,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return getAuthenticatedUser().getInsurer().isFnolEnable();
         }
     }
+    
+    public boolean getInsurerIsSupervisorEnabled() {
+        if (!getIsInsurer()) {
+            return true;
+        } else {
+            return getAuthenticatedUser().getInsurer().isSupervisorEnable();
+        }
+    }
 
     public boolean getInsurerIsEngineersEnabled() {
         if (!getIsInsurer()) {

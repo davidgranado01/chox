@@ -1,8 +1,10 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.ActionResponse;
+
 import java.util.List;
 
 public class AlertAction extends BaseAction {
@@ -14,6 +16,8 @@ public class AlertAction extends BaseAction {
     private List duplicatedClaims;
     private String actionResult;
     private List duplicatedSupplementaryInvoice;
+    private int numberOfTimesContestedWithCHOtoEscalate;
+    private int daysSinceInvoiceUploadToEscalate;
 
     public List getDuplicatedSupplementaryInvoice() {
         return duplicatedSupplementaryInvoice;
@@ -35,6 +39,25 @@ public class AlertAction extends BaseAction {
         }
         return "empty";
     }
+    
+    public String getClaimEscalatedToSupervisorAlert() {
+        Insurer insurer = claimService.getClaim(claimId).getInsurer();
+        int daysBeforeEscalatedRetriction = insurer.getDaysBeforeEscalated();
+        int timesInStatusContestedRetriction = insurer.getTimesInStatusContested();
+        
+        daysSinceInvoiceUploadToEscalate = claimService.getDaysSinceInvoiceUploadToEscalate(claimId);
+        numberOfTimesContestedWithCHOtoEscalate = claimService.getNumberOfTimesContestedWithCHOtoEscalate(claimId);
+        
+        //if claim does not match the insurers restriction in that case we set it to 0 and don't display it in alert panel
+        numberOfTimesContestedWithCHOtoEscalate = numberOfTimesContestedWithCHOtoEscalate >= timesInStatusContestedRetriction ? numberOfTimesContestedWithCHOtoEscalate : 0;
+        daysSinceInvoiceUploadToEscalate = daysSinceInvoiceUploadToEscalate >= daysBeforeEscalatedRetriction ? daysSinceInvoiceUploadToEscalate : 0;
+        
+        if (claimService.getClaim(claimId).getInsurer().isSupervisorEnable() &&
+                (numberOfTimesContestedWithCHOtoEscalate > 0 || daysSinceInvoiceUploadToEscalate > 0)) {
+            return SUCCESS;
+        }
+        return "empty";
+    }
 
     public String isClaimNumberDuplicated() {
 
@@ -46,7 +69,7 @@ public class AlertAction extends BaseAction {
 
         return SUCCESS;
     }
-
+    
     public List getOtherDuplicatedClaims() {
         return duplicatedClaims;
     }
@@ -83,4 +106,13 @@ public class AlertAction extends BaseAction {
     public String getActionResult() {
         return actionResult;
     }
+
+    public int getNumberOfTimesContestedWithCHOtoEscalate() {
+        return numberOfTimesContestedWithCHOtoEscalate;
+    }
+
+    public int getDaysSinceInvoiceUploadToEscalate() {
+        return daysSinceInvoiceUploadToEscalate;
+    }
+
 }

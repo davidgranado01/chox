@@ -2151,4 +2151,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 	        id = claim.getInsurer().getId().intValue();
 	    return id;
 	}
+
+    public boolean getIsEscalatedToSupervisor() {
+        if(claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable() 
+                && (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) > 0
+                        || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) > 0 ))
+            return  true;
+        return false;
+    }
 }

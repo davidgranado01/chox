@@ -1279,4 +1279,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
     }
+
+    @Override
+    public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
+        Claim claim = getClaim(claimId);
+        Date createdDate = claim.getInvoice().getCreatedDate();
+        Date currentDate = DateHelper.getCurrentDate();  
+        return DateHelper.getNumberOfDaysBetween(createdDate, currentDate);
+    }
+
+    @Override
+    public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
+        Criteria criteria = getSession().createCriteria(AuditTrail.class);
+        criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
+        criteria.add(Restrictions.eq("claim.id", claimId));
+        return countClaims(criteria).intValue();
+    }
 }
