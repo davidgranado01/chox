@@ -1292,6 +1292,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
         Criteria criteria = getSession().createCriteria(AuditTrail.class);
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
+        criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
         return countClaims(criteria).intValue();
     }

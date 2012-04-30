@@ -5,7 +5,7 @@
     <div class="status-info">
 		This claim has been escalated to a Supervisor because
 		<s:if test="numberOfTimesContestedWithCHOtoEscalate > 0">
-        it has been contested back to the CHO <s:property
+        it has been contested back to the Insurer <s:property
 				value="numberOfTimesContestedWithCHOtoEscalate" /> times
         </s:if>
 		<s:if

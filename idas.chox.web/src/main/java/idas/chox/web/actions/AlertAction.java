@@ -5,6 +5,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.ActionResponse;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
