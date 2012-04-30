@@ -303,5 +303,10 @@ public class AdminWeeklyOverviewReport implements Report {
         }
 
         return ins;
-    }    
+    }
+
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

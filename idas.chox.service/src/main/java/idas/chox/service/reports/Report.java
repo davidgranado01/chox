@@ -18,4 +18,6 @@ public interface Report {
     ByteArrayOutputStream build();
 
     String getReportCode();
+    
+    public short[] getColumnsToHide();
 }

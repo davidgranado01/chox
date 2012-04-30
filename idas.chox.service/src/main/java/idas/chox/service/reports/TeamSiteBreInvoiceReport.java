@@ -551,5 +551,10 @@ public class TeamSiteBreInvoiceReport implements Report {
 
         return chorg;
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

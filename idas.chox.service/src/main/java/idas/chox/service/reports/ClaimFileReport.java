@@ -86,5 +86,10 @@ public class ClaimFileReport implements Report {
     public String getReportCode() {
         return "RPT100";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }
