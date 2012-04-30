@@ -30,6 +30,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean fixedTransactionalFee;
     private boolean workgroupEnable;
     private boolean fnolEnable;
+    private boolean supervisorEnable;
     private boolean engineersEnable;
     private boolean autoRoutingEnable;
     private boolean autoRoutingEnablePrice;
@@ -490,6 +491,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setEnableIPWhitelist(boolean enableIPWhitelist) {
         this.enableIPWhitelist = enableIPWhitelist;
+    }
+
+    public boolean isSupervisorEnable() {
+        return supervisorEnable;
+    }
+
+    public void setSupervisorEnable(boolean supervisorEnable) {
+        this.supervisorEnable = supervisorEnable;
     }
 
 }

@@ -1279,4 +1279,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
     }
+    
+    @Override
+    public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
+        DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
+        auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+        auditTrail.add(Restrictions.eq("aut.reverted", false));
+        auditTrail.add(Restrictions.eq("aut.claim.id", claimId));
+        List result = getHibernateTemplate().findByCriteria(auditTrail);
+        //in case the claim was in status 'invoice payment logged' we return 0 and don't display it in information panel
+        if(result.size() > 0)
+            return 0;
+        Claim claim = getClaim(claimId);
+        Date createdDate = claim.getInvoice().getCreatedDate();
+        Date currentDate = DateHelper.getCurrentDate();  
+        return DateHelper.getNumberOfDaysBetween(createdDate, currentDate);
+    }
+
+    @Override
+    public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
+        Criteria criteria = getSession().createCriteria(AuditTrail.class);
+        criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
+        criteria.add(Restrictions.eq("reverted", false));
+        criteria.add(Restrictions.eq("claim.id", claimId));
+        return countClaims(criteria).intValue();
+    }
 }
