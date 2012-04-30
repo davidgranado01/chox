@@ -232,20 +232,25 @@
         doFormValidationSetup(action);
 
         if($("#formAcknowledgeAction").valid()){
+            $('#ACKmessageBox').text("");
+            var reasonOfRejectionDropDown = $("form#formAcknowledgeAction #reasonOfRejectionId");
+            //TODO: this is a quick solution for reason of rejeciton validation (in case we press "refer to fnol" and then reject)
+             if(action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
+            		 && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
+                 $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
+             }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
+                 var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+                 var claimId = $("form#formAcknowledgeAction #claimId").val();
+                 var form = $("form#formAcknowledgeAction");
 
-            if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
-                    var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
-                    var claimId = $("form#formAcknowledgeAction #claimId").val();
-                    var form = $("form#formAcknowledgeAction");
-
-                    if(claimNumber && claimNumber.length > 0){
-                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-                    }else{
-                        form.submit();
-                    }
-                }else{return false;}})){
-                return;
-            }
+                 if(claimNumber && claimNumber.length > 0){
+                     checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                 }else{
+                     form.submit();
+                 }
+             }else{return false;}})){
+                   return;
+             }
             else{
                
                 var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
