@@ -64,8 +64,11 @@
 
     function validateRejectionComboBox(){
     	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
-    	if ($("#reasonOfRejectionId").val() == "-1") {
-    		msgBox.text("You must choose a 'Reason For Rejection'").show();
+    	if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+    		if($("#reasonOfRejectionId").val() == "-1")
+                $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+            if($("#rejecDescId").val() == "" && msgBox.text().indexOf("Supporting Rejection Notes") == -1 )
+                $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();     
     		return false;
     	} else {
     		msgBox.text("").show();
@@ -84,20 +87,9 @@
     	}
     }
     
-    $(function(){
-        $("form#routeUnacknowledgedUnroutedClaim").validate({
-            errorLabelContainer: "#RouteUnacknowledgedUnroutedClaimMessageBox",
-       });
-    });
-    
     function doClaimUnacknowledgedFormSubmit(action){
         actionPanel.registerAction(action);
-        $("form#routeUnacknowledgedUnroutedClaim #rejecDescId").rules("remove");
         if(action === 'rejectClaim' && validateRejectionComboBox()){
-        	 $("form#routeUnacknowledgedUnroutedClaim #rejecDescId").rules("add", {
-                 required: true,
-                 messages: {required: "You must enter  'Supporting Rejection Notes'"}
-             });
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
         }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");

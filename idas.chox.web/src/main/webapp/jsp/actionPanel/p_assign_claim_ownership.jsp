@@ -211,7 +211,6 @@
     	var mesBox = $("#OwnershippAssignmentMessageBox");
     	if (coh.val() == "")
     		coh.val(-1);
-    	$("form#formOwnershipAssignmentAction #rejecDescId").rules("remove");
     	actionPanel.registerAction("referFNOL");
     	 if ($("#workgroupComboId").val() != "--- Please Select ---") {
     		 mesBox.text("").show();
@@ -223,26 +222,17 @@
     	
     }
     
-    $(function(){
-    	$("form#formOwnershipAssignmentAction").validate({
-            errorLabelContainer: "#OwnershippAssignmentMessageBox",
-       });
-    });
-
     function doAssignOwnershipRejectSubmit(){
-    	 $("form#formOwnershipAssignmentAction #rejecDescId").rules("add", {
-             required: true,
-             messages: {required: "You must enter 'Supporting Rejection Notes'"}
-         });
     	actionPanel.registerAction("rejectClaim");
-    	if($("form#formOwnershipAssignmentAction").valid()){
-	    	if($("#reasonOfRejectionId").val() == "-1") {
-	    		$("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").show();
-	    	} else {
+	    	if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+	    		 if($("#reasonOfRejectionId").val() == "-1")
+	    		    $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+                 if($("#rejecDescId").val() == "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") == -1 )
+                	    $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
+            } else {
 	    		$("#OwnershippAssignmentMessageBox").text("").show();
 	    		Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
 	    	}
-    	}
     }
     
     function rejectClaim(btn) {
@@ -253,7 +243,6 @@
     }
 
     function doAssignOwnershipSubmit(){
-    	$("form#formOwnershipAssignmentAction #rejecDescId").rules("remove");
     	actionPanel.registerAction("assignOwner");
     	if (validateComboBox()) {
 			Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
