@@ -64,11 +64,12 @@
 
     function validateRejectionComboBox(){
     	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
+    	msgBox.text("");
     	if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
     		if($("#reasonOfRejectionId").val() == "-1")
-                $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+    			msgBox.text("You must choose a 'Reason For Rejection'").append('<br/>').show();
             if($("#rejecDescId").val() == "" && msgBox.text().indexOf("Supporting Rejection Notes") == -1 )
-                $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();     
+            	msgBox.append("You must enter 'Supporting Rejection Notes'").show();     
     		return false;
     	} else {
     		msgBox.text("").show();

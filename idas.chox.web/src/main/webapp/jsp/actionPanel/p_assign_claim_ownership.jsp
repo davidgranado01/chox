@@ -224,6 +224,7 @@
     
     function doAssignOwnershipRejectSubmit(){
     	actionPanel.registerAction("rejectClaim");
+    	$("#OwnershippAssignmentMessageBox").text("");
 	    	if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
 	    		 if($("#reasonOfRejectionId").val() == "-1")
 	    		    $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
