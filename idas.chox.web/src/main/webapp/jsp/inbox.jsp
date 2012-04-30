@@ -1384,7 +1384,7 @@
 
                                 function generateWorkgroup(){
                                     var target = "#couWorkgroupDropDownDiv";
-                                    var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action";
+                                    var url = "<%=request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action";
                                     var param = {};
                                     ajax.loadHtml2(url, param, function(data){
                                         $(target).html(data);
