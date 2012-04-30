@@ -1282,6 +1282,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     @Override
     public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
+        DetachedCriteria claimCriteria = DetachedCriteria.forClass(Claim.class, "cl");
+        claimCriteria.add(Restrictions.eq("cl.id", claimId));
+        for (String status : ClaimStatus.getCompletedStatus(true)) {
+            claimCriteria.add(Restrictions.ne("cl.status", status));
+        }
+        List clResult = getHibernateTemplate().findByCriteria(claimCriteria);
+        Claim claim = (Claim) ((clResult != null && clResult.size() == 1) ? clResult.get(0) : null);
+        if(claim == null)
+            return 0;
+
         DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
         auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
         auditTrail.add(Restrictions.eq("aut.reverted", false));
@@ -1291,7 +1301,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if(result.size() > 0)
             return 0;
 
-        Claim claim = getClaim(claimId);
         Date createdDate = claim.getInvoice().getCreatedDate();
         Date currentDate = DateHelper.getCurrentDate();  
         return DateHelper.getNumberOfDaysBetween(createdDate, currentDate);
