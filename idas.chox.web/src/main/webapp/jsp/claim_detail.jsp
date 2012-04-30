@@ -532,6 +532,10 @@
             <s:param name="customerClaimRefNum"><s:property value="customer.claimReference" /></s:param>
         </s:action>
     </s:if>
+    
+    <s:if test="isEscalatedToSupervisor">
+        <s:action name="getClaimEscalatedToSupervisorAlert" namespace="/prv/p" executeResult="true"></s:action>
+    </s:if>
 
     <s:if test="notificationAccessibility.userViewingNotificationAccessibility">
         <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">

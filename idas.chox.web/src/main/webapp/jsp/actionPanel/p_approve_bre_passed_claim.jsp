@@ -25,7 +25,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  true,
+            allowBlank       :  false,
             renderTo         : 'rejectionDescId'
         });
 

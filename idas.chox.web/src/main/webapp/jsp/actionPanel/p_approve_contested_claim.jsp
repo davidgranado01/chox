@@ -37,7 +37,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  true,
+            allowBlank       :  false,
             renderTo         : 'rejectionDescId'
         });
     });
@@ -84,13 +84,19 @@
         $("form#formProcessRejectedClaim #claimNumber").rules("remove");
         $("form#formProcessRejectedClaim #reasonOfRejectionId").rules("remove");
         $("form#formProcessRejectedClaim #percentageLiabilityAccepted").rules("remove", "min");
-
+        $("form#formProcessRejectedClaim #rejecDescId").rules("remove");
+        
         // ADD NEW VALIDATION PER SUBMIT TYPE
         if(action=='rejectClaim'){
 
             $("form#formProcessRejectedClaim #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+            
+            $("form#formProcessRejectedClaim #rejecDescId").rules("add", {
+                required: true,
+                messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
 
             addValidationRulePercentageLiabilityAccepted(0);

@@ -93,7 +93,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  true,
+            allowBlank       :  false,
             renderTo         : 'rejectionDescId'
         });
         
@@ -221,15 +221,18 @@
          }
     	
     }
-
+    
     function doAssignOwnershipRejectSubmit(){
     	actionPanel.registerAction("rejectClaim");
-    	if($("#reasonOfRejectionId").val() == "-1") {
-    		$("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").show();
-    	} else {
-    		$("#OwnershippAssignmentMessageBox").text("").show();
-    		Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
-    	}
+	    	if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+	    		 if($("#reasonOfRejectionId").val() == "-1")
+	    		    $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+                 if($("#rejecDescId").val() == "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") == -1 )
+                	    $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
+            } else {
+	    		$("#OwnershippAssignmentMessageBox").text("").show();
+	    		Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+	    	}
     }
     
     function rejectClaim(btn) {

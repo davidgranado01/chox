@@ -56,7 +56,7 @@
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
-            allowBlank       :  true,
+            allowBlank       :  false,
             renderTo         : 'rejectionDescId'
         });
 
@@ -64,8 +64,11 @@
 
     function validateRejectionComboBox(){
     	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
-    	if ($("#reasonOfRejectionId").val() == "-1") {
-    		msgBox.text("You must choose a 'Reason For Rejection'").show();
+    	if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+    		if($("#reasonOfRejectionId").val() == "-1")
+                $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+            if($("#rejecDescId").val() == "" && msgBox.text().indexOf("Supporting Rejection Notes") == -1 )
+                $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();     
     		return false;
     	} else {
     		msgBox.text("").show();
