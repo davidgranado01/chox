@@ -3,6 +3,7 @@ package idas.chox.web.security;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.PermissionedUser;
 import java.io.Serializable;
@@ -15,6 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class PasswordExpiredInterceptor extends AbstractInterceptor implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(PasswordExpiredInterceptor.class);
+    private UserService userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String intercept(ActionInvocation invocation) throws Exception {
@@ -22,7 +27,7 @@ public class PasswordExpiredInterceptor extends AbstractInterceptor implements S
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         if (!(invocation.getAction() instanceof idas.chox.web.actions.UserAccountAction) && currentUser != null && currentUser.getPrincipal() instanceof PermissionedUser) {
             PermissionedUser user = (PermissionedUser) currentUser.getPrincipal();
-            WebUser webUser = user.getUser();
+            WebUser webUser = userService.getWebUser(user.getUser().getId());
             int forcePasswordChangeDays = 0;
 
             Date passwordLastModifiedDate = webUser.getPasswordLastModifiedDate();
@@ -38,6 +43,7 @@ public class PasswordExpiredInterceptor extends AbstractInterceptor implements S
                         passwordNotChangedDays, forcePasswordChangeDays);
 
                 webUser.setIsExpired(Boolean.TRUE);
+                user.getUser().setIsExpired(Boolean.TRUE); // Needed to update the permissioned user to get the expired message in the page
                 
             } else {
                 LOG.debug("No forced password change: password is '{}' days old, forced days set to '{}'", passwordNotChangedDays, forcePasswordChangeDays);
