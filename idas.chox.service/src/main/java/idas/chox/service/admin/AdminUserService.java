@@ -230,17 +230,18 @@ public class AdminUserService extends SecureDataService {
     // </editor-fold>
 
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId) {
-        return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true, true);
+        return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true, true, true);
     }
 
-    public Set<WebUserRole> getAllAvailableUserroles(int organisationTypeId, boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
-        return this.webUserUserRoleService.getWebUserroles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled);
+    public Set<WebUserRole> getAllAvailableUserroles(int organisationTypeId, boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled) {
+        return this.webUserUserRoleService.getWebUserroles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled);
     }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId,
-            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled) {
-        List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled, isInsurerUploadEnabled);
+            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, 
+            boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled) {
+        List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled);
 
         return availableUserRoles;
     }

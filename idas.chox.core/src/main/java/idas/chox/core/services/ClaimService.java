@@ -92,4 +92,8 @@ public interface ClaimService extends DataService {
     public Claim updateClaimWithInvalidSessionVersion(Claim claim);
     
     public void updateLiabilityPayment(Claim claim);
+
+    public int getDaysSinceInvoiceUploadToEscalate(Integer claimId);
+
+    public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId);
 }

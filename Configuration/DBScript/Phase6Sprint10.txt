@@ -255,6 +255,7 @@ insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('f
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_SUP', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MI', 1, (select id from accessibility where name='filter.EscalatedInvoicesToSupervisor'));
+
 ---------------------------------------------------------------------
 -- End of ToDo item:  6.10.4 Escalation Of Invoices (Supervisor)
 ---------------------------------------------------------------------
@@ -286,3 +287,7 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'report.IncomingHandlerActionsReport';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MI',1,id from accessibility where name ='report.IncomingHandlerActionsReport';
 
+---------------------------------------------------------------------
+-- #1665 Escalation of Invoices new requirements
+---------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN is_supervisor_enable boolean DEFAULT false;

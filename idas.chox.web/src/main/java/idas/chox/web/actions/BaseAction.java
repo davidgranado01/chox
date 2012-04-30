@@ -190,6 +190,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return getAuthenticatedUser().getInsurer().isFnolEnable();
         }
     }
+    
+    public boolean getInsurerIsSupervisorEnabled() {
+        if (getIsCHO()) {
+            return false;
+        } else if (getIsInsurer()){
+            return getAuthenticatedUser().getInsurer().isSupervisorEnable();
+        } else {
+            return true; //for CHOX admin we return true
+        }
+    }
 
     public boolean getInsurerIsEngineersEnabled() {
         if (!getIsInsurer()) {

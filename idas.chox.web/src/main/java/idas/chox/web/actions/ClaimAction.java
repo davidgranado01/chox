@@ -2151,4 +2151,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 	        id = claim.getInsurer().getId().intValue();
 	    return id;
 	}
+
+    public boolean getIsEscalatedToSupervisor() {
+        if(getAuthenticatedUser().isCHO()){
+            return false;
+        } else if (getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isSupervisorEnable()
+                && isInsurerAllowedForSupervisorQueue() 
+                && isEscalatedToSupervisor()){
+            return true;
+        } else if(getAuthenticatedUser().isCHOXAdmin() && claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable() 
+                && isEscalatedToSupervisor())
+            return  true;
+        return false;
+    }
+    
+    private boolean isInsurerAllowedForSupervisorQueue(){
+        for(Object userRole : getAuthenticatedUser().getRoles()){
+            WebUserRole role = (WebUserRole) userRole;
+            if(role.getName().contains(WebUserRole.ROLE_INS_MNG)
+                    || role.getName().contains(WebUserRole.ROLE_INS_SUP)
+                    || role.getName().contains(WebUserRole.ROLE_INS_MI)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isEscalatedToSupervisor(){
+        if(service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= getAuthenticatedUser().getInsurer().getDaysBeforeEscalated()
+                || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >=  getAuthenticatedUser().getInsurer().getTimesInStatusContested()){
+            return true;
+        }
+        return false;
+    }
 }
