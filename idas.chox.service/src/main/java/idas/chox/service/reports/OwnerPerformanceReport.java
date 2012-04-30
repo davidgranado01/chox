@@ -322,4 +322,9 @@ public class OwnerPerformanceReport implements Report {
     public String getReportCode() {
         return "RPT056";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

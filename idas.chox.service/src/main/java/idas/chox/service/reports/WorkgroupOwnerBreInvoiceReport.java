@@ -558,4 +558,9 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     public String getReportCode() {
         return "RPT032";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

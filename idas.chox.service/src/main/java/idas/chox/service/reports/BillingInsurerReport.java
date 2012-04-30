@@ -177,4 +177,9 @@ public class BillingInsurerReport implements Report {
     public String getReportCode() {
         return "RPT009";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

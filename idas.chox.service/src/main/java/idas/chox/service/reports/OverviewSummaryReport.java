@@ -1410,5 +1410,10 @@ public class OverviewSummaryReport implements Report {
         }
         return wu;
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

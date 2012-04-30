@@ -1243,4 +1243,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     public String getReportCode() {
         return "RPT030";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

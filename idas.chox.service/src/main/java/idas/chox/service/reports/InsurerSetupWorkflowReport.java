@@ -231,4 +231,9 @@ public class InsurerSetupWorkflowReport implements Report {
     public String getReportCode() {
         return "RPT023";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

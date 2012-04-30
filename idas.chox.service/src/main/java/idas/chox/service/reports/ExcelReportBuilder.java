@@ -32,8 +32,9 @@ public class ExcelReportBuilder implements ReportBuilder {
         }
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
+        short[] columnsToHide = report.getColumnsToHide();
         LOG.info("Report data generated - constructing report from template file '{}'", templeteName);
-        return doCreateReport(reportParameters, templeteName, addLogo);
+        return doCreateReport(reportParameters, templeteName, addLogo, columnsToHide);
     }
 
     
@@ -66,13 +67,16 @@ public class ExcelReportBuilder implements ReportBuilder {
     }
 
     
-    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo) {
+    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide) {
         ByteArrayOutputStream out = null;
         try {
             InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
+            if (columnsToHide != null)
+                transformer.setColumnsToHide(columnsToHide);
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
+            
             if (addLogo) {
                 resultWorkbook = appendImage(resultWorkbook);
             }

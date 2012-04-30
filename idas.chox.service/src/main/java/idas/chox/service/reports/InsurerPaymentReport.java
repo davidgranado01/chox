@@ -177,5 +177,10 @@ public class InsurerPaymentReport implements Report {
     public String getReportCode() {
         return "RPT002";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

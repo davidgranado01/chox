@@ -355,4 +355,9 @@ public class ClaimRejectedReport implements Report {
     public String getReportCode() {
         return "RPT003";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

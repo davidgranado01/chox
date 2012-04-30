@@ -459,5 +459,10 @@ public class TeamWorkflowReport implements Report {
     public String getReportCode() {
         return "RPT022";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

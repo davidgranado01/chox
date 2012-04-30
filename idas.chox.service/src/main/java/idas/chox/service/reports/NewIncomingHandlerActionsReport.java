@@ -207,6 +207,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     /*
                      * No of new handler actions ClaimUnacknowledgedRouted
                      */
+                    
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
@@ -215,8 +216,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='ClaimUnacknowledgedRouted' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimUnacknowledgedRouted, ");
+                        .append("and ((a.new_status='ClaimUnacknowledgedRouted' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='ClaimUnacknowledgedRouted' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countClaimUnacknowledgedRouted, " );
 
                     /*
                      * No of new handler actions ClaimPending
@@ -229,8 +233,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='ClaimPending' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimPending, ");
+                        .append("and ((a.new_status='ClaimPending' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='ClaimPending' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countClaimPending, " );
 
                     /*
                      * No of new handler actions ClaimRejectionContested
@@ -243,9 +250,12 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='ClaimRejectionContested' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimRejectionContested, ");
-
+                        .append("and ((a.new_status='ClaimRejectionContested' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='ClaimRejectionContested' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countClaimRejectionContested, " );
+                    
                     /*
                      * No of new handler actions ClaimUpdatedByEngineer
                      */
@@ -257,8 +267,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='ClaimUpdatedByEngineer' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimUpdatedByEngineer, ");
+                        .append("and ((a.new_status='ClaimUpdatedByEngineer' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='ClaimUpdatedByEngineer' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countClaimUpdatedByEngineer, " );
 
                     /*
                      * No of new handler actions InvoiceEscalatedToHandler
@@ -271,8 +284,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='InvoiceEscalatedToHandler' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countInvoiceEscalatedToHandler, ");
+                        .append("and ((a.new_status='InvoiceEscalatedToHandler' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='InvoiceEscalatedToHandler' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countInvoiceEscalatedToHandler, " );
 
                     /*
                      * No of new handler actions
@@ -286,8 +302,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='ContestedInvoiceReferredToInsurer' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countContestedInvoiceReferredToInsurer, ");
+                        .append("and ((a.new_status='ContestedInvoiceReferredToInsurer' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='ContestedInvoiceReferredToInsurer' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countContestedInvoiceReferredToInsurer, " );
 
                     /*
                      * No of new handler actions InvoiceApprovedByBRE
@@ -300,8 +319,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='InvoiceApprovedByBRE' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countInvoiceApprovedByBRE, ");
+                        .append("and ((a.new_status='InvoiceApprovedByBRE' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='InvoiceApprovedByBRE' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countInvoiceApprovedByBRE, " );
 
                     /*
                      * No of new handler actions AwaitingLiabilityResolution
@@ -314,8 +336,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='AwaitingLiabilityResolution' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countAwaitingLiabilityResolution, ");
+                        .append("and ((a.new_status='AwaitingLiabilityResolution' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='AwaitingLiabilityResolution' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countAwaitingLiabilityResolution, " );
 
                     /*
                      * No of new handler actions AwaitingInvoicePayment
@@ -328,8 +353,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (isClaimOwnershipEnabled)
                         sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId ")
-                        .append("and a.new_status='AwaitingInvoicePayment' ")
-                        .append("and a.created_date between :pStartDate and :pEndDate ) as countAwaitingInvoicePayment ");
+                        .append("and ((a.new_status='AwaitingInvoicePayment' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) ")
+                        .append("or (a.original_status='AwaitingInvoicePayment' ") 
+                        .append("and a.last_modified_date between :pStartDate and :pEndDate ")
+                        .append("and a.reverted = true))) as countAwaitingInvoicePayment " );
 
                     queryParameters = new HashMap();
                     if (isWorkgroupEnabled) {
@@ -355,6 +383,10 @@ public class NewIncomingHandlerActionsReport implements Report {
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             // Now build report parameters
+            if (selectedCHOId > 0)
+                reportParameters.put("CHOName", getChorganisation(selectedCHOId).getName());
+            else
+                reportParameters.put("CHOName", "ALL");
             reportParameters.put("insurerName", currentUser.getInsurer().getName());
             reportParameters.put("createdDate", DateHelper.getCurrentDateWithFormat("dd/MM/yyyy HH:mm:ss"));
             reportParameters.put("startDate", sdf.format(startDate));
@@ -369,15 +401,12 @@ public class NewIncomingHandlerActionsReport implements Report {
 
     @Override
     public String getReportTemplateFileName() {
+//        return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
         WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
-        if (user.getInsurer().isWorkgroupEnable() && user.getInsurer().isClaimOwnershipEnable()) {
+        if (user.getInsurer().isWorkgroupEnable()) {
             return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
-        } else if (user.getInsurer().isWorkgroupEnable()){
-            return "template_NewIncomingHandlerWorkgroupOnlyActionsReport.xls";
-        } else if (user.getInsurer().isClaimOwnershipEnable()){
-            return "template_NewIncomingHandlerOwnerOnlyActionsReport.xls";
         } else {
-            return "";
+            return "template_NewIncomingHandlerOwnerOnlyActionsReport.xls";
         }
     }
 
@@ -458,6 +487,35 @@ public class NewIncomingHandlerActionsReport implements Report {
                     e.getMessage());
         }
         return wu;
+    }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        /*
+         * please note there is 2 template used for this report eventhough we
+         * can dynamically disable the column because when disable workgroup
+         * column which hides other variable defined on that column eg. chox
+         * logo and cho,insurer,created date parameter. So we are forced to use
+         * 2 different template. Further investigation needed to work around. 
+         */
+        short[] columnsToHide = null;
+        WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
+        if (user.getInsurer().isWorkgroupEnable() && user.getInsurer().isClaimOwnershipEnable()) { // if both claimownership and workgroup enabled
+            if (!user.getInsurer().isEngineersEnable()) {
+                columnsToHide = new short[]{(short) 6};
+            }
+        } else if (user.getInsurer().isWorkgroupEnable()) { // if claimownership not enabled
+            if (user.getInsurer().isEngineersEnable()) {
+                columnsToHide = new short[]{(short) 2};
+            } else {
+                columnsToHide = new short[]{(short) 2, (short) 6};
+            }
+        } else if (user.getInsurer().isClaimOwnershipEnable()) { // if workgroup not enabled 
+            if (!user.getInsurer().isEngineersEnable()) {
+                columnsToHide = new short[]{(short) 5};
+            }
+        }
+        return columnsToHide;
     }
 
 }
