@@ -585,4 +585,9 @@ public class InvoiceSummaryReport implements Report {
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

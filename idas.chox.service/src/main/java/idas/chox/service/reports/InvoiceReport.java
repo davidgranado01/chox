@@ -203,5 +203,10 @@ public class InvoiceReport implements Report {
 
         return chorganisation;
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

@@ -176,5 +176,10 @@ public class InvoiceSavingSummaryReport implements Report {
 
         return chorganisation;
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

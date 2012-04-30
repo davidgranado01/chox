@@ -204,5 +204,10 @@ public class BillingChoReport implements Report {
     public String getReportCode() {
         return "RPT010";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

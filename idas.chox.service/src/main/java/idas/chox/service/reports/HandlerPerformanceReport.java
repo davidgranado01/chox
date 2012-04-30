@@ -241,4 +241,9 @@ public class HandlerPerformanceReport implements Report {
     public String getReportCode() {
         return "RPT057";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

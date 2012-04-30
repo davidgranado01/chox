@@ -224,11 +224,10 @@
 
             <div class="form-container">
 
-				<div class="instruction-message">This report provides details
-					on the number of new handler actions across a specified period,
-					this allows an assessment of the volume of new work coming into
-					handlers. The dates below determine the period from which the
-					incoming work was received.
+				<div class="instruction-message">This report provides details on the number of 
+                                    new actions across a specified period, this allows an assessment of 
+                                    the volume of new work coming in. The dates below determine the period 
+                                    from which the incoming work was received.
 				</div>
 
 				<table class="report-form">

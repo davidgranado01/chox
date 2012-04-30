@@ -492,5 +492,10 @@ public class OwnerWorkflowReport implements Report {
     public String getReportCode() {
         return "RPT021";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }

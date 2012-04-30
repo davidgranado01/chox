@@ -1185,4 +1185,9 @@ public class InvoiceStatusReport implements Report {
     public String getReportCode() {
         return "RPT025";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

@@ -282,4 +282,9 @@ public class AverageSettlementAmountReport implements Report {
     public String getReportCode() {
         return "RPT006";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 }

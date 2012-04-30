@@ -295,5 +295,10 @@ public class TeamPerformanceReport implements Report{
     public String getReportCode() {
         return "RPT055";
     }
+    
+    @Override
+    public short[] getColumnsToHide() {
+        return null;
+    }
 
 }
