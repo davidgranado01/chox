@@ -100,7 +100,7 @@
                                         <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
                                             <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
                                         </s:if>
-                                         <s:if test="reportAccessibility.newIncomingHandlerActionsAccessibility">
+                                         <s:if test="reportAccessibility.newIncomingHandlerActionsAccessibility && (insurerIsClaimOwnershipEnabled || insurerIsWorkgroupEnabled)">
                                             <li><a href="javascript:renderParameterPanel('NewIncomingHandlerActionsReport-Excel');">New Incoming Actions Report</a></li>
                                         </s:if>
                                     </s:if>

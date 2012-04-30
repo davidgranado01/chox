@@ -81,15 +81,12 @@ public class ClaimRejectedReport implements Report {
             Integer iOrgId = null;
 
             if (isInsReport) {
-
                 Insurer ins = currentUser.getInsurer();
                 iOrgId = ins.getId();
                 sOrganisationLabel = "Insurer";
                 sOrganisationName = ins.getName();
 
             } else {
-                isInsReport = false;
-
                 Chorganisation cho = currentUser.getChorganisation();
                 iOrgId = cho.getId();
                 sOrganisationLabel = "Credit Hire";
@@ -116,6 +113,7 @@ public class ClaimRejectedReport implements Report {
         return reportParameters;
     }
 
+    
     private ClaimRejection getReportLineResult(boolean isIns, Integer iOrgId, ClaimRejection claimRejection, Date dataStart, Date dataEnd) {
 
         claimRejection = getReportHeader(isIns, iOrgId, dataStart, dataEnd, claimRejection);
@@ -135,10 +133,10 @@ public class ClaimRejectedReport implements Report {
                         .append(cRejected.getId()).append(", ");
                     } else {
                         sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection in ")
-                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :pOrgId)) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
+                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id=insurer.id) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
                         .append(cRejected.getId()).append(", ");
                         sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection in")
-                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :pOrgId)) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
+                        .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id=insurer.id) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
                         .append(cRejected.getId()).append(", ");
                     }
                         
@@ -179,6 +177,7 @@ public class ClaimRejectedReport implements Report {
                     reportColumn.setNumberOfClaim(MathHelper.getIntegerValue(data.get(keyName)));
                     reportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(reportColumn.getNumberOfClaim(), iTotalClaimRejected));
                     cRejected.getReportColumns().add(reportColumn);
+            LOG.debug("Added column for '{}': Number of claims={}, %={}", new Object[]{keyName, reportColumn.getNumberOfClaim(), reportColumn.getNumberOfClaimPercentage()});
                 }
             }
         }
@@ -226,7 +225,7 @@ public class ClaimRejectedReport implements Report {
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
         sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as iTotal, ");
-        sb.append("(select count(*) from claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = claim.id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected'))) as iTotalRejected, ");
+        sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
 
         if (isInsReport) {
 
@@ -282,7 +281,7 @@ public class ClaimRejectedReport implements Report {
             ReportColumnRejClaim.setNumberOfClaim(MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase())));
             ReportColumnRejClaim.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumnRejClaim.getNumberOfClaim(), ReportColumnClaim.getNumberOfClaim()));
             reportRowRejected.getReportColumns().add(ReportColumnRejClaim);
-
+            LOG.debug("Added column for '{}': Number of claims={}, Number of rejected claims={}", new Object[] {data.get("name").toString(), ReportColumnClaim.getNumberOfClaim(), ReportColumnRejClaim.getNumberOfClaim()});
         }
 
         reportRowAll.setAllOrgClaimCount(iClaimTotalCount);

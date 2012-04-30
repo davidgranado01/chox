@@ -53,10 +53,12 @@ public class NewIncomingHandlerActionsReport implements Report {
             Integer selectedWorkgroupId = -1;
             Integer selectedOwnerId = -1;
             boolean isWorkgroupEnabled = false;
+            boolean isClaimOwnershipEnabled = false;
 
             if (currentUser.getInsurer() != null) {
                 insurerId = currentUser.getInsurer().getId();
                 isWorkgroupEnabled = currentUser.getInsurer().isWorkgroupEnable();
+                isClaimOwnershipEnabled = currentUser.getInsurer().isClaimOwnershipEnable();
             }
             if (((String[]) externalParameter.get("DateStart")) != null) {
                 startDate = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
@@ -68,13 +70,17 @@ public class NewIncomingHandlerActionsReport implements Report {
             if(endDate != null && startDate != null && endDate.before(startDate)){
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
-            if (((String[]) externalParameter.get("ownerId")) != null) {
-                String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
-                    selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
-                    LOG.debug("selectedOwnerId={}", selectedOwnerId);
+            
+            if (isClaimOwnershipEnabled) {
+                if (((String[]) externalParameter.get("ownerId")) != null) {
+                    String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
+                    if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                        selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
+                        LOG.debug("selectedOwnerId={}", selectedOwnerId);
+                    }
                 }
             }
+            
             if (((String[]) externalParameter.get("nhrSupplierId")) != null) {
                 String selectedCHO = ((String[]) externalParameter.get("nhrSupplierId"))[0];
                 if (!selectedCHO.equalsIgnoreCase("undefined") && !selectedCHO.equalsIgnoreCase("") && !selectedCHO.equalsIgnoreCase("--- ALL ---")) {
@@ -93,7 +99,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             }
 
             List<HandlerActionsReportObject> handlerActionReportObjects = new ArrayList<HandlerActionsReportObject>();
-            if (isWorkgroupEnabled) {
+            if (isWorkgroupEnabled && isClaimOwnershipEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                 StringBuilder sb = new StringBuilder();
@@ -117,7 +123,29 @@ public class NewIncomingHandlerActionsReport implements Report {
                     handlerActionReportObjects.add(actionReportObject);
                     LOG.debug("Workgroup added: {}", actionReportObject.getWorkgroup());
                 }
-            } else {
+            } else if (isWorkgroupEnabled) {
+                
+                HashMap queryParameters = new HashMap();
+                queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
+                StringBuilder sb = new StringBuilder();
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                if (selectedWorkgroupId != -1) {
+                    sb.append("and id = :pWorkgroupId ");
+                    queryParameters.put("pWorkgroupId", selectedWorkgroupId);
+                }
+                sb.append("order by name");
+                
+                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                for (Object o : result) {
+                    Map data = (Map) o;
+                    HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
+                    actionReportObject.setWorkgroup(data.get("name").toString());
+                    actionReportObject.setId((Integer) data.get("id"));
+                    handlerActionReportObjects.add(actionReportObject);
+                    LOG.debug("Workgroup added: {}", actionReportObject.getWorkgroup());
+                }
+                
+            } else if (isClaimOwnershipEnabled) { // this condition can be replaced with just else {} but having isClaimOwnershipEnabled check ensure this report will not work when both workgroup and claimOwner disabled.
                 HandlerActionsReportObject workflowReportObject = new HandlerActionsReportObject();
                 handlerActionReportObjects.add(workflowReportObject);
                 LOG.debug("Empty Workgroup added.");
@@ -128,28 +156,36 @@ public class NewIncomingHandlerActionsReport implements Report {
                         obj.getWorkgroup());
                 HashMap queryParameters = new HashMap();
                 StringBuffer sb = new StringBuffer();
-                if (isWorkgroupEnabled && selectedOwnerId == -1) {
+                if (isWorkgroupEnabled && isClaimOwnershipEnabled && selectedOwnerId == -1) {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
                             obj.getId());
                     sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
-                } else if (isWorkgroupEnabled) {
+                } else if (isWorkgroupEnabled && isClaimOwnershipEnabled) {
                     queryParameters.put("pWorkgroupId", obj.getId());
                     LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
                             obj.getId());
                     sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id ");
-                } else {
+                } else if (isWorkgroupEnabled) { // 
+                    queryParameters.put("pWorkgroupId", obj.getId());
+                    sb.append("select w.name as workgroup from workgroup w where w.id = :pWorkgroupId ");
+                    LOG.debug("Added to parameter map: {}={}", "pWorkgroupId",
+                            obj.getId());
+                } else if (isClaimOwnershipEnabled) { // this condition can be replaced with just else {} but having isClaimOwnershipEnabled check ensure this report will not work when both workgroup and claimOwner disabled.
                     queryParameters.put("pInsurerId", insurerId);
                     LOG.debug("Added to parameter map: {}={}", "pInsurerId",
                             insurerId);
                     sb.append("select u.id as id, u.first_name || ' ' || u.last_name as name from web_user u, web_user_role wur, web_user_user_role wuur where u.insurer_id = :pInsurerId and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH'");
                 }
-                if (selectedOwnerId != -1) {
+                if (isClaimOwnershipEnabled && selectedOwnerId != -1) {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                     LOG.debug("Added to parameter map: {}={}", "pOwnerId", selectedOwnerId);
                     sb.append("and u.id = :pOwnerId ");
                 }
-                sb.append("order by u.last_name");
+                if (isClaimOwnershipEnabled) {
+                    sb.append("order by u.last_name");
+                } 
+                
                 LOG.debug("Querying for users with: {}", sb.toString());
                 List result = baseDataService.externalQuery(sb.toString(),
                         queryParameters);
@@ -163,7 +199,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                         first = false;
                     }
                     HandlerActionsStatusLineItem handlerActionItem = HandlerActionsStatusLineItem.getObject(data);
-                    LOG.debug("Getting stats for user: {}", handlerActionItem.getName());
+//                    LOG.debug("Getting stats for user: {}", handlerActionItem.getName());
                     // Now construct query to get claim owner stats
                     sb = new StringBuffer();
                     sb.append("select ");
@@ -176,10 +212,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='ClaimUnacknowledgedRouted' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countClaimUnacknowledgedRouted, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='ClaimUnacknowledgedRouted' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimUnacknowledgedRouted, ");
 
                     /*
                      * No of new handler actions ClaimPending
@@ -189,10 +226,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='ClaimPending' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countClaimPending, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='ClaimPending' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimPending, ");
 
                     /*
                      * No of new handler actions ClaimRejectionContested
@@ -202,10 +240,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='ClaimRejectionContested' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countClaimRejectionContested, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='ClaimRejectionContested' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimRejectionContested, ");
 
                     /*
                      * No of new handler actions ClaimUpdatedByEngineer
@@ -215,10 +254,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='ClaimUpdatedByEngineer' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countClaimUpdatedByEngineer, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='ClaimUpdatedByEngineer' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countClaimUpdatedByEngineer, ");
 
                     /*
                      * No of new handler actions InvoiceEscalatedToHandler
@@ -228,10 +268,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='InvoiceEscalatedToHandler' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countInvoiceEscalatedToHandler, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='InvoiceEscalatedToHandler' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countInvoiceEscalatedToHandler, ");
 
                     /*
                      * No of new handler actions
@@ -242,10 +283,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='ContestedInvoiceReferredToInsurer' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countContestedInvoiceReferredToInsurer, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='ContestedInvoiceReferredToInsurer' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countContestedInvoiceReferredToInsurer, ");
 
                     /*
                      * No of new handler actions InvoiceApprovedByBRE
@@ -255,10 +297,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='InvoiceApprovedByBRE' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countInvoiceApprovedByBRE, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='InvoiceApprovedByBRE' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countInvoiceApprovedByBRE, ");
 
                     /*
                      * No of new handler actions AwaitingLiabilityResolution
@@ -268,10 +311,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='AwaitingLiabilityResolution' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countAwaitingLiabilityResolution, ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='AwaitingLiabilityResolution' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countAwaitingLiabilityResolution, ");
 
                     /*
                      * No of new handler actions AwaitingInvoicePayment
@@ -281,10 +325,11 @@ public class NewIncomingHandlerActionsReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     if (selectedCHOId > 0)
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ")
-                            .append("and c.insurer_id = :pInsurerId ")
-                            .append("and a.new_status='AwaitingInvoicePayment' ")
-                            .append("and a.last_modified_date between :pStartDate and :pEndDate ) as countAwaitingInvoicePayment ");
+                    if (isClaimOwnershipEnabled)
+                        sb.append("and c.claim_owner_id = :pOwnerId ");
+                    sb.append("and c.insurer_id = :pInsurerId ")
+                        .append("and a.new_status='AwaitingInvoicePayment' ")
+                        .append("and a.created_date between :pStartDate and :pEndDate ) as countAwaitingInvoicePayment ");
 
                     queryParameters = new HashMap();
                     if (isWorkgroupEnabled) {
@@ -293,7 +338,9 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (selectedCHOId > 0) {
                         queryParameters.put("pChoId", selectedCHOId);
                     }
-                    queryParameters.put("pOwnerId", handlerActionItem.getId());
+                    if (isClaimOwnershipEnabled)
+                        queryParameters.put("pOwnerId", handlerActionItem.getId());
+                    
                     queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
@@ -323,10 +370,14 @@ public class NewIncomingHandlerActionsReport implements Report {
     @Override
     public String getReportTemplateFileName() {
         WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
-        if (user.getInsurer().isWorkgroupEnable()) {
-            return "template_NewIncomingHandlerActionsReport.xls";
+        if (user.getInsurer().isWorkgroupEnable() && user.getInsurer().isClaimOwnershipEnable()) {
+            return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
+        } else if (user.getInsurer().isWorkgroupEnable()){
+            return "template_NewIncomingHandlerWorkgroupOnlyActionsReport.xls";
+        } else if (user.getInsurer().isClaimOwnershipEnable()){
+            return "template_NewIncomingHandlerOwnerOnlyActionsReport.xls";
         } else {
-            return "template_NewIncomingOwnerActionsReport.xls";
+            return "";
         }
     }
 
