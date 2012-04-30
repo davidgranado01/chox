@@ -846,6 +846,10 @@
             <result name="success">/jsp/alertPanel/p_awaiting_litigation_outcome.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
+        <action name="getClaimEscalatedToSupervisorAlert" class="idas.chox.web.actions.AlertAction" method="getClaimEscalatedToSupervisorAlert">
+            <result name="success">/jsp/alertPanel/p_claim_escalated_to_supervisor.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
         
        <!--End Alert Panel-->
        <!--Start Admin-->

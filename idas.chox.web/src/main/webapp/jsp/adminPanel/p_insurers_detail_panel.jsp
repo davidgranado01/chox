@@ -381,6 +381,7 @@
     function doPageLoadCheck(){
         var claimWorkgroupEnable = doWorkgroupCheck();
         var claimOwnershipEnable = doOwnershipCheck();
+        var supervisorEscalation = doSupervisorEscalationCheck();
 
         if(!claimWorkgroupEnable && !claimOwnershipEnable){
             $("#ClaimLockedHolder").hide();
@@ -388,6 +389,17 @@
         }else{
             $("#ClaimLockedHolder").slideDown();
         }
+    }
+    
+    function doSupervisorEscalationCheck(){
+        var supervisorEscalationFlag = false;
+        if($('form#formUpdateInsurerDetail input[name="supervisorEnable"]:checked').val()){
+        	supervisorEscalationFlag = true;
+        	 $("#supervisorEscalationFields").slideDown();
+         }else{
+             $("#supervisorEscalationFields").hide();
+        }
+        return supervisorEscalationFlag;
     }
 
     function doWorkgroupCheck(){
@@ -603,18 +615,33 @@
                             <label class="chox-form-std-label">Minimum Password Length</label>
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
-                        
-                         <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
-                            <label class="chox-form-std-label">Days Since Upload to Escalate</label>
-                            <input type="text" class="chox-ttxt" id="nrOfDaysUploadedId" name="daysBeforeEscalated" value="<s:property value="daysBeforeEscalated" />"/>
-                        </div>
-                        
-                         <div class="chox-form-item" id="timeEnteredToContestedInvDiv">
-                            <label class="chox-form-std-label">Number of Times Contested to Escalate</label>
-                            <input type="text" class="chox-ttxt" id="timeEnteredToContId" name="timesInStatusContested" value="<s:property value="timesInStatusContested" />"/>
-                        </div>
 
-                        <table>
+						<div class="chox-form-item">
+							<label class="chox-form-std-label">Enable Supervisor Escalation</label>
+							<s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
+						</div>
+						<div id="supervisorEscalationFields">
+							<div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
+								<label class="chox-form-std-label">
+								Days Since Invoice Upload to Escalate
+								</label>
+								<input type="text" class="chox-ttxt"
+									id="nrOfDaysUploadedId" name="daysBeforeEscalated"
+									value="<s:property value="daysBeforeEscalated" />" />
+							</div>
+                            <div class="labelWithInputField">
+								<div class="chox-form-item" id="timeEnteredToContestedInvDiv">
+									<label class="chox-form-std-label" style="margin-top : -7px;">
+									   Number of Times Contested<br/> With CHO to Escalate 
+									</label>
+									<input type="text"
+										class="chox-ttxt" id="timeEnteredToContId"
+										name="timesInStatusContested"
+										value="<s:property value="timesInStatusContested" />" />
+								</div>
+							</div>
+						</div>
+						<table>
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
