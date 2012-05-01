@@ -710,21 +710,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.isEscalatedToSupervisor()) {
-            DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-            auditTrail.add(Restrictions.eqProperty("aut.claim.id", "this.id"));
-            auditTrail.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
-                    "where a.claim_id = id " +
-                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
-                    "and a.reverted = false group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" ));
-            auditTrail.setProjection(Property.forName("aut.claim.id"));
-            
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-            for (String status : ClaimStatus.getCompletedStatus(true)) {
-                criteria.add(Restrictions.ne("status", status));
-            }
+            
             criteria.add(Restrictions.disjunction()
                     .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-                    .add(Property.forName("this.id").in(auditTrail)));
+                    .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
+                    "where a.claim_id = {alias}.id " +
+                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
+                    "and a.reverted = false " +
+                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" )));
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
