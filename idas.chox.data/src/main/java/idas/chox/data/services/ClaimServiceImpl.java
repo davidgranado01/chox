@@ -709,28 +709,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
-        
         if (searchCriteria.isEscalatedToSupervisor()) {
             DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-            auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-            auditTrail.add(Restrictions.eq("aut.reverted", false));
             auditTrail.add(Restrictions.eqProperty("aut.claim.id", "this.id"));
+            auditTrail.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
+                    "where a.claim_id = id " +
+                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
+                    "and a.reverted = false group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" ));
             auditTrail.setProjection(Property.forName("aut.claim.id"));
-
-            DetachedCriteria innerQuery = DetachedCriteria.forClass(Claim.class, "cl1");
-            innerQuery.add(Restrictions.sqlRestriction("id in (select temp.id from (select count(c.id) as nr, c.id as id from claim c, audit_trail a "
-                                    + "where c.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToInsurer' and c.insurer_id = "
-                                    + getCurrentUser().getInsurer().getId()
-                                    + " and a.reverted = false group by c.id ) as temp where nr >= "
-                                    + getCurrentUser().getInsurer().getTimesInStatusContested() + ")"));
-            innerQuery.add(Restrictions.ne("cl1.status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-            innerQuery.setProjection(Property.forName("cl1.id"));
             
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+            for (String status : ClaimStatus.getCompletedStatus(true)) {
+                criteria.add(Restrictions.ne("status", status));
+            }
             criteria.add(Restrictions.disjunction()
-                    .add(Restrictions.conjunction()
-                            .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-                            .add(Property.forName("this.id").notIn(auditTrail)))
-                    .add(Property.forName("this.id").in(innerQuery)));
+                    .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
+                    .add(Property.forName("this.id").in(auditTrail)));
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
