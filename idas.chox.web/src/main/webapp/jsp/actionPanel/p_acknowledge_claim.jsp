@@ -1,6 +1,39 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ include file="s_liability_validation.jspf" %>
+<script type="text/javascript">
+$(function(){
+
+    var rejectionDescField = new Ext.form.TextArea({
+        name             : 'rejectionDescription',
+        id               : 'rejecDescJspfId',
+        width            :  350,
+        height           :  80,
+        allowBlank       :  false,
+        renderTo         : 'rejectionDescJspfId'
+    });
+    
+});
+var reasonOfRejectionDescReader = new Ext.data.JsonReader({
+    fields:[{name:'id'},{name:'description'}]
+});
+
+var reasonOfRejectionDescStore = new Ext.data.Store({
+    data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
+    reader : reasonOfRejectionDescReader
+});
+
+function refreshDesc(id){
+    reasonOfRejectionDescStore.each(function(rec) {
+        if(id == rec.json.text){
+            Ext.getCmp('rejecDescJspfId').setValue(rec.json.value);
+        }
+    });
+    if(id == -1 || id == '')
+        Ext.getCmp('rejecDescJspfId').setValue("");
+}
+
+</script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
@@ -180,7 +213,7 @@
                             <tr>
                             <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
 			                        <td>
-			                            <div id="rejectionDescId"/>
+			                            <div id="rejectionDescJspfId"/>
 			                        </td>
                             </tr>
                             </s:if>
