@@ -206,15 +206,6 @@
             }
         });
         
-        var rejectionDescField = new Ext.form.TextArea({
-            name             : 'rejectionDescription',
-            id               : 'rejecDescId',
-            width            :  350,
-            height           :  80,
-            allowBlank       :  false,
-            renderTo         : 'rejectionDescId'
-        });
-
     });
     
     function doUpdateLiabilityFormSubmit(action){        
@@ -269,9 +260,9 @@
 
     function doFormValidationSetup(action){
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-        if($("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0 ){
+        if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
         	$("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        	$("form#formAcknowledgeAction #rejecDescId").rules("remove");
+        	$("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
         }
         var liabilityStatus = $("#liabilityStatus").val();
         var validationCheck=false;
@@ -288,7 +279,7 @@
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
-            $("form#formAcknowledgeAction #rejecDescId").rules("add", {
+            $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
                 required: true,
                 messages: {required: "You must enter  'Supporting Rejection Notes'"}
             });
@@ -447,23 +438,4 @@
         Ext.QuickTips.init();
     }
     
-    var reasonOfRejectionDescReader = new Ext.data.JsonReader({
-        fields:[{name:'id'},{name:'description'}]
-    });
-    
-    var reasonOfRejectionDescStore = new Ext.data.Store({
-        data : Ext.util.JSON.decode('<s:property value="jsonReasonOfClaimRejectionDesc" escape="false"/>'),
-        reader : reasonOfRejectionDescReader
-    });
-    
-    function refreshDesc(id){
-    	reasonOfRejectionDescStore.each(function(rec) {
-    		if(id == rec.json.text){
-    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    		}
-    	});
-    	if(id == -1 || id == '')
-    		Ext.getCmp('rejecDescId').setValue("");
-    }
-
 </script>
