@@ -187,7 +187,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 claimResult.setDataValid(false);
 
                 if (ex instanceof DataIntegrityViolationException) {
-                    claimResult.getMessage().add("Some of the value provided for this claim/invoice is incorrect. Please contact Chox support.");
+                    claimResult.getMessage().add("Some of the values provided for this claim/invoice are incorrect. Please contact Chox support.");
                     claimResult.getClaim().setId(0);
                 } else if (ex.getMessage() != null) {
                     claimResult.getMessage().add(ex.getMessage());
