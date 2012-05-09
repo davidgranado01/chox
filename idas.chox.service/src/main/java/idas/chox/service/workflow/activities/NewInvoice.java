@@ -147,13 +147,20 @@ public class NewInvoice extends BaseActivity {
 
         /*
          * New task creation for new invoice if repair gross is not 0.00 
-         * and automated repair tasks is activated for the CHO
+         * and automated repair tasks (for managing/not managing repaur) is
+         * activated in the BRE Band
          */
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
-        if (claim.getChorganisation().isAllowRepairDocAutomatedTasks()
+        if (claim.isManagingRepair() && claim.getBreBand().isAllowManagingRepairAutomatedTasks()
                 && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
-                LOG.debug("new task creation failed.");
+                LOG.info("new task creation failed.");
+            }
+        }
+        else if (!claim.isManagingRepair() && claim.getBreBand().isAllowNotManagingRepairAutomatedTasks()
+                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
+            if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
+                LOG.info("new task creation failed.");
             }
         }
 
@@ -216,7 +223,7 @@ public class NewInvoice extends BaseActivity {
                 LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
                 return true;
             } catch (Exception ex) {
-                LOG.debug("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+                LOG.error("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex);
                 return false;
             }
         } else {

@@ -360,7 +360,7 @@
                 </table>
             </div>
 
-            <div>
+            <!--div -->
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'/>
                 <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'/>
 
@@ -368,6 +368,8 @@
                    
                     
 
+                  <div class="admin-bre-band-detail-section">                 
+                    <div class="section-heading">Insurer/CHO Configuration</div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Claim Upload Note</div>
                         <div class="status-info">
@@ -386,7 +388,30 @@
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
                     </div>
-
+                            
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Penalty Charges</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowPenaltyCharges" value="allowPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue invoices.</div>
+                        </div>
+                    </div>
+                            
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Automated Tasks For Repair Documentation</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowNotManagingRepairAutomatedTasks" value="allowNotManagingRepairAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Tasks For The CHO When Credit Repair Costs Are Submitted And Not Managing Repair</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the CHO uploads an invoice with a charge for credit repair costs and they did not manage the repair then an automated task will be raised advising the CHO to upload documentation to support the repair costs.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowManagingRepairAutomatedTasks" value="allowManagingRepairAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Tasks For The CHO When Credit Repair Costs Are Submitted And Managing Repair</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the CHO uploads an invoice with a charge for credit repair costs and they managed the repair then an automated task will be raised advising the CHO to upload documentation to support the repair costs.</div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="admin-bre-band-detail-section">                 
+                    <div class="section-heading">Business Rules</div>
+                            
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Total Loss Duration Rule</div>
                         <div class="chox-form-item">
@@ -1066,11 +1091,6 @@
                             <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="allowPenaltyCharges" value="allowPenaltyCharges" /></div>
-                            <label class="chox-form-check-label">Allow Penalty Charges</label>
-                            <div class="chox-form-check-description">Check to allow the CHO to apply penalty charges to overdue invoices.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="subscriberCheckRejectedClaims" value="subscriberCheckRejectedClaims" /></div>
                             <label class="chox-form-check-label">Subscriber Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
@@ -1089,7 +1109,8 @@
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
-                </div>
+                    </div>
+                <!--/div -->
             </div>
         </div>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>

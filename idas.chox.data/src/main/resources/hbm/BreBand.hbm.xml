@@ -119,6 +119,8 @@
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>
         <property column="hire_end_check" name="hireTerminatedAfterRepairCompletionCheck"/>
+        <property column="allow_manag_repair_auto_tasks" name="allowManagingRepairAutomatedTasks" not-null="true"/>
+        <property column="allow_notmanag_repair_auto_tasks" name="allowNotManagingRepairAutomatedTasks" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

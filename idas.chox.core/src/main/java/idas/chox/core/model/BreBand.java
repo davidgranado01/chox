@@ -114,6 +114,8 @@ public class BreBand extends Entity implements Serializable {
     private boolean subscriberAcquisitionFeeCheck;
     private boolean subscriberAdminFeeCheck;
     private boolean hireTerminatedAfterRepairCompletionCheck;
+    private boolean allowManagingRepairAutomatedTasks;
+    private boolean allowNotManagingRepairAutomatedTasks;
     
     public BreBand() {
     }
@@ -1121,5 +1123,21 @@ public class BreBand extends Entity implements Serializable {
 
     public void setHireTerminatedAfterRepairCompletionCheck(boolean hireTerminatedAfterRepairCompletionCheck) {
         this.hireTerminatedAfterRepairCompletionCheck = hireTerminatedAfterRepairCompletionCheck;
+    }
+
+    public boolean isAllowManagingRepairAutomatedTasks() {
+        return allowManagingRepairAutomatedTasks;
+    }
+
+    public void setAllowManagingRepairAutomatedTasks(boolean allowManagingRepairAutomatedTasks) {
+        this.allowManagingRepairAutomatedTasks = allowManagingRepairAutomatedTasks;
+    }
+
+    public boolean isAllowNotManagingRepairAutomatedTasks() {
+        return allowNotManagingRepairAutomatedTasks;
+    }
+
+    public void setAllowNotManagingRepairAutomatedTasks(boolean allowNotManagingRepairAutomatedTasks) {
+        this.allowNotManagingRepairAutomatedTasks = allowNotManagingRepairAutomatedTasks;
     }
 }

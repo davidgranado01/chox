@@ -435,16 +435,8 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <table class="chox-table-form">
-                                            <tr>
-                                                <td>
-                                                    <label class="chox-form-std-label">Enable Repair Documentation<br/>Automated Tasks</label>
-                                                </td>
-                                                <td>
-                                                    <s:checkbox name="allowRepairDocAutomatedTasks" value="allowRepairDocAutomatedTasks" />
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <label class="chox-form-std-label">Enable Automatic Penalty Charges</label>
+                                        <s:checkbox name="autoPenaltyChargeEnabled" value="autoPenaltyChargeEnabled" />
                                     </div>
                                 </td>
                             </tr>
@@ -457,21 +449,10 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Automatic Penalty Charges</label>
-                                        <s:checkbox name="autoPenaltyChargeEnabled" value="autoPenaltyChargeEnabled" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable IP Whitelist</label>
                                         <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
                                     </div>
                                 </td>
-                                <td>
-                                </td>
-
                             </tr>
                         </table>
                         <div class="chox-form-button">

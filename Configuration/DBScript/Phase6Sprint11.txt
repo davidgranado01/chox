@@ -1,6 +1,6 @@
---
+--------------------------------------------------------------------------------------
 -- 6.11.1 New Role To Separate 'CHOX Administration' Access From Insurer Manager Role
---
+--------------------------------------------------------------------------------------
 ALTER TABLE web_user_role ADD COLUMN show_admin_only boolean not null default false;
 
 INSERT INTO web_user_role (name, created_by, last_modified_by, description,type_id, is_workgroup_related, is_ownership_related, show_admin_only, version )  
@@ -11,3 +11,28 @@ UPDATE accessibility_item
 WHERE accessibility_id=(select id from accessibility where name = 'admin.InsurerBreManagement')
   AND role='ROLE_INS_MNG';
 
+---------------------
+--- End of 6.11.1 ---
+---------------------
+
+
+--------------------------------------------------------------------------------------
+--- 6.11.2 Move 'Enable Repair Documentation Automated Tasks' to BRE Band
+--------------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN allow_manag_repair_auto_tasks boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN allow_notmanag_repair_auto_tasks boolean not null default false;
+
+UPDATE bre_band
+  set allow_manag_repair_auto_tasks = true,
+      allow_notmanag_repair_auto_tasks = true
+from bre_band_organisation bbo, chorganisation c
+where bbo.band_id = bre_band.id
+  and bbo.chorganisation_id = c.id
+  and c.is_allow_repairdoc_automated_tasks = true;
+
+ALTER TABLE chorganisation DROP COLUMN is_allow_repairdoc_automated_tasks;
+
+
+---------------------
+--- End of 6.11.2 ---
+---------------------
