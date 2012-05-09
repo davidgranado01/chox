@@ -239,7 +239,7 @@
                         <s:select
                             id="userrolesId"
                             name="userrolesId"
-                            list="availableUserroles"
+                            list="availableUserRoles"
                             listKey="id"
                             listValue="name"
                             headerKey="-1"

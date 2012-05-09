@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 
-public class WebUserRoleDropDownAction2 extends BaseAction {
+public class WebUserRoleDropDownAction extends BaseAction {
 
     private String selectedOrganisationTypeId;
     private List userroleList = null;

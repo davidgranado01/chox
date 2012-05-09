@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
-public class UserRoleAction2 extends BaseAction {
+public class UserRoleAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(UserRoleAction.class);
 
     private List<UserroleViewData> userroles;

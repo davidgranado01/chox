@@ -31,7 +31,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
     private AdminInsurerService adminInsurerService;
     private BreBandOrganisationService breBandOrganisationService;
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -138,7 +138,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String addBreBandChorganisation() {
 
         try {
@@ -196,7 +196,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
         return false;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String deleteBreBandChorganisation() {
 
         try {

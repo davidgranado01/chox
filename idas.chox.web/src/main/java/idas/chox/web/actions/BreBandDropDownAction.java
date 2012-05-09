@@ -28,7 +28,7 @@ public class BreBandDropDownAction extends BaseAction {
     }
 
     @Override
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String execute() throws Exception {
         if ((getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) || getUserOrganisationType() == 3) {
             throw new AccessDeniedException("Illegal access detected.");

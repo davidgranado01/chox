@@ -52,7 +52,7 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
         this.model = model;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -139,7 +139,7 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String addNewVehicleClassCeiling() {
 
         try {
@@ -170,7 +170,7 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String removeVehicleClassCeiling() throws Exception {
 
         try {
@@ -208,7 +208,7 @@ public class InsurerVehicleClassCeilingAction extends BaseAction implements Mode
         return false;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String updateVehicleClassCeiling() {
 //        if (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
 //            LOG.error("Illegal Access detected: InsurerId = {}, getUserOrganisationId={}", insurerId, getUserOrganisationId());

@@ -28,7 +28,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private List<InsurerBreBandViewData> insurerBreBands;
     private AdminInsurerService adminInsurerService;
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String doRenderActionPage() {
         updateModelInSession(Arrays.asList(model));
         return SUCCESS;
@@ -114,7 +114,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String updateInsurerBreBand() {
 
         try {
@@ -134,7 +134,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String deleteInsurerBreBand() {
         try {
             if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
