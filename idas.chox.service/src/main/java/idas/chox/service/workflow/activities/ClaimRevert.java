@@ -9,7 +9,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CommentService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
@@ -21,7 +20,6 @@ public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
     private BigDecimal amountReceived = null;
     private ClaimService claimService;
-    private CommentService commentService;
     private TaskService taskService;
     private BreBandService breBandService;
 
@@ -35,10 +33,6 @@ public class ClaimRevert extends BaseActivity {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 
     public void setAmountReceived(BigDecimal amountReceived) {
@@ -112,7 +106,7 @@ public class ClaimRevert extends BaseActivity {
                         if (comment.getCreatedDate().getTime() - 500 < originalStatusModifiedDate.getTime()
                                 && originalStatusModifiedDate.getTime() < comment.getCreatedDate().getTime() + 500) {
                             LOG.debug("Marking comment with id={} as deleted: '{}'", comment.getId(), comment.getComment());
-                            commentService.deleteCommentById(comment.getId());
+                            comment.setReverted(true);
                           break;
                         }
                     }

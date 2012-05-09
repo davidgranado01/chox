@@ -198,7 +198,7 @@
         selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
 
         var target = "#userroleDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/WebUserroleDropDownAction.action";
+        var url = "<%= request.getContextPath()%>/prv/p/WebUserRoleDropDownAction.action";
         var param = {"selectedOrganisationTypeId":selectedOrganisationTypeId};
 
         ajax.loadHtml2(url,param,function(data){

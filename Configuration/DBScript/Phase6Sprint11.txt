@@ -1,0 +1,8 @@
+--
+-- 6.11.1 New Role To Separate 'CHOX Administration' Access From Insurer Manager Role
+--
+ALTER TABLE web_user_role ADD COLUMN show_admin_only boolean not null default false;
+
+INSERT INTO web_user_role (name, created_by, last_modified_by, description,type_id, is_workgroup_related, is_ownership_related, show_admin_only, version )  
+VALUES('ROLE_INS_ADMIN', 999, 999, 'Manager Admin',2, false, false, true, 0);
+

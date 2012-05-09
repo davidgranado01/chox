@@ -298,7 +298,7 @@
         <action name="OrganisationDropDownAction" class="idas.chox.web.actions.OrganisationDropDownAction">
             <result>/jsp/dropdown/p_dropdown_organisation.jsp</result>
         </action>
-        <action name="WebUserroleDropDownAction" class="idas.chox.web.actions.WebUserroleDropDownAction">
+        <action name="WebUserRoleDropDownAction" class="idas.chox.web.actions.WebUserRoleDropDownAction">
             <result>/jsp/dropdown/p_dropdown_userrole.jsp</result>
         </action>
         <action name="BreBandDropDownAction" class="idas.chox.web.actions.BreBandDropDownAction">
@@ -894,26 +894,26 @@
         </action>
        <!--End User Details-->
         <!--Start User ROLE Details-->
-        <action name="getUseroles" class="idas.chox.web.actions.UserroleAction" method="getUseroles">
+        <action name="getUserRoles" class="idas.chox.web.actions.UserRoleAction" method="getUserRoles">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="getAllAvailableUserroles" class="idas.chox.web.actions.UserroleAction" method="getAllAvailableUserroles">
+        <action name="getAllAvailableUserRoles" class="idas.chox.web.actions.UserRoleAction" method="getAllAvailableUserRoles">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="getUserroleMapping" class="idas.chox.web.actions.UserroleAction" method="doRenderActionPage">
+        <action name="getUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>
-        <action name="removeWebUserRoleMapping" class="idas.chox.web.actions.UserroleAction" method="removeWebUserRoleMapping">
+        <action name="removeWebUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="removeWebUserRoleMapping">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="addNewWebUserRoleMapping" class="idas.chox.web.actions.UserroleAction" method="addNewWebUserRoleMapping">
+        <action name="addNewWebUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="addNewWebUserRoleMapping">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="isWebUserRoleAllowToDelete" class="idas.chox.web.actions.UserroleAction" method="checkRoleAllowToDelete">
+        <action name="isWebUserRoleAllowToDelete" class="idas.chox.web.actions.UserRoleAction" method="checkRoleAllowToDelete">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>

@@ -132,7 +132,7 @@
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
                 {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserroleMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserRoleMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserWorkgroupMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}}
                 
             ]

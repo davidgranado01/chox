@@ -17,17 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class WebUserUserRoleServiceImpl extends SecureDataService implements WebUserUserRoleService {
 
-    public WebUserUserRoleServiceImpl() {
-    }
     protected UserService userService;
-    protected WebUserUserRoleService webUserUserRoleService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    public void setWebUserRoleService(WebUserUserRoleService webUserUserRoleService) {
-        this.webUserUserRoleService = webUserUserRoleService;
     }
 
     @Override
@@ -36,7 +29,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public String getUserroleName(int id) {
+    public String getUserRoleName(int id) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", id));
         WebUserRole object = (WebUserRole) getByCriteria(criteria);
@@ -115,7 +108,10 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public Set<WebUserRole> getWebUserroles(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled) {
+    public Set<WebUserRole> getWebUserRoles(int orgTypeId, boolean isWorkgroupEnabled,
+                                boolean isClaimownershipEnabled, boolean isFnolEnabled,
+                                boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
+                                boolean isSupervisorEnabled, boolean isAdmin) {
         Set<WebUserRole> webUserRoles = new HashSet<WebUserRole>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("typeId", orgTypeId));
@@ -140,14 +136,20 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         if (!isSupervisorEnabled) {
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS_SUP));
         }
+        if (!isAdmin) {
+            criteria.add(Restrictions.ne("showAdminOnly", true));
+        }
         webUserRoles.addAll(findByCriteria(criteria));
         return webUserRoles;
     }
 
     @Override
-    public List<IdLookupItem> getWebUserrolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled) {
+    public List<IdLookupItem> getWebUserRolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled,
+                                boolean isClaimownershipEnabled, boolean isFnolEnabled,
+                                boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
+                                boolean isSupervisorEnabled, boolean isAdmin) {
 
-        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled);
+        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
 
         Iterator itr = webUserroles.iterator();
@@ -160,10 +162,14 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled) {
+    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId,
+                                boolean isWorkgroupEnabled, boolean isClaimownershipEnabled,
+                                boolean isFnolEnabled, boolean isEngineersEnabled,
+                                boolean isInsurerUploadEnabled, boolean isSupervisorEnabled,
+                                boolean isAdmin) {
 
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
-        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled);
+        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
 
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();

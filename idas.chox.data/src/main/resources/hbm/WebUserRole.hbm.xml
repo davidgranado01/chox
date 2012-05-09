@@ -18,9 +18,10 @@
     <property column="is_ownership_related" name="ownershipRelated"/>
     <property column="is_fnol_related" name="fnolRelated"/>
     <property column="is_engineer_related" name="engineerRelated"/>
-    <property column="show_workgroup_disabled" name="showWorkgroupDisabled"/>
-    <property column="show_ownership_disabled" name="showOwnershipDisabled"/>
-    <property column="show_insurer_upload_disabled" name="showInsurerUploadDisabled"/>
+    <property column="show_workgroup_disabled" name="showWorkgroupDisabled" not-null="true"/>
+    <property column="show_ownership_disabled" name="showOwnershipDisabled" not-null="true"/>
+    <property column="show_insurer_upload_disabled" name="showInsurerUploadDisabled" not-null="true"/>
+    <property column="show_admin_only" name="showAdminOnly" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
   </class>
