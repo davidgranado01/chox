@@ -170,7 +170,7 @@
 		            data : mysuppliers,
 		            reader : suppliersJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','id':1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1}
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
