@@ -12,8 +12,6 @@ import java.util.Date;
  */
 public class EcdAnomalousNotificationChecker implements AnomalousCheck {
 
-    private static double ecdDurationAllowPercentage = 0.5;
-
     @Override
     public boolean check(Claim c) {
 
@@ -26,6 +24,7 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
         Date policyHolderDate = c.getPolicyHolderContactDate();
         Date firstECD = c.getCustomer().getInitialECD();
         Date lastECD = c.getCustomer().getInitialECD();
+        double ecdDurationAllowPercentage = c.getInsurer().getEcdIncreaseTriggerPercentage().doubleValue()/100.0;
 
         int numberOfEcd = c.getHireMonitoringEcds().size();
 
@@ -37,10 +36,10 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
             lastECD = c.getHireMonitoringEcds().get(numberOfEcd - 1).getEcdDate();
         }
 
-        return isClaimAnomalies(policyHolderDate, firstECD, lastECD);
+        return isClaimAnomalies(policyHolderDate, firstECD, lastECD, ecdDurationAllowPercentage);
     }
 
-    private Boolean isClaimAnomalies(Date policyHolderDate, Date firstECD, Date lastECD) {
+    private Boolean isClaimAnomalies(Date policyHolderDate, Date firstECD, Date lastECD, double ecdDurationAllowPercentage) {
 
         if (policyHolderDate != null && lastECD != null && firstECD != null) {
             Long iTotalDelayDays = DateHelper.getNumberOf24HourPeriodsBetween(firstECD, lastECD);

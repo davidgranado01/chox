@@ -52,6 +52,7 @@
     <property column="enable_ip_whitelist" name="enableIPWhitelist" not-null="true"/>
     <property column="max_login_attempts" name="maxLoginAttempts" not-null="true"/>
     <property column="block_time" name="blockTime" not-null="true"/>
+    <property column="ecd_increase_trigger" name="ecdIncreaseTriggerPercentage" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
