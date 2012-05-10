@@ -56,13 +56,13 @@ public class TeamPerformanceReport implements Report{
             LOG.debug("rptInsurerName={}", rptInsurerName);
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equals("--- ALL ---") || selectedSite.equals("") || selectedSite.equals("undefined"))
+                    if (selectedSite.equals("--- ALL ---") || selectedSite.equals("") || selectedSite.equals("-1"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equals("--- ALL ---") || selectedTeam.equals("") || selectedTeam.equals("undefined"))
+                    if (selectedTeam.equals("--- ALL ---") || selectedTeam.equals("") || selectedTeam.equals("-1"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);

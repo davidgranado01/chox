@@ -68,7 +68,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             if ((externalParameter.get("supplierId")) != null) {
                 supplierId = ((String[]) externalParameter.get("supplierId"))[0];
                 LOG.debug("Team site bre invoice report supplieriD ={}", supplierId);
-                if (!supplierId.equalsIgnoreCase("undefined") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
+                if (!supplierId.equalsIgnoreCase("-1") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("Team site bre invoice report selectedChoId ={}", selectedCHOId);
 //                    selectedOrgId = iSupplierId;
@@ -78,13 +78,13 @@ public class TeamSiteBreInvoiceReport implements Report {
 
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equalsIgnoreCase("--- ALL ---") || selectedSite.equalsIgnoreCase("") || selectedSite.equalsIgnoreCase("undefined"))
+                    if (selectedSite.equalsIgnoreCase("--- ALL ---") || selectedSite.equalsIgnoreCase("") || selectedSite.equalsIgnoreCase("-1"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equalsIgnoreCase("--- ALL ---") || selectedTeam.equalsIgnoreCase("") || selectedTeam.equalsIgnoreCase("undefined"))
+                    if (selectedTeam.equalsIgnoreCase("--- ALL ---") || selectedTeam.equalsIgnoreCase("") || selectedTeam.equalsIgnoreCase("-1"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);

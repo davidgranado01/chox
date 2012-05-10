@@ -66,8 +66,7 @@
                                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
                                 reader :  ownerPerformanceWorkgroupJsonReader,
                                 listeners: {load: function() {
-
-                                          var  defaultValue={'value':'--- All ---','id':1}
+                                          var  defaultValue={'value':'--- All ---','text':-1}
                                           this.insert(0, new Ext.data.Record(defaultValue));
                 }
             }
