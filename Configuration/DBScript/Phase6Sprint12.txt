@@ -15,6 +15,7 @@ ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0
 -- End of 6.12.1 --
 -------------------
 
+
 -----------------------------------------------------------
 -- 6.12.2 BRE modification audit records for all updates
 -----------------------------------------------------------
