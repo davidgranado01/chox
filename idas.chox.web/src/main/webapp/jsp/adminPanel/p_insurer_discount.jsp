@@ -221,6 +221,7 @@
         insurerDiscount_gridviewData.setDefaultSort('choName', 'asc');
         insurerDiscountRowEditor = new Ext.ux.grid.RowEditor({
             saveText: 'Update'
+            ,clicksToEdit: 2
             ,listeners: {
                 canceledit : function () {
                     clearValidation();
