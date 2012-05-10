@@ -1,0 +1,10 @@
+---
+---  6.12.4 Hire update notifications/warnings - Ability to configure % change at an Insurer level
+---
+ALTER TABLE insurer ADD COLUMN ecd_increase_trigger integer NOT NULL DEFAULT 50;
+
+
+---------------------
+--- End of 6.12.4 ---
+---------------------
+
