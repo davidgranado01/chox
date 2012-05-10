@@ -55,8 +55,11 @@ public class Insurer extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
+<<<<<<< HEAD
     private int maxLoginAttempts;
     private int blockTime;
+=======
+>>>>>>> First implementation of todo item 6.12.4 Hire update notifications/warnings - Ability to configure % change at an Insurer level.
     private Integer ecdIncreaseTriggerPercentage;
 
     public int getMinimumPasswordLength() {
