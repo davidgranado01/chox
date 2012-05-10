@@ -259,6 +259,35 @@
             <result name="success">/jsp/adminPanel/p_insurer_discount.jsp</result>
         </action>
         
+        <action name="getIPWhitelistPage" class="idas.chox.web.actions.IPWhitelistAction">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/adminPanel/p_ipWhitelist.jsp</result>
+        </action>
+        
+        <action name="addIPWhitelist" class="idas.chox.web.actions.IPWhitelistAction" method="addIPWhitelist">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="deleteIPWhitelist" class="idas.chox.web.actions.IPWhitelistAction" method="deleteIPWhitelist">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="updateIPWhitelist" class="idas.chox.web.actions.IPWhitelistAction" method="updateIPWhitelist">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="getIPWhitelist" class="idas.chox.web.actions.IPWhitelistAction" method="getIPWhitelists">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="generateReportFile" class="idas.chox.web.actions.ReportAction" method="exportReport">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>

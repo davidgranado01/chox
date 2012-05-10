@@ -28,7 +28,7 @@ public class IPWhitelist extends Entity implements Serializable {
     }
 
     public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+        this.ipAddress = ipAddress.trim();
     }
 
     public Chorganisation getChorganisation() {
@@ -44,7 +44,7 @@ public class IPWhitelist extends Entity implements Serializable {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
 }
