@@ -41,6 +41,8 @@
             valueField : 'id',
             displayField :'name',
             hiddenName: 'ownerId',
+            emptyText: '--- All ---',
+            emptyValue: '-1',
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
@@ -49,9 +51,6 @@
                     if(this.getRawValue() == "" ) {
                         this.clearValue(); this.reset();
                     }
-                },
-                afterrender : function(){
-                    this.setValue('--- All ---');
                 }
             }
         });
@@ -73,7 +72,7 @@
                 reader :  ownerWorkflowWorkgroupJsonReader,
                 listeners: {load: function() {
 
-                        var  defaultValue={'value':'--- All ---','id':1}
+                        var  defaultValue={'value':'--- All ---','text':-1}
                                               this.insert(0, new Ext.data.Record(defaultValue));
                     }
                 }
@@ -88,7 +87,8 @@
                 displayField:'value',
                 width: 250,
                 typeAhead: true,
-                //                                autoWidth: true,
+                emptyText: '--- All ---',
+                emptyValue: '-1',
                 mode: 'local',
                 triggerAction : 'all',
                 forceSelection : true,
@@ -109,9 +109,6 @@
                             claimOwnerWorkflowCombo.reset();
                             claimOwnerWorkflowStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue('--- All ---');
                     }
                 }
             });
@@ -152,6 +149,8 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
+                emptyText: '--- All ---',
+                emptyValue: '-1',
                 selectOnFocus : false,
                 allowBlank : true,
                 forceSelection : true,
@@ -159,9 +158,6 @@
                         if(this.getRawValue() == "" ) {
                             this.clearValue();
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue('--- All ---');
                     }
                 }
             });

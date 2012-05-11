@@ -82,7 +82,6 @@
                 listeners: { blur: function () {
                         if(this.getRawValue() == "" ) {
                             this.clearValue();
-
                         }
                     }
                 }
@@ -108,9 +107,8 @@
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
                 reader : invSumRepClaimOwnerReader,
                 listeners: {load: function() {
-
                         var  defaultName={'name':'--- ALL ---','id':-1}
-                                              this.insert(0, new Ext.data.Record(defaultName));
+                        this.insert(0, new Ext.data.Record(defaultName));
                     }
                 }
                             
@@ -123,7 +121,8 @@
                 valueField : 'id',
                 displayField :'name',
                 hiddenName: 'ownerId',
-                valueNotFoundText : '--- ALL ---',
+                emptyText: '--- All ---',
+                emptyValue: '-1',
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
@@ -132,9 +131,6 @@
                         if(this.getRawValue() == "" ) {
                             this.clearValue(); this.reset();
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue('--- ALL ---');
                     }
                 }
             });
@@ -155,9 +151,8 @@
                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
                     reader :  invSumRepWorkgroupJsonReader,
                     listeners: {load: function() {
-
-                            var  defaultValue={'value':'--- ALL ---','id':1}
-                                                  this.insert(0, new Ext.data.Record(defaultValue));
+                            var  defaultValue={'value':'--- ALL ---','text':-1}
+                            this.insert(0, new Ext.data.Record(defaultValue));
                         }
                     }
                 });
@@ -170,9 +165,9 @@
                     hiddenName: 'workgroupId',
                     displayField:'value',
                     width: 250,
-                    valueNotFoundText : '--- ALL ---',
+                    emptyText: '--- All ---',
+                    emptyValue: '-1',
                     typeAhead: true,
-                    //                                autoWidth: true,
                     mode: 'local',
                     triggerAction : 'all',
                     forceSelection : true,
@@ -181,9 +176,8 @@
                             if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
                                 workgroupId = invSumRepWorkgroupCombo.getValue();
                             }
-                            //                                                        var insurerId = $("#userInsurerId").val();
                             invSumRepClaimOwnerCombo.reset();
-                            invSumRepClaimOwnerCombo.setValue('--- ALL ---');
+//                             invSumRepClaimOwnerCombo.setValue('--- ALL ---');
                             invSumRepClaimOwnerStore.removeAll();
                             invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                         },
@@ -193,9 +187,6 @@
                                 invSumRepClaimOwnerCombo.reset();
                                 invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                             }
-                        },
-                        afterrender : function(){
-                            this.setValue('--- ALL ---');
                         }
                     }
                 });
@@ -218,9 +209,8 @@
                     data : mysuppliers,
                     reader : suppliersJsonReader,
                     listeners: {load: function() {
-
-                            var  defaultValue={'value':'--- ALL ---','id':1}
-                                                  this.insert(0, new Ext.data.Record(defaultValue));
+                            var  defaultValue={'value':'--- ALL ---','text':-1}
+                            this.insert(0, new Ext.data.Record(defaultValue));
                         }
                     }
                 });
@@ -236,7 +226,8 @@
                     typeAhead : true,
                     mode : 'local',
                     triggerAction : 'all',
-                    valueNotFoundText : '--- ALL ---',
+                    emptyText: '--- All ---',
+                    emptyValue: '-1',
                     selectOnFocus : false,
                     allowBlank : true,
                     forceSelection : true,
@@ -245,9 +236,6 @@
                                 this.clearValue();
                                 this.reset();
                             }
-                        },
-                        afterrender : function(){
-                            this.setValue('--- ALL ---');
                         }
                     }
                 });
