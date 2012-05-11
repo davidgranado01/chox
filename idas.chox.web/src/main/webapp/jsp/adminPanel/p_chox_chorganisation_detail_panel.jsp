@@ -7,6 +7,7 @@
     var choAdminTabIndex=0;
     var isNew = true;
     var insurerUploadOnly = false;
+    var disableIPWhitelistTab = true;
     // var isNew = true;
 
     Ext.onReady(function(){
@@ -22,6 +23,10 @@
         
         isNew = isTrue($("#isNew").val());
         insurerUploadOnly = <s:property value="insurerUploadOnly" />;
+        
+        if(<s:property value="enableIPWhitelist"/> && !isNew){
+            disableIPWhitelistTab = false;
+        }
         
         if(document.getElementById('insurerUploadOnlyCheckBoxId').checked){
              markFieldReadOnly();            
@@ -74,7 +79,8 @@
             activeTab: choAdminTabIndex,
             items:[
                 {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: choHandleActivate}},
-                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />, scripts:true}}
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=3"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
@@ -470,5 +476,6 @@
         </div>
         <div id="CHOAliasPanelTab" class="x-hide-display"></div>
         <div id="ChoTpiPanelTab" class="x-hide-display"></div>
+        <div id="IPWhitelistConfigTab" class="x-hide-display"></div>
     </div>
 </div>

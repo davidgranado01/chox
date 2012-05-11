@@ -1,0 +1,5 @@
+----------------------------------------------
+-- 6.12.3 IP white-list configuration panel
+----------------------------------------------
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE ip_whitelist TO chox_user;
