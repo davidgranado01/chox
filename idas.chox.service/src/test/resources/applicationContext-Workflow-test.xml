@@ -66,6 +66,7 @@
     <bean id="updateLiability" class="idas.chox.service.workflow.activities.UpdateLiability" scope="prototype"/>
     <bean id="revertClaim" class="idas.chox.service.workflow.activities.ClaimRevert" scope="prototype">
         <property name="claimService" ref="claimService" />
+        <property name="breBandService" ref="breBandService" />
     </bean>
     <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" scope="prototype"/>
     <bean id="switchClaimToMulIns" class="idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer" scope="prototype">

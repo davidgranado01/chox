@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
-public class UserroleAction extends BaseAction {
-    private static final Logger LOG = LoggerFactory.getLogger(UserroleAction.class);
+public class UserRoleAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(UserRoleAction.class);
 
     private List<UserroleViewData> userroles;
     private int webUserId;
@@ -105,12 +105,11 @@ public class UserroleAction extends BaseAction {
     
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
-    @Override
     public String execute() {
         return SUCCESS;
     }
 
-    public String getUseroles() {
+    public String getUserRoles() {
         LOG.debug("Getting user roles for user: {}", webUserId);
         try {
 
@@ -132,36 +131,38 @@ public class UserroleAction extends BaseAction {
         return SUCCESS;
     }
 
-    public List<IdLookupItem> getAvailableUserroles() {
+    public List<IdLookupItem> getAvailableUserRoles() {
       LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
       LOG.debug("ObjectId = {}", objectId);
       Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
       if (insurer != null)
-          return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
+          return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
               insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable());
+              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
 
-      return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
+      return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false);
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
     }
 
-    public String getAllAvailableUserroles() {
+    public String getAllAvailableUserRoles() {
       LOG.debug("Getting all available user roles...");
-      Set<WebUserRole>  webUserRoles = null;
-      userroles = new ArrayList<UserroleViewData>();
+      Set<WebUserRole>  webUserRoles;
       LOG.debug("Getting available user roles for user {}", webUserId);
       LOG.debug("ObjectId = {}", objectId);
       try {
         Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
         if (insurer != null)
-            webUserRoles = adminUserService.getAllAvailableUserroles(2,
+            webUserRoles = adminUserService.getAllAvailableUserRoles(2,
               insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable());
+              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
         else
-            webUserRoles = adminUserService.getAllAvailableUserroles(3,
+            webUserRoles = adminUserService.getAllAvailableUserRoles(3,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false);
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
+
+        userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
+
         for (WebUserRole webUserRole : webUserRoles)
                     userroles.add(new UserroleViewData(webUserRole));
       } catch (Exception ex) {
@@ -217,7 +218,7 @@ public class UserroleAction extends BaseAction {
 
     private boolean isRoleAvailable(int webUserRoleId, int orgType) {
         LOG.debug("Is role {} available to this user?", webUserRoleId);
-        List<IdLookupItem> availableRoles = adminUserService.getAvailableUserroles(orgType, webUserId);
+        List<IdLookupItem> availableRoles = adminUserService.getAvailableUserRoles(orgType, webUserId);
         LOG.debug("We have {} roles available:", availableRoles.size());
         for (Iterator<IdLookupItem> i = availableRoles.iterator(); i.hasNext( ); ) {
             IdLookupItem lu = i.next();

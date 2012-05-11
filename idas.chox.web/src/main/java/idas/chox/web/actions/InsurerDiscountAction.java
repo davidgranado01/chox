@@ -124,7 +124,7 @@ public class InsurerDiscountAction extends BaseAction {
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String addOrUpdateDiscount() throws Exception {
         Map result = null;
         if (getIsInsurer()) {
@@ -154,7 +154,7 @@ public class InsurerDiscountAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String listDiscountGridData() {
         List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
         List<InsurerDiscount> discountList = new ArrayList();
@@ -176,7 +176,7 @@ public class InsurerDiscountAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String deleteInsurerDiscount() {
         try {
             LOG.debug("Delete insurer discount");

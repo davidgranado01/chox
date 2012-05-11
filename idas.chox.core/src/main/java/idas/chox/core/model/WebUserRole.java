@@ -21,6 +21,7 @@ public class WebUserRole extends Entity implements Serializable {
     public static final String ROLE_CHO_MI = "ROLE_CHO_MI";
     public static final String ROLE_INS_MI = "ROLE_INS_MI";
     public static final String ROLE_INS_SUP = "ROLE_INS_SUP";
+    public static final String ROLE_INS_ADMIN = "ROLE_INS_ADMIN";
     
     private String name;
     private String description;
@@ -32,6 +33,7 @@ public class WebUserRole extends Entity implements Serializable {
     private boolean showWorkgroupDisabled;
     private boolean showOwnershipDisabled;
     private boolean showInsurerUploadDisabled;
+    private boolean showAdminOnly;
 
     public WebUserRole() {
     }
@@ -116,5 +118,12 @@ public class WebUserRole extends Entity implements Serializable {
         this.showInsurerUploadDisabled = showInsurerUploadDisabled;
     }
 
+    public boolean isShowAdminOnly() {
+        return showAdminOnly;
+    }
+
+    public void setShowAdminOnly(boolean showAdminOnly) {
+        this.showAdminOnly = showAdminOnly;
+    }
     
 }

@@ -310,7 +310,7 @@
             <input type="hidden" name="claimId" id="claimId" value='<s:property value="claimId" />'>
             <input type="hidden" name="uploadFileName" id="uploadFileName">
             <fieldset class="x-fieldset">
-                <legend>Add a new Attachment&nbsp;</legend>
+                <legend>Add New Attachment&nbsp;</legend>
                 <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr>
                         <td width="200" align="right">
@@ -345,7 +345,7 @@
                     <tr>
                         <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
                         <td>
-                            <s:checkbox name="notifyTask" value="false" id="checkboxId" />
+                            <s:checkbox name="notifyTask" value="true" id="checkboxId" />
                         </td>
                     </tr>
                     <tr>

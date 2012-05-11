@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 
-public class WebUserroleDropDownAction extends BaseAction {
+public class WebUserRoleDropDownAction extends BaseAction {
 
     private String selectedOrganisationTypeId;
     private List userroleList = null;
@@ -23,17 +23,17 @@ public class WebUserroleDropDownAction extends BaseAction {
         }
 
         if (getSelectedOrganisationTypeId() != null && !getSelectedOrganisationTypeId().equals("")) {
-            getUserroleList(getSelectedOrganisationTypeId());
+            getUserRoleList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
             return SUCCESS;
         }
     }
 
-    private void getUserroleList(String id) {
+    private void getUserRoleList(String id) {
         this.userroleList = new ArrayList();
-        this.userroleList = service.getWebUserrolesLookupItem(Integer.valueOf(id), getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), getInsurerIsSupervisorEnabled());
+        this.userroleList = service.getWebUserRolesLookupItem(Integer.valueOf(id), getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), getInsurerIsSupervisorEnabled(), getIsChoxAdmin());
     }
 
     public String getSelectedOrganisationTypeId() {

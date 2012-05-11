@@ -184,7 +184,7 @@ public class AdminUserServiceTest extends BaseTest {
 
         // CHECK SELECTED USER'S WEB USER USER ROLES
         List<WebUserUserRole> selectedUserRoles = adminUserService.getMappedUserRole(webUser.getId());
-        List availableUserRole = adminUserService.getAvailableUserroles(3, webUser.getId());
+        List availableUserRole = adminUserService.getAvailableUserRoles(3, webUser.getId());
         Assert.assertEquals(2, selectedUserRoles.size());
         Assert.assertEquals(1, availableUserRole.size());
 //        IdLookupItem item = (IdLookupItem) (availableUserRole.get(0));
@@ -194,7 +194,7 @@ public class AdminUserServiceTest extends BaseTest {
 //        System.out.println(response.getIsValid());
 //        Assert.assertTrue(response.getIsValid());
 //        Assert.assertEquals(3, (adminUserService.getMappedUserRole(webUser.getId())).size());
-//        Assert.assertEquals(0, (adminUserService.getAvailableUserroles(3, webUser.getId())).size());
+//        Assert.assertEquals(0, (adminUserService.getAvailableUserRoles(3, webUser.getId())).size());
 
     }
 
@@ -206,7 +206,7 @@ public class AdminUserServiceTest extends BaseTest {
 
         // CHECK SELECTED USER'S WEB-USER-USER-ROLES
         List<WebUserUserRole> selectedUserRoles = adminUserService.getMappedUserRole(webUser.getId());
-        List availableUserRole = adminUserService.getAvailableUserroles(3, webUser.getId());
+        List availableUserRole = adminUserService.getAvailableUserRoles(3, webUser.getId());
         Assert.assertEquals(2, selectedUserRoles.size());
         Assert.assertEquals(1, availableUserRole.size());
 
@@ -216,7 +216,7 @@ public class AdminUserServiceTest extends BaseTest {
         ActionResponse response1 = adminUserService.deleteWebUserRoleMapping(webUserUserRoleId);
         Assert.assertTrue(response1.getIsValid());
         Assert.assertEquals(1, (adminUserService.getMappedUserRole(webUser.getId())).size());
-        Assert.assertEquals(2, (adminUserService.getAvailableUserroles(3, webUser.getId())).size());
+        Assert.assertEquals(2, (adminUserService.getAvailableUserRoles(3, webUser.getId())).size());
 
     }
 

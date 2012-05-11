@@ -28,7 +28,7 @@
 
         userrole_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUseroles.action?webUserId='+<s:property value="webUserId" />, method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getUserRoles.action?webUserId='+<s:property value="webUserId" />, method:'POST'}),
             reader:userrole_gridviewJsonReader
         });
 
@@ -239,7 +239,7 @@
                         <s:select
                             id="userrolesId"
                             name="userrolesId"
-                            list="availableUserroles"
+                            list="availableUserRoles"
                             listKey="id"
                             listValue="name"
                             headerKey="-1"
