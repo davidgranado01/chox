@@ -55,6 +55,7 @@ public class Insurer extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
+    private Integer ecdIncreaseTriggerPercentage;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -499,6 +500,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setSupervisorEnable(boolean supervisorEnable) {
         this.supervisorEnable = supervisorEnable;
+    }
+
+    public Integer getEcdIncreaseTriggerPercentage() {
+        return ecdIncreaseTriggerPercentage;
+    }
+
+    public void setEcdIncreaseTriggerPercentage(Integer ecdIncreaseTriggerPercentage) {
+        this.ecdIncreaseTriggerPercentage = ecdIncreaseTriggerPercentage;
     }
 
 }

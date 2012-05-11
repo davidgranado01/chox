@@ -210,18 +210,20 @@
                 postcode:{ required:true },
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },
                 adminHandlingCharge:{ required:true, number:true, min:0 },
+                ecdIncreaseTriggerPercentage:{ required:true, number:true, min:0, max:100},
                 scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 }
-                //                workgroupIdField:{comboSelection:workgroupId },
-                //                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
+//                workgroupIdField:{comboSelection:workgroupId },
+//                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
             },
             messages:
                 {
                 name: {required:"You must supply a value for 'Name'" },
                 adminHandlingCharge: { required:"You must supply a value for 'Admin Handling Charge'", number:"'Admin Handling Charge' must be numeric", min:"'Admin Handling Charge' cannot be less than zero" },
+                ecdIncreaseTriggerPercentage: { required:"You must supply a value for 'ECD % Increase Trigger Point'", number:"'ECD % Increase Trigger Point' must be numeric", min:"'ECD % Increase Trigger Point' cannot be less than zero", max:"'ECD % Increase Trigger Point' cannot be higher than 100%" },
                 vatNo:{ required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number" },
                 companyNo:{ required:"You must supply a value for 'Company No.'", number:"'Company No' must be number" },
                 address1:{ required:"You must supply a value for 'Address 1'" },
@@ -235,8 +237,8 @@
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
                 minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" }
-                //                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
-                //                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
+//                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
+//                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
         });
 
@@ -609,17 +611,17 @@
                             </div>
 
                             <div class="chox-form-item" id="CCDForcePasswordChangeDiv">
-                                <label class="chox-form-std-label">Password Expiry Period (Days)</label>
+                                <label class="chox-form-std-label">Password Expiry Period (Days)<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
                         </div>
 
                         <div class="chox-form-item" id="CCDUniquePasswordHistoryDiv">
-                            <label class="chox-form-std-label">Number Of Unique Passwords</label>
+                            <label class="chox-form-std-label">Number Of Unique Passwords<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDUniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
                         </div>
 
                         <div class="chox-form-item" id="CCDMinimumPasswordLengthDiv">
-                            <label class="chox-form-std-label">Minimum Password Length</label>
+                            <label class="chox-form-std-label">Minimum Password Length<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
 
@@ -648,6 +650,11 @@
 								</div>
 							</div>
 						</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">ECD % Increase Trigger Point <span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDEcdIncreaseTrigger" name="ecdIncreaseTriggerPercentage" value="<s:property value="ecdIncreaseTriggerPercentage" />"/>
+                        </div>
+  
 						<table>
                             <tr>
                                 <td>
