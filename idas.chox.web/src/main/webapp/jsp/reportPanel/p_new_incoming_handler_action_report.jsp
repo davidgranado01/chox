@@ -74,7 +74,8 @@
 		        valueField : 'id',
 		        displayField :'name',
 		        hiddenName: 'ownerId',
-		        valueNotFoundText : '--- ALL ---',
+		        emptyText: '--- All ---',
+                emptyValue: '-1',
 		        typeAhead : true,
 		        mode : 'local',
 		        triggerAction : 'all',
@@ -83,9 +84,6 @@
 		                if(this.getRawValue() == "" ) {
 		                    this.clearValue(); this.reset();
 		                }
-		            },
-		            afterrender : function(){
-		                this.setValue('--- ALL ---');
 		            }
 		        }
 		    });
@@ -107,7 +105,7 @@
 		            ({url : "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
 		            reader :  incmgHnderRepWorkgroupJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','id':1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1}
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
@@ -121,7 +119,8 @@
 		            hiddenName: 'workgroupId',
 		            displayField:'value',
 		            width: 250,
-		            valueNotFoundText : '--- ALL ---',
+		            emptyText: '--- All ---',
+	                emptyValue: '-1',
 		            typeAhead: true,
 		            mode: 'local',
 		            triggerAction : 'all',
@@ -146,9 +145,6 @@
                                             incmgHnderRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                                         }
 		                    }
-		                },
-		                afterrender : function(){
-		                    this.setValue('--- ALL ---');
 		                }
 		            }
 		        });
@@ -187,7 +183,8 @@
 		            typeAhead : true,
 		            mode : 'local',
 		            triggerAction : 'all',
-		            valueNotFoundText : '--- ALL ---',
+		            emptyText: '--- All ---',
+	                emptyValue: '-1',
 		            selectOnFocus : false,
 		            allowBlank : true,
 		            forceSelection : true,
@@ -196,9 +193,6 @@
 		                        this.clearValue();
 		                        this.reset();
 		                    }
-		                },
-		                afterrender : function(){
-		                    this.setValue('--- ALL ---');
 		                }
 		            }
 		        });
