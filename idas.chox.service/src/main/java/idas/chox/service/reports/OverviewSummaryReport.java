@@ -59,7 +59,7 @@ public class OverviewSummaryReport implements Report {
             if (isWorkgroupEnabled) {
                     if (((String[]) externalParameter.get("workgroupId")) != null) {
                         String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
-                        if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                        if (!workgropId.equalsIgnoreCase("-1") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
                             selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                             if(getWorkgroup(selectedWorkgroupId).getName()!=null){
                               selectedWorkgroupName = getWorkgroup(selectedWorkgroupId).getName();  
@@ -75,7 +75,7 @@ public class OverviewSummaryReport implements Report {
 
                 if (((String[]) externalParameter.get("ownerId")) != null) {
                     String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                    if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!ownerId.equalsIgnoreCase("-1") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
                         selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                         if(getClaimOwner(selectedOwnerId).getDisplayName()!=null && getClaimOwner(selectedOwnerId).getInsurer().getId().compareTo(currentUser.getInsurer().getId())==0){
                            selectedClaimOwnerName = getClaimOwner(selectedOwnerId).getDisplayName();

@@ -27,9 +27,8 @@
             ({url : "<%= request.getContextPath()%>/prv/p/TeamDropDownActionByInsurer.action", method:'GET', params : {"insurerId":insurerId, "site":''}}),
             reader : teamPerformanceReader,
             listeners: {load: function() {
-
-                                          var  defaultTeam={'team':'--- All ---'}
-                                          this.insert(0, new Ext.data.Record(defaultTeam));
+                        var  defaultTeam={'team':'--- All ---'}
+                        this.insert(0, new Ext.data.Record(defaultTeam));
                 }
             }
         });

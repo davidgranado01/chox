@@ -27,7 +27,12 @@
                 var invoiceReportWorkgroupStore = new Ext.data.Store({
                     proxy : new Ext.data.HttpProxy
                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
-                    reader : invoiceReportWorkgroupJsonReader
+                    reader : invoiceReportWorkgroupJsonReader,
+                    listeners: {load: function() {
+                            var  defaultName={'value':'--- All ---','text':-1}
+                            this.insert(0, new Ext.data.Record(defaultName));
+                            }
+                    }
                 });
 
                 var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
@@ -39,6 +44,7 @@
                     displayField:'value',
                     typeAhead: true,
                     autoWidth: true,
+                    width: 220,
                     mode: 'local',
                     emptyText: '--- All ---',
                     triggerAction : 'all',
@@ -49,6 +55,12 @@
                             if(this.getRawValue() == "" ) {
                                 this.clearValue();
                             }
+                        },
+                        select: function () {
+                            if (ownerPerformanceWorkgroupCombo.getValue() == "--- All ---") {
+                            	invoiceReportWorkgroupCombo.clearValue();
+                            	invoiceReportWorkgroupCombo.reset();
+                            }                             
                         }
                     }
                 });
@@ -57,10 +69,16 @@
 
                 $("form#formInvoiceReportParam").validate(
                 {
-                    errorLabelContainer: "#formInvoiceReportParamMessageBox",
+                    errorLabelContainer: "#errorMsgBox",
                     rules: {
-                        supplierId:{
-                            required:true
+                    	supplierCombo:{
+                    		equalTo: "--- All ---",
+                            required:function(){
+                            	if(Ext.get('supplierCombo').getValue() != "--- All ---")
+                            		return true;
+                            	else
+                            		return false;
+                            }
                         },
                         DateStart:{
                         	max:function(){
@@ -79,8 +97,9 @@
                         }
                     },
                     messages: {
-                        supplierId:{
-                            required:"You must select 'Credit Hire Organisation'"
+                    	supplierCombo:{
+                    		equalTo: "You must select 'Credit Hire Organisation'",
+                      		required:"You must select 'Credit Hire Organisation'"
                         },
                         DateStart: {
                         	max:"'Date to' can't be before 'Date From'",
@@ -93,24 +112,76 @@
                         }
                     }
                 });
+                
+                
+                <s:if test="!isCHO">
+	                var suppliersJsonReader = new Ext.data.JsonReader({
+	                    totalProperty: 'totalCount',
+	                    root: 'results',
+	                    fields:
+	                        [
+	                        {name:'text'},
+	                        {name:'value'}
+	                    ]
+	                });
+	
+	                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+	                var suppliersStore = new Ext.data.Store({
+	                    data : mysuppliers,
+	                    reader : suppliersJsonReader,
+	                });
+	                
+	                var supplierCombo = new Ext.form.ComboBox({
+	                    store : suppliersStore,
+	                    id : 'supplierCombo',
+	                    renderTo: 'choDDid',
+	                    width: 220,
+	                    valueField : 'text',
+	                    hiddenName: 'supplierId',
+	                    displayField :'value',
+	                    typeAhead : true,
+	                    mode : 'local',
+	                    triggerAction : 'all',
+	                    emptyText: '--- All ---',
+	                    emptyValue: '-1',
+	                    selectOnFocus : false,
+	                    allowBlank : true,
+	                    forceSelection : true,
+	                    listeners: { blur: function () {
+	                            if(this.getRawValue() == "" ) {
+	                                this.clearValue();
+	                                this.reset();
+	                            }
+	                        }
+	                    }
+	                });
+                
+                </s:if>
+                
             });
     
-            function openInvoiceReport()
-            {
-                if($("form#formInvoiceReportParam").valid()){
-                    var queryString = $('form#formInvoiceReportParam').formSerialize();
-                    // If no workgroup selected, insert a '-1' into the query string
-                    if (queryString.indexOf('workgroupId=&') >= 0)
-                        queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
-                    generateReport(queryString);        }
-            }
+    function openInvoiceReport(){
+    	var msgBox = $('#errorMsgBox');
+        if(Ext.get('supplierCombo').getValue() == "--- All ---"){
+        	msgBox.empty();
+        	msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
+        }
+        if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- All ---"){
+            var queryString = $('form#formInvoiceReportParam').formSerialize();
+            $("#errorMsgBox").empty();
+            // If no workgroup selected, insert a '-1' into the query string
+            if (queryString.indexOf('workgroupId=&') >= 0)
+                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+            generateReport(queryString);        }
+        msgBox.show();
+    }
+
 
 </script>
 <fieldset class="x-fieldset">
 
     <legend>CHO Invoice Report</legend>
     <form id="formInvoiceReportParam" name="formInvoiceReportParam" class="XXentity-form" action="POST">
-
 
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
@@ -130,13 +201,9 @@
                     </s:else>
                     <s:if test="!isCHO">
                         <tr>
-                            <td nowrap><label>Credit Hire Organisation</label></td>
-                            <td>
-                                <s:select name="supplierId" id="supplierId" list="suppliers"
-                                          listKey="id" listValue="name" headerKey="" headerValue="-- Please Select --" emptyOption="false">
-                                </s:select>
-                            </td>
-                        </tr>
+							<td nowrap><label>Credit Hire Organisation</label></td>
+							<td><div id="choDDid"></td>
+						</tr>
                     </s:if>
 
                     <tr>
@@ -157,10 +224,10 @@
 
             </div>
 
-            <div id="formInvoiceReportParamMessageBox" class="action-error-msg"></div>
-
         </div>
 
     </form>
+    
+    <div id="errorMsgBox" class="action-error-msg"></div>
 
 </fieldset>
