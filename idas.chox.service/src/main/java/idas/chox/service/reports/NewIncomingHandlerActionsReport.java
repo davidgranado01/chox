@@ -74,7 +74,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             if (isClaimOwnershipEnabled) {
                 if (((String[]) externalParameter.get("ownerId")) != null) {
                     String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
-                    if (!ownerId.equalsIgnoreCase("undefined") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!ownerId.equalsIgnoreCase("-1") && !ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
                         selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
                         LOG.debug("selectedOwnerId={}", selectedOwnerId);
                     }
@@ -83,7 +83,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             
             if (((String[]) externalParameter.get("nhrSupplierId")) != null) {
                 String selectedCHO = ((String[]) externalParameter.get("nhrSupplierId"))[0];
-                if (!selectedCHO.equalsIgnoreCase("undefined") && !selectedCHO.equalsIgnoreCase("") && !selectedCHO.equalsIgnoreCase("--- ALL ---")) {
+                if (!selectedCHO.equalsIgnoreCase("-1") && !selectedCHO.equalsIgnoreCase("") && !selectedCHO.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(selectedCHO);
                     LOG.debug("selectedCHOId={}", selectedOwnerId);
                 }
@@ -91,7 +91,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             if (isWorkgroupEnabled) {
                 if (((String[]) externalParameter.get("workgroupId")) != null) {
                     String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
-                    if (!workgropId.equalsIgnoreCase("undefined") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                    if (!workgropId.equalsIgnoreCase("-1") && !workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
                         selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
                         LOG.debug("selectedWorkgroupId={}", selectedWorkgroupId);
                     }

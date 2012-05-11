@@ -41,6 +41,8 @@
             valueField : 'id',
             displayField :'name',
             hiddenName: 'ownerId',
+            emptyText: '--- All ---',
+            emptyValue: '-1',
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
@@ -49,9 +51,6 @@
                     if(this.getRawValue() == "" ) {
                         this.clearValue(); this.reset();
                     }
-                },
-                afterrender : function(){
-                    this.setValue('--- All ---');
                 }
             }
         });
@@ -73,7 +72,7 @@
                 reader :  ownerWorkflowWorkgroupJsonReader,
                 listeners: {load: function() {
 
-                        var  defaultValue={'value':'--- All ---','id':1}
+                        var  defaultValue={'value':'--- All ---','text':-1}
                                               this.insert(0, new Ext.data.Record(defaultValue));
                     }
                 }
@@ -88,7 +87,8 @@
                 displayField:'value',
                 width: 250,
                 typeAhead: true,
-                //                                autoWidth: true,
+                emptyText: '--- All ---',
+                emptyValue: '-1',
                 mode: 'local',
                 triggerAction : 'all',
                 forceSelection : true,
@@ -109,9 +109,6 @@
                             claimOwnerWorkflowCombo.reset();
                             claimOwnerWorkflowStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue('--- All ---');
                     }
                 }
             });
@@ -152,6 +149,8 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
+                emptyText: '--- All ---',
+                emptyValue: '-1',
                 selectOnFocus : false,
                 allowBlank : true,
                 forceSelection : true,
@@ -159,9 +158,6 @@
                         if(this.getRawValue() == "" ) {
                             this.clearValue();
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue('--- All ---');
                     }
                 }
             });
@@ -189,13 +185,13 @@
                 },
                 messages: {
                     startDate: {
-                    	max:"'Date to' can't be before 'Date From'",
-                        required:"A value must be supplied for 'Date From'",
-                        dateITA:"You must supply a date value 'Date From'"
+                    	max:"'Period to' can't be before 'Period From'",
+                        required:"A value must be supplied for 'Period From'",
+                        dateITA:"You must supply a date value 'Period From'"
                     },
                     endDate: {
-                        required:"A value must be supplied for 'Date To'",
-                        dateITA:"You must supply a date value 'Date To'"
+                        required:"A value must be supplied for 'Period To'",
+                        dateITA:"You must supply a date value 'Period To'"
                     }
                 }
             });
@@ -249,10 +245,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Period From</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
                     <tr>
-                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Period To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
 
                 </table>

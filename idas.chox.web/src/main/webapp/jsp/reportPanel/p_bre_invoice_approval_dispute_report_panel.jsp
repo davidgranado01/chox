@@ -100,26 +100,10 @@
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
                             <td><div id="searchBreScreenSupplierDropDownDiv"></div></td>
-
-
-                            <%--
-                            <td>
-                                <s:select
-                                    name="supplierId"
-                                    id="supplierId"
-                                    list="suppliers"
-                                    listKey="id"
-                                    listValue="name"
-                                    headerKey=""
-                                    headerValue="--- ALL ---"
-                                    emptyOption="false">
-                                </s:select>
-                            </td>
-                            --%>
                         </tr>
                     </s:if>
                     <tr>
-                        <td nowrap width="30%"><label>Start Date</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Start Date</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
                 </table>
 

@@ -32,13 +32,13 @@
             },
             messages: {
                 DateStart: {
-                	max:"'Date to' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Handler Task Created From'",
-                    dateITA:"You must supply a date value 'Handler Task Created From'"
+                	max:"'Period to' can't be before 'Period From'",
+                    required:"A value must be supplied for 'Period From'",
+                    dateITA:"You must supply a date value 'Period From'"
                 },
                 DateEnd: {
-                    required:"A value must be supplied for 'Handler Task Created To'",
-                    dateITA:"You must supply a date value 'Handler Task Created To'"
+                    required:"A value must be supplied for 'Period To'",
+                    dateITA:"You must supply a date value 'Period To'"
                 }
             }
         });
@@ -74,7 +74,8 @@
 		        valueField : 'id',
 		        displayField :'name',
 		        hiddenName: 'ownerId',
-		        valueNotFoundText : '--- ALL ---',
+		        emptyText: '--- All ---',
+                emptyValue: '-1',
 		        typeAhead : true,
 		        mode : 'local',
 		        triggerAction : 'all',
@@ -83,9 +84,6 @@
 		                if(this.getRawValue() == "" ) {
 		                    this.clearValue(); this.reset();
 		                }
-		            },
-		            afterrender : function(){
-		                this.setValue('--- ALL ---');
 		            }
 		        }
 		    });
@@ -107,7 +105,7 @@
 		            ({url : "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
 		            reader :  incmgHnderRepWorkgroupJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','id':1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1}
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
@@ -121,7 +119,8 @@
 		            hiddenName: 'workgroupId',
 		            displayField:'value',
 		            width: 250,
-		            valueNotFoundText : '--- ALL ---',
+		            emptyText: '--- All ---',
+	                emptyValue: '-1',
 		            typeAhead: true,
 		            mode: 'local',
 		            triggerAction : 'all',
@@ -146,9 +145,6 @@
                                             incmgHnderRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                                         }
 		                    }
-		                },
-		                afterrender : function(){
-		                    this.setValue('--- ALL ---');
 		                }
 		            }
 		        });
@@ -170,7 +166,7 @@
 		            data : mysuppliers,
 		            reader : suppliersJsonReader,
 		            listeners: {load: function() {
-		                    var  defaultValue={'value':'--- ALL ---','id':1}
+		                    var  defaultValue={'value':'--- ALL ---','text':-1}
 		                    this.insert(0, new Ext.data.Record(defaultValue));
 		                }
 		            }
@@ -187,7 +183,8 @@
 		            typeAhead : true,
 		            mode : 'local',
 		            triggerAction : 'all',
-		            valueNotFoundText : '--- ALL ---',
+		            emptyText: '--- All ---',
+	                emptyValue: '-1',
 		            selectOnFocus : false,
 		            allowBlank : true,
 		            forceSelection : true,
@@ -196,9 +193,6 @@
 		                        this.clearValue();
 		                        this.reset();
 		                    }
-		                },
-		                afterrender : function(){
-		                    this.setValue('--- ALL ---');
 		                }
 		            }
 		        });
@@ -255,11 +249,11 @@
 					</tr>
                                         </s:if>
 					<tr>
-						<td nowrap width="30%"><label>Period From</label></td>
+						<td nowrap width="30%"><label>Period From</label><span class="mandatory">*</span></td>
 						<td><div id="dateFromDiv" /></td>
 					</tr>
 					<tr>
-						<td nowrap><label>Period To</label></td>
+						<td nowrap><label>Period To</label><span class="mandatory">*</span></td>
 						<td><div id="dateToDiv" /></td>
 					</tr>
 				</table>

@@ -25,9 +25,8 @@
             ({url : "<%= request.getContextPath()%>/prv/p/TeamDropDownActionByInsurer.action", method:'GET', params : {"insurerId":insurerId, "site":''}}),
             reader : teamWorkflowReader,
             listeners: {load: function() {
-
                     var  defaultTeam={'team':'--- All ---'}
-                                          this.insert(0, new Ext.data.Record(defaultTeam));
+                    this.insert(0, new Ext.data.Record(defaultTeam));
                 }
             }
         });
@@ -36,7 +35,8 @@
             store : teamWorkflowStore,
             width: 250,
             renderTo: 'rptBreTeamSelectionHolder',
-            //                            valueField : 'team',
+            emptyText: '--- All ---',
+            emptyValue: '-1',
             displayField :'team',
             hiddenName: 'team',
             typeAhead : true,
@@ -47,10 +47,8 @@
                     if(this.getRawValue() == "" ) {
                         this.clearValue(); this.reset();
                     }
-                },
-                afterrender : function(){
-                    this.setValue('--- All ---');
-                }}
+                }
+            }
         });
         teamWorkflowStore.load();
 
@@ -68,8 +66,8 @@
             ({url : "<%= request.getContextPath()%>/prv/p/SiteDropDownActionByInsurer.action", method:'GET'}),
             reader :  siteJsonReader,
             listeners: {load: function() {
-                                          var defaultSite = {'site':'--- All ---'};
-                                          this.insert(0, new Ext.data.Record(defaultSite));
+                    var defaultSite = {'site':'--- All ---'};
+                    this.insert(0, new Ext.data.Record(defaultSite));
                 }
             }
         });
@@ -77,7 +75,8 @@
         var  siteWorkflowCombo = new Ext.form.ComboBox({
             store:  siteWorkflowStore,
             renderTo: 'rptBreSiteSelectionHolder',
-            //                                valueField: 'site',
+            emptyText: '--- All ---',
+            emptyValue: '-1',
             hiddenName: 'site',
             displayField:'site',
             width: 250,
@@ -102,9 +101,6 @@
                         teamWorkflowCombo.reset();
                         teamWorkflowStore.load({ params : {"site":'',"insurerId":insurerId}});
                     }
-                },
-                afterrender : function(){
-                    this.setValue('--- All ---');
                 }
             }
         });
@@ -125,8 +121,8 @@
             data : mysuppliers,
             reader : suppliersJsonReader,
             listeners: {load: function() {
-                                          var defaultSupplier = {'value':'--- All ---'};
-                                          this.insert(0, new Ext.data.Record(defaultSupplier));
+                    var defaultSupplier = {'value':'--- All ---'};
+                    this.insert(0, new Ext.data.Record(defaultSupplier));
                 }
             }
         });
@@ -140,6 +136,8 @@
             hiddenName: 'supplierId',
             displayField :'value',
             typeAhead : true,
+            emptyText: '--- All ---',
+            emptyValue: '-1',
             mode : 'local',
             triggerAction : 'all',
             selectOnFocus : false,
@@ -149,9 +147,6 @@
                     if(this.getRawValue() == "" ) {
                         this.clearValue();
                     }
-                },
-                afterrender : function(){
-                    this.setValue('--- All ---');
                 }
             }
         });
@@ -178,13 +173,13 @@
             },
             messages: {
                 startDate: {
-                	max:"'Date to' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Date From'",
-                    dateITA:"You must supply a date value 'Date From'"
+                	max:"'Period to' can't be before 'Period From'",
+                    required:"A value must be supplied for 'Period From'",
+                    dateITA:"You must supply a date value 'Period From'"
                 },
                 endDate: {
-                    required:"A value must be supplied for 'Date To'",
-                    dateITA:"You must supply a date value 'Date To'"
+                    required:"A value must be supplied for 'Period To'",
+                    dateITA:"You must supply a date value 'Period To'"
                 }
             }
         });
@@ -239,10 +234,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Period From</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
                     <tr>
-                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Period To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
 
                 </table>

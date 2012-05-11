@@ -29,6 +29,7 @@
                                 store: choPaymentWorkgroupStore,
                                 renderTo: 'rptPaymentWorkgroupSelectionHolder',
                                 valueField: 'text',
+                                width: 220,
                                 id: 'choPaymentWorkgroupComboId',
                                 hiddenName: 'workgroupId',
                                 displayField:'value',
@@ -64,18 +65,69 @@
 
             }
         });
+        
+        <s:if test="!isCHO">
+        var suppliersJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
+
+        var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+        var suppliersStore = new Ext.data.Store({
+            data : mysuppliers,
+            reader : suppliersJsonReader,
+        });
+        
+        var supplierCombo = new Ext.form.ComboBox({
+            store : suppliersStore,
+            id : 'supplierCombo',
+            renderTo: 'choDDid',
+            width: 220,
+            valueField : 'text',
+            hiddenName: 'supplierId',
+            displayField :'value',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- Please Select ---',
+            emptyValue: '-1',
+            selectOnFocus : false,
+            allowBlank : true,
+            forceSelection : true,
+            listeners: { blur: function () {
+                    if(this.getRawValue() == "" ) {
+                        this.clearValue();
+                        this.reset();
+                    }
+                }
+            }
+        });
+    
+        </s:if>
 
     }); 
 
     function openReport()
     {
-        if($("form#formReportParam").valid()){
+    	var msgBox = $('#formReportParamMessageBox');
+    	if(Ext.get('supplierCombo').getValue() == "--- Please Select ---"){
+            msgBox.empty();
+            msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
+        }
+        if($("form#formReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
             var queryString = $('#formReportParam').formSerialize();
+            msgBox.empty();
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.indexOf('workgroupId=&') >= 0)
                 queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             generateReport(queryString);
         }
+        msgBox.show();
     }
    
 </script>
@@ -105,19 +157,8 @@
 
                     <s:if test="!isCHO">
                         <tr>
-                            <td nowrap><label>Credit Hire Organisation</label></td>
-                            <td>
-                                <s:select
-                                    name="supplierId"
-                                    id="PRPPsupplierId"
-                                    list="suppliers"
-                                    listKey="id"
-                                    listValue="name"
-                                    headerKey=""
-                                    headerValue="-- Please Select --"
-                                    emptyOption="false">
-                                </s:select>
-                            </td>
+                            <td nowrap><label>Credit Hire Organisation</label><span class="mandatory">*</span></td>
+                            <td><div id="choDDid"></td>
                         </tr>
                     </s:if>
                 </table>

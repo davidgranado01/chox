@@ -92,11 +92,11 @@
                     </tr>
 
                     <tr>
-                        <td nowrap width="30%"><label>Invoice Upload Date From</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Invoice Upload Date From</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
 
                     <tr>
-                        <td nowrap><label>Invoice Upload Date To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Invoice Upload Date To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
 
                 </table>
