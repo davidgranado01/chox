@@ -23,8 +23,6 @@
     var claimOwnerIdField=-1;
     var disableIPWhitelistTab = true;
 
-
-
     Ext.onReady(function(){
 
     	 Ext.override(Ext.form.ComboBox, {
@@ -176,7 +174,7 @@
         if(<s:property value="enableIPWhitelist"/> && !isNew){
             disableIPWhitelistTab = false;
         }
-
+        
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -787,6 +785,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
 =======
 >>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
@@ -794,5 +793,8 @@
 >>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
 =======
 >>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
+=======
+        <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
+>>>>>>> 6.12.1 Added 'Rejection Reasons' configuration panel
     </div>
 </div>

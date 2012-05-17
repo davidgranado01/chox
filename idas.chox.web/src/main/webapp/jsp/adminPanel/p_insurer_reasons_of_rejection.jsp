@@ -159,7 +159,6 @@ $(function(){
 
 function closeWindowAndRefresh(){
 	rorEditPopWindow.hide();
-	onPageRefresh();
 }
 
 function removeReasonOfRejection(grid, rowIndex, columnIndex, e){
