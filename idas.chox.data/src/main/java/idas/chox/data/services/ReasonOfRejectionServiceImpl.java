@@ -73,6 +73,12 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection) {
         save(reasonOfRejection);
     }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+        delete(reasonOfRejection);
+    }
 
     public void setReasonOfRejectionTemplateService(
             ReasonOfRejectionTemplateService reasonOfRejectionTemplateService) {
