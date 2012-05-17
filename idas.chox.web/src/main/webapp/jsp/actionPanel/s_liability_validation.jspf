@@ -261,11 +261,10 @@
     function doFormValidationSetup(action){
         //in case there is not a valid date inserted into 'liability agreed date' and the date is not mandatory, we set it to '' 
         var dateValue = $("form#formAcknowledgeAction #liabilityAgreedDate");
-        if(dateValue.val().indexOf(' ') || !isValidDate(dateValue.val()) ){
-        	dateValue.val($.trim(dateValue.val()));
-        	if(!isValidDate(dateValue.val()))
-        	    dateValue.val('');      
-        }
+        if(dateValue.val().indexOf(' ') >= 0)
+            dateValue.val($.trim(dateValue.val()));
+        if(!isValidDate(dateValue.val()) )
+        	dateValue.val('');      
     	
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
@@ -450,7 +449,7 @@
         var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(date);
         if (matches == null) return false;
         var d = matches[1];
-        var m = matches[2];
+        var m = matches[2] - 1;
         var y = matches[3];
         var composedDate = new Date(y, m, d);
         return composedDate.getDate() == d &&
