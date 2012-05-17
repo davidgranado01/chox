@@ -15,5 +15,7 @@ public interface ReasonOfRejectionService {
     public void createDefaultRecord(Insurer insurer);
     
     public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection);
+    
+    public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection);
 
 }

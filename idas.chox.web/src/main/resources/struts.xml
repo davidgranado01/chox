@@ -1356,6 +1356,33 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
+        
+        <action name="getReasonsOfRejectionPage" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="doRenderActionPage">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/adminPanel/p_insurer_reasons_of_rejection.jsp</result>
+        </action>
+        
+         <action name="getInsurersReasonsOfRejection" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="getInsurersReasonsOfRejection">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="addReasonOfRejection" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="addReasonOfRejection">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
+        <action name="deleteReasonOfRejection" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="deleteReasonOfRejection">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="updateReasonOfRejection" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="updateReasonOfRejection">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
 
     </package>
 </struts>
