@@ -57,7 +57,7 @@
                             }
                         },
                         select: function () {
-                            if (ownerPerformanceWorkgroupCombo.getValue() == "--- All ---") {
+                            if (invoiceReportWorkgroupCombo.getValue() == "--- All ---") {
                             	invoiceReportWorkgroupCombo.clearValue();
                             	invoiceReportWorkgroupCombo.reset();
                             }                             
@@ -128,7 +128,7 @@
 	                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
 	                var suppliersStore = new Ext.data.Store({
 	                    data : mysuppliers,
-	                    reader : suppliersJsonReader,
+	                    reader : suppliersJsonReader
 	                });
 	                
 	                var supplierCombo = new Ext.form.ComboBox({
