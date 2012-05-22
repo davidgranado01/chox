@@ -1270,23 +1270,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     @Override
     public int getDaysSinceInvoiceUploadToEscalate(Integer claimId) {
-        DetachedCriteria claimCriteria = DetachedCriteria.forClass(Claim.class, "cl");
-        claimCriteria.add(Restrictions.eq("cl.id", claimId));
-        for (String status : ClaimStatus.getCompletedStatus(true)) {
-            claimCriteria.add(Restrictions.ne("cl.status", status));
-        }
-        List clResult = getHibernateTemplate().findByCriteria(claimCriteria);
-        Claim claim = (Claim) ((clResult != null && clResult.size() == 1) ? clResult.get(0) : null);
-        if(claim == null)
+        Claim claim = (Claim) this.getClaim(claimId);
+        
+        if(isClaimInClosedStatus(claim)){
             return 0;
-
+        }
+        
         DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-        auditTrail.add(Restrictions.eq("aut.newStatus", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+        auditTrail.add(Restrictions.eq("aut.newStatus",ClaimStatus.INVOICE_PAYMENT_LOGGED));
         auditTrail.add(Restrictions.eq("aut.reverted", false));
-        auditTrail.add(Restrictions.eq("aut.claim.id", claimId));
+        auditTrail.add(Restrictions.eq("aut.claim.id", claim.getId()));
         List result = getHibernateTemplate().findByCriteria(auditTrail);
-        //in case the claim was in status 'invoice payment logged' we return 0 and don't display it in information panel
-        if(result.size() > 0)
+        // in case the claim was in status 'invoice payment logged' we return 0
+        // and don't display it in information panel
+        if (result.size() > 0)
             return 0;
 
         Date createdDate = claim.getInvoice().getCreatedDate();
@@ -1296,10 +1293,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
+        Claim claim = (Claim) this.getClaim(claimId);
+
+        if(isClaimInClosedStatus(claim)){
+            return 0;
+        }
+        
         Criteria criteria = getSession().createCriteria(AuditTrail.class);
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
         return countClaims(criteria).intValue();
     }
+    
+    private boolean isClaimInClosedStatus(Claim claim) {
+        for (String status : ClaimStatus.getCompletedStatus(true)) {
+            if (claim.getStatus().equalsIgnoreCase(status))
+                return true;
+        }
+        return false;
+    }
+    
 }
