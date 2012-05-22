@@ -1291,7 +1291,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         Date createdDate = claim.getInvoice().getCreatedDate();
         Date currentDate = DateHelper.getCurrentDate();  
-        return DateHelper.getNumberOfDaysBetween(createdDate, currentDate);
+        return DateHelper.getNumberOfDaysBetween(createdDate, currentDate) + 1;
     }
 
     @Override
