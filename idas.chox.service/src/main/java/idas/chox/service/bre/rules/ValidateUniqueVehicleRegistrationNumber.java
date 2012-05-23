@@ -4,6 +4,7 @@ import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Customer;
 
@@ -54,6 +55,6 @@ public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        return "InvoiceVehicleRegistrationNotUnique";
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }
