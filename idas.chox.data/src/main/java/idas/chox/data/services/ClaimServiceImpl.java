@@ -1276,16 +1276,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             return 0;
         }
         
-        DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
-        auditTrail.add(Restrictions.eq("aut.newStatus",ClaimStatus.INVOICE_PAYMENT_LOGGED));
-        auditTrail.add(Restrictions.eq("aut.reverted", false));
-        auditTrail.add(Restrictions.eq("aut.claim.id", claim.getId()));
-        List result = getHibernateTemplate().findByCriteria(auditTrail);
-        // in case the claim was in status 'invoice payment logged' we return 0
-        // and don't display it in information panel
-        if (result.size() > 0)
-            return 0;
-
         Date createdDate = claim.getInvoice().getCreatedDate();
         Date currentDate = DateHelper.getCurrentDate();  
         return DateHelper.getNumberOfDaysBetween(createdDate, currentDate) + 1;
@@ -1311,6 +1301,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (claim.getStatus().equalsIgnoreCase(status))
                 return true;
         }
+        DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
+        auditTrail.add(Restrictions.eq("aut.newStatus",ClaimStatus.INVOICE_PAYMENT_LOGGED));
+        auditTrail.add(Restrictions.eq("aut.reverted", false));
+        auditTrail.add(Restrictions.eq("aut.claim.id", claim.getId()));
+        List result = getHibernateTemplate().findByCriteria(auditTrail);
+        // in case the claim was in status 'invoice payment logged' we return 0
+        // and don't display it in information panel
+        if (result.size() > 0)
+            return true;
         return false;
     }
     
