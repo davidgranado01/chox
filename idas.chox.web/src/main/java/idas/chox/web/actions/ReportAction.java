@@ -173,7 +173,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
                 try {
-                    reportStream = new DeleteOnCloseFileInputStream((String) getSession().get("reportFileLocation"));
+                    File reportFile = new File((String) getSession().get("reportFileLocation"));
+                    reportStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage());
                     createEmptyReport();
