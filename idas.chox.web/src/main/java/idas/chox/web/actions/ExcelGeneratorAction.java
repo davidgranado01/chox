@@ -435,7 +435,8 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSession()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 try {
-                    excelStream = new DeleteOnCloseFileInputStream((String) getSession().get("reportFileLocation"));
+                    File reportFile = new File((String) getSession().get("reportFileLocation"));
+                    excelStream = new DeleteOnCloseFileInputStream(reportFile);
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
                     createEmptyReport();

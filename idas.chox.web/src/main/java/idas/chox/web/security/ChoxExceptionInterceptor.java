@@ -17,10 +17,14 @@ public class ChoxExceptionInterceptor extends ExceptionMappingInterceptor {
     @Override
     protected void publishException(ActionInvocation invocation, ExceptionHolder exceptionHolder) {
         try {
+            // We'll log some exceptions as warnings as they do not relate to an underlying problem
+            // but are caused by general usage
             if (exceptionHolder.getException() instanceof javax.net.ssl.SSLException
-                    || (exceptionHolder.getException() != null && exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException)
                     || (exceptionHolder.getException() instanceof java.io.IOException)
-                    || (exceptionHolder.getException() != null && exceptionHolder.getExceptionStack().contains("getOutputStream() has already been called for this response")))
+                    || (exceptionHolder.getException() != null
+                        && (exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException)
+                            || exceptionHolder.getExceptionStack().contains("getOutputStream() has already been called for this response")
+                            || exceptionHolder.getExceptionStack().contains("getAttribute: Session already invalidated")))
                 LOG.warn("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
             else
                 LOG.error("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
