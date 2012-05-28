@@ -36,3 +36,4 @@ GRANT select, update ON audit_history_id_seq TO chox_user;
 -------------------
 -- End of 6.12.2 --
 -------------------
+
