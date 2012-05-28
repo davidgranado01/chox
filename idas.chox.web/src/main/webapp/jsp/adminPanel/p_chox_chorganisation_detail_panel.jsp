@@ -52,7 +52,7 @@
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
                 maxLoginAttempts:{ required:true, number:true, min:0 },
                 blockTime:{ required:true, number:true, min:0 }
-       },
+         },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
                 vatNo:{required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number"},
@@ -429,6 +429,10 @@
                             <input type="text" class="chox-ttxt" id="CCDBlockTimeCho" name="blockTime" value="<s:property value="blockTime" />"/>
                         </div>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> First implementation of todo item 6.12.7 Lockout a user after x consecutive unsuccessful login attempts.
                         <table><tr>
                                 <td>
                                     <div class="chox-form-item">

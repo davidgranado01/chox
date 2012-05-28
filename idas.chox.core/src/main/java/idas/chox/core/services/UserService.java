@@ -42,6 +42,12 @@ public interface UserService {
     public void savePasswordHistory(PasswordHistory passwordHistory);
 
     public void updateLastLogin(int userId);
+
+    public void block(int userId);
+
+    public void unblock(int userId);
+    
+    public boolean failedLogin(int userId);
     
     public List<PasswordHistory> getPasswordHistory(int userId, int count);
 

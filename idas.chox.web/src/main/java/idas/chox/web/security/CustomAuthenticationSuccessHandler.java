@@ -64,6 +64,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                         HttpServletResponse response,
                         Authentication authentication) throws ServletException, IOException {
         int blockMinutes = 0;
+
         currentAuthentication = authentication;
         WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
 
@@ -82,7 +83,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             if (user.getChorganisation().isEnableIPWhitelist())
                 orgId = user.getChorganisation().getId();
         }
-          
+
         if (orgId >= 0) {
             boolean isValid = false;
             
@@ -151,7 +152,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
-        
         // Add nonce
         HttpSession session = request.getSession();
         byte[] nonce = new byte[16];

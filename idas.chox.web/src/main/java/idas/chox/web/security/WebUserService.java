@@ -18,7 +18,7 @@ public class WebUserService implements UserDetailsService {
     private SaltSource saltSource;
 
     public WebUser findByUserName(String userName) {
-        return this.getUserService().findByUserName(userName);
+        return userService.findByUserName(userName);
     }
 
     public void persist(WebUser user) {

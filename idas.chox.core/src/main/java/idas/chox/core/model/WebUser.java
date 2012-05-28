@@ -32,7 +32,9 @@ public class WebUser extends Entity implements Serializable {
     private boolean showSplash;
     private boolean blocked;
     private int failedLoginAttempts;
-    private Date blockedDate;    // </editor-fold>
+    private Date blockedDate;
+    
+    // </editor-fold>
 
     public WebUser() {
         isExpired = false;
@@ -361,8 +363,7 @@ public class WebUser extends Entity implements Serializable {
 
         return bFlag;
     }
-
-    
+        
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHOX;

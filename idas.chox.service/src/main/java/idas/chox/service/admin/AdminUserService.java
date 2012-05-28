@@ -215,7 +215,7 @@ public class AdminUserService extends SecureDataService {
         }
         else
             webUser.setStatus(!webUser.getStatus());
- 
+
         boolean isAllowUpdate = true;
 
         if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId())) {
