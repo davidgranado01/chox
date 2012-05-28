@@ -320,7 +320,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                                 Object[] state2, String[] propertyNames, Type[] types) {
 
         if (entity instanceof Auditable && getSecurityInfoProvider().getCurrentUser() != null) {
-
             Integer indexOfStatusModifiedDate = null;
             Integer indexForPrevStatus = null;
             Date statusModifiedDate = null;
@@ -370,9 +369,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                             prevStatus = oldStatus;
                         }
                     }
-
                 }
-
             }
         }
 
@@ -411,10 +408,10 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 }
             }
         }
- 
-
 
         if (entity instanceof HireMonitoringDetail) {
+
+            LOG.debug("Inside HireMonitoringDetail");
             Integer indexOfInspectionBookedDate = null;
             Integer indexOfInspectionBookedDateLastModified = null;
             Integer indexOfInspectionDate = null;
@@ -768,18 +765,16 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
         return securityInfoProvider;
 
     }
-
+    
     
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
 
-    
     public void setAuditService(FullAuditService fullAuditService) {
         this.fullAuditService = fullAuditService;
     }
 
-    
     @Override
     public void setBeanFactory(BeanFactory bf) throws BeansException {
         this.bf = bf;

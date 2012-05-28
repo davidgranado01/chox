@@ -58,8 +58,6 @@ public class Insurer extends Entity implements Serializable {
     private int maxLoginAttempts;
     private int blockTime;
     private Integer ecdIncreaseTriggerPercentage;
-    private int maxLoginAttempts;
-    private int blockTime;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -528,22 +526,6 @@ public class Insurer extends Entity implements Serializable {
 
     public void setEcdIncreaseTriggerPercentage(Integer ecdIncreaseTriggerPercentage) {
         this.ecdIncreaseTriggerPercentage = ecdIncreaseTriggerPercentage;
-    }
-
-    public int getBlockTime() {
-        return blockTime;
-    }
-
-    public void setBlockTime(int blockTime) {
-        this.blockTime = blockTime;
-    }
-
-    public int getMaxLoginAttempts() {
-        return maxLoginAttempts;
-    }
-
-    public void setMaxLoginAttempts(int maxLoginAttempts) {
-        this.maxLoginAttempts = maxLoginAttempts;
     }
 
 }

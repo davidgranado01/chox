@@ -3,7 +3,6 @@ package idas.chox.core.services;
 import idas.chox.core.model.WebUser;
 import java.io.Serializable;
 
-
 /**
  *
  * @author John
