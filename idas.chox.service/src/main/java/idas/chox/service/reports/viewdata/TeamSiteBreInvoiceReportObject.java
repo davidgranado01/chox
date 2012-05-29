@@ -9,9 +9,6 @@ import java.util.List;
  */
 public class TeamSiteBreInvoiceReportObject {
 
-
-
-
     private String site;
     private List<TeamSiteBreInvoiceLineItem> teams;
 

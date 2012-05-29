@@ -782,19 +782,6 @@
         <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
         <div id="InsurerDiscountsTab" class="x-hide-display"></div>
         <div id="IPWhitelistConfigTab" class="x-hide-display"></div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
-=======
->>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
-=======
->>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
-=======
->>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
-=======
-        <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
->>>>>>> 6.12.1 Added 'Rejection Reasons' configuration panel
     </div>
 </div>
