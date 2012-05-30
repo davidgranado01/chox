@@ -62,6 +62,7 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean enableSubscriberClaims;
     private boolean autoPenaltyChargeEnabled;
     private boolean enableIPWhitelist;
+    private boolean disablePrivateNotes;
 
     public boolean isAutoPenaltyChargeEnabled() {
         return autoPenaltyChargeEnabled;
@@ -421,5 +422,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setEnableIPWhitelist(boolean enableIPWhitelist) {
         this.enableIPWhitelist = enableIPWhitelist;
+    }
+
+    public boolean isDisablePrivateNotes() {
+        return disablePrivateNotes;
+    }
+
+    public void setDisablePrivateNotes(boolean disablePrivateNotes) {
+        this.disablePrivateNotes = disablePrivateNotes;
     }
 }

@@ -55,6 +55,7 @@ public class Insurer extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
+    private boolean disablePrivateNotes;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -499,6 +500,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setSupervisorEnable(boolean supervisorEnable) {
         this.supervisorEnable = supervisorEnable;
+    }
+
+    public boolean isDisablePrivateNotes() {
+        return disablePrivateNotes;
+    }
+
+    public void setDisablePrivateNotes(boolean disablePrivateNotes) {
+        this.disablePrivateNotes = disablePrivateNotes;
     }
 
 }
