@@ -497,7 +497,8 @@
             });
         }
     }
-    
+
+
     function updateInsurerDetailPanel(objectId) {
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";

@@ -34,10 +34,10 @@ public class UserViewData {
             this.lastLoginDate = DateHelper.getLocalDateTimeFormat().format(object.getLastLoginDate());
         else
             this.lastLoginDate = "";
-        this.status = object.getStatus();
+        this.status = object.getStatus() && !object.isBlocked();
         this.isExpired = object.getIsExpired() ? "Yes" : "No";
 
-        if (object.getStatus()) {
+        if (status) {
             this.statusDesc = "Yes";
         } else {
             this.statusDesc = "No";

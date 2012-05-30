@@ -1,0 +1,16 @@
+-----------------------------------------------------------
+-- 6.12.1 Lockout a user after x consecutive unsuccessful
+          login attempts
+-----------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN max_login_attempts integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_login_attempts integer not null default 0;
+ALTER TABLE insurer ADD COLUMN block_time integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN block_time integer not null default 0;
+
+ALTER TABLE web_user ADD COLUMN blocked_date timestamp without time zone;
+ALTER TABLE web_user ADD COLUMN blocked boolean not null default false;
+ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0;
+
+-------------------
+-- End of 6.12.1 --
+-------------------

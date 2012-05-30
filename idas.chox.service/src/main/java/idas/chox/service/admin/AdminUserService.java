@@ -168,6 +168,7 @@ public class AdminUserService extends SecureDataService {
 //        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
         return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
     }
+    
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(WebUser webUser) {
@@ -220,6 +221,7 @@ public class AdminUserService extends SecureDataService {
 
         return this.actionResponse;
     }
+
 
     public ActionResponse triggerPasswordExpiredStatus(WebUser webUser) {
         this.actionResponse = new ActionResponse();
