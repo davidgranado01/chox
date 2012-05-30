@@ -39,6 +39,7 @@
         <property column="enable_ip_whitelist" name="enableIPWhitelist" not-null="true"/>
         <property column="max_login_attempts" name="maxLoginAttempts" not-null="true"/>
         <property column="block_time" name="blockTime" not-null="true"/>
+        <property column="disable_private_notes" name="disablePrivateNotes" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         

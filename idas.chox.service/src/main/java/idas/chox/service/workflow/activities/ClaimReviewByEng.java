@@ -70,8 +70,14 @@ public class ClaimReviewByEng extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
 
+        boolean disablePrivateNotes = getCurrentUser().getInsurer() != null ? 
+                getCurrentUser().getInsurer().isDisablePrivateNotes() : getCurrentUser().getChorganisation().isDisablePrivateNotes();
         if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
-            claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
+            if(!disablePrivateNotes){
+                claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
+            }else{
+                claim.addComment(Comment.New(0, getEngineerClaimReviewNotes()));
+            }
         }
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {

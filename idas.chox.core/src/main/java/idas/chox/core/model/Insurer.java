@@ -57,6 +57,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean enableIPWhitelist;
     private int maxLoginAttempts;
     private int blockTime;
+    private boolean disablePrivateNotes;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -517,6 +518,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setMaxLoginAttempts(int maxLoginAttempts) {
         this.maxLoginAttempts = maxLoginAttempts;
+    }
+    
+    public boolean isDisablePrivateNotes() {
+        return disablePrivateNotes;
+    }
+
+    public void setDisablePrivateNotes(boolean disablePrivateNotes) {
+        this.disablePrivateNotes = disablePrivateNotes;
     }
 
 }

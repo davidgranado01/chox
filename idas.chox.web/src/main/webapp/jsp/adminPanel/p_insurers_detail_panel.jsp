@@ -756,6 +756,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Disable Private Notes</label>
+                                        <s:checkbox name="disablePrivateNotes" value="disablePrivateNotes" onclick="doToggleInsurerDiscount()" />
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                         <table>
                             <tr>
