@@ -429,10 +429,6 @@
                             <input type="text" class="chox-ttxt" id="CCDBlockTimeCho" name="blockTime" value="<s:property value="blockTime" />"/>
                         </div>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> First implementation of todo item 6.12.7 Lockout a user after x consecutive unsuccessful login attempts.
                         <table><tr>
                                 <td>
                                     <div class="chox-form-item">

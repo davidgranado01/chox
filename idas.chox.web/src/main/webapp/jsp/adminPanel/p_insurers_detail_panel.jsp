@@ -583,11 +583,6 @@
                             <label class="chox-form-std-label">Account blocked period (in minutes)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDBlockTime" name="blockTime" value="<s:property value="blockTime" />"/>
                         </div>
-<<<<<<< HEAD
-                        
-=======
-
->>>>>>> First implementation of todo item 6.12.7 Lockout a user after x consecutive unsuccessful login attempts.
 						<div class="chox-form-item">
 							<label class="chox-form-std-label">Enable Supervisor Escalation</label>
 							<s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
