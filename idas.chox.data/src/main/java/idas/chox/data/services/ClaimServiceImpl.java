@@ -595,23 +595,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
             ArrayList<Integer> ClaimOwnerIds = new ArrayList<Integer>();
-            if (searchCriteria.getClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
-                ClaimOwnerIds.add(null);
-//               criteria.add(Restrictions.isNull("claimOwner.id")); 
-            }
+
             ClaimOwnerIds.addAll(searchCriteria.getClaimOwnerIds());
             criteria.add(Restrictions.in("claimOwner.id", ClaimOwnerIds.toArray()));
         }
-        
+
         if (searchCriteria.getSupplierClaimOwnerIds() != null && !searchCriteria.getSupplierClaimOwnerIds().isEmpty()) {
             ArrayList<Integer> supplierClaimOwnerIds = new ArrayList<Integer>();
 
             if (searchCriteria.getSupplierClaimOwnerIds().contains(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED)) {
-                supplierClaimOwnerIds.add(null);
-//               criteria.add(Restrictions.isNull("supplierClaimOwner.id")); 
+                // Remove -9 value from selected supplierClaimOwnerIds as we are adding null restriction.
+                searchCriteria.getSupplierClaimOwnerIds().remove(ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED);
+                // If multiple SupplierClaimOwner selected with CLAIM_OWNER_NOT_ASSIGNED then use criteria OR condition.
+                if (searchCriteria.getSupplierClaimOwnerIds().size() > 0) {
+                    supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
+                    criteria.add(Restrictions.or(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()),
+                            Restrictions.isNull("supplierClaimOwner.id")));
+                } else { // If only CLAIM_OWNER_NOT_ASSIGNED selected just add null restriction.
+                    criteria.add(Restrictions.isNull("supplierClaimOwner.id"));
+                }
+            } else {
+                supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
+                criteria.add(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()));
             }
-            supplierClaimOwnerIds.addAll(searchCriteria.getSupplierClaimOwnerIds());
-            criteria.add(Restrictions.in("supplierClaimOwner.id", supplierClaimOwnerIds.toArray()));
         }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
