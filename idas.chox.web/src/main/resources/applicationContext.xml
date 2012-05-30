@@ -97,6 +97,7 @@
                 <value>hbm/ChorganisationAlias.hbm.xml</value>
                 <value>hbm/QueuedTicket.hbm.xml</value>
                 <value>hbm/IPWhitelist.hbm.xml</value>
+                <value>hbm/AuditEntry.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -118,6 +119,8 @@
 
     <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <!-- The following creates a circular dependency!! -->
+        <!--property name="fullAuditService" ref="fullAuditService"/-->
     </bean>
 
     <bean id="hpiCheck" class="idas.chox.core.hpi.Hpi" factory-method="getInstance">

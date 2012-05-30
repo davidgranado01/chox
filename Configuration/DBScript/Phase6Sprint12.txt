@@ -14,3 +14,25 @@ ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0
 -------------------
 -- End of 6.12.1 --
 -------------------
+
+
+-----------------------------------------------------------
+-- 6.12.2 BRE modification audit records for all updates
+-----------------------------------------------------------
+CREATE TABLE audit_history (
+    id serial NOT NULL,
+    table_name character varying(128) not null,
+    object_id integer not_null,
+    parameter_name character varying(128) not null,
+    old_value character varying(128),
+    new_value character varying(128),
+    created_date timestamp without time zone not null,
+    created_by integer not null
+)
+WITH (OIDS=FALSE);
+GRANT select, insert ON audit_history TO chox_user;
+GRANT select, update ON audit_history_id_seq TO chox_user; 
+
+-------------------
+-- End of 6.12.2 --
+-------------------
