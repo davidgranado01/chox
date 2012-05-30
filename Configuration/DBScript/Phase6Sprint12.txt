@@ -22,7 +22,7 @@ ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0
 CREATE TABLE audit_history (
     id serial NOT NULL,
     table_name character varying(128) not null,
-    object_id integer not_null,
+    object_id integer not null,
     parameter_name character varying(128) not null,
     old_value character varying(128),
     new_value character varying(128),
