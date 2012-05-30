@@ -1,0 +1,65 @@
+package idas.chox.web.security;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+
+/**
+ *
+ * @author John
+ */
+public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationFailureHandler.class);
+    private String defaultFailureUrl;
+    private String defaultBlockedUrl;
+    private UserService userService;
+    
+    public void setDefaultBlockedUrl(String defaultBlockedUrl) {
+        this.defaultBlockedUrl = defaultBlockedUrl;
+    }
+
+    @Override
+    public void setDefaultFailureUrl(String defaultFailureUrl) {
+        this.defaultFailureUrl = defaultFailureUrl;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception)
+                    throws IOException, ServletException {
+
+        String username = request.getParameterValues("j_username")[0];
+        LOG.debug("AuthenticationException thrown for login attempt with username='{}'\n", username, exception);
+        
+        WebUser user = userService.findByUserName(username);
+        
+        if (user != null && user.getMaxFailedLoginAttempts() > 0) {
+            /*
+             * Here we need to increment the failed log-in attempt count
+             * and block if this is now >= the maxLoginAttempts of the organisation
+             */
+            if (user.isBlocked() || userService.failedLogin(user.getId())) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                getRedirectStrategy().sendRedirect(request, response, defaultBlockedUrl);
+                return;
+            }
+        }
+        
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        getRedirectStrategy().sendRedirect(request, response, defaultFailureUrl);
+
+    }
+
+}

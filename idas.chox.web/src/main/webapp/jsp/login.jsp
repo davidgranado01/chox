@@ -63,6 +63,7 @@
             <span class="note" style="font-size:11px">
                 <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
+        
         <div style="text-align:center; padding-top:10px;">
             <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>

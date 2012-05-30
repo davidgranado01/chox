@@ -62,7 +62,9 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean enableSubscriberClaims;
     private boolean autoPenaltyChargeEnabled;
     private boolean enableIPWhitelist;
-
+    private int maxLoginAttempts;
+    private int blockTime;
+    
     public boolean isAutoPenaltyChargeEnabled() {
         return autoPenaltyChargeEnabled;
     }
@@ -422,4 +424,21 @@ public class Chorganisation extends Entity implements Serializable {
     public void setEnableIPWhitelist(boolean enableIPWhitelist) {
         this.enableIPWhitelist = enableIPWhitelist;
     }
+
+    public int getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(int blockTime) {
+        this.blockTime = blockTime;
+    }
+
+    public int getMaxLoginAttempts() {
+        return maxLoginAttempts;
+    }
+
+    public void setMaxLoginAttempts(int maxLoginAttempts) {
+        this.maxLoginAttempts = maxLoginAttempts;
+    }
+    
 }

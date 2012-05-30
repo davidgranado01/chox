@@ -337,6 +337,44 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void block(int userId) {
+        WebUser user = (WebUser) get(WebUser.class, userId);
+        user.setBlocked(true);
+        user.setBlockedDate(new Date());
+        save(user);        
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void unblock(int userId) {
+        WebUser user = (WebUser) get(WebUser.class, userId);
+        user.setBlocked(false);
+        user.setBlockedDate(null);
+        user.setFailedLoginAttempts(0);
+        user.setLastModifiedBy(user);
+        save(user);        
+    }
+
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public boolean failedLogin(int userId) {
+        WebUser user = (WebUser) get(WebUser.class, userId);
+
+        if (!user.isBlocked()) {
+            user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
+            if (user.getFailedLoginAttempts() >= user.getMaxFailedLoginAttempts()) {
+                user.setBlocked(true);
+                user.setBlockedDate(new Date());
+            }
+            save(user);
+        }
+
+        return user.isBlocked();
+    }
+
     @Override
     public List<PasswordHistory> getPasswordHistory(int userId, int count) {
         List<PasswordHistory> passwordHistory = new ArrayList<PasswordHistory>(count);

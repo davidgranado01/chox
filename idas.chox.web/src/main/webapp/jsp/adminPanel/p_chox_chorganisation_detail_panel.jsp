@@ -468,6 +468,7 @@
 
             </div>
         </div>
+                    
         <div id="CHOAliasPanelTab" class="x-hide-display"></div>
         <div id="ChoTpiPanelTab" class="x-hide-display"></div>
     </div>

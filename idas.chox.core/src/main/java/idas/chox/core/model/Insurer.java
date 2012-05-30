@@ -55,6 +55,8 @@ public class Insurer extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
+    private int maxLoginAttempts;
+    private int blockTime;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -499,6 +501,22 @@ public class Insurer extends Entity implements Serializable {
 
     public void setSupervisorEnable(boolean supervisorEnable) {
         this.supervisorEnable = supervisorEnable;
+    }
+
+    public int getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(int blockTime) {
+        this.blockTime = blockTime;
+    }
+
+    public int getMaxLoginAttempts() {
+        return maxLoginAttempts;
+    }
+
+    public void setMaxLoginAttempts(int maxLoginAttempts) {
+        this.maxLoginAttempts = maxLoginAttempts;
     }
 
 }

@@ -1,22 +1,24 @@
 package idas.chox.web.security;
 
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.IPWhitelistService;
-import idas.chox.core.services.UserService;
-import idas.chox.service.security.PermissionedUser;
-import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.time.DateUtils;
 import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.IPWhitelistService;
+import idas.chox.core.services.UserService;
+import idas.chox.service.security.PermissionedUser;
+import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 
 /**
  *
@@ -29,6 +31,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private IPWhitelistService ipWhitelistService;
     private String browserWarningParam;
     private String failureUrl;
+    private String blockedUrl;
     private Authentication currentAuthentication;
 
     public void setBrowserWarningParam(String browserWarningParam) {
@@ -37,6 +40,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
     public void setFailureUrl(String failureUrl) {
         this.failureUrl = failureUrl;
+    }
+
+    public void setBlockedUrl(String blockedUrl) {
+        this.blockedUrl = blockedUrl;
     }
 
     public void setCurrentAuthentication(Authentication currentAuthentication) {
@@ -56,6 +63,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     public void onAuthenticationSuccess(HttpServletRequest request,
                         HttpServletResponse response,
                         Authentication authentication) throws ServletException, IOException {
+        int blockMinutes = 0;
         currentAuthentication = authentication;
         WebUser user = ((PermissionedUser)currentAuthentication.getPrincipal()).getUser();
 
@@ -64,11 +72,17 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
          * NB: This should be refactored to use a custom Spring decision voter
          */
         int orgId = -1;
-        if ((user.isAnInsurer() && user.getInsurer().isEnableIPWhitelist()))
-            orgId = user.getInsurer().getId();
-        else if (user.isCHO() && user.getChorganisation().isEnableIPWhitelist())
-            orgId = user.getChorganisation().getId();
-        
+        if (user.isAnInsurer()) {
+            blockMinutes = user.getInsurer().getBlockTime();
+            if (user.getInsurer().isEnableIPWhitelist())
+                orgId = user.getInsurer().getId();
+        }
+        else if (user.isCHO()) {
+            blockMinutes = user.getChorganisation().getBlockTime();
+            if (user.getChorganisation().isEnableIPWhitelist())
+                orgId = user.getChorganisation().getId();
+        }
+          
         if (orgId >= 0) {
             boolean isValid = false;
             
@@ -108,10 +122,35 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 request.getSession().invalidate();
                 getRedirectStrategy().sendRedirect(request, response, failureUrl);
-//                super.onAuthenticationSuccess(request, response, authentication);
                 return;
             }
         }
+        
+        // Check account has not been blocked due to failed log-in attempts
+        if (user.isBlocked()) {
+            boolean blocked=true;
+            // Check time-limit has not passed
+            if (blockMinutes > 0) {
+                Date blockTime = user.getBlockedDate();
+                Date unblockDate = DateUtils.addMinutes(blockTime, blockMinutes);
+                if ((new Date()).after(unblockDate)) {
+                    LOG.info("Allowing access for user '{}' as blocked time limit has been exceeded (unblock date was '{}')", user.getFullName(), unblockDate);
+                    blocked = false;
+                }
+            }
+
+            if (blocked) {
+                LOG.error("User '{}' denied access as account is currently blocked.", user.getFullName());
+                HttpServletResponse httpResponse = response;
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                request.getSession().invalidate();
+                getRedirectStrategy().sendRedirect(request, response, blockedUrl);
+                return;                
+            } else {
+                userService.unblock(user.getId());
+            }
+        }
+
         
         // Add nonce
         HttpSession session = request.getSession();
