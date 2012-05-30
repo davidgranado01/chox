@@ -206,8 +206,16 @@ public class AdminUserService extends SecureDataService {
 
         this.actionResponse = new ActionResponse();
 
-        webUser.setStatus(!webUser.getStatus());
-
+        if (webUser.isBlocked()) {
+            webUser.setBlocked(false);
+            webUser.setStatus(true);
+            webUser.setFailedLoginAttempts(0);
+            webUser.setBlockedDate(null);
+            webUser.setStatus(true);
+        }
+        else
+            webUser.setStatus(!webUser.getStatus());
+ 
         boolean isAllowUpdate = true;
 
         if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId())) {

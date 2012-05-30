@@ -363,7 +363,7 @@ public class Insurer extends Entity implements Serializable {
     public String getDisplayAddress() {
 
         String strDelimiter = ", ";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (TextHelper.isValidText(this.address1)) {
             if (TextHelper.isValidText(sb.toString())) {

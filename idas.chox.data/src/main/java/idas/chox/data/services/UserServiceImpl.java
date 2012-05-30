@@ -334,6 +334,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public void updateLastLogin(int userId) {
         WebUser user = (WebUser) get(WebUser.class, userId);
         user.setLastLoginDate(new Date());
+        user.setFailedLoginAttempts(0);
+        user.setBlocked(false);
+        user.setBlockedDate(null);
         save(user);
     }
 
