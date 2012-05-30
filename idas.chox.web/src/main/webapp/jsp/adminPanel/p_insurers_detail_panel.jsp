@@ -257,7 +257,8 @@
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
 
@@ -281,7 +282,8 @@
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
 
@@ -780,12 +782,6 @@
         <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
         <div id="InsurerDiscountsTab" class="x-hide-display"></div>
         <div id="IPWhitelistConfigTab" class="x-hide-display"></div>
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
-=======
->>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
-=======
->>>>>>> TO DO ITEM : 6.12.3 IP white-list configuration panel
     </div>
 </div>
