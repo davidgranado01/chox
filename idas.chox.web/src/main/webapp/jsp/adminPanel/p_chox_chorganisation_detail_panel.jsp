@@ -44,8 +44,10 @@
                 dailyRateChargeLimit:{number:true, min:1 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
-                minimumPasswordLength:{ required:true, number:true, min:6, max:32 }
-          },
+                minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
+                maxLoginAttempts:{ required:true, number:true, min:0 },
+                blockTime:{ required:true, number:true, min:0 }
+       },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
                 vatNo:{required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number"},
@@ -60,7 +62,9 @@
                 dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords' must be numeric", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
-                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" }
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length' must be numeric", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
+                maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
+                blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"}
             }
         });
 
@@ -209,6 +213,8 @@
                 $('form#formUpdateChorganisationDetail #CCDAddress5' ).rules("add", {required: true});
                 $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).rules("add", {required: true});
                 $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).rules("add", {required: true});
             }
 
        }
@@ -227,6 +233,8 @@
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).attr('readonly', true);
              
              $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#e4e4e4');
@@ -240,6 +248,8 @@
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#e4e4e4');  
+             $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).css('background','#e4e4e4');  
+             $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).css('background','#e4e4e4');  
        }
        
        function markFieldEditable(){
@@ -255,6 +265,8 @@
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', false);  
+             $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).attr('readonly', false);  
              
              $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#ffffff');
@@ -268,6 +280,8 @@
              $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).css('background','#ffffff');
        }
        
        function setDefaultValueForMandatoryField(){
@@ -281,6 +295,8 @@
              Ext.get('CCDAddress5').dom.value = 'xxxxxxx';
              Ext.get('CCDUniquePasswordHistory').dom.value = '1';
              Ext.get('CCDMinimumPasswordLength').dom.value = '8';
+             Ext.get('CCDMaximumLoginAttemptsCho').dom.value = '0';
+             Ext.get('CCDBlockTimeCho').dom.value = '0';
        }
        
        function onInsurerUploadOnlyChecked(){
@@ -395,6 +411,16 @@
                         <div class="chox-form-item" id="MinimumPasswordLengthDiv">
                             <label class="chox-form-std-label">Minimum Password Length</label>
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="MaximumLoginAttemptsDiv">
+                            <label class="chox-form-std-label" style="margin-top : -7px;">Maximum login attempts<br/> (before account blocked)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaximumLoginAttemptsCho" name="maxLoginAttempts" value="<s:property value="maxLoginAttempts" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="BlockTimeDiv">
+                            <label class="chox-form-std-label">Account blocked period (in minutes)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDBlockTimeCho" name="blockTime" value="<s:property value="blockTime" />"/>
                         </div>
 
                         <table><tr>

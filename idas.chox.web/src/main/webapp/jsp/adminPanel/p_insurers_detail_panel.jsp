@@ -209,9 +209,9 @@
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
-                minimumPasswordLength:{ required:true, number:true, min:6, max:32 }
-                //                workgroupIdField:{comboSelection:workgroupId },
-                //                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
+                minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
+                maxLoginAttempts:{ required:true, number:true, min:0 },
+                blockTime:{ required:true, number:true, min:0 }
             },
             messages:
                 {
@@ -229,9 +229,9 @@
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
-                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" }
-                //                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
-                //                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
+                maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
+                blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"}
             }
         });
 
@@ -617,6 +617,16 @@
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
 
+                        <div class="chox-form-item" id="CCDMaximumLoginAttemptsDiv">
+                            <label class="chox-form-std-label" style="margin-top : -7px;">Maximum login attempts<br/> (before account blocked)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaximumLoginAttempts" name="maxLoginAttempts" value="<s:property value="maxLoginAttempts" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="CCDBlockTimeDiv">
+                            <label class="chox-form-std-label">Account blocked period (in minutes)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDBlockTime" name="blockTime" value="<s:property value="blockTime" />"/>
+                        </div>
+                        
 						<div class="chox-form-item">
 							<label class="chox-form-std-label">Enable Supervisor Escalation</label>
 							<s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
