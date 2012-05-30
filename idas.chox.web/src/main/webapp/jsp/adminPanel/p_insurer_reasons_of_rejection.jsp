@@ -256,7 +256,7 @@ function onEditNotificatoinChange(){
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                                        <input id="rorId" name="reasonOfRejectionName" style="width: 350px"/>
+                                        <input id="rorId" name="reasonOfRejectionName" style="width: 175px"/>
                                     </div>
                                     
                                     <div class="chox-form-item">
@@ -280,9 +280,10 @@ function onEditNotificatoinChange(){
 		                                        </div>
 		                                    </td>
 			                                <td width="15%" >
-                                                <label>Active</label>
-                                                <s:checkbox id="status" name="status" style="margin-left: 20px"/>
-                                                <br/>
+			                                    <div style="margin-left: 91px">
+                                                    <label>Active</label>
+                                                    <s:checkbox id="status" name="status"/>
+                                                </div>
                                                 <div id="restrictedDivId">
                                                     <label>Visible Before Assigned</label>
                                                     <s:checkbox id="restricted" name="restricted" />
@@ -316,7 +317,7 @@ function onEditNotificatoinChange(){
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                        <input id="rorEditId" name="reasonOfRejectionName" style="width: 350px"/>
+                        <input id="rorEditId" name="reasonOfRejectionName" style="width: 175px"/>
                     </div>
                     
                     <div class="chox-form-item">
@@ -341,9 +342,10 @@ function onEditNotificatoinChange(){
                             </td>
                             <td width="15%" >
 	                            <div class="chox-form-item">
-	                                <label>Active</label>
-	                                <s:checkbox id="statusWindowId" name="status" style="margin-left: 20px" />
-	                                <br/>
+	                                <div style="margin-left: 91px">
+	                                   <label>Active</label>
+	                                   <s:checkbox id="statusWindowId" name="status"/>
+	                                </div>
 	                                <div id="restrictedEditDivId">
 	                                   <label>Visible Before Assigned</label>
 	                                   <s:checkbox id="restrictedWindowId" name="restricted"/>
