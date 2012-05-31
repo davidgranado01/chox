@@ -36,3 +36,99 @@ GRANT select, update ON audit_history_id_seq TO chox_user;
 -------------------
 -- End of 6.12.2 --
 -------------------
+
+-----------------------------------------------------------
+-- 6.12.4 New User Manager Role For Insurers
+-----------------------------------------------------------
+-- Remove visibility of Admin tab from Manager and give to Manager Admin
+update accessibility_item set role='ROLE_INS_ADMIN'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'menu.Admin'
+  and accessibility_item.role = 'ROLE_INS_MNG';
+
+-- Create new role
+insert into web_user_role(version, name, description, type_id, is_workgroup_related, is_ownership_related,
+                          created_by, created_date, last_modified_by, last_modified_date)
+select 0, 'ROLE_INS_USER', 'User Manager', 2, false, false, 999, now(), 999, now();
+ 
+-- Define new accessibility for Inbox and Search
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'menu.Search', false, false;
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'menu.Inbox', false, false;
+
+-- Define access for existing roles
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_PC', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_PC', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_UPLOAD', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_UPLOAD', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MI', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MI', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SUP', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SUP', 1, id from accessibility where name='menu.Inbox';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_ADMIN', 1, id from accessibility where name='menu.Search';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_ADMIN', 1, id from accessibility where name='menu.Inbox';
+
+-- Define access for new role
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_USER', 1, id from accessibility where name='menu.Admin';
+
+update accessibility_item set role='ROLE_INS_USER'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'admin.UserManagement'
+  and accessibility_item.role = 'ROLE_INS_MNG';
+
+-------------------
+-- End of 6.12.4
+-------------------
+
+

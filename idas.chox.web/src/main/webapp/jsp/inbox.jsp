@@ -128,6 +128,7 @@
         </s:if>
 
         <s:elseif test="isInsurer" > 
+            if (document.getElementById('queueOrgFilter')) {
                 document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;CHO Filter : &nbsp;&nbsp;';
             
                 var suppliersJsonReader = new Ext.data.JsonReader({
@@ -171,7 +172,8 @@
                     }
                 });
                 supplierFilterCombo.render('orgFilterDiv');
-                supplierFilterCombo.setValue(-1);    
+                supplierFilterCombo.setValue(-1);
+            }
         </s:elseif>
                 //        else
                 //            document.getElementById('queueOrgFilter').innerHTML  = '';
@@ -1526,7 +1528,7 @@
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
-                    autoheight:true,
+                    autoheight: false,
                     activeTab: selectedIndex,
                     items:[
                         {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
@@ -1547,7 +1549,7 @@
 
                     tabs = new Ext.TabPanel({
                         renderTo: 'tabPanel',
-                        autoheight:true,
+                        autoheight: false,
                         activeTab: selectedIndex,
                         items:[
                             {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
@@ -1565,6 +1567,16 @@
 
         <s:if test="menuAccessibility.isDashBoardMenuAccessibility!=true">
                 tabs.remove('boardPanelTabId', true);
+        </s:if>
+
+        <s:if test="menuAccessibility.isSearchMenuAccessibility!=true">
+                tabs.remove('searchPanelTabId', true);
+        </s:if>
+
+        <s:if test="menuAccessibility.isInboxMenuAccessibility!=true">
+                tabs.remove('inboxPanelTabId', true);
+                // Set height as this is usually controlled by the inbox/filter panel
+                document.getElementById('adminPanelTab').style.height = 413;
         </s:if>
 
         <s:if test="menuAccessibility.isReportMenuAccessibility!=true">
@@ -1673,7 +1685,7 @@
 </head>
 
 <div id="inboxScreenDiv">
-    <div id="tabPanel"></div>
+    <div id="tabPanel" ></div>
 
     <div id="boardPanelTab" class="x-hide-display">
         <div id="boardPanel">
