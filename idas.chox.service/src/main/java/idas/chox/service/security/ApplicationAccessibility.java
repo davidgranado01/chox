@@ -98,6 +98,8 @@ public class ApplicationAccessibility {
     public static final String MENU_DASHBOARD = "Dashboard";
     public static final String MENU_REPORT = "Report";
     public static final String MENU_ADMIN = "Admin";
+    public static final String MENU_INBOX = "Inbox";
+    public static final String MENU_SEARCH = "Search";
     // ***************************************
     // REPORT
     // ***************************************

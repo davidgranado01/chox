@@ -104,6 +104,8 @@
             emptyMsg: "No Tasks to display"
         });
 
+   if (document.getElementById('tasksGridId')) {
+
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
@@ -513,6 +515,7 @@
         // so we'll add a timer to do this.'
         // ToDo: sort out scroll-bar problem and remove this timer
         setTimeout("gridRefresh()", 100);
+      }
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
