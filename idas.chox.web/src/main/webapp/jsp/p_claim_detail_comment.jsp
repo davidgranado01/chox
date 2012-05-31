@@ -147,7 +147,7 @@
             <fieldset class="x-fieldset">
                 <legend>Add New Note</legend>
                 <div class="chox-form-item">
-                    <s:textarea cols="100" rows="5" id="comment" disabled="isChoxAdmin||isDisablePrivateNotes" name="comment" />
+                    <s:textarea cols="100" rows="5" id="comment" disabled="isChoxAdmin" name="comment" />
                 </div>
 
                 <div class="chox-form-item">
@@ -164,7 +164,7 @@
                             <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" disabled /> Private Note (Only Visible Internally)</span>
                         </s:elseif>
                 </div>
-                    <s:submit type="submit" id="claimDetailsCommentId" disabled="isChoxAdmin||isDisablePrivateNotes" value="Add Note"/>
+                    <s:submit type="submit" id="claimDetailsCommentId" disabled="isChoxAdmin" value="Add Note"/>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>
         </div>
