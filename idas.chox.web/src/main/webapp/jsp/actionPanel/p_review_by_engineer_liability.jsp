@@ -65,7 +65,12 @@
                 <s:hidden id="name" name="name" />
                 <div>
                     <div class="status-info">
-                        Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be private and not visible to the CHO. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be public and visible to the CHO.
+                        <s:if test="insurerIsDisablePrivateNotes">
+                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. Any notes entered into the ‘Claim Review Notes (Public)’ section will be public and visible to the CHO.
+                        </s:if>
+                        <s:else>
+                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be private and not visible to the CHO. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be public and visible to the CHO.
+                        </s:else>
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
