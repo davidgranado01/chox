@@ -334,6 +334,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getInsurer().isEngineersEnable();
     }
 
+    public boolean getInsurerIsDisablePrivateNotes() {
+        return claim.getInsurer().isDisablePrivateNotes();
+    }
+
     public BigDecimal getInterimPaymentMade() {
         return claim.getInvoice().getInterimPaymentMade() == null ? BigDecimal.ZERO.setScale(2): claim.getInvoice().getInterimPaymentMade();
     }
