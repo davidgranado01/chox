@@ -92,11 +92,11 @@
             propmtMsg(title, msg);
         }
         else if(columnIndex == 3 && comment.get("delete")!=""){
-            deleteAttachment(fileId);
+            deleteComment(fileId);
         }
     }
     
-    function deleteAttachment(a){
+    function deleteComment(a){
         
         var box= Ext.Msg.show({
             title      : 'Confirm',
