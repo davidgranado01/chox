@@ -1094,7 +1094,7 @@ img.tip-target
     float: left;
     margin-right: 5px;
     text-align: right;
-    width: 250px;
+    width: 200px;
     white-space: nowrap;
     height:20px;
 }
@@ -1625,5 +1625,3 @@ br.smallBr
     border-left: 1px solid #99BBE8;
     padding: 2px 8px 2px 5px;
 }
-
-

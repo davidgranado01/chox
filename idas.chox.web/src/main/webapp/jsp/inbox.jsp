@@ -1528,7 +1528,7 @@
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
-                    autoheight: false,
+                    autoheight:true,
                     activeTab: selectedIndex,
                     items:[
                         {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
@@ -1549,7 +1549,7 @@
 
                     tabs = new Ext.TabPanel({
                         renderTo: 'tabPanel',
-                        autoheight: false,
+                        autoheight: true,
                         activeTab: selectedIndex,
                         items:[
                             {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
@@ -1576,7 +1576,7 @@
         <s:if test="menuAccessibility.isInboxMenuAccessibility!=true">
                 tabs.remove('inboxPanelTabId', true);
                 // Set height as this is usually controlled by the inbox/filter panel
-                document.getElementById('adminPanelTab').style.height = 413;
+                document.getElementById('adminPanelTab').style.height = 391;
         </s:if>
 
         <s:if test="menuAccessibility.isReportMenuAccessibility!=true">
@@ -1685,7 +1685,7 @@
 </head>
 
 <div id="inboxScreenDiv">
-    <div id="tabPanel" ></div>
+    <div id="tabPanel"></div>
 
     <div id="boardPanelTab" class="x-hide-display">
         <div id="boardPanel">
