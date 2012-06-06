@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * @author John
  */
-public class VehicleClassPrice extends Entity implements Serializable {
+public class VehicleClassPrice extends Entity implements Serializable, FullAudit {
     /**
      * This attribute maps to the column price in the vehicle_class table.
      */

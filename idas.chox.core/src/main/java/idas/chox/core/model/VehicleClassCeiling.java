@@ -1,11 +1,12 @@
 package idas.chox.core.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 /**
  *
  * @author emmanuel
  */
-public class VehicleClassCeiling extends Entity {
+public class VehicleClassCeiling extends Entity implements Serializable, FullAudit {
 
     private BigDecimal hireNetCeiling;
     private BigDecimal repairNetCeiling;

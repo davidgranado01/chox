@@ -10,10 +10,7 @@ import java.util.Date;
  *
  * @author seeni
  */
-public class VehicleClassPriceSpecialRate extends Entity implements Serializable{
-
-
-
+public class VehicleClassPriceSpecialRate extends Entity implements Serializable, FullAudit {
     private BigDecimal price;
     private Date startDate;
     private BigDecimal age;
