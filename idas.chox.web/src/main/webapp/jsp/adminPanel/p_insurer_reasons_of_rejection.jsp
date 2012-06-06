@@ -122,25 +122,7 @@ $(function(){
         }
     });
 
-    ui.ajaxForm(form,function(responseText, statusText){
-         
-        var response = eval('(' + responseText.trim() + ')');
-        if(response)
-        {
-            if(response.isValid){
-                onPageRefresh();
-            } else {
-                Ext.Msg.show({
-                    title: 'Error',
-                    msg:response.errors,
-                    icon:Ext.Msg.ERROR,
-                    buttons:Ext.Msg.OK,
-                    width : 400
-                });
-                onPageRefresh();
-            }
-        }
-    });
+    ui.ajaxForm(form, onSubmitHandler);
     
     var editForm = $("form#rorEditForm");
     editForm.validate(
@@ -168,10 +150,31 @@ function removeReasonOfRejection(grid, rowIndex, columnIndex, e){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/deleteReasonOfRejection.action";
         var param = {"reasonOfRejectionId":rorId};
-        ajax.loadHtml2(url, param, onPageRefresh);
+        ajax.loadHtml2(url, param, onSubmitHandler);
     }else if(columnIndex==0){
     	showEditReasonOfRejection(gridView);
     }
+}
+
+function onSubmitHandler(responseText, statusText){
+	var response = eval('(' + responseText.trim() + ')');
+    var outputDiv = $('div#rorEditErrorMessageBox');
+    triggerCss("div#rorEditErrorMessageBox", true);
+   
+    if(response && !response.isValid){
+        triggerCss("div#rorEditErrorMessageBox", true);
+        $.each(response.errors, function() {
+            Ext.Msg.show({
+                title: 'Error',
+                msg:this.toString(),
+                icon:Ext.Msg.ERROR,
+                buttons:Ext.Msg.OK,
+                width : 400
+            });
+        });
+    }
+    onPageRefresh();
+    
 }
 
 function onPageRefresh(){

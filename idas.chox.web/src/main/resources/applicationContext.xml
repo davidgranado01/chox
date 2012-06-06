@@ -19,7 +19,7 @@
         <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="initialSize" value="15"/>
+        <property name="initialSize" value="25"/>
         <property name="maxActive" value="75"/>
     </bean>
 
@@ -97,6 +97,7 @@
                 <value>hbm/ChorganisationAlias.hbm.xml</value>
                 <value>hbm/QueuedTicket.hbm.xml</value>
                 <value>hbm/IPWhitelist.hbm.xml</value>
+                <value>hbm/AuditEntry.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -118,6 +119,8 @@
 
     <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <!-- The following creates a circular dependency!! -->
+        <!--property name="fullAuditService" ref="fullAuditService"/-->
     </bean>
 
     <bean id="hpiCheck" class="idas.chox.core.hpi.Hpi" factory-method="getInstance">

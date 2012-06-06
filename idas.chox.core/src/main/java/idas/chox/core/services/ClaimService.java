@@ -96,4 +96,6 @@ public interface ClaimService extends DataService {
     public int getDaysSinceInvoiceUploadToEscalate(Integer claimId);
 
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId);
+    
+    public int getNoOfRejectedClaims(Integer reasonOfRejectionId);
 }

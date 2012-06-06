@@ -450,6 +450,17 @@ public class AdminInsurerService extends SecureDataService {
         return this.actionResponse;
     }
     
+    public ActionResponse deleteReasonOfRejection(ReasonOfRejection ror) {
+        this.actionResponse = new ActionResponse();
+        if(claimService.getNoOfRejectedClaims(ror.getId()) != 0){
+            this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to a claim and it cannot be deleted");
+        } else {
+            reasonOfRejectionService.deleteReasonOfRejection(ror);
+            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getName() + "' has been removed");
+        }
+        return this.actionResponse;
+    }
+    
     public ActionResponse triggerInsurerWorkgroupStatus(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
 

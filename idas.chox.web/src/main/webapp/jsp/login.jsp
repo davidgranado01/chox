@@ -53,6 +53,9 @@
                                 <s:elseif test="#parameters.iperror[0] == 'true'">
                                     <p><span id="login-error">Due to your current IP address, you are not authorised to access CHOX.<br/> Please contact CHOX Support on 03333 404327.</span></p>
                                 </s:elseif>
+                                <s:elseif test="#parameters.blocked[0] == 'true'">
+                                    <p><span id="login-error">Your account is currently blocked due to too many unsuccessful login attempts.<br/> Please contact CHOX Support on 03333 404327.</span></p>
+                                </s:elseif>
                             </div>
                         </div>
                     </form>
@@ -63,6 +66,7 @@
             <span class="note" style="font-size:11px">
                 <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
+        
         <div style="text-align:center; padding-top:10px;">
             <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>

@@ -32,7 +32,7 @@
             },
             messages: {
                 DateStart: {
-                	max:"'Date to' can't be before 'Date From'",
+                	max:"'Invoice Uploaded To' can't be before 'Invoice Uploaded From'",
                     required:"A value must be supplied for 'Invoice Uploaded From'",
                     dateITA:"You must supply a date value 'Invoice Uploaded From'"
                 },
@@ -303,10 +303,12 @@
                         </tr>
                     </s:else>
                     <tr>
-                        <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
+                        <td nowrap width="30%"><label>Invoice Uploaded From</label><span class="mandatory">*</span></td>
+                        <td><div id="dateFromDiv" /></td>                       
                     </tr>    
                     <tr>
-                        <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>                            
+                        <td nowrap><label>Invoice Uploaded To</label><span class="mandatory">*</span></td>
+                        <td><div id="dateToDiv"/></td>                            
                     </tr>                      
                 </table>
 

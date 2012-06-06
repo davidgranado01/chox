@@ -862,7 +862,7 @@
                         actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS%>';
                         actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
 //                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
-                        this.insert(1, new Ext.data.Record(actionsForHandlers));
+                        this.insert(0, new Ext.data.Record(actionsForHandlers));
                         
             </s:if>
             <s:else >

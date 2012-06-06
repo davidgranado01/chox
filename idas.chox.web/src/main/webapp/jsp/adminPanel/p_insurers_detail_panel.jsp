@@ -174,7 +174,6 @@
         if(<s:property value="enableIPWhitelist"/> && !isNew){
             disableIPWhitelistTab = false;
         }
-        
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -204,7 +203,9 @@
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
-                minimumPasswordLength:{ required:true, number:true, min:6, max:32 }
+                minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
+                maxLoginAttempts:{ required:true, number:true, min:0 },
+                blockTime:{ required:true, number:true, min:0 }
             },
             messages:
                 {
@@ -223,7 +224,9 @@
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
-                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" }
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
+                maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
+                blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"}
             }
         });
         
@@ -252,7 +255,6 @@
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}},
                     {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
@@ -278,7 +280,6 @@
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}},
                     {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
@@ -450,7 +451,8 @@
             });
         }
     }
-    
+
+
     function updateInsurerDetailPanel(objectId) {
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
@@ -569,6 +571,15 @@
                             <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
 
+                        <div class="chox-form-item" id="CCDMaximumLoginAttemptsDiv">
+                            <label class="chox-form-std-label" style="margin-top : -7px;">Maximum login attempts<br/> (before account blocked)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaximumLoginAttempts" name="maxLoginAttempts" value="<s:property value="maxLoginAttempts" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="CCDBlockTimeDiv">
+                            <label class="chox-form-std-label">Account blocked period (in minutes)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDBlockTime" name="blockTime" value="<s:property value="blockTime" />"/>
+                        </div>
 						<div class="chox-form-item">
 							<label class="chox-form-std-label">Enable Supervisor Escalation</label>
 							<s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
@@ -665,7 +676,7 @@
                                     <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                                         <label class="chox-form-std-label">Automatic Claim Routing</label>
 
-                                        <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
+                                        <select id="autoRoutingEnableDropDownId" name="autoRoutingEnableId" >
                                             <option value="">--Disabled--</option>
                                             <option value="autoRoutingEnable">By Policy Number</option>
                                             <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
@@ -753,6 +764,7 @@
                 </form>
             </div>
         </div>
+                    
         <div id="insurerAliasPanelTab" class="x-hide-display"></div>
         <div id="insurerWorkgroupPanelTab" class="x-hide-display"></div>
         <div id="insurerCreditHirePanelTab" class="x-hide-display"></div>

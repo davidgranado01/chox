@@ -1,4 +1,44 @@
 -----------------------------------------------------------
+-- 6.12.1 Lockout a user after x consecutive unsuccessful
+          login attempts
+-----------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN max_login_attempts integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_login_attempts integer not null default 0;
+ALTER TABLE insurer ADD COLUMN block_time integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN block_time integer not null default 0;
+
+ALTER TABLE web_user ADD COLUMN blocked_date timestamp without time zone;
+ALTER TABLE web_user ADD COLUMN blocked boolean not null default false;
+ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0;
+
+-------------------
+-- End of 6.12.1 --
+-------------------
+
+
+-----------------------------------------------------------
+-- 6.12.2 BRE modification audit records for all updates
+-----------------------------------------------------------
+CREATE TABLE audit_history (
+    id serial NOT NULL,
+    table_name character varying(128) not null,
+    object_id integer not null,
+    parameter_name character varying(128) not null,
+    old_value character varying(128),
+    new_value character varying(128),
+    created_date timestamp without time zone not null,
+    created_by integer not null
+)
+WITH (OIDS=FALSE);
+GRANT select, insert ON audit_history TO chox_user;
+GRANT select, update ON audit_history_id_seq TO chox_user; 
+
+-------------------
+-- End of 6.12.2 --
+-------------------
+
+
+-----------------------------------------------------------
 -- 6.12.3 IP white-list configuration panel
 -----------------------------------------------------------
 

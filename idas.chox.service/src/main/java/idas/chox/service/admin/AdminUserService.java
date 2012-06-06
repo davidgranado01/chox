@@ -168,6 +168,7 @@ public class AdminUserService extends SecureDataService {
 //        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
         return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
     }
+    
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(WebUser webUser) {
@@ -205,7 +206,15 @@ public class AdminUserService extends SecureDataService {
 
         this.actionResponse = new ActionResponse();
 
-        webUser.setStatus(!webUser.getStatus());
+        if (webUser.isBlocked()) {
+            webUser.setBlocked(false);
+            webUser.setStatus(true);
+            webUser.setFailedLoginAttempts(0);
+            webUser.setBlockedDate(null);
+            webUser.setStatus(true);
+        }
+        else
+            webUser.setStatus(!webUser.getStatus());
 
         boolean isAllowUpdate = true;
 
@@ -220,6 +229,7 @@ public class AdminUserService extends SecureDataService {
 
         return this.actionResponse;
     }
+
 
     public ActionResponse triggerPasswordExpiredStatus(WebUser webUser) {
         this.actionResponse = new ActionResponse();

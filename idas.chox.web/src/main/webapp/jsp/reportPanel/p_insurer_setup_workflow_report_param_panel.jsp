@@ -32,13 +32,13 @@
             },
             messages: {
                 startDate: {
-                	max:"'Date to' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Date From'",
-                    dateITA:"You must supply a date value 'Date From'"
+                	max:"'Period to' can't be before 'Period From'",
+                    required:"A value must be supplied for 'Period From'",
+                    dateITA:"You must supply a date value 'Period From'"
                 },
                 endDate: {
-                    required:"A value must be supplied for 'Date To'",
-                    dateITA:"You must supply a date value 'Date To'"
+                    required:"A value must be supplied for 'Period To'",
+                    dateITA:"You must supply a date value 'Period To'"
                 }
             }
         });
@@ -71,10 +71,10 @@
 
                 <table class="report-form">
                     <tr>
-                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Period From</label> Claim Status Workflow Report<span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
                     <tr>
-                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Period To</label> Claim Status Workflow Report<span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
                 </table>
 

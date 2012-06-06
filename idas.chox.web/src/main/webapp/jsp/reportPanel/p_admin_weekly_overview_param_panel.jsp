@@ -194,13 +194,16 @@
                             </td>
                         </s:if>
                     </tr>
-                    <tr>
-                        <td nowrap width="30%"><label>Date From</label></td><td><div id="dateFromDiv" /></td>
-                    </tr>
-                    <tr>
-                        <td nowrap><label>Date To</label></td><td><div id="dateToDiv"/></td>
-                    </tr>
-                </table>
+					<tr>
+						<td nowrap width="30%"><label>Date From</label><span
+							class="mandatory">*</span></td>
+						<td><div id="dateFromDiv" /></td>
+					</tr>
+					<tr>
+						<td nowrap><label>Date To</label><span class="mandatory">*</span></td>
+						<td><div id="dateToDiv" /></td>
+					</tr>
+				</table>
 
                 <div class="chox-report-button">
                     <button type="button" id="AWOPPGenerateReportId" onclick="javascript:openReport();">Generate Report</button>

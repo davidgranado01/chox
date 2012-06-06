@@ -84,10 +84,10 @@
                     <s:else><input id="insurerId" name="insurerId" type="hidden"/></s:else>
 
                     <tr>
-                        <td nowrap width="30%"><label>Settlement Date From</label></td><td><div id="dateFromDiv" /></td>                       
+                        <td nowrap width="30%"><label>Settlement Date From</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    
                     <tr>
-                        <td nowrap><label>Settlement Date To</label></td><td><div id="dateToDiv"/></td>                            
+                        <td nowrap><label>Settlement Date To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>                            
                     </tr>  
                 </table>
                 <div class="chox-report-button">

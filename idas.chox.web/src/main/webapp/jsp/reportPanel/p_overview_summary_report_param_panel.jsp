@@ -33,12 +33,12 @@
             messages: {
                 DateStart: {
                 	max:"'Date to' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Claim Uploaded From'",
-                    dateITA:"You must supply a date value 'Claim Uploaded From'"
+                    required:"A value must be supplied for 'Claim Uploaded Date From'",
+                    dateITA:"You must supply a date value 'Claim Uploaded Date From'"
                 },
                 DateEnd: {
-                    required:"A value must be supplied for 'Claim Uploaded To'",
-                    dateITA:"You must supply a date value 'Claim Uploaded To'"
+                    required:"A value must be supplied for 'Claim Uploaded Date To'",
+                    dateITA:"You must supply a date value 'Claim Uploaded Date To'"
                 }
             }
         });
@@ -61,9 +61,8 @@
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
                 reader : overviewSumRepClaimOwnerReader,
                 listeners: {load: function() {
-
                         var  defaultName={'name':'--- ALL ---','id':-1}
-                                              this.insert(0, new Ext.data.Record(defaultName));
+                        this.insert(0, new Ext.data.Record(defaultName));
                     }
                 }
                             
@@ -149,8 +148,6 @@
         </s:if>
                 overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
 
-                
-
     </s:if>
 
     });
@@ -203,13 +200,13 @@
                     </s:if>
                     <tr>
                         <td nowrap width="30%">
-                            <label>Claim Uploaded Date From</label>
+                            <label>Claim Uploaded Date From</label><span class="mandatory">*</span>
                         </td>
                         <td><div id="dateFromDiv"></div></td>
                     </tr>    
                     <tr>
                         <td nowrap>
-                            <label>Claim Uploaded Date To</label>
+                            <label>Claim Uploaded Date To</label><span class="mandatory">*</span>
                         </td>
                         <td><div id="dateToDiv"></div></td>                            
                     </tr>                      

@@ -124,10 +124,12 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
                 LOG.error("Trying to delete a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
                 throw new AccessDeniedException("Trying to delete a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
+            
             if (this.reasonOfRejectionId > 0) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
-                if (ror != null)
-                    reasonOfRejectionService.deleteReasonOfRejection(ror);
+                ActionResponse response;
+                response = adminInsurerService.deleteReasonOfRejection(ror);
+                setActionResponse(response);
             }
         } catch (Exception ex) {
             handleException(ex);

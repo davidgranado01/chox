@@ -33,12 +33,12 @@
             messages: {
                 DateStart: {
                 	max:"'Date To' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Created Date From'",
-                    dateITA:"You must supply a date value 'Created Date From'"
+                    required:"A value must be supplied for 'Claim Uploaded Date From'",
+                    dateITA:"You must supply a date value 'Claim Uploaded Date From'"
                 },
                 DateEnd: {
-                    required:"A value must be supplied for 'Created Date To'",
-                    dateITA:"You must supply a date value 'Created Date To'"
+                    required:"A value must be supplied for 'Claim Uploaded Date To'",
+                    dateITA:"You must supply a date value 'Claim Uploaded Date To'"
                 }
             }
         });
@@ -74,10 +74,11 @@
 
 				<table class="report-form">
                     <tr>
-                        <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>
-                    </tr>
+						<td nowrap width="30%"><label>Claim Uploaded Date From</label><span class="mandatory">*</span></td>
+						<td><div id="dateFromDiv" /></td>
+					</tr>
                     <tr>
-                        <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Claim Uploaded Date To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
                 </table>
 

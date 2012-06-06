@@ -55,6 +55,8 @@ public class Insurer extends Entity implements Serializable {
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
+    private int maxLoginAttempts;
+    private int blockTime;
     private Integer ecdIncreaseTriggerPercentage;
 
     public int getMinimumPasswordLength() {
@@ -362,7 +364,7 @@ public class Insurer extends Entity implements Serializable {
     public String getDisplayAddress() {
 
         String strDelimiter = ", ";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (TextHelper.isValidText(this.address1)) {
             if (TextHelper.isValidText(sb.toString())) {
@@ -502,6 +504,22 @@ public class Insurer extends Entity implements Serializable {
         this.supervisorEnable = supervisorEnable;
     }
 
+    public int getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(int blockTime) {
+        this.blockTime = blockTime;
+    }
+
+    public int getMaxLoginAttempts() {
+        return maxLoginAttempts;
+    }
+
+    public void setMaxLoginAttempts(int maxLoginAttempts) {
+        this.maxLoginAttempts = maxLoginAttempts;
+    }
+    
     public Integer getEcdIncreaseTriggerPercentage() {
         return ecdIncreaseTriggerPercentage;
     }

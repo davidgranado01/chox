@@ -1,21 +1,29 @@
 package idas.chox.data;
 
-import idas.chox.core.model.Auditable;
-import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.util.DateHelper;
 import java.io.Serializable;
-
 import java.util.Date;
+
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 
-public class DBInterceptor extends EmptyInterceptor {
+import idas.chox.core.model.Auditable;
+import idas.chox.core.model.FullAudit;
+import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.FullAuditService;
+import idas.chox.core.util.DateHelper;
+
+public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBInterceptor.class);
     private SecurityInfoProvider securityInfoProvider;
+    private FullAuditService fullAuditService;
+    private BeanFactory bf;
 
     @Override
     public boolean onSave(Object entity,
@@ -25,7 +33,7 @@ public class DBInterceptor extends EmptyInterceptor {
             Type[] types) {
 
         if (entity instanceof Auditable) {
-
+            LOG.debug("In onSave for Auditable entity...");
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("createdDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentDateTime();
@@ -308,9 +316,10 @@ public class DBInterceptor extends EmptyInterceptor {
     }
 
     @Override
-    public boolean onFlushDirty(Object entity, Serializable id, Object[] state1, Object[] state2, String[] propertyNames, Type[] types) {
-        if (entity instanceof Auditable) {
+    public boolean onFlushDirty(Object entity, Serializable id, Object[] state1,
+                                Object[] state2, String[] propertyNames, Type[] types) {
 
+        if (entity instanceof Auditable && getSecurityInfoProvider().getCurrentUser() != null) {
             Integer indexOfStatusModifiedDate = null;
             Integer indexForPrevStatus = null;
             Date statusModifiedDate = null;
@@ -324,7 +333,7 @@ public class DBInterceptor extends EmptyInterceptor {
 
                     LOG.debug("state1[" + i + "]" + state1[i]);
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
-                    state1[i] = this.getSecurityInfoProvider().getCurrentUser();
+                    state1[i] = getSecurityInfoProvider().getCurrentUser();
                 } else if ("statusModifiedDate".equals(propertyNames[i])) {
                     if (statusModifiedDate == null) {
                         indexOfStatusModifiedDate = i;
@@ -360,18 +369,49 @@ public class DBInterceptor extends EmptyInterceptor {
                             prevStatus = oldStatus;
                         }
                     }
-
                 }
-
             }
         }
 
-
-
+        if (entity instanceof FullAudit) {
+            if (fullAuditService == null) {
+                /*
+                 * This is a bit of a hack....
+                 * Letting spring inject this bean causes a circular dependency error,
+                 * so we'll make this class BeanFactoryAware and get the bean ourselves
+                 */
+                fullAuditService = (FullAuditService)bf.getBean("fullAuditService");
+            }
+            for (int i = 0; i < propertyNames.length; i++) {
+                // ignore auditable entries
+                if (!"lastModifiedDate".equals(propertyNames[i])
+                        && !"lastModifiedBy".equals(propertyNames[i])
+                        && !"createdBy".equals(propertyNames[i])
+                        && !"createdDate".equals(propertyNames[i])) {
+                    if ((state1[i] != null && state2[i] != null && !state1[i].equals(state2[i])
+                        || (state1[i] != null && state2[i] == null))
+                        || (state1[i] == null && state2[i] != null)) {
+                        String oldValue = null;
+                        String newValue = null;
+                        if (state2[i] != null)
+                            oldValue = state2[i].toString();
+                        if (state1[i] != null)
+                            newValue = state1[i].toString();
+                        fullAuditService.logAuditEntry(entity.getClass().toString(), id,
+                                            propertyNames[i], oldValue, newValue,
+                                            getSecurityInfoProvider().getCurrentUser());
+                        LOG.debug("Audit entry: table='{}', id={}, parameter='{}', old_value='{}', new_value='{}', by='{}'",
+                            new Object[]{entity.getClass().toString(), id,
+                                            propertyNames[i], state2[i], state1[i],
+                                            getSecurityInfoProvider().getCurrentUser().getId()});
+                    }
+                }
+            }
+        }
 
         if (entity instanceof HireMonitoringDetail) {
 
-            LOG.debug("Inside  HireMonitoringDetail");
+            LOG.debug("Inside HireMonitoringDetail");
             Integer indexOfInspectionBookedDate = null;
             Integer indexOfInspectionBookedDateLastModified = null;
             Integer indexOfInspectionDate = null;
@@ -725,9 +765,19 @@ public class DBInterceptor extends EmptyInterceptor {
         return securityInfoProvider;
 
     }
-
+    
     
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
+
+    public void setAuditService(FullAuditService fullAuditService) {
+        this.fullAuditService = fullAuditService;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory bf) throws BeansException {
+        this.bf = bf;
+    }
+
 }

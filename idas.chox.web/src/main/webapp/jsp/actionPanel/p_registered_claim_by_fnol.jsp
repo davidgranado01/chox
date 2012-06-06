@@ -11,7 +11,7 @@
         var reasonForRejection = $("form#formRegisterFNOL #reasonForRejection").val();
 
         if((claimNumber.length+reasonForRejection.length)<1){
-            $("form#formRegisterFNOL #registerByFnolMessageBox").html("Both of the above fields cannot be balnk. If there is no claim number for this claim, please enter the reason why in the 'FNOL Review Note' field");
+            $("form#formRegisterFNOL #registerByFnolMessageBox").html("Both of the above fields cannot be blank. If there is no claim number for this claim, please enter the reason why in the 'FNOL Review Note' field");
             return false;
         }
 

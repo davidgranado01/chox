@@ -30,10 +30,38 @@ public class WebUser extends Entity implements Serializable {
     private boolean claimHandler = false;
     private Set workgroupRelatedRoles;
     private boolean showSplash;
+    private boolean blocked;
+    private int failedLoginAttempts;
+    private Date blockedDate;
+    
     // </editor-fold>
 
     public WebUser() {
         isExpired = false;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public Date getBlockedDate() {
+        return blockedDate;
+    }
+
+    public void setBlockedDate(Date blockedDate) {
+        this.blockedDate = blockedDate;
+    }
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
     }
 
     public Date getPasswordLastModifiedDate() {
@@ -160,7 +188,7 @@ public class WebUser extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        String orgName = orgName = String.format("(%1$s)", getOrganisationName());
+        String orgName = String.format("(%1$s)", getOrganisationName());
         return String.format("%1$s, %2$s %3$s", this.getLastName(), this.getFirstName(), orgName);
     }
 
@@ -174,6 +202,16 @@ public class WebUser extends Entity implements Serializable {
         }
         return ids;
     }
+
+    public int getMaxFailedLoginAttempts() {
+        if (getOrganisationType().equals(OrganisationType.INS))
+            return insurer.getMaxLoginAttempts();
+        else if (getOrganisationType().equals(OrganisationType.CHO))
+            return chorganisation.getMaxLoginAttempts();
+        
+        return 0;
+    }
+
 
     public String getDisplayName() {
         return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
@@ -325,7 +363,7 @@ public class WebUser extends Entity implements Serializable {
 
         return bFlag;
     }
-
+        
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHOX;
@@ -371,4 +409,6 @@ public class WebUser extends Entity implements Serializable {
             }
         }
     }
+
+    
 }

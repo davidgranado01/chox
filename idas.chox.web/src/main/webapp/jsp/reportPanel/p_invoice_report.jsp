@@ -57,7 +57,7 @@
                             }
                         },
                         select: function () {
-                            if (ownerPerformanceWorkgroupCombo.getValue() == "--- All ---") {
+                            if (invoiceReportWorkgroupCombo.getValue() == "--- All ---") {
                             	invoiceReportWorkgroupCombo.clearValue();
                             	invoiceReportWorkgroupCombo.reset();
                             }                             
@@ -72,9 +72,9 @@
                     errorLabelContainer: "#errorMsgBox",
                     rules: {
                     	supplierCombo:{
-                    		equalTo: "--- All ---",
+                    		equalTo: "--- Please Select ---",
                             required:function(){
-                            	if(Ext.get('supplierCombo').getValue() != "--- All ---")
+                            	if(Ext.get('supplierCombo').getValue() != "--- Please Select ---")
                             		return true;
                             	else
                             		return false;
@@ -102,7 +102,7 @@
                       		required:"You must select 'Credit Hire Organisation'"
                         },
                         DateStart: {
-                        	max:"'Date to' can't be before 'Date From'",
+                        	max:"'Invoice Uploaded From' can't be before 'Invoice Uploaded From'",
                             required:"A value must be supplied for 'Invoice Uploaded From'",
                             dateITA:"You must supply a date value 'Invoice Uploaded From'"
                         },
@@ -128,7 +128,7 @@
 	                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
 	                var suppliersStore = new Ext.data.Store({
 	                    data : mysuppliers,
-	                    reader : suppliersJsonReader,
+	                    reader : suppliersJsonReader
 	                });
 	                
 	                var supplierCombo = new Ext.form.ComboBox({
@@ -142,7 +142,7 @@
 	                    typeAhead : true,
 	                    mode : 'local',
 	                    triggerAction : 'all',
-	                    emptyText: '--- All ---',
+	                    emptyText: '--- Please Select ---',
 	                    emptyValue: '-1',
 	                    selectOnFocus : false,
 	                    allowBlank : true,
@@ -162,13 +162,13 @@
     
     function openInvoiceReport(){
     	var msgBox = $('#errorMsgBox');
-        if(Ext.get('supplierCombo').getValue() == "--- All ---"){
+        if(Ext.get('supplierCombo').getValue() == "--- Please Select ---"){
         	msgBox.empty();
         	msgBox.text("You must select 'Credit Hire Organisation'").append('<br/>').show();
         }
-        if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- All ---"){
+        if($("form#formInvoiceReportParam").valid() && Ext.get('supplierCombo').getValue() != "--- Please Select ---"){
             var queryString = $('form#formInvoiceReportParam').formSerialize();
-            $("#errorMsgBox").empty();
+            msgBox.empty();
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.indexOf('workgroupId=&') >= 0)
                 queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
@@ -201,16 +201,17 @@
                     </s:else>
                     <s:if test="!isCHO">
                         <tr>
-							<td nowrap><label>Credit Hire Organisation</label></td>
+							<td nowrap><label>Credit Hire Organisation</label><span class="mandatory">*</span></td>
 							<td><div id="choDDid"></td>
 						</tr>
                     </s:if>
 
                     <tr>
-                        <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>
-                    </tr>
+						<td nowrap width="30%"><label>Invoice Uploaded From</label><span class="mandatory">*</span></td>
+						<td><div id="dateFromDiv" /></td>
+					</tr>
                     <tr>
-                        <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Invoice Uploaded To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
                     <tr>
                         <td nowrap><label>Supplier Reference(s)<br/><br/><font size="1">(Supplier Reference Number input<br/>format: ABC123, ABC124, ABC125)</font></label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><!--img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/--></td>

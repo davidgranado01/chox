@@ -12,6 +12,7 @@
         ui.dateField('endDate',getTodayDate(),'dateToDiv');
 
         var serviceCommencingDatePicker = new Ext.form.DateField({
+        	id: 'serviceCommencingDate',
             name: 'serviceCommencingDate',
             renderTo: 'serviceCommencingDiv',
             width: 120,
@@ -116,6 +117,10 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
+            	serviceCommencingDate:{
+            		 required:true,
+                     dateITA: true
+            	},
                 startDate:{
                 	max:function(){
                         var sd = Ext.get('startDate').getValue().split("/");
@@ -133,14 +138,18 @@
                 }
             },
             messages: {
+            	serviceCommencingDate:{
+                    required:"A value must be supplied for 'Service Commencing'",
+                    dateITA: "You must supply a date value 'Service Commencing'"
+                },
                 startDate: {
-                	max:"'Date to' can't be before 'Date From'",
-                    required:"A value must be supplied for 'Date From'",
-                    dateITA:"You must supply a date value 'Date From'"
+                	max:"'Period to' can't be before 'Period From'",
+                    required:"A value must be supplied for 'Period From'",
+                    dateITA:"You must supply a date value 'Period From'"
                 },
                 endDate: {
-                    required:"A value must be supplied for 'Date To'",
-                    dateITA:"You must supply a date value 'Date To'"
+                    required:"A value must be supplied for 'Period To'",
+                    dateITA:"You must supply a date value 'Period To'"
                 }
             }
         });
@@ -159,7 +168,7 @@
    
 </script>
 <fieldset class="x-fieldset">
-    <legend>Claim Owner Workflow Report</legend>
+    <legend>Service Commencing</legend>
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
 
@@ -188,10 +197,10 @@
                             </td>
                         </tr>
                     <tr>
-                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                        <td nowrap width="30%"><label>Period From</label><span class="mandatory">*</span></td><td><div id="dateFromDiv" /></td>
                     </tr>
                     <tr>
-                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                        <td nowrap><label>Period To</label><span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
                     <tr>
                         <td nowrap width="30%"><label>Service Commencing<span class="mandatory">*</span><img id="help-service-commencing-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><div id="serviceCommencingDiv" /></td>

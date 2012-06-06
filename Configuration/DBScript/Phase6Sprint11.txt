@@ -36,3 +36,60 @@ ALTER TABLE chorganisation DROP COLUMN is_allow_repairdoc_automated_tasks;
 ---------------------
 --- End of 6.11.2 ---
 ---------------------
+
+--------------------------------------------------------------------------------------
+--- bug#1752: Production - claims at status AwaitingLitigationOutcome
+                            cannot be re-assigned in batch
+--------------------------------------------------------------------------------------
+insert into accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome', true, false, true, true;
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateInsurerClaimOwner.AwaitingLitigationOutcome', false, false, false, true;
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership)
+select 'batch.supplierClaimOwnership.AwaitingLitigationOutcome', false, false, false, false, true;
+
+update accessibility set check_claimownership_enabled = true
+where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToEngineer';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='batch.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, id from accessibility where name='batch.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, id from accessibility where name='batch.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='batch.supplierClaimOwnership.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 2, id from accessibility where name='batch.supplierClaimOwnership.AwaitingLitigationOutcome';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 2, id from accessibility where name='batch.supplierClaimOwnership.AwaitingLitigationOutcome';
+
+
+--------------------------------------------------------------------------------------
+--- bug#1755: Production - CHO MI Access Role Can See 'Switch Claim' Button
+                          When They Should Not Be Able To
+--------------------------------------------------------------------------------------
+insert into accessibility_item(accessibility_id, role, access_right)
+select accessibility_id, 'ROLE_CHO_OPR', 1 from accessibility_item where accessibility_id in (select id from accessibility where name ilike '%switch%') and role='ROLE_CHO' and access_right!=0;
+
+insert into accessibility_item(accessibility_id, role, access_right)
+select accessibility_id, 'ROLE_CHO_MNG', 1 from accessibility_item where accessibility_id in (select id from accessibility where name ilike '%switch%') and role='ROLE_CHO' and access_right!=0;
+
+delete from accessibility_item
+using accessibility
+where accessibility_item. accessibility_id = accessibility.id
+  and accessibility.name ilike '%switch%'
+  and accessibility_item.role='ROLE_CHO'
+  and accessibility_item.access_right=1;
+
+

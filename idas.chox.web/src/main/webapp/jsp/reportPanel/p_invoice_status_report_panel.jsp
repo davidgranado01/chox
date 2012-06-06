@@ -169,7 +169,7 @@
                     </s:else>
 
                     <tr>
-                        <td nowrap><label>Create Date</label></td>
+                        <td nowrap><label>Create Date</label><span class="mandatory">*</span></td>
                         <td>
                             <div id="startDateDiv" />
                         </td>
