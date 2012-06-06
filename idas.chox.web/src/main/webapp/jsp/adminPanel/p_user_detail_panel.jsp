@@ -322,7 +322,7 @@
                         </div>
                     </s:if>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label" style="width: 260px;">Active</label><s:checkbox name="status" value="status" />
+                        <label class="chox-form-std-label" style="width: 260px;">Active</label><s:checkbox name="status" value="statusOrBlocked" />
                     </div>
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes"/>

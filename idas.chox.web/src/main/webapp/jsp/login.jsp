@@ -54,7 +54,7 @@
                                     <p><span id="login-error">Due to your current IP address, you are not authorised to access CHOX.<br/> Please contact CHOX Support on 03333 404327.</span></p>
                                 </s:elseif>
                                 <s:elseif test="#parameters.blocked[0] == 'true'">
-                                    <p><span id="login-error">Your account is currently blocked due to too many unsuccessful login attempts.<br/> Please contact CHOX Support on 03333 404327.</span></p>
+                                    <p><span id="login-error"><%= request.getParameter("message") %></span></p>
                                 </s:elseif>
                             </div>
                         </div>

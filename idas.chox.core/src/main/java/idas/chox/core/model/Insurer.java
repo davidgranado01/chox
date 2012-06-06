@@ -58,6 +58,15 @@ public class Insurer extends Entity implements Serializable {
     private int maxLoginAttempts;
     private int blockTime;
     private boolean disablePrivateNotes;
+    private String blockedMessage;
+
+    public String getBlockedMessage() {
+        return blockedMessage;
+    }
+
+    public void setBlockedMessage(String blockedMessage) {
+        this.blockedMessage = blockedMessage;
+    }
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;

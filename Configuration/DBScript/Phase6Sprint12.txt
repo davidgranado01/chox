@@ -11,6 +11,9 @@ ALTER TABLE web_user ADD COLUMN blocked_date timestamp without time zone;
 ALTER TABLE web_user ADD COLUMN blocked boolean not null default false;
 ALTER TABLE web_user ADD COLUMN failed_login_attempts integer not null default 0;
 
+ALTER TABLE insurer ADD COLUMN blocked_message character varying not null default 'Your account is currently blocked due to too many unsuccessful login attempts. Please contact your User Management team or CHOX Support on 03333 404327.';
+ALTER TABLE chorganisation ADD COLUMN blocked_message character varying not null default 'Your account is currently blocked due to too many unsuccessful login attempts. Please contact your User Management team or CHOX Support on 03333 404327.';
+
 -------------------
 -- End of 6.12.1 --
 -------------------

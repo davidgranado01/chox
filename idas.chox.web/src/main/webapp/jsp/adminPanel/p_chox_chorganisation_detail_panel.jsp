@@ -46,7 +46,8 @@
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
                 maxLoginAttempts:{ required:true, number:true, min:0 },
-                blockTime:{ required:true, number:true, min:0 }
+                blockTime:{ required:true, number:true, min:0 },
+                blockedMessage:{ required:true}
        },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
@@ -64,7 +65,8 @@
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords' must be numeric", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
                 minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length' must be numeric", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
                 maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
-                blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"}
+                blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"},
+                blockedMessage:{ required: "You must supply an 'Account blocked message'"}
             }
         });
 
@@ -215,6 +217,7 @@
                 $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).rules("add", {required: true});
                 $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).rules("add", {required: true});
                 $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDBlockedMessage' ).rules("add", {required: true});
             }
 
        }
@@ -235,6 +238,7 @@
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).attr('readonly', true);
              $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDBlockedMessage' ).attr('readonly', true);
              
              $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#e4e4e4');
              $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#e4e4e4');
@@ -250,6 +254,7 @@
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#e4e4e4');  
              $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).css('background','#e4e4e4');  
              $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).css('background','#e4e4e4');  
+             $('form#formUpdateChorganisationDetail #CCDBlockedMessage' ).css('background','#e4e4e4');  
        }
        
        function markFieldEditable(){
@@ -267,6 +272,7 @@
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', false);  
              $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).attr('readonly', false);
              $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).attr('readonly', false);  
+             $('form#formUpdateChorganisationDetail #CCDBlockedMessage' ).attr('readonly', false);  
              
              $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#ffffff');
@@ -282,6 +288,7 @@
              $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDMaximumLoginAttemptsCho' ).css('background','#ffffff');
              $('form#formUpdateChorganisationDetail #CCDBlockTimeCho' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDBlockedMessage' ).css('background','#ffffff');
        }
        
        function setDefaultValueForMandatoryField(){
@@ -297,6 +304,7 @@
              Ext.get('CCDMinimumPasswordLength').dom.value = '8';
              Ext.get('CCDMaximumLoginAttemptsCho').dom.value = '0';
              Ext.get('CCDBlockTimeCho').dom.value = '0';
+             Ext.get('CCDBlockedMessage').dom.value = 'Not Used';
        }
        
        function onInsurerUploadOnlyChecked(){
@@ -421,6 +429,11 @@
                         <div class="chox-form-item" id="BlockTimeDiv">
                             <label class="chox-form-std-label">Account blocked period (in minutes)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDBlockTimeCho" name="blockTime" value="<s:property value="blockTime" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="CCDBlockedMessageDiv">
+                            <label class="chox-form-std-label">Account blocked message<span class="mandatory">*</span></label>
+                            <textarea id="CCDBlockedMessage" name="blockedMessage" cols="30"  rows="3"><s:property value="blockedMessage" /></textarea>
                         </div>
 
                         <table><tr>

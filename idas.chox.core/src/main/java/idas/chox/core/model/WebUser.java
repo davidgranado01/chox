@@ -115,8 +115,14 @@ public class WebUser extends Entity implements Serializable {
         return status;
     }
 
+    public boolean getStatusOrBlocked() {
+        return status && !blocked;
+    }
+
     public void setStatus(boolean status) {
         this.status = status;
+        if (status && blocked)
+            blocked = false;
     }
 
     public Chorganisation getChorganisation() {

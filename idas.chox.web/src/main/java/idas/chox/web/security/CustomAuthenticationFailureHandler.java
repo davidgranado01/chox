@@ -3,6 +3,7 @@ package idas.chox.web.security;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import java.io.IOException;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +53,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
              */
             if (user.isBlocked() || userService.failedLogin(user.getId())) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                getRedirectStrategy().sendRedirect(request, response, defaultBlockedUrl);
+                String blockedMessage = null;
+                if (user.isCHO())
+                    blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(),  "UTF-8");
+                else if (user.isAnInsurer())
+                    blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(),  "UTF-8");
+                getRedirectStrategy().sendRedirect(request, response, defaultBlockedUrl + "&message=" + blockedMessage);
                 return;
             }
         }
