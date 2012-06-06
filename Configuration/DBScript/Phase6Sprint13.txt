@@ -1,0 +1,59 @@
+-----------------------------------------------------------
+-- 6.13.1 Admin Fee increase for hires starting on or after
+--        15th June 2012
+-----------------------------------------------------------
+
+CREATE TABLE admin_fee (
+    id serial NOT NULL,
+    version integer NOT NULL,
+    fee numeric(10,2) NOT NULL,
+    start_date timestamp without time zone NOT NULL,
+    managing_repair boolean NOT NULL,
+    cover_note_required boolean NOT NULL,
+    created_by integer NOT NULL,
+    created_date timestamp without time zone NOT NULL DEFAULT now(),
+    last_modified_by integer NOT NULL,
+    last_modified_date timestamp without time zone DEFAULT now(),
+    CONSTRAINT admin_fee_pkey PRIMARY KEY (id),
+    CONSTRAINT admin_fee_webuser_created_fkey FOREIGN KEY (created_by)
+        REFERENCES web_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT admin_fee_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+        REFERENCES web_user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT ON TABLE admin_fee TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE admin_fee_id_seq TO chox_user;
+
+
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 60.00, '2008-01-01', true, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 50.00, '2008-01-01', true, false, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 40.00, '2008-01-01', false, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 30.00, '2008-01-01', false, false, 999, now(), 999, now();
+
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 61.00, '2011-07-01', true, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 51.00, '2011-07-01', true, false, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 41.00, '2011-07-01', false, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 31.00, '2011-07-01', false, false, 999, now(), 999, now();
+
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 67.00, '2012-06-15', true, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 57.00, '2012-06-15', true, false, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 47.00, '2012-06-15', false, true, 999, now(), 999, now();
+INSERT INTO admin_fee(version, fee, start_date, managing_repair, cover_note_required, created_by, created_date, last_modified_by, last_modified_date)
+select 0, 37.00, '2012-06-15', false, false, 999, now(), 999, now();
+
+

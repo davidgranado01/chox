@@ -36,7 +36,9 @@
                 <bean class="idas.chox.service.bre.rules.LabourCostBusinessRule"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedVehicleClassRepairNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.NumberOfHireDaysReconcile"></bean>
-                <bean class="idas.chox.service.bre.rules.HasCorrectAdminFee"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectAdminFee">
+                    <property name="adminFeeService" ref="adminFeeService"/>
+                </bean>
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnFriday"></bean>
                 <bean class="idas.chox.service.bre.rules.FlaggedForManualInvoiceReview"></bean>
                 <bean class="idas.chox.service.bre.rules.AutomaticChargeCheck"></bean>
