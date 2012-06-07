@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class UserWorkgroupServiceImpl extends SecureDataService implements UserWorkgroupService {
 
+    @Override
     public List<WebUserWorkgroup> getUserWorkgroupsByUser(int userId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
@@ -21,10 +22,12 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return findByCriteria(criteria);
     }
 
+    @Override
     public WebUserWorkgroup getUserWorkgroup(int userWorkgroupId) {
         return (WebUserWorkgroup) get(WebUserWorkgroup.class, userWorkgroupId);
     }
 
+    @Override
     public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("workgroup.id", workgroupId));
@@ -36,6 +39,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveUserWorkgroup(WebUserWorkgroup userWorkgroup) {
         save(userWorkgroup);
     }

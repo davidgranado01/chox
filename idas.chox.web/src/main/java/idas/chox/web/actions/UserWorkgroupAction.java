@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 public class UserWorkgroupAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(UserWorkgroupAction.class);
 
     private List<UserWorkgroupViewData> userworkgroups;
     private int webUserId;
@@ -22,6 +25,7 @@ public class UserWorkgroupAction extends BaseAction {
     private AdminUserService adminUserService;
     private UserWorkgroupService userWorkgroupService;
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -89,7 +93,6 @@ public class UserWorkgroupAction extends BaseAction {
     }
 
     public String getUserWorkgroups() {
-
         List<WebUserWorkgroup> userworkgroupData = adminUserService.getUserWorkgroupsByUserId(webUserId);
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
 
@@ -100,7 +103,7 @@ public class UserWorkgroupAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER"})
     public List getAvailableWorkgroups() {
         List items = new ArrayList<IdLookupItem>();
         try {
@@ -125,7 +128,7 @@ public class UserWorkgroupAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER"})
     public String removeWebUserWorkgroupMapping() {
 
         try {
@@ -146,7 +149,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER"})
     public String addNewWebUserWorkgroupMapping() {
 
         try {
