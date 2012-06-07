@@ -1,22 +1,28 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import idas.chox.core.services.AdminFeeService;
 
 public class HasCorrectAdminFee implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(HasCorrectAdminFee.class);
-
+    private AdminFeeService adminFeeService;
     private String narrative = "";
 
+    public void setAdminFeeService(AdminFeeService adminFeeService) {
+        this.adminFeeService = adminFeeService;
+    }
+
+    
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
@@ -28,32 +34,8 @@ public class HasCorrectAdminFee implements IBusinessRule {
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isCorrentAdminFee() && claim.getVehicleHire() != null) {
           try {
             boolean success = true;
-            BigDecimal adminFee = null;
-            boolean managingRepair = claim.getManagingRepair();
             boolean coverNoteRequired = (claim.getInvoice().getCoverNoteRequired() == null ? false : claim.getInvoice().getCoverNoteRequired());
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-            Date firstJuly2011 = formatter.parse("2011/07/01");
-            Date hireStart = claim.getVehicleHire().getHireStart();
-            
-            if (firstJuly2011.compareTo(hireStart) > 0) {
-                if (managingRepair && coverNoteRequired)
-                    adminFee = new BigDecimal("60.00");
-                else if (managingRepair && !coverNoteRequired)
-                    adminFee = new BigDecimal("50.00");
-                else if (!managingRepair && coverNoteRequired)
-                    adminFee = new BigDecimal("40.00");
-                else if (!managingRepair && !coverNoteRequired)
-                    adminFee = new BigDecimal("30.00");
-            } else { // after 1/7/2011
-                if (managingRepair && coverNoteRequired)
-                    adminFee = new BigDecimal("61.00");
-                else if (managingRepair && !coverNoteRequired)
-                    adminFee = new BigDecimal("51.00");
-                else if (!managingRepair && coverNoteRequired)
-                    adminFee = new BigDecimal("41.00");
-                else if (!managingRepair && !coverNoteRequired)
-                    adminFee = new BigDecimal("31.00");
-            }
+            BigDecimal adminFee = adminFeeService.getAdminFee(claim.getVehicleHire().getHireStart(), coverNoteRequired, claim.getManagingRepair());
             
             if (claim.getInvoice().getAdminFee().compareTo(adminFee) > 0) {
                 success = false;
@@ -74,15 +56,18 @@ public class HasCorrectAdminFee implements IBusinessRule {
         return res;
     }
 
+
     @Override
     public String getNarrative() {
         return narrative;
     }
 
+
     @Override
     public String getRuleId() {
         return "025";
     }
+
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
