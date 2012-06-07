@@ -768,7 +768,7 @@
                             notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';
                             notAssigned['name'] = 'NOT ASSIGNED';
 //                            this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
-                            this.insert(1, new Ext.data.Record(notAssigned));
+                            this.insert(0, new Ext.data.Record(notAssigned));
                             
                 </s:if>
                 <s:else >
