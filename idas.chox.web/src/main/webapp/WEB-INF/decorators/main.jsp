@@ -49,7 +49,7 @@
                                                <!--  <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a> -->
                                             </s:if>
                                             <s:else>
-                                                <a href="javascript:
+                                                <a href="#" onclick="javascript:
                                                    Ext.MessageBox.show({
                                                    title: '',
                                                    msg: 'Online support form is not available.',
