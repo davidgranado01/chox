@@ -547,8 +547,8 @@ public class ClaimFileReportData {
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
-            if (invoice.getHirePenaltyPercentageApplied() != null && !currentUser.isCHO()) 
-                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
+            if (invoice.getHirePenaltyPercentageApplied(vehicleHire.getHireStart()) != null && !currentUser.isCHO()) 
+                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied(vehicleHire.getHireStart());
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
             if (invoice.getRepairPenaltyPercentageApplied() != null && !currentUser.isCHO())

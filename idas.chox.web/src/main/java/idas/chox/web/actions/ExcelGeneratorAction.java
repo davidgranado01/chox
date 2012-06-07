@@ -7,14 +7,16 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
-import idas.chox.web.viewdata.AuditTrailViewData;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
+import idas.chox.web.viewdata.AuditTrailViewData;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,10 +27,13 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.sf.jxls.transformer.XLSTransformer;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -40,6 +45,7 @@ public class ExcelGeneratorAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
     private InputStream excelStream;
     private ClaimService claimService;
+    private VehicleHireService vehicleHireService;
     private AuditTrailService auditTrailService;
     private String claimSizeError;
     private int exportedClaimCount;
@@ -222,8 +228,11 @@ public class ExcelGeneratorAction extends BaseAction {
                     excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
                     excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
                 } else {
-                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() && inv.getHirePenaltyPercentageApplied() != null)
-                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:").concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
+                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
+                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() 
+                            && inv.getHirePenaltyPercentageApplied(hireStart) != null)
+                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
+                                .concat(inv.getHirePenaltyPercentageApplied(hireStart)).concat("]"));
                     else
                         excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
                     if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)

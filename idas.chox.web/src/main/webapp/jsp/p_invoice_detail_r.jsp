@@ -311,8 +311,8 @@
                                     <td>
                                         <label class="std-data-ro">
                                             <s:property value="hirePenaltyPercentage" />
-                                            <s:if test="invoice.hirePenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
-                                                &nbsp;[actual: <s:property value="invoice.hirePenaltyPercentageApplied" />]
+                                            <s:if test="hirePenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
+                                                &nbsp;[actual: <s:property value="hirePenaltyPercentageApplied" />]
                                             </s:if>
                                         </label>
                                     </td>
@@ -328,8 +328,8 @@
                                     <td>
                                         <label class="std-data-ro">
                                             <s:property value="repairPenaltyPercentage" />
-                                            <s:if test="invoice.repairPenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
-                                              &nbsp;[actual: <s:property value="invoice.repairPenaltyPercentageApplied" />]  
+                                            <s:if test="repairPenaltyPercentageApplied != null && (isInsurer || isChoxAdmin)">
+                                              &nbsp;[actual: <s:property value="repairPenaltyPercentageApplied" />]  
                                             </s:if>
                                         </label>
                                     </td>

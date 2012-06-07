@@ -3,8 +3,6 @@ package idas.chox.web.actions;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -3100,5 +3098,41 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 //        invoiceOriginalAction.model.setTotalToPayOriginal(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
 //        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
     }
-    // </editor-fold>
+
+    public String getRepairPenaltyPercentageApplied() {
+        if (getRepairNet() != null && getRepairNet().compareTo(BigDecimal.ZERO) >= 1 
+                && getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
+            for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentage()) {
+                if (getRepairPenaltyPercentage().equals(repairPenaltyPercentageValue.getPercentage())) {
+                    BigDecimal appliedRepairPenaltyPercentage = getRepairPenaltyCharge().multiply(BigDecimal.valueOf(100))
+                            .divide((getRepairNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getRepairPenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+                    if (appliedRepairPenaltyPercentage.compareTo(repairPenaltyPercentageValue.getPercentageValue()) != 0) {
+                        LOG.debug("actualRepairPenaltyPercentage : {}, appliedRepairPenaltyPercentage : {}", getRepairPenaltyPercentage(), appliedRepairPenaltyPercentage);
+                        return appliedRepairPenaltyPercentage.toString().concat("%");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getHirePenaltyPercentageApplied() {
+        if (getHireNet() != null && getHireNet().compareTo(BigDecimal.ZERO) >= 1 
+                && getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+            List<PenaltyPercentage> penaltyPercentage = PenaltyPercentage.getHirePenaltyPercentage(hireStart);
+            for (PenaltyPercentage hirePenaltyPercentageValue : penaltyPercentage) {
+                if (getHirePenaltyPercentage().equals(hirePenaltyPercentageValue.getPercentage())) {
+                    BigDecimal appliedHirePenaltyPercentage = getHirePenaltyCharge().multiply(BigDecimal.valueOf(100))
+                            .divide((getHireNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getHirePenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+                    if (appliedHirePenaltyPercentage.compareTo(hirePenaltyPercentageValue.getPercentageValue()) != 0) {
+                        LOG.debug("actualHirePenaltyPercentage : {}, appliedHirePenaltyPercentage : {}", getHirePenaltyPercentage(), appliedHirePenaltyPercentage);
+                        return appliedHirePenaltyPercentage.toString().concat("%");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
 }

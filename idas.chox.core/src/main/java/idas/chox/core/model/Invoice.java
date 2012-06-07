@@ -1,15 +1,16 @@
 package idas.chox.core.model;
 
+import idas.chox.core.util.CalcHelper;
+import idas.chox.core.util.DateHelper;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import idas.chox.core.util.CalcHelper;
-import idas.chox.core.util.DateHelper;
 
 public class Invoice extends Entity implements Serializable {
 
@@ -1453,10 +1454,11 @@ public class Invoice extends Entity implements Serializable {
         return null;
     }
 
-    public String getHirePenaltyPercentageApplied() {
+    public String getHirePenaltyPercentageApplied(Date hireStart) {
         if (getHireNet() != null && getHireNet().compareTo(BigDecimal.ZERO) >= 1 
                 && getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
-            for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentage()) {
+            List<PenaltyPercentage> penaltyPercentage = PenaltyPercentage.getHirePenaltyPercentage(hireStart);
+            for (PenaltyPercentage hirePenaltyPercentageValue : penaltyPercentage) {
                 if (getHirePenaltyPercentage().equals(hirePenaltyPercentageValue.getPercentage())) {
                     /*
                      * Calculate the appliedHirePenaltyPercentage using the same

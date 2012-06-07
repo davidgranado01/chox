@@ -42,7 +42,6 @@
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
                                 $('#tHirePenaltyChargeAmount').val((obj.hirePenaltyAmount).toFixed(2));
-//                                $('#hvHirePenaltyPercentage').val(opts.params.hirePenaltyPercentage);
                                 updateTotalToPay();
                             }
                         },
