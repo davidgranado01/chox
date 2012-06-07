@@ -322,7 +322,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
         if (getIsInsurer()) {
             iRoleType = 1;
-            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_ADMIN)
+                    || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER)) {
                 iRoleType = 2;
             }
         }
