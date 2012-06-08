@@ -9,17 +9,19 @@ import java.util.List;
 
 
 public enum PenaltyPercentage {
-    
+    /*
+     * Same percentages should apply to the applyautopenaltycharge stored procedure!
+     */
     ZERO_PERCENTAGE              ("0%",BigDecimal.ZERO),
-    HIRE_MORE_THAN_30_DAYS_NEW       ("12.5%",new BigDecimal(12.5)),
-    HIRE_MORE_THAN_60_DAYS_NEW       ("20%",new BigDecimal(20)),
-    HIRE_MORE_THAN_30_DAYS   ("7.5%",new BigDecimal(7.5)),
-    HIRE_MORE_THAN_60_DAYS   ("15%",new BigDecimal(15)),
+    HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012   ("12.5%",new BigDecimal(12.5)),
+    HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012   ("20%",new BigDecimal(20)),
+    HIRE_MORE_THAN_30_DAYS_BEFORE_15_JUNE_2012  ("7.5%",new BigDecimal(7.5)),
+    HIRE_MORE_THAN_60_DAYS_BEFORE_15_JUNE_2012  ("15%",new BigDecimal(15)),
     COMMERCIAL                   ("Commercial",BigDecimal.ZERO),
     REPAIR_MORE_THAN_30_DAYS     ("2.5%",new BigDecimal(2.5)),
     REPAIR_MORE_THAN_60_DAYS     ("5%",new BigDecimal(5));
 
-    public static final String NEW_PENALTY_INCREASE_DATE = "15/06/2012";
+    public static final String PENALTY_INCREASE_DATE = "15/06/2012";
     private String percentage;
     private BigDecimal percentageValue;
     
@@ -46,12 +48,12 @@ public enum PenaltyPercentage {
     
     public static List<PenaltyPercentage> getHirePenaltyPercentage(Date hireStart){
         List <PenaltyPercentage> hirePenaltyPercentage = new ArrayList<PenaltyPercentage>();
-        if(DateHelper.Parse(NEW_PENALTY_INCREASE_DATE).before(hireStart)){
-            hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS_NEW);
-            hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS_NEW);
+        if(DateHelper.Parse(PENALTY_INCREASE_DATE).before(hireStart)){
+            hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012);
+            hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012);
         } else {
-            hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS);
-            hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS);
+            hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS_BEFORE_15_JUNE_2012);
+            hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS_BEFORE_15_JUNE_2012);
         }
         hirePenaltyPercentage.add(COMMERCIAL);
         return hirePenaltyPercentage;
