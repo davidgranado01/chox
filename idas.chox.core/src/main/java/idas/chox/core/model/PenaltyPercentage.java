@@ -9,7 +9,9 @@ import java.util.List;
 
 
 public enum PenaltyPercentage {
-    
+    /*
+     * Same percentages should apply to the applyautopenaltycharge stored procedure!
+     */
     ZERO_PERCENTAGE              ("0%",BigDecimal.ZERO),
     HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012   ("12.5%",new BigDecimal(12.5)),
     HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012   ("20%",new BigDecimal(20)),

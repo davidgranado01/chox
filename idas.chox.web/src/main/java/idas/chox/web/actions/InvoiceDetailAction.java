@@ -3101,8 +3101,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public String getHirePenaltyPercentageApplied() {
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-            Invoice inv = new Invoice();
-            return inv.getHirePenaltyPercentageApplied(hireStart);
+            return invoice.getHirePenaltyPercentageApplied(hireStart);
     }
     
 }
