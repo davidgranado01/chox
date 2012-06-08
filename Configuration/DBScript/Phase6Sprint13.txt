@@ -169,7 +169,6 @@ RAISE NOTICE 'hirepenalPer60DVal %', hirepenalPer60DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
 
-
     UPDATE invoice  
     SET 
       auto_penalty_alert_qty = 2,
