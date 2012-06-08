@@ -13,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 
-public class MailSecurityAthenticatorTest extends BaseWebTest{
+public class MailSecurityAthenticatorTest extends BaseWebTest {
     
 	@Autowired
 	private MailSecurityAthenticator mailSecurityAthenticator;
@@ -46,22 +45,6 @@ public class MailSecurityAthenticatorTest extends BaseWebTest{
         List<String> listOfPrivilegedSenders = mailUtil.parseStringToList(props.getProperty("penUpdate_privilegedUsers"), ",");
         boolean result = mailSecurityAthenticator.isPrivilegedSender(listOfPrivilegedSenders, sender);
         assertEquals(true, result);
-    }
-
-    /**
-     * Test of authenticateSender method, of class MailSecurityAthenticator.
-     */
-    @Test
-    public void testAuthenticateSender() {
-        System.out.println("authenticateSender");
-        String userName = props.getProperty("refUpdate_updateUserName");
-        String password = props.getProperty("penUpdate_updatePassword");
-       
-        mailSecurityAthenticator.authenticateSender(userName, password);
-        
-        assertEquals(true, SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-        //XXX this needs to be done better
-        //assertEquals( "ROLE_CHO", SecurityContextHolder.getContext().getAuthentication().getAuthorities()[1].toString());
     }
 
 }
