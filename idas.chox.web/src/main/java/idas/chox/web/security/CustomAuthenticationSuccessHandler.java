@@ -19,6 +19,7 @@ import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
+import java.net.URLEncoder;
 
 /**
  *
@@ -141,10 +142,15 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
             if (blocked) {
                 LOG.error("User '{}' denied access as account is currently blocked.", user.getFullName());
+                String blockedMessage = null;
+                if (user.isCHO())
+                    blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(),  "UTF-8");
+                else if (user.isAnInsurer())
+                    blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(),  "UTF-8");
                 HttpServletResponse httpResponse = response;
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 request.getSession().invalidate();
-                getRedirectStrategy().sendRedirect(request, response, blockedUrl);
+                getRedirectStrategy().sendRedirect(request, response, blockedUrl + "&message=" + blockedMessage);
                 return;                
             } else {
                 userService.unblock(user.getId());

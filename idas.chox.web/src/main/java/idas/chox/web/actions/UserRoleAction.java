@@ -34,7 +34,7 @@ public class UserRoleAction extends BaseAction {
     private AdminUserService adminUserService;
     private WebUserUserRoleService webUserUserRoleService;
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
     public String doRenderActionPage() {
         LOG.debug("doRenderActionPage() called for user: {}", webUserId);
         return SUCCESS;
@@ -177,7 +177,7 @@ public class UserRoleAction extends BaseAction {
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty
-//    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
     public String addNewWebUserRoleMapping() {
         LOG.debug("Adding user role '{}' to user '{}'", webUserRoleId, webUserId);
 
@@ -185,9 +185,9 @@ public class UserRoleAction extends BaseAction {
 
             try {
                 // As Spring/ACEGI security is commented out (above), we'll check manually that we are an admin
-                if (!getIsAdmin()) {
-                    throw new AccessDeniedException("Non admin role trying to add a new role (POSSIBLE HACK ATTEMPT)");
-                }
+//                if (!getIsAdmin()) {
+//                    throw new AccessDeniedException("Non admin role trying to add a new role (POSSIBLE HACK ATTEMPT)");
+//                }
                 // Need to check that that the user we are attaching the role to is one of our users
                 // this is to prevent parameter hacking
                 LOG.debug("Checking access to addNewWebUserRoleMapping for current user");
@@ -230,7 +230,7 @@ public class UserRoleAction extends BaseAction {
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty
-//    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
     public String removeWebUserRoleMapping() {
         LOG.debug("Removing user role '{}' to user '{}'", webUserRoleId, webUserId);
 
@@ -238,9 +238,9 @@ public class UserRoleAction extends BaseAction {
 
             try {
                 // As Spring/ACEGI security is commented out (above), we'll check manually that we are an admin
-                if (!getIsAdmin()) {
-                    throw new AccessDeniedException("Non admin role trying to remove a new role (POSSIBLE HACK ATTEMPT)");
-                }
+//                if (!getIsAdmin()) {
+//                    throw new AccessDeniedException("Non admin role trying to remove a new role (POSSIBLE HACK ATTEMPT)");
+//                }
                  // Need to check that that the user we are attaching the role to is one of our users
                  // this is to prevent parameter hacking
                  LOG.debug("Checking access to removeNewWebUserRoleMapping for current user");
