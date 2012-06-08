@@ -1,6 +1,6 @@
 -----------------------------------------------------------
 -- 6.12.1 Lockout a user after x consecutive unsuccessful
-          login attempts
+--        login attempts
 -----------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN max_login_attempts integer not null default 0;
 ALTER TABLE chorganisation ADD COLUMN max_login_attempts integer not null default 0;
