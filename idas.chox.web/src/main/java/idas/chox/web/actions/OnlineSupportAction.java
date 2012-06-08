@@ -21,19 +21,19 @@ public class OnlineSupportAction extends BaseAction {
     private static final String email_date_format = "dd MMMM yyyy";
     private static final String propertiesFile = "/application.properties";
 
-    public String getiEmail() {
+    public String getIEmail() {
         return iEmail;
     }
 
-    public void setiEmail(String iEmail) {
+    public void setIEmail(String iEmail) {
         this.iEmail = iEmail;
     }
 
-    public String getiPhone() {
+    public String getIPhone() {
         return iPhone;
     }
 
-    public void setiPhone(String iPhone) {
+    public void setIPhone(String iPhone) {
         this.iPhone = iPhone;
     }
 
