@@ -18,8 +18,6 @@ claimRecord90D claim%rowtype;
 userId int;
 ClaimsId integer;
 invoiceCount30D int;
-hirepenalPer30DBeforeJune2012 NUMERIC;
-hirepenalPer30DAfterJune2012 NUMERIC;
 invoiceCount60D int;
 invoiceCount90D int;
 hirepenalPer30D NUMERIC;
@@ -34,8 +32,6 @@ repairpenalPer60DVal NUMERIC(8,3);
 BEGIN
 ClaimsId = claimId;
 userId = userIdNumber;
-hirepenalPer30DBeforeJune2012 = 7.5;
-hirepenalPer30DAfterJune2012 = 12.5;
 repairpenalPer30D = 2.5;
 repairpenalPer30DVal = repairpenalPer30D/100;
 repairpenalPer60D = 5;
@@ -43,8 +39,6 @@ repairpenalPer60DVal = repairpenalPer60D/100;
 invoiceCount30D = 0;
 invoiceCount60D = 0;
 invoiceCount90D = 0;
-
-RAISE NOTICE 'userid : % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
 
 FOR claimRecord30D IN 
 SELECT * 
@@ -74,13 +68,10 @@ WHERE
 
 LOOP
 
-hirepenalPer30D = CASE WHEN(SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id < '2012-06-15'::date) THEN 7.5::NUMERIC ELSE 12.5::numeric END;
+hirepenalPer30D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id) < '2012-06-15'::date) THEN 7.5::NUMERIC ELSE 12.5::numeric END;
 hirepenalPer30DVal = hirepenalPer30D/100;
 
-hirepenalPer60D = CASE WHEN(SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
-hirepenalPer60DVal = hirepenalPer60D/100;
-
-RAISE NOTICE 'Hire penalty charge --------------------> ',hirepenalPer30D;
+RAISE NOTICE 'hirepenalPer30DVal %',hirepenalPer30DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_reference;
     
@@ -171,6 +162,10 @@ WHERE
 
 LOOP
 
+hirepenalPer60D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id) < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
+hirepenalPer60DVal = hirepenalPer60D/100;
+
+RAISE NOTICE 'hirepenalPer60DVal %', hirepenalPer60DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
 
