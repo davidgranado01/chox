@@ -223,4 +223,11 @@ public class ClaimStatus {
         }
         return false;
     }
+    
+    public static boolean isManualStatus(String status) {
+        return status.equals(ClaimStatus.MANUAL_INVOICE_APPROVED)
+                || status.equals(ClaimStatus.MANUAL_INVOICE_CONTESTED)
+                || status.equals(ClaimStatus.MANUAL_INVOICE_PAID)
+                || status.equals(ClaimStatus.MANUAL_INVOICE_REJECTED);
+    }
 }

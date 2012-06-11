@@ -900,12 +900,14 @@
                                         <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
                                     </s:action>
                                 </div>
-                                <div>
-                                    <s:action name="getVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
-                                        <s:param name="claimId"><s:property value="id" /></s:param>
-                                        <s:param name="claimStatus"><s:property value="status" /></s:param>
-                                    </s:action>
-                                </div>
+                                <s:if test="!isManualInvoice" >
+                                    <div>
+                                        <s:action name="getVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
+                                            <s:param name="claimId"><s:property value="id" /></s:param>
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                        </s:action>
+                                    </div>
+                                </s:if>
                             </td>
                         </tr>
                     </table>

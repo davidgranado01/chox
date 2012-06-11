@@ -1113,6 +1113,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getIsIsAnomalies();
     }
 
+    public boolean getIsManualInvoice() {
+        return ClaimStatus.isManualStatus(claim.getStatus());
+    }
+
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
         this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
     }
