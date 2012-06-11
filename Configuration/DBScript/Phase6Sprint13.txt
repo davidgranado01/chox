@@ -359,7 +359,7 @@ ALTER FUNCTION applyautopenaltycharge(integer, integer)
 -- End of 6.13.2 --
 -------------------
 
--- bug#1773 User Manager and MI Access can be assigned tasks
+---------------------------------------------------------------------------------------- bug#1773 User Manager and MI Access can be assigned tasks
 --------------------------------------------------------------------------------------
 ALTER TABLE web_user_role ADD COLUMN can_be_assigned_tasks boolean NOT NULL DEFAULT true;
 update web_user_role set can_be_assigned_tasks = false
