@@ -36,6 +36,7 @@ public class WebUser extends Entity implements Serializable {
 
     public WebUser() {
         isExpired = false;
+        showSplash = true;
     }
 
     public boolean isBlocked() {
