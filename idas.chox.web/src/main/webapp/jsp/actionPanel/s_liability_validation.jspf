@@ -4,7 +4,7 @@
     $(function(){
         createHelpNote();
 
-        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
+        var liabilityAgreedDatePicker = ui.unvalidatedDateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
         
         $("#liabilityStatus").change(function(evt){
             var liabilityStatus = $("#liabilityStatus").val();
@@ -17,10 +17,6 @@
                     $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
                     $("#percentageLiabilityCho").val((0.00).toFixed(2));
                 }
-                //                else{
-                //                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
-                //                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
-                //                }
                 Ext.getCmp('liabilityAgreedDate').setValue(new Date());
             }else if (isLiabilityRepudiated()) {
                 $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
@@ -143,6 +139,19 @@
             return true;
         }
     );
+        
+        $.validator.addMethod(
+        	    "checkDateFormat",
+        	    function(value, element) {
+        	    	if(isLiabilityAccepted()){
+                        var accdate = $("form#formAcknowledgeAction #liabilityAgreedDate").val();
+                        if ( !isValidDate(accdate) ){
+                            return false;
+                        }
+        	    	}
+                    return true;
+                }
+        );
 
         $.validator.addMethod(
         "checkFullAccepted",
@@ -179,9 +188,9 @@
                     checkZero:true
                 },
                 liabilityAgreedDate:{
+                	checkDateFormat: true,
                     checkAcceptedDate:true,
-                    checkDateBlank:true,
-                    date: true
+                    checkDateBlank:true
                 }
             },
             messages: {
@@ -199,13 +208,12 @@
                     checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
                 },
                 liabilityAgreedDate:{
+                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
-                    checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'",
-                    date:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY "
+                    checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'"
                 }
             }
         });
-        
     });
     
     function doUpdateLiabilityFormSubmit(action){        
@@ -254,7 +262,6 @@
                     form.submit();
                 }
             }
-            
         }
     }
 
@@ -263,8 +270,6 @@
         var dateValue = $("form#formAcknowledgeAction #liabilityAgreedDate");
         if(dateValue.val().indexOf(' ') >= 0)
             dateValue.val($.trim(dateValue.val()));
-        if(!isValidDate(dateValue.val()) )
-        	dateValue.val('');      
     	
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
@@ -358,10 +363,7 @@
             });
         }
 
-
     }
-
-
 
     function isLiabilityDisputed(){
         var liabilityStatus = $("#liabilityStatus").val();

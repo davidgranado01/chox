@@ -119,6 +119,20 @@ var ui = function(){
         return errorMsg;
     }
 
+    function unvalidatedDateField(name,defaultValue,target) {
+    	return new Ext.form.DateField({
+            name: name,
+            id: name,
+            width: 100,
+            allowBlank: true,
+            format: dateFormat,
+            showWeekNumber: true,
+            validationEvent : false,
+            value: defaultValue,
+            renderTo:target
+        });
+    }
+    
     function createDateField(name,defaultValue,target) {
 
         var dateField = new Ext.form.DateField({
@@ -189,6 +203,7 @@ var ui = function(){
 
     return {
         dateField : createDateField,
+        unvalidatedDateField : unvalidatedDateField,
         ajaxForm : ajaxForm,
         promptMsg : promptMsg,
         promptErrorMsg :promptErrorMsg,
