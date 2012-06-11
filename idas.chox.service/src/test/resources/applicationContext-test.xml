@@ -97,6 +97,8 @@
                 <value>hbm/ChorganisationAlias.hbm.xml</value>
                 <value>hbm/QueuedTicket.hbm.xml</value>
                 <value>hbm/IPWhitelist.hbm.xml</value>
+                <value>hbm/AuditEntry.hbm.xml</value>
+                <value>hbm/AdminFee.hbm.xml</value>
             </list>
         </property>
     </bean>

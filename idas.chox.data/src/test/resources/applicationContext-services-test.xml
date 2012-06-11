@@ -131,5 +131,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    <bean id="adminFeeService" class="idas.chox.data.services.AdminFeeServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 </beans>

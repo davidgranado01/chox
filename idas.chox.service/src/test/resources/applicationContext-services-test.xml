@@ -233,6 +233,9 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     
+    <bean id="adminFeeService" class="idas.chox.data.services.AdminFeeServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
     

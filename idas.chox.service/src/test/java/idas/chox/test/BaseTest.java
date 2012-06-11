@@ -1,25 +1,7 @@
 package idas.chox.test;
 
 import idas.chox.core.bre.RulesEngine;
-import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.BordereauService;
-import idas.chox.core.services.BreBandOrganisationService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.FilterService;
-import idas.chox.core.services.InsurerChorganisationService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.InvoiceService;
-import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.UploadClaimXMLService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.UserWorkgroupService;
-import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.services.WorkgroupService;
+import idas.chox.core.services.*;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.service.admin.AdminUserService;
@@ -101,4 +83,6 @@ public abstract class BaseTest {
     protected FakeSecurityInfoProvider fakeSecurityInfoProvider;
     @Autowired
     protected InvoiceService invoiceService;
+    @Autowired
+    protected AdminFeeService adminFeeService;
 }
