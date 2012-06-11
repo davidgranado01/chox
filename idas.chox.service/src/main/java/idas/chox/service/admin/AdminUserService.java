@@ -247,7 +247,14 @@ public class AdminUserService extends SecureDataService {
                                     boolean isClaimownershipEnabled, boolean isFnolEnabled,
                                     boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
                                     boolean isSupervisorEnabled, boolean isAdmin) {
-        return this.webUserUserRoleService.getWebUserRoles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
+        return getAllAvailableUserRoles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
+    }
+
+    public Set<WebUserRole> getAllAvailableUserRoles(int organisationTypeId, boolean isWorkgroupEnebled,
+                                    boolean isClaimownershipEnabled, boolean isFnolEnabled,
+                                    boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
+                                    boolean isSupervisorEnabled, boolean isAdmin, boolean canBeAssignedTasksOnly) {
+        return this.webUserUserRoleService.getWebUserRoles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, canBeAssignedTasksOnly);
     }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">

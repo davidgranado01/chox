@@ -230,7 +230,7 @@
             });
 
             var visibilityRoleStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAllAvailableUserRoles.action',method:'POST'}),
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAvailableUserRolesForTask.action',method:'POST'}),
                 reader: visibilityRoleReader
             });
 

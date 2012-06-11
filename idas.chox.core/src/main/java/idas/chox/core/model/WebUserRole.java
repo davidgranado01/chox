@@ -35,6 +35,7 @@ public class WebUserRole extends Entity implements Serializable {
     private boolean showOwnershipDisabled;
     private boolean showInsurerUploadDisabled;
     private boolean showAdminOnly;
+    private boolean canBeAssignedTasks;
 
     public WebUserRole() {
     }
@@ -126,5 +127,13 @@ public class WebUserRole extends Entity implements Serializable {
     public void setShowAdminOnly(boolean showAdminOnly) {
         this.showAdminOnly = showAdminOnly;
     }
-    
+
+    public boolean isCanBeAssignedTasks() {
+        return canBeAssignedTasks;
+    }
+
+    public void setCanBeAssignedTasks(boolean canBeAssignedTasks) {
+        this.canBeAssignedTasks = canBeAssignedTasks;
+    }
+
 }

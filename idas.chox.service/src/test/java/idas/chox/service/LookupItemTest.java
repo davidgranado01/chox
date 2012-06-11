@@ -64,7 +64,7 @@ public class LookupItemTest extends BaseTest {
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(webUserUserRoleService);
 
-        Set userRoles = webUserUserRoleService.getWebUserRoles(2, true, true, true, true,true, true, true);
+        Set userRoles = webUserUserRoleService.getWebUserRoles(2, true, true, true, true,true, true, true, false);
         System.out.println(userRoles.size());
         Assert.assertTrue(userRoles.size() > 0);
     }
