@@ -801,8 +801,7 @@
             <div id="claimDetails">
                 <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
                     <div class="x-panel-bwrap chox-form-container">
-                        <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                        <br/><br class="smallBR"/>
+                        <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
                             <tr valign="top">
                                 <td class="chox-form-left-col">
@@ -884,8 +883,7 @@
         <div id="hireMonitoringDetails" class="x-hide-display">
             <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
                 <div class="x-panel-bwrap chox-form-container">
-                    <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                    <br/><br class="smallBR"/>
+                    <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="top">
                             <td class="chox-form-left-col">
@@ -922,15 +920,11 @@
         <div id="invoiceDetails" class="x-hide-display">
             <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
                 <div class="x-panel-bwrap chox-form-container">
-                    <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                    <br/><br class="smallBR"/>
-                    <div>
-                        <s:action name="getInvoiceRecalculation" namespace="/prv/p" executeResult="true">
-                            <s:param name="claimId"><s:property value="id" /></s:param>
-                            <s:param name="claimStatus"><s:property value="status" /></s:param>
-                        </s:action>
-
-                    </div>
+                    <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 11px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                    <s:action name="getInvoiceRecalculation" namespace="/prv/p" executeResult="true">
+                        <s:param name="claimId"><s:property value="id" /></s:param>
+                        <s:param name="claimStatus"><s:property value="status" /></s:param>
+                    </s:action>
                 </div>
             </s:if>
         </div>
