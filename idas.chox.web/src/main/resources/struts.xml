@@ -900,6 +900,9 @@
         <action name="getAllAvailableUserRoles" class="idas.chox.web.actions.UserRoleAction" method="getAllAvailableUserRoles">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getAvailableUserRolesForTask" class="idas.chox.web.actions.UserRoleAction" method="getAvailableUserRolesForTask">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="getUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>

@@ -176,6 +176,37 @@ public class UserRoleAction extends BaseAction {
       return SUCCESS;
     }
 
+    public String getAvailableUserRolesForTask() {
+      LOG.debug("Getting all available user roles for task assignment...");
+      Set<WebUserRole>  webUserRoles;
+      LOG.debug("Getting available user roles for user {}", webUserId);
+      LOG.debug("ObjectId = {}", objectId);
+      try {
+        Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+        if (insurer != null)
+            webUserRoles = adminUserService.getAllAvailableUserRoles(2,
+              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
+        else
+            webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin(), true);
+
+        userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
+
+        for (WebUserRole webUserRole : webUserRoles)
+                    userroles.add(new UserroleViewData(webUserRole));
+      } catch (Exception ex) {
+            handleException(ex);
+            LOG.debug("Error getting all available user roles: {}", ex.getMessage());
+            return ERROR;
+      }
+
+      LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
+
+      return SUCCESS;
+    }
+
 // For some reason the following line causes the add/remove role panel to be displayed empty
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
     public String addNewWebUserRoleMapping() {

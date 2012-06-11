@@ -111,7 +111,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     public Set<WebUserRole> getWebUserRoles(int orgTypeId, boolean isWorkgroupEnabled,
                                 boolean isClaimownershipEnabled, boolean isFnolEnabled,
                                 boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
-                                boolean isSupervisorEnabled, boolean isAdmin) {
+                                boolean isSupervisorEnabled, boolean isAdmin, boolean canBeAssignedTasksOnly) {
         Set<WebUserRole> webUserRoles = new HashSet<WebUserRole>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("typeId", orgTypeId));
@@ -139,6 +139,9 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         if (!isAdmin) {
             criteria.add(Restrictions.ne("showAdminOnly", true));
         }
+        if (canBeAssignedTasksOnly) {
+            criteria.add(Restrictions.eq("canBeAssignedTasks", true));
+        }
         webUserRoles.addAll(findByCriteria(criteria));
         return webUserRoles;
     }
@@ -149,7 +152,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                                 boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
                                 boolean isSupervisorEnabled, boolean isAdmin) {
 
-        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
+        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
 
         Iterator itr = webUserroles.iterator();
@@ -169,7 +172,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                                 boolean isAdmin) {
 
         List<IdLookupItem> items = new ArrayList<IdLookupItem>();
-        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
+        Set<WebUserRole> webUserroles = getWebUserRoles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
 
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();

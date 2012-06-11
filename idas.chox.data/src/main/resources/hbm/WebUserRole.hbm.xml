@@ -22,6 +22,7 @@
     <property column="show_ownership_disabled" name="showOwnershipDisabled" not-null="true"/>
     <property column="show_insurer_upload_disabled" name="showInsurerUploadDisabled" not-null="true"/>
     <property column="show_admin_only" name="showAdminOnly" not-null="true"/>
+    <property column="can_be_assigned_tasks" name="canBeAssignedTasks" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
   </class>
