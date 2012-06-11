@@ -138,8 +138,12 @@
             columns: [
                 {header: "Vehicle Class", width: 200, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>"+value+"</a>" }},
-                {header: "Hire Net Ceiling", width: 160, dataIndex: 'hireNetCeiling', sortable: true, resizable: true},
-                {header: "Repair Net Ceiling", width: 160, dataIndex: 'repairNetCeiling', sortable: true, resizable: true},
+                {header: "Hire Net Ceiling", width: 160, dataIndex: 'hireNetCeiling', sortable: true, resizable: true, renderer: function(value,p,r) {
+                    return '£' + value.toFixed(2);
+                }},
+                {header: "Repair Net Ceiling", width: 160, dataIndex: 'repairNetCeiling', sortable: true, resizable: true, renderer: function(value,p,r) {
+                    return '£' + value.toFixed(2);
+                }},
                 {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
@@ -150,7 +154,7 @@
         onVehicleClassPageRefresh();
 
     });
-
+    
     function doVehicleClassCeilingPageRefresh(){
 
         vehicleCeilingEditSelectionDlg.hide();
@@ -214,8 +218,8 @@
         vehicleCeilingEditSelectionDlg.show();
         $("form#editVehicleClassCeilingDetail input[name$='vehicleClassCeilingId']").val(gridView.get("id"));
         $("form#editVehicleClassCeilingDetail label#editVehicleClassName").html(gridView.get("vehicleClassName"));
-        $("form#editVehicleClassCeilingDetail input[name$='hireNetCeiling']").val(gridView.get("hireNetCeiling"));
-        $("form#editVehicleClassCeilingDetail input[name$='repairNetCeiling']").val(gridView.get("repairNetCeiling"));
+        $("form#editVehicleClassCeilingDetail input[name$='hireNetCeiling']").val(gridView.get("hireNetCeiling").toFixed(2));
+        $("form#editVehicleClassCeilingDetail input[name$='repairNetCeiling']").val(gridView.get("repairNetCeiling").toFixed(2));
     }
 
     function showVehicleClassDropDown() {
