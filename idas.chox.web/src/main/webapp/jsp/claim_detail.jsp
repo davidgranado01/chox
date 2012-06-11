@@ -146,10 +146,10 @@
     function clearActionResult(tab){
     
         if(document.getElementById("HMmessageBox")){
-            
             document.getElementById("HMmessageBox").innerHTML = '';
+        }
+        if(document.getElementById("HVDmessageBox")){
             document.getElementById("HVDmessageBox").innerHTML = '';
-        
         }
     
         if(document.getElementById("customerVehicleDamageMsgBox")){
@@ -635,8 +635,10 @@
                 $("#hireMonitoringWId").css("display", "inline");
                 $("#hireMonitoringRId").css("display", "inline");
                 $("#newRevisedECDWId").css("display", "inline");
-                $("#hireMonitoringVehicleDetailRId").css("display", "inline");
-                $("#hireMonitoringVehicleDetailWId").css("display", "inline");
+                if (document.getElementById("hireMonitoringVehicleDetailRId") != null)
+                    $("#hireMonitoringVehicleDetailRId").css("display", "inline");
+                if (document.getElementById("hireMonitoringVehicleDetailWId") != null)
+                    $("#hireMonitoringVehicleDetailWId").css("display", "inline");
             } else {
                 document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(true);};
                 document.getElementById("expandAllHireId").innerHTML = '+Expand All';
@@ -644,8 +646,10 @@
                 $("#hireMonitoringWId").css("display", "none");
                 $("#hireMonitoringRId").css("display", "none");
                 $("#newRevisedECDWId").css("display", "none");
-                $("#hireMonitoringVehicleDetailRId").css("display", "none");
-                $("#hireMonitoringVehicleDetailWId").css("display", "none");
+                if (document.getElementById("hireMonitoringVehicleDetailRId") != null)
+                    $("#hireMonitoringVehicleDetailRId").css("display", "none");
+                if (document.getElementById("hireMonitoringVehicleDetailWId") != null)
+                    $("#hireMonitoringVehicleDetailWId").css("display", "none");
             }
         }
 
