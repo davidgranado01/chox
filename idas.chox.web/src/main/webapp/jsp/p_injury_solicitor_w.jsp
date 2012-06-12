@@ -11,17 +11,9 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
         
-//        form.validate(
-//        {
-//            errorLabelContainer: "#solicitorMsgBox",
-//            rules: {
-//                name:{required:true}
-//            },
-//            messages: {
-//                name:{required:"Please supply a valid value for Name"}
-//            }
-//        });
         ui.ajaxForm(form,null,'html');
+        
+        $("#solicitorSuccessBox").fadeOut(10000);
     }); 
 
 </script>
@@ -71,7 +63,7 @@
                 <input type="submit" id="ISOLSubmitButtonId" value="Save Changes" />
             </div>
             <div id="solicitorMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="solicitorSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>

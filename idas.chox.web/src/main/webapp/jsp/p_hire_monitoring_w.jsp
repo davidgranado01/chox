@@ -69,6 +69,7 @@
         });
 
         ui.ajaxForm(form,onHireMonitoringSubmitResponseReceived,'html');
+        $("#HMsuccessBox").fadeOut(10000);
 
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);
@@ -545,7 +546,7 @@
                 <input type="button"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="HMsuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
 
         </div>
 

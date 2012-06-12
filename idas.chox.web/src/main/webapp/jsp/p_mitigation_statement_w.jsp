@@ -13,6 +13,8 @@
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
         ui.ajaxForm(form,null,'html');
+        
+        $("#MSsuccessBox").fadeOut(10000);
     });
 
 </script>
@@ -66,7 +68,7 @@
                 <input type="submit" id="mitigationStatementSubmitButtonId" value="Save Changes" />
             </div>
             <div id="CDmessageBox1" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="MSsuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

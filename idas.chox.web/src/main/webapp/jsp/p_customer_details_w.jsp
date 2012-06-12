@@ -96,10 +96,16 @@
                     email:"You must supply a valid email address for 'Email'"
                 }
             }
+            
         });
         ui.ajaxForm(form,null,'html');
+        $("#CDSuccessBox").fadeOut(10000);
+        
+        $('#CDSuccessBox').change(function() {
+        	  alert('Handler for .change() called.');
+        });
     });
-
+    
 </script>
 
 <form id="formUpdateCustomerDetails" action="<%=request.getContextPath()%>/prv/p/updateCustomer.action" class="XXentity-form">
@@ -226,7 +232,7 @@
                 <input type="submit" id="customerDetailsSubmitButtonId" value="Save Changes" />
             </div>
             <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="CDSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         <hr width="80%"/>
         <div>
             <a  href="http://www.hpicheck.com/" target="_blank"><img align="right" src="<%= request.getContextPath()%>/images/logo-hpi.png" style="display: inline;" alt="HPI" width="80" height="60" border="0"/></a>
