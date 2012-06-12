@@ -334,8 +334,8 @@ public class OverviewSummaryReport implements Report {
             
             
             
-            sb.append("(select case when sum(original_full_total_to_pay - total_to_pay) is null then 0 ")
-              .append( "else sum(original_full_total_to_pay - total_to_pay) end as no_count from rpt_claim_invoice ")
+            sb.append("(select ")
+              .append( "sum(original_full_total_to_pay - total_to_pay) as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )

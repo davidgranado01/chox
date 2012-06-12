@@ -217,8 +217,8 @@ public class TeamPerformanceReport implements Report{
                     sb.append(")  j ) as averageDaysToProcess, ");
 
 
-                    sb.append("(select avg(original_total_to_pay) from (select i.original_full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, workgroup w, invoice i  where c.invoice_id=i.id and c.workgroup_id = w.id and w.status = true ");
+                    sb.append("(select avg(original_total_to_pay) from (select io.full_total_to_pay as original_total_to_pay ");
+                    sb.append("from claim c, audit_trail a1, workgroup w, invoice_original io  where c.invoice_original_id=io.id and c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id ");
                     sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");

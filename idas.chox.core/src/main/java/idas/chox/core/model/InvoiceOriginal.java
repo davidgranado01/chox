@@ -63,9 +63,9 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private Date repairPenaltyChargeAppliedDateOriginal;
     private Integer penaltyAlertQtyOriginal;
     private BigDecimal totalPenaltyChargeOriginal;
-    private BigDecimal originalFullTotalToPayOriginal;
+//    private BigDecimal originalFullTotalToPayOriginal;
     private BigDecimal totalToPayOriginal;
-    private BigDecimal originalTotalToPayOriginal;
+//    private BigDecimal originalTotalToPayOriginal;
     private BigDecimal totalLossFeeNetOriginal;
     private BigDecimal totalLossFeeVatOriginal;
     private BigDecimal totalLossFeeGrossOriginal;
@@ -357,21 +357,21 @@ public class InvoiceOriginal extends Entity implements Serializable {
             this.nonStandardInsurancePremiumQtyOriginal = nonStandardInsurancePremiumQtyOriginal;
     }
 
-    public BigDecimal getOriginalFullTotalToPayOriginal() {
-        return originalFullTotalToPayOriginal;
-    }
-
-    public void setOriginalFullTotalToPayOriginal(BigDecimal originalFullTotalToPayOriginal) {
-            this.originalFullTotalToPayOriginal = originalFullTotalToPayOriginal;
-    }
-
-    public BigDecimal getOriginalTotalToPayOriginal() {
-        return originalTotalToPayOriginal;
-    }
-
-    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPayOriginal) {
-            this.originalTotalToPayOriginal = originalTotalToPayOriginal;
-    }
+//    public BigDecimal getOriginalFullTotalToPayOriginal() {
+//        return originalFullTotalToPayOriginal;
+//    }
+//
+//    public void setOriginalFullTotalToPayOriginal(BigDecimal originalFullTotalToPayOriginal) {
+//            this.originalFullTotalToPayOriginal = originalFullTotalToPayOriginal;
+//    }
+//
+//    public BigDecimal getOriginalTotalToPayOriginal() {
+//        return originalTotalToPayOriginal;
+//    }
+//
+//    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPayOriginal) {
+//            this.originalTotalToPayOriginal = originalTotalToPayOriginal;
+//    }
 
     public Integer getPenaltyAlertQtyOriginal() {
         return penaltyAlertQtyOriginal;

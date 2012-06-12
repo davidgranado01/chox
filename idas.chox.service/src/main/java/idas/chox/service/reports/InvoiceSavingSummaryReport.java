@@ -81,14 +81,15 @@ public class InvoiceSavingSummaryReport implements Report {
             sb.append("select claim.cho_reference as supplier_reference_number, claim.claim_number as claim_number, ");
             sb.append("case when third_party.vehicle_registration is null then '-' else third_party.vehicle_registration end as policy_holder_vehicle_registeration_number, ");
             sb.append("case when workgroup.name is null then '-' else workgroup.name end as workgroup_name, ");
-            sb.append("invoice.original_total_to_pay as original_invoice_amount, invoice.total_to_pay as agreed_settlement_value ");
+            sb.append("invoiceOriginal.total_to_pay as original_invoice_amount, invoice.total_to_pay as agreed_settlement_value ");
             sb.append("from claim claim inner join invoice invoice on claim.invoice_id=invoice.id ");
+            sb.append("inner join invoice_original invoiceOriginal on claim.invoice_original_id=invoiceOriginal.id ");
             sb.append("left outer join workgroup workgroup on workgroup.id=claim.workgroup_id ");
             sb.append("left outer join third_party third_party on third_party.id=claim.third_party_id ");
             sb.append("where claim.id in (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged' and reverted=false) ");
             sb.append("and claim.insurer_id = :pInsurerId and claim.chorganisation_id = :pChorganisationId ");
             sb.append("and date(invoice.created_date) between :pInvUploadDateFrom and :pInvUploadDateTo ");
-            sb.append("order by (invoice.original_total_to_pay - invoice.total_to_pay) desc");
+            sb.append("order by (invoiceOriginal.total_to_pay - invoice.total_to_pay) desc");
             String query = sb.toString();
 
             Map paramMap = new HashMap();

@@ -1,22 +1,21 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-// This class is used nowhere please make sure this class is declared in 
-// applicationContext-service.xml and injected required services before use.
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
     private ClaimService claimService;
-
-    public ClaimService getClaimService() {
-        return claimService;
-    }
-
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceServiceImpl.class);
+    
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
@@ -44,6 +43,74 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     public void saveInvoice(Invoice invoice) {
 
         save(invoice);
+    }
+    
+    @Transactional(readOnly = false)
+    @Override
+    public InvoiceOriginal saveOriginalInvoice(Claim claim, Invoice inv) {
+        try {
+
+            InvoiceOriginal invOriginal = new InvoiceOriginal();
+            invOriginal.setDateInvoicedOriginal(inv.getDateInvoiced());
+            invOriginal.setMiscellaneousQtyOriginal(inv.getMiscellaneousQty());
+            invOriginal.setAutomaticQtyOriginal(inv.getAutomaticQty());
+            invOriginal.setSatNavQtyOriginal(inv.getSatNavQty());
+            invOriginal.setEstateQtyOriginal(inv.getEstateQty());
+            invOriginal.setBabySeatQtyOriginal(inv.getBabySeatQty());
+            invOriginal.setTowBarsQtyOriginal(inv.getTowBarsQty());
+            invOriginal.setNonStandardInsurancePremiumQtyOriginal(inv.getNonStandardInsurancePremiumQty());
+            invOriginal.setAdminQtyOriginal(inv.getAdminQty());
+            invOriginal.setRoofRackQtyOriginal(inv.getRoofRackQty());
+            invOriginal.setDualControlQtyOriginal(inv.getDualControlQty());
+            invOriginal.setDeliveryCollectionQtyOriginal(inv.getDeliveryCollectionQty());
+            invOriginal.setHireNetOriginal(inv.getHireNet());
+            invOriginal.setHireVatOriginal(inv.getHireVat());
+            invOriginal.setHireGrossOriginal(inv.getHireGross());
+            invOriginal.setRepairNetOriginal(inv.getRepairNet());
+            invOriginal.setRepairVatOriginal(inv.getRepairVat());
+            invOriginal.setRepairGrossOriginal(inv.getRepairGross());
+            invOriginal.setEngineerFeeNetOriginal(inv.getEngineerFeeNet());
+            invOriginal.setEngineerFeeVatOriginal(inv.getEngineerFeeVat());
+            invOriginal.setEngineerFeeGrossOriginal(inv.getEngineerFeeGross());
+            invOriginal.setStorageRecoveryNetOriginal(inv.getStorageRecoveryNet());
+            invOriginal.setStorageRecoveryVatOriginal(inv.getStorageRecoveryVat());
+            invOriginal.setStorageRecoveryGrossOriginal(inv.getStorageRecoveryGross());
+            invOriginal.setTotalNetOriginal(inv.getTotalNet());
+            invOriginal.setTotalVatOriginal(inv.getTotalVat());
+            invOriginal.setTotalGrossOriginal(inv.getTotalGross());
+            invOriginal.setClaimsHandlingInvoiceAmountOriginal(inv.getClaimsHandlingInvoiceAmount());
+            invOriginal.setDeductionForClaimsHandlingFeeOriginal(inv.getDeductionForClaimsHandlingFee());
+            invOriginal.setDiscountOriginal(inv.getDiscount());
+            invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay());
+            invOriginal.setMiscellaneousFeeOriginal(inv.getMiscellaneousFee());
+            invOriginal.setAutomaticFeeOriginal(inv.getAutomaticFee());
+            invOriginal.setSatNavFeeOriginal(inv.getSatNavFee());
+            invOriginal.setEstateFeeOriginal(inv.getEstateFee());
+            invOriginal.setBabySeatFeeOriginal(inv.getBabySeatFee());
+            invOriginal.setTowBarsFeeOriginal(inv.getTowBarsFee());
+            invOriginal.setNonStandardInsurancePremiumFeeOriginal(inv.getNonStandardInsurancePremiumFee());
+            invOriginal.setAdminFeeOriginal(inv.getAdminFee());
+            invOriginal.setRoofRackFeeOriginal(inv.getRoofRackFee());
+            invOriginal.setDualControlFeeOriginal(inv.getDualControlFee());
+            invOriginal.setDeliveryCollectionFeeOriginal(inv.getDeliveryCollectionFee());
+            invOriginal.setHireRateChargedPerDayOriginal(inv.getHireRateChargedPerDay());
+            invOriginal.setExcessAmountCollectedOriginal(inv.getExcessAmountCollected());
+            invOriginal.setVatAmountCollectedOriginal(inv.getVatAmountCollected());
+            invOriginal.setVersion(0);
+            invOriginal.setTotalToPayOriginal(inv.getTotalToPay());
+            invOriginal.setAdditionalDriverFeeOriginal(inv.getAdditionalDriverFee());
+            invOriginal.setAdditionalDriverQtyOriginal(inv.getAdditionalDriverQty());
+            invOriginal.setTotalLossFeeNetOriginal(inv.getTotalLossFeeNet());
+            invOriginal.setTotalLossFeeVatOriginal(inv.getTotalLossFeeVat());
+            invOriginal.setTotalLossFeeGrossOriginal(inv.getTotalLossFeeGross());
+            invOriginal.setInsurerDiscountOriginal(inv.getInsurerDiscount());
+            save(invOriginal);
+            return invOriginal;
+            
+        } catch (Exception ex) {
+            LOG.error("Exception thrown when saving original invoice. Exception is ", ex);
+            return null;
+        }
     }
 
 /*

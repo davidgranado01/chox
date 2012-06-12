@@ -34,8 +34,8 @@
         <property column="insurer_discount" name="insurerDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
-        <property column="original_full_total_to_pay" name="originalFullTotalToPayOriginal"/>
-        <property column="original_total_to_pay" name="originalTotalToPayOriginal"/>
+<!--        <property column="original_full_total_to_pay" name="originalFullTotalToPayOriginal"/>-->
+<!--        <property column="original_total_to_pay" name="originalTotalToPayOriginal"/>-->
        
         <property column="miscellaneous_fee" name="miscellaneousFeeOriginal"/>
         <property column="miscellaneous_qty" name="miscellaneousQtyOriginal"/>

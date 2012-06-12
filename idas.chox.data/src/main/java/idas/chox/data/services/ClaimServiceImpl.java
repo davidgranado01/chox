@@ -1261,12 +1261,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                BigDecimal ofttp = invoice.getOriginalFullTotalToPay();
-                invoice.setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+//                BigDecimal ofttp = invoice.getOriginalFullTotalToPay();
+//                invoice.setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + invoice.getTotalToPay());
             } else if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);
-                invoice.setOriginalTotalToPay(BigDecimal.ZERO);
+//                invoice.setOriginalTotalToPay(BigDecimal.ZERO);
             } else {
                 invoice.setTotalToPay(invoice.getFullTotalToPay());
                 LOG.debug("liablity not updated");

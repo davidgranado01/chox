@@ -232,8 +232,8 @@ public class OwnerPerformanceReport implements Report {
                     sb.append(")  a ) as averageDaysToProcess, ");
 
 
-                    sb.append("(select avg(original_total_to_pay) from (select i.original_full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select avg(original_total_to_pay) from (select io.full_total_to_pay as original_total_to_pay ");
+                    sb.append("from claim c, audit_trail a1, invoice_original io  where c.invoice_original_id=io.id and c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
