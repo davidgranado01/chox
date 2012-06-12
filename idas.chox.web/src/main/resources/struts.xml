@@ -1380,6 +1380,16 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         
+        <action name="updateReasonOfRejectionRestricted" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="updateReasonOfRejectionRestricted">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
+        <action name="updateReasonOfRejectionActive" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="updateReasonOfRejectionActive">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
         <action name="updateReasonOfRejection" class="idas.chox.web.actions.ReasonsOfRejectionAction" method="updateReasonOfRejection">
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
