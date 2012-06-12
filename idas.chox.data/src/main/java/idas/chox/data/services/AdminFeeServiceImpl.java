@@ -43,7 +43,7 @@ public class AdminFeeServiceImpl extends SecureDataService implements AdminFeeSe
             throw new Exception("No admin fee found.");
         }
 
-        LOG.info("Found {} rows: Returning fee={} for startDate={}, coverNoteRequired={}, managingRepair={}",
+        LOG.debug("Found {} rows: Returning fee={} for startDate={}, coverNoteRequired={}, managingRepair={}",
                 new Object[]{adminFees.size(), ((AdminFee) adminFees.get(0)).getFee(), startDate, coverNoteRequired, managingRepair});
 
         return ((AdminFee) adminFees.get(0)).getFee();
