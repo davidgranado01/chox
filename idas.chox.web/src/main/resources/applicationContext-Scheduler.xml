@@ -130,7 +130,6 @@
     </bean> 
 
     
-<!-- 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true" />
         <property name="quartzProperties">
@@ -155,5 +154,4 @@
             </list>
         </property>
     </bean>
- -->
 </beans>
