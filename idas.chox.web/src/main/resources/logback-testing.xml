@@ -1,7 +1,7 @@
 <included>
     <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-springstruts.log</File>
+        <File>${catalina.base}/logs/idaschox-springstruts-5.11.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
@@ -21,7 +21,7 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error (Testing)</Subject>
+        <Subject>CHOX Application Error (Testing V5.11)</Subject>
         <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk,Patrik.Bego@sherwoodcompliance.co.uk</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
@@ -39,7 +39,7 @@
     
     <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/webServices.log</File>
+        <File>${catalina.base}/logs/webServices-5.11.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
@@ -57,7 +57,7 @@
     </appender>
     <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
+        <File>${catalina.base}/logs/idaschox-ehCacheManager-5.11.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
@@ -76,7 +76,7 @@
     
     <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
+        <File>${catalina.base}/logs/idaschox-hibernate-5.11.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
@@ -95,7 +95,7 @@
     
     <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox.log</File>
+        <File>${catalina.base}/logs/idaschox-5.11.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
@@ -137,7 +137,7 @@
         <appender-ref ref="S"/>
         <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="org.apache.struts2.components.ActionComponent " level="WARN" additivity="false">
+    <logger name="org.apache.struts2.components.ActionComponent" level="WARN" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="CYCLIC" />
     </logger>

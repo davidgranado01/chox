@@ -1,9 +1,14 @@
 package idas.chox.service.reports.viewdata;
 
+import idas.chox.core.model.ReasonOfRejection;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,17 +30,10 @@ public class BreInvoiceApprovalDisputeCumulativeData {
     private BigDecimal perInvoicesApprovedByBusinessRulesNotDisputedPaid30DaysCumm = BigDecimal.ZERO;
     private BigDecimal perInvoicesApprovedByBusinessRulesDisputedPaid15DaysCumm = BigDecimal.ZERO;
     private BigDecimal perInvoicesApprovedByBusinessRulesDisputedPaid30DaysCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToHireChargeCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToHireDurationCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToLIabilityDisputeCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToLikeForLikeCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToQuantumCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToRepairCostCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToInvoiceAlreadyPaidCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToUndisclosedCumm = BigDecimal.ZERO;
-    private BigDecimal perInvoicesDisputedDueToOtherCumm = BigDecimal.ZERO;
+    
+    private Map<Integer, BigDecimal> disputedApprovalReasonsMap;
 
-    public static BreInvoiceApprovalDisputeCumulativeData getObject(Map data) {
+    public static BreInvoiceApprovalDisputeCumulativeData getObject(Map data, List<ReasonOfRejection> reasonsOfRejection) {
 
         BreInvoiceApprovalDisputeCumulativeData result = new BreInvoiceApprovalDisputeCumulativeData();
         result.setHeaderNameCumm((String) data.get("month_header".toLowerCase()));
@@ -56,24 +54,17 @@ public class BreInvoiceApprovalDisputeCumulativeData {
             }
         }
 
-        if(result.getNoInvoicesApprovedByBusinessRulesDisputedCumm().intValue() !=0){
-            result.setPerInvoicesDisputedDueToHireChargeCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_hire_charge_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToHireDurationCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_hire_duration_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToLIabilityDisputeCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_liability_dispute_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToLikeForLikeCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_like_for_like_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToQuantumCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_quantum_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToRepairCostCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_repair_cost_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToInvoiceAlreadyPaidCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_invoice_already_paid_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToUndisclosedCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_undisclosed_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
-            result.setPerInvoicesDisputedDueToOtherCumm(new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_other_total")) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
+        if (result.getNoInvoicesApprovedByBusinessRulesDisputedCumm().intValue() != 0) {
+            Map<Integer, BigDecimal> drorMap = new HashMap<Integer, BigDecimal>();
+            for (ReasonOfRejection ror : reasonsOfRejection) {
+                drorMap.put(ror.getId(), new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_" + ror.getName().toLowerCase())) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
+            }
+            result.setDisputedApprovalReasonsMap(drorMap);
         }
+        
 
         return result;
     }
-
-
-
-
 
      private static double getDoubleValue(Object v) {
         LOG.debug("inside getDoubleValue method found class for the sent value is: {}", v.getClass());
@@ -230,131 +221,12 @@ public class BreInvoiceApprovalDisputeCumulativeData {
         this.perInvoicesApprovedByBusinessRulesDisputedPaid30DaysCumm = perInvoicesApprovedByBusinessRulesDisputedPaid30DaysCumm;
     }
 
-    /**
-     * @return the perInvoicesDisputedDueToHireChargeCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToHireChargeCumm() {
-        return perInvoicesDisputedDueToHireChargeCumm;
+    public Map<Integer, BigDecimal> getDisputedApprovalReasonsMap() {
+        return disputedApprovalReasonsMap;
     }
 
-    /**
-     * @param perInvoicesDisputedDueToHireChargeCumm the perInvoicesDisputedDueToHireChargeCumm to set
-     */
-    public void setPerInvoicesDisputedDueToHireChargeCumm(BigDecimal perInvoicesDisputedDueToHireChargeCumm) {
-        this.perInvoicesDisputedDueToHireChargeCumm = perInvoicesDisputedDueToHireChargeCumm;
+    public void setDisputedApprovalReasonsMap(
+            Map<Integer, BigDecimal> disputedApprovalReasonsMap) {
+        this.disputedApprovalReasonsMap = disputedApprovalReasonsMap;
     }
-
-    /**
-     * @return the perInvoicesDisputedDueToHireDurationCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToHireDurationCumm() {
-        return perInvoicesDisputedDueToHireDurationCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToHireDurationCumm the perInvoicesDisputedDueToHireDurationCumm to set
-     */
-    public void setPerInvoicesDisputedDueToHireDurationCumm(BigDecimal perInvoicesDisputedDueToHireDurationCumm) {
-        this.perInvoicesDisputedDueToHireDurationCumm = perInvoicesDisputedDueToHireDurationCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToLIabilityDisputeCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToLIabilityDisputeCumm() {
-        return perInvoicesDisputedDueToLIabilityDisputeCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToLIabilityDisputeCumm the perInvoicesDisputedDueToLIabilityDisputeCumm to set
-     */
-    public void setPerInvoicesDisputedDueToLIabilityDisputeCumm(BigDecimal perInvoicesDisputedDueToLIabilityDisputeCumm) {
-        this.perInvoicesDisputedDueToLIabilityDisputeCumm = perInvoicesDisputedDueToLIabilityDisputeCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToLikeForLikeCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToLikeForLikeCumm() {
-        return perInvoicesDisputedDueToLikeForLikeCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToLikeForLikeCumm the perInvoicesDisputedDueToLikeForLikeCumm to set
-     */
-    public void setPerInvoicesDisputedDueToLikeForLikeCumm(BigDecimal perInvoicesDisputedDueToLikeForLikeCumm) {
-        this.perInvoicesDisputedDueToLikeForLikeCumm = perInvoicesDisputedDueToLikeForLikeCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToQuantumCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToQuantumCumm() {
-        return perInvoicesDisputedDueToQuantumCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToQuantumCumm the perInvoicesDisputedDueToQuantumCumm to set
-     */
-    public void setPerInvoicesDisputedDueToQuantumCumm(BigDecimal perInvoicesDisputedDueToQuantumCumm) {
-        this.perInvoicesDisputedDueToQuantumCumm = perInvoicesDisputedDueToQuantumCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToRepairCostCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToRepairCostCumm() {
-        return perInvoicesDisputedDueToRepairCostCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToRepairCostCumm the perInvoicesDisputedDueToRepairCostCumm to set
-     */
-    public void setPerInvoicesDisputedDueToRepairCostCumm(BigDecimal perInvoicesDisputedDueToRepairCostCumm) {
-        this.perInvoicesDisputedDueToRepairCostCumm = perInvoicesDisputedDueToRepairCostCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToInvoiceAlreadyPaidCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToInvoiceAlreadyPaidCumm() {
-        return perInvoicesDisputedDueToInvoiceAlreadyPaidCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToInvoiceAlreadyPaidCumm the perInvoicesDisputedDueToInvoiceAlreadyPaidCumm to set
-     */
-    public void setPerInvoicesDisputedDueToInvoiceAlreadyPaidCumm(BigDecimal perInvoicesDisputedDueToInvoiceAlreadyPaidCumm) {
-        this.perInvoicesDisputedDueToInvoiceAlreadyPaidCumm = perInvoicesDisputedDueToInvoiceAlreadyPaidCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToUndisclosedCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToUndisclosedCumm() {
-        return perInvoicesDisputedDueToUndisclosedCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToUndisclosedCumm the perInvoicesDisputedDueToUndisclosedCumm to set
-     */
-    public void setPerInvoicesDisputedDueToUndisclosedCumm(BigDecimal perInvoicesDisputedDueToUndisclosedCumm) {
-        this.perInvoicesDisputedDueToUndisclosedCumm = perInvoicesDisputedDueToUndisclosedCumm;
-    }
-
-    /**
-     * @return the perInvoicesDisputedDueToOtherCumm
-     */
-    public BigDecimal getPerInvoicesDisputedDueToOtherCumm() {
-        return perInvoicesDisputedDueToOtherCumm;
-    }
-
-    /**
-     * @param perInvoicesDisputedDueToOtherCumm the perInvoicesDisputedDueToOtherCumm to set
-     */
-    public void setPerInvoicesDisputedDueToOtherCumm(BigDecimal perInvoicesDisputedDueToOtherCumm) {
-        this.perInvoicesDisputedDueToOtherCumm = perInvoicesDisputedDueToOtherCumm;
-    }
-
-
 }

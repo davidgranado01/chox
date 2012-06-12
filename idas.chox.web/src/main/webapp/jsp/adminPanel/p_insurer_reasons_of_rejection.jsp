@@ -134,7 +134,7 @@ $(function(){
     });
 
     ui.ajaxForm(form, onSubmitHandler);
-    
+
     var editForm = $("form#rorEditForm");
     editForm.validate(
     {

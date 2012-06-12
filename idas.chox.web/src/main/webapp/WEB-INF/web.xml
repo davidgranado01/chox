@@ -10,7 +10,7 @@
     <!-- Development flag: controls the load of a minimazed content.-->
     <context-param>
         <param-name>development</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
     </context-param>
  
     <!-- Listeners -->
@@ -182,7 +182,7 @@
         </web-resource-collection>
         <auth-constraint/>
     </security-constraint>
-   <security-constraint>
+   <!-- <security-constraint>
         <web-resource-collection>
             <web-resource-name>Automatic SLL Forwarding</web-resource-name>
             <url-pattern>/*</url-pattern>
@@ -192,5 +192,5 @@
                 CONFIDENTIAL
             </transport-guarantee>
         </user-data-constraint>
-    </security-constraint>
+    </security-constraint> -->
 </web-app>

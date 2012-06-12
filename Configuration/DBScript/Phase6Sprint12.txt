@@ -40,7 +40,6 @@ GRANT select, update ON audit_history_id_seq TO chox_user;
 -- End of 6.12.2 --
 -------------------
 
-
 ---------------------------------------------------------------------------------------- 6.12.3 Ability to disable private notes--------------------------------------------------------------------------------------ALTER TABLE insurer ADD COLUMN disable_private_notes boolean DEFAULT false;ALTER TABLE chorganisation ADD COLUMN disable_private_notes boolean DEFAULT false;
 
 --------------------
