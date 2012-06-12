@@ -141,3 +141,4 @@ where accessibility_item.accessibility_id = accessibility.id
 -------------------
 -- End of 6.12.4
 -------------------
+

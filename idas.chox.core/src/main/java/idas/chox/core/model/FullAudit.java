@@ -1,6 +1,5 @@
 package idas.chox.core.model;
 
-
 /**
  *
  * @author John

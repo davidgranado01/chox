@@ -23,8 +23,6 @@
     var claimOwnerIdField=-1;
     var disableIPWhitelistTab = true;
 
-
-
     Ext.onReady(function(){
 
     	 Ext.override(Ext.form.ComboBox, {
@@ -57,9 +55,6 @@
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
-        
-//        if(insurerIsWorkgroupEnabled) {
-
             wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -83,7 +78,6 @@
                 valueField: 'text',
                 id: 'workgroupComboId',
                 hiddenName: 'workgroupIdField',
-//                 value:'',
                 displayField:'value',
                 typeAhead: true,
                 mode: 'local',
@@ -111,10 +105,7 @@
                 }
             });
 
-
-            workgroupStore.load({params : {"orgId":'<s:property value="objectId"/>'}});
-//        }
-//        if(insurerIsClaimOwnershipEnabled) {
+        workgroupStore.load({params : {"orgId":'<s:property value="objectId"/>'}});
             
         claimOwnerReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -139,7 +130,6 @@
             valueField: 'id',
             id: 'claimOwnerComboId',
             hiddenName: 'claimOwnerIdField',
-//             value:'',
             displayField:'name',
             typeAhead: true,
             mode: 'local',
@@ -173,7 +163,6 @@
 				$("[name='workgroupIdField']").val(-1)
 				}
 		});
-		
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
@@ -185,7 +174,6 @@
         if(<s:property value="enableIPWhitelist"/> && !isNew){
             disableIPWhitelistTab = false;
         }
-
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -243,16 +231,11 @@
                 blockedMessage:{ required: "You must supply an 'Account blocked message'"}
             }
         });
-
-        
         
         ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
 
-        //ui.ajaxForm($("form#formUpdateInsurerDetail"), doInsurerSaveChanges);
-
         getInsurerAdminTabIndex();
         doTpiEnableCheck();
-
 
         if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
 
@@ -261,7 +244,6 @@
                 height:615,
                 width:775,
                 enableTabScroll : true,
-//                id:"tab",
                 border:true,
                 loadMask:false,
                 activeTab: insDetailAdminTabIndex,
@@ -275,9 +257,7 @@
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
-
-
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
 
@@ -302,46 +282,33 @@
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'IPWhitelistConfigTab', id:"IPWhitelistConfigTabId", title:'IP Whitelist', tabTip:'IP Whitelist Address', disabled: disableIPWhitelistTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getIPWhitelistPage.action?orgId="+<s:property value="objectId" />+"&orgType=2"+"&nonce="+'<%= session.getAttribute("SessionNonce")%>', scripts:true}}
-                
-                
+                    {contentEl:'isnurerReasonOfRejectionTab', id:"reasonOfRejetictionTabId", title:'Rejection Reasons', tabTip:'Manage Reasons Of Rejection Per Insurer', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getReasonsOfRejectionPage.action?insurerId="+<s:property value="objectId" />+"&nonce="+ '<%= session.getAttribute("SessionNonce")%>', scripts:true}}
                 ]
             });
 
         }
 
         var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
-        
-
         doPageLoadCheck();
 
         if (isFixedTransactionalFee) {
-            //            console.log("Hiding Agreed Benefit stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#CCDFixedTransactionalFeeValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else {
             $("#fixedTransactionalFeeOpt").val("false");
-            //            console.log("Hiding Fixed Transaction stuff");
             $("#CCDFixedTransactionalFeeValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
 
-       
-
         if (autoRoutingPolicyNumberEnabled) {
-
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
         } else if(autoRoutingPrice){
-
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
-
         }else{
-
             $("select#autoRoutingEnableDropDownId").val("");
-            
         }
 
     });
@@ -351,7 +318,6 @@
             insDetailAdminTabIndex = $("#tabIndex").val();
         }
     }
-
 
     function doRenderClaimHandlerDropDown1(workgroupId){
 
@@ -379,15 +345,10 @@
         
         if($('form#formUpdateInsurerDetail input[name="insurerDiscountEnable"]:checked').val()){
             disableDiscountTab = false;
-//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
         }else{
             disableDiscountTab = true;
-//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
         }
     }
-
-
-
 
     function doPageLoadCheck(){
         var claimWorkgroupEnable = doWorkgroupCheck();
@@ -431,23 +392,12 @@
         var tpiEnableEnable = false;
         if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
             tpiEnableEnable = true;
-            //            $("#tpiWorkgroupId").slideDown();
-            //            $("#TpiClaimOwnerId").slideDown();
-            //            $("#tpiExclusionRegexId").slideDown();
             $("#tpiIdentifierId").slideDown();
-
         }else{
-            //            $("#tpiWorkgroupId").hide();
-            //            $("#TpiClaimOwnerId").hide();
-            //            $("#tpiExclusionRegexId").hide();
             $("#tpiIdentifierId").hide();
-
-            // $("select#autoRoutingEnableDropDownId").val("");
         }
         return tpiEnableEnable;
     }
-
-
 
     function doOwnershipCheck(){
         var claimOwnershipEnable = false;
@@ -462,21 +412,16 @@
 
     function chargeMethodSelected(fixedTransactionalFee) {
         if (fixedTransactionalFee === 'true') {
-            //            console.log("fixedTransactionalFee selected.");
             $("#CCDFixedTransactionalFeeValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else if (fixedTransactionalFee === 'false') {
-            //           console.log("AgreedBenefitShare selected.");
             $("#CCDFixedTransactionalFeeValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
-        //        else {
-        //            console.log("unknown chatge method selected: " + fixedTransactionalFee);
-        //        }
-
     }
+    
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
@@ -642,32 +587,32 @@
                             <label class="chox-form-std-label">Account blocked message<span class="mandatory">*</span></label>
                             <textarea id="CCDBlockedMessage" name="blockedMessage" cols="30"  rows="3"><s:property value="blockedMessage" /></textarea>
                         </div>
-                        
-						<div class="chox-form-item">
-							<label class="chox-form-std-label">Enable Supervisor Escalation</label>
-							<s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
-						</div>
-						<div id="supervisorEscalationFields">
-							<div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
-								<label class="chox-form-std-label">
-								Days Since Invoice Upload to Escalate
-								</label>
-								<input type="text" class="chox-ttxt"
-									id="nrOfDaysUploadedId" name="daysBeforeEscalated"
-									value="<s:property value="daysBeforeEscalated" />" />
-							</div>
+                            
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Enable Supervisor Escalation</label>
+                            <s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
+                        </div>
+                        <div id="supervisorEscalationFields">
+                            <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
+                                <label class="chox-form-std-label">
+                                    Days Since Invoice Upload to Escalate
+                                </label>
+                                <input type="text" class="chox-ttxt"
+                                       id="nrOfDaysUploadedId" name="daysBeforeEscalated"
+                                       value="<s:property value="daysBeforeEscalated" />" />
+                            </div>
                             <div class="labelWithInputField">
-								<div class="chox-form-item" id="timeEnteredToContestedInvDiv">
-									<label class="chox-form-std-label" style="margin-top : -7px;">
-									   Number of Times Contested<br/> With CHO to Escalate 
-									</label>
-									<input type="text"
-										class="chox-ttxt" id="timeEnteredToContId"
-										name="timesInStatusContested"
-										value="<s:property value="timesInStatusContested" />" />
-								</div>
-							</div>
-						</div>
+                                <div class="chox-form-item" id="timeEnteredToContestedInvDiv">
+                                    <label class="chox-form-std-label" style="margin-top : -7px;">
+                                        Number of Times Contested<br/> With CHO to Escalate 
+                                    </label>
+                                    <input type="text"
+                                           class="chox-ttxt" id="timeEnteredToContId"
+                                           name="timesInStatusContested"
+                                           value="<s:property value="timesInStatusContested" />" />
+                                </div>
+                            </div>
+                        </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">ECD % Increase Trigger Point <span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDEcdIncreaseTrigger" name="ecdIncreaseTriggerPercentage" value="<s:property value="ecdIncreaseTriggerPercentage" />"/>
@@ -835,6 +780,7 @@
                 </form>
             </div>
         </div>
+                    
         <div id="insurerAliasPanelTab" class="x-hide-display"></div>
         <div id="insurerWorkgroupPanelTab" class="x-hide-display"></div>
         <div id="insurerCreditHirePanelTab" class="x-hide-display"></div>
@@ -844,5 +790,6 @@
         <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
         <div id="InsurerDiscountsTab" class="x-hide-display"></div>
         <div id="IPWhitelistConfigTab" class="x-hide-display"></div>
+        <div id="isnurerReasonOfRejectionTab" class="x-hide-display"></div>
     </div>
 </div>

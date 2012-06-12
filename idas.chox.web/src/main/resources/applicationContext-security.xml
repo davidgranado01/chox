@@ -64,7 +64,7 @@
         <beans:property name="defaultTargetUrl" value="/prv/inbox.action" /> 
         <beans:property name="failureUrl" value="/login.action?iperror=true" />
         <beans:property name="blockedUrl" value="/login.action?blocked=true" />
-      <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
+        <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
         <beans:property name="browserWarningParam"  value="?showSplash=true"/>
     </beans:bean>
     

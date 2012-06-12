@@ -42,7 +42,7 @@ public interface UserService {
     public void savePasswordHistory(PasswordHistory passwordHistory);
 
     public void updateLastLogin(int userId);
-    
+
     public List<PasswordHistory> getPasswordHistory(int userId, int count);
 
     public void block(int userId);

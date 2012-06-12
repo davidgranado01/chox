@@ -3,7 +3,6 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  *
  * @author John

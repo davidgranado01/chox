@@ -1318,4 +1318,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return false;
     }
     
+    @Override
+    public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
+        Criteria criteria = getSession().createCriteria(Claim.class);
+        criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
+        return countClaims(criteria).intValue();
+    }
+    
 }
