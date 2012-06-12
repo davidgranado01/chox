@@ -74,11 +74,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
             ror.setLastModifiedBy(getAuthenticatedUser());
-            ror.setName(reasonOfRejectionName);
             ror.setDescription(reasonOfRejectionDesc);
-            ror.setRestricted(restricted);
-            ror.setType(type);
-            ror.setStatus(status);
             
             ActionResponse response;
             response = adminInsurerService.addOrUpdateReasonOfRejection(ror);
@@ -129,6 +125,50 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 ActionResponse response;
                 response = adminInsurerService.deleteReasonOfRejection(ror);
+                setActionResponse(response);
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+    @Secured ({"ROLE_CHOX_ADMIN"})
+    public String updateReasonOfRejectionActive() throws Exception {
+        try {
+            if (!getIsChoxAdmin()) {
+                LOG.error("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
+                throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
+            
+            if (this.reasonOfRejectionId > 0) {
+                ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+                ror.setStatus(!ror.isStatus());
+                ActionResponse response;
+                response = adminInsurerService.updateReasonOfRejectionActive(ror);
+                setActionResponse(response);
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+    @Secured ({"ROLE_CHOX_ADMIN"})
+    public String updateReasonOfRejectionRestricted() throws Exception {
+        try {
+            if (!getIsChoxAdmin()) {
+                LOG.error("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
+                throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
+            
+            if (this.reasonOfRejectionId > 0) {
+                ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
+                ror.setRestricted(!ror.isRestricted());
+                ActionResponse response;
+                response = adminInsurerService.updateReasonOfRejectionRestricted(ror);
                 setActionResponse(response);
             }
         } catch (Exception ex) {

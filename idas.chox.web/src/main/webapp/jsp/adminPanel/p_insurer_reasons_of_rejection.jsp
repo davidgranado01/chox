@@ -54,19 +54,21 @@ $(function(){
     });
     
     rorGridView = new Ext.grid.GridPanel({
-        listeners:  {cellclick:removeReasonOfRejection},
+        listeners:  {cellclick:editReasonOfRejection},
         store: rorGridViewDataStore,
         renderTo:'rorGridViewPanel',
         enableHdMenu:false,
         layout:'fit',
         viewConfig:{forceFit:true},
         columns: [
-            {header: "Name", width: 200, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
+            {header: "Name", width: 160, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>"+value+"</a>" }},
-            {header: "Description", width: 160, dataIndex: 'description', sortable: true, resizable: true},
-            {header: "Type", width: 160, dataIndex: 'type', sortable: true, resizable: true},
-            {header: "Active", width: 160, xtype: 'booleancolumn', trueText: 'Yes',falseText: 'No', dataIndex: 'status', sortable: true, resizable: true},
-            {header: "Visible Before Assigned", xtype: 'booleancolumn', width: 160,trueText: 'Yes',falseText: 'No', dataIndex: 'restricted', sortable: true, resizable: true},
+            {header: "Description", width: 260, dataIndex: 'description', sortable: true, resizable: true},
+            {header: "Type", width: 80, dataIndex: 'type', sortable: true, resizable: true},
+            {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, 
+                renderer: booleanLink},            	
+            {header: "Visible Before Assigned", width: 80, dataIndex: 'restricted', sortable: true, resizable: true,
+                renderer:booleanLink},            		
             {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>Remove</a>"}}
         ],
@@ -74,12 +76,21 @@ $(function(){
         width: 760
     });
     
+    function booleanLink(value,p,r){
+    	if(value){
+    		value = "Yes";
+    	}else{
+    		value = "No";
+    	}
+    	return "<a href='#' class='high-light-item'>" + value + "</a>"
+    }
+    
     if(!rorEditPopWindow || rorEditPopWindow==null)
     {
     	rorEditPopWindow =  new Ext.Window({
             applyTo:'rorEditWindow',
             width:600,
-            height:300,
+            height:215,
             layout:'fit',
             modal:true,
             closeAction:'hide',
@@ -144,7 +155,7 @@ function closeWindowAndRefresh(){
 	onPageRefresh();
 }
 
-function removeReasonOfRejection(grid, rowIndex, columnIndex, e){
+function editReasonOfRejection(grid, rowIndex, columnIndex, e){
     var gridView = rorGridView.getStore().getAt(rowIndex);
     if(columnIndex==5){
         var rorId = gridView.get("id");
@@ -153,6 +164,16 @@ function removeReasonOfRejection(grid, rowIndex, columnIndex, e){
         ajax.loadHtml2(url, param, onSubmitHandler);
     }else if(columnIndex==0){
     	showEditReasonOfRejection(gridView);
+    }else if(columnIndex==3){
+    	var rorId = gridView.get("id");
+        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
+        var param = {"reasonOfRejectionId":rorId};
+        ajax.loadHtml2(url, param, onSubmitHandler);
+    }else if(columnIndex==4){
+    	var rorId = gridView.get("id");
+        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
+        var param = {"reasonOfRejectionId":rorId};
+        ajax.loadHtml2(url, param, onSubmitHandler);
     }
 }
 
@@ -199,22 +220,10 @@ function showEditReasonOfRejection(gridView){
 	rorEditPopWindow.show();
 	
 	var radio = $("form#rorEditForm  input[type='radio']").get(0);
-	var radio2 = $("form#rorEditForm  input[type='radio']").get(1);
 	
     $("form#rorEditForm input[name$='reasonOfRejectionId']").val(gridView.get("id"));
     $("form#rorEditForm input[name$='reasonOfRejectionName']").val(gridView.get("name"));
-    $("form#rorEditForm input#statusWindowId").attr('checked', gridView.get("status"));
-    $("form#rorEditForm input#restrictedWindowId").attr('checked', gridView.get("restricted"));
     $("form#rorEditForm #rorDescEditTextId").val(gridView.get("description"));
-    if(gridView.get("type").toLowerCase() == "claim"){
-    	radio.setAttribute('checked', 'checked');
-    	radio2.removeAttribute('checked');
-        $("#restrictedEditDivId").show();
-    } else if(gridView.get("type").toLowerCase() == "invoice"){
-    	radio2.setAttribute('checked', 'checked');
-    	radio.removeAttribute('checked');
-    	$("#restrictedEditDivId").hide();
-    }
 }
 
 function onNotificatoinChange(){
@@ -226,17 +235,6 @@ function onNotificatoinChange(){
 	} else {
 		$("#restrictedDivId").slideUp();
 	}
-}
-
-function onEditNotificatoinChange(){
-    var radio = $("form#rorEditForm input[type='radio']").get(0);
-    var radio2 = $("form#rorEditForm input[type='radio']").get(1)
-    if(radio.checked){
-        $("#restrictedEditDivId").slideDown();
-    } else {
-    	$("form#rorEditForm input#restrictedWindowId").attr('checked', false);
-        $("#restrictedEditDivId").slideUp();
-    }
 }
 
 </script>
@@ -273,12 +271,12 @@ function onEditNotificatoinChange(){
 			                                    <div class="chox-form-item" id="radioBox" style="padding-left: 70px">
 		                                        <span class="input-radio"> 
 		                                            First Notification Rejection Reason
-		                                            <input type="radio" name="type" checked="checked" value="claim" onclick="onNotificatoinChange()"/>
+		                                            <input type="radio" name="type" checked="checked" value="Claim" onclick="onNotificatoinChange()"/>
 		                                            </span>
 		                                        <br/>
 		                                        <span class="input-radio">
 		                                            Invoice Stage Rejection Reason
-		                                            <input type="radio" name="type" value="invoice" style="margin-left: 14px" onclick="onNotificatoinChange()"/> 
+		                                            <input type="radio" name="type" value="Invoice" style="margin-left: 14px" onclick="onNotificatoinChange()"/> 
 		                                            </span>
 		                                        </div>
 		                                    </td>
@@ -314,55 +312,19 @@ function onEditNotificatoinChange(){
     
     <div id="rorEditWindow" class="x-hidden">
         <div id="rorEditPanel">
-            <div class="form-container" style="height:300px; padding-bottom:30px; padding-top:30px">
+            <div class="form-container" style="height:275px; padding-bottom:30px; padding-top:30px">
                 <form id="rorEditForm" name="rorEditForm" class="XXentity-form" action="<%= request.getContextPath()%>/prv/p/updateReasonOfRejection.action" method="post">
                     <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden"/>
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                        <input id="rorEditId" name="reasonOfRejectionName" style="width: 175px"/>
+                        <input id="rorEditId" name="reasonOfRejectionName" style="width: 175px" disabled="disabled"/>
                     </div>
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Supporting Rejection Note</label>
                         <div id="rorDescEditId"/>
                     </div>
-                    <br/>
-                    <table width="100%">
-                        <tr>
-                            <td width="30%">
-                                <div class="chox-form-item" id="radioBox" style="padding-left: 70px">
-	                                <span class="input-radio"> 
-	                                    First Notification Rejection Reason
-	                                    <input type="radio" name="type" value="claim" onclick="onEditNotificatoinChange()"/>
-                                    </span>
-                                <br/>
-	                                <span class="input-radio">
-	                                    Invoice Stage Rejection Reason
-	                                    <input type="radio" name="type" value="invoice"  style="margin-left: 14px" onclick="onEditNotificatoinChange()"/> 
-                                    </span>
-                                </div>
-                            </td>
-                            <td width="15%" >
-	                            <div class="chox-form-item">
-	                                <div style="margin-left: 91px">
-	                                   <label>Active</label>
-	                                   <s:checkbox id="statusWindowId" name="status"/>
-	                                </div>
-	                                <div id="restrictedEditDivId">
-	                                   <label>Visible Before Assigned</label>
-	                                   <s:checkbox id="restrictedWindowId" name="restricted"/>
-	                                </div>
-	                            </div>
-                            </td>
-                        </tr>
-                        <tr>
-	                        <td colspan="2">
-	                           <div id="rorEditErrorMessageBox" class="action-error-msg"></div>
-	                        </td>
-                        </tr>
-                    </table>
-                    
                     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
                 </form>
             </div>

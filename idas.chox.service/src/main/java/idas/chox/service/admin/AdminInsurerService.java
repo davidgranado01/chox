@@ -461,6 +461,24 @@ public class AdminInsurerService extends SecureDataService {
         return this.actionResponse;
     }
     
+    public ActionResponse updateReasonOfRejectionRestricted(ReasonOfRejection ror) {
+        this.actionResponse = new ActionResponse();
+        if(ror.getType().equalsIgnoreCase("Invoice")) {
+            this.actionResponse.AddError("'Visible before assigned' is not applicable to Invoice type Rejection Reasons.");
+        } else {
+            reasonOfRejectionService.saveReasonOfRejection(ror);
+            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getName() + "' has been updated");
+        }
+        return this.actionResponse;
+    }
+    
+    public ActionResponse updateReasonOfRejectionActive(ReasonOfRejection ror) {
+        this.actionResponse = new ActionResponse();
+        reasonOfRejectionService.saveReasonOfRejection(ror);
+        this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getName() + "' has been updated");
+        return this.actionResponse;
+    }
+    
     public ActionResponse triggerInsurerWorkgroupStatus(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
 
