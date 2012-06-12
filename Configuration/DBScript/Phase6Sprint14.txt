@@ -1,0 +1,18 @@
+-------------------------------------------------------------
+-- 6.14.3 IP white-list configuration panel
+-------------------------------------------------------------
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE ip_whitelist TO chox_user;
+
+---------------------
+--- End of 6.14.3 ---
+---------------------
+
+-------------------------------------------------------------
+---  6.14.4 Hire update notifications/warnings -
+---         Ability to configure % change at an Insurer level
+-------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN ecd_increase_trigger integer NOT NULL DEFAULT 50;
+
+---------------------
+--- End of 6.14.4 ---
+---------------------

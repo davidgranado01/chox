@@ -370,3 +370,4 @@ where name in ('ROLE_INS_MI', 'ROLE_INS_USER');
 -------------------
 -- End of bug#1773 
 -------------------
+

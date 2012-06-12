@@ -96,9 +96,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             String ipAddress = request.getRemoteAddr();
             if (!ipAddress.isEmpty()) {
                 if (user.isAnInsurer())
-                    isValid = ipWhitelistService.validateInsurerIP(orgId, ipAddress);
+                    isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, false, true);
                 else
-                    isValid = ipWhitelistService.validateChoIP(orgId, ipAddress);
+                    isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, true, false);
                 LOG.debug("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
             }
             

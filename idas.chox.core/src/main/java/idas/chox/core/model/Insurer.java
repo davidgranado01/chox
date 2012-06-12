@@ -59,6 +59,7 @@ public class Insurer extends Entity implements Serializable {
     private int blockTime;
     private boolean disablePrivateNotes;
     private String blockedMessage;
+    private Integer ecdIncreaseTriggerPercentage;
 
     public String getBlockedMessage() {
         return blockedMessage;
@@ -67,7 +68,7 @@ public class Insurer extends Entity implements Serializable {
     public void setBlockedMessage(String blockedMessage) {
         this.blockedMessage = blockedMessage;
     }
-
+    
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
     }
@@ -535,6 +536,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setDisablePrivateNotes(boolean disablePrivateNotes) {
         this.disablePrivateNotes = disablePrivateNotes;
+    }
+    
+    public Integer getEcdIncreaseTriggerPercentage() {
+        return ecdIncreaseTriggerPercentage;
+    }
+
+    public void setEcdIncreaseTriggerPercentage(Integer ecdIncreaseTriggerPercentage) {
+        this.ecdIncreaseTriggerPercentage = ecdIncreaseTriggerPercentage;
     }
 
 }
