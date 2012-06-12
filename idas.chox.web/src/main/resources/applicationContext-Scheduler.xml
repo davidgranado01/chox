@@ -129,7 +129,7 @@
         <property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
     </bean> 
 
-    
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true" />
         <property name="quartzProperties">
@@ -154,4 +154,5 @@
             </list>
         </property>
     </bean>
+    
 </beans>
