@@ -48,7 +48,7 @@ public enum PenaltyPercentage {
     
     public static List<PenaltyPercentage> getHirePenaltyPercentage(Date hireStart){
         List <PenaltyPercentage> hirePenaltyPercentage = new ArrayList<PenaltyPercentage>();
-        if(DateHelper.Parse(PENALTY_INCREASE_DATE).before(hireStart)){
+        if(DateHelper.Parse(PENALTY_INCREASE_DATE).compareTo(hireStart) <= 0){
             hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012);
             hirePenaltyPercentage.add(HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012);
         } else {
