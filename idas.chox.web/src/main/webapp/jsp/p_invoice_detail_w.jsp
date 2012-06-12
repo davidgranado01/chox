@@ -356,6 +356,7 @@
             }
         });
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
+        $("#IDsuccessBox").fadeOut(10000);
 <s:if test="penaltyChargesAppled">
 	refreshPenaltyChargeForm();
     Ext.MessageBox.alert('Information', "The Invoice has been updated and penalty charges have previously been applied. You may now wish to adjust the penalty charges to conform to the new Invoice values.");
@@ -2003,7 +2004,7 @@
     <div id="formSubmitButtons"  class="XXentity-form">
         <div class="chox-form-button">
             <div id="EngRptmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result" id="resultMessage"><s:property value="actionResult" /></div>
+            <div id="IDsuccessBox" class="chox-form-submit-result" id="resultMessage"><s:property value="actionResult" /></div>
             <table align="center">
                 <tr >
                     <td>

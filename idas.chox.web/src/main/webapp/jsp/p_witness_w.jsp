@@ -11,19 +11,8 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
-//        form.validate(
-//        {
-//            errorLabelContainer: "#witnessMsgBox",
-//            rules: {
-//                name:{required:true},
-//                email:{email:true}
-//            },
-//            messages: {
-//                name:{required:'Please supply a valid value for Name'},
-//                email:{email:'Please supply a valid email address for "Email"'}
-//            }
-//        });
         ui.ajaxForm(form,null,'html');
+        $("#witnessSuccessBox").fadeOut(10000);
     });
 
 </script>
@@ -75,7 +64,7 @@
                 <input type="text" class="chox-ttxt" name="email" id="witnessEmailFieldId" value="<s:property value="email" />"/></div>
             <div class="chox-form-button"><input type="submit" id="witnessSubmitButtonId" value="Save Changes" /></div>
             <div id="witnessMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="witnessSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

@@ -24,6 +24,7 @@
         });
         
         ui.ajaxForm(form, null, 'html');
+        $("#CVDSucsessBox").fadeOut(10000);
     });
     
     function vehicleDamageSubmit() {
@@ -66,7 +67,7 @@
                 <input type="button"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" onclick="return vehicleDamageSubmit()"/>
             </div>
             <div id="customerVehicleDamageMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="CVDSucsessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

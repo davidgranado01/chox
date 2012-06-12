@@ -38,6 +38,7 @@
             }
         });
         ui.ajaxForm(form,null,'html');
+        $("#thirdPartySuccessBox").fadeOut(10000);
     }); 
 </script>
 
@@ -129,7 +130,7 @@
             </div>
             <div class="chox-form-button"><input type="submit" id="thirdPartySubmitButtonId" value="Save Changes" /></div>
             <div id="thirdPartyMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="thirdPartySuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

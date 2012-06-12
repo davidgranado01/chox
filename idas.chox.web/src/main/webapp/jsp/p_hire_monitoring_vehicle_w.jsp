@@ -47,7 +47,7 @@
             }
         });
         ui.ajaxForm(form,null,'html');
-
+        $("#HVDSuccessBox").fadeOut(10000);
     });
 
 </script>
@@ -74,7 +74,7 @@
                 <input type="submit" id="hireMonitoringVehicleSubmitButtonId" value="Save Changes" />
             </div>
             <div id="HVDmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="HVDSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

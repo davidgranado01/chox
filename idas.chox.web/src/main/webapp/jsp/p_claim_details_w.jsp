@@ -39,9 +39,7 @@ $(document).ready(function(){
             }
         });
         ui.ajaxForm(form,null,'html');
-        
-       
-        
+        $("#claimDetailsResultMsgBox").fadeOut(10000);
 });
 
 function saveChanges(){

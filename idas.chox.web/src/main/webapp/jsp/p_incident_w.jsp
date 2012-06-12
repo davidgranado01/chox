@@ -69,6 +69,8 @@
             }
         });
         ui.ajaxForm(form,null,'html');
+        
+        $("#incidentSuccessBox").fadeOut(10000);
     });
 </script>
 
@@ -106,7 +108,7 @@
                 <input type="submit" id="IncidentSubmitButtonId" value="Save Changes" />
             </div>
             <div id="incidentMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="incidentSuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
