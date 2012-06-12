@@ -14,4 +14,6 @@ public interface InvoiceService {
     public void saveInvoice(Invoice invoice);
     
     public InvoiceOriginal saveOriginalInvoice(Claim claim, Invoice invoice);
+    
+    public void deleteOriginalInvoice(Claim claim);
 }

@@ -113,6 +113,15 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         }
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteOriginalInvoice(Claim claim) {
+        try {
+            delete(claim.getInvoiceOriginal());
+        } catch (Exception ex) {
+            LOG.error("Exception thrown when deleting original invoice. Exception is ", ex);
+        }
+    }
 /*
     public void updateLiabilityPayment(Claim claim){
         LiabilityStatus l = claim.getLiabilityStatus();

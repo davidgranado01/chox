@@ -433,6 +433,29 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 }
             }
         }
+        
+        /*
+         * delete invoice_original when the invoice is deleted from the claim
+         * (using revert functionality). set null to invoiceOriginal field in
+         * the claim.
+         */
+
+        if (entity instanceof Claim) {
+            Claim claim = (Claim) entity;
+            if (claim.getInvoice() == null && claim.getInvoiceOriginal() != null) {
+                InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
+                invoiceService.deleteOriginalInvoice(claim);
+                
+                for (int i = 0; i < propertyNames.length; i++) {
+                    if ("invoiceOriginal".equals(propertyNames[i])) {
+
+                        state1[i] = null;
+
+                        i = propertyNames.length; // this line is to stop 'for loop'.
+                    }
+                }
+            }
+        }
 
         if (entity instanceof HireMonitoringDetail) {
             Integer indexOfInspectionBookedDate = null;
