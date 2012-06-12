@@ -353,7 +353,9 @@ $BODY$
   ROWS 1000;
 ALTER FUNCTION applyautopenaltycharge(integer, integer)
   OWNER TO chox;
-
+  
+GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox;
+GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox_user;
 
 -------------------
 -- End of 6.13.2 --
