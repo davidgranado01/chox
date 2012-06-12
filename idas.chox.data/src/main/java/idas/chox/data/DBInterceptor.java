@@ -1,5 +1,6 @@
 package idas.chox.data;
 
+import idas.chox.core.model.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,11 +12,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
-import idas.chox.core.model.Auditable;
-import idas.chox.core.model.FullAudit;
-import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.FullAuditService;
+import idas.chox.core.services.InvoiceService;
 import idas.chox.core.util.DateHelper;
 
 public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware {
@@ -408,6 +407,29 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 }
             }
         }
+        
+        /*
+         * save new invoice to invoice_original and attach the invoice_original
+         * to claim.
+         */
+        if (entity instanceof Claim) {
+            Claim claim = (Claim) entity;
+            if (claim.getInvoice() != null && claim.getInvoiceOriginal() == null) {
+                InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
+                InvoiceOriginal invoiceOriginal = invoiceService.saveOriginalInvoice(claim, claim.getInvoice());
+                
+                for (int i = 0; i < propertyNames.length; i++) {
+                    if ("invoiceOriginal".equals(propertyNames[i])) {
+
+                        LOG.debug("propertyNames[" + i + "]" + propertyNames[i]);
+                        state1[i] = invoiceOriginal;
+
+                        LOG.debug("state1[" + i + "]" + state1[i]);
+                        i = propertyNames.length; // this line is to stop 'for loop'.
+                    }
+                }
+            }
+        }
 
         if (entity instanceof HireMonitoringDetail) {
 
@@ -765,7 +787,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
         return securityInfoProvider;
 
     }
-    
     
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;

@@ -51,8 +51,8 @@ public class InvoiceResubmitTest extends BaseTest {
         invoice.setDiscount(BigDecimal.ZERO);
         invoice.setTotalToPay(BigDecimal.TEN);
         invoice.setFullTotalToPay(BigDecimal.TEN);
-        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
-        invoice.setOriginalTotalToPay(BigDecimal.TEN);
+//        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
+//        invoice.setOriginalTotalToPay(BigDecimal.TEN);
         claim.setInvoice(invoice);
         InvoiceResubmit activity = (InvoiceResubmit) activityFactory.getActivity("resubmitInvoice");
         activity.process(claim);

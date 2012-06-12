@@ -405,32 +405,6 @@ public class Claim extends Entity implements Serializable {
         return DateHelper.getNumberOf24HourPeriodsBetween(lastStatusModified, now);
     }
 
-    /*
-     * The below method moved to ClaimService. Code change for bug#1668.
-     
-    public void updateLiabilityPayment() {
-
-        LiabilityStatus l = getLiabilityStatus();
-        if (getInvoice() != null) {
-            if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
-                BigDecimal ttp = getInvoice().getFullTotalToPay();
-                BigDecimal insper = getPercentageLiabilityAccepted();
-                getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
-                getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                LOG.debug("liability updated " + getInvoice().getTotalToPay());
-            } else if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
-                getInvoice().setTotalToPay(BigDecimal.ZERO);
-                getInvoice().setOriginalTotalToPay(BigDecimal.ZERO);
-            } else {
-                getInvoice().setTotalToPay(getInvoice().getFullTotalToPay());
-                LOG.debug("liablity not updated");
-            }
-        }
-    }
-    
-    */
-
     public long getLiabilityAgreedDays() {
 
         long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getLiabilityAgreedDate(), new Date()) + 1;

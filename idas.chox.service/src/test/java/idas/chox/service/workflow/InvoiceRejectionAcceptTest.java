@@ -57,8 +57,8 @@ public class InvoiceRejectionAcceptTest extends BaseTest{
         invoice.setDiscount(BigDecimal.ZERO);
         invoice.setTotalToPay(BigDecimal.TEN);
         invoice.setFullTotalToPay(BigDecimal.TEN);
-        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
-        invoice.setOriginalTotalToPay(BigDecimal.TEN);
+//        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
+//        invoice.setOriginalTotalToPay(BigDecimal.TEN);
         invoice.setInsurerDiscount(BigDecimal.ZERO);
         claim.setInvoice(invoice);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);

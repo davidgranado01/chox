@@ -621,15 +621,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public Integer getMiscellaneousQtyOriginal() {
-        return invoiceOriginal.getMiscellaneousQtyOriginal();
-    }
-
-    public void setMiscellaneousQtyOriginal(Integer miscellaneousQty) {
-        if (miscellaneousQty != getMiscellaneousQtyOriginal() && (getMiscellaneousQtyOriginal() == null)) {
-            invoiceOriginal.setMiscellaneousQtyOriginal(miscellaneousQty);
-        }
-    }
+//    public Integer getMiscellaneousQtyOriginal() {
+//        return invoiceOriginal.getMiscellaneousQtyOriginal();
+//    }
+//
+//    public void setMiscellaneousQtyOriginal(Integer miscellaneousQty) {
+//        if (miscellaneousQty != getMiscellaneousQtyOriginal() && (getMiscellaneousQtyOriginal() == null)) {
+//            invoiceOriginal.setMiscellaneousQtyOriginal(miscellaneousQty);
+//        }
+//    }
 
     public Integer getAutomaticQtyOriginal() {
         return invoiceOriginal.getAutomaticQtyOriginal();
@@ -875,15 +875,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public BigDecimal getOriginalFullTotalToPayOriginal() {
-        return invoiceOriginal.getOriginalFullTotalToPayOriginal();
-    }
-
-    public void setOriginalFullTotalToPayOriginal(BigDecimal originalTotalToPay) {
-        if (originalTotalToPay != getOriginalFullTotalToPayOriginal() && (getOriginalFullTotalToPayOriginal() == null)) {
-            invoiceOriginal.setOriginalFullTotalToPayOriginal(originalTotalToPay);
-        }
-    }
+//    public BigDecimal getOriginalFullTotalToPayOriginal() {
+//        return invoiceOriginal.getOriginalFullTotalToPayOriginal();
+//    }
+//
+//    public void setOriginalFullTotalToPayOriginal(BigDecimal originalTotalToPay) {
+//        if (originalTotalToPay != getOriginalFullTotalToPayOriginal() && (getOriginalFullTotalToPayOriginal() == null)) {
+//            invoiceOriginal.setOriginalFullTotalToPayOriginal(originalTotalToPay);
+//        }
+//    }
 
     public BigDecimal getTotalToPayOriginal() {
         return invoiceOriginal.getTotalToPayOriginal();
@@ -898,15 +898,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         LOG.debug("setTotalToPayOriginal() is called but value is not set as condition failed");
     }
 
-    public BigDecimal getOriginalTotalToPayOriginal() {
-        return invoiceOriginal.getOriginalTotalToPayOriginal();
-    }
-
-    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPay) {
-        if (originalTotalToPay != getOriginalTotalToPayOriginal() && (getOriginalTotalToPayOriginal() == null)) {
-            invoiceOriginal.setOriginalTotalToPayOriginal(originalTotalToPay);
-        }
-    }
+//    public BigDecimal getOriginalTotalToPayOriginal() {
+//        return invoiceOriginal.getOriginalTotalToPayOriginal();
+//    }
+//
+//    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPay) {
+//        if (originalTotalToPay != getOriginalTotalToPayOriginal() && (getOriginalTotalToPayOriginal() == null)) {
+//            invoiceOriginal.setOriginalTotalToPayOriginal(originalTotalToPay);
+//        }
+//    }
 
     public BigDecimal getAdditionalDriverFeeOriginal() {
 
@@ -1659,16 +1659,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public BigDecimal getOriginalFullTotalToPay() {
-        return invoice.getOriginalFullTotalToPay();
-    }
-
-    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
-        if (actionSelected != reset && invoice != null) {
-            setOriginalFullTotalToPayOriginal(invoice.getOriginalFullTotalToPay());
-            invoice.setOriginalTotalToPay(originalTotalToPay);
-        }
-    }
+//    public BigDecimal getOriginalFullTotalToPay() {
+//        return invoice.getOriginalFullTotalToPay();
+//    }
+//
+//    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
+//        if (actionSelected != reset && invoice != null) {
+//            setOriginalFullTotalToPayOriginal(invoice.getOriginalFullTotalToPay());
+//            invoice.setOriginalTotalToPay(originalTotalToPay);
+//        }
+//    }
 
     public BigDecimal getTotalToPay() {
         return invoice.getTotalToPay();
@@ -1685,16 +1685,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public BigDecimal getOriginalTotalToPay() {
-        return invoice.getOriginalTotalToPay();
-    }
-
-    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
-        if (actionSelected != reset && invoice != null) {
-            setOriginalTotalToPayOriginal(invoice.getOriginalTotalToPay());
-            invoice.setOriginalTotalToPay(originalTotalToPay);
-        }
-    }
+//    public BigDecimal getOriginalTotalToPay() {
+//        return invoice.getOriginalTotalToPay();
+//    }
+//
+//    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
+//        if (actionSelected != reset && invoice != null) {
+//            setOriginalTotalToPayOriginal(invoice.getOriginalTotalToPay());
+//            invoice.setOriginalTotalToPay(originalTotalToPay);
+//        }
+//    }
 
     public BigDecimal getAdditionalDriverFee() {
 

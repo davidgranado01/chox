@@ -203,9 +203,9 @@ public class Invoice extends Entity implements Serializable {
     private Integer penaltyAlertQty;
     private BigDecimal totalPenaltyCharge;
     private ReasonOfRejection reasonOfRejection;
-    private BigDecimal originalFullTotalToPay;
+//    private BigDecimal originalFullTotalToPay;
     private BigDecimal totalToPay;
-    private BigDecimal originalTotalToPay;
+//    private BigDecimal originalTotalToPay;
     private BigDecimal totalLossFeeNet;
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;
@@ -1285,13 +1285,13 @@ public class Invoice extends Entity implements Serializable {
         this.repairPenaltyChargeAppliedDate = repairPenaltyChargeAppliedDate;
     }
 
-    public BigDecimal getOriginalFullTotalToPay() {
-        return originalFullTotalToPay;
-    }
-
-    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
-        this.originalFullTotalToPay = originalTotalToPay;
-    }
+//    public BigDecimal getOriginalFullTotalToPay() {
+//        return originalFullTotalToPay;
+//    }
+//
+//    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
+//        this.originalFullTotalToPay = originalTotalToPay;
+//    }
 
     public BigDecimal getTotalToPay() {
         return totalToPay;
@@ -1302,13 +1302,13 @@ public class Invoice extends Entity implements Serializable {
         this.totalToPay = totalToPaySplitLiability;
     }
 
-    public BigDecimal getOriginalTotalToPay() {
-        return originalTotalToPay;
-    }
-
-    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
-        this.originalTotalToPay = originalTotalToPay;
-    }
+//    public BigDecimal getOriginalTotalToPay() {
+//        return originalTotalToPay;
+//    }
+//
+//    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
+//        this.originalTotalToPay = originalTotalToPay;
+//    }
 
     public BigDecimal getAdditionalDriverFee() {
 //        if (additionalDriverFee == null)
