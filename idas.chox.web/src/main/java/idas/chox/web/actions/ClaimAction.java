@@ -559,7 +559,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     && (!claim.isAutoPenaltyChargeEnabled()
                     || service.calculatePenaltyAlertQty(invoice) >= 3)))) {
-                result = invoice.getInvoicedDays() >= (invoice.getPenaltyAlertQty() + 1) * 30;
+                result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
         return result;
