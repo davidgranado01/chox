@@ -1946,8 +1946,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyPercentageJsonString() {
-        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getRepairPenaltyPercentage().size());
-        for (PenaltyPercentage repairPenaltyPercentageEnum : PenaltyPercentage.getRepairPenaltyPercentage()) {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getRepairPenaltyPercentages().size());
+        for (PenaltyPercentage repairPenaltyPercentageEnum : PenaltyPercentage.getRepairPenaltyPercentages()) {
             luItems.add(new LookupItem(repairPenaltyPercentageEnum.getPercentage(), repairPenaltyPercentageEnum.getPercentage()));
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
@@ -1955,8 +1955,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getHirePenaltyPercentageJsonString() {
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getHirePenaltyPercentage(hireStart).size());
-        for (PenaltyPercentage hirePenaltyPercentageEnum : PenaltyPercentage.getHirePenaltyPercentage(hireStart)) {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(PenaltyPercentage.getHirePenaltyPercentages(hireStart).size());
+        for (PenaltyPercentage hirePenaltyPercentageEnum : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
             luItems.add(new LookupItem(hirePenaltyPercentageEnum.getPercentage(), hirePenaltyPercentageEnum.getPercentage()));
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
@@ -1968,7 +1968,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         BigDecimal hireNet = claim.getInvoice().getHireNet();
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         
-        for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentage(hireStart)) {
+        for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
             if (hirePenaltyPercentageValue.getPercentage().equals(hirePercentage)) {
                 BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
                 hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
@@ -1982,7 +1982,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
         BigDecimal repairNet = claim.getInvoice().getRepairNet();
 
-        for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentage()) {
+        for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentages()) {
             if (repairPenaltyPercentageValue.getPercentage().equals(repairPercentage)) {
                 BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
                 repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
@@ -1995,19 +1995,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim.getInvoice().getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int penaltyAlertQty = service.calculatePenaltyAlertQty(claim.getInvoice());
-            if(DateHelper.Parse(PenaltyPercentage.PENALTY_INCREASE_DATE).compareTo(claim.getVehicleHire().getHireStart()) <= 0){
-                return penaltyAlertQty == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012.getPercentage()
-                        : penaltyAlertQty == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012.getPercentage()
-                        : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
-                        : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
-            } else {
-                return penaltyAlertQty == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS_BEFORE_15_JUNE_2012.getPercentage()
-                        : penaltyAlertQty == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS_BEFORE_15_JUNE_2012.getPercentage()
-                        : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
-                        : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
-            }
-            
-
+            return PenaltyPercentage.getHirePenaltyPercentage(claim.getVehicleHire().getHireStart(), penaltyAlertQty);
         } else {
             return "";
         }
@@ -2018,11 +2006,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim.getInvoice().getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
             int penaltyAlertQty = service.calculatePenaltyAlertQty(claim.getInvoice());
-
-            return penaltyAlertQty == 1 ? PenaltyPercentage.REPAIR_MORE_THAN_30_DAYS.getPercentage()
-                    : penaltyAlertQty >= 2 ? PenaltyPercentage.REPAIR_MORE_THAN_60_DAYS.getPercentage()
-                    : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
-
+            return PenaltyPercentage.getRepairPenaltyPercentage(penaltyAlertQty);
         } else {
             return "";
         }
