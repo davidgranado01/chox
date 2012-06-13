@@ -188,8 +188,8 @@
                     checkZero:true
                 },
                 liabilityAgreedDate:{
-                	checkDateFormat: true,
                     checkAcceptedDate:true,
+                	checkDateFormat: true,
                     checkDateBlank:true
                 }
             },
@@ -208,8 +208,8 @@
                     checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
                 },
                 liabilityAgreedDate:{
-                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
+                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'"
                 }
             }
