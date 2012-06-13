@@ -115,11 +115,19 @@
         function(value, element) {
             if (isLiabilityAccepted()){
                 var accdate = $('#liabilityAgreedDate').val();
+                var composedDate = new Date();
+                var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(accdate);
+                if(matches != null){
+	                var d = matches[1];
+	                var m = matches[2] - 1;
+	                var y = matches[3];
+	                composedDate = new Date(y, m, d);
+                }
                 if ( accdate == "" ){
                     return false;
                 }
                 var cur = new Date();
-                if ( ( cur - accdate) < 0 ){
+                if ( ( cur - composedDate) < 0 ){
                     return false;
                 }
             }
