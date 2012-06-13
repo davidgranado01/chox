@@ -1995,7 +1995,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim.getInvoice().getHireNet().compareTo(BigDecimal.ZERO) == 1) {
             int penaltyAlertQty = service.calculatePenaltyAlertQty(claim.getInvoice());
-            if(DateHelper.Parse(PenaltyPercentage.PENALTY_INCREASE_DATE).before(claim.getVehicleHire().getHireStart())){
+            if(DateHelper.Parse(PenaltyPercentage.PENALTY_INCREASE_DATE).compareTo(claim.getVehicleHire().getHireStart()) <= 0){
                 return penaltyAlertQty == 1 ? PenaltyPercentage.HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012.getPercentage()
                         : penaltyAlertQty == 2 ? PenaltyPercentage.HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012.getPercentage()
                         : penaltyAlertQty >= 3 ? PenaltyPercentage.COMMERCIAL.getPercentage()
