@@ -114,7 +114,7 @@
         "checkAcceptedDate",
         function(value, element) {
             if (isLiabilityAccepted()){
-                var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                var accdate = $('#liabilityAgreedDate').val();
                 if ( accdate == "" ){
                     return false;
                 }
@@ -131,7 +131,7 @@
         "checkDateBlank",
         function(value, element) {
             if (!isLiabilityAccepted()){
-                var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                var accdate = $('#liabilityAgreedDate').val();
                 if ( accdate != "" ){
                     return false;
                 }
