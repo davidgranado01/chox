@@ -1433,7 +1433,7 @@ public class Invoice extends Entity implements Serializable {
     public String getRepairPenaltyPercentageApplied() {
         if (getRepairNet() != null && getRepairNet().compareTo(BigDecimal.ZERO) >= 1 
                 && getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
-            for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentage()) {
+            for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentages()) {
                 if (getRepairPenaltyPercentage().equals(repairPenaltyPercentageValue.getPercentage())) {
                     /*
                      * Calculate the appliedRepairPenaltyPercentage using the
@@ -1457,7 +1457,7 @@ public class Invoice extends Entity implements Serializable {
     public String getHirePenaltyPercentageApplied(Date hireStart) {
         if (getHireNet() != null && getHireNet().compareTo(BigDecimal.ZERO) >= 1 
                 && getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
-            List<PenaltyPercentage> penaltyPercentage = PenaltyPercentage.getHirePenaltyPercentage(hireStart);
+            List<PenaltyPercentage> penaltyPercentage = PenaltyPercentage.getHirePenaltyPercentages(hireStart);
             for (PenaltyPercentage hirePenaltyPercentageValue : penaltyPercentage) {
                 if (getHirePenaltyPercentage().equals(hirePenaltyPercentageValue.getPercentage())) {
                     /*

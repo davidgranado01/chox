@@ -223,7 +223,7 @@ WHERE
 
 LOOP
 
-hirepenalPer60D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id) < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
+hirepenalPer60D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord60D.vehicle_hire_id) < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
 hirepenalPer60DVal = hirepenalPer60D/100;
 
 RAISE NOTICE 'hirepenalPer60DVal %', hirepenalPer60DVal;

@@ -46,7 +46,7 @@ public enum PenaltyPercentage {
         this.percentageValue = percentageValue;
     }
     
-    public static List<PenaltyPercentage> getHirePenaltyPercentage(Date hireStart){
+    public static List<PenaltyPercentage> getHirePenaltyPercentages(Date hireStart){
         List <PenaltyPercentage> hirePenaltyPercentage = new ArrayList<PenaltyPercentage>();
         if(DateHelper.Parse(PENALTY_INCREASE_DATE).compareTo(hireStart) <= 0){
             hirePenaltyPercentage.add(HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012);
@@ -59,11 +59,31 @@ public enum PenaltyPercentage {
         return hirePenaltyPercentage;
     }
     
-    public static List<PenaltyPercentage> getRepairPenaltyPercentage(){
+    public static List<PenaltyPercentage> getRepairPenaltyPercentages(){
         List <PenaltyPercentage> repairPenaltyPercentage = new ArrayList<PenaltyPercentage>();
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_30_DAYS);
         repairPenaltyPercentage.add(REPAIR_MORE_THAN_60_DAYS);
         return repairPenaltyPercentage;
+    }
+    
+    public static String getHirePenaltyPercentage(Date hireStart, int penaltyAlertQty){
+        if(DateHelper.Parse(PENALTY_INCREASE_DATE).compareTo(hireStart) <= 0){
+            return penaltyAlertQty == 1 ? HIRE_MORE_THAN_30_DAYS_AFTER_15_JUNE_2012.getPercentage()
+                    : penaltyAlertQty == 2 ? HIRE_MORE_THAN_60_DAYS_AFTER_15_JUNE_2012.getPercentage()
+                    : penaltyAlertQty >= 3 ? COMMERCIAL.getPercentage()
+                    : ZERO_PERCENTAGE.getPercentage();
+        } else {
+            return penaltyAlertQty == 1 ? HIRE_MORE_THAN_30_DAYS_BEFORE_15_JUNE_2012.getPercentage()
+                    : penaltyAlertQty == 2 ? HIRE_MORE_THAN_60_DAYS_BEFORE_15_JUNE_2012.getPercentage()
+                    : penaltyAlertQty >= 3 ? COMMERCIAL.getPercentage()
+                    : ZERO_PERCENTAGE.getPercentage();
+        }
+    }
+
+    public static String getRepairPenaltyPercentage(int penaltyAlertQty){
+        return penaltyAlertQty == 1 ? REPAIR_MORE_THAN_30_DAYS.getPercentage()
+                : penaltyAlertQty >= 2 ? REPAIR_MORE_THAN_60_DAYS.getPercentage()
+                : ZERO_PERCENTAGE.getPercentage();
     }
 
 } 
