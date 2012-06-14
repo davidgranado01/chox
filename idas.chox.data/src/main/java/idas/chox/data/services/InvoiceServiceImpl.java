@@ -1,15 +1,16 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
@@ -47,7 +48,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     
     @Transactional(readOnly = false)
     @Override
-    public InvoiceOriginal saveOriginalInvoice(Claim claim, Invoice inv) {
+    public InvoiceOriginal saveOriginalInvoice(Invoice inv) {
         try {
 
             InvoiceOriginal invOriginal = new InvoiceOriginal();
@@ -115,9 +116,9 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
     @Override
     @Transactional(readOnly = false)
-    public void deleteOriginalInvoice(Claim claim) {
+    public void deleteOriginalInvoice(Invoice invoice) {
         try {
-            delete(claim.getInvoiceOriginal());
+            delete(invoice.getInvoiceOriginal());
         } catch (Exception ex) {
             LOG.error("Exception thrown when deleting original invoice. Exception is ", ex);
         }

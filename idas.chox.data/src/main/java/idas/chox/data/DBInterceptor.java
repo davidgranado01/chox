@@ -1,6 +1,5 @@
 package idas.chox.data;
 
-import idas.chox.core.model.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +11,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
+import idas.chox.core.model.*;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.FullAuditService;
 import idas.chox.core.services.InvoiceService;
@@ -25,11 +25,40 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
     private BeanFactory bf;
 
     @Override
+    public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+
+
+        /*
+         * delete invoice_original when the invoice is deleted from the claim
+         * (using revert functionality).
+         */
+
+        if (entity instanceof Invoice) {
+            Invoice invoice = (Invoice) entity;
+            InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
+            invoiceService.deleteOriginalInvoice(invoice);
+        }
+    }
+    
+    @Override
     public boolean onSave(Object entity,
             Serializable id,
             Object[] state,
             String[] propertyNames,
             Type[] types) {
+        
+        if (entity instanceof Invoice) {
+            Invoice invoice = (Invoice)entity;
+            InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
+            InvoiceOriginal invoiceOriginal = invoiceService.saveOriginalInvoice(invoice);
+            for (int i = 0; i < propertyNames.length; i++) {
+                    if ("invoiceOriginal".equals(propertyNames[i])) {
+
+                        state[i] = invoiceOriginal;
+                        break;
+                    }
+                }
+        }
 
         if (entity instanceof Auditable) {
 
@@ -411,52 +440,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             }
         }
         
-        /*
-         * save new invoice to invoice_original and attach the invoice_original
-         * to claim.
-         */
-        if (entity instanceof Claim) {
-            Claim claim = (Claim) entity;
-            if (claim.getInvoice() != null && claim.getInvoiceOriginal() == null) {
-                InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
-                InvoiceOriginal invoiceOriginal = invoiceService.saveOriginalInvoice(claim, claim.getInvoice());
-                
-                for (int i = 0; i < propertyNames.length; i++) {
-                    if ("invoiceOriginal".equals(propertyNames[i])) {
-
-                        LOG.debug("propertyNames[" + i + "]" + propertyNames[i]);
-                        state1[i] = invoiceOriginal;
-
-                        LOG.debug("state1[" + i + "]" + state1[i]);
-                        i = propertyNames.length; // this line is to stop 'for loop'.
-                    }
-                }
-            }
-        }
-        
-        /*
-         * delete invoice_original when the invoice is deleted from the claim
-         * (using revert functionality). set null to invoiceOriginal field in
-         * the claim.
-         */
-
-        if (entity instanceof Claim) {
-            Claim claim = (Claim) entity;
-            if (claim.getInvoice() == null && claim.getInvoiceOriginal() != null) {
-                InvoiceService invoiceService = (InvoiceService) bf.getBean("invoiceService");
-                invoiceService.deleteOriginalInvoice(claim);
-                
-                for (int i = 0; i < propertyNames.length; i++) {
-                    if ("invoiceOriginal".equals(propertyNames[i])) {
-
-                        state1[i] = null;
-
-                        i = propertyNames.length; // this line is to stop 'for loop'.
-                    }
-                }
-            }
-        }
-
         if (entity instanceof HireMonitoringDetail) {
             Integer indexOfInspectionBookedDate = null;
             Integer indexOfInspectionBookedDateLastModified = null;

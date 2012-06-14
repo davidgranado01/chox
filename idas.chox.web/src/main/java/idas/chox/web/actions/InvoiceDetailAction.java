@@ -364,12 +364,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getDateInvoicedOriginal();
     }
 
-    public void setDateInvoicedOriginal(java.util.Date dateInvoiced) {
-        if ((getDateInvoicedOriginal() == null) && (dateInvoiced != getDateInvoicedOriginal())) {
-            invoiceOriginal.setDateInvoicedOriginal(dateInvoiced);
-        }
-    }
-
     public java.math.BigDecimal getHireNetOriginal() {
 
 
@@ -379,25 +373,9 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     }
 
-    public void setHireNetOriginal(java.math.BigDecimal hireNet) {
-
-        LOG.debug("setHireNetOriginal is being called");
-
-        if ((getHireNetOriginal() == null) && (hireNet != getHireNetOriginal())) {
-            invoiceOriginal.setHireNetOriginal(hireNet);
-        }
-    }
-
     public java.math.BigDecimal getHireVatOriginal() {
 
         return invoiceOriginal.getHireVatOriginal();
-    }
-
-    public void setHireVatOriginal(java.math.BigDecimal hireVat) {
-
-        if (hireVat != getHireVatOriginal() && (getHireVatOriginal() == null)) {
-            invoiceOriginal.setHireVatOriginal(hireVat);
-        }
     }
 
     public java.math.BigDecimal getHireGrossOriginal() {
@@ -405,518 +383,190 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getHireGrossOriginal();
     }
 
-    public void setHireGrossOriginal(java.math.BigDecimal hireGross) {
-
-        if (hireGross != getHireGrossOriginal() && (getHireGrossOriginal() == null)) {
-            invoiceOriginal.setHireGrossOriginal(hireGross);
-        }
-    }
-
     public java.math.BigDecimal getRepairNetOriginal() {
 
         return invoiceOriginal.getRepairNetOriginal();
-    }
-
-    public void setRepairNetOriginal(java.math.BigDecimal repairNet) {
-
-        if (repairNet != getRepairNetOriginal() && (getRepairNetOriginal() == null)) {
-            invoiceOriginal.setRepairNetOriginal(repairNet);
-        }
     }
 
     public java.math.BigDecimal getRepairVatOriginal() {
         return invoiceOriginal.getRepairVatOriginal();
     }
 
-    public void setRepairVatOriginal(java.math.BigDecimal repairVat) {
-        if (repairVat != getRepairVatOriginal() && (getRepairVatOriginal() == null)) {
-            invoiceOriginal.setRepairVatOriginal(repairVat);
-        }
-    }
-
     public java.math.BigDecimal getRepairGrossOriginal() {
         return invoiceOriginal.getRepairGrossOriginal();
-    }
-
-    public void setRepairGrossOriginal(java.math.BigDecimal repairGross) {
-        if (repairGross != getRepairGrossOriginal() && (getRepairGrossOriginal() == null)) {
-            invoiceOriginal.setRepairGrossOriginal(repairGross);
-        }
     }
 
     public java.math.BigDecimal getEngineerFeeNetOriginal() {
         return invoiceOriginal.getEngineerFeeNetOriginal();
     }
 
-    public void setEngineerFeeNetOriginal(java.math.BigDecimal engineerFeeNet) {
-        if (engineerFeeNet != getEngineerFeeNetOriginal() && (getEngineerFeeNetOriginal() == null)) {
-            invoiceOriginal.setEngineerFeeNetOriginal(engineerFeeNet);
-        }
-    }
-
     public java.math.BigDecimal getEngineerFeeVatOriginal() {
         return invoiceOriginal.getEngineerFeeVatOriginal();
-    }
-
-    public void setEngineerFeeVatOriginal(java.math.BigDecimal engineerFeeVat) {
-        if (engineerFeeVat != getEngineerFeeVatOriginal() && (getEngineerFeeVatOriginal() == null)) {
-            invoiceOriginal.setEngineerFeeVatOriginal(engineerFeeVat);
-        }
     }
 
     public java.math.BigDecimal getEngineerFeeGrossOriginal() {
         return invoiceOriginal.getEngineerFeeGrossOriginal();
     }
 
-    public void setEngineerFeeGrossOriginal(java.math.BigDecimal engineerFeeGross) {
-        if (engineerFeeGross != getEngineerFeeGrossOriginal() && (getEngineerFeeGrossOriginal() == null)) {
-            invoiceOriginal.setEngineerFeeGrossOriginal(engineerFeeGross);
-        }
-    }
-
     public java.math.BigDecimal getStorageRecoveryNetOriginal() {
         return invoiceOriginal.getStorageRecoveryNetOriginal();
-    }
-
-    public void setStorageRecoveryNetOriginal(java.math.BigDecimal storageRecoveryNet) {
-        if (storageRecoveryNet != getStorageRecoveryNetOriginal() && (getStorageRecoveryNetOriginal() == null)) {
-            invoiceOriginal.setStorageRecoveryNetOriginal(storageRecoveryNet);
-        }
     }
 
     public java.math.BigDecimal getStorageRecoveryVatOriginal() {
         return invoiceOriginal.getStorageRecoveryVatOriginal();
     }
 
-    public void setStorageRecoveryVatOriginal(java.math.BigDecimal storageRecoveryVat) {
-        if (storageRecoveryVat != getStorageRecoveryVatOriginal() && (getStorageRecoveryVatOriginal() == null)) {
-            invoiceOriginal.setStorageRecoveryVatOriginal(storageRecoveryVat);
-        }
-    }
-
     public java.math.BigDecimal getStorageRecoveryGrossOriginal() {
         return invoiceOriginal.getStorageRecoveryGrossOriginal();
-    }
-
-    public void setStorageRecoveryGrossOriginal(java.math.BigDecimal storageRecoveryGross) {
-        if (storageRecoveryGross != getStorageRecoveryGrossOriginal() && (getStorageRecoveryGrossOriginal() == null)) {
-            invoiceOriginal.setStorageRecoveryGrossOriginal(storageRecoveryGross);
-        }
     }
 
     public java.math.BigDecimal getTotalNetOriginal() {
         return invoiceOriginal.getTotalNetOriginal();
     }
 
-    public void setTotalNetOriginal(java.math.BigDecimal totalNet) {
-        if (totalNet != getTotalNetOriginal() && (getTotalNetOriginal() == null)) {
-            invoiceOriginal.setTotalNetOriginal(totalNet);
-        }
-    }
-
     public java.math.BigDecimal getTotalVatOriginal() {
         return invoiceOriginal.getTotalVatOriginal();
-    }
-
-    public void setTotalVatOriginal(java.math.BigDecimal totalVat) {
-        if (totalVat != getTotalVatOriginal() && (getTotalVatOriginal() == null)) {
-            invoiceOriginal.setTotalVatOriginal(totalVat);
-        }
     }
 
     public java.math.BigDecimal getTotalGrossOriginal() {
         return invoiceOriginal.getTotalGrossOriginal();
     }
 
-    public void setTotalGrossOriginal(java.math.BigDecimal totalGross) {
-        if (totalGross != getTotalGrossOriginal() && (getTotalGrossOriginal() == null)) {
-            invoiceOriginal.setTotalGrossOriginal(totalGross);
-        }
-    }
-
     public java.math.BigDecimal getClaimsHandlingInvoiceAmountOriginal() {
         return invoiceOriginal.getClaimsHandlingInvoiceAmountOriginal();
-    }
-
-    public void setClaimsHandlingInvoiceAmountOriginal(java.math.BigDecimal claimsHandlingInvoiceAmount) {
-        if (claimsHandlingInvoiceAmount != getClaimsHandlingInvoiceAmountOriginal() && (getClaimsHandlingInvoiceAmountOriginal() == null)) {
-            invoiceOriginal.setClaimsHandlingInvoiceAmountOriginal(claimsHandlingInvoiceAmount);
-        }
     }
 
     public java.math.BigDecimal getDeductionForClaimsHandlingFeeOriginal() {
         return invoiceOriginal.getDeductionForClaimsHandlingFeeOriginal();
     }
 
-    public void setDeductionForClaimsHandlingFeeOriginal(java.math.BigDecimal deductionForClaimsHandlingFee) {
-        if (deductionForClaimsHandlingFee != getDeductionForClaimsHandlingFeeOriginal() && (getDeductionForClaimsHandlingFeeOriginal() == null)) {
-            invoiceOriginal.setDeductionForClaimsHandlingFeeOriginal(deductionForClaimsHandlingFee);
-        }
-    }
-
     public java.math.BigDecimal getDiscountOriginal() {
         return invoiceOriginal.getDiscountOriginal();
-    }
-
-    public void setDiscountOriginal(java.math.BigDecimal discount) {
-        if (discount != getDiscountOriginal() && (getDiscountOriginal() == null)) {
-            invoiceOriginal.setDiscountOriginal(discount);
-        }
     }
 
     public java.math.BigDecimal getInsurerDiscountOriginal() {
         return invoiceOriginal.getInsurerDiscountOriginal();
     }
 
-    public void setInsurerDiscountOriginal(java.math.BigDecimal insurerDiscount) {
-        if (insurerDiscount != getInsurerDiscountOriginal() && (getInsurerDiscountOriginal() == null)) {
-            invoiceOriginal.setInsurerDiscountOriginal(insurerDiscount);
-        }
-    }
-
     public java.math.BigDecimal getFullTotalToPayOriginal() {
         return invoiceOriginal.getFullTotalToPayOriginal();
-    }
-
-    public void setFullTotalToPayOriginal(java.math.BigDecimal totalToPay) {
-        if (totalToPay != getFullTotalToPayOriginal() && (getFullTotalToPayOriginal() == null)) {
-            invoiceOriginal.setFullTotalToPayOriginal(totalToPay);
-
-        }
-        if (invoice.getTotalToPay() != getTotalToPayOriginal() && (getTotalToPayOriginal() == null)) {
-            LOG.debug("setTotalToPayOriginal is set with the value of {}", invoice.getTotalToPay());
-            invoiceOriginal.setTotalToPayOriginal(invoice.getTotalToPay());
-        }
-
     }
 
     public java.math.BigDecimal getMiscellaneousFeeOriginal() {
         return invoiceOriginal.getMiscellaneousFeeOriginal();
     }
 
-    public void setMiscellaneousFeeOriginal(java.math.BigDecimal miscellaneousFee) {
-        if (miscellaneousFee != getMiscellaneousFeeOriginal() && (getMiscellaneousFeeOriginal() == null)) {
-            invoiceOriginal.setMiscellaneousFeeOriginal(miscellaneousFee);
-        }
-    }
-
     public java.math.BigDecimal getAutomaticFeeOriginal() {
         return invoiceOriginal.getAutomaticFeeOriginal();
-    }
-
-    public void setAutomaticFeeOriginal(java.math.BigDecimal automaticFee) {
-        if (automaticFee != getAutomaticFeeOriginal() && (getAutomaticFeeOriginal() == null)) {
-            invoiceOriginal.setAutomaticFeeOriginal(automaticFee);
-        }
-
     }
 
     public Integer getEstateQtyOriginal() {
         return invoiceOriginal.getEstateQtyOriginal();
     }
 
-    public void setEstateQtyOriginal(Integer estateQty) {
-        if (estateQty != getEstateQtyOriginal() && (getEstateQtyOriginal() == null)) {
-            invoiceOriginal.setEstateQtyOriginal(estateQty);
-        }
-    }
-
-//    public Integer getMiscellaneousQtyOriginal() {
-//        return invoiceOriginal.getMiscellaneousQtyOriginal();
-//    }
-//
-//    public void setMiscellaneousQtyOriginal(Integer miscellaneousQty) {
-//        if (miscellaneousQty != getMiscellaneousQtyOriginal() && (getMiscellaneousQtyOriginal() == null)) {
-//            invoiceOriginal.setMiscellaneousQtyOriginal(miscellaneousQty);
-//        }
-//    }
-
     public Integer getAutomaticQtyOriginal() {
         return invoiceOriginal.getAutomaticQtyOriginal();
-    }
-
-    public void setAutomaticQtyOriginal(Integer automaticQty) {
-        if (automaticQty != getAutomaticQtyOriginal() && (getAutomaticQtyOriginal() == null)) {
-            invoiceOriginal.setAutomaticQtyOriginal(automaticQty);
-        }
     }
 
     public Integer getSatNavQtyOriginal() {
         return invoiceOriginal.getSatNavQtyOriginal();
     }
 
-    public void setSatNavQtyOriginal(Integer satNavQty) {
-        if (satNavQty != getSatNavQtyOriginal() && (getSatNavQtyOriginal() == null)) {
-            invoiceOriginal.setSatNavQtyOriginal(satNavQty);
-        }
-    }
-
     public Integer getBabySeatQtyOriginal() {
         return invoiceOriginal.getBabySeatQtyOriginal();
-    }
-
-    public void setBabySeatQtyOriginal(Integer babySeatQty) {
-        if (babySeatQty != getBabySeatQtyOriginal() && (getBabySeatQtyOriginal() == null)) {
-            invoiceOriginal.setBabySeatQtyOriginal(babySeatQty);
-        }
     }
 
     public Integer getTowBarsQtyOriginal() {
         return invoiceOriginal.getTowBarsQtyOriginal();
     }
 
-    public void setTowBarsQtyOriginal(Integer towBarsQty) {
-        if (towBarsQty != getTowBarsQtyOriginal() && (getTowBarsQtyOriginal() == null)) {
-            invoiceOriginal.setTowBarsQtyOriginal(towBarsQty);
-        }
-    }
-
     public Integer getNonStandardInsurancePremiumQtyOriginal() {
         return invoiceOriginal.getNonStandardInsurancePremiumQtyOriginal();
-    }
-
-    public void setNonStandardInsurancePremiumQtyOriginal(Integer nonStandardInsurancePremiumQty) {
-        if (nonStandardInsurancePremiumQty != getNonStandardInsurancePremiumQtyOriginal() && (getNonStandardInsurancePremiumQtyOriginal() == null)) {
-            invoiceOriginal.setNonStandardInsurancePremiumQtyOriginal(nonStandardInsurancePremiumQty);
-        }
     }
 
     public Integer getAdminQtyOriginal() {
         return invoiceOriginal.getAdminQtyOriginal();
     }
 
-    public void setAdminQtyOriginal(Integer adminQty) {
-        if (adminQty != getAdminQtyOriginal() && (getAdminQtyOriginal() == null)) {
-            invoiceOriginal.setAdminQtyOriginal(adminQty);
-        }
-    }
-
     public Integer getRoofRackQtyOriginal() {
         return invoiceOriginal.getRoofRackQtyOriginal();
-    }
-
-    public void setRoofRackQtyOriginal(Integer roofRackQty) {
-        if (roofRackQty != getRoofRackQtyOriginal() && (getRoofRackQtyOriginal() == null)) {
-            invoiceOriginal.setRoofRackQtyOriginal(roofRackQty);
-        }
     }
 
     public Integer getDualControlQtyOriginal() {
         return invoiceOriginal.getDualControlQtyOriginal();
     }
 
-    public void setDualControlQtyOriginal(Integer dualControlQty) {
-        if (dualControlQty != getDualControlQtyOriginal() && (getDualControlQtyOriginal() == null)) {
-            invoiceOriginal.setDualControlQtyOriginal(dualControlQty);
-        }
-    }
-
     public Integer getDeliveryCollectionQtyOriginal() {
         return invoiceOriginal.getDeliveryCollectionQtyOriginal();
-    }
-
-    public void setDeliveryCollectionQtyOriginal(Integer deliveryCollectionQty) {
-        if (deliveryCollectionQty != getDeliveryCollectionQtyOriginal() && (getDeliveryCollectionQtyOriginal() == null)) {
-            invoiceOriginal.setDeliveryCollectionQtyOriginal(deliveryCollectionQty);
-        }
     }
 
     public java.math.BigDecimal getSatNavFeeOriginal() {
         return invoiceOriginal.getSatNavFeeOriginal();
     }
 
-    public void setSatNavFeeOriginal(java.math.BigDecimal satNavFee) {
-        if (satNavFee != getSatNavFeeOriginal() && (getSatNavFeeOriginal() == null)) {
-            invoiceOriginal.setSatNavFeeOriginal(satNavFee);
-        }
-    }
-
     public java.math.BigDecimal getEstateFeeOriginal() {
         return invoiceOriginal.getEstateFeeOriginal();
-    }
-
-    public void setEstateFeeOriginal(java.math.BigDecimal estateFee) {
-        if (estateFee != getEstateFeeOriginal() && (getEstateFeeOriginal() == null)) {
-            invoiceOriginal.setEstateFeeOriginal(estateFee);
-        }
     }
 
     public java.math.BigDecimal getBabySeatFeeOriginal() {
         return invoiceOriginal.getBabySeatFeeOriginal();
     }
 
-    public void setBabySeatFeeOriginal(java.math.BigDecimal babySeatFee) {
-        if (babySeatFee != getBabySeatFeeOriginal() && (getBabySeatFeeOriginal() == null)) {
-            invoiceOriginal.setBabySeatFeeOriginal(babySeatFee);
-        }
-    }
-
     public java.math.BigDecimal getTowBarsFeeOriginal() {
         return invoiceOriginal.getTowBarsFeeOriginal();
-    }
-
-    public void setTowBarsFeeOriginal(java.math.BigDecimal towBarsFee) {
-        if (towBarsFee != getTowBarsFeeOriginal() && (getTowBarsFeeOriginal() == null)) {
-            invoiceOriginal.setTowBarsFeeOriginal(towBarsFee);
-        }
     }
 
     public java.math.BigDecimal getNonStandardInsurancePremiumFeeOriginal() {
         return invoiceOriginal.getNonStandardInsurancePremiumFeeOriginal();
     }
 
-    public void setNonStandardInsurancePremiumFeeOriginal(java.math.BigDecimal nonStandardInsurancePremiumFee) {
-        if (nonStandardInsurancePremiumFee != getNonStandardInsurancePremiumFeeOriginal() && (getNonStandardInsurancePremiumFeeOriginal() == null)) {
-            invoiceOriginal.setNonStandardInsurancePremiumFeeOriginal(nonStandardInsurancePremiumFee);
-        }
-    }
-
     public java.math.BigDecimal getAdminFeeOriginal() {
         return invoiceOriginal.getAdminFeeOriginal();
-    }
-
-    public void setAdminFeeOriginal(java.math.BigDecimal adminFee) {
-        if (adminFee != getAdminFeeOriginal() && (getAdminFeeOriginal() == null)) {
-            invoiceOriginal.setAdminFeeOriginal(adminFee);
-        }
     }
 
     public java.math.BigDecimal getRoofRackFeeOriginal() {
         return invoiceOriginal.getRoofRackFeeOriginal();
     }
 
-    public void setRoofRackFeeOriginal(java.math.BigDecimal roofRackFee) {
-        if (roofRackFee != getRoofRackFeeOriginal() && (getRoofRackFeeOriginal() == null)) {
-            invoiceOriginal.setRoofRackFeeOriginal(roofRackFee);
-        }
-    }
-
     public java.math.BigDecimal getDualControlFeeOriginal() {
         return invoiceOriginal.getDualControlFeeOriginal();
-    }
-
-    public void setDualControlFeeOriginal(java.math.BigDecimal dualControlFee) {
-        if (dualControlFee != getDualControlFeeOriginal() && (getDualControlFeeOriginal() == null)) {
-            invoiceOriginal.setDualControlFeeOriginal(dualControlFee);
-        }
     }
 
     public java.math.BigDecimal getDeliveryCollectionFeeOriginal() {
         return invoiceOriginal.getDeliveryCollectionFeeOriginal();
     }
 
-    public void setDeliveryCollectionFeeOriginal(java.math.BigDecimal deliveryCollectionFee) {
-        if (deliveryCollectionFee != getDeliveryCollectionFeeOriginal() && (getDeliveryCollectionFeeOriginal() == null)) {
-            invoiceOriginal.setDeliveryCollectionFeeOriginal(deliveryCollectionFee);
-        }
-    }
-
     public BigDecimal getHireRateChargedPerDayOriginal() {
         return invoiceOriginal.getHireRateChargedPerDayOriginal();
-    }
-
-    public void setHireRateChargedPerDayOriginal(BigDecimal hireRateChargedPerDay) {
-        if (hireRateChargedPerDay != getHireRateChargedPerDayOriginal() && (getHireRateChargedPerDayOriginal() == null)) {
-            invoiceOriginal.setHireRateChargedPerDayOriginal(hireRateChargedPerDay);
-        }
     }
 
     public BigDecimal getExcessAmountCollectedOriginal() {
         return invoiceOriginal.getExcessAmountCollectedOriginal();
     }
 
-    public void setExcessAmountCollectedOriginal(BigDecimal excessAmountCollected) {
-        if (excessAmountCollected != getExcessAmountCollectedOriginal() && (getExcessAmountCollectedOriginal() == null)) {
-            invoiceOriginal.setExcessAmountCollectedOriginal(excessAmountCollected);
-        }
-    }
-
     public BigDecimal getVatAmountCollectedOriginal() {
         return invoiceOriginal.getVatAmountCollectedOriginal();
-    }
-
-    public void setVatAmountCollectedOriginal(BigDecimal vatAmountCollected) {
-        if (vatAmountCollected != getVatAmountCollectedOriginal() && (getVatAmountCollectedOriginal() == null)) {
-            invoiceOriginal.setVatAmountCollectedOriginal(vatAmountCollected);
-        }
     }
 
     public BigDecimal getHirePenaltyChargeOriginal() {
         return invoiceOriginal.getHirePenaltyChargeOriginal();
     }
 
-    public void setHirePenaltyChargeOriginal(BigDecimal hirePenaltyCharge) {
-        LOG.debug("setHirePenaltyChargeOriginal() is called with the value of {}", hirePenaltyCharge);
-        if (hirePenaltyCharge != getHirePenaltyChargeOriginal() && (getHirePenaltyChargeOriginal() == null)) {
-            LOG.debug("setHirePenaltyChargeOriginal is set with the value of {}", hirePenaltyCharge);
-            invoiceOriginal.setHirePenaltyChargeOriginal(hirePenaltyCharge);
-        }
-        LOG.debug("setHirePenaltyChargeOriginal is called but condition failed value did not setup");
-
-    }
-
     public BigDecimal getRepairPenaltyChargeOriginal() {
         return invoiceOriginal.getRepairPenaltyChargeOriginal();
-    }
-
-    public void setRepairPenaltyChargeOriginal(BigDecimal repairPenaltyCharge) {
-        if (repairPenaltyCharge != getRepairPenaltyChargeOriginal() && (getRepairPenaltyChargeOriginal() == null)) {
-            invoiceOriginal.setRepairPenaltyChargeOriginal(repairPenaltyCharge);
-        }
     }
 
     public Integer getPenaltyAlertQtyOriginal() {
         return invoiceOriginal.getPenaltyAlertQtyOriginal();
     }
 
-    public void setPenaltyAlertQtyOriginal(Integer penaltyAlertQty) {
-        if (penaltyAlertQty != getPenaltyAlertQtyOriginal() && (getPenaltyAlertQtyOriginal() == null)) {
-            invoiceOriginal.setPenaltyAlertQtyOriginal(invoice.getPenaltyAlertQty());
-        }
-    }
-
-//    public BigDecimal getOriginalFullTotalToPayOriginal() {
-//        return invoiceOriginal.getOriginalFullTotalToPayOriginal();
-//    }
-//
-//    public void setOriginalFullTotalToPayOriginal(BigDecimal originalTotalToPay) {
-//        if (originalTotalToPay != getOriginalFullTotalToPayOriginal() && (getOriginalFullTotalToPayOriginal() == null)) {
-//            invoiceOriginal.setOriginalFullTotalToPayOriginal(originalTotalToPay);
-//        }
-//    }
-
     public BigDecimal getTotalToPayOriginal() {
         return invoiceOriginal.getTotalToPayOriginal();
     }
 
-    public void setTotalToPayOriginal(BigDecimal totalToPaySplitLiability) {
-        LOG.debug("setTotalToPayOriginal() is called with the value of {}", totalToPaySplitLiability);
-        if (totalToPaySplitLiability != getTotalToPayOriginal() && (getTotalToPayOriginal() == null)) {
-            LOG.debug("setTotalToPayOriginal is set with the value of {}", totalToPaySplitLiability);
-            invoiceOriginal.setTotalToPayOriginal(totalToPaySplitLiability);
-        }
-        LOG.debug("setTotalToPayOriginal() is called but value is not set as condition failed");
-    }
-
-//    public BigDecimal getOriginalTotalToPayOriginal() {
-//        return invoiceOriginal.getOriginalTotalToPayOriginal();
-//    }
-//
-//    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPay) {
-//        if (originalTotalToPay != getOriginalTotalToPayOriginal() && (getOriginalTotalToPayOriginal() == null)) {
-//            invoiceOriginal.setOriginalTotalToPayOriginal(originalTotalToPay);
-//        }
-//    }
-
     public BigDecimal getAdditionalDriverFeeOriginal() {
 
         return invoiceOriginal.getAdditionalDriverFeeOriginal();
-    }
-
-    public void setAdditionalDriverFeeOriginal(BigDecimal additionalDriverFee) {
-        if (additionalDriverFee != getAdditionalDriverFeeOriginal() && (getAdditionalDriverFeeOriginal() == null)) {
-            invoiceOriginal.setAdditionalDriverFeeOriginal(additionalDriverFee);
-        }
     }
 
     public Integer getAdditionalDriverQtyOriginal() {
@@ -924,60 +574,24 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getAdditionalDriverQtyOriginal();
     }
 
-    public void setAdditionalDriverQtyOriginal(Integer additionalDriverQty) {
-        if (additionalDriverQty != getAdditionalDriverQtyOriginal() && (getAdditionalDriverQtyOriginal() == null)) {
-            invoiceOriginal.setAdditionalDriverQtyOriginal(additionalDriverQty);
-        }
-    }
-
     public BigDecimal getTotalLossFeeGrossOriginal() {
         return invoiceOriginal.getTotalLossFeeGrossOriginal();
-    }
-
-    public void setTotalLossFeeGrossOriginal(BigDecimal totalLossFeeGross) {
-        if (totalLossFeeGross != getTotalLossFeeGrossOriginal() && (getTotalLossFeeGrossOriginal() == null)) {
-            invoiceOriginal.setTotalLossFeeGrossOriginal(totalLossFeeGross);
-        }
     }
 
     public BigDecimal getTotalLossFeeNetOriginal() {
         return invoiceOriginal.getTotalLossFeeNetOriginal();
     }
 
-    public void setTotalLossFeeNetOriginal(BigDecimal totalLossFeeNet) {
-        if (totalLossFeeNet != getTotalLossFeeNetOriginal() && (getTotalLossFeeNetOriginal() == null)) {
-            invoiceOriginal.setTotalLossFeeNetOriginal(totalLossFeeNet);
-        }
-    }
-
     public BigDecimal getTotalLossFeeVatOriginal() {
         return invoiceOriginal.getTotalLossFeeVatOriginal();
-    }
-
-    public void setTotalLossFeeVatOriginal(BigDecimal totalLossFeeVat) {
-        if (totalLossFeeVat != getTotalLossFeeVatOriginal() && (getTotalLossFeeVatOriginal() == null)) {
-            invoiceOriginal.setTotalLossFeeVatOriginal(totalLossFeeVat);
-        }
     }
 
     public String getHirePenaltyPercentageOriginal() {
         return invoiceOriginal.getHirePenaltyPercentageOriginal();
     }
 
-    public void setHirePenaltyPercentageOriginal(String hirePenaltyPercentage) {
-        if (!hirePenaltyPercentage.equals(getHirePenaltyPercentageOriginal()) && (getHirePenaltyPercentageOriginal() == null)) {
-            invoiceOriginal.setHirePenaltyPercentageOriginal(hirePenaltyPercentage);
-        }
-    }
-
     public String getRepairPenaltyPercentageOriginal() {
         return invoiceOriginal.getRepairPenaltyPercentageOriginal();
-    }
-
-    public void setRepairPenaltyPercentageOriginal(String repairPenaltyPercentage) {
-        if (!repairPenaltyPercentage.equals(getRepairPenaltyPercentageOriginal()) && (getRepairPenaltyPercentageOriginal() == null)) {
-            invoiceOriginal.setRepairPenaltyPercentageOriginal(repairPenaltyPercentage);
-        }
     }
 
     public BigDecimal getInterimPaymentOriginal() {
@@ -985,20 +599,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getInterimPaymentOriginal();
     }
 
-    public void setInterimPaymentOriginal(BigDecimal interimPayment) {
-        if (interimPayment != getInterimPaymentOriginal() && (getInterimPaymentOriginal() == null)) {
-            invoiceOriginal.setInterimPaymentOriginal(interimPayment);
-        }
-    }
-
     public BigDecimal getTotalPenaltyChargeOriginal() {
         return invoiceOriginal.getTotalPenaltyChargeOriginal();
-    }
-
-    public void setTotalPenaltyChargeOriginal(BigDecimal totalPenaltyCharge) {
-        if (totalPenaltyCharge != getTotalPenaltyChargeOriginal() && (getTotalPenaltyChargeOriginal() == null)) {
-            invoiceOriginal.setTotalPenaltyChargeOriginal(totalPenaltyCharge);
-        }
     }
 
     // </editor-fold>
@@ -1018,7 +620,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDateInvoiced(java.util.Date dateInvoiced) {
         if (actionSelected != reset && invoice != null) {
-            setDateInvoicedOriginal(getDateInvoiced());
             invoice.setDateInvoiced(dateInvoiced);
         }
     }
@@ -1034,7 +635,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
             setPreviousHireNet(invoice.getHireNet());
 
-            setHireNetOriginal(invoice.getHireNet());
             invoice.setHireNet(hireNet);
 
 
@@ -1049,7 +649,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setHireVat(java.math.BigDecimal hireVat) {
         if (actionSelected != reset && invoice != null) {
             setPreviousHireVat(invoice.getHireVat());
-            setHireVatOriginal(invoice.getHireVat());
             invoice.setHireVat(hireVat);
         }
     }
@@ -1060,7 +659,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setHireGross(java.math.BigDecimal hireGross) {
         if (actionSelected != reset && invoice != null) {
-            setHireGrossOriginal(invoice.getHireGross());
             invoice.setHireGross(hireGross);
         }
     }
@@ -1072,7 +670,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setRepairNet(java.math.BigDecimal repairNet) {
         if (actionSelected != reset && invoice != null) {
             setPreviousRepairNet(invoice.getRepairNet());
-            setRepairNetOriginal(invoice.getRepairNet());
             invoice.setRepairNet(repairNet);
         }
     }
@@ -1084,7 +681,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setRepairVat(java.math.BigDecimal repairVat) {
         if (actionSelected != reset && invoice != null) {
             setPreviousRepairVat(invoice.getRepairVat());
-            setRepairVatOriginal(invoice.getRepairVat());
             invoice.setRepairVat(repairVat);
         }
     }
@@ -1095,7 +691,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRepairGross(java.math.BigDecimal repairGross) {
         if (actionSelected != reset && invoice != null) {
-            setRepairGrossOriginal(invoice.getRepairGross());
             invoice.setRepairGross(repairGross);
         }
     }
@@ -1107,7 +702,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setEngineerFeeNet(java.math.BigDecimal engineerFeeNet) {
         if (actionSelected != reset && invoice != null) {
             setPreviousEngineerFeeNet(invoice.getEngineerFeeNet());
-            setEngineerFeeNetOriginal(invoice.getEngineerFeeNet());
             invoice.setEngineerFeeNet(engineerFeeNet);
         }
     }
@@ -1119,7 +713,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setEngineerFeeVat(java.math.BigDecimal engineerFeeVat) {
         if (actionSelected != reset && invoice != null) {
             setPreviousEngineerFeeVat(invoice.getEngineerFeeVat());
-            setEngineerFeeVatOriginal(invoice.getEngineerFeeVat());
             invoice.setEngineerFeeVat(engineerFeeVat);
         }
     }
@@ -1130,7 +723,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setEngineerFeeGross(java.math.BigDecimal engineerFeeGross) {
         if (actionSelected != reset && invoice != null) {
-            setEngineerFeeGrossOriginal(invoice.getEngineerFeeGross());
             invoice.setEngineerFeeGross(engineerFeeGross);
         }
     }
@@ -1142,7 +734,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setStorageRecoveryNet(java.math.BigDecimal storageRecoveryNet) {
         if (actionSelected != reset && invoice != null) {
             setPreviousStorageNet(invoice.getStorageRecoveryNet());
-            setStorageRecoveryNetOriginal(invoice.getStorageRecoveryNet());
             invoice.setStorageRecoveryNet(storageRecoveryNet);
         }
     }
@@ -1154,7 +745,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setStorageRecoveryVat(java.math.BigDecimal storageRecoveryVat) {
         if (actionSelected != reset && invoice != null) {
             setPreviousStorageVat(invoice.getStorageRecoveryVat());
-            setStorageRecoveryVatOriginal(invoice.getStorageRecoveryVat());
             invoice.setStorageRecoveryVat(storageRecoveryVat);
         }
     }
@@ -1165,7 +755,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setStorageRecoveryGross(java.math.BigDecimal storageRecoveryGross) {
         if (actionSelected != reset && invoice != null) {
-            setStorageRecoveryGrossOriginal(invoice.getStorageRecoveryGross());
             invoice.setStorageRecoveryGross(storageRecoveryGross);
         }
     }
@@ -1176,7 +765,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTotalNet(java.math.BigDecimal totalNet) {
         if (actionSelected != reset && invoice != null) {
-            setTotalNetOriginal(invoice.getTotalNet());
             invoice.setTotalNet(totalNet);
         }
     }
@@ -1187,7 +775,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTotalVat(java.math.BigDecimal totalVat) {
         if (actionSelected != reset && invoice != null) {
-            setTotalVatOriginal(invoice.getTotalVat());
             invoice.setTotalVat(totalVat);
         }
     }
@@ -1198,7 +785,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTotalGross(java.math.BigDecimal totalGross) {
         if (actionSelected != reset && invoice != null) {
-            setTotalGrossOriginal(invoice.getTotalGross());
             invoice.setTotalGross(totalGross);
         }
     }
@@ -1209,7 +795,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setClaimsHandlingInvoiceAmount(java.math.BigDecimal claimsHandlingInvoiceAmount) {
         if (actionSelected != reset && invoice != null) {
-            setClaimsHandlingInvoiceAmountOriginal(invoice.getClaimsHandlingInvoiceAmount());
             invoice.setClaimsHandlingInvoiceAmount(claimsHandlingInvoiceAmount);
         }
     }
@@ -1220,7 +805,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDeductionForClaimsHandlingFee(java.math.BigDecimal deductionForClaimsHandlingFee) {
         if (actionSelected != reset && invoice != null) {
-            setDeductionForClaimsHandlingFeeOriginal(invoice.getDeductionForClaimsHandlingFee());
             invoice.setDeductionForClaimsHandlingFee(deductionForClaimsHandlingFee);
         }
     }
@@ -1231,7 +815,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDiscount(java.math.BigDecimal discount) {
         if (actionSelected != reset && invoice != null) {
-            setDiscountOriginal(invoice.getDiscount());
             invoice.setDiscount(discount);
         }
     }
@@ -1246,7 +829,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerDiscount());
                 setCanAddInsurerDiscountComment(true);
             }
-            setInsurerDiscountOriginal(invoice.getInsurerDiscount());
             invoice.setInsurerDiscount(insurerDiscount);
         }
     }
@@ -1257,7 +839,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setFullTotalToPay(java.math.BigDecimal totalToPay) {
         if (actionSelected != reset && invoice != null) {
-            setFullTotalToPayOriginal(invoice.getFullTotalToPay());
             invoice.setFullTotalToPay(totalToPay);
         }
     }
@@ -1290,7 +871,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setMiscellaneousFee(java.math.BigDecimal miscellaneousFee) {
         if (actionSelected != reset && invoice != null) {
-            setMiscellaneousFeeOriginal(invoice.getMiscellaneousFee());
             invoice.setMiscellaneousFee(miscellaneousFee);
         }
     }
@@ -1301,7 +881,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAutomaticFee(java.math.BigDecimal automaticFee) {
         if (actionSelected != reset && invoice != null) {
-            setAutomaticFeeOriginal(invoice.getAutomaticFee());
             invoice.setAutomaticFee(automaticFee);
         }
     }
@@ -1312,7 +891,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setEstateQty(Integer estateQty) {
         if (actionSelected != reset && invoice != null) {
-            setEstateQtyOriginal(invoice.getEstateQty());
             invoice.setEstateQty(estateQty);
         }
     }
@@ -1333,7 +911,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAutomaticQty(Integer automaticQty) {
         if (actionSelected != reset && invoice != null) {
-            setAutomaticQtyOriginal(invoice.getAutomaticQty());
             invoice.setAutomaticQty(automaticQty);
         }
     }
@@ -1344,7 +921,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setSatNavQty(Integer satNavQty) {
         if (actionSelected != reset && invoice != null) {
-            setSatNavQtyOriginal(invoice.getSatNavQty());
             invoice.setSatNavQty(satNavQty);
         }
     }
@@ -1355,7 +931,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setBabySeatQty(Integer babySeatQty) {
         if (actionSelected != reset && invoice != null) {
-            setBabySeatQtyOriginal(invoice.getBabySeatQty());
             invoice.setBabySeatQty(babySeatQty);
         }
     }
@@ -1366,7 +941,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTowBarsQty(Integer towBarsQty) {
         if (actionSelected != reset && invoice != null) {
-            setTowBarsQtyOriginal(invoice.getTowBarsQty());
             invoice.setTowBarsQty(towBarsQty);
         }
     }
@@ -1377,7 +951,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setNonStandardInsurancePremiumQty(Integer nonStandardInsurancePremiumQty) {
         if (actionSelected != reset && invoice != null) {
-            setNonStandardInsurancePremiumQtyOriginal(invoice.getNonStandardInsurancePremiumQty());
             invoice.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
         }
     }
@@ -1388,7 +961,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAdminQty(Integer adminQty) {
         if (actionSelected != reset && invoice != null) {
-            setAdminQtyOriginal(invoice.getAdminQty());
             invoice.setAdminQty(adminQty);
         }
     }
@@ -1399,7 +971,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRoofRackQty(Integer roofRackQty) {
         if (actionSelected != reset && invoice != null) {
-            setRoofRackQtyOriginal(invoice.getRoofRackQty());
             invoice.setRoofRackQty(roofRackQty);
         }
     }
@@ -1410,7 +981,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDualControlQty(Integer dualControlQty) {
         if (actionSelected != reset && invoice != null) {
-            setDualControlQtyOriginal(invoice.getDualControlQty());
             invoice.setDualControlQty(dualControlQty);
         }
     }
@@ -1421,7 +991,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDeliveryCollectionQty(Integer deliveryCollectionQty) {
         if (actionSelected != reset && invoice != null) {
-            setDeliveryCollectionQtyOriginal(invoice.getDeliveryCollectionQty());
             invoice.setDeliveryCollectionQty(deliveryCollectionQty);
         }
     }
@@ -1432,7 +1001,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setSatNavFee(java.math.BigDecimal satNavFee) {
         if (actionSelected != reset && invoice != null) {
-            setSatNavFeeOriginal(invoice.getSatNavFee());
             invoice.setSatNavFee(satNavFee);
         }
     }
@@ -1443,7 +1011,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setEstateFee(java.math.BigDecimal estateFee) {
         if (actionSelected != reset && invoice != null) {
-            setEstateFeeOriginal(invoice.getEstateFee());
             invoice.setEstateFee(estateFee);
         }
     }
@@ -1454,7 +1021,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setBabySeatFee(java.math.BigDecimal babySeatFee) {
         if (actionSelected != reset && invoice != null) {
-            setBabySeatFeeOriginal(invoice.getBabySeatFee());
             invoice.setBabySeatFee(babySeatFee);
         }
     }
@@ -1465,7 +1031,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTowBarsFee(java.math.BigDecimal towBarsFee) {
         if (actionSelected != reset && invoice != null) {
-            setTowBarsFeeOriginal(invoice.getTowBarsFee());
             invoice.setTowBarsFee(towBarsFee);
         }
     }
@@ -1477,7 +1042,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setNonStandardInsurancePremiumFee(java.math.BigDecimal nonStandardInsurancePremiumFee) {
         if (actionSelected != reset && invoice != null) {
             setPreviousNonStandardInsurancePremiumFee(invoice.getNonStandardInsurancePremiumFee());
-            setNonStandardInsurancePremiumFeeOriginal(invoice.getNonStandardInsurancePremiumFee());
             invoice.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
         }
     }
@@ -1488,7 +1052,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAdminFee(java.math.BigDecimal adminFee) {
         if (actionSelected != reset && invoice != null) {
-            setAdminFeeOriginal(invoice.getAdminFee());
             invoice.setAdminFee(adminFee);
         }
     }
@@ -1499,7 +1062,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRoofRackFee(java.math.BigDecimal roofRackFee) {
         if (actionSelected != reset && invoice != null) {
-            setRoofRackFeeOriginal(invoice.getRoofRackFee());
             invoice.setRoofRackFee(roofRackFee);
         }
     }
@@ -1510,7 +1072,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDualControlFee(java.math.BigDecimal dualControlFee) {
         if (actionSelected != reset && invoice != null) {
-            setDualControlFeeOriginal(invoice.getDualControlFee());
             invoice.setDualControlFee(dualControlFee);
         }
     }
@@ -1521,7 +1082,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setDeliveryCollectionFee(java.math.BigDecimal deliveryCollectionFee) {
         if (actionSelected != reset && invoice != null) {
-            setDeliveryCollectionFeeOriginal(invoice.getDeliveryCollectionFee());
             invoice.setDeliveryCollectionFee(deliveryCollectionFee);
         }
     }
@@ -1562,7 +1122,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setHireRateChargedPerDay(BigDecimal hireRateChargedPerDay) {
         if (actionSelected != reset && invoice != null) {
-            setHireRateChargedPerDayOriginal(invoice.getHireRateChargedPerDay());
             invoice.setHireRateChargedPerDay(hireRateChargedPerDay);
         }
     }
@@ -1573,7 +1132,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setExcessAmountCollected(BigDecimal excessAmountCollected) {
         if (actionSelected != reset && invoice != null) {
-            setExcessAmountCollectedOriginal(invoice.getExcessAmountCollected());
             invoice.setExcessAmountCollected(excessAmountCollected);
         }
     }
@@ -1584,7 +1142,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setVatAmountCollected(BigDecimal vatAmountCollected) {
         if (actionSelected != reset && invoice != null) {
-            setVatAmountCollectedOriginal(invoice.getVatAmountCollected());
             invoice.setVatAmountCollected(vatAmountCollected);
         }
     }
@@ -1595,7 +1152,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setHirePenaltyCharge(BigDecimal hirePenaltyCharge) {
         if (actionSelected != reset && invoice != null) {
-            setHirePenaltyChargeOriginal(invoice.getHirePenaltyCharge());
             invoice.setHirePenaltyCharge(hirePenaltyCharge);
         }
 
@@ -1607,7 +1163,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRepairPenaltyCharge(BigDecimal repairPenaltyCharge) {
         if (actionSelected != reset && invoice != null) {
-            setRepairPenaltyChargeOriginal(invoice.getRepairPenaltyCharge());
             invoice.setRepairPenaltyCharge(repairPenaltyCharge);
         }
     }
@@ -1618,7 +1173,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setPenaltyAlertQty(Integer penaltyAlertQty) {
         if (actionSelected != reset && invoice != null) {
-            setPenaltyAlertQtyOriginal(invoice.getPenaltyAlertQty());
             invoice.setPenaltyAlertQty(penaltyAlertQty);
         }
     }
@@ -1659,17 +1213,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-//    public BigDecimal getOriginalFullTotalToPay() {
-//        return invoice.getOriginalFullTotalToPay();
-//    }
-//
-//    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
-//        if (actionSelected != reset && invoice != null) {
-//            setOriginalFullTotalToPayOriginal(invoice.getOriginalFullTotalToPay());
-//            invoice.setOriginalTotalToPay(originalTotalToPay);
-//        }
-//    }
-
     public BigDecimal getTotalToPay() {
         return invoice.getTotalToPay();
     }
@@ -1678,23 +1221,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         LOG.debug("setTotalToPay() is called with the value of {}", totalToPaySplitLiability);
         if (actionSelected != reset && invoice != null) {
             LOG.debug("setTotalToPay() is passed through the reset condition with the value of {}", totalToPaySplitLiability);
-            setTotalToPayOriginal(invoice.getTotalToPay());
             LOG.debug("setTotalToPayOriginal() from settotaltopay() is called with the value of {}", getTotalToPay());
             invoice.setTotalToPay(totalToPaySplitLiability);
             LOG.debug("setTotalToPay set up done");
         }
     }
-
-//    public BigDecimal getOriginalTotalToPay() {
-//        return invoice.getOriginalTotalToPay();
-//    }
-//
-//    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
-//        if (actionSelected != reset && invoice != null) {
-//            setOriginalTotalToPayOriginal(invoice.getOriginalTotalToPay());
-//            invoice.setOriginalTotalToPay(originalTotalToPay);
-//        }
-//    }
 
     public BigDecimal getAdditionalDriverFee() {
 
@@ -1703,7 +1234,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAdditionalDriverFee(BigDecimal additionalDriverFee) {
         if (actionSelected != reset && invoice != null) {
-            setAdditionalDriverFeeOriginal(invoice.getAdditionalDriverFee());
             invoice.setAdditionalDriverFee(additionalDriverFee);
         }
     }
@@ -1715,7 +1245,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setAdditionalDriverQty(Integer additionalDriverQty) {
         if (actionSelected != reset && invoice != null) {
-            setAdditionalDriverQtyOriginal(invoice.getAdditionalDriverQty());
             invoice.setAdditionalDriverQty(additionalDriverQty);
         }
     }
@@ -1743,7 +1272,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTotalLossFeeGross(BigDecimal totalLossFeeGross) {
         if (actionSelected != reset && invoice != null) {
-            setTotalLossFeeGrossOriginal(invoice.getTotalLossFeeGross());
             invoice.setTotalLossFeeGross(totalLossFeeGross);
         }
     }
@@ -1755,7 +1283,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setTotalLossFeeNet(BigDecimal totalLossFeeNet) {
         if (actionSelected != reset && invoice != null) {
             setPreviousTotalLossNet(invoice.getTotalLossFeeNet());
-            setTotalLossFeeNetOriginal(invoice.getTotalLossFeeNet());
             invoice.setTotalLossFeeNet(totalLossFeeNet);
         }
     }
@@ -1767,7 +1294,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public void setTotalLossFeeVat(BigDecimal totalLossFeeVat) {
         if (actionSelected != reset && invoice != null) {
             setPreviousTotalLossVat(invoice.getTotalLossFeeVat());
-            setTotalLossFeeVatOriginal(invoice.getTotalLossFeeVat());
             invoice.setTotalLossFeeVat(totalLossFeeVat);
         }
     }
@@ -1778,7 +1304,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setHirePenaltyPercentage(String hirePenaltyPercentage) {
         if (actionSelected != reset && invoice != null) {
-            setHirePenaltyPercentageOriginal(invoice.getHirePenaltyPercentage());
             invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
         }
     }
@@ -1789,7 +1314,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setRepairPenaltyPercentage(String repairPenaltyPercentage) {
         if (actionSelected != reset && invoice != null) {
-            setRepairPenaltyPercentageOriginal(invoice.getRepairPenaltyPercentage());
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
         }
     }
@@ -1828,7 +1352,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
         if (actionSelected != reset && invoice != null) {
-            setTotalPenaltyChargeOriginal(invoice.getTotalPenaltyCharge());
             invoice.setTotalPenaltyCharge(totalPenaltyCharge);
         }
     }
@@ -2690,7 +2213,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             try {
                 checkVersion(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
                 claim.setEngineerReport(engineerReport);
-                claim.setInvoiceOriginal(invoiceOriginal);
+//                claim.setInvoiceOriginal(invoiceOriginal);
                 claim.setVehicleHire(vehicleHire);
                 claim.setInvoice(invoice);
                 claimService.updateLiabilityPayment(claim);
@@ -2760,8 +2283,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
             }
             engineerReport = (claim.getEngineerReport() != null) ? claim.getEngineerReport() : new EngineerReport();
-            invoiceOriginal = (claim.getInvoiceOriginal() != null) ? claim.getInvoiceOriginal() : new InvoiceOriginal();
             invoice = (claim.getInvoice() != null) ? claim.getInvoice() : new Invoice();
+            invoiceOriginal = (invoice.getInvoiceOriginal() != null) ? invoice.getInvoiceOriginal() : new InvoiceOriginal();
             vehicleHire = (claim.getVehicleHire() != null) ? claim.getVehicleHire() : new VehicleHire();
 
             oldVRN = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
@@ -2769,7 +2292,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             addModelToSession(Arrays.asList(claim, engineerReport, invoiceOriginal, vehicleHire, invoice));
 
         } catch (Throwable ex) {
-            LOG.debug("Exception in preparing for InvoiceDetailAction : {}", ex.getStackTrace());
+            LOG.error("Exception in preparing for InvoiceDetailAction : ", ex);
         }
     }
 
@@ -3040,8 +2563,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalVat = totalVat.add(storageRecoveryVat);
 
         setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
-//        LOG.debug(" getRepairNet() value{} ", getRepairNet());
-//        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
 
         totalGross = totalGross.add(hireGross);
         totalGross = totalGross.add(repairGross);
@@ -3055,7 +2576,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
-        //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
 
         fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
@@ -3067,36 +2587,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
 
-        /*
-         * The beleow code has been removed because it duplicate the same code
-         * used in updateLiabilityPayment() in Claim class and it make problem
-         * when you change in one place and not in another. now the
-         * updateLiabilityPayment() method moved to ClaimService modified to
-         * updateLiabilityPayment(Claim claim).
-         * The problem found in bug#1668 and this code change is part of bug#1668.
-         
-        liablitityPercentage = liablitityPercentage.add(getPercentageLiabilityAccepted());
-        LOG.debug(" liablitityPercentage() value{} ", liablitityPercentage);
-        liablitityPercentage = liablitityPercentage.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-        
-        fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
-
-        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
-            fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
-        }
-        LiabilityStatus l = claim.getLiabilityStatus();
-        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType()) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
-            setTotalToPay(fullTotalToPay.multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-        } else {
-            setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
-        }
-        
-        * 
-        */
         claimService.updateLiabilityPayment(claim);
-        
-//        invoiceOriginalAction.model.setTotalToPayOriginal(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
-//        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
+
     }
 
     public String getHirePenaltyPercentageApplied() {
