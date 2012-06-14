@@ -603,18 +603,6 @@
                                        id="nrOfDaysUploadedId" name="daysBeforeEscalated"
                                        value="<s:property value="daysBeforeEscalated" />" />
                             </div>
-                            <div class="chox-form-item">
-                                <label class="chox-form-std-label">Enable Supervisor Escalation</label>
-                                <s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);" style="margin-left : 2px;" />
-                            </div>
-                            <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
-                                <label class="chox-form-std-label">
-                                    Days Since Invoice Upload to Escalate
-                                </label>
-                                <input type="text" class="chox-ttxt"
-                                        id="nrOfDaysUploadedId" name="daysBeforeEscalated"
-                                        value="<s:property value="daysBeforeEscalated" />" />
-                            </div>
                             <div class="labelWithInputField">
                                 <div class="chox-form-item" id="timeEnteredToContestedInvDiv">
                                     <label class="chox-form-std-label" style="margin-top : -7px;">
