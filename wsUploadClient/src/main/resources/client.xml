@@ -8,7 +8,7 @@
     
     <jaxws:client id="uploadBordereau"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="https://test.idaschox.com:8443/chox_p6s12/services/UploadService/uploadBordereau">
+                  address="https://www.idaschox.com:8443/services/UploadService/uploadBordereau">
         <jaxws:outInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
             <ref bean="wss4jOutInterceptor" />
@@ -17,7 +17,7 @@
 
     <jaxws:client id="paymentReceived"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="https://test.idaschox.com:8443/chox_p6s12/services/UploadService/paymentReceived">
+                  address="https://www.idaschox.com:8443/services/UploadService/paymentReceived">
         <jaxws:outInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
             <ref bean="wss4jOutInterceptor" />
