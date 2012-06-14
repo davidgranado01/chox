@@ -1,21 +1,23 @@
 
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimStatus;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.TeamPerformanceLineItem;
 import idas.chox.service.reports.viewdata.TeamPerformanceReportObject;
-import java.io.ByteArrayOutputStream;
 
 
 public class TeamPerformanceReport implements Report{
@@ -218,7 +220,7 @@ public class TeamPerformanceReport implements Report{
 
 
                     sb.append("(select avg(original_total_to_pay) from (select io.full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, workgroup w, invoice_original io  where c.invoice_original_id=io.id and c.workgroup_id = w.id and w.status = true ");
+                    sb.append("from claim c, audit_trail a1, workgroup w, invoice_original io, invoice i where i.invoice_original_id=io.id and c.invoice_id = i.id and c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id ");
                     sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");

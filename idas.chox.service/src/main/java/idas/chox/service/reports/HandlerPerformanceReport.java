@@ -165,7 +165,7 @@ public class HandlerPerformanceReport implements Report {
 
 
                     sb.append("(select avg(original_total_to_pay) from (select io.full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, invoice_original io  where c.invoice_original_id=io.id and a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
+                    sb.append("from claim c, audit_trail a1, invoice_original io, invoice i  where i.id = c.invoice_id and i.invoice_original_id=io.id and a1.created_by = :pOwnerId and c.insurer_id = :pInsurerId ");
                     sb.append("and c.id = a1.claim_id ");
                     sb.append("and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' ");
                     sb.append("and not exists (select * from audit_trail a2 where a2.reverted=false and a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");

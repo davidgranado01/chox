@@ -1,14 +1,16 @@
 package idas.chox.core.model;
 
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.notifications.AnomalousCheck;
 import java.io.Serializable;
-import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.notifications.AnomalousCheck;
+import idas.chox.core.util.DateHelper;
 
 public class Claim extends Entity implements Serializable {
 
@@ -51,7 +53,6 @@ public class Claim extends Entity implements Serializable {
     private Customer customer;
     private Incident incident;
     private Invoice invoice;
-    private InvoiceOriginal invoiceOriginal;
     private ThirdParty thirdParty;
     private VehicleHire vehicleHire;
     private EngineerReport engineerReport;
@@ -98,50 +99,12 @@ public class Claim extends Entity implements Serializable {
         return ClaimType.isTPI(getClaimType());
     }
 
-/**
-    public boolean isOriginalSupplementaryInvoicedClaim() {
-        return originalSupplementaryInvoicedClaim;
-    }
-
-    public void setOriginalSupplementaryInvoicedClaim(boolean originalSupplementaryInvoicedClaim) {
-        this.originalSupplementaryInvoicedClaim = originalSupplementaryInvoicedClaim;
-    }
-    
-    public boolean isSupplementaryInvoicedClaim() {
-        return supplementaryInvoicedClaim;
-    }
-
-    public void setSupplementaryInvoicedClaim(boolean supplementaryInvoicedClaim) {
-        this.supplementaryInvoicedClaim = supplementaryInvoicedClaim;
-    }
-
-
-    public void setTpiClaim(boolean TpiClaim) {
-        this.tpiClaim = TpiClaim;
-    }
-
-    public boolean isInsurerVsInsurerClaim() {
-        return insurerVsInsurerClaim;
-    }
-
-    public void setInsurerVsInsurerClaim(boolean insurerVsInsurerClaim) {
-        this.insurerVsInsurerClaim = insurerVsInsurerClaim;
-    }
-**/
     public String getTpiClaimStatus() {
         return tpiClaimStatus;
     }
 
     public void setTpiClaimStatus(String TpiClaimStatus) {
         this.tpiClaimStatus = TpiClaimStatus;
-    }
-
-    public InvoiceOriginal getInvoiceOriginal() {
-        return invoiceOriginal;
-    }
-
-    public void setInvoiceOriginal(InvoiceOriginal invoiceOriginal) {
-        this.invoiceOriginal = invoiceOriginal;
     }
 
     public boolean isManagingRepair() {
@@ -575,10 +538,6 @@ public class Claim extends Entity implements Serializable {
 
                         isDeletable = false;
 
-                        // System.out.println("BuildNotification TYPE:"+anc.BuildNotification().getType());
-                        // System.out.println("RepairBookInDate:"+this.getHireMonitoringDetail().getRepairBookInDate());
-                        // System.out.println("NotificationRepairBookInDate:"+this.getHireMonitoringDetail().getNotificationRepairBookInDate());
-                        // System.out.println("");
                     }
 
                     if (isDeletable) {
@@ -595,24 +554,6 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
-    /*
-    public void AddNotification(Notification notification) {
-    
-    if (notification != null && !isSameTypeOfNotificationExist(notification)) {
-    
-    if (this.notifications == null) {
-    this.notifications = new ArrayList<Notification>();
-    }
-    
-    notification.setClaim(this);
-    notifications.add(notification);
-    } else if (notification != null && isSameTypeOfNotificationExist(notification)) {
-    Notification n = getSameTypeOfNotificationExist(notification);
-    n.setMessage(notification.getMessage());
-    }
-    }
-    
-     */
     public void AddNotification(Notification notification) {
 
         if (notification != null) {

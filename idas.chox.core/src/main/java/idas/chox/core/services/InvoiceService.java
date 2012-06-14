@@ -1,9 +1,9 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.xmlValidation.ClaimResult;
+
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.InvoiceOriginal;
+import idas.chox.core.xmlValidation.ClaimResult;
 
 public interface InvoiceService {
 
@@ -13,7 +13,7 @@ public interface InvoiceService {
 
     public void saveInvoice(Invoice invoice);
     
-    public InvoiceOriginal saveOriginalInvoice(Claim claim, Invoice invoice);
+    public InvoiceOriginal saveOriginalInvoice(Invoice invoice);
     
-    public void deleteOriginalInvoice(Claim claim);
+    public void deleteOriginalInvoice(Invoice invoice);
 }

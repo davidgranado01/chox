@@ -1,14 +1,16 @@
 package idas.chox.service.claim;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.LiabilityStatus;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.LiabilityStatus;
 
 /**
  *
@@ -99,7 +101,7 @@ public class ClaimObjectService {
             newClaim.setWorkgroup(claim.getWorkgroupOriginal());
         }
         newClaim.setInvoice(null);
-        newClaim.setInvoiceOriginal(null);
+//        newClaim.setInvoiceOriginal(null);
         newClaim.setAttachments(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);

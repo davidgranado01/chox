@@ -1,13 +1,16 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimStatus;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
@@ -15,7 +18,6 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.OwnerPerformanceLineItem;
 import idas.chox.service.reports.viewdata.OwnerPerformanceReportObject;
-import java.io.ByteArrayOutputStream;
 
 public class OwnerPerformanceReport implements Report {
 
@@ -233,7 +235,7 @@ public class OwnerPerformanceReport implements Report {
 
 
                     sb.append("(select avg(original_total_to_pay) from (select io.full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, invoice_original io  where c.invoice_original_id=io.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("from claim c, audit_trail a1, invoice_original io, invoice i where i.invoice_original_id=io.id and c.invoice_id = i.id and c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }

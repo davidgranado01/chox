@@ -107,35 +107,40 @@ GRANT EXECUTE ON FUNCTION updateinvoiceoriginal() TO chox_user;
 
 SELECT COUNT(*) FROM updateinvoiceoriginal();
 
-
-
 DROP VIEW rpt_claim_invoice;
 
-CREATE OR REPLACE VIEW rpt_claim_invoice AS 
- SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty AS cdw_qty, 
-  invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, 
-  invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty,
-  invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_modified_by, 
-  invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, 
-  invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net,
-  invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, 
-  invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay,
-  invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, 
-  invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee,
-  invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, 
-  invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.total_penalty_charge, 
-  invoice.penalty_alert_qty, invoice.hire_penalty_charge_applied_date, invoice.repair_penalty_charge_applied_date, claim.id AS claim_id,
-  claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, 
-  third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, 
-  third_party.vehicle_registration AS vehicle_registration_number, claim.created_date AS claim_created_date, 
-  claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner, 
-  io.total_to_pay as original_total_to_pay, claim.percentage_liability_accepted, claim.percentage_liability_cho, io.full_total_to_pay as original_full_total_to_pay
- FROM claim claim
- JOIN invoice invoice ON claim.invoice_id = invoice.id
- INNER JOIN invoice_original io ON claim.invoice_original_id = io.id
- LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
- LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+ALTER TABLE invoice ADD COLUMN invoice_original_id integer;
 
+UPDATE invoice SET invoice_original_id = c.invoice_original_id FROM claim c WHERE c.invoice_id = invoice.id;
+
+ALTER TABLE claim DROP COLUMN invoice_original_id;
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE invoice_original TO chox_user;
+
+
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.miscellaneous_qty AS cdw_qty, invoice.automatic_qty, 
+ invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty,
+ invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_modified_by, 
+ invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, 
+ invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, 
+ invoice.total_net, invoice.total_vat, invoicedice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay,
+ invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee,
+ invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, 
+ invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.total_penalty_charge, invoice.penalty_alert_qty, invoice.hire_penalty_charge_applied_date, 
+ invoice.repair_penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, third_party.first_name AS policy_holder_first_name, 
+ third_party.last_name AS policy_holder_surname_name, third_party.vehicle_registration AS vehicle_registration_number, claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, 
+ workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner, io.total_to_pay AS original_total_to_pay, claim.percentage_liability_accepted, 
+ claim.percentage_liability_cho, io.full_total_to_pay AS original_full_total_to_pay
+   FROM invoice_original io, claim claim 
+   JOIN invoice invoice ON claim.invoice_id = invoice.id
+   LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
+   LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id
+   WHERE invoice.invoice_original_id = io.id;
+
+ALTER TABLE rpt_claim_invoice
+  OWNER TO chox;
 GRANT ALL ON TABLE rpt_claim_invoice TO chox;
 GRANT SELECT ON TABLE rpt_claim_invoice TO chox_user;
 
@@ -149,6 +154,9 @@ ALTER TABLE invoice DROP COLUMN original_full_total_to_pay;
 ALTER TABLE invoice_original DROP COLUMN rejection_reason;
 -- ALTER TABLE invoice_original DROP COLUMN interim_payment_amount;
 ALTER TABLE invoice_original DROP COLUMN interim_payment_received;
+
+
+
 
 
 DROP FUNCTION bre_failure_report(text, text, integer);
@@ -173,9 +181,9 @@ count(*) as NumberOfFailures, (100.0*count(*)/(select count(*)
       count(distinct(c.id)) as NumberOfUniqueCases,
 
       (select avg(invoice_original.total_to_pay)::numeric(8,2) 
-       from claim inner join invoice_original on claim.invoice_original_id = invoice_original.id
+       from invoice_original, claim
        inner join invoice on claim.invoice_id = invoice.id
-       where claim.id in (select distinct(c.id)
+       where invoice.invoice_original_id = invoice_original.id and claim.id in (select distinct(c.id)
 from history hi, invoice i, claim c 
 where c.invoice_id = i.id
 and c.id = hi.claim_id
@@ -195,9 +203,9 @@ and c.insurer_id in (insurerId) -- insurer ids
 and hi.type = 'ERROR'
 and hi.rule_id = h.rule_id)) as AverageInvoicedValue
 
-from rule_name n, history h, invoice i, claim c left join invoice_original io
-on c.invoice_original_id = io.id
+from rule_name n, history h, invoice i, invoice_original io, claim c 
 where n.rule_id = h.rule_id
+   and i.invoice_original_id = io.id
    and c.invoice_id = i.id
    and c.id = h.claim_id
    and  i.created_date between startDate::date and endDate::date -- invoice created date
@@ -208,7 +216,409 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
   ROWS 1000;
-  
+ALTER FUNCTION bre_failure_report(text, text, integer)
+  OWNER TO chox;
+
+
+
+DROP FUNCTION esure_monthly_review_report(integer, integer, text);
+
+CREATE OR REPLACE FUNCTION esure_monthly_review_report(IN insid integer, IN chorganid integer, IN dat text)
+  RETURNS TABLE("Report" text, last_12_months numeric, current_month numeric, previous_month numeric, previous_2_months numeric, previous_3_months numeric, previous_4_months numeric, previous_5_months numeric, previous_6_months numeric, previous_7_months numeric, previous_8_months numeric, previous_9_months numeric, previous_10_months numeric, previous_11_months numeric) AS
+$BODY$ DECLARE dat1 date
+;
+BEGIN dat1 = dat::Date
+;
+RETURN QUERY
+select
+'No. New Claims' as title ,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy'))as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'No. Claims Rejected' as title ,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and c.id = a.claim_id and a.reverted = false and a.new_status = 'ClaimRejectionAccepted' and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'No. Invoice Payments Reconciled' as title ,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c, audit_trail a where (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.new_status = 'PaymentReceived' and a.claim_id = c.id and a.reverted = false and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'No. New Invoices' as title ,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c, invoice i where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'No. Invoices Paid' as title ,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c , audit_trail a where a.claim_id = c.id and a.new_status = 'InvoicePaymentLogged' and a.reverted = false and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Average Hire Cost Invoiced' as title ,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select avg(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(8,2) from invoice_original io, claim c, invoice i, audit_trail a where c.invoice_id = i.id and i.invoice_original_id = io.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Average Hire Cost paid' as title ,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select avg(COALESCE(i.hire_gross, 0.00))::numeric(8,2) from claim c, invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Total Hire Cost Invoiced' as title ,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select sum(COALESCE(io.hire_gross, i.hire_gross, 0.00))::numeric(15,2) from claim c, invoice i, invoice_original io, audit_trail a where i.invoice_original_id = io.id and c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Total Hire Cost Paid' as title ,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select sum(COALESCE(i.hire_gross, 0.00))::numeric(15,2) from claim c , invoice i, audit_trail a where c.invoice_id = i.id and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Average Hire Days Invoiced' as title ,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select avg(COALESCE(v.days_original, v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Average Hire Days Paid' as title ,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select avg(COALESCE(v.days, 0.00))::numeric(8,2) from claim c, audit_trail a , vehicle_hire v where a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and c.vehicle_hire_id = v.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'),'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Total Penalty Charges Charged' as title ,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select sum(COALESCE(i.hire_penalty_charge, 0.00))::numeric(10,2) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'), 'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'No. Claims Where Penalty Paid' as title ,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as last_12_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') and to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as current_month,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' and to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) as previous_month,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' and to_date(to_char(params.startDate - interval '1 month', 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) as previous_2_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' and to_date(to_char(params.startDate - interval '2 month', 'MM') || '-01-' || to_char(params.startDate - interval '2 month', 'yyyy'), 'mm-dd-yyyy')) as previous_3_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' and to_date(to_char(params.startDate - interval '3 month', 'MM') || '-01-' || to_char(params.startDate - interval '3 month', 'yyyy'), 'mm-dd-yyyy')) as previous_4_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' and to_date(to_char(params.startDate - interval '4 month', 'MM') || '-01-' || to_char(params.startDate - interval '4 month', 'yyyy'), 'mm-dd-yyyy')) as previous_5_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' and to_date(to_char(params.startDate - interval '5 month', 'MM') || '-01-' || to_char(params.startDate - interval '5 month', 'yyyy'), 'mm-dd-yyyy')) as previous_6_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' and to_date(to_char(params.startDate - interval '6 month', 'MM') || '-01-' || to_char(params.startDate - interval '6 month', 'yyyy'), 'mm-dd-yyyy')) as previous_7_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' and to_date(to_char(params.startDate - interval '7 month', 'MM') || '-01-' || to_char(params.startDate - interval '7 month', 'yyyy'), 'mm-dd-yyyy')) as previous_8_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' and to_date(to_char(params.startDate - interval '8 month', 'MM') || '-01-' || to_char(params.startDate - interval '8 month', 'yyyy'), 'mm-dd-yyyy')) as previous_9_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' and to_date(to_char(params.startDate - interval '9 month', 'MM') || '-01-' || to_char(params.startDate - interval '9 month', 'yyyy'), 'mm-dd-yyyy')) as previous_10_months,
+(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and i.total_penalty_charge > 0 and (c.insurer_id = params.insurerId or params.insurerId = -1) and (c.chorganisation_id = params.chorgId or params.chorgId = -1) and a.reverted = false and a.new_status = 'InvoicePaymentLogged' and c.id = a.claim_id and a.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' and to_date(to_char(params.startDate - interval '10 month', 'MM') || '-01-' || to_char(params.startDate - interval '10 month', 'yyyy'), 'mm-dd-yyyy')) as previous_11_months
+from (select dat1 as startDate, chorganid as chorgId, insid as insurerId) params
+
+UNION ALL
+
+select
+'Total Fees Paid To Sherwood' as title ,
+(select null::numeric) as last_12_months,
+(select null::numeric) as current_month,
+(select null::numeric) as previous_month,
+(select null::numeric) as previous_2_months,
+(select null::numeric) as previous_3_months,
+(select null::numeric) as previous_4_months,
+(select null::numeric) as previous_5_months,
+(select null::numeric) as previous_6_months,
+(select null::numeric) as previous_7_months,
+(select null::numeric) as previous_8_months,
+(select null::numeric) as previous_9_months,
+(select null::numeric) as previous_10_months,
+(select null::numeric) as previous_11_months
+union
+all
+select
+'Average Time To Process Tasks (Manchester)' as title ,
+(select null::numeric) as last_12_months,
+(select null::numeric) as current_month,
+(select null::numeric) as previous_month,
+(select null::numeric) as previous_2_months,
+(select null::numeric) as previous_3_months,
+(select null::numeric) as previous_4_months,
+(select null::numeric) as previous_5_months,
+(select null::numeric) as previous_6_months,
+(select null::numeric) as previous_7_months,
+(select null::numeric) as previous_8_months,
+(select null::numeric) as previous_9_months,
+(select null::numeric) as previous_10_months,
+(select null::numeric) as previous_11_months
+union
+all
+select
+'Average Time To Process Tasks (Glasgow)' as title ,
+(select null::numeric) as last_12_months,
+(select null::numeric) as current_month,
+(select null::numeric) as previous_month,
+(select null::numeric) as previous_2_months,
+(select null::numeric) as previous_3_months,
+(select null::numeric) as previous_4_months,
+(select null::numeric) as previous_5_months,
+(select null::numeric) as previous_6_months,
+(select null::numeric) as previous_7_months,
+(select null::numeric) as previous_8_months,
+(select null::numeric) as previous_9_months,
+(select null::numeric) as previous_10_months,
+(select null::numeric) as previous_11_months
+;
+END
+;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION esure_monthly_review_report(integer, integer, text)
+  OWNER TO chox;
+
+
+DROP FUNCTION monthly_mobile_chox_report();
+
+create or replace function monthly_mobile_chox_report()
+returns table("Month" text, No_Notifications_Received bigint, No_Invoices_Received bigint, No_Invoices_Paid bigint,
+           Value_of_Invoices_Received numeric(15,2), Value_of_Invoices_Paid numeric(15,2), Average_Days_Invoice_Loaded_to_Payment numeric(8,2), Cumulative_Total_Invoices_Submitted bigint,
+           Cumulative_Total_Invoices_Paid bigint, Cumulative_Total_Invoices_Outstanding bigint, No_of_CHOS_Onboard bigint, No_Manual_CHOs bigint, No_of_Insurers_Onboard bigint, No_of_CHO_Insurer_Pairings bigint, Number_of_registered_users bigint) as $$
+
+DECLARE
+   first_claim_date date;
+   start_date date;
+   end_date date;
+BEGIN
+
+   first_claim_date = (select min(created_date) FROM claim);
+   start_date = (select to_date(to_char(first_claim_date, 'MM') || '-01-' || to_char(first_claim_date, 'yyyy'), 'mm-dd-yyyy'));
+   end_date = start_date +  interval '1 month';
+
+WHILE start_date < now() LOOP
+
+   
+RETURN QUERY
+
+   select to_char(start_date, 'TMMonth') || ' - ' || to_char(start_date , 'yyyy') AS "Month",
+
+  (select count(*) as No_Notifications_Received from claim where created_date between start_date and end_date),
+       
+  (select count(*) as No_Invoices_Received from invoice where created_date between start_date and end_date),
+
+  (select count(*) as No_Invoices_Paid from audit_trail a where a.new_status='InvoicePaymentLogged' 
+       and a.update_date between start_date and end_date
+       and a.reverted=false),
+                  
+  (select sum(io.total_to_pay)::numeric(15,2) as Value_of_Invoices_Received 
+       from invoice i, invoice_original io, claim c
+       where c.invoice_id = i.id and i.invoice_original_id = io.id and i.created_date between start_date and end_date),
+       
+  (select sum(i.total_to_pay)::numeric(15,2) as Value_of_Invoices_Paid from audit_trail a, invoice i, claim c
+       where a.new_status='InvoicePaymentLogged' and a.update_date between start_date and end_date
+       and a.reverted=false
+       and c.id = a.claim_id and c.invoice_id = i.id),
+                      
+   (select case when count(*) = 0 then 0 else avg(EXTRACT(DAY FROM (a.update_date - i.created_date)))::numeric(8,2) end as Average_Days_Invoice_Loaded_to_Payment 
+              from invoice i, claim c, audit_trail a where a.claim_id = c.id and c.invoice_id = i.id and a.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') 
+              and a.reverted=false and i.created_date between start_date and end_date),
+              
+   (select count(*) as Cumulative_Total_Invoices_Submitted from invoice where created_date < end_date),
+   
+   (select count(*) as Cumulative_Total_Invoices_Paid from audit_trail a where a.new_status='InvoicePaymentLogged' and a.update_date < end_date and a.reverted=false),
+
+   (select count(*) as Cumulative_Total_Invoices_Outstanding
+        from claim c , audit_trail a
+        where a.claim_id = c.id
+              and a.new_status in ('InvoiceReferredToEngineer','InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer',
+                               'ContestedInvoiceReferredToCHO', 'InvoiceReferredToClaimsHandler', 'AwaitingLiabilityResolution', 'InvoiceUnassigned', 'InvoiceEscalatedToHandler', 
+                               'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'ManualInvoiceBREApproved', 'AwaitingLitigationOutcome')
+              and a.created_date < end_date
+              and (a.reverted = false or (a.reverted=true and a.last_modified_date > end_date))  -- check it wasn't reverted, or if it was, it was reverted AFTER the end of the month
+              and not exists (select * from audit_trail a2 where a2.claim_id = c.id and a2.created_date > a.created_date and a2.created_date < end_date)),
+              
+   (select count(*) as No_of_CHOS_Onboard from chorganisation where status = true and insurer_upload_only = false and created_date < end_date),
+   
+   (select count(*) as No_Manual_CHOs from chorganisation where status = true and insurer_upload_only = true and created_date < end_date),
+              
+   (select count(*) as No_of_Insurers_Onboard from insurer where status = true and created_date < end_date),
+
+   (select count(*) as No_of_CHO_Insurer_Pairings from insurer_chorganisation ic , insurer i, chorganisation c where ic.insurer_id = i.id 
+                   and ic.chorganisation_id = c.id and c.status = true and i.status = true and ic.status = true and ic.created_date < end_date),
+              
+   (select count(distinct wu.id) from web_user wu, web_user_user_role wuur, web_user_role wur  where wu.id = wuur.web_user_id 
+              and wur.name != 'ROLE_CHOX_ADMIN' 
+              and wuur.web_user_role_id = wur.id 
+              and wu.status = true and wu.created_date < end_date);
+
+
+start_date = end_date;
+end_date = end_date + interval '1 month';
+
+END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+
   
   
 DROP FUNCTION updatedashboard(integer);
@@ -581,9 +991,9 @@ update dashboard
    set val_invoices_submitted_w = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id and c.claim_type not in (4,5,6)
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -604,9 +1014,9 @@ update dashboard
    set val_invoices_submitted_m = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id and c.claim_type not in (4,5,6)
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -625,9 +1035,9 @@ update dashboard
    set val_invoices_submitted_c = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id and c.claim_type not in (4,5,6)
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1653,9 +2063,9 @@ update dashboard
    set val_manual_invoices_submitted_w = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1672,9 +2082,9 @@ update dashboard
    set val_manual_invoices_submitted_m = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1690,9 +2100,9 @@ update dashboard
    set val_manual_invoices_submitted_c = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
@@ -1760,9 +2170,9 @@ update dashboard
    set val_manual_invoices_paid_w = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfWeek()
@@ -1780,9 +2190,9 @@ update dashboard
    set val_manual_invoices_paid_m = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfMonth()
@@ -1799,9 +2209,9 @@ update dashboard
    set val_manual_invoices_paid_c = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.status = 'ManualInvoicePaid'
 and c.claim_type = 10
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -1870,9 +2280,9 @@ update dashboard
    set val_manual_invoices_closed_w = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfWeek()
@@ -1890,9 +2300,9 @@ update dashboard
    set val_manual_invoices_closed_m = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.claim_type = 10
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfMonth()
@@ -1909,9 +2319,9 @@ update dashboard
    set val_manual_invoices_closed_c = t1.val
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(io.full_total_to_pay) as val
-from claim c , invoice i, invoice_original io
+from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
-and c.invoice_original_id = io.id
+and i.invoice_original_id = io.id
 and c.status = 'ClaimClosed'
 and c.claim_type = 10
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -2070,9 +2480,10 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-
-GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
+ALTER FUNCTION updatedashboard(integer)
+  OWNER TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
+GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 

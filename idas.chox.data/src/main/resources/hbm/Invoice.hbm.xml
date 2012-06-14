@@ -34,8 +34,6 @@
         <property column="insurer_discount" name="insurerDiscount" not-null="true"/>
         <property column="full_total_to_pay" name="fullTotalToPay" not-null="true"/>
         <property column="total_to_pay" name="totalToPay"/>
-<!--        <property column="original_full_total_to_pay" name="originalFullTotalToPay" not-null="true"/>-->
-<!--        <property column="original_total_to_pay" name="originalTotalToPay" not-null="true"/>-->
         <property column="handling_invoice_no" name="handlingInvoiceNo"/>
         <property column="claim_invoice_no" name="claimInvoiceNo"/>
         <property column="miscellaneous_fee" name="miscellaneousFee"/>
@@ -97,6 +95,7 @@
         <property column="insurer_discount_fee_paid" name="insurerDiscountFeePaid"/>
         <property column="penalty_charges_paid" name="penaltyChargesPaid"/>
         <property column="final_payment" name="finalPayment"/>
+        <many-to-one cascade="save-update,delete" class="idas.chox.core.model.InvoiceOriginal" column="invoice_original_id" name="invoiceOriginal"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
