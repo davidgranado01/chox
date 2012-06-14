@@ -125,7 +125,7 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
  invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_modified_by, 
  invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, 
  invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, 
- invoice.total_net, invoice.total_vat, invoicedice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay,
+ invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay,
  invoice.miscellaneous_fee AS cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee,
  invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, 
  invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.total_penalty_charge, invoice.penalty_alert_qty, invoice.hire_penalty_charge_applied_date, 
@@ -159,7 +159,7 @@ ALTER TABLE invoice_original DROP COLUMN interim_payment_received;
 
 
 
-DROP FUNCTION bre_failure_report(text, text, integer);
+-- DROP FUNCTION bre_failure_report(text, text, integer);
 
 CREATE OR REPLACE FUNCTION bre_failure_report(IN startdate text, IN enddate text, IN insurerid integer)
   RETURNS TABLE(ruleid character varying, rulename character varying, numberoffailures bigint, percentage numeric, numberofuniquecases bigint, averageinvoicedvalue numeric, averagessettledvalue numeric) AS
@@ -221,7 +221,7 @@ ALTER FUNCTION bre_failure_report(text, text, integer)
 
 
 
-DROP FUNCTION esure_monthly_review_report(integer, integer, text);
+-- DROP FUNCTION esure_monthly_review_report(integer, integer, text);
 
 CREATE OR REPLACE FUNCTION esure_monthly_review_report(IN insid integer, IN chorganid integer, IN dat text)
   RETURNS TABLE("Report" text, last_12_months numeric, current_month numeric, previous_month numeric, previous_2_months numeric, previous_3_months numeric, previous_4_months numeric, previous_5_months numeric, previous_6_months numeric, previous_7_months numeric, previous_8_months numeric, previous_9_months numeric, previous_10_months numeric, previous_11_months numeric) AS
@@ -537,7 +537,7 @@ ALTER FUNCTION esure_monthly_review_report(integer, integer, text)
   OWNER TO chox;
 
 
-DROP FUNCTION monthly_mobile_chox_report();
+-- DROP FUNCTION monthly_mobile_chox_report();
 
 create or replace function monthly_mobile_chox_report()
 returns table("Month" text, No_Notifications_Received bigint, No_Invoices_Received bigint, No_Invoices_Paid bigint,
@@ -621,7 +621,7 @@ $$ LANGUAGE plpgsql;
 
   
   
-DROP FUNCTION updatedashboard(integer);
+-- DROP FUNCTION updatedashboard(integer);
 
 CREATE OR REPLACE FUNCTION updatedashboard(integer)
   RETURNS boolean AS
