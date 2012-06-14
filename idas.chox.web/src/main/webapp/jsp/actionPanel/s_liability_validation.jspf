@@ -115,11 +115,19 @@
         function(value, element) {
             if (isLiabilityAccepted()){
                 var accdate = $('#liabilityAgreedDate').val();
+                var composedDate = new Date();
+                var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(accdate);
+                if(matches != null){
+	                var d = matches[1];
+	                var m = matches[2] - 1;
+	                var y = matches[3];
+	                composedDate = new Date(y, m, d);
+                }
                 if ( accdate == "" ){
                     return false;
                 }
                 var cur = new Date();
-                if ( ( cur - accdate) < 0 ){
+                if ( ( cur - composedDate) < 0 ){
                     return false;
                 }
             }
@@ -188,8 +196,8 @@
                     checkZero:true
                 },
                 liabilityAgreedDate:{
-                	checkDateFormat: true,
                     checkAcceptedDate:true,
+                	checkDateFormat: true,
                     checkDateBlank:true
                 }
             },
@@ -208,8 +216,8 @@
                     checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
                 },
                 liabilityAgreedDate:{
-                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
+                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'"
                 }
             }
