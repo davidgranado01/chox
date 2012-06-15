@@ -1431,18 +1431,15 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public String getRepairPenaltyPercentageApplied() {
-        if (getRepairNet() != null && getRepairNet().compareTo(BigDecimal.ZERO) >= 1 
+        if (getRepairGross() != null && getRepairGross().compareTo(BigDecimal.ZERO) >= 1 
                 && getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
             for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentages()) {
                 if (getRepairPenaltyPercentage().equals(repairPenaltyPercentageValue.getPercentage())) {
                     /*
-                     * Calculate the appliedRepairPenaltyPercentage using the
-                     * same vat rate used originaly to calculate
-                     * RepairPenaltyPercentageCharge formula
-                     * appliedRepairPenaltyPercentage = (RepairPenaltyCharge * 100)/(RepairNet * (1 + vat_rate_used))
+                     * Calculate the appliedRepairPenaltyPercentage using the Hire Gross
                      */
                     BigDecimal appliedRepairPenaltyPercentage = getRepairPenaltyCharge().multiply(BigDecimal.valueOf(100))
-                            .divide((getRepairNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getRepairPenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+                            .divide((getRepairGross()), 2, RoundingMode.HALF_UP);
 //                    BigDecimal appliedRepairPenaltyPercentage = (invoice.getRepairPenaltyCharge().multiply(new BigDecimal(100))).divide(invoice.getRepairGross(), 2, RoundingMode.HALF_UP);
                     if (appliedRepairPenaltyPercentage.compareTo(repairPenaltyPercentageValue.getPercentageValue()) != 0) {
                         LOG.debug("actualRepairPenaltyPercentage : {}, appliedRepairPenaltyPercentage : {}", getRepairPenaltyPercentage(), appliedRepairPenaltyPercentage);
@@ -1455,19 +1452,16 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public String getHirePenaltyPercentageApplied(Date hireStart) {
-        if (getHireNet() != null && getHireNet().compareTo(BigDecimal.ZERO) >= 1 
+        if (getHireGross() != null && getHireGross().compareTo(BigDecimal.ZERO) >= 1 
                 && getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
             List<PenaltyPercentage> penaltyPercentage = PenaltyPercentage.getHirePenaltyPercentages(hireStart);
             for (PenaltyPercentage hirePenaltyPercentageValue : penaltyPercentage) {
                 if (getHirePenaltyPercentage().equals(hirePenaltyPercentageValue.getPercentage())) {
                     /*
-                     * Calculate the appliedHirePenaltyPercentage using the same
-                     * vat rate used originaly to calculate
-                     * HirePenaltyPercentageCharge formula
-                     * appliedHirePenaltyPercentage = (HirePenaltyCharge * 100)/(hireNet * (1 + vat_rate_used))
+                     * Calculate the appliedHirePenaltyPercentage using the Hire Gross
                      */
                     BigDecimal appliedHirePenaltyPercentage = getHirePenaltyCharge().multiply(BigDecimal.valueOf(100))
-                            .divide((getHireNet().multiply((BigDecimal.ONE.add(CalcHelper.getVatRate(getHirePenaltyChargeAppliedDate()))))), 2, RoundingMode.HALF_UP);
+                            .divide((getHireGross()), 2, RoundingMode.HALF_UP);
 //                    BigDecimal appliedHirePenaltyPercentage = (invoice.getHirePenaltyCharge().multiply(new BigDecimal(100))).divide(invoice.getHireGross(), 2, RoundingMode.HALF_UP);
                     if (appliedHirePenaltyPercentage.compareTo(hirePenaltyPercentageValue.getPercentageValue()) != 0) {
                         LOG.debug("actualHirePenaltyPercentage : {}, appliedHirePenaltyPercentage : {}", getHirePenaltyPercentage(), appliedHirePenaltyPercentage);
