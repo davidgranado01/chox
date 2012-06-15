@@ -81,8 +81,10 @@ ClaimsId integer;
 invoiceCount30D int;
 invoiceCount60D int;
 invoiceCount90D int;
+hireStartDate30D date;
 hirepenalPer30D NUMERIC;
 hirepenalPer30DVal NUMERIC(8,3);
+hireStartDate60D date;
 hirepenalPer60D NUMERIC;
 hirepenalPer60DVal NUMERIC(8,3);
 repairpenalPer30D NUMERIC;
@@ -129,9 +131,15 @@ WHERE
 
 LOOP
 
-hirepenalPer30D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id) < '2012-06-15'::date) THEN 7.5::NUMERIC ELSE 12.5::numeric END;
+hireStartDate30D = (SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id)::date;
+
+hirepenalPer30D = CASE WHEN(
+    (CASE WHEN hireStartDate30D is not null then hireStartDate30D else (select date_invoiced from invoice where id = claimRecord30D.invoice_id) END) 
+    < '2012-06-15'::date) THEN 7.5::NUMERIC ELSE 12.5::numeric END;
 hirepenalPer30DVal = hirepenalPer30D/100;
 
+RAISE NOTICE 'hireStartDate30D %', hireStartDate30D;
+RAISE NOTICE 'hirepenalPer30D %', hirepenalPer30D;
 RAISE NOTICE 'hirepenalPer30DVal %',hirepenalPer30DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_reference;
@@ -177,9 +185,7 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
       now() + interval '0.1 sec',
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
-                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (current_date - i.auto_penalty_start::Date) 
-                                      || ' days.',
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 30 days.', 
      0
    FROM 
      invoice i
@@ -223,9 +229,15 @@ WHERE
 
 LOOP
 
-hirepenalPer60D = CASE WHEN((SELECT rental_start FROM vehicle_hire WHERE id = claimRecord60D.vehicle_hire_id) < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
+hireStartDate60D = (SELECT rental_start FROM vehicle_hire WHERE id = claimRecord60D.vehicle_hire_id);
+
+hirepenalPer60D = CASE WHEN(
+    (CASE WHEN hireStartDate60D is not null THEN hireStartDate60D ELSE (select date_invoiced from invoice where id = claimRecord60D.invoice_id) end)::date
+    < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
 hirepenalPer60DVal = hirepenalPer60D/100;
 
+RAISE NOTICE 'hireStartDate60D %', hireStartDate60D;
+RAISE NOTICE 'hirepenalPer60D %', hirepenalPer60D;
 RAISE NOTICE 'hirepenalPer60DVal %', hirepenalPer60DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
@@ -270,9 +282,7 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
       now() + interval '0.1 sec',
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
-                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (current_date - i.auto_penalty_start::Date)
-                                      || ' days.',
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 60 days.',
       0
     FROM 
       invoice i
