@@ -1969,13 +1969,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public BigDecimal calculateHirePenaltyCharge(String hirePercentage) {
 
         BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal hireNet = claim.getInvoice().getHireNet();
+//        BigDecimal hireNet = claim.getInvoice().getHireNet();
+        BigDecimal hireGross = claim.getInvoice().getHireGross();
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         
         for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
             if (hirePenaltyPercentageValue.getPercentage().equals(hirePercentage)) {
-                BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
-                hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+//                BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
+//                hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+                hirePenaltyAmout = (hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
             }
         }
         return hirePenaltyAmout;
@@ -1984,12 +1986,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public BigDecimal calculateRepairPenaltyCharge(String repairPercentage) {
 
         BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal repairNet = claim.getInvoice().getRepairNet();
+//        BigDecimal repairNet = claim.getInvoice().getRepairNet();
+        BigDecimal repairGross = claim.getInvoice().getRepairGross();
 
         for (PenaltyPercentage repairPenaltyPercentageValue : PenaltyPercentage.getRepairPenaltyPercentages()) {
             if (repairPenaltyPercentageValue.getPercentage().equals(repairPercentage)) {
-                BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
-                repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+//                BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
+//                repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
+                repairPenaltyAmout = (repairPenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
             }
         }
         return repairPenaltyAmout;
