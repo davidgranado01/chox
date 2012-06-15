@@ -109,6 +109,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setTaskManagementEnable(false);
         insurer.setRelatedInsurer(null);
         insurer.setSupportProcedure(null);
+        insurer.setEcdIncreaseTriggerPercentage(0);
 
         ActionResponse response = adminInsurerService.updateInsurer(insurer, true);
         Assert.assertTrue(response.getIsValid());
