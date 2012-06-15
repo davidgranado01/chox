@@ -15,6 +15,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +35,16 @@ public class NotificationTest extends BaseTest {
     @Autowired
     UploadClaimXMLService service;
 
+    @Before
+    public void setUpClass() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(true);
+    }
+
+    @After
+    public void tearDownClass() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(false);
+    }
+    
     @Test
     public void canClaimAnomalousCheckerGetInjected() {
         Assert.assertNotNull(newECDAddedChecker);

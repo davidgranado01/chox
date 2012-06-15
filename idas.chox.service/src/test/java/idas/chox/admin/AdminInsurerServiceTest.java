@@ -113,7 +113,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setBlockTime(0);
         insurer.setDisablePrivateNotes(false);
         insurer.setMaxLoginAttempts(0);
-
+        insurer.setEcdIncreaseTriggerPercentage(0);
 
         ActionResponse response = adminInsurerService.updateInsurer(insurer, true);
         Assert.assertTrue(response.getIsValid());
