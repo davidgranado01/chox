@@ -70,27 +70,6 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
 
     }
 
-    @Test
-    public void testSkipped_noHire() throws IOException {
-
-        /*
-         * CHO Control Flag is OFF
-         */
-
-        Claim claim = getTestClaim();
-        claim.setVehicleHire(null);
-        claim.getBreBand().setCorrentAdminFee(true);
-        HasCorrectAdminFee rule = new HasCorrectAdminFee();
-        rule.setAdminFeeService(adminFeeService);
-        
-        RuleEvaluation rv = rule.applyToClaim(claim);
-
-        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
-        assertTrue(rv.getIsVisibleToCHO());
-
-    }
 
     @Test
     public void testPassed_managingRepairCoverNoteRequired_equals() throws IOException, ParseException {
