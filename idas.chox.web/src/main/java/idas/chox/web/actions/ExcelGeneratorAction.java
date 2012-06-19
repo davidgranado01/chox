@@ -230,9 +230,9 @@ public class ExcelGeneratorAction extends BaseAction {
                 } else {
                     Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
                     if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() 
-                            && inv.getHirePenaltyPercentageApplied(hireStart) != null)
+                            && inv.getHirePenaltyPercentageApplied() != null)
                         excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
-                                .concat(inv.getHirePenaltyPercentageApplied(hireStart)).concat("]"));
+                                .concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
                     else
                         excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
                     if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
