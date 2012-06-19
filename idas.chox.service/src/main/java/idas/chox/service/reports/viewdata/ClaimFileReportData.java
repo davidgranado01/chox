@@ -517,6 +517,7 @@ public class ClaimFileReportData {
             extrasMiscellaneousTitle = "Miscellaneous Fee";
         }
 
+        
         Invoice invoice = claim.getInvoice();
         if (invoice != null) {
             LOG.debug("Adding invoice info.");
@@ -547,8 +548,8 @@ public class ClaimFileReportData {
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
-            if (invoice.getHirePenaltyPercentageApplied(vehicleHire.getHireStart()) != null && !currentUser.isCHO()) 
-                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied(vehicleHire.getHireStart());
+            if (invoice.getHirePenaltyPercentageApplied() != null && !currentUser.isCHO()) 
+                invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
             if (invoice.getRepairPenaltyPercentageApplied() != null && !currentUser.isCHO())
