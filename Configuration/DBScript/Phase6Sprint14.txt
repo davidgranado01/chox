@@ -2490,3 +2490,11 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 --------------------
 -- END OF 6.14.6 
 --------------------
+
+------------------------------------------
+-- 6.14.1 Reason Of Rejection Admin Panel
+------------------------------------------
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE reason_of_rejection TO chox_user;
+--------------------
+-- END OF 6.14.1
+--------------------
