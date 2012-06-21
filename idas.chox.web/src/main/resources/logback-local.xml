@@ -10,7 +10,6 @@
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-springstruts.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
-            <maxIndex>10</maxIndex>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                      <!-- or whenever the file size reaches 5MB -->
                 <maxFileSize>5MB</maxFileSize>
@@ -29,7 +28,6 @@
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/webServices.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
-            <maxIndex>10</maxIndex>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                      <!-- or whenever the file size reaches 5MB -->
                 <maxFileSize>5MB</maxFileSize>
@@ -47,7 +45,6 @@
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
-            <maxIndex>10</maxIndex>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                      <!-- or whenever the file size reaches 5MB -->
                 <maxFileSize>5MB</maxFileSize>
@@ -66,7 +63,6 @@
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-hibernate.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
-            <maxIndex>10</maxIndex>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                      <!-- or whenever the file size reaches 5MB -->
                 <maxFileSize>5MB</maxFileSize>
@@ -85,7 +81,6 @@
             <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox.log.%i</fileNamePattern>
                 <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
-            <maxIndex>10</maxIndex>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                      <!-- or whenever the file size reaches 5MB -->
                 <maxFileSize>5MB</maxFileSize>
