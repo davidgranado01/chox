@@ -777,7 +777,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             Map data = (Map) o;
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
-            reportRow.setName(data.get("name").toString().replace(" ", "_"));
+            reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
             reportRows.add(reportRow);
         }
 
