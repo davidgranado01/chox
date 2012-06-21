@@ -100,7 +100,7 @@ public class AdminChorganisationService extends SecureDataService {
 
             ChorganisationAlias choAlias = new ChorganisationAlias();
             // Strip out white-space before saving
-            choAlias.setAliasName(choAliasName.trim().replaceAll("\\s+", ""));
+            choAlias.setAliasName(choAliasName.trim().replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", ""));
             choAlias.setChorganisation(chorganisationService.getChorganisation(choId));
             chorganisationAliasService.saveChorganisationAlias(choAlias);
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + choAliasName + "' has been created");
