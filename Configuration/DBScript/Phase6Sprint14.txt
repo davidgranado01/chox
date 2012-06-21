@@ -2792,3 +2792,34 @@ GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId i
 --------------------
 -- END OF bug#1796
 --------------------
+
+
+-------------------------------------------------------------
+-- bug#1795 - Production - Ignore Non Text Characters For Alias Matching
+-------------------------------------------------------------
+
+-- Update Insurer Alias names
+update insurer_alias
+   set alias_name = regexp_replace(alias_name, '[^A-Za-z0-9]', '', 'g');
+
+
+-- Remove duplicates
+delete from insurer_alias ia
+where exists
+(select * from insurer_alias where insurer_alias.alias_name ilike ia.alias_name
+  and insurer_alias.id>ia.id and insurer_alias.insurer_id=ia.insurer_id);
+
+-- Update CHO Alias names
+update chorganisation_alias
+   set alias_name = regexp_replace(alias_name, '[^A-Za-z0-9]', '', 'g');
+
+-- Remove duplicates
+delete from chorganisation_alias ca
+where exists
+(select * from chorganisation_alias where chorganisation_alias.alias_name ilike ca.alias_name
+  and chorganisation_alias.id>ca.id and chorganisation_alias.alias_name=ca.alias_name);
+
+--------------------
+-- END OF bug#1795
+--------------------
+
