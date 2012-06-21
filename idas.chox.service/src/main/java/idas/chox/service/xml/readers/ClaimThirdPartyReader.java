@@ -1,8 +1,5 @@
 package idas.chox.service.xml.readers;
 
-//import idas.chox.core.model.BreBand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.ThirdParty;
@@ -18,6 +15,9 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ClaimThirdPartyReader extends BaseEntityReader {
 
@@ -43,7 +43,6 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 ) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             claimResult = NodeHelper.nodeInsurerAliasValidate(sectionName, "name", element, claimResult, getDataValidationParameter(), insurerAliasService, insurerChorganisationService);
@@ -88,8 +87,7 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
         String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
         if (vehicleClassName != null && vehicleClassName.length() > 0) {
-            VehicleClass vehicleClass = null;
-            vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, "vehicle-class");
+            VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, "vehicle-class");
             claimResult.getClaim().getThirdParty().setVehicleClass(vehicleClass);
         }
 

@@ -684,6 +684,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getIsPenaltyChargeApplied()) {
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
