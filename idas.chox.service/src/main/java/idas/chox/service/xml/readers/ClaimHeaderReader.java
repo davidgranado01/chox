@@ -704,7 +704,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
             InsurerAlias alias = getBordereauReaderContext().getInsurerAliasService().getInsurerByAliasName(insurerAliasName);
             Insurer insurer = alias.getInsurer();
-            tpiIdentificationString = insurer.getTpiIdentificationString().trim().replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", "");
+            tpiIdentificationString = insurer.getTpiIdentificationString().replaceAll("[^A-Za-z0-9]", "");
         }
 
         return tpiIdentificationString;

@@ -21,7 +21,7 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
     public void createDefaultRecord(Chorganisation chorganisation) {
         ChorganisationAlias object = new ChorganisationAlias();
         object.setChorganisation(chorganisation);
-        object.setAliasName(chorganisation.getName().replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", ""));
+        object.setAliasName(chorganisation.getName().replaceAll("[^A-Za-z0-9]", ""));
         saveChorganisationAlias(object);
     }
 
@@ -30,7 +30,7 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
 
         ChorganisationAlias object = null;
         DetachedCriteria criteria = DetachedCriteria.forClass(ChorganisationAlias.class);
-        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", "")));
+        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("[^A-Za-z0-9]", "")));
         object = (ChorganisationAlias) getByCriteria(criteria);
 
         return object;

@@ -72,8 +72,7 @@ public class AdminChorganisationService extends SecureDataService {
 
             this.actionResponse = new ActionResponse();
 
-            Chorganisation chorganisation = null;
-            chorganisation = chorganisationService.getChorganisation(Integer.valueOf(chorganisationId));
+            Chorganisation chorganisation = chorganisationService.getChorganisation(Integer.valueOf(chorganisationId));
 
             if (chorganisation.isStatus()) {
                 chorganisation.setStatus(false);
@@ -100,7 +99,7 @@ public class AdminChorganisationService extends SecureDataService {
 
             ChorganisationAlias choAlias = new ChorganisationAlias();
             // Strip out white-space before saving
-            choAlias.setAliasName(choAliasName.trim().replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", ""));
+            choAlias.setAliasName(choAliasName.replaceAll("[^A-Za-z0-9]", ""));
             choAlias.setChorganisation(chorganisationService.getChorganisation(choId));
             chorganisationAliasService.saveChorganisationAlias(choAlias);
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + choAliasName + "' has been created");

@@ -17,7 +17,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     public void createDefaultRecord(Insurer insurer) {
         InsurerAlias object = new InsurerAlias();
         object.setInsurer(insurer);
-        object.setAliasName(insurer.getName().replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", ""));
+        object.setAliasName(insurer.getName().replaceAll("[^A-Za-z0-9]", ""));
         saveInsurerAlias(object);
     }
 
@@ -25,7 +25,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     public InsurerAlias getInsurerByAliasName(String aliasName) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
-        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("\\s+", "").replaceAll("[^A-Za-z0-9]", "")));
+        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("[^A-Za-z0-9]", "")));
         InsurerAlias insurerAlias = (InsurerAlias) getByCriteria(criteria);
 
         return insurerAlias;
