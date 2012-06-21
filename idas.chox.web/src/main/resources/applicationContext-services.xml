@@ -185,6 +185,8 @@
         <property name="insurerChorganisationService" ref="insurerChorganisationService" />
         <property name="insurerAliasService" ref="insurerAliasService" />
         <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
+        <property name="claimService" ref="claimService" />
+        <property name="invoiceService" ref="invoiceService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
