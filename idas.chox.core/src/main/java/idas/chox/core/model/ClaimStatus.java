@@ -207,6 +207,7 @@ public class ClaimStatus {
 
     public static List<String> getPenaltyChargeExclusionStatus() {
         List<String> exclusionList = new ArrayList<String>();
+        exclusionList.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         exclusionList.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         exclusionList.add(ClaimStatus.CLAIM_CLOSED);
         exclusionList.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
