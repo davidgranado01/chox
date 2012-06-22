@@ -100,19 +100,19 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<ReasonOfRejection> getClaimRejectionReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, null);
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM, true, null);
         return rejectionReasons;
     }
     
     @Override
     public List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Claim", true, true);
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM, true, true);
         return rejectionReasons;
     }
 
     @Override
     public List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, "Invoice", true, null);
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_INVOICE, true, null);
         return rejectionReasons;
     }
     
