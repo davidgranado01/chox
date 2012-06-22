@@ -21,6 +21,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassCeilingService;
@@ -52,11 +53,8 @@ public class AdminInsurerService extends SecureDataService {
     private VehicleClassService vehicleClassService;
     private UserService userService;
     private ClaimService claimService;
+    private InvoiceService invoiceService;
     private ReasonOfRejectionService reasonOfRejectionService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -452,8 +450,10 @@ public class AdminInsurerService extends SecureDataService {
     
     public ActionResponse deleteReasonOfRejection(ReasonOfRejection ror) {
         this.actionResponse = new ActionResponse();
-        if(claimService.getNoOfRejectedClaims(ror.getId()) != 0){
+        if(ror.getType().equalsIgnoreCase("claim") && claimService.getNoOfRejectedClaims(ror.getId()) != 0){
             this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to a claim and it cannot be deleted");
+        } else if(ror.getType().equalsIgnoreCase("invoice") && invoiceService.getNoOfRejectedInvoices(ror.getId()) != 0){
+            this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to a invoice and it cannot be deleted");
         } else {
             reasonOfRejectionService.deleteReasonOfRejection(ror);
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getName() + "' has been removed");
@@ -549,5 +549,13 @@ public class AdminInsurerService extends SecureDataService {
     public void setReasonOfRejectionService(
             ReasonOfRejectionService reasonOfRejectionService) {
         this.reasonOfRejectionService = reasonOfRejectionService;
+    }
+    
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
     }
 }

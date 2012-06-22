@@ -1,11 +1,17 @@
 package idas.chox.data.services;
 
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
@@ -123,15 +129,18 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             LOG.error("Exception thrown when deleting original invoice. Exception is ", ex);
         }
     }
-/*
-    public void updateLiabilityPayment(Claim claim){
-        LiabilityStatus l = claim.getLiabilityStatus();
-        if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
-            BigDecimal ttp = claim.getInvoice().getFullTotalToPay();
-            BigDecimal insper = claim.getPercentageLiabilityAccepted();
-            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
-        }
+    
+    @Override
+    public int getNoOfRejectedInvoices(Integer reasonOfRejectionId) {
+        Criteria criteria = getSession().createCriteria(Invoice.class);
+        criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
+        return countInvoices(criteria).intValue();
     }
- * 
- */
+    
+    private Integer countInvoices(Criteria criteria) {
+        criteria.setProjection(Projections.rowCount());
+        List totalCountResult = criteria.list();
+        criteria.setProjection(null);
+        return ((Long) totalCountResult.get(0)).intValue();
+    }
 }

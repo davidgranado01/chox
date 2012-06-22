@@ -16,4 +16,6 @@ public interface InvoiceService {
     public InvoiceOriginal saveOriginalInvoice(Invoice invoice);
     
     public void deleteOriginalInvoice(Invoice invoice);
+
+    int getNoOfRejectedInvoices(Integer reasonOfRejectionId);
 }
