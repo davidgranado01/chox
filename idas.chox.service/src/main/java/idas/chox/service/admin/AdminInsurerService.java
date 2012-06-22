@@ -450,10 +450,10 @@ public class AdminInsurerService extends SecureDataService {
     
     public ActionResponse deleteReasonOfRejection(ReasonOfRejection ror) {
         this.actionResponse = new ActionResponse();
-        if(ror.getType().equalsIgnoreCase("claim") && claimService.getNoOfRejectedClaims(ror.getId()) != 0){
+        if(ror.getType().equalsIgnoreCase(ReasonOfRejection.TYPE_CLAIM) && claimService.getNoOfRejectedClaims(ror.getId()) != 0){
             this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to a claim and it cannot be deleted");
-        } else if(ror.getType().equalsIgnoreCase("invoice") && invoiceService.getNoOfRejectedInvoices(ror.getId()) != 0){
-            this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to a invoice and it cannot be deleted");
+        } else if(ror.getType().equalsIgnoreCase(ReasonOfRejection.TYPE_INVOICE) && invoiceService.getNoOfRejectedInvoices(ror.getId()) != 0){
+            this.actionResponse.AddError("Rejection reason '" + ror.getName() + "' is assigned to an invoice and it cannot be deleted");
         } else {
             reasonOfRejectionService.deleteReasonOfRejection(ror);
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Rejection reason '" + ror.getName() + "' has been removed");
@@ -463,7 +463,7 @@ public class AdminInsurerService extends SecureDataService {
     
     public ActionResponse updateReasonOfRejectionRestricted(ReasonOfRejection ror) {
         this.actionResponse = new ActionResponse();
-        if(ror.getType().equalsIgnoreCase("Invoice")) {
+        if(ror.getType().equalsIgnoreCase(ReasonOfRejection.TYPE_INVOICE)) {
             this.actionResponse.AddError("'Visible before assigned' is not applicable to Invoice type Rejection Reasons.");
         } else {
             reasonOfRejectionService.saveReasonOfRejection(ror);

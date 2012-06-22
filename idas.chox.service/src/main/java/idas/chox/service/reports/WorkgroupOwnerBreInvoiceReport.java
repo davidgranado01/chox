@@ -424,15 +424,18 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
         if(currentUser.getInsurer() != null){
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
-                    "and ror.insurer_id = :insurerId group by ror.id order by ror.id asc";
+                    "and ror.insurer_id = :insurerId group by ror.id " +
+                    "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
             result = baseDataService.externalQuery(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
-                    "and ror.insurer_id = (select insurer_id from insurer_chorganisation where chorganisation_id = :choId)" +
-                    " group by ror.id order by ror.id asc";
+                    "and ror.insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId)" +
+                    " group by ror.id " +
+                    "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id in" +
+                    " (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
             result = baseDataService.externalQuery(query, paramMap);
