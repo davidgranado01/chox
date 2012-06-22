@@ -6,7 +6,7 @@ package idas.chox.core.model;
  */
 public enum LiabilityStatus {
 
-    LIABILITY_NULL              (0, "Liability Not Yet Specified"),
+    LIABILITY_NULL              (0, ""),
     LIABILITY_ACCEPTED          (1, "Full Liability Accepted"),
     LIABILITY_DISPUTED          (2, "Liability In Negotiation"),
     LIABILITY_UNKNOWN           (3, "Liability Unknown"),
