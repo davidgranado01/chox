@@ -511,6 +511,20 @@ public class InvoiceStatusReport implements Report {
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
            .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+           .append( "and c.status = 'ManualInvoiceUnassigned' ")
+           .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
+           .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_manual_invoices_in_to_be_assigned_total, ");
+        sb1.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
+           .append( "where c.invoice_id = i.id ")
+           .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+           .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+           .append( "and c.status = 'ManualInvoiceUnassigned' ")
+           .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
+           .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_manual_invoices_in_to_be_assigned_total, ");
+        sb1.append("(select count(*) from claim c, invoice i ")
+           .append( "where c.invoice_id = i.id ")
+           .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+           .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
            .append( "and c.status = 'ManualInvoiceBREApproved' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_manual_invoices_approved_total, ");

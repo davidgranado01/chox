@@ -38,6 +38,7 @@ public interface Filter {
     public static final String FILTER_MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
     public static final String FILTER_MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
     public static final String FILTER_ESCALATED_INVOICES_TO_SUPERVISOR = "EscalatedInvoicesToSupervisor";
+    public static final String FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED = "ManualInvoicesToBeAssigned";
 
     String getKey();
 
@@ -58,10 +59,6 @@ public interface Filter {
     boolean getIsCheckOwnership();
     boolean getIsCheckFnol();
     boolean getIsCheckEngineers();
-
-//    boolean getIsCheckWorkGroup();
-
-//    boolean getIsCheckOwnership();
 
     ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
 }

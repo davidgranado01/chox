@@ -1,0 +1,60 @@
+---------------------------------------------------------
+6.15.1 - Assigning Workgroups/Ownership For Manual Claims
+---------------------------------------------------------
+alter table insurer add column enable_invoice_workgroups boolean default false;
+alter table insurer add column enable_invoice_ownership boolean default false;
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('filter.ManualInvoicesToBeAssigned',false,false);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_UPLOAD', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MI', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoicesToBeAssigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.ManualInvoicesToBeAssigned';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.AuditTrail.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.ClaimDetail.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.HireMonitoring.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.History.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.InvoiceDetail.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Notes.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.PaymentPack.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Tasks.ManualInvoiceUnassigned',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.History.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Notes.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('action.updateManualInvoice.ManualInvoiceUnassigned',false,false);
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceUnassigned',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceUnassigned';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceUnassigned';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceUnassigned';
+
+--------------
+END Of 6.15.1 
+--------------

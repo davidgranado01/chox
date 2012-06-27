@@ -64,6 +64,8 @@ public class InvoiceStatusReportCummulativeData {
     private BigDecimal valOfManualInvoicesPaidCumm;
     private Integer noOfManualInvoicesApprovedCumm;
     private BigDecimal valOfManualInvoicesApprovedCumm;
+    private Integer noOfManualInvoicesInToBeAssignedCumm;
+    private BigDecimal valOfManualInvoicesInToBeAssignedCumm;
     private Integer noOfManualInvoicesRejectedCumm;
     private BigDecimal valOfManualInvoicesRejectedCumm;
     private Integer noOfManualInvoicesContestedCumm;
@@ -131,6 +133,8 @@ public class InvoiceStatusReportCummulativeData {
         
         result.setNoOfManualInvoicesPaidCumm(((BigInteger) data.get("no_manual_invoices_paid_total".toLowerCase())).intValue());
         result.setValOfManualInvoicesPaidCumm((BigDecimal) data.get("val_manual_invoices_paid_total".toLowerCase()));
+        result.setNoOfManualInvoicesInToBeAssignedCumm(((BigInteger) data.get("no_manual_invoices_in_to_be_assigned_total".toLowerCase())).intValue());
+        result.setValOfManualInvoicesInToBeAssignedCumm((BigDecimal) data.get("val_manual_invoices_in_to_be_assigned_total".toLowerCase()));
         result.setNoOfManualInvoicesApprovedCumm(((BigInteger) data.get("no_manual_invoices_approved_total".toLowerCase())).intValue());
         result.setValOfManualInvoicesApprovedCumm((BigDecimal) data.get("val_manual_invoices_approved_total".toLowerCase()));
         result.setNoOfManualInvoicesRejectedCumm(((BigInteger) data.get("no_manual_invoices_rejected_total".toLowerCase())).intValue());
@@ -640,5 +644,23 @@ public class InvoiceStatusReportCummulativeData {
 
     public void setValOfInvoicesInLitigationStatusCumm(BigDecimal valOfInvoicesInLitigationStatusCumm) {
         this.valOfInvoicesInLitigationStatusCumm = valOfInvoicesInLitigationStatusCumm;
+    }
+
+    public Integer getNoOfManualInvoicesInToBeAssignedCumm() {
+        return noOfManualInvoicesInToBeAssignedCumm;
+    }
+
+    public void setNoOfManualInvoicesInToBeAssignedCumm(
+            Integer noOfManualInvoicesInToBeAssignedCumm) {
+        this.noOfManualInvoicesInToBeAssignedCumm = noOfManualInvoicesInToBeAssignedCumm;
+    }
+
+    public BigDecimal getValOfManualInvoicesInToBeAssignedCumm() {
+        return valOfManualInvoicesInToBeAssignedCumm;
+    }
+
+    public void setValOfManualInvoicesInToBeAssignedCumm(
+            BigDecimal valOfManualInvoicesInToBeAssignedCumm) {
+        this.valOfManualInvoicesInToBeAssignedCumm = valOfManualInvoicesInToBeAssignedCumm;
     }
 }

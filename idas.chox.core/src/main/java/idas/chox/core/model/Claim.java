@@ -15,7 +15,6 @@ import idas.chox.core.util.DateHelper;
 public class Claim extends Entity implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
-    // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
     private String choReference;
@@ -39,15 +38,9 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ClaimType claimType;
-//    private boolean tpiClaim;
-//    private boolean insurerVsInsurerClaim;
     private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
-//    private boolean supplementaryInvoicedClaim;
     private boolean autoPenaltyChargeEnabled;
-
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
     private Chorganisation chorganisation;
     private Customer customer;
@@ -59,17 +52,13 @@ public class Claim extends Entity implements Serializable {
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
     private Workgroup workgroupOriginal;
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
     private List<Notification> notifications;
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
-    // </editor-fold>
+    private boolean manualInvoiceApproved;
     
-//    private boolean originalSupplementaryInvoicedClaim;
-
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
@@ -83,8 +72,6 @@ public class Claim extends Entity implements Serializable {
     public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
         this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="Public Properties">
 
     public boolean isSpecialRoutedTpiClaim() {
         return specialRoutedTpiClaim;
@@ -339,8 +326,6 @@ public class Claim extends Entity implements Serializable {
         this.workgroupOriginal = workgroupOriginal;
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">
     public String getIsManagingRepairDesc() {
         return managingRepair ? "Yes" : "No";
     }
@@ -373,9 +358,7 @@ public class Claim extends Entity implements Serializable {
         long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getLiabilityAgreedDate(), new Date()) + 1;
         return dateDiff;
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
         if (hireMonitoringEcds == null) {
             hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
@@ -420,9 +403,7 @@ public class Claim extends Entity implements Serializable {
         LOG.debug("Latest hire monitoring ECD is null");
         return null;
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc=" Attachment ">
     public List<Attachment> getAttachments() {
         return attachments;
     }
@@ -443,9 +424,7 @@ public class Claim extends Entity implements Serializable {
     public void deleteAttachment(Attachment attachment) {
         attachments.remove(attachment);
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc=" Comments ">
     public List<Comment> getComments() {
         return comments;
     }
@@ -466,9 +445,7 @@ public class Claim extends Entity implements Serializable {
     public void deleteComment(Comment comment) {
         comments.remove(comment);
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="History">
     public List<History> getHistories() {
         return histories;
     }
@@ -498,9 +475,7 @@ public class Claim extends Entity implements Serializable {
             histories.add(history);
         }
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Notification">
     public List<Notification> getNotifications() {
         return notifications;
     }
@@ -746,5 +721,13 @@ public class Claim extends Entity implements Serializable {
         this.claimType = claimType;
         if (!ClaimType.isGTA(claimType))
             autoPenaltyChargeEnabled = false;
+    }
+
+    public boolean isManualInvoiceApproved() {
+        return manualInvoiceApproved;
+    }
+
+    public void setManualInvoiceApproved(boolean manualInvoiceApproved) {
+        this.manualInvoiceApproved = manualInvoiceApproved;
     }
 }

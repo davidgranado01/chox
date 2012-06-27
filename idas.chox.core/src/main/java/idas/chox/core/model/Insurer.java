@@ -60,6 +60,8 @@ public class Insurer extends Entity implements Serializable {
     private boolean disablePrivateNotes;
     private String blockedMessage;
     private Integer ecdIncreaseTriggerPercentage;
+    private boolean enableInvoiceWorkgroups;
+    private boolean enableInvoiceOwnership;
 
     public String getBlockedMessage() {
         return blockedMessage;
@@ -544,6 +546,22 @@ public class Insurer extends Entity implements Serializable {
 
     public void setEcdIncreaseTriggerPercentage(Integer ecdIncreaseTriggerPercentage) {
         this.ecdIncreaseTriggerPercentage = ecdIncreaseTriggerPercentage;
+    }
+
+    public boolean isEnableInvoiceWorkgroups() {
+        return enableInvoiceWorkgroups;
+    }
+
+    public void setEnableInvoiceWorkgroups(boolean enableInvoiceWorkgroups) {
+        this.enableInvoiceWorkgroups = enableInvoiceWorkgroups;
+    }
+
+    public boolean isEnableInvoiceOwnership() {
+        return enableInvoiceOwnership;
+    }
+
+    public void setEnableInvoiceOwnership(boolean enableInvoiceOwnership) {
+        this.enableInvoiceOwnership = enableInvoiceOwnership;
     }
 
 }
