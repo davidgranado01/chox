@@ -226,6 +226,7 @@
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
+                <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceContested" />
                 <ref bean="EscalatedInvoicesToSupervisor" />
             </list>

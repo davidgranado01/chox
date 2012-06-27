@@ -54,6 +54,8 @@
     <property column="block_time" name="blockTime" not-null="true"/>
     <property column="disable_private_notes" name="disablePrivateNotes" not-null="true"/>
     <property column="blocked_message" name="blockedMessage" not-null="true"/>
+    <property column="enable_invoice_workgroups" name="enableInvoiceWorkgroups" not-null="true"/>
+    <property column="enable_invoice_ownership" name="enableInvoiceOwnership" not-null="true"/>
     <property column="ecd_increase_trigger" name="ecdIncreaseTriggerPercentage" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>

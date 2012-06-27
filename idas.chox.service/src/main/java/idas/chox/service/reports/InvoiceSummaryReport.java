@@ -302,7 +302,7 @@ public class InvoiceSummaryReport implements Report {
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
-            sb.append( "and status in ('InvoiceReferredToEngineer', 'InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO', 'InvoiceReferredToClaimsHandler', 'AwaitingLiabilityResolution', 'InvoiceUnassigned', 'InvoiceEscalatedToHandler', 'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'ManualInvoiceBREApproved', 'AwaitingLitigationOutcome') ")
+            sb.append( "and status in ('InvoiceReferredToEngineer', 'InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO', 'InvoiceReferredToClaimsHandler', 'AwaitingLiabilityResolution', 'InvoiceUnassigned', 'InvoiceEscalatedToHandler', 'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'ManualInvoiceBREApproved', 'AwaitingLitigationOutcome', 'ManualInvoiceUnassigned') ")
               .append( "and date_trunc('day', created_date) between :pInvUploadDateFrom and :pInvUploadDateTo) as noInvoicePending,");
             
             
@@ -313,7 +313,7 @@ public class InvoiceSummaryReport implements Report {
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
-            sb.append( "and status in ('InvoiceReferredToEngineer','InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO', 'InvoiceReferredToClaimsHandler', 'AwaitingLiabilityResolution', 'InvoiceUnassigned', 'InvoiceEscalatedToHandler', 'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'ManualInvoiceBREApproved', 'AwaitingLitigationOutcome') ")
+            sb.append( "and status in ('InvoiceReferredToEngineer','InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO', 'InvoiceReferredToClaimsHandler', 'AwaitingLiabilityResolution', 'InvoiceUnassigned', 'InvoiceEscalatedToHandler', 'ManualInvoiceBRERejected', 'ManualInvoiceContested', 'ManualInvoiceBREApproved', 'AwaitingLitigationOutcome', 'ManualInvoiceUnassigned') ")
               .append( "and date_trunc('day', created_date) between :pInvUploadDateFrom and :pInvUploadDateTo) as invoicePendingValue,");
             
             

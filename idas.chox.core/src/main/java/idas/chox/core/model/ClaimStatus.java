@@ -37,6 +37,7 @@ public class ClaimStatus {
     public static final String MANUAL_INVOICE_PAID = "ManualInvoicePaid";
     public static final String MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
     public static final String AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcome";
+    public static final String MANUAL_INVOICE_UNASSIGNED = "ManualInvoiceUnassigned";
     private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>();
     private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>();
     private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>();
@@ -50,6 +51,7 @@ public class ClaimStatus {
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+        invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
         invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         invoiceWithInsurerStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
@@ -128,6 +130,7 @@ public class ClaimStatus {
         status.add(INVOICE_PAYMENT_RECEIVED);
         
         if (isManualInvoiceAllowed) {
+            status.add(MANUAL_INVOICE_UNASSIGNED);
             status.add(MANUAL_INVOICE_APPROVED);
             status.add(MANUAL_INVOICE_REJECTED);
             status.add(MANUAL_INVOICE_PAID);
@@ -190,6 +193,7 @@ public class ClaimStatus {
         }
         
         if (usesInsurerUpload) {
+            results.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
             results.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
             results.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
             results.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
@@ -227,6 +231,7 @@ public class ClaimStatus {
     
     public static boolean isManualStatus(String status) {
         return status.equals(ClaimStatus.MANUAL_INVOICE_APPROVED)
+                || status.equals(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)
                 || status.equals(ClaimStatus.MANUAL_INVOICE_CONTESTED)
                 || status.equals(ClaimStatus.MANUAL_INVOICE_PAID)
                 || status.equals(ClaimStatus.MANUAL_INVOICE_REJECTED);
