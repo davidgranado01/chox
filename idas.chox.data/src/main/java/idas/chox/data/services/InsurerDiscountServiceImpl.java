@@ -41,10 +41,16 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
-    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
+    public Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount) {
         /*
          *  Add one day to 'dateTo'
          */
+        Date dateFrom = insurerDiscount.getDateFrom();
+        Date dateTo = insurerDiscount.getDateTo();
+        int discountId = -1;
+        if (insurerDiscount.getId() != null) {
+            discountId = insurerDiscount.getId();
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
@@ -63,28 +69,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
 
-        if (discountId > 0) {
-            InsurerDiscount insurerDiscount = getInsurerDiscount(discountId);
-            if (insurerDiscount != null) {
-                insurerDiscount.setDateFrom(dateFrom);
-                insurerDiscount.setDateTo(dateTo);
-                insurerDiscount.setDiscountPercentage(discountPercentage);
-                save(insurerDiscount);
-                hm.put("success", Boolean.TRUE);
-            } else {
-                hm.put("success", Boolean.FALSE);
-                hm.put("error", "no discount found in database");
-            }
-        } else {
-            InsurerDiscount insurerDiscount = new InsurerDiscount();
-            insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
-            insurerDiscount.setInsurer(insurerService.getInsurer(insId));
-            insurerDiscount.setDateFrom(dateFrom);
-            insurerDiscount.setDateTo(dateTo);
-            insurerDiscount.setDiscountPercentage(discountPercentage);
-            save(insurerDiscount);
-            hm.put("success", Boolean.TRUE);
-        }
+        insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
+        insurerDiscount.setInsurer(insurerService.getInsurer(insId));
+        save(insurerDiscount);
+        hm.put("success", Boolean.TRUE);
 
         return hm;
     }
@@ -117,10 +105,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         Map hm = new HashMap();
         try {
             delete(insurerDiscount);
+            hm.put("success", Boolean.TRUE);
         } catch (Exception ex) {
-            LOG.error("Error thrown in deleteInsurerDiscount: {}", ex.getMessage());
+            LOG.error("Error thrown in deleteInsurerDiscount: ", ex);
+            hm.put("success", Boolean.FALSE);
         }
-        hm.put("success", Boolean.TRUE);
         return hm;
     }
 
@@ -206,7 +195,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         try {
             valList = getCurrentSession().createSQLQuery(query).list();
         } catch (Throwable th) {
-            LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: {}", th.getMessage());
+            LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: ", th);
             LOG.error("ins id {}, cho id {}", insId, choId);
             LOG.error("invoice Created date {}", invoiceCreatedDate);
             return BigDecimal.ZERO;

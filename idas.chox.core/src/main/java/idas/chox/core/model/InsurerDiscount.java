@@ -14,6 +14,24 @@ public class InsurerDiscount extends Entity{
     private Date dateFrom;
     private Date dateTo;
     private BigDecimal discountPercentage;
+    private InsurerDiscountType insurerDiscountType;
+    private boolean appliedToPenalties;
+
+    public boolean isAppliedToPenalties() {
+        return appliedToPenalties;
+    }
+
+    public void setAppliedToPenalties(boolean appliedToPenalties) {
+        this.appliedToPenalties = appliedToPenalties;
+    }
+
+    public InsurerDiscountType getInsurerDiscountType() {
+        return insurerDiscountType;
+    }
+
+    public void setInsurerDiscountType(InsurerDiscountType insurerDiscountType) {
+        this.insurerDiscountType = insurerDiscountType;
+    }
 
     public Chorganisation getChOrganisation() {
         return chOrganisation;
