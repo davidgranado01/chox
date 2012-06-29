@@ -168,7 +168,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         }
         
-        List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(currentUser);
+        List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(currentUser, false);
         List<BreInvoiceApprovalDisputedRoRData> breInvRorData = new ArrayList<BreInvoiceApprovalDisputedRoRData>();
         List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<BreInvoiceApprovalDisputedData>();
 
@@ -722,7 +722,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         
         
         //sets the data for uoter loop which loops trough reasons of rejection
-        for(ReasonOfRejection ror : reasonsOfRejection){
+        for(ReasonOfRejection ror : getReasonsOfRejection(currentUser, true)){
             BreInvoiceApprovalDisputedRoRData rorData = new BreInvoiceApprovalDisputedRoRData();
             
             Map<Integer, BigDecimal> listOfCommLineData = breInvoiceApprovalDisputeCumulativeData.getDisputedApprovalReasonsMap();
@@ -741,7 +741,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         }
         
         //populates the 'reason of rejection loop' 
-
+//        reportParameters.put("breInvoiceRorHeader",getReasonsOfRejection(currentUser, true));
         reportParameters.put("breInvoiceRor", breInvRorData);
         reportParameters.put("breInvoiceCumulative", breInvoiceApprovalDisputeCumulativeData);
         reportParameters.put("breInvoiceApproval", breInvoiceApproval);
@@ -757,7 +757,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         return reportParameters;
     }
     
-    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser) {
+    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
         List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
         List result = null;
         if(currentUser.getInsurer() != null){
@@ -784,7 +784,11 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             Map data = (Map) o;
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
-            reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            if(!displayInHeader){
+                reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            } else {
+                reportRow.setName(data.get("name").toString());
+            }
             reportRows.add(reportRow);
         }
 
