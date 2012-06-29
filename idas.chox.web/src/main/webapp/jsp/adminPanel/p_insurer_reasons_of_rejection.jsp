@@ -126,10 +126,12 @@ $(function(){
     {
         errorLabelContainer: "#rorErrorMessageBox",
         rules: {
-        	reasonOfRejectionName:{ required:true}
+        	reasonOfRejectionName:{ required:true, minlength:5 , maxlength:32}
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'"}
+        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
+                minlength:"'Rejection Reason Name' must be at least 5 charachters long." , 
+                maxlength:"'Rejection Reason Name' can have maximum 32 charachters."}
         }
     });
 
@@ -146,6 +148,37 @@ $(function(){
         	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
         		minlength:"'Rejection Reason Name' must be at least 5 charachters long." , 
         		maxlength:"'Rejection Reason Name' can have maximum 32 charachters."}
+        }
+    });
+    
+    var types = ['Claim','Invoice'];
+    
+    var typeCombo = new Ext.form.ComboBox({
+        store: types
+        ,valueField:'type'
+        ,displayField:'Type'
+        ,fieldLabel: 'Type'
+        ,mode:'local'
+        ,renderTo: 'typeDivId'
+        ,name: 'rorTypeName'
+        ,id: 'rorTypeId'
+        ,triggerAction: 'all'
+        ,hiddenName: 'type'
+        ,width: 150
+        ,selectOnFocus: true
+        ,mode: 'local'
+        ,editable: false
+        ,allowBlank: false
+        ,forceSelection: true
+        ,listeners: {
+        	select: function() {
+       		    if(this.getValue() == 'Claim'){
+       		        $("#restrictedDivId").slideDown();
+       		        $("form#rorForm input#restricted").attr('checked',false);
+       		    } else {
+       		        $("#restrictedDivId").slideUp();
+       		    }
+            }
         }
     });
     
@@ -210,8 +243,10 @@ function refreshForm(){
     $("#rorDescTextId").val("");
     $("form#rorForm input#restricted").attr('checked',false);
     $("form#rorForm input#status").attr('checked',false);
-    $("form#rorForm input[type='radio']").get(0).setAttribute('checked', 'checked');
-    $("form#rorForm input[type='radio']").get(1).removeAttribute('checked');
+    Ext.getCmp('rorTypeId').setValue('Claim');
+    $("#restrictedDivId").slideDown();
+    $("form#rorForm input#restricted").attr('checked',false);
+    $("form#rorForm input#active").attr('checked',false);
 }
 
 function loadGridViewList(){
@@ -221,22 +256,9 @@ function loadGridViewList(){
 function showEditReasonOfRejection(gridView){
 	rorEditPopWindow.show();
 	
-	var radio = $("form#rorEditForm  input[type='radio']").get(0);
-	
     $("form#rorEditForm input[name$='reasonOfRejectionId']").val(gridView.get("id"));
     $("form#rorEditForm input[name$='reasonOfRejectionName']").val(gridView.get("name"));
     $("form#rorEditForm #rorDescEditTextId").val(gridView.get("description"));
-}
-
-function onNotificatoinChange(){
-	var radio = $("form#rorForm input[type='radio']").get(0);
-	var radio2 = $("form#rorForm input[type='radio']").get(1)
-	if(radio.checked){
-		$("#restrictedDivId").slideDown();
-		$("form#rorForm input#restricted").attr('checked',false);
-	} else {
-		$("#restrictedDivId").slideUp();
-	}
 }
 
 </script>
@@ -258,8 +280,13 @@ function onNotificatoinChange(){
                                     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
+                                        <label class="chox-form-std-label">Type</label>
+                                        <div id="typeDivId" style="padding-left: 70px"></div>
+                                    </div>
+                                    
+                                    <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                                        <input id="rorId" name="reasonOfRejectionName" style="width: 175px"/>
+                                        <input type="text" id="rorId" name="reasonOfRejectionName" style="width: 175px" minlength="5" />
                                     </div>
                                     
                                     <div class="chox-form-item">
@@ -270,24 +297,14 @@ function onNotificatoinChange(){
                                     <table width="100%">
 	                                    <tr>
 		                                    <td width="30%">
-			                                    <div class="chox-form-item" id="radioBox" style="padding-left: 70px">
-		                                        <span class="input-radio"> 
-		                                            First Notification Rejection Reason
-		                                            <input type="radio" name="type" checked="checked" value="Claim" onclick="onNotificatoinChange()"/>
-		                                            </span>
-		                                        <br/>
-		                                        <span class="input-radio">
-		                                            Invoice Stage Rejection Reason
-		                                            <input type="radio" name="type" value="Invoice" style="margin-left: 14px" onclick="onNotificatoinChange()"/> 
-		                                            </span>
-		                                        </div>
-		                                    </td>
-			                                <td width="15%" >
-			                                    <div style="margin-left: 91px">
+			                                    <div style="margin-left: 191px">
                                                     <label>Active</label>
                                                     <s:checkbox id="status" name="status"/>
                                                 </div>
-                                                <div id="restrictedDivId">
+		                                    </td>
+			                                <td width="15%" >
+			                                   
+                                                <div id="restrictedDivId" style="margin-right: 142px">
                                                     <label>Visible Before Assigned</label>
                                                     <s:checkbox id="restricted" name="restricted" />
                                                 </div>
