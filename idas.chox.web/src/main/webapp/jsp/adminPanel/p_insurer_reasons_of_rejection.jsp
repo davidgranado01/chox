@@ -129,7 +129,7 @@ $(function(){
         	reasonOfRejectionName:{ required:true}
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Reason Of Rejection'"}
+        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'"}
         }
     });
 
@@ -143,7 +143,7 @@ $(function(){
         	reasonOfRejectionName:{ required:true}
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Reason Of Rejection'"}
+        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'"}
         }
     });
     
