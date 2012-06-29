@@ -2826,3 +2826,13 @@ where exists
 --------------------
 -- END OF bug#1795
 --------------------
+
+-------------------------------------------------------------
+-- bug#1813 - Reason Of Rejction Description Should Not Be Limited
+-------------------------------------------------------------
+
+ALTER TABLE reason_of_rejection ALTER COLUMN description type TEXT;
+
+--------------------
+-- END OF bug#1813
+--------------------
