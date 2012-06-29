@@ -140,10 +140,12 @@ $(function(){
     {
         errorLabelContainer: "#rorEditErrorMessageBox",
         rules: {
-        	reasonOfRejectionName:{ required:true}
+        	reasonOfRejectionName:{ required:true, minlength:5 , maxlength:32 }
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'"}
+        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
+        		minlength:"'Rejection Reason Name' must be at least 5 charachters long." , 
+        		maxlength:"'Rejection Reason Name' can have maximum 32 charachters."}
         }
     });
     
