@@ -12,29 +12,6 @@ var claimOwnerStore;
 var claimOwnerCombo;
 
 Ext.onReady(function(){
-//     Ext.override(Ext.form.ComboBox, {
-//         setValue : function(v){
-//             if (this.store.getCount() == 0) {
-//                 this.store.on('load',
-//                 this.setValue.createDelegate(this, [v]), null, {single: true});
-//                 return;
-//             }
-//             var text = v;
-//             if(this.valueField){
-//                 var r = this.findRecord(this.valueField, v);
-//                 if(r){
-//                     text = r.data[this.displayField];
-//                 }else if(this.valueNotFoundText !== undefined){
-//                     text = this.valueNotFoundText;
-//                 }
-//             }
-//             this.lastSelectionText = text;
-//             if(this.hiddenField){
-//                 this.hiddenField.value = v;
-//             }
-//             Ext.form.ComboBox.superclass.setValue.call(this, text);
-//             this.value = v;
-//         }});
 
     insurerId = '<s:property value="insurer.id"/>';
     isWorkgroupEnable = ('<s:property value="insurer.enableInvoiceWorkgroups"/>' == 'true');
@@ -196,9 +173,6 @@ function assignClaimSubmit(){
                 <s:hidden id="name" name="name" />
                 
                 <s:if test="status.equalsIgnoreCase('ManualInvoiceUnassigned')">
-<%--                     <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>"> --%>
-<%--                     <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>"> --%>
-<%--                     <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.enableInvoiceWorkgroups"/>"> --%>
                 
                     <s:if test="insurer.enableInvoiceWorkgroups && insurer.enableInvoiceOwnership">
 	                    <div class="status-info">Please assign the
@@ -216,6 +190,10 @@ function assignClaimSubmit(){
                             Please assign the claim owner for this claim and click on the 'Assign Claim' button.
                         </div>
                     </s:elseif>
+                    <s:else>
+                        <div class="status-info">'Enable Manual Invoice Workgroups' and 'Enable Manual Invoice Ownership' are disabled for this insurer.
+                        </div>
+                    </s:else>
                     
                     
                      <div class="status-control-set">

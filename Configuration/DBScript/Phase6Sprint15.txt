@@ -1,5 +1,5 @@
 ---------------------------------------------------------
-6.15.1 - Assigning Workgroups/Ownership For Manual Claims
+-- 6.15.1 - Assigning Workgroups/Ownership For Manual Claims
 ---------------------------------------------------------
 alter table insurer add column enable_invoice_workgroups boolean default false;
 alter table insurer add column enable_invoice_ownership boolean default false;
@@ -56,5 +56,5 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceUnassigned';
 
 --------------
-END Of 6.15.1 
+--END OF 6.15.1 
 --------------

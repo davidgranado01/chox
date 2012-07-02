@@ -224,9 +224,9 @@
                 <ref bean="AwaitingLiabilityResolution" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoiceUnassigned" />
+                <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
-                <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceContested" />
                 <ref bean="EscalatedInvoicesToSupervisor" />
             </list>

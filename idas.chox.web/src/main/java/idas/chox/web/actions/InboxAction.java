@@ -248,4 +248,18 @@ public class InboxAction extends BaseAction {
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
+    
+    public boolean getEnableInvoiceWorkgroups() {
+        if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
+           return false;
+        } 
+        return getAuthenticatedUser().getInsurer().isEnableInvoiceWorkgroups();
+    }
+    
+    public boolean getEnableInvoiceOwnership() {
+        if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
+            return false;
+         } 
+        return getAuthenticatedUser().getInsurer().isEnableInvoiceOwnership();
+    }
 }

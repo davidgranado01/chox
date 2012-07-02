@@ -216,4 +216,6 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public void setRelatedInsurerId(int id) {
         this.relatedInsurerId = id;
     }
+    
+    
 }
