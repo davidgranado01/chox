@@ -123,19 +123,19 @@ public class InsurerUpload extends BaseActivity {
             claim.addHistory(history);
         }
 
-        boolean isEnableInvoiceWorkgroupOwnership = claim.getInsurer().isEnableInvoiceOwnership() || claim.getInsurer().isEnableInvoiceWorkgroups();
+        boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
-            if(isEnableInvoiceWorkgroupOwnership){
+            if(isEnableManualInvoiceWorkgroupOwnership){
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
                 claim.setManualInvoiceApproved(true);
             } else {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
             }
         } else {
-            if(isEnableInvoiceWorkgroupOwnership){
+            if(isEnableManualInvoiceWorkgroupOwnership){
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
                 claim.setManualInvoiceApproved(false);
             } else {

@@ -253,13 +253,13 @@ public class InboxAction extends BaseAction {
         if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
            return false;
         } 
-        return getAuthenticatedUser().getInsurer().isEnableInvoiceWorkgroups();
+        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups();
     }
     
     public boolean getEnableInvoiceOwnership() {
         if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
             return false;
          } 
-        return getAuthenticatedUser().getInsurer().isEnableInvoiceOwnership();
+        return getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership();
     }
 }

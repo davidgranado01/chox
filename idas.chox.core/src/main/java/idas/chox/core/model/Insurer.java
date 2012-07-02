@@ -60,8 +60,8 @@ public class Insurer extends Entity implements Serializable {
     private boolean disablePrivateNotes;
     private String blockedMessage;
     private Integer ecdIncreaseTriggerPercentage;
-    private boolean enableInvoiceWorkgroups;
-    private boolean enableInvoiceOwnership;
+    private boolean enableManualInvoiceWorkgroups;
+    private boolean enableManualInvoiceOwnership;
 
     public String getBlockedMessage() {
         return blockedMessage;
@@ -548,20 +548,21 @@ public class Insurer extends Entity implements Serializable {
         this.ecdIncreaseTriggerPercentage = ecdIncreaseTriggerPercentage;
     }
 
-    public boolean isEnableInvoiceWorkgroups() {
-        return enableInvoiceWorkgroups;
+    public boolean isEnableManualInvoiceWorkgroups() {
+        return enableManualInvoiceWorkgroups;
     }
 
-    public void setEnableInvoiceWorkgroups(boolean enableInvoiceWorkgroups) {
-        this.enableInvoiceWorkgroups = enableInvoiceWorkgroups;
+    public void setEnableManualInvoiceWorkgroups(
+            boolean enableManualInvoiceWorkgroups) {
+        this.enableManualInvoiceWorkgroups = enableManualInvoiceWorkgroups;
     }
 
-    public boolean isEnableInvoiceOwnership() {
-        return enableInvoiceOwnership;
+    public boolean isEnableManualInvoiceOwnership() {
+        return enableManualInvoiceOwnership;
     }
 
-    public void setEnableInvoiceOwnership(boolean enableInvoiceOwnership) {
-        this.enableInvoiceOwnership = enableInvoiceOwnership;
+    public void setEnableManualInvoiceOwnership(boolean enableManualInvoiceOwnership) {
+        this.enableManualInvoiceOwnership = enableManualInvoiceOwnership;
     }
 
 }
