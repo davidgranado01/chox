@@ -722,7 +722,7 @@
                                     <td>
                                         <div class="chox-form-item">
                                             <label class="chox-form-std-label">Enable Manual Invoice Workgroups</label>
-                                            <s:checkbox name="enableInvoiceWorkgroups" value="enableInvoiceWorkgroups" />
+                                            <s:checkbox name="enableManualInvoiceWorkgroups" value="enableManualInvoiceWorkgroups" />
                                         </div>
                                     </td>
 	                               </tr>
@@ -730,7 +730,7 @@
                                     <td>
                                         <div class="chox-form-item">
                                             <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
-                                            <s:checkbox name="enableInvoiceOwnership" value="enableInvoiceOwnership" />
+                                            <s:checkbox name="enableManualInvoiceOwnership" value="enableManualInvoiceOwnership" />
                                         </div>
                                     </td>
                                 </tr>
