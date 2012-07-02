@@ -141,7 +141,7 @@ public class ClaimRejectedReport implements Report {
                     }
                         
                 }
-                
+                System.out.println(sb.toString());
             }
 
         if (isIns) {
@@ -317,9 +317,9 @@ public class ClaimRejectedReport implements Report {
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
                     "where ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) " +
-                    "or (ror.status = true and ror.type='Claim' and ror.insurer_id = in " +
+                    "or (ror.status = true and ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId)) " +
-                    "group by ror.id order by id asc " +
+                    "group by ror.id " +
                     "union select id, name from reason_of_rejection where status = true and type='Claim' and insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             
