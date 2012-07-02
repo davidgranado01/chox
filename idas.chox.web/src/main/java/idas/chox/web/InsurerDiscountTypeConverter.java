@@ -10,13 +10,15 @@ import org.apache.struts2.util.StrutsTypeConverter;
  */
 public class InsurerDiscountTypeConverter extends StrutsTypeConverter{
 
-    InsurerDiscountType values[] = InsurerDiscountType.values();
 
     @Override
     public Object convertFromString(Map context, String[] values, Class toClass) {
         if (values != null && values.length > 0 && values[0] != null && values[0].length() > 0) {
-            return InsurerDiscountType.values()[Integer.valueOf(values[0])];
-
+            for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
+                if (insurerDiscountType.toString().equalsIgnoreCase(values[0])) {
+                    return insurerDiscountType;
+                }
+            }
         }
         return null;
     }

@@ -174,7 +174,7 @@
                 store : insurerDiscountTypeStore,
                 width: 120,
                 listWidth: 120,
-                valueField : 'value',
+                valueField : 'text',
                 displayField :'text',
                 typeAhead : true,
                 mode : 'local',
