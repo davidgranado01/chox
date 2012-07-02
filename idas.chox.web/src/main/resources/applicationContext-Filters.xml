@@ -377,6 +377,19 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
+    
+    <bean id="ManualInvoicesToBeAssigned" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Manual Invoices To Be Assigned"/>
+        <property name="key" value="ManualInvoicesToBeAssigned"/>
+        <property name="status" value="ManualInvoiceUnassigned"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
 
     <bean id="ManualInvoiceBREApproved" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Manual Invoices Approved By BRE"/>
@@ -428,4 +441,5 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
+    
 </beans>

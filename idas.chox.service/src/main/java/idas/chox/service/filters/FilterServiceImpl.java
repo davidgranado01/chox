@@ -43,6 +43,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED) && webUser.isAnInsurer()
+                                && !(webUser.getInsurer().isEnableInvoiceOwnership() || webUser.getInsurer().isEnableInvoiceOwnership())) {
+                                LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
+                                continue;
                         } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED)
                                                                                                   || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_CONTESTED))
                                 && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
@@ -55,11 +59,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_ESCALATED_INVOICES_TO_SUPERVISOR) && webUser.isAnInsurer() && !webUser.getInsurer().isSupervisorEnable()) {
                                 LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                                 continue;
-                        } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED) && webUser.isAnInsurer()
-                                && !(webUser.getInsurer().isEnableInvoiceOwnership() || webUser.getInsurer().isEnableInvoiceOwnership())) {
-                                LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
-                                continue;
-                        }
+                        } 
                      
                         LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);

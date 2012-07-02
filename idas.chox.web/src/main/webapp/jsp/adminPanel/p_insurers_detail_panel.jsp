@@ -737,8 +737,8 @@
 	                            <tr>
 	                                <td>
 	                                    <div class="chox-form-item" id="tpiExclusionRegexId">
-	                                        <label class="chox-form-std-label1">Auto-routing Exclusion Regular Expression for Approved Invoices</label>
-	                                        <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+	                                        <label class="chox-form-std-label1">Auto-routing Exclusion Regular Expression for Approved Invoices (TPI)</label>
+	                                        <input type="text" class="chox-ttxt" style="width: 200px; height:20px; margin-top:6px;" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
 	                                    </div>
 	                                </td>
 	                                <td></td>
