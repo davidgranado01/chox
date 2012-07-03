@@ -55,8 +55,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         dateTo = cal.getTime();
+        
+        int insurerDiscountTypeValue = insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue();
 
-        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
+        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
@@ -113,10 +115,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
+    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
         Map hm = new HashMap();
 
-        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId);
+        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -126,11 +128,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
+    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
         Map checks = new HashMap();
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct");
-        sb.append("(date_from,date_to) ");
+        sb.append(" (date_from,date_to) ");
         sb.append("overlaps ");
         sb.append("(DATE '");
         sb.append(getShDtStr(dateFrom));
@@ -140,10 +142,13 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("from insurer_discount ");
         sb.append("where chorganisation_id = ");
         sb.append(choId);
-        sb.append("and insurer_id = ");
+        sb.append(" and insurer_id = ");
         sb.append(insId);
+        sb.append(" and discount_type = ");
+        sb.append(insurerDiscountTypeValue);
+        
         if (discountId > 0) {
-            sb.append("and id != ");
+            sb.append(" and id != ");
             sb.append(discountId);
         }
 
@@ -163,7 +168,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     @Override
-    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate) {
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue) {
 
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct discount_percentage from (");
@@ -180,6 +185,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append(choId);
         sb.append(" and insurer_id = ");
         sb.append(insId);
+        sb.append(" and discount_type = ");
+        sb.append(insurerDiscountTypeValue);
         sb.append(") as discountPercentage where overlap = ");
         sb.append(true);
 

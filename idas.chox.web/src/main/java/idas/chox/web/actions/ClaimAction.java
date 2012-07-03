@@ -59,7 +59,6 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.CalcHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ActionPanel;
@@ -1664,7 +1663,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getPaymentDetailsInsurerDiscount() {
-        return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        return claim.getInvoice().getInsurerTotalGrossDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
     }
 
     public boolean isPenaltyChargeApplied() {

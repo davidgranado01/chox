@@ -203,9 +203,9 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         this.previousTotalLossNet = previousTotalLossNet;
     }
 
-    private BigDecimal getInsurerDiscountPercentage(Claim claim) {
+    private BigDecimal getInsurerDiscountTotalGrossPercentage(Claim claim) {
         if (claim.getInsurer().isInsurerDiscountEnable()) {
-            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue());
         } else {
             return BigDecimal.ZERO;
         }
@@ -819,17 +819,17 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public java.math.BigDecimal getInsurerDiscount() {
-        return invoice.getInsurerDiscount();
+    public java.math.BigDecimal getInsurerTotalGrossDiscount() {
+        return invoice.getInsurerTotalGrossDiscount();
     }
 
-    public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
+    public void setInsurerTotalGrossDiscount(java.math.BigDecimal insurerDiscount) {
         if (actionSelected != reset && invoice != null) {
-            if (insurerDiscount.compareTo(invoice.getInsurerDiscount()) != 0) {
-                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerDiscount());
+            if (insurerDiscount.compareTo(invoice.getInsurerTotalGrossDiscount()) != 0) {
+                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerTotalGrossDiscount());
                 setCanAddInsurerDiscountComment(true);
             }
-            invoice.setInsurerDiscount(insurerDiscount);
+            invoice.setInsurerTotalGrossDiscount(insurerDiscount);
         }
     }
 
@@ -2218,15 +2218,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 claim.setInvoice(invoice);
                 claimService.updateLiabilityPayment(claim);
                 updateHpi();
-                BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
+                BigDecimal insurerDiscountPercentage = getInsurerDiscountTotalGrossPercentage(claim);
                 /*
                  * getCanAddInsurerDiscountComment will return true if the
                  * insurer discount amount changed after the original invoice
                  * upload.
                  */
                 if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
-//                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
-                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
+//                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerTotalGrossDiscount().compareTo(BigDecimal.ZERO));
+                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerTotalGrossDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
                     comment.setRaisedBy(userService.findByUserName("system"));
                     claim.addComment(comment);
                 }
@@ -2388,7 +2388,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         BigDecimal fullTotalRequested = BigDecimal.ZERO;
         BigDecimal fullTotalToPay = BigDecimal.ZERO;
         BigDecimal liablitityPercentage = BigDecimal.ZERO;
-        BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
+        BigDecimal insurerDiscountPercentage = getInsurerDiscountTotalGrossPercentage(claim);
         BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
 
         LOG.debug("initial value setup done in recalculate() function");
@@ -2573,7 +2573,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
             insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
         }
-        setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
+        setInsurerTotalGrossDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
 
