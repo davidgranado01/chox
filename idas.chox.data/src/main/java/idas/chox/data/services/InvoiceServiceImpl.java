@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.InvoiceOriginal;
 import idas.chox.core.services.ClaimService;
@@ -110,7 +109,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setTotalLossFeeNetOriginal(inv.getTotalLossFeeNet());
             invOriginal.setTotalLossFeeVatOriginal(inv.getTotalLossFeeVat());
             invOriginal.setTotalLossFeeGrossOriginal(inv.getTotalLossFeeGross());
-            invOriginal.setInsurerDiscountOriginal(inv.getInsurerDiscount());
+            invOriginal.setInsurerDiscountOriginal(inv.getInsurerTotalGrossDiscount());
             save(invOriginal);
             return invOriginal;
             

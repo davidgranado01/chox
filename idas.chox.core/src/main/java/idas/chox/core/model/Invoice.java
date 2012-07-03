@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.util.CalcHelper;
 import idas.chox.core.util.DateHelper;
 
 public class Invoice extends Entity implements Serializable {
@@ -97,7 +95,11 @@ public class Invoice extends Entity implements Serializable {
      * This attribute maps to the column discount in the invoice table.
      */
     private BigDecimal discount;
-    private BigDecimal insurerDiscount;
+    private BigDecimal insurerTotalGrossDiscount;
+    
+    private BigDecimal insurerRepairGrossDiscount;
+    
+    private BigDecimal insurerHireGrossDiscount;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
@@ -701,12 +703,28 @@ public class Invoice extends Entity implements Serializable {
         this.discount = discount;
     }
 
-    public BigDecimal getInsurerDiscount() {
-        return insurerDiscount;
+    public BigDecimal getInsurerTotalGrossDiscount() {
+        return insurerTotalGrossDiscount;
     }
 
-    public void setInsurerDiscount(BigDecimal insurerDiscount) {
-        this.insurerDiscount = insurerDiscount;
+    public void setInsurerTotalGrossDiscount(BigDecimal insurerTotalGrossDiscount) {
+        this.insurerTotalGrossDiscount = insurerTotalGrossDiscount;
+    }
+
+    public BigDecimal getInsurerHireGrossDiscount() {
+        return insurerHireGrossDiscount;
+    }
+
+    public void setInsurerHireGrossDiscount(BigDecimal insurerHireGrossDiscount) {
+        this.insurerHireGrossDiscount = insurerHireGrossDiscount;
+    }
+
+    public BigDecimal getInsurerRepairGrossDiscount() {
+        return insurerRepairGrossDiscount;
+    }
+
+    public void setInsurerRepairGrossDiscount(BigDecimal insurerRepairGrossDiscount) {
+        this.insurerRepairGrossDiscount = insurerRepairGrossDiscount;
     }
 
     /**

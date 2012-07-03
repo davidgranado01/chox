@@ -59,7 +59,7 @@ public class InvoiceRejectionAcceptTest extends BaseTest{
         invoice.setFullTotalToPay(BigDecimal.TEN);
 //        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
 //        invoice.setOriginalTotalToPay(BigDecimal.TEN);
-        invoice.setInsurerDiscount(BigDecimal.ZERO);
+        invoice.setInsurerTotalGrossDiscount(BigDecimal.ZERO);
         claim.setInvoice(invoice);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         InvoiceRejectionAccept activity = (InvoiceRejectionAccept) activityFactory.getActivity("acceptRejectedInvoice");

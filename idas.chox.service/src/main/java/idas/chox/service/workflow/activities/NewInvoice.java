@@ -2,15 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.hpi.*;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.History;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.Task;
-import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.WebUserRole;
+import idas.chox.core.model.*;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.TaskService;
@@ -120,20 +112,24 @@ public class NewInvoice extends BaseActivity {
         }
         if (claim.getInsurer().isInsurerDiscountEnable()) {
             /*
-             *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
+             * Add insurer dicount amount (price is configured in chox (or)
+             * insurer admin - insurance - discounts tab)
              */
-            BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
+            for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
+                BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime(), insurerDiscountType.getInsurerDiscountTypeValue());
 
-            /*
-             *  Add public note for insurer discount percentage
-             */
-            LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
-            if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+                /*
+                 * Add public note for insurer discount percentage
+                 */
+                LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
+                if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-                Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
-                comment.setRaisedBy(userService.findByUserName("system"));
-                claim.addComment(comment);
+                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerTotalGrossDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to " + "the " + insurerDiscountType.toString() + " on this invoice based on the discount contract in place.");
+                    comment.setRaisedBy(userService.findByUserName("system"));
+                    claim.addComment(comment);
+                }
             }
+
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
