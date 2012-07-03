@@ -242,7 +242,7 @@ function refreshForm(){
     $("#rorId").val("");
     $("#rorDescTextId").val("");
     $("form#rorForm input#restricted").attr('checked',false);
-    $("form#rorForm input#status").attr('checked',false);
+    $("form#rorForm input#statusId").attr('checked',false);
     Ext.getCmp('rorTypeId').setValue('Claim');
     $("#restrictedDivId").slideDown();
     $("form#rorForm input#restricted").attr('checked',false);
@@ -296,15 +296,15 @@ function showEditReasonOfRejection(gridView){
                                     <br/>
                                     <table width="100%">
 	                                    <tr>
-		                                    <td width="30%">
+		                                    <td width="20%">
 			                                    <div style="margin-left: 191px">
                                                     <label>Active</label>
-                                                    <s:checkbox id="status" name="status"/>
+                                                    <s:checkbox id="statusId" name="status"/>
                                                 </div>
 		                                    </td>
 			                                <td width="15%" >
 			                                   
-                                                <div id="restrictedDivId" style="margin-right: 142px">
+                                                <div id="restrictedDivId" style="margin-right: 110px">
                                                     <label>Visible Before Assigned</label>
                                                     <s:checkbox id="restricted" name="restricted" />
                                                 </div>
