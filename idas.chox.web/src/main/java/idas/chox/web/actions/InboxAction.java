@@ -2,6 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUserRole;
@@ -10,6 +11,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.MenuAccessibility;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,25 @@ public class InboxAction extends BaseAction {
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
-            if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName,claim)) {
+
+            if (getAuthenticatedUser().isAnInsurer()
+                    && claim.getStatus().equalsIgnoreCase(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)
+                    && statusAllow.contains(claim.getStatus())) {
+                // in case we have manual invoice ownership batch update enabled 
+                if (batchUpdateAction.equals("claimOwnership")
+                        && (!getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups() || getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership())) {
+                    getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                    return SUCCESS;
+                }
+                // in case we have manual invoice workgroup and ownership batch update enabled
+                if (batchUpdateAction.equals("updateClaimWorkgroupAndOwner") 
+                        && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups()) {
+                    getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                    return SUCCESS;
+                }
+            }
+
+            if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
@@ -249,14 +269,14 @@ public class InboxAction extends BaseAction {
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
     
-    public boolean getEnableInvoiceWorkgroups() {
+    public boolean getEnableManualInvoiceWorkgroups() {
         if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
            return false;
         } 
         return getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups();
     }
     
-    public boolean getEnableInvoiceOwnership() {
+    public boolean getEnableManualInvoiceOwnership() {
         if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
             return false;
          } 

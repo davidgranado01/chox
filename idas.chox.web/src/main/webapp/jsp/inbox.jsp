@@ -807,8 +807,7 @@
                 var claimOwnerSelectionDlg;
                 var doClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Owner',
-                    hidden: <s:property value="isCHO"/> || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) ,
-                   // || (<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceOwnership"/>),
+                    hidden: <s:property value="isCHO"/> || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>),
                     handler: function(){
 
                         if(!claimOwnerSelectionDlg)
@@ -1073,10 +1072,7 @@
                 var insurerClaimOwnerSelectionDlg;
                 var doInsurerClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Owner',
-                    hidden:(<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                    		|| (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                    		|| (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)
-                    		/* || (<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceOwnership"/>) */ ),
+                    hidden:(<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     handler: function(){
 
                         if(!insurerClaimOwnerSelectionDlg)
@@ -1208,10 +1204,7 @@
 
                 var updateInsurerClaimOwnershipSelectionDlg;
                 var doUpdateInsurerClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Owner',
-                    hidden: (<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                    		|| (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                    		|| (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)
-                    		/* || (<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && <s:property value="enableManualInvoiceOwnership"/>) */),
+                    hidden: (<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     handler: function(){
 
                         if(!updateInsurerClaimOwnershipSelectionDlg)
@@ -1310,10 +1303,7 @@
 
                 var updateClaimOwnershipSelectionDlg;
                 var doUpdateClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Workgroup And Claim Owner',
-                    hidden: (<s:property value="isCHO"/> 
-                    || (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>) 
-                    || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)
-                    /* || (<s:property value="isInsurer"/> && !<s:property value="enableManualInvoiceWorkgroups"/> && <s:property value="enableManualInvoiceOwnership"/>) */),
+                    hidden: (<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>) || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     handler: function(){
 
                         if(!updateClaimOwnershipSelectionDlg)

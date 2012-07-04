@@ -1,6 +1,8 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.ClaimService;
@@ -69,6 +71,16 @@ public class BatchUpdateAction extends BaseAction {
             }
 
             claim.setClaimOwner(claimOwnerDBA);
+            
+            //in case of manual invoice batch update we set the proper status
+            if(claim.getStatus().equalsIgnoreCase(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)){
+                if(claim.isManualInvoiceApproved()){
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+                }else{
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+                }
+            }
+                
             claimService.updateClaim(claim);
 
             // SAVE NEW NOTE

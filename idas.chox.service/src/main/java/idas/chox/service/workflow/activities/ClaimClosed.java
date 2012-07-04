@@ -71,5 +71,6 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
         expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
     }
 }
