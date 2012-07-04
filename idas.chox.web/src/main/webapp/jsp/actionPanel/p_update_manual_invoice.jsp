@@ -56,8 +56,12 @@ Ext.onReady(function(){
 	                if(this.getRawValue() == "") {
 	                    this.clearValue(); this.reset();
 	                    claimOwnerId = -1;
+	                    validateComboBox()
 	                }
-	            }
+	            },select : function () {
+                    validateComboBox()
+                },
+	            
 	        }
 	    });
 	    claimOwnerStore.load({ params : {"workgroupId":-1, "insurerId":insurerId}});
@@ -102,6 +106,7 @@ Ext.onReady(function(){
             	<s:if test="insurer.enableManualInvoiceOwnership">
                     doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                 </s:if>
+                validateComboBox();
                 },
                 blur: function () {
                     if(this.getRawValue() == "") {
@@ -134,11 +139,16 @@ function doRenderClaimHandlerDropDown(selectedWorkgroupId){
 function validateComboBox(){
     var mesBox = $("#OwnershippAssignmentMessageBox");
     mesBox.empty();
-    if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---") {
+    if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---" && 
+    		isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---"){
+    	mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
+    	mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
+        return false;
+    } else if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---") {
         mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
         return false;
     } else if (isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---") {
-        mesBox.append("You must supply a value for 'Work Group'\n<br/>").show();
+        mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
         return false;
     } else {
         mesBox.text("").show();
@@ -156,7 +166,7 @@ function doUpdateManualInvoice(action){
 }
 
 function assignClaimSubmit(){
-	actionPanel.registerAction("assignInvoiceOwner");
+	actionPanel.registerAction("assignManualInvoiceOwner");
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
         $("#updateManualInvoicePaymentForm").submit();
@@ -182,12 +192,12 @@ function assignClaimSubmit(){
 						</div>
                     </s:if>
                     <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership">
-                        <div class="status-info">Please assign the
+                        <div class="status-info">
                             Please assign the Workgroup for this claim and click on the 'Assign Claim' button. 
                         </div>
                     </s:elseif>
                      <s:elseif test="!insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
-                        <div class="status-info">Please assign the
+                        <div class="status-info">
                             Please assign the claim owner for this claim and click on the 'Assign Claim' button.
                         </div>
                     </s:elseif>
@@ -213,13 +223,23 @@ function assignClaimSubmit(){
 	                                    <td width="70%"></td>
 	                                </tr>
                                 </s:if>
-                                <s:if test="insurer.enableManualInvoiceWorkgroups || insurer.enableManualInvoiceOwnership">
-	                                <tr>
-	                                    <td colspan="3" class="" nowrap >
-	                                        <input type="button" id="miAssignButton" value="Assign Claim" onclick="return assignClaimSubmit();"/>
-	                                    </td>
-	                                </tr>
-                                </s:if>
+                                
+                                <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership)
+                                              || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
+			                        <tr>
+                                        <td colspan="3" class="" nowrap >
+                                            <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignClaimSubmit();"/>
+                                        </td>
+                                    </tr>
+			                    </s:if>
+			                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership">
+			                        <tr>
+                                        <td colspan="3" class="" nowrap >
+                                            <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignClaimSubmit();"/>
+                                        </td>
+                                    </tr>
+			                    </s:elseif>
+                                
                             </table>
                     <div class="chox-form-submit-result"></div>
                     <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>

@@ -11,7 +11,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 
-public class AssignInvoiceOwner extends BaseActivity {
+public class AssignManualInvoiceOwner extends BaseActivity {
 
     private int manualInvoiceWorkgroupId;
     private int claimOwnerId;
