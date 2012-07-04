@@ -97,7 +97,7 @@ public class InboxAction extends BaseAction {
             Claim claim = claimService.getClaim(id);
 
             if (getAuthenticatedUser().isAnInsurer()
-                    && claim.getStatus().equalsIgnoreCase(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)
+                    && ClaimStatus.isManualStatus(claim.getStatus())
                     && statusAllow.contains(claim.getStatus())) {
                 // in case we have manual invoice ownership batch update enabled 
                 if (batchUpdateAction.equals("claimOwnership")
