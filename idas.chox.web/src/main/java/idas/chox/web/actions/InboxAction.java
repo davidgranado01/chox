@@ -101,7 +101,7 @@ public class InboxAction extends BaseAction {
                     && statusAllow.contains(claim.getStatus())) {
                 // in case we have manual invoice ownership batch update enabled 
                 if (batchUpdateAction.equals("claimOwnership")
-                        && (!getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups() || getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership())) {
+                        && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership()) {
                     getActionResponse().AssignYesNoResult(Boolean.FALSE);
                     return SUCCESS;
                 }

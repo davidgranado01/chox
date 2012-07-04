@@ -193,17 +193,17 @@ function assignClaimSubmit(){
                     <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
 	                    <div class="status-info">Please assign the
 							Workgroup and claim owner for this claim and click on the 'Assign
-							Claim' button.
+							Owner' button.
 						</div>
                     </s:if>
                     <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership">
                         <div class="status-info">
-                            Please assign the Workgroup for this claim and click on the 'Assign Claim' button. 
+                            Please assign the Workgroup for this claim and click on the 'Assign Workgroup' button. 
                         </div>
                     </s:elseif>
                      <s:elseif test="!insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
                         <div class="status-info">
-                            Please assign the claim owner for this claim and click on the 'Assign Claim' button.
+                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                         </div>
                     </s:elseif>
                     <s:else>

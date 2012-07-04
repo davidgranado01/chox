@@ -42,7 +42,7 @@ UPDATE bre_band
 ALTER TABLE bre_band RENAME COLUMN average_labour_rate TO average_labour_rate_standard;
 ALTER TABLE bre_band ADD COLUMN average_labour_rate_prestige integer not null default 0;
 UPDATE bre_band
-    set average_labour_rate_prestige = average_labour_rate_standard,
+    set average_labour_rate_prestige = average_labour_rate_standard;
 
 ---------------------
 --- End of 6.15.6 ---
