@@ -178,7 +178,12 @@ function assignClaimSubmit(){
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
-        <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
+        <s:if test="status.equalsIgnoreCase('ManualInvoiceUnassigned')">
+            <fieldset class="x-fieldset"><legend>Manual Invoice Ownership - Action Required</legend>
+        </s:if>
+        <s:else>
+            <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
+        </s:else>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />

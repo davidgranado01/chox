@@ -65,9 +65,6 @@ select 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceUnassigned', false, fals
 insert into accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
 select 'batch.updateInsurerClaimOwner.ManualInvoiceUnassigned', false, false, false, false;
 
-INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) 
-VALUES ('batch.insurerClaimOwnership.ManualInvoiceUnassigned',false,false,false,true);
-
 insert into accessibility_item(role, access_right, accessibility_id)
 select 'ALL', 0, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ManualInvoiceUnassigned';
 insert into accessibility_item(role, access_right, accessibility_id)
@@ -83,20 +80,25 @@ insert into accessibility_item(role, access_right, accessibility_id)
 select 'ROLE_INS_MNG', 2, id from accessibility where name='batch.updateInsurerClaimOwner.ManualInvoiceUnassigned';
 
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceUnassigned';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceUnassigned';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceUnassigned';
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceBREApproved', false, false, false, false;
 
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateInsurerClaimOwner.ManualInvoiceBREApproved', false, false, false, false;
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBREApproved';
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBREApproved';
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBREApproved';
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBREApproved';
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
 values ('extraAction.updateClaimWorkgroupAndOwner.ManualInvoiceBREApproved',FALSE,FALSE);
@@ -113,12 +115,25 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ManualInvoiceBREApproved';
 
 
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceBRERejected', false, false, false, false;
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateInsurerClaimOwner.ManualInvoiceBRERejected', false, false, false, false;
+
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBRERejected';
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBRERejected';
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceBRERejected';
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.ManualInvoiceBREApproved.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.ManualInvoiceBREApproved.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.ManualInvoiceBREApproved.ManualInvoiceBRERejected';
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
 values ('extraAction.updateClaimWorkgroupAndOwner.ManualInvoiceBRERejected',FALSE,FALSE);
@@ -135,12 +150,25 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ManualInvoiceBRERejected';
 
 
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceContested', false, false, false, false;
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateInsurerClaimOwner.ManualInvoiceContested', false, false, false, false;
+
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceContested';
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceContested';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceContested';
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceContested';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoiceContested';
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoiceContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoiceContested';
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
 values ('extraAction.updateClaimWorkgroupAndOwner.ManualInvoiceContested',FALSE,FALSE);
@@ -157,12 +185,25 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ManualInvoiceContested';
 
 
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.ManualInvoicePaid', false, false, false, false;
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check,check_workgroup_enabled, check_claimownership_enabled)
+select 'batch.updateInsurerClaimOwner.ManualInvoicePaid', false, false, false, false;
+
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoicePaid';
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoicePaid';
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) 
-SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ManualInvoicePaid';
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ManualInvoicePaid';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoicePaid';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoicePaid';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) 
+SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateClaimWorkgroupAndOwner.ManualInvoicePaid';
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) 
 values ('extraAction.updateClaimWorkgroupAndOwner.ManualInvoicePaid',FALSE,FALSE);
