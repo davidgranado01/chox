@@ -313,14 +313,14 @@ public class ClaimRejectedReport implements Report {
             paramMap.put("insurerId", currentUser.getInsurer().getId());
             result = baseDataService.externalQuery(query, paramMap);
         } else {
-            String query = "select ror.id, ror.name from reason_of_rejection ror " +
+            String query = "select ror.name from reason_of_rejection ror " +
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
                     "where ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) " +
                     "or (ror.status = true and ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId)) " +
                     "group by ror.id " +
-                    "union select id, name from reason_of_rejection where status = true and type='Claim' and insurer_id in " +
+                    "union select name from reason_of_rejection where status = true and type='Claim' and insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             
             Map paramMap = new HashMap();

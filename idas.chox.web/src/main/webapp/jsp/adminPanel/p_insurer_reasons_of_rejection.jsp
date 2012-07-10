@@ -130,8 +130,8 @@ $(function(){
         },
         messages: {
         	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
-                minlength:"'Rejection Reason Name' must be at least 5 charachters long." , 
-                maxlength:"'Rejection Reason Name' can have maximum 32 charachters."}
+                minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
+                maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
         }
     });
 
@@ -146,8 +146,8 @@ $(function(){
         },
         messages: {
         	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
-        		minlength:"'Rejection Reason Name' must be at least 5 charachters long." , 
-        		maxlength:"'Rejection Reason Name' can have maximum 32 charachters."}
+        		minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
+        		maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
         }
     });
     
