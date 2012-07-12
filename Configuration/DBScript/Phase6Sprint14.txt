@@ -1,3 +1,4 @@
+
 -------------------------------------------------------------
 -- 6.14.3 IP white-list configuration panel
 -------------------------------------------------------------
@@ -20,6 +21,23 @@ ALTER TABLE insurer ADD COLUMN ecd_increase_trigger integer NOT NULL DEFAULT 50;
 -------------------------------------------------------------
 -- 6.14.6 Clarify use of invoice 'original' values
 -------------------------------------------------------------
+
+UPDATE 
+    invoice_original 
+SET 
+    full_total_to_pay = i.original_full_total_to_pay, 
+    total_to_pay = i.original_total_to_pay,
+    version = invoice_original.version + 1,
+    last_modified_date = now(),
+    last_modified_by = 999
+FROM 
+    invoice i,
+    claim c 
+WHERE 
+    i.id = c.invoice_id
+    AND invoice_original.id = c.invoice_original_id
+    AND ((i.hire_penalty_charge > 0) OR (i.repair_penalty_charge > 0))
+    AND ((invoice_original.created_date > i.hire_penalty_charge_applied_date) OR (invoice_original.created_date > i.repair_penalty_charge_applied_date));
 
 -- Function: updateinvoiceoriginal()
 
@@ -48,7 +66,7 @@ RAISE NOTICE 'invoice original update process started' ;
 
   LOOP
 
-    RAISE NOTICE 'Cho Reference : % ',claimRecord.cho_reference;
+    -- RAISE NOTICE 'Cho Reference : % ',claimRecord.cho_reference;
     
     INSERT INTO invoice_original 
      (
@@ -77,22 +95,22 @@ RAISE NOTICE 'invoice original update process started' ;
         i.hire_rate_charged_per_day, i.excess_amount_collected, 
         i.vat_amount_collected, 0, i.total_to_pay, i.original_total_to_pay,
         i.additional_driver_fee, i.additional_driver_qty, i.total_loss_net, i.total_loss_vat, i.total_loss_gross,
-        i.insurer_discount 
+        i.insurer_discount
        FROM invoice i 
        WHERE i.id = claimRecord.invoice_id;
        
-    UPDATE claim SET invoice_original_id = (SELECT currval(pg_get_serial_sequence('invoice_original', 'id'))) WHERE id = claimRecord.id;
+    UPDATE claim SET invoice_original_id = (SELECT currval(pg_get_serial_sequence('invoice_original', 'id'))), version = claim.version + 1, last_modified_date = now(), last_modified_by = 999 WHERE id = claimRecord.id;
 
     RETURN NEXT claimRecord;
   END LOOP;
-
+RAISE NOTICE 'invoice original update process finished' ;
 RAISE NOTICE 'Updating total_to_pay column';
 
-UPDATE invoice_original set total_to_pay = original_total_to_pay where total_to_pay != original_total_to_pay and original_total_to_pay > 0;
+UPDATE invoice_original SET total_to_pay = original_total_to_pay, version = invoice_original.version + 1, last_modified_date = now(), last_modified_by = 999 WHERE total_to_pay != original_total_to_pay AND original_total_to_pay > 0;
 
 RAISE NOTICE 'Updating full_total_to_pay column';
 
-UPDATE invoice_original set full_total_to_pay = original_full_total_to_pay where full_total_to_pay != original_full_total_to_pay and original_full_total_to_pay > 0;
+UPDATE invoice_original SET full_total_to_pay = original_full_total_to_pay, version = invoice_original.version + 1, last_modified_date = now(), last_modified_by = 999 WHERE full_total_to_pay != original_full_total_to_pay AND original_full_total_to_pay > 0;
 
 
 RETURN ;
@@ -111,7 +129,7 @@ DROP VIEW rpt_claim_invoice;
 
 ALTER TABLE invoice ADD COLUMN invoice_original_id integer;
 
-UPDATE invoice SET invoice_original_id = c.invoice_original_id FROM claim c WHERE c.invoice_id = invoice.id;
+UPDATE invoice SET invoice_original_id = c.invoice_original_id, version = invoice.version + 1, last_modified_date = now(), last_modified_by = 999 FROM claim c WHERE c.invoice_id = invoice.id;
 
 ALTER TABLE claim DROP COLUMN invoice_original_id;
 
@@ -2825,4 +2843,14 @@ where exists
 
 --------------------
 -- END OF bug#1795
+--------------------
+
+-------------------------------------------------------------
+-- bug#1813 - Reason Of Rejction Description Should Not Be Limited
+-------------------------------------------------------------
+
+ALTER TABLE reason_of_rejection ALTER COLUMN description type TEXT;
+
+--------------------
+-- END OF bug#1813
 --------------------

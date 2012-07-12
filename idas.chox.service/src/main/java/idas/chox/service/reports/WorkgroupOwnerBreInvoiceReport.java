@@ -64,7 +64,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             Date endDate = null;
             user = ((WebUser) externalParameter.get("CurrentUser"));
             
-            List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user);
+            List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user, false);
 
             LOG.debug("user={}", user);
             // GET INSURER INFORMATION
@@ -355,6 +355,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             }
 
             // Now build report parameters
+            reportParameters.put("reasonsOfRejectionHeader", getReasonsOfRejection(user, true));
             reportParameters.put("reasonsOfRejection", reasonsOfRejection);
             reportParameters.put("insurerName", rptInsurerName);
             reportParameters.put("choName", selectedCHOName);
@@ -418,7 +419,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
         return null;
     }
     
-    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser) {
+    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayForHeader) {
         List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
         List result = null;
         if(currentUser.getInsurer() != null){
@@ -445,7 +446,11 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             Map data = (Map) o;
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
-            reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            if(!displayForHeader){
+                reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            } else {
+                reportRow.setName(data.get("name").toString());
+            }
             reportRows.add(reportRow);
         }
 

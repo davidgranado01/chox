@@ -159,7 +159,7 @@
     </bean>
     
     <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus" >
-        <property name="name" value="New Claims to be Assigned"/>
+        <property name="name" value="New Claims To Be Assigned"/>
         <property name="key" value="ClaimUnacknowledgedUnassigned"/>
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
         <property name="isFilterWorkGroup" value="true"/>
