@@ -37,7 +37,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
                 if (choReference != null && !choReference.equals("")) {
                     referenceNumber = choReference;
-                    boolean isUpdateSuccessful = getClaimService().setPenaltyStartToDateInvoiced(choReference);
+                    boolean isUpdateSuccessful = getInvoiceService().setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
                         if (xlsDataMap.get(row).size() == 1) {

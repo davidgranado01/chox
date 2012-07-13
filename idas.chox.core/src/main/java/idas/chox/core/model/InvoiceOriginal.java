@@ -27,6 +27,9 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal deductionForClaimsHandlingFeeOriginal;
     private BigDecimal discountOriginal;
     private BigDecimal insurerDiscountOriginal;
+    private BigDecimal totalGrossInsurerDiscountOriginal;
+    private BigDecimal repairGrossInsurerDiscountOriginal;
+    private BigDecimal hireGrossInsurerDiscountOriginal;
     private BigDecimal fullTotalToPayOriginal;
     private BigDecimal miscellaneousFeeOriginal;
     private Integer miscellaneousQtyOriginal;
@@ -70,6 +73,14 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal totalLossFeeVatOriginal;
     private BigDecimal totalLossFeeGrossOriginal;
     private BigDecimal interimPaymentOriginal;
+
+    public BigDecimal getTotalGrossInsurerDiscountOriginal() {
+        return totalGrossInsurerDiscountOriginal;
+    }
+
+    public void setTotalGrossInsurerDiscountOriginal(BigDecimal totalGrossInsurerDiscountOriginal) {
+        this.totalGrossInsurerDiscountOriginal = totalGrossInsurerDiscountOriginal;
+    }
 
     public Date getDateInvoicedOriginal() {
         return dateInvoicedOriginal;
@@ -199,6 +210,22 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     public void setInsurerDiscountOriginal(BigDecimal insurerDiscountOriginal) {
         this.insurerDiscountOriginal = insurerDiscountOriginal;
+    }
+
+    public BigDecimal getHireGrossInsurerDiscountOriginal() {
+        return hireGrossInsurerDiscountOriginal;
+    }
+
+    public void setHireGrossInsurerDiscountOriginal(BigDecimal hireGrossInsurerDiscountOriginal) {
+        this.hireGrossInsurerDiscountOriginal = hireGrossInsurerDiscountOriginal;
+    }
+
+    public BigDecimal getRepairGrossInsurerDiscountOriginal() {
+        return repairGrossInsurerDiscountOriginal;
+    }
+
+    public void setRepairGrossInsurerDiscountOriginal(BigDecimal repairGrossInsurerDiscountOriginal) {
+        this.repairGrossInsurerDiscountOriginal = repairGrossInsurerDiscountOriginal;
     }
 
     public BigDecimal getDiscountOriginal() {

@@ -1,19 +1,23 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.*;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.LookupService;
-import idas.chox.web.viewdata.InsurerDiscountViewData;
 import java.math.BigDecimal;
 import java.util.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import idas.chox.core.model.*;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.LookupService;
+import idas.chox.web.viewdata.InsurerDiscountViewData;
 
 public class InsurerDiscountAction extends BaseAction implements ModelDriven<InsurerDiscount>, Preparable {
 
@@ -26,6 +30,17 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     private int insurerId;
     private int choId;
     private String jsonData;
+    private String applyPenalties; // this is varibale added though it's already in the model because extjs sends checkbox value as string.
+
+    public String getApplyPenalties() {
+        return applyPenalties;
+    }
+
+    public void setApplyPenalties(String applyPenalties) {
+        if (applyPenalties != null && applyPenalties.equalsIgnoreCase("on")) {
+            model.setAppliedToPenalties(true);
+        }
+    }
 
     public int getDiscountId() {
         return discountId;

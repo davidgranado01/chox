@@ -32,6 +32,9 @@
         <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFeeOriginal"/>
         <property column="discount" name="discountOriginal"/>
         <property column="insurer_discount" name="insurerDiscountOriginal"/>
+        <property column="total_gross_insurer_discount" name="totalGrossInsurerDiscountOriginal" not-null="true"/>
+        <property column="repair_gross_insurer_discount" name="repairGrossInsurerDiscountOriginal"/>
+        <property column="hire_gross_insurer_discount" name="hireGrossInsurerDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
 <!--        <property column="original_full_total_to_pay" name="originalFullTotalToPayOriginal"/>-->

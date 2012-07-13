@@ -108,7 +108,7 @@ public class InvoicePaymentLogged extends BaseActivity {
                 invoice.setChoDiscountFeePaid(invoice.getDiscount());
                 invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount());
                 invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
-                invoice.setInsurerDiscountFeePaid(invoice.getInsurerTotalGrossDiscount());
+                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
             } else {
                 invoice.setHireGrossPaid(invoice.getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
@@ -120,7 +120,7 @@ public class InvoicePaymentLogged extends BaseActivity {
                 invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setInsurerDiscountFeePaid(invoice.getInsurerTotalGrossDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
             }
             if (invoice.getInterimPaymentMade() != null) {
                 invoice.setFinalPayment(invoice.getTotalToPay().subtract(invoice.getInterimPaymentMade()));

@@ -127,37 +127,37 @@
             listeners: {load: function() {this.insert(0, new Ext.data.Record(insurerDiscountDefaultDropdownValue));}}
         });
 
-        insurerDiscountSupplierFilterCombo = new Ext.form.ComboBox({
-            store : insurerDiscountSuppliersStore,
-            id:'insurerDiscountSupplierId',
-            width: 180,
-            listWidth: 180,
-            valueField : 'text',
-            displayField :'value',
-            typeAhead : true,
-            mode : 'local',
-            triggerAction : 'all',
-            valueNotFoundText : '--- ALL ---',
-            //            selectOnFocus : true,
-            listeners: {
-                select: function () {
-                    if(this.getRawValue() == "" ) {
-                        this.clearValue();
-                        choId = -1;
-                        insurerDiscount_loadGridViewList();
-                    }else{
-                        choId = this.getValue();
-                        insurerDiscount_loadGridViewList(choId);
-                    }
-                }
-            }
-        });
-        insurerDiscountSupplierFilterCombo.render('insurerDiscountSuppliers');
-        insurerDiscountSupplierFilterCombo.setValue('--- ALL ---');
+//        insurerDiscountSupplierFilterCombo = new Ext.form.ComboBox({
+//            store : insurerDiscountSuppliersStore,
+//            id:'insurerDiscountSupplierId',
+//            width: 180,
+//            listWidth: 180,
+//            valueField : 'text',
+//            displayField :'value',
+//            typeAhead : true,
+//            mode : 'local',
+//            triggerAction : 'all',
+//            valueNotFoundText : '--- ALL ---',
+//            //            selectOnFocus : true,
+//            listeners: {
+//                select: function () {
+//                    if(this.getRawValue() == "" ) {
+//                        this.clearValue();
+//                        choId = -1;
+//                        insurerDiscount_loadGridViewList();
+//                    }else{
+//                        choId = this.getValue();
+//                        insurerDiscount_loadGridViewList(choId);
+//                    }
+//                }
+//            }
+//        });
+//        insurerDiscountSupplierFilterCombo.render('insurerDiscountSuppliers');
+//        insurerDiscountSupplierFilterCombo.setValue('--- ALL ---');
         
         
         var tbar = new Ext.Toolbar({
-        items:[{
+        items:['-','',{
                 text:'New ',
                 handler : function() {
                     
@@ -167,7 +167,7 @@
 //                        Ext.getCmp('newInsurerDiscountFormId').show();
                    
                 }
-            }]
+            },'-','']
         });
 
         insdiscountTypeEditor = new Ext.form.ComboBox({
@@ -193,7 +193,7 @@
         defaults     : {
             msgTarget : 'side'
         },
-//        width: 300,
+        width: 400,
         items : [{
                 xtype : 'combo',
                 store : insurerDiscountSuppliersStore,
@@ -353,7 +353,7 @@
         closeAction : 'hide',
         autoHeight: true, 
 //        height : 600,
-//        width  : 100,
+        autoWidth : true,
         resizable : false,
         items  : [insurerDiscountForm]
 //        listners : {beforeclose : function() {
@@ -445,7 +445,7 @@
                 {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'insurerDiscount_gridviewGridPanel',
-            height:390,
+            height:450,
             width: 760
         });
 
@@ -478,7 +478,7 @@
     function insurerDiscount_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = insurerDiscount_gridviewGrid.getStore().getAt(rowIndex);
         
-        if(columnIndex==6){
+        if(columnIndex == 8){
             insurerDiscount_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -547,14 +547,14 @@
 
     <div class="grid-view-header">
 
-        <table >
+<!--        <table >
             <tr><td>
                     <div class="label-block">
                         <p class="std-label-insdiscount">CHO</p><div id="insurerDiscountSuppliers"></div>
                     </div>
                 </td>
             </tr>
-        </table>
+        </table>-->
         &nbsp;
 
     </div>

@@ -338,17 +338,17 @@
                                 <tr>
                                     <td><label class="std-label-ro">Insurer Discount</label></td>
                                     <td>&nbsp;</td>
-                                    <s:if test="insurerTotalGrossDiscount<0">
-                                        <td><label class="std-data-ro" style="color: red; font-weight:bold;">£<s:property value="insurerTotalGrossDiscount" /></label></td>
+                                    <s:if test="insurerDiscount<0">
+                                        <td><label class="std-data-ro" style="color: red; font-weight:bold;">£<s:property value="insurerDiscount" /></label></td>
                                     </s:if>
                                     <s:else>
-                                        <td><label class="std-data-ro">£<s:property value="insurerTotalGrossDiscount" /></label></td>
+                                        <td><label class="std-data-ro">£<s:property value="insurerDiscount" /></label></td>
                                     </s:else>
                                     
                                     <td>
-                                        <s:if test="insurerTotalGrossDiscount!=insurerTotalGrossDiscountOriginal&&(insurerTotalGrossDiscountOriginal!=null)">
+                                        <s:if test="insurerDiscount!=insurerDiscountOriginal&&(insurerDiscountOriginal!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">(<s:property value="insurerTotalGrossDiscountOriginal" />)</label>
+                                            <label class="chox-ttnum-smalll">(<s:property value="insurerDiscountOriginal" />)</label>
                                         </s:if>
                                     </td>
                                 </tr>
