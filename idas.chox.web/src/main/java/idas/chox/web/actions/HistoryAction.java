@@ -30,7 +30,6 @@ public class HistoryAction extends ClaimModelAction<History> {
     public String getHistory() {
 
         List<HistoryViewData> histories = new ArrayList<HistoryViewData>();
-        histories = new ArrayList<HistoryViewData>();
 
         for (History h : claim.getHistories()) {
 

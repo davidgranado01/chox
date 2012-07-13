@@ -639,7 +639,7 @@ public class ClaimFileReportData {
         }
       }
       catch (Exception ex) {
-          LOG.error("Error creating claim file report for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+          LOG.error("Error creating claim file report for claim '{}':\n {}\n**********", claim.getChoReference());
           if (ex.getCause() != null) {
               LOG.error("    Caused by: {}", ex.getCause().getMessage());
           }
