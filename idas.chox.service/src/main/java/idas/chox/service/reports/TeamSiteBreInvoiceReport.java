@@ -61,7 +61,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             Date endDate = null;
             Date serviceCommencingDate = null;
             user = ((WebUser) externalParameter.get("CurrentUser"));
-            List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user);
+            List<ReasonOfRejection> reasonsOfRejection = getReasonsOfRejection(user, false);
             // GET INSURER INFORMATION
             if (RoleHelper.isInsurerUser(user)) {
                 insurerId = user.getInsurer().getId();
@@ -334,6 +334,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             }
 
             // Now build report parameters
+            reportParameters.put("reasonsOfRejectionHeader",getReasonsOfRejection(user, true));
             reportParameters.put("reasonsOfRejection", reasonsOfRejection);
             reportParameters.put("insurerName", rptInsurerName);
             reportParameters.put("choName", selectedCHOName);
@@ -392,7 +393,7 @@ public class TeamSiteBreInvoiceReport implements Report {
         return null;
     }
 
-    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser) {
+    private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
         List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
         List result = null;
         if(currentUser.getInsurer() != null){
@@ -420,7 +421,11 @@ public class TeamSiteBreInvoiceReport implements Report {
             Map data = (Map) o;
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
-            reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            if(!displayInHeader){
+                reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+            }else{
+                reportRow.setName(data.get("name").toString());
+            }
             reportRows.add(reportRow);
         }
 

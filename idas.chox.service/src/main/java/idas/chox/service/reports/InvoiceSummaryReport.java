@@ -243,7 +243,7 @@ public class InvoiceSummaryReport implements Report {
             
             
             
-            sb.append("(select sum(original_full_total_to_pay) as no_sum from rpt_claim_invoice ")
+            sb.append("(select case when sum(original_full_total_to_pay) is null then 0.00 else sum(original_full_total_to_pay) end as no_sum from rpt_claim_invoice ")
               .append("where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
