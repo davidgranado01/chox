@@ -470,9 +470,13 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             }
 //                }
 //            }
-            inv.setAverageInsurerDiscountPercentageApplied((totalGrossInsurerDiscountPercentage.add(repairGrossInsurerDiscountPercentage)
+            if (totalEnabledDiscounts > 0) {
+                inv.setAverageInsurerDiscountPercentageApplied((totalGrossInsurerDiscountPercentage.add(repairGrossInsurerDiscountPercentage)
                     .add(hireGrossInsurerDiscountPercentage))
                     .divide(new BigDecimal(totalEnabledDiscounts), 4, BigDecimal.ROUND_HALF_UP));
+            } else {
+                inv.setAverageInsurerDiscountPercentageApplied(BigDecimal.ZERO.setScale(2));
+            }
             insurerDiscountAmount = totalGrossInsurerDiscountAmount.add(repairGrossInsurerDiscountAmount).add(hireGrossInsurerDiscountAmount);
             LOG.debug("total insurer discount calculated {}.", insurerDiscountAmount);
             LOG.debug("full total to pay before insurer discount is {}.", inv.getFullTotalToPay());
