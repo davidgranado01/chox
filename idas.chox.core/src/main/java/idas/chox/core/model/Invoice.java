@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.util.CalcHelper;
 import idas.chox.core.util.DateHelper;
 
 public class Invoice extends Entity implements Serializable {
@@ -98,6 +96,12 @@ public class Invoice extends Entity implements Serializable {
      */
     private BigDecimal discount;
     private BigDecimal insurerDiscount;
+    
+    private BigDecimal totalGrossInsurerDiscount;
+    
+    private BigDecimal repairGrossInsurerDiscount;
+    
+    private BigDecimal hireGrossInsurerDiscount;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
@@ -228,6 +232,23 @@ public class Invoice extends Entity implements Serializable {
     private Date autoPenaltyStart;
     private Integer autoPenaltyAlertQty;
     private InvoiceOriginal invoiceOriginal;
+    private BigDecimal averageInsurerDiscountPercentageApplied;
+
+    public BigDecimal getAverageInsurerDiscountPercentageApplied() {
+        return averageInsurerDiscountPercentageApplied;
+    }
+
+    public void setAverageInsurerDiscountPercentageApplied(BigDecimal averageInsurerDiscountPercentageApplied) {
+        this.averageInsurerDiscountPercentageApplied = averageInsurerDiscountPercentageApplied;
+    }
+
+    public BigDecimal getTotalGrossInsurerDiscount() {
+        return totalGrossInsurerDiscount;
+    }
+
+    public void setTotalGrossInsurerDiscount(BigDecimal totalGrossInsurerDiscount) {
+        this.totalGrossInsurerDiscount = totalGrossInsurerDiscount;
+    }
 
     public InvoiceOriginal getInvoiceOriginal() {
         return invoiceOriginal;
@@ -707,6 +728,22 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInsurerDiscount(BigDecimal insurerDiscount) {
         this.insurerDiscount = insurerDiscount;
+    }
+
+    public BigDecimal getHireGrossInsurerDiscount() {
+        return hireGrossInsurerDiscount;
+    }
+
+    public void setHireGrossInsurerDiscount(BigDecimal hireGrossInsurerDiscount) {
+        this.hireGrossInsurerDiscount = hireGrossInsurerDiscount;
+    }
+
+    public BigDecimal getRepairGrossInsurerDiscount() {
+        return repairGrossInsurerDiscount;
+    }
+
+    public void setRepairGrossInsurerDiscount(BigDecimal repairGrossInsurerDiscount) {
+        this.repairGrossInsurerDiscount = repairGrossInsurerDiscount;
     }
 
     /**

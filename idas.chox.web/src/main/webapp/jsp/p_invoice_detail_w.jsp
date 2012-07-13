@@ -908,26 +908,7 @@
                                                 </s:if></div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                    Insurer Discount</label>
-                                                <s:if test="insurerDiscount<0">
-                                                    <input type="text" id="insurer_discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
-                                                </s:if>
-                                                <s:else>
-                                                    <input type="text" id="insurer_discount" class="chox-ttnum" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
-                                                </s:else>
-                                                </div>
-                                        </td>
-                                        <td>
-                                            <div class="chox-form-item" ><s:if test="insurerDiscount!=insurerDiscountOriginal&&(insurerDiscountOriginal!=null)">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">(<s:property value="insurerDiscountOriginal" />)</label>
-                                                </s:if></div>
-                                        </td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td>
 
@@ -994,6 +975,31 @@
                                                 </s:if></div>
                                         </td>
                                     </tr>
+                                    
+                                    <tr>
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Insurer Discount</label>
+                                                <s:if test="insurerDiscount<0">
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
+                                                </s:if>
+                                                <s:else>
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
+                                                </s:else>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="chox-form-item" ><s:if test="insurerDiscount!=insurerDiscountOriginal&&(insurerDiscountOriginal!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="insurerDiscountOriginal" />)</label>
+                                                </s:if></div>
+                                        </td>
+                                    </tr>
+                                    <input type="hidden" id="totalGrossInsurerDiscountAmountId" name="totalGrossInsurerDiscount" value="<s:property value="totalGrossInsurerDiscount" />" />
+                                    <input type="hidden" id="repairGrossInsurerDiscountAmountId" name="repairGrossInsurerDiscount" value="<s:property value="repairGrossInsurerDiscount" />" />
+                                    <input type="hidden" id="hireGrossInsurerDiscountAmountId" name="hireGrossInsurerDiscount" value="<s:property value="hireGrossInsurerDiscount" />" />
+                                    
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">

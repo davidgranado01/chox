@@ -1,6 +1,7 @@
 package idas.chox.web.viewdata;
 
 import idas.chox.core.model.InsurerDiscount;
+import idas.chox.core.model.InsurerDiscountType;
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,8 @@ public class InsurerDiscountViewData {
     private String createdBy;
     private String createdDate;
     private String choName;
+    private boolean appliedToPenalties; 
+    private String insurerDiscountType;
 
     public InsurerDiscountViewData(InsurerDiscount insurerDiscount) {
         
@@ -29,7 +32,25 @@ public class InsurerDiscountViewData {
         this.createdBy = insurerDiscount.getCreatedBy().getDisplayName();
         this.createdDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(insurerDiscount.getCreatedDate());
         this.choName = insurerDiscount.getChOrganisation().getName();
+        this.insurerDiscountType = insurerDiscount.getInsurerDiscountType().toString();
+        this.appliedToPenalties = insurerDiscount.isAppliedToPenalties();
 
+    }
+
+    public String getInsurerDiscountType() {
+        return insurerDiscountType;
+    }
+
+    public void setInsurerDiscountType(String insurerDiscountType) {
+        this.insurerDiscountType = insurerDiscountType;
+    }
+
+    public boolean isAppliedToPenalties() {
+        return appliedToPenalties;
+    }
+
+    public void setAppliedToPenalties(boolean appliedToPenalties) {
+        this.appliedToPenalties = appliedToPenalties;
     }
 
     public String getChoName() {

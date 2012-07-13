@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface InsurerDiscountService {
     
-    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId);
+    public Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount);
     
     public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId);
     
@@ -20,7 +20,7 @@ public interface InsurerDiscountService {
     
     public InsurerDiscount getInsurerDiscount(int insurerDiscountId);
     
-    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate);
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue);
     
     
 }

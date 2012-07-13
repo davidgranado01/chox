@@ -73,11 +73,11 @@ public interface ClaimService extends DataService {
     
     public int getSubscriberClaimRejectedDays(int claimId);
     
-    public boolean updateAutomaticPenaltyCharge(Claim claim);
+//    public boolean updateAutomaticPenaltyCharge(Claim claim);
     
-    public int calculatePenaltyAlertQty(Invoice inv);
+//    public int calculatePenaltyAlertQty(Invoice inv);
     
-    public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
+//    public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
     
     public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender);
     
@@ -85,7 +85,7 @@ public interface ClaimService extends DataService {
     
     public List<QueuedTicket> getQueuedTicket();
  
-    public boolean setPenaltyStartToDateInvoiced(String choReference);
+//    public boolean setPenaltyStartToDateInvoiced(String choReference);
 
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
     

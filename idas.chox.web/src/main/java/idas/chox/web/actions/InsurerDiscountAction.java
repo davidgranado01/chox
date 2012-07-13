@@ -1,45 +1,45 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.InsurerDiscount;
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.LookupService;
-import idas.chox.web.viewdata.InsurerDiscountViewData;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
-public class InsurerDiscountAction extends BaseAction {
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import idas.chox.core.model.*;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.LookupService;
+import idas.chox.web.viewdata.InsurerDiscountViewData;
+
+public class InsurerDiscountAction extends BaseAction implements ModelDriven<InsurerDiscount>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDiscountAction.class);
     private LookupService lookupService;
     private InsurerDiscountService insurerDiscountService;
     private List<Chorganisation> suppliers;
+    private InsurerDiscount model;
+    private int discountId;
     private int insurerId;
     private int choId;
-    private Date dateFrom;
-    private Date dateTo;
     private String jsonData;
-    private int discountId;
-    private BigDecimal discountPercentage;
+    private String applyPenalties; // this is varibale added though it's already in the model because extjs sends checkbox value as string.
 
-    public BigDecimal getDiscountPercentage() {
-        return discountPercentage;
+    public String getApplyPenalties() {
+        return applyPenalties;
     }
 
-    public void setDiscountPercentage(BigDecimal discountPercentage) {
-        this.discountPercentage = discountPercentage;
+    public void setApplyPenalties(String applyPenalties) {
+        if (applyPenalties != null && applyPenalties.equalsIgnoreCase("on")) {
+            model.setAppliedToPenalties(true);
+        }
     }
 
     public int getDiscountId() {
@@ -56,22 +56,6 @@ public class InsurerDiscountAction extends BaseAction {
 
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
-    }
-
-    public Date getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public Date getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
     }
 
     public int getChoId() {
@@ -124,28 +108,43 @@ public class InsurerDiscountAction extends BaseAction {
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
+    public String getInsurerDiscountTypeJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(InsurerDiscountType.values().length);
+        for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
+            luItems.add(new LookupItem(insurerDiscountType.toString(), Integer.toString(insurerDiscountType.getInsurerDiscountTypeValue())));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+    
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String addOrUpdateDiscount() throws Exception {
-        Map result = null;
+        Map result = new HashMap();
         if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
-        if(discountPercentage.compareTo(BigDecimal.ZERO)<=0){
-            LOG.info("Discount Percentage can not be less than or equal to 0",dateFrom,dateTo);
+        if(model.getDiscountPercentage().compareTo(BigDecimal.ZERO)<=0){
+            Map error = new HashMap();
+            LOG.info("Discount Percentage can not be less than or equal to 0",model.getDateFrom(),model.getDateTo());
             result.put("success", Boolean.FALSE);
-            result.put("error", "Discount Percentage can not be less than or equal to 0");
+            error.put("discountPercentage", "Discount Percentage can not be less than or equal to 0");
+            result.put("errors",error);
         }
-        else if (dateFrom.after(dateTo)) {
-            LOG.info("date from {} is not earlier than date to {}",dateFrom,dateTo);
+        else if (model.getDateFrom().after(model.getDateTo())) {
+            Map error = new HashMap();
+            LOG.info("date from {} is not earlier than date to {}",model.getDateFrom(),model.getDateTo());
             result.put("success", Boolean.FALSE);
-            result.put("error", "'Date From' should be earlier than 'Date To'");
+            error.put("dateFrom", "'Date From' should be earlier than 'Date To'");
+            result.put("errors",error);
         } else {
             try {
-                result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountPercentage, discountId);
+                checkVersion(Arrays.asList(model));
+                result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, model);
             } catch (Exception ex) {
-                LOG.error("Exception in addDiscount(): {}", ex.getMessage());
+                Map error = new HashMap();
+                LOG.error("Exception in addDiscount(): ", ex);
                 result.put("success", Boolean.FALSE);
-                result.put("error", "Unexpected error occured, Please contact Chox support.");
+                error.put("error", "Unexpected error occured, Please contact Chox support.");
+                result.put("errors",error);
             }
         }
         JSONObject jsonObject = JSONObject.fromObject(result);
@@ -180,19 +179,46 @@ public class InsurerDiscountAction extends BaseAction {
     public String deleteInsurerDiscount() {
         try {
             LOG.debug("Delete insurer discount");
-            InsurerDiscount insurerDiscount = insurerDiscountService.getInsurerDiscount(discountId);
-            if (getIsInsurer() && insurerDiscount.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
-                throw new AccessDeniedException("Cannot delete Insurer Discount that does not belong to you.");
+            if (model.getId() != null && model.getId() > 0) {
+                if (getIsInsurer() && model.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
+                    throw new AccessDeniedException("Cannot delete Insurer Discount that does not belong to you.");
+                }
+                checkVersion(Arrays.asList(model));
+                Map hm = insurerDiscountService.deleteInsurerDiscount(model);
+                JSONObject jsonObject = JSONObject.fromObject(hm);
+                setJsonData(jsonObject.toString());
+                LOG.debug("Back from deleteInsurerDiscount");
             }
-            Map hm = insurerDiscountService.deleteInsurerDiscount(insurerDiscount);
+
+        } catch (Exception ex) {
+            Map hm = new HashMap();
+            LOG.error("Exception in deleteInsurerDiscount: ", ex);
+            hm.put("success", Boolean.FALSE);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
-            LOG.debug("Back from delete schedule");
-        } catch (RuntimeException re) {
-
-            LOG.error("Exception in deleteBill(): {}", re.getMessage());
-            throw re;
         }
         return SUCCESS;
+    }
+
+    @Override
+    public InsurerDiscount getModel() {
+        return model;
+    }
+
+    public void setModel(InsurerDiscount model) {
+        this.model = model;
+    }
+
+    @Override
+    public void prepare() throws Exception {
+        try {
+            model = new InsurerDiscount();
+            if (discountId > 0) {
+                model = insurerDiscountService.getInsurerDiscount(discountId);
+                addModelToSession(Arrays.asList(model));
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+        }
     }
 }

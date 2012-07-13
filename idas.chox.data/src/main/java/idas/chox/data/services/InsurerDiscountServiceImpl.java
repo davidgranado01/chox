@@ -41,16 +41,24 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
-    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
+    public Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount) {
         /*
          *  Add one day to 'dateTo'
          */
+        Date dateFrom = insurerDiscount.getDateFrom();
+        Date dateTo = insurerDiscount.getDateTo();
+        int discountId = -1;
+        if (insurerDiscount.getId() != null) {
+            discountId = insurerDiscount.getId();
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         dateTo = cal.getTime();
+        
+        int insurerDiscountTypeValue = insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue();
 
-        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
+        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
@@ -63,28 +71,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
 
-        if (discountId > 0) {
-            InsurerDiscount insurerDiscount = getInsurerDiscount(discountId);
-            if (insurerDiscount != null) {
-                insurerDiscount.setDateFrom(dateFrom);
-                insurerDiscount.setDateTo(dateTo);
-                insurerDiscount.setDiscountPercentage(discountPercentage);
-                save(insurerDiscount);
-                hm.put("success", Boolean.TRUE);
-            } else {
-                hm.put("success", Boolean.FALSE);
-                hm.put("error", "no discount found in database");
-            }
-        } else {
-            InsurerDiscount insurerDiscount = new InsurerDiscount();
-            insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
-            insurerDiscount.setInsurer(insurerService.getInsurer(insId));
-            insurerDiscount.setDateFrom(dateFrom);
-            insurerDiscount.setDateTo(dateTo);
-            insurerDiscount.setDiscountPercentage(discountPercentage);
-            save(insurerDiscount);
-            hm.put("success", Boolean.TRUE);
-        }
+        insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
+        insurerDiscount.setInsurer(insurerService.getInsurer(insId));
+        save(insurerDiscount);
+        hm.put("success", Boolean.TRUE);
 
         return hm;
     }
@@ -117,17 +107,18 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         Map hm = new HashMap();
         try {
             delete(insurerDiscount);
+            hm.put("success", Boolean.TRUE);
         } catch (Exception ex) {
-            LOG.error("Error thrown in deleteInsurerDiscount: {}", ex.getMessage());
+            LOG.error("Error thrown in deleteInsurerDiscount: ", ex);
+            hm.put("success", Boolean.FALSE);
         }
-        hm.put("success", Boolean.TRUE);
         return hm;
     }
 
-    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
+    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
         Map hm = new HashMap();
 
-        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId);
+        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -137,11 +128,11 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
+    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId, int insurerDiscountTypeValue) {
         Map checks = new HashMap();
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct");
-        sb.append("(date_from,date_to) ");
+        sb.append(" (date_from,date_to) ");
         sb.append("overlaps ");
         sb.append("(DATE '");
         sb.append(getShDtStr(dateFrom));
@@ -151,10 +142,13 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("from insurer_discount ");
         sb.append("where chorganisation_id = ");
         sb.append(choId);
-        sb.append("and insurer_id = ");
+        sb.append(" and insurer_id = ");
         sb.append(insId);
+        sb.append(" and discount_type = ");
+        sb.append(insurerDiscountTypeValue);
+        
         if (discountId > 0) {
-            sb.append("and id != ");
+            sb.append(" and id != ");
             sb.append(discountId);
         }
 
@@ -174,7 +168,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     @Override
-    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate) {
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue) {
 
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct discount_percentage from (");
@@ -191,6 +185,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append(choId);
         sb.append(" and insurer_id = ");
         sb.append(insId);
+        sb.append(" and discount_type = ");
+        sb.append(insurerDiscountTypeValue);
         sb.append(") as discountPercentage where overlap = ");
         sb.append(true);
 
@@ -206,7 +202,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         try {
             valList = getCurrentSession().createSQLQuery(query).list();
         } catch (Throwable th) {
-            LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: {}", th.getMessage());
+            LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: ", th);
             LOG.error("ins id {}, cho id {}", insId, choId);
             LOG.error("invoice Created date {}", invoiceCreatedDate);
             return BigDecimal.ZERO;

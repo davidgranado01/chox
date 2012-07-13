@@ -1,31 +1,21 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.hpi.*;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.History;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.Task;
-import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.WebUserRole;
+import idas.chox.core.model.*;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.TaskService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.xml.util.NodeHelper;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NewInvoice extends BaseActivity {
 
@@ -34,6 +24,7 @@ public class NewInvoice extends BaseActivity {
     private InsurerDiscountService insurerDiscountService;
     private TaskService taskService;
     private UserService userService;
+    private InvoiceService invoiceService;
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -51,6 +42,10 @@ public class NewInvoice extends BaseActivity {
         this.userService = userService;
     }
 
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         LOG.debug("Validating Claim in NewInvoice activity: {}", claim.getChoReference());
@@ -62,10 +57,7 @@ public class NewInvoice extends BaseActivity {
             }
             getExpectingStatuses().clear();
             getExpectingStatuses().add(null);
-            String claimNumber = claim.getClaimNumber();
-            if (claimNumber != null && !claimNumber.isEmpty()) {
-                claim.setClaimNumber(claimNumber.trim());
-            }
+            
         } else {
             LOG.debug("Non TPI claim");
         }
@@ -79,22 +71,25 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-            String claimNumber = claim.getThirdParty().getClaimReference();
-            if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
-                NodeHelper nodeHelper = new NodeHelper();
-                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                    claim.setSpecialRoutedTpiClaim(false);
-                } else {
-                    claim.setSpecialRoutedTpiClaim(true);
-                }
+        
+        String claimNumber = claim.getThirdParty().getClaimReference();
+        if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
+            NodeHelper nodeHelper = new NodeHelper();
+            if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setSpecialRoutedTpiClaim(false);
             } else {
                 claim.setSpecialRoutedTpiClaim(true);
             }
+        } else {
+            claim.setSpecialRoutedTpiClaim(true);
+        }
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
+        invoiceService.applyInsurerDiscounts(claim,userService.findByUserName("system"),true);
+        
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {
@@ -118,24 +113,7 @@ public class NewInvoice extends BaseActivity {
                 adjustDailyRateCharge(claim);
             }
         }
-        if (claim.getInsurer().isInsurerDiscountEnable()) {
-            /*
-             *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
-             */
-            BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
-
-            /*
-             *  Add public note for insurer discount percentage
-             */
-            LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
-            if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
-//            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-                Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
-                comment.setRaisedBy(userService.findByUserName("system"));
-                claim.addComment(comment);
-            }
-        }
-
+        
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
