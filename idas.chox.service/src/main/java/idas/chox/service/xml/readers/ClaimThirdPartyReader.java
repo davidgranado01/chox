@@ -107,6 +107,9 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
         }
 
         String claimNumber = XmlHelper.getNodeValue(element, "claim-number");
+        if (claimNumber != null && !claimNumber.isEmpty()) {
+            claimNumber = claimNumber.trim();
+        }
         claimResult.getClaim().setClaimNumber(claimNumber);
         claimResult.getClaim().getThirdParty().setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
         claimResult.getClaim().getThirdParty().setClaimReference(claimNumber);

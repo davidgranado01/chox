@@ -14,14 +14,9 @@ import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
 import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.*;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.util.DateHelper;
+import idas.chox.core.services.*;
 import idas.chox.core.util.CalcHelper;
+import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
@@ -32,6 +27,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceDetailAction.class);
     private int claimId = 0;
     private ClaimService claimService;
+    private InvoiceService invoiceService;
     private LookupService lookupService;
     private InsurerDiscountService insurerDiscountService;
     private String actionResult;
@@ -65,13 +61,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
     private BigDecimal previousNonStandardInsurancePremiumFee;
-    private Boolean canAddInsurerDiscountComment = false;
+    private Boolean canAddTotalGrossInsurerDiscountComment = false;
+    private Boolean canAddRepairGrossInsurerDiscountComment = false;
+    private Boolean canAddHireGrossInsurerDiscountComment = false;
     private UserService userService;
     private BigDecimal insurerDiscountPercentageApplied;
     private boolean modelSaved = false;
     private String oldVRN;
-    private EngineerReport engineerReport;
     private InvoiceOriginal invoiceOriginal;
+    private EngineerReport engineerReport;
     private VehicleHire vehicleHire;
     private Invoice invoice;
     private String daysWithCHOForReview;
@@ -79,6 +77,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysAwaitingLiabilityResolution;
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+    
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+    
     public BigDecimal getPaymentDetailsCHODiscount() {
         return invoice.getChoDiscountFeePaid();
     }
@@ -95,12 +98,28 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getInsurerDiscountFeePaid();
     }
 
-    public Boolean getCanAddInsurerDiscountComment() {
-        return canAddInsurerDiscountComment;
+    public Boolean getCanAddHireGrossInsurerDiscountComment() {
+        return canAddHireGrossInsurerDiscountComment;
     }
 
-    public void setCanAddInsurerDiscountComment(Boolean canAddInsurerDiscountComment) {
-        this.canAddInsurerDiscountComment = canAddInsurerDiscountComment;
+    public void setCanAddHireGrossInsurerDiscountComment(Boolean canAddHireGrossInsurerDiscountComment) {
+        this.canAddHireGrossInsurerDiscountComment = canAddHireGrossInsurerDiscountComment;
+    }
+
+    public Boolean getCanAddTotalGrossInsurerDiscountComment() {
+        return canAddTotalGrossInsurerDiscountComment;
+    }
+
+    public void setCanAddTotalGrossInsurerDiscountComment(Boolean canAddTotalGrossInsurerDiscountComment) {
+        this.canAddTotalGrossInsurerDiscountComment = canAddTotalGrossInsurerDiscountComment;
+    }
+
+    public Boolean getCanAddRepairGrossInsurerDiscountComment() {
+        return canAddRepairGrossInsurerDiscountComment;
+    }
+
+    public void setCanAddRepairGrossInsurerDiscountComment(Boolean canAddRepairGrossInsurerDiscountComment) {
+        this.canAddRepairGrossInsurerDiscountComment = canAddRepairGrossInsurerDiscountComment;
     }
 
     public void setUserService(UserService userService) {
@@ -203,7 +222,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         this.previousTotalLossNet = previousTotalLossNet;
     }
 
-    private BigDecimal getInsurerDiscountTotalGrossPercentage(Claim claim) {
+    private BigDecimal getTotalGrossInsurerDiscountPercentage(Claim claim) {
         if (claim.getInsurer().isInsurerDiscountEnable()) {
             return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue());
         } else {
@@ -211,6 +230,22 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+    private BigDecimal getRepairGrossInsurerDiscountPercentage(Claim claim) {
+        if (claim.getInsurer().isInsurerDiscountEnable()) {
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue());
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
+    private BigDecimal getHireGrossInsurerDiscountPercentage(Claim claim) {
+        if (claim.getInsurer().isInsurerDiscountEnable()) {
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate(), InsurerDiscountType.HIRE.getInsurerDiscountTypeValue());
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
     public BigDecimal getEngineerFee_vat_used() {
         return engineerFee_vat_used.multiply(new BigDecimal(100));
     }
@@ -819,20 +854,62 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public java.math.BigDecimal getInsurerTotalGrossDiscount() {
-        return invoice.getInsurerTotalGrossDiscount();
+    public java.math.BigDecimal getInsurerDiscount() {
+        return invoice.getInsurerDiscount();
     }
 
-    public void setInsurerTotalGrossDiscount(java.math.BigDecimal insurerDiscount) {
+    public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
         if (actionSelected != reset && invoice != null) {
-            if (insurerDiscount.compareTo(invoice.getInsurerTotalGrossDiscount()) != 0) {
-                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerTotalGrossDiscount());
-                setCanAddInsurerDiscountComment(true);
+            if (insurerDiscount.compareTo(invoice.getInsurerDiscount()) != 0) {
+                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoice.getInsurerDiscount());
             }
-            invoice.setInsurerTotalGrossDiscount(insurerDiscount);
+            invoice.setInsurerDiscount(insurerDiscount);
         }
     }
 
+    public BigDecimal getTotalGrossInsurerDiscount() {
+        return invoice.getTotalGrossInsurerDiscount();
+    }
+    
+    public void setTotalGrossInsurerDiscount(java.math.BigDecimal totalGrossInsurerDiscount) {
+        if (actionSelected != reset && invoice != null) {
+            if (totalGrossInsurerDiscount.compareTo(invoice.getTotalGrossInsurerDiscount()) != 0 && getTotalGrossInsurerDiscountPercentage(claim).compareTo(BigDecimal.ZERO) == 1) {
+                LOG.debug("TotalGrossinsurerDiscount from form is {} and existing TotalGrossinsurerdiscount is {} ", totalGrossInsurerDiscount, invoice.getTotalGrossInsurerDiscount());
+                setCanAddTotalGrossInsurerDiscountComment(true);
+            }
+            invoice.setTotalGrossInsurerDiscount(totalGrossInsurerDiscount);
+        }
+    }
+
+    
+    public BigDecimal getRepairGrossInsurerDiscount() {
+        return invoice.getRepairGrossInsurerDiscount();
+    }
+    
+    public void setRepairGrossInsurerDiscount(java.math.BigDecimal repairGrossInsurerDiscount) {
+        if (actionSelected != reset && invoice != null) {
+            if (repairGrossInsurerDiscount.compareTo(invoice.getRepairGrossInsurerDiscount()) != 0 && getRepairGrossInsurerDiscountPercentage(claim).compareTo(BigDecimal.ZERO) == 1) {
+                LOG.debug("RepairGrossinsurerDiscount from form is {} and existing RepairGrossinsurerdiscount is {} ", repairGrossInsurerDiscount, invoice.getRepairGrossInsurerDiscount());
+                setCanAddRepairGrossInsurerDiscountComment(true);
+            }
+            invoice.setRepairGrossInsurerDiscount(repairGrossInsurerDiscount);
+        }
+    }
+    
+    public BigDecimal getHireGrossInsurerDiscount() {
+        return invoice.getHireGrossInsurerDiscount();
+    }
+    
+    public void setHireGrossInsurerDiscount(java.math.BigDecimal hireGrossInsurerDiscount) {
+        if (actionSelected != reset && invoice != null) {
+            if (hireGrossInsurerDiscount.compareTo(invoice.getHireGrossInsurerDiscount()) != 0 && getHireGrossInsurerDiscountPercentage(claim).compareTo(BigDecimal.ZERO) == 1) {
+                LOG.debug("HireGrossinsurerDiscount from form is {} and existing HireGrossinsurerdiscount is {} ", hireGrossInsurerDiscount, invoice.getHireGrossInsurerDiscount());
+                setCanAddHireGrossInsurerDiscountComment(true);
+            }
+            invoice.setHireGrossInsurerDiscount(hireGrossInsurerDiscount);
+        }
+    }
+    
     public java.math.BigDecimal getFullTotalToPay() {
         return invoice.getFullTotalToPay();
     }
@@ -2211,27 +2288,31 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             return SUCCESS;
         } else if (actionSelected == submit) {
             try {
-                checkVersion(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
+                checkVersion(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 claim.setEngineerReport(engineerReport);
 //                claim.setInvoiceOriginal(invoiceOriginal);
                 claim.setVehicleHire(vehicleHire);
                 claim.setInvoice(invoice);
                 claimService.updateLiabilityPayment(claim);
+
                 updateHpi();
-                BigDecimal insurerDiscountPercentage = getInsurerDiscountTotalGrossPercentage(claim);
-                /*
-                 * getCanAddInsurerDiscountComment will return true if the
-                 * insurer discount amount changed after the original invoice
-                 * upload.
-                 */
-                if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
-//                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerTotalGrossDiscount().compareTo(BigDecimal.ZERO));
-                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerTotalGrossDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
-                    comment.setRaisedBy(userService.findByUserName("system"));
-                    claim.addComment(comment);
+                for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
+                    if (getCanAddTotalGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue()) {
+                        BigDecimal totalGrossInsurerDiscountPercentage = getTotalGrossInsurerDiscountPercentage(claim);
+                        invoiceService.addInsurerDiscountComment(claim, getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), totalGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                    }
+                    if (getCanAddRepairGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue()) {
+                        BigDecimal repairGrossInsurerDiscountPercentage = getRepairGrossInsurerDiscountPercentage(claim);
+                        invoiceService.addInsurerDiscountComment(claim, getRepairGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), repairGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                    }
+                    if (getCanAddHireGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue()) {
+                        BigDecimal hireGrossInsurerDiscountPercentage = getHireGrossInsurerDiscountPercentage(claim);
+                        invoiceService.addInsurerDiscountComment(claim, getHireGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), hireGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                    }
                 }
+                
                 claimService.updateClaim(claim);
-                updateModelInSession(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
+                updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
                 modelSaved = true;
                 this.setActionResult("Your Changes Have Been Saved");
                 return SUCCESS;
@@ -2244,7 +2325,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             return ERROR;
         }
     }
-
+    
     public boolean isPenaltyChargesAppled() {
         if (modelSaved && claim.getInvoice().getTotalPenaltyCharge() != null
                 && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) != 0) {
@@ -2270,7 +2351,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
-        updateModelInSession(Arrays.asList(engineerReport, invoiceOriginal, vehicleHire, invoice, claim));
+        updateModelInSession(Arrays.asList(engineerReport, vehicleHire, invoice, claim));
         return result;
     }
 
@@ -2289,7 +2370,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
             oldVRN = (vehicleHire.getVehicleRegistration() != null) ? vehicleHire.getVehicleRegistration() : "";
 
-            addModelToSession(Arrays.asList(claim, engineerReport, invoiceOriginal, vehicleHire, invoice));
+            addModelToSession(Arrays.asList(claim, engineerReport, vehicleHire, invoice));
 
         } catch (Throwable ex) {
             LOG.error("Exception in preparing for InvoiceDetailAction : ", ex);
@@ -2386,13 +2467,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         BigDecimal totalLossVat = BigDecimal.ZERO;
         BigDecimal totalLossGross = BigDecimal.ZERO;
         BigDecimal fullTotalRequested = BigDecimal.ZERO;
-        BigDecimal fullTotalToPay = BigDecimal.ZERO;
-        BigDecimal liablitityPercentage = BigDecimal.ZERO;
-        BigDecimal insurerDiscountPercentage = getInsurerDiscountTotalGrossPercentage(claim);
-        BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
 
         LOG.debug("initial value setup done in recalculate() function");
-        setInsurerDiscountPercentageApplied(insurerDiscountPercentage);
 
         totalExtras = totalExtras.add(getMiscellaneousFee());
 
@@ -2424,10 +2500,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             }
             LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
 
-//            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
-
         } else {
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
             hire_vat_used = Vat_Rate;
@@ -2446,7 +2518,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
         setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
 
-        // add Insurance Premium fee & vat to hire net & hire vat for TPI CLAIM ONLY.  Insurance Premium fee & vat should be added to hire net & vat after calculating hire vat.
         if (ClaimType.isTPI(claim.getClaimType())) {
 
             hireNet = hireNet.add(tpiInsurancePremiumFee);
@@ -2461,10 +2532,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue() == 0)) {
             setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" Repair_vat_used value{} ", getRepair_vat_used());
-
-//            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
 
         } else {
 
@@ -2485,11 +2552,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             setEngineerFee_vat_used(getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" EngineerFee_vat_used value{} ", getEngineerFee_vat_used());
 
-//            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
         } else {
-            //LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
             engineerFee_vat_used = Vat_Rate;
         }
 
@@ -2506,10 +2569,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue() == 0)) {
             setTotalLossFee_vat_used(getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" TotalLossFee_vat_used value{} ", getTotalLossFee_vat_used());
-
-//            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
 
         } else {
             totalLossFee_vat_used = Vat_Rate;
@@ -2528,10 +2587,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue() == 0)) {
             setStorageRecovery_vat_used(getPreviousStorageVat().divide(getPreviousStorageNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" StorageRecovery_vat_used value{} ", getStorageRecovery_vat_used());
-
-//            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
 
         } else {
             storageRecovery_vat_used = Vat_Rate;
@@ -2570,19 +2625,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalGross = totalGross.add(totalLossGross);
         totalGross = totalGross.add(storageRecoveryGross);
 
-        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
-            insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-        }
-        setInsurerTotalGrossDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
-
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
 
+        invoiceService.applyInsurerDiscounts(claim, null, false);
+        setInsurerDiscountPercentageApplied(invoice.getAverageInsurerDiscountPercentageApplied());
         fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());
         fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
-        fullTotalRequested = fullTotalRequested.subtract(insurerDiscountAmount);
+        fullTotalRequested = fullTotalRequested.add(getInsurerDiscount());
 
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
@@ -2592,7 +2644,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     public String getHirePenaltyPercentageApplied() {
-            return invoice.getHirePenaltyPercentageApplied();
+        return invoice.getHirePenaltyPercentageApplied();
     }
     
 }

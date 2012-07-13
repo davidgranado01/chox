@@ -545,7 +545,7 @@ public class ClaimFileReportData {
             invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
             invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
             invoiceDiscount = invoice.getDiscount();
-            invoiceInsurerDiscount = invoice.getInsurerTotalGrossDiscount();
+            invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             if (invoice.getHirePenaltyPercentageApplied() != null && !currentUser.isCHO()) 

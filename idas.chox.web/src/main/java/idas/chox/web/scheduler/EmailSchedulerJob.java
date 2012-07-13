@@ -2,6 +2,7 @@ package idas.chox.web.scheduler;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InvoiceService;
 import idas.chox.core.util.EmailHelper;
 
 import java.io.InputStream;
@@ -42,6 +43,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private String smtpEmailPassword;
     private String errorMessageReceivers;
     private ClaimService claimService;
+    private InvoiceService invoiceService;
     private SecurityInfoProvider securityInfoProvider;
     protected static final String email_date_format = "dd MMMM yyyy";
 
@@ -198,6 +200,14 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
     public SecurityInfoProvider getSecurityInfoProvider() {
         return securityInfoProvider;
+    }
+
+    public InvoiceService getInvoiceService() {
+        return invoiceService;
+    }
+
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
     }
 
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
