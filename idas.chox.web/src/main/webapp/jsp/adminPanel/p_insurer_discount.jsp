@@ -188,10 +188,11 @@
         xtype       : 'form',
         id : 'newInsurerDiscountFormId',
         frame:true,
-        title: 'Multi Column, Nested Layouts and Anchoring',
+        title: 'Insurer Discount Configuration Window',
         bodyStyle : 'padding:10px',
         defaults     : {
-            msgTarget : 'side'
+            msgTarget : 'side',
+            labelStyle: 'text-align: right;'
         },
         width: 400,
         items : [{
@@ -207,7 +208,7 @@
                 triggerAction : 'all',
                 allowBlank: false,
                 emptyText  : 'Please select CHO',
-                fieldLabel : 'CHO',
+                fieldLabel : 'CHO<span class="mandatory">*</span>',
                 listeners: {
                 select: function () {
                     if(this.getRawValue() == "" ) {
@@ -226,7 +227,7 @@
                 width: 95,
                 allowBlank: false,
                 format: 'd/m/Y',
-                fieldLabel : 'Date From',
+                fieldLabel : 'Date From<span class="mandatory">*</span>',
                 //            value: '',
                 showWeekNumber: true,
                 vtype: 'daterange',
@@ -239,7 +240,7 @@
                 width: 95,
                 allowBlank: false,
                 format: 'd/m/Y',
-                fieldLabel : 'Date To',
+                fieldLabel : 'Date To<span class="mandatory">*</span>',
                 //            value: '',
                 showWeekNumber: true,
                 vtype: 'daterange',
@@ -247,7 +248,7 @@
             }, {
                 xtype : 'textfield',
                 id:"newInsurerDiscountPercentageId",
-                fieldLabel : 'Discount %',
+                fieldLabel : 'Discount %<span class="mandatory">*</span>',
                 name:"discountPercentage",
                 width:95,
                 allowBlank : false,
@@ -269,7 +270,7 @@
                 mode : 'local',
                 triggerAction : 'all',
                 allowBlank : false,
-                fieldLabel : 'Type',
+                fieldLabel : 'Type<span class="mandatory">*</span>',
                 name : 'insurerDiscountType'
             },{
                 xtype : 'checkbox',
