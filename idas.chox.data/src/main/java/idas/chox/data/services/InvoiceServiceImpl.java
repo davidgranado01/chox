@@ -1,7 +1,9 @@
 package idas.chox.data.services;
 
 
-import idas.chox.core.model.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -12,14 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.*;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Calendar;
-import java.util.Date;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
     
@@ -348,6 +347,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             boolean repairGrossInsurerDiscountEnabled = false;
             boolean hireGrossInsurerDiscountEnabled = false;
             boolean totalGrossInsurerDiscountEnabled = false;
+            int totalEnabledDiscounts = 0;
             BigDecimal hireGrossInsurerDiscountPercentage = BigDecimal.ZERO;
             BigDecimal repairGrossInsurerDiscountPercentage = BigDecimal.ZERO;
             BigDecimal totalGrossInsurerDiscountPercentage = BigDecimal.ZERO;
@@ -369,6 +369,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                             inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
                     if (repairGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
                         repairGrossInsurerDiscountEnabled = true;
+                        totalEnabledDiscounts += 1;
                     }
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue() && inv.getHireGross().compareTo(BigDecimal.ZERO) == 1) {
@@ -376,6 +377,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                             inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
                     if (hireGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
                         hireGrossInsurerDiscountEnabled = true;
+                        totalEnabledDiscounts += 1;
                     }
                 }
                 if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue() && inv.getTotalGross().compareTo(BigDecimal.ZERO) == 1) {
@@ -383,6 +385,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                             claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
                     if (totalGrossInsurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
                         totalGrossInsurerDiscountEnabled = true;
+                        totalEnabledDiscounts += 1;
                     }
                 }
             }
@@ -469,7 +472,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 //            }
             inv.setAverageInsurerDiscountPercentageApplied((totalGrossInsurerDiscountPercentage.add(repairGrossInsurerDiscountPercentage)
                     .add(hireGrossInsurerDiscountPercentage))
-                    .divide(new BigDecimal(3), 4, BigDecimal.ROUND_HALF_UP));
+                    .divide(new BigDecimal(totalEnabledDiscounts), 4, BigDecimal.ROUND_HALF_UP));
             insurerDiscountAmount = totalGrossInsurerDiscountAmount.add(repairGrossInsurerDiscountAmount).add(hireGrossInsurerDiscountAmount);
             LOG.debug("total insurer discount calculated {}.", insurerDiscountAmount);
             LOG.debug("full total to pay before insurer discount is {}.", inv.getFullTotalToPay());
@@ -480,6 +483,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         }
     }
     
+    @Override
     public void addInsurerDiscountComment(Claim claim, BigDecimal insurerDiscountAmount, BigDecimal insurerDiscountPercentage, String insurerDiscountType, WebUser user) {
         Comment comment = Comment.New(0, "A discount of £" + insurerDiscountAmount + " (" + insurerDiscountPercentage + "%) " + "has been applied to " + "the " + insurerDiscountType + " on this invoice based on the discount contract in place.");
         comment.setRaisedBy(user);
