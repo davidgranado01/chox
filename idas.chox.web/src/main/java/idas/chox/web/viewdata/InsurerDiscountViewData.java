@@ -1,10 +1,10 @@
 package idas.chox.web.viewdata;
 
-import idas.chox.core.model.InsurerDiscount;
-import idas.chox.core.model.InsurerDiscountType;
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+
+import idas.chox.core.model.InsurerDiscount;
 
 /**
  *
@@ -21,6 +21,7 @@ public class InsurerDiscountViewData {
     private String choName;
     private boolean appliedToPenalties; 
     private String insurerDiscountType;
+    private int choId;
 
     public InsurerDiscountViewData(InsurerDiscount insurerDiscount) {
         
@@ -34,7 +35,16 @@ public class InsurerDiscountViewData {
         this.choName = insurerDiscount.getChOrganisation().getName();
         this.insurerDiscountType = insurerDiscount.getInsurerDiscountType().toString();
         this.appliedToPenalties = insurerDiscount.isAppliedToPenalties();
+        this.choId = insurerDiscount.getChOrganisation().getId();
 
+    }
+
+    public int getChoId() {
+        return choId;
+    }
+
+    public void setChoId(int choId) {
+        this.choId = choId;
     }
 
     public String getInsurerDiscountType() {
