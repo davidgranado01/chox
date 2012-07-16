@@ -1,9 +1,9 @@
 package idas.chox.core.model;
 
 public enum InsurerDiscountType {
-    HIRE           (0, "hire"),
-    REPAIR         (1, "repair"),
-    TOTAL          (2, "total");
+    HIRE           (0, "Hire"),
+    REPAIR         (1, "Repair"),
+    TOTAL          (2, "Total");
 
     private final String description;
     private final int insurerDiscountTypeValue;
