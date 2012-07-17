@@ -269,7 +269,7 @@
                         if(response){
                     
                             if(response.success){
-                                insurerDiscount_loadGridViewList(record.get('choId'));
+                                insurerDiscount_loadGridViewList(choId);
                             } else if(response.errors){
                                 Ext.MessageBox.show({
                                     title: 'ERROR',
