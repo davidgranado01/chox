@@ -59,7 +59,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("5.00"));
@@ -89,7 +90,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
@@ -118,7 +120,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
@@ -150,7 +153,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
@@ -177,7 +181,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(5);
 
         // SET HIRE MONITORING
@@ -293,7 +298,8 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING

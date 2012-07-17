@@ -300,7 +300,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setRepairNetCeiling(BigDecimal.valueOf(100.00));
         breBand.setIsNotMobileDayAllowance(1);
         breBand.setAverageLabourHoursPerHireDay(1);
-        breBand.setAverageLabourRate(1);
+        breBand.setAverageLabourRateStandard(1);
+        breBand.setAverageLabourRatePrestige(1);
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
@@ -372,7 +373,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setRepairNetCeiling(BigDecimal.valueOf(100.00));
         breBand.setIsNotMobileDayAllowance(1);
         breBand.setAverageLabourHoursPerHireDay(1);
-        breBand.setAverageLabourRate(1);
+        breBand.setAverageLabourRateStandard(1);
+        breBand.setAverageLabourRatePrestige(1);
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
@@ -446,7 +448,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setRepairNetCeiling(BigDecimal.valueOf(100.00));
         breBand.setIsNotMobileDayAllowance(1);
         breBand.setAverageLabourHoursPerHireDay(1);
-        breBand.setAverageLabourRate(1);
+        breBand.setAverageLabourRateStandard(1);
+        breBand.setAverageLabourRatePrestige(1);
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
