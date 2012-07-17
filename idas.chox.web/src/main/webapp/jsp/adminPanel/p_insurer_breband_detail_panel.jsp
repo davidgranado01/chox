@@ -830,10 +830,29 @@
                         </div>
 
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div>
-                            <label class="chox-form-check-label">Repair Booked In Date Check For Mobile Vehicles</label>
-                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday or Sunday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnThursday" value="repairBookedInDateOnThursday" /></div>
+                            <label class="chox-form-check-label">Thursday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Thursday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
                         </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnFriday" value="repairBookedInDateOnFriday" /></div>
+                            <label class="chox-form-check-label">Friday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
+                        </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnSaturday" value="repairBookedInDateOnSaturday" /></div>
+                            <label class="chox-form-check-label">Saturday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Saturday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
+                        </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnSunday" value="repairBookedInDateOnSunday" /></div>
+                            <label class="chox-form-check-label">Sunday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Sunday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
+                        </div>
+
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div>
                             <label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>

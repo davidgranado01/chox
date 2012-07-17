@@ -66,7 +66,10 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
     private boolean numberOfHireDaysReconcile;
     private boolean correntAdminFee;
-    private boolean repairBookedInDate;
+    private boolean repairBookedInDateOnThursday;
+    private boolean repairBookedInDateOnFriday;
+    private boolean repairBookedInDateOnSaturday;
+    private boolean repairBookedInDateOnSunday;
     private boolean flaggedForManualInvoiceReview;
     private boolean hireNetDoesNotExceedBandHireNetCeiling;
     private boolean repairNetDoesNotExceedBandRepairNetCeiling;
@@ -630,12 +633,36 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.numberOfHireDaysReconcile = numberOfHireDaysReconcile;
     }
 
-    public boolean isRepairBookedInDate() {
-        return repairBookedInDate;
+     public void setRepairBookedInDateOnThursday(boolean repairBookedInDateOnThursday) {
+        this.repairBookedInDateOnThursday = repairBookedInDateOnThursday;
     }
 
-    public void setRepairBookedInDate(boolean repairBookedInDate) {
-        this.repairBookedInDate = repairBookedInDate;
+    public boolean isRepairBookedInDateOnThursday() {
+        return repairBookedInDateOnThursday;
+    }
+
+    public void setRepairBookedInDateOnFriday(boolean repairBookedInDateOnFriday) {
+        this.repairBookedInDateOnFriday = repairBookedInDateOnFriday;
+    }
+
+    public boolean isRepairBookedInDateOnFriday() {
+        return repairBookedInDateOnFriday;
+    }
+
+    public void setRepairBookedInDateOnSaturday(boolean repairBookedInDateOnSaturday) {
+        this.repairBookedInDateOnSaturday = repairBookedInDateOnSaturday;
+    }
+
+    public boolean isRepairBookedInDateOnSaturday() {
+        return repairBookedInDateOnSaturday;
+    }
+
+    public void setRepairBookedInDateOnSunday(boolean repairBookedInDateOnSunday) {
+        this.repairBookedInDateOnSunday = repairBookedInDateOnSunday;
+    }
+
+   public boolean isRepairBookedInDateOnSunday() {
+        return repairBookedInDateOnSunday;
     }
 
     public boolean isRepairGrossIsLessThanEstimatedTotalRepairAmount() {

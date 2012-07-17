@@ -79,7 +79,10 @@
         <property column="repair_net_does_not_exceed_vehicle_class_repair_net_ceiling" name="repairNetDoesNotExceedVehicleClassRepairNetCeiling"/>
         <property column="number_of_hire_days_reconcile" name="numberOfHireDaysReconcile"/>
         <property column="corrent_admin_fee" name="correntAdminFee"/>
-        <property column="repair_booked_in_date" name="repairBookedInDate"/>
+        <property column="repair_booked_in_date_on_thursday" name="repairBookedInDateOnThursday"/>
+        <property column="repair_booked_in_date_on_friday" name="repairBookedInDateOnFriday"/>
+        <property column="repair_booked_in_date_on_saturday" name="repairBookedInDateOnSaturday"/>
+        <property column="repair_booked_in_date_on_sunday" name="repairBookedInDateOnSunday"/>
         <property column="flagged_for_manual_invoice_review" name="flaggedForManualInvoiceReview"/>
         <property column="hire_net_does_not_exceed_band_hire_net_ceiling" name="hireNetDoesNotExceedBandHireNetCeiling"/>
         <property column="vehicle_class_hire_provision_6_to_8" name="vehicleClassHireProvisionLikeForLike6To8"/>

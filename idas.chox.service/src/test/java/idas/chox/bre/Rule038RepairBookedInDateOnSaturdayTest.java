@@ -51,7 +51,7 @@ public class Rule038RepairBookedInDateOnSaturdayTest extends TestCase {
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDate(false);
+        claim.getBreBand().setRepairBookedInDateOnSaturday(false);
         RuleEvaluation rv = new RepairBookedInDateOnSaturday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
@@ -65,7 +65,7 @@ public class Rule038RepairBookedInDateOnSaturdayTest extends TestCase {
     public void testPassed() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDate(true);
+        claim.getBreBand().setRepairBookedInDateOnSaturday(true);
 
         // SET TO NOT SATURDAY
         claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("09/10/2009"));
@@ -83,7 +83,7 @@ public class Rule038RepairBookedInDateOnSaturdayTest extends TestCase {
     public void testFailled() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDate(true);
+        claim.getBreBand().setRepairBookedInDateOnSaturday(true);
 
         // SET TO SATURDAY
         claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("10/10/2009"));
