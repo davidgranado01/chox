@@ -352,10 +352,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             BigDecimal hireGrossInsurerDiscountPercentage = BigDecimal.ZERO;
             BigDecimal repairGrossInsurerDiscountPercentage = BigDecimal.ZERO;
             BigDecimal totalGrossInsurerDiscountPercentage = BigDecimal.ZERO;
-            BigDecimal repairPenaltyAmount = BigDecimal.ZERO;
-            BigDecimal hirePenaltyAmount = BigDecimal.ZERO;
-            BigDecimal totalPenaltyAmount = BigDecimal.ZERO;
-            
 
             for (InsurerDiscount insurerDiscount : insurerDiscounts) {
 
@@ -398,16 +394,11 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 }
             }
 
-//            for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
-
-//                if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue() && inv.getHireGross().compareTo(BigDecimal.ZERO) == 1) {
-//                    BigDecimal hireGrossInsurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-//                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
             if (hireGrossInsurerDiscountEnabled) {
                 hireGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isHireGrossDiscountAppliedToPenalties) {
                     Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-                    hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
+                    BigDecimal hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
                     hireGrossInsurerDiscountAmount = (inv.getHireGross().add(hirePenaltyAmount)).multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                 } else {
                     hireGrossInsurerDiscountAmount = inv.getHireGross().multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
@@ -423,15 +414,11 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 inv.setHireGrossInsurerDiscount(hireGrossInsurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
                 
             }
-//                }
 
-//                if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue() && inv.getRepairGross().compareTo(BigDecimal.ZERO) == 1) {
-//                    BigDecimal repairGrossInsurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(),
-//                            inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
             if (repairGrossInsurerDiscountEnabled) {
                 repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isRepairGrossDiscountAppliedToPenalties) {
-                    repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
+                    BigDecimal repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
                     repairGrossInsurerDiscountAmount = (inv.getRepairGross().add(repairPenaltyAmount)).multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                 } else {
                     repairGrossInsurerDiscountAmount = inv.getRepairGross().multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
@@ -446,11 +433,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 inv.setRepairGrossInsurerDiscount(repairGrossInsurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
                 
             }
-//                }
 
-//                if (insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue() && inv.getTotalGross().compareTo(BigDecimal.ZERO) == 1) {
-//                    BigDecimal totalGrossInsurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(),
-//                            claim.getChorganisation().getId(), inv.getCreatedDate(), insurerDiscountType.getInsurerDiscountTypeValue());
             if (totalGrossInsurerDiscountEnabled) {
 
                 BigDecimal grossValueCombined = BigDecimal.ZERO;
@@ -465,7 +448,10 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 totalGrossValue = inv.getTotalGross().subtract(grossValueCombined);
 
                 if (isTotalGrossDiscountAppliedToPenalties) {
-                    totalPenaltyAmount = hirePenaltyAmount.add(repairPenaltyAmount);
+                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
+                    BigDecimal hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
+                    BigDecimal repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
+                    BigDecimal totalPenaltyAmount = hirePenaltyAmount.add(repairPenaltyAmount);
                     totalGrossInsurerDiscountAmount = (totalGrossValue.add(totalPenaltyAmount)).multiply(totalGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                 } else {
                     totalGrossInsurerDiscountAmount = totalGrossValue.multiply(totalGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
@@ -482,8 +468,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 inv.setTotalGrossInsurerDiscount(totalGrossInsurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
                 
             }
-//                }
-//            }
+
             if (totalEnabledDiscounts > 0) {
                 inv.setAverageInsurerDiscountPercentageApplied((totalGrossInsurerDiscountPercentage.add(repairGrossInsurerDiscountPercentage)
                     .add(hireGrossInsurerDiscountPercentage))
