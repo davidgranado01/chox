@@ -123,6 +123,7 @@
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>
+        <property column="overlapping_hire_check" name="overlappingHireCheck"/>
         <property column="hire_end_check" name="hireTerminatedAfterRepairCompletionCheck"/>
         <property column="allow_manag_repair_auto_tasks" name="allowManagingRepairAutomatedTasks" not-null="true"/>
         <property column="allow_notmanag_repair_auto_tasks" name="allowNotManagingRepairAutomatedTasks" not-null="true"/>

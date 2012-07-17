@@ -469,17 +469,16 @@
                             <input type="text" class="chox-ttxt" id="CCDTakeVehicleOutDays" name="takeVehicleOutDays" value="<s:property value="takeVehicleOutDays" />" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour For Standard Vehicles & Vans (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour <span class="mandatory">*</span> </br>For Standard Vehicles & Vans (£)</label>
                             <input type="text" class="chox-ttxt" id="CCDAverageLabourRateStandard" name="averageLabourRateStandard" value="<s:property value="averageLabourRateStandard" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRateStandard" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour For Prestige & Special Vehicles (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour <span class="mandatory">*</span> </br>For Prestige & Special Vehicles (£)</label>
                             <input type="text" class="chox-ttxt" id="CCDAverageLabourRatePrestige" name="averageLabourRatePrestige" value="<s:property value="averageLabourRatePrestige" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRatePrestige" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Productive Labour hours Per Hire Day (Hours)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourHoursPerHireDay" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -1139,6 +1138,13 @@
                             <label class="chox-form-check-label">Subscriber No Acquisition Fee Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="overlappingHireCheck" value="overlappingHireCheck" /></div>
+                            <label class="chox-form-check-label">Overlapping Hire Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the replacement hire vehicle was not on hire simultaneously across multiple claims.
                             </div>
                         </div>
                     </div>

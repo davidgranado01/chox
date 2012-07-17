@@ -47,3 +47,12 @@ UPDATE bre_band
 ---------------------
 --- End of 6.15.6 ---
 ---------------------
+
+--------------------------------------------------------------------------------
+-- 6.15.7 NEW BRE Rule: Check For Overlapping Hires Across All Mapped CHOs For Insurer
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN overlapping_hire_check boolean not null default true;
+
+---------------------
+--- End of 6.15.7 ---
+---------------------
