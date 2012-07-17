@@ -121,7 +121,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET BRE BAND
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(5);
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
@@ -173,7 +174,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET BRE BAND
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(5);
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
@@ -225,7 +227,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET BRE BAND
         claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(5);
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);

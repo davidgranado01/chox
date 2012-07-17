@@ -102,7 +102,8 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
         claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
@@ -137,7 +138,8 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
         claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
@@ -170,7 +172,8 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
         claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRateStandard(4);
+        claim.getBreBand().setAverageLabourRatePrestige(4);
         claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING

@@ -6,7 +6,8 @@
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
-        new Ext.ToolTip({ target: 'help-averageLabourRate', html: 'Average amount charged per hour for repair. This is based on an average amount charged for both preferred repairers and all other repairers.'});
+        new Ext.ToolTip({ target: 'help-averageLabourRateStandard', html: 'Average amount charged per hour for repair for standard vehicles & vans. This is based on an average amount charged for both preferred repairers and all other repairers.</br> The standard vehicle and van classes are: all non-P and non S-classes'});
+        new Ext.ToolTip({ target: 'help-averageLabourRatePrestige', html: 'Average amount charged per hour for repair for prestige & special vehicles. This is based on an average amount charged for both preferred repairers and all other repairers.</br> The prestige and special veicle classes are: all P or S classes'});
         new Ext.ToolTip({ target: 'help-hireDayCeiling', html: 'Maximum allowable hire days.'});
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
@@ -32,7 +33,8 @@
                 hireNetCeiling:{required:true, number:true, min:0},
                 hireDayCeiling:{required:true, number:true, min:0},
                 repairNetCeiling:{required:true, number:true, min:0},
-                averageLabourRate:{required:true, number:true, min:0},
+                averageLabourRateStandard:{required:true, number:true, min:0},
+                averageLabourRatePrestige:{required:true, number:true, min:0},
                 averageLabourHoursPerHireDay:{required:true, number:true, min:0},
                 takeVehicleOutDays:{required:true, number:true, min:0}
             },
@@ -51,7 +53,8 @@
                 hireNetCeiling: {required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero"},
                 hireDayCeiling: {required:"You must supply a value for 'Hire Day Ceiling'", number:"'Hire Day Ceiling' must be numeric", min:"'Hire Day Ceiling' cannot be less than zero"},
                 repairNetCeiling: {required:"You must supply a value for 'Max Repair Value'", number:"'Max Repair Value' must be numeric", min:"'Max Repair Value' cannot be less than zero"},
-                averageLabourRate: {required:"You must supply a value for 'Average Labour Rate'", number:"'Average Labour Rate' must be numeric", min:"'Average Labour Rate' cannot be less than zero"},
+                averageLabourRateStandard: {required:"You must supply a value for 'Average Labour Rate For Standard Vehicles & Vans'", number:"'Average Labour Rate For Standard Vehicles & Vans' must be numeric", min:"'Average Labour Rate For Standard Vehicles & Vans' cannot be less than zero"},
+                averageLabourRatePrestige: {required:"You must supply a value for 'Average Labour Rate For Prestige & Special Vehicles'", number:"'Average Labour Rate For Prestige & Special Vehicles' must be numeric", min:"'Average Labour Rate For Prestige & Special Vehicles' cannot be less than zero"},
                 averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
                 takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"}
             }
@@ -466,8 +469,12 @@
                             <input type="text" class="chox-ttxt" id="CCDTakeVehicleOutDays" name="takeVehicleOutDays" value="<s:property value="takeVehicleOutDays" />" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRate" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour For Standard Vehicles & Vans (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRateStandard" name="averageLabourRateStandard" value="<s:property value="averageLabourRateStandard" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRateStandard" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour For Prestige & Special Vehicles (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRatePrestige" name="averageLabourRatePrestige" value="<s:property value="averageLabourRatePrestige" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRatePrestige" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Productive Labour hours Per Hire Day (Hours)<span class="mandatory">*</span></label>

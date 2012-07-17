@@ -21,7 +21,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private int hireDayCeiling;
     private BigDecimal repairNetCeiling;
     private int isNotMobileDayAllowance;
-    private int averageLabourRate;
+    private int averageLabourRateStandard;
+    private int averageLabourRatePrestige;
     private int averageLabourHoursPerHireDay;
     private String name;
     private String claimUploadNote;
@@ -303,12 +304,27 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.averageLabourHoursPerHireDay = averageLabourHoursPerHireDay;
     }
 
-    public int getAverageLabourRate() {
-        return averageLabourRate;
+    public int getAverageLabourRate(String vehicleClass) {
+        if (VehicleClass.isPrestige(vehicleClass))
+            return getAverageLabourRatePrestige();
+        
+        return getAverageLabourRateStandard();
     }
 
-    public void setAverageLabourRate(int averageLabourRate) {
-        this.averageLabourRate = averageLabourRate;
+    public int getAverageLabourRateStandard() {
+        return averageLabourRateStandard;
+    }
+
+    public void setAverageLabourRateStandard(int averageLabourRateStandard) {
+        this.averageLabourRateStandard = averageLabourRateStandard;
+    }
+
+    public int getAverageLabourRatePrestige() {
+        return averageLabourRatePrestige;
+    }
+
+    public void setAverageLabourRatePrestige(int averageLabourRatePrestige) {
+        this.averageLabourRatePrestige = averageLabourRatePrestige;
     }
 
     public String getName() {

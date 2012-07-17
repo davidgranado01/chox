@@ -37,7 +37,8 @@
         <property column="non_standard_insurance_premium" name="nonStandardInsurancePremium" not-null="true"/>
         <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
         <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
-        <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
+        <property column="average_labour_rate_standard" name="averageLabourRateStandard" not-null="true"/>
+        <property column="average_labour_rate_prestige" name="averageLabourRatePrestige" not-null="true"/>
         <property column="automatic_charge_check" name="automaticChargeCheck"/>
         <property column="automatic_charge_check_hpi_lookup" name="automaticChargeCheckHpiLookup"/>
         <property column="additional_driver_check" name="additionalDriverChargeCheck"/>

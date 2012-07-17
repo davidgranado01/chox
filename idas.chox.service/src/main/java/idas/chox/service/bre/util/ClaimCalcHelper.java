@@ -241,7 +241,11 @@ public class ClaimCalcHelper {
         LOG.debug("LabourCost is {}", bLabourCost);
 
         BigDecimal bAverageLabourHoursPerHireDay = new BigDecimal(claim.getBreBand().getAverageLabourHoursPerHireDay());
-        BigDecimal bAverageLabourRate = new BigDecimal(claim.getBreBand().getAverageLabourRate());
+        BigDecimal bAverageLabourRate;
+        if (claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null)
+            bAverageLabourRate = new BigDecimal(claim.getBreBand().getAverageLabourRate(claim.getCustomer().getVehicleClass().getName()));
+        else
+            bAverageLabourRate = new BigDecimal(claim.getBreBand().getAverageLabourRateStandard());
 
         BigDecimal bLabourCostAverageRateDay = BigDecimal.ZERO;
 
@@ -279,8 +283,15 @@ public class ClaimCalcHelper {
         if ((bLabourCost.compareTo(BigDecimal.ZERO) < 1) && (iLabourHour.compareTo(BigDecimal.ZERO) > 0)) {
 
             if (bLabourRate.compareTo(BigDecimal.ZERO) < 1) {
-                bLabourCost = new BigDecimal(claim.getBreBand().getAverageLabourRate()).multiply(iLabourHour);
-                LOG.debug("LabourCost={} ({}*LabourHour)", bLabourCost, claim.getBreBand().getAverageLabourRate());
+                int labourRate;
+                
+                if (claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null)
+                    labourRate = claim.getBreBand().getAverageLabourRate(claim.getCustomer().getVehicleClass().getName());
+                else
+                    labourRate = claim.getBreBand().getAverageLabourRateStandard();
+                
+                bLabourCost = new BigDecimal(labourRate).multiply(iLabourHour);
+                LOG.debug("LabourCost={} ({}*LabourHour)", bLabourCost, labourRate);
             } else {
                 bLabourCost = bLabourRate.multiply(iLabourHour);
                 LOG.debug("LabourCost={} (LabourRate*LabourHour)", bLabourCost);

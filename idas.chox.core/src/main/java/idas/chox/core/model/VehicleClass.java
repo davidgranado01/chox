@@ -35,6 +35,10 @@ public class VehicleClass extends Entity implements Serializable {
         this.name = name;
     }
 
+    static public boolean isPrestige(String className) {
+        return isPOrSClass(className);
+    }
+    
     static public boolean isCommercialPrivateOrTaxi(String className) {
         /*
          * All Ts
