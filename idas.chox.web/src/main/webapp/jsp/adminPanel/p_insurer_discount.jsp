@@ -19,6 +19,7 @@
     var insdiscountFromDateEditor;
     var insdiscountToDateEditor;
     var insdiscountTypeEditor;
+    var applyToPenaltiesChecked = false;
 
     Ext.onReady(function(){
         Ext.QuickTips.init();
@@ -260,7 +261,7 @@
                     clearValidation();
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
                     var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
-                    var param = {"insurerId":<s:property value="insurerId" />,"choId": record.get('choId'),"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountPercentage": record.get('discount'),"discountId": record.get('discountId'),"insurerDiscountType": record.get('insurerDiscountType'),"applyPenalties": record.get('appliedToPenalties')};
+                    var param = {"insurerId":<s:property value="insurerId" />,"choId": record.get('choId'),"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountPercentage": record.get('discount'),"discountId": record.get('discountId'),"insurerDiscountType": record.get('insurerDiscountType'),"appliedToPenalties": record.get('appliedToPenalties')};
                     ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                         var response = eval('(' + responseText.trim() + ')');
@@ -268,7 +269,7 @@
                         if(response){
                     
                             if(response.success){
-                                insurerDiscount_loadGridViewList();
+                                insurerDiscount_loadGridViewList(record.get('choId'));
                             } else if(response.errors){
                                 Ext.MessageBox.show({
                                     title: 'ERROR',
@@ -307,7 +308,7 @@
                 {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,editor: insdiscountToDateEditor},
                 {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
                 {header: "Discount Type", width: 60, dataIndex: 'insurerDiscountType',  sortable: true, resizable: true, editor: insdiscountTypeEditor},
-                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: true, resizable: true,editor: {xtype: 'checkbox'}},
+                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: true, resizable: true,editor: {xtype: 'checkbox', listeners:{beforeshow:function(){this.setValue(applyToPenaltiesChecked)}}}},
                 {header: "CHO Name", width: 170, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
                 {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
@@ -344,6 +345,11 @@
 
     function insurerDiscount_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = insurerDiscount_gridviewGrid.getStore().getAt(rowIndex);
+        if (gridView.get("appliedToPenalties")== 'Yes') {
+            applyToPenaltiesChecked = true;
+        } else {
+            applyToPenaltiesChecked = false;
+        }
         if(columnIndex == 8){
             insurerDiscount_triggerStatusRemoveRecord(gridView);
         }
@@ -381,7 +387,7 @@
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
 
             if(response.success){
-                insurerDiscount_loadGridViewList();
+                insurerDiscount_loadGridViewList(choId);
             }
             else
             {
@@ -450,9 +456,9 @@
                         Ext.getCmp('insurerDiscountPercentageId').reset();
                         Ext.getCmp('insurerDiscountTypeComboId').reset();
                         Ext.getCmp('applyPenaltiesToInsurerTypeId').reset();
-                        Ext.getCmp('insurerDiscountSupplierId').reset();
+//                        Ext.getCmp('insurerDiscountSupplierId').reset();
                         clearValidation();
-                        insurerDiscount_loadGridViewList();
+                        insurerDiscount_loadGridViewList(choId);
                     } else if(response.errors){
                         Ext.MessageBox.show({
                           title: 'Error',
