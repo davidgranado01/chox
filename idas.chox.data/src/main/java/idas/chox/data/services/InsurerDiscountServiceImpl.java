@@ -56,7 +56,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
-
+        
         insurerDiscount.setDateTo(dateTo);
         
         int insurerDiscountTypeValue = insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue();
@@ -131,9 +131,9 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append(" (date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
+        sb.append("(TIMESTAMP '");
         sb.append(getShDtStr(dateFrom));
-        sb.append("',DATE '");
+        sb.append("',TIMESTAMP '");
         sb.append(getShDtStr(dateTo));
         sb.append("') ");
         sb.append("from insurer_discount ");
@@ -172,9 +172,9 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
+        sb.append("(TIMESTAMP '");
         sb.append(getShDtStr(invoiceCreatedDate));
-        sb.append("',DATE '");
+        sb.append("',TIMESTAMP '");
         sb.append(getShDtStr(invoiceCreatedDate));
         sb.append("') as overlap, discount_percentage ");
         sb.append("from insurer_discount ");
@@ -215,7 +215,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     private String getShDtStr(Date date) {
-        DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return overlap_literal_format.format(date);
     }
 
