@@ -1,6 +1,6 @@
----------------------------------------------------------
+--------------------------------------------------------------------------------
 -- 6.15.1 - Assigning Workgroups/Ownership For Manual Claims
----------------------------------------------------------
+--------------------------------------------------------------------------------
 ALTER TABLE insurer ADD COLUMN enable_manual_invoice_workgroups boolean default false;
 ALTER TABLE insurer ADD COLUMN enable_manual_invoice_ownership boolean default false;
 
@@ -223,9 +223,9 @@ SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateI
 ---------------
 --END OF 6.15.1 
 ---------------
----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- 6.15.2 Automated discount off Hire Costs (extension on to-do 6.1.1)
----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 ALTER TABLE insurer_discount ADD COLUMN is_applied_to_penalties BOOLEAN DEFAULT FALSE;
 
@@ -242,3 +242,20 @@ ALTER TABLE invoice ADD COLUMN hire_gross_insurer_discount numeric(10,2) NOT NUL
 ALTER TABLE invoice_original ADD COLUMN total_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
 ALTER TABLE invoice_original ADD COLUMN repair_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
 ALTER TABLE invoice_original ADD COLUMN hire_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
+
+
+--------------------------------------------------------------------------------
+-- 6.15.4 BRE Modification: Engineer Inspection Delay Variable
+--        Split Into 2 - Mobile/Non-Mobile
+--------------------------------------------------------------------------------
+
+ALTER TABLE bre_band RENAME COLUMN engineer_inspection_delay_days TO engineer_inspection_delay_days_mobile;
+ALTER TABLE bre_band ADD COLUMN engineer_inspection_delay_days_non_mobile integer not null default 0;
+
+UPDATE bre_band
+    set engineer_inspection_delay_days_non_mobile = engineer_inspection_delay_days_mobile;
+
+
+---------------------
+--- End of 6.15.4 ---
+---------------------

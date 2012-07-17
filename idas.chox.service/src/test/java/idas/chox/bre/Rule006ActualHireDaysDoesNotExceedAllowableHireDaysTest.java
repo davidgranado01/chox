@@ -126,7 +126,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
         claim.getBreBand().setTakeVehicleOutDays(1);
-        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysMobile(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysNonMobile(2);
         claim.getBreBand().setIsMobileDayAllowance(2);
         claim.getBreBand().setIsNotMobileDayAllowance(9);
 
@@ -177,7 +178,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
         claim.getBreBand().setTakeVehicleOutDays(1);
-        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysMobile(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysNonMobile(2);
         claim.getBreBand().setIsMobileDayAllowance(2);
         claim.getBreBand().setIsNotMobileDayAllowance(9);
 
@@ -228,7 +230,8 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
         claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
         claim.getBreBand().setTakeVehicleOutDays(1);
-        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysMobile(2);
+        claim.getBreBand().setEngineerInspectionDelayDaysNonMobile(2);
         claim.getBreBand().setIsMobileDayAllowance(2);
         claim.getBreBand().setIsNotMobileDayAllowance(9);
 

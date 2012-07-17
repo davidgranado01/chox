@@ -16,7 +16,8 @@
         <property column="take_vehicle_to_garage_days_non_mobile" name="takeVehicleToGarageDaysNonMobile" not-null="true"/>
         <property column="weekend_buffer_days" name="weekendBufferDays" not-null="true"/>
         <property column="take_vehicle_out_days" name="takeVehicleOutDays" not-null="true"/>
-        <property column="engineer_inspection_delay_days" name="engineerInspectionDelayDays" not-null="true"/>
+        <property column="engineer_inspection_delay_days_mobile" name="engineerInspectionDelayDaysMobile" not-null="true"/>
+        <property column="engineer_inspection_delay_days_non_mobile" name="engineerInspectionDelayDaysNonMobile" not-null="true"/>
         <property column="is_mobile_day_allowance" name="isMobileDayAllowance" not-null="true"/>
         <property column="offer_made_days" name="offerMadeDays" not-null="true"/>
         <property column="receipt_of_final_statement_cheque_days" name="receiptOfFinalStatementChequeDays" not-null="true"/>
