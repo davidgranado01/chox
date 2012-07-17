@@ -37,7 +37,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     }
 
     public void setApplyPenalties(String applyPenalties) {
-        if (applyPenalties != null && applyPenalties.equalsIgnoreCase("on")) {
+        if (applyPenalties != null && applyPenalties.equalsIgnoreCase("on") && model != null) {
             model.setAppliedToPenalties(true);
         }
     }

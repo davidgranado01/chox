@@ -232,7 +232,7 @@ public class Invoice extends Entity implements Serializable {
     private Date autoPenaltyStart;
     private Integer autoPenaltyAlertQty;
     private InvoiceOriginal invoiceOriginal;
-    private BigDecimal averageInsurerDiscountPercentageApplied;
+    private BigDecimal averageInsurerDiscountPercentageApplied = BigDecimal.ZERO;
 
     public BigDecimal getAverageInsurerDiscountPercentageApplied() {
         return averageInsurerDiscountPercentageApplied;

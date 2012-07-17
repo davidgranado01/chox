@@ -54,7 +54,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
+        
+        insurerDiscount.setDateTo(dateTo);
         
         int insurerDiscountTypeValue = insurerDiscount.getInsurerDiscountType().getInsurerDiscountTypeValue();
 
@@ -62,13 +65,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
-
-        /*
-         *  Reduce one second to 'dateTo'
-         */
-        cal.add(Calendar.SECOND, -1);
-        dateTo = cal.getTime();
-
+        
         LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
 
         insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
@@ -134,9 +131,9 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append(" (date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
+        sb.append("(TIMESTAMP '");
         sb.append(getShDtStr(dateFrom));
-        sb.append("',DATE '");
+        sb.append("',TIMESTAMP '");
         sb.append(getShDtStr(dateTo));
         sb.append("') ");
         sb.append("from insurer_discount ");
@@ -158,8 +155,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         List valList = getCurrentSession().createSQLQuery(query).list();
         for (Object object : valList) {
             if (((Boolean) object).booleanValue()) {
-                checks.put("dateTo", "From or To date overlaps existing discount.");
-                checks.put("dateFrom", "From or To date overlaps existing discount.");
+                checks.put("dateTo", "Selected period overlaps with an existing discount for this CHO.");
+//                checks.put("dateFrom", "Selected period overlaps with an existing discount for this CHO.");
                 break;
             }
         }
@@ -175,9 +172,9 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
-        sb.append("(DATE '");
+        sb.append("(TIMESTAMP '");
         sb.append(getShDtStr(invoiceCreatedDate));
-        sb.append("',DATE '");
+        sb.append("',TIMESTAMP '");
         sb.append(getShDtStr(invoiceCreatedDate));
         sb.append("') as overlap, discount_percentage ");
         sb.append("from insurer_discount ");
@@ -218,7 +215,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     private String getShDtStr(Date date) {
-        DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return overlap_literal_format.format(date);
     }
 
