@@ -71,7 +71,8 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
 
     public BreBand getDummyBreBand() {
         BreBand object = new BreBand();
-        object.setEngineerInspectionDelayDays(2);
+        object.setEngineerInspectionDelayDaysMobile(2);
+        object.setEngineerInspectionDelayDaysNonMobile(2);
         object.setHireDayCeiling(22);
         object.setHireNetCeiling(new BigDecimal("1500.00"));
         object.setHireRateChargeTolerance(new BigDecimal("0.01"));

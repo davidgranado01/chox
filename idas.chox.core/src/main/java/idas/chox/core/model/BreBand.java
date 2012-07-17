@@ -10,7 +10,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private int takeVehicleToGarageDaysNonMobile;
     private int weekendBufferDays;
     private int takeVehicleOutDays;
-    private int engineerInspectionDelayDays;
+    private int engineerInspectionDelayDaysMobile;
+    private int engineerInspectionDelayDaysNonMobile;
     private int isMobileDayAllowance;
     private int offerMadeDays;
     private int receiptOfFinalStatementChequeDays;
@@ -208,12 +209,20 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.takeVehicleOutDays = takeVehicleOutDays;
     }
 
-    public int getEngineerInspectionDelayDays() {
-        return engineerInspectionDelayDays;
+    public int getEngineerInspectionDelayDaysMobile() {
+        return engineerInspectionDelayDaysMobile;
     }
 
-    public void setEngineerInspectionDelayDays(int engineerInspectionDelayDays) {
-        this.engineerInspectionDelayDays = engineerInspectionDelayDays;
+    public void setEngineerInspectionDelayDaysMobile(int engineerInspectionDelayDaysMobile) {
+        this.engineerInspectionDelayDaysMobile = engineerInspectionDelayDaysMobile;
+    }
+
+    public int getEngineerInspectionDelayDaysNonMobile() {
+        return engineerInspectionDelayDaysMobile;
+    }
+
+    public void setEngineerInspectionDelayDaysNonMobile(int engineerInspectionDelayDaysNonMobile) {
+        this.engineerInspectionDelayDaysNonMobile = engineerInspectionDelayDaysNonMobile;
     }
 
     public int getIsMobileDayAllowance() {

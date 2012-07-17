@@ -75,8 +75,12 @@
         $(".chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile").val(iCCDTakeVehicleToGarageDaysNonMobile);
 
         // C11 - Engineer Inspection Delay Variable (Days)
-        var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
-        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDays);
+        var iCCDEngineerInspectionDelayDaysMobile = $("#CCDEngineerInspectionDelayDaysMobile").val();
+        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDaysMobile);
+
+        // C11 - Engineer Inspection Delay Variable (Days)
+        var iCCDEngineerInspectionDelayDaysNonMobile = $("#CCDEngineerInspectionDelayDaysNonMobile").val();
+        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDaysNonMobile);
 
         // C12 - Collection of Vehicle from garage Variable (Days)
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
@@ -106,12 +110,12 @@
         var iWeekendBufferDays = 0
 
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
-        var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
+        var iCCDEngineerInspectionDelayDaysMobile = $("#CCDEngineerInspectionDelayDaysMobile").val();
         var iCCDTakeVehicleToGarageDaysMobile = $("#CCDTakeVehicleToGarageDaysMobile").val();
         var iCCDIsMobileDayAllowance = $("#CCDIsMobileDayAllowance").val();
 
         iLabourCostTotalDay = parseFloat(iCCDTakeVehicleOutDays)
-            + parseFloat(iCCDEngineerInspectionDelayDays)
+            + parseFloat(iCCDEngineerInspectionDelayDaysMobile)
             + parseFloat(iCCDTakeVehicleToGarageDaysMobile)
             + parseFloat(iCCDIsMobileDayAllowance);
 
@@ -129,12 +133,12 @@
         var iWeekendBufferDays = 0
 
         var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
-        var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
+        var iCCDEngineerInspectionDelayDaysNonMobile = $("#CCDEngineerInspectionDelayDaysNonMobile").val();
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
         var iCCDIsNotMobileDayAllowance = $("#CCDIsNotMobileDayAllowance").val();
 
         iLabourCostTotalDay = parseFloat(iCCDTakeVehicleToGarageDaysNonMobile)
-            + parseFloat(iCCDEngineerInspectionDelayDays)
+            + parseFloat(iCCDEngineerInspectionDelayDaysNonMobile)
             + parseFloat(iCCDTakeVehicleOutDays)
             + parseFloat(iCCDIsNotMobileDayAllowance);
 
@@ -450,8 +454,12 @@
                             <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysNonMobile" name="takeVehicleToGarageDaysNonMobile" value="<s:property value="takeVehicleToGarageDaysNonMobile" />" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDEngineerInspectionDelayDays" name="engineerInspectionDelayDays" value="<s:property value="engineerInspectionDelayDays" />" onchange="javascript:doRefreshCalculation();"/>
+                            <label class="chox-form-std-label-longer">Mobile Vehicle Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDEngineerInspectionDelayDaysMobile" name="engineerInspectionDelayDaysMobile" value="<s:property value="engineerInspectionDelayDaysMobile" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Non-Mobile Vehicle Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDEngineerInspectionDelayDaysNonMobile" name="engineerInspectionDelayDaysNonMobile" value="<s:property value="engineerInspectionDelayDaysNonMobile" />" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)<span class="mandatory">*</span></label>

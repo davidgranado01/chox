@@ -74,7 +74,8 @@ public class MockObjects {
         band.setTakeVehicleToGarageDaysMobile(1);
         band.setTakeVehicleToGarageDaysNonMobile(3);
         band.setTakeVehicleOutDays(1);
-        band.setEngineerInspectionDelayDays(2);
+        band.setEngineerInspectionDelayDaysMobile(2);
+        band.setEngineerInspectionDelayDaysNonMobile(2);
         band.setOfferMadeDays(7);
         band.setReceiptOfFinalStatementChequeDays(10);
         band.setAverageLabourRate(40);

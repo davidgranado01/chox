@@ -288,7 +288,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setTakeVehicleToGarageDaysNonMobile(1);
         breBand.setWeekendBufferDays(1);
         breBand.setTakeVehicleOutDays(1);
-        breBand.setEngineerInspectionDelayDays(1);
+        breBand.setEngineerInspectionDelayDaysMobile(1);
+        breBand.setEngineerInspectionDelayDaysNonMobile(1);
         breBand.setIsMobileDayAllowance(1);
         breBand.setOfferMadeDays(1);
         breBand.setReceiptOfFinalStatementChequeDays(1);
@@ -356,7 +357,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setTakeVehicleToGarageDaysNonMobile(1);
         breBand.setWeekendBufferDays(1);
         breBand.setTakeVehicleOutDays(1);
-        breBand.setEngineerInspectionDelayDays(1);
+        breBand.setEngineerInspectionDelayDaysMobile(1);
+        breBand.setEngineerInspectionDelayDaysNonMobile(1);
         breBand.setIsMobileDayAllowance(1);
         breBand.setOfferMadeDays(1);
         breBand.setReceiptOfFinalStatementChequeDays(1);
@@ -426,7 +428,8 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setTakeVehicleToGarageDaysNonMobile(1);
         breBand.setWeekendBufferDays(1);
         breBand.setTakeVehicleOutDays(1);
-        breBand.setEngineerInspectionDelayDays(1);
+        breBand.setEngineerInspectionDelayDaysMobile(1);
+        breBand.setEngineerInspectionDelayDaysNonMobile(1);
         breBand.setIsMobileDayAllowance(1);
         breBand.setOfferMadeDays(1);
         breBand.setReceiptOfFinalStatementChequeDays(1);
