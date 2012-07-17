@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveVehicleHireForXMLUploader(final ClaimResult claimResult) {
 
@@ -17,10 +18,12 @@ public class VehicleHireServiceImpl extends SecureDataService implements Vehicle
         }
     }
 
+    @Override
     public VehicleHire getVehicleHire(int id) {
         return (VehicleHire) get(VehicleHire.class, id);
     }
 
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveVehicleHire(VehicleHire vehicleHire) {
         save(vehicleHire);

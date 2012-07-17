@@ -1241,5 +1241,30 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
         return countClaims(criteria).intValue();
     }
+
+    @Override
+    public String getOverlappingHire(Claim claim) {
+        /* returns the insurer claim nuber of any claim found with an overlappinh hire period
+         * to the argument claim, otherwise null
+         */
+        String insurerClaimNumber = null;
+        
+        if (claim.getVehicleHire() != null && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+                                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN);
+
+            criteria.add(Restrictions.ne("id", claim.getId()));
+            criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
+            criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
+                    .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
+ 
+            List<Claim> claims = findByCriteria(criteria);
+            if (claims.size() > 0) {
+                insurerClaimNumber = claims.get(0).getClaimNumber();
+            }
+
+        }
+        return insurerClaimNumber;
+    }
     
 }

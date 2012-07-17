@@ -121,7 +121,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean hireTerminatedAfterRepairCompletionCheck;
     private boolean allowManagingRepairAutomatedTasks;
     private boolean allowNotManagingRepairAutomatedTasks;
-    
+    private boolean overlappingHireCheck;
+
     public BreBand() {
     }
 
@@ -1191,5 +1192,13 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setAllowNotManagingRepairAutomatedTasks(boolean allowNotManagingRepairAutomatedTasks) {
         this.allowNotManagingRepairAutomatedTasks = allowNotManagingRepairAutomatedTasks;
+    }
+
+    public boolean isOverlappingHireCheck() {
+        return overlappingHireCheck;
+    }
+
+    public void setOverlappingHireCheck(boolean overlappingHireCheck) {
+        this.overlappingHireCheck = overlappingHireCheck;
     }
 }

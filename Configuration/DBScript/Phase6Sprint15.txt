@@ -288,8 +288,17 @@ UPDATE bre_band
 ALTER TABLE bre_band RENAME COLUMN average_labour_rate TO average_labour_rate_standard;
 ALTER TABLE bre_band ADD COLUMN average_labour_rate_prestige integer not null default 0;
 UPDATE bre_band
-    set average_labour_rate_prestige = average_labour_rate_standard,
+    set average_labour_rate_prestige = average_labour_rate_standard;
 
 ---------------------
 --- End of 6.15.6 ---
+---------------------
+
+--------------------------------------------------------------------------------
+-- 6.15.7 NEW BRE Rule: Check For Overlapping Hires Across All Mapped CHOs For Insurer
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN overlapping_hire_check boolean not null default true;
+
+---------------------
+--- End of 6.15.7 ---
 ---------------------
