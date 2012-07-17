@@ -78,7 +78,8 @@ public class MockObjects {
         band.setEngineerInspectionDelayDaysNonMobile(2);
         band.setOfferMadeDays(7);
         band.setReceiptOfFinalStatementChequeDays(10);
-        band.setAverageLabourRate(40);
+        band.setAverageLabourRateStandard(40);
+        band.setAverageLabourRatePrestige(40);
         band.setAverageLabourHoursPerHireDay(4);
         band.setInspectionDelayDays(4);
         band.setHireDayCeiling(22);
