@@ -335,7 +335,10 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         breBand.setLabourCostBusinessRule(true);
         breBand.setNumberOfHireDaysReconcile(true);
-        breBand.setRepairBookedInDate(true);
+        breBand.setRepairBookedInDateOnThursday(false);
+        breBand.setRepairBookedInDateOnFriday(true);
+        breBand.setRepairBookedInDateOnSaturday(true);
+        breBand.setRepairBookedInDateOnSunday(true);
         breBand.setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
         breBand.setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
         breBand.setValidateUniqueVehicleRegistrationNumber(true);
@@ -404,7 +407,10 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         breBand.setLabourCostBusinessRule(true);
         breBand.setNumberOfHireDaysReconcile(true);
-        breBand.setRepairBookedInDate(true);
+        breBand.setRepairBookedInDateOnThursday(false);
+        breBand.setRepairBookedInDateOnFriday(true);
+        breBand.setRepairBookedInDateOnSaturday(true);
+        breBand.setRepairBookedInDateOnSunday(true);
         breBand.setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
         breBand.setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
         breBand.setValidateUniqueVehicleRegistrationNumber(true);
@@ -475,7 +481,10 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         breBand.setLabourCostBusinessRule(true);
         breBand.setNumberOfHireDaysReconcile(true);
-        breBand.setRepairBookedInDate(true);
+        breBand.setRepairBookedInDateOnThursday(false);
+        breBand.setRepairBookedInDateOnFriday(true);
+        breBand.setRepairBookedInDateOnSaturday(true);
+        breBand.setRepairBookedInDateOnSunday(true);
         breBand.setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
         breBand.setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
         breBand.setValidateUniqueVehicleRegistrationNumber(true);

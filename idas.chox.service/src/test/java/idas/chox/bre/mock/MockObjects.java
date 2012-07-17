@@ -122,7 +122,10 @@ public class MockObjects {
         band.setActualHireDaysDoesNotExceedTotalLossInspection(true);
         band.setAutomaticChargeCheck(true);
         band.setRoofRackChargeCheck(true);
-        band.setRepairBookedInDate(true);
+        band.setRepairBookedInDateOnThursday(true);
+        band.setRepairBookedInDateOnFriday(true);
+        band.setRepairBookedInDateOnSaturday(true);
+        band.setRepairBookedInDateOnSunday(true);
         band.setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
         band.setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
         band.setSatelliteNavigationChargeCheck(true);

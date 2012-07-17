@@ -259,3 +259,23 @@ UPDATE bre_band
 ---------------------
 --- End of 6.15.4 ---
 ---------------------
+
+
+--------------------------------------------------------------------------------
+-- 6.15.5 BRE Modification: Add Thursday To Repair Book In Day For Mobile
+--	  Vehicles & Split Out Current Repair Book In Day Check For Mobile Vehicles
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band RENAME COLUMN repair_booked_in_date TO repair_booked_in_date_on_thursday;
+ALTER TABLE bre_band ADD COLUMN repair_booked_in_date_on_friday boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN repair_booked_in_date_on_saturday boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN repair_booked_in_date_on_sunday boolean not null default true;
+
+UPDATE bre_band
+    set repair_booked_in_date_on_friday = repair_booked_in_date_on_thursday,
+        repair_booked_in_date_on_saturday = repair_booked_in_date_on_thursday,
+        repair_booked_in_date_on_sunday = repair_booked_in_date_on_thursday;
+
+
+---------------------
+--- End of 6.15.5 ---
+---------------------

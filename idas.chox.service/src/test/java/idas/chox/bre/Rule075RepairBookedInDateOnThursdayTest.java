@@ -6,14 +6,14 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.bre.rules.RepairBookedInDateOnSunday;
+import idas.chox.service.bre.rules.RepairBookedInDateOnThursday;
 import java.io.IOException;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class Rule039RepairBookedInDateOnSundayTest extends TestCase {
+public class Rule075RepairBookedInDateOnThursdayTest extends TestCase {
 
     MockObjects testClaim = new MockObjects();
 
@@ -51,8 +51,8 @@ public class Rule039RepairBookedInDateOnSundayTest extends TestCase {
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDateOnSunday(false);
-        RuleEvaluation rv = new RepairBookedInDateOnSunday().applyToClaim(claim);
+        claim.getBreBand().setRepairBookedInDateOnThursday(false);
+        RuleEvaluation rv = new RepairBookedInDateOnThursday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -61,15 +61,16 @@ public class Rule039RepairBookedInDateOnSundayTest extends TestCase {
 
     }
 
+    @Test
     public void testPassed() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDateOnSunday(true);
+        claim.getBreBand().setRepairBookedInDateOnThursday(true);
 
-        // SET TO NOT SUNDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("10/10/2009"));
+        // SET TO NOT FRIDAY
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("07/10/2009"));
 
-        RuleEvaluation rv = new RepairBookedInDateOnSunday().applyToClaim(claim);
+        RuleEvaluation rv = new RepairBookedInDateOnThursday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -82,15 +83,15 @@ public class Rule039RepairBookedInDateOnSundayTest extends TestCase {
     public void testFailled() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setRepairBookedInDateOnSunday(true);
+        claim.getBreBand().setRepairBookedInDateOnThursday(true);
 
-        // SET TO SUNDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("11/10/2009"));
+        // SET TO FRIDAY
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("08/10/2009"));
 
-        RuleEvaluation rv = new RepairBookedInDateOnSunday().applyToClaim(claim);
+        RuleEvaluation rv = new RepairBookedInDateOnThursday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair booked in on Thursday and the CHO's Customer's vehicle was driveable."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
