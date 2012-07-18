@@ -36,7 +36,40 @@ public class VehicleClass extends Entity implements Serializable {
     }
 
     static public boolean isPrestige(String className) {
-        return isPOrSClass(className);
+        /* Vehicle classes considered 'Prestige & Special Vehicles' are:
+         *      M5-M6, F4-F9, P1-P13, SP4-SP13, PV1-PV6, CV1-CV4,
+         *      RV1-RV2, CP1-CP3, CS1-CS5, CM1-CM3, T5-T14.
+         *      PT9 & PT13, B4-B6
+         */
+        if (className == null || className.length()==0)
+            return false;
+        
+        if (className.startsWith("M5") || className.startsWith("M6")
+                || className.startsWith("F4") || className.startsWith("F5")
+                || className.startsWith("F6") || className.startsWith("F7")
+                || className.startsWith("F8") || className.startsWith("F9")
+                || isPClass(className)
+                || className.startsWith("SP4") || className.startsWith("SP5")
+                || className.startsWith("SP6") || className.startsWith("SP7")
+                || className.startsWith("SP8") || className.startsWith("SP9")
+                || className.startsWith("SP10") || className.startsWith("SP11")
+                || className.startsWith("SP12") || className.startsWith("SP13")
+                || className.startsWith("PV")
+                || className.startsWith("CV")
+                || className.startsWith("RV")
+                || className.startsWith("CP")
+                || className.startsWith("CS")
+                || className.startsWith("CM")
+                || className.startsWith("T5") || className.startsWith("T6")
+                || className.startsWith("T7") || className.startsWith("T8")
+                || className.startsWith("T9") || className.startsWith("T10")
+                || className.startsWith("T11") || className.startsWith("T12")
+                || className.startsWith("T13") || className.startsWith("T14")
+                || className.startsWith("PT9") || className.startsWith("PT13")
+                || className.startsWith("B4") || className.startsWith("B5") || className.startsWith("B6"))
+            return true;
+        
+        return false;
     }
     
     static public boolean isCommercialPrivateOrTaxi(String className) {
