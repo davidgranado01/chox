@@ -1249,12 +1249,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          */
         String insurerClaimNumber = null;
         
-        if (claim.getVehicleHire() != null && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
+        if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration()!=null
+                && claim.getVehicleHire().getVehicleRegistration().length() > 0
+                && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
                                 .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN);
 
             criteria.add(Restrictions.ne("id", claim.getId()));
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
+            criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
                     .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
  
