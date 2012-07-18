@@ -1127,7 +1127,7 @@ p.std-label
     height:20px;
 }
 
-p.std-label-insdiscount
+p.std-label-ipWhitelist
 {
     vertical-align:bottom;
     font-weight:500;
@@ -1135,6 +1135,21 @@ p.std-label-insdiscount
     float: left;
     margin-right: 3px;
     margin-left: 50px;
+    text-align: right;
+/*    width: 300px;*/
+    white-space: nowrap;
+    height:20px;
+    padding-top:3px;
+}
+
+p.std-label-insdiscount
+{
+    vertical-align:bottom;
+    font-weight:500;
+    display: block;
+/*    float: left;*/
+    margin-right: 3px;
+/*    margin-left: 50px;*/
     text-align: right;
 /*    width: 300px;*/
     white-space: nowrap;

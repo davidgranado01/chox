@@ -218,10 +218,10 @@
         <table>
              <tr>
                 <td width ="260" align="left">
-                    <p class="std-label-insdiscount">IP Address</p><div id="ipAddressHolder"></div>
+                    <p class="std-label-ipWhitelist">IP Address</p><div id="ipAddressHolder"></div>
                 </td> 
                 <td width ="380" align="left">
-                    <p class="std-label-insdiscount">Description</p><div id="descriptionHolder"></div>
+                    <p class="std-label-ipWhitelist">Description</p><div id="descriptionHolder"></div>
                 </td> 
                 <td align="center">
                     <input type="button" onclick="javascript:return ipWhitelist_triggerStatusAddRecord();" value="Add"/>
