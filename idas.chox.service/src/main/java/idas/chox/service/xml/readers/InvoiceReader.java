@@ -99,7 +99,10 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setHirePenaltyCharge(BigDecimal.ZERO);
         invoice.setRepairPenaltyCharge(BigDecimal.ZERO);
         invoice.setTotalPenaltyCharge(BigDecimal.ZERO);
-        
+        invoice.setInsurerDiscount(BigDecimal.ZERO);
+        invoice.setTotalGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setHireGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setRepairGrossInsurerDiscount(BigDecimal.ZERO);
 
         // PRE-DEFINED
         invoice.setHireGross(BigDecimal.ZERO);
