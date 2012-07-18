@@ -14,10 +14,6 @@ ALTER TABLE invoice ADD COLUMN total_gross_insurer_discount numeric(10,2) NOT NU
 ALTER TABLE invoice ADD COLUMN repair_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
 ALTER TABLE invoice ADD COLUMN hire_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
 
-ALTER TABLE invoice_original ADD COLUMN total_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
-ALTER TABLE invoice_original ADD COLUMN repair_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
-ALTER TABLE invoice_original ADD COLUMN hire_gross_insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;
-
 
 -- Function: applyautopenaltycharge(integer, integer)
 
