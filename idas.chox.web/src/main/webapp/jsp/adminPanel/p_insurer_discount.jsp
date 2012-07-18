@@ -128,7 +128,7 @@
         var appliedToPenalties = new Ext.form.Checkbox ({
             id : 'applyPenaltiesToInsurerTypeId',
             name : 'applyPenalties',
-            checked: false,
+//            checked: false,
             renderTo : 'appliedToPenaltiesInsurerDiscountId'
         });
 
@@ -411,7 +411,7 @@
         var insurerDiscountPercentage = $("#insurerDiscountPercentageId").val();
         var insurerDiscountDateFrom = $("#InsurerDiscountDateFromId").val();
         var insurerDiscountDateTo = $("#InsurerDiscountDateToId").val();
-        var insurerDiscountapplyPenalties = $("#applyPenaltiesToInsurerTypeId").val();
+        var insurerDiscountapplyPenalties = Ext.getCmp('applyPenaltiesToInsurerTypeId').getValue();
         
         
         if(choId==-1 || choId == null || choId ==  '' || choId == 0){
@@ -444,7 +444,7 @@
         }
         else {
             var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage, "insurerDiscountType" : discountTypeId, "applyPenalties": insurerDiscountapplyPenalties};
+            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage, "insurerDiscountType" : discountTypeId, "appliedToPenalties": insurerDiscountapplyPenalties};
             ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                 var response = eval('(' + responseText.trim() + ')');

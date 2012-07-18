@@ -448,9 +448,14 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 totalGrossValue = inv.getTotalGross().subtract(grossValueCombined);
 
                 if (isTotalGrossDiscountAppliedToPenalties) {
+                    BigDecimal hirePenaltyAmount = BigDecimal.ZERO;
+                    BigDecimal repairPenaltyAmount = BigDecimal.ZERO;
+                    
                     Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-                    BigDecimal hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
-                    BigDecimal repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
+                    if (!isHireGrossDiscountAppliedToPenalties)
+                        hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
+                    if (!isRepairGrossDiscountAppliedToPenalties)
+                        repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
                     BigDecimal totalPenaltyAmount = hirePenaltyAmount.add(repairPenaltyAmount);
                     totalGrossInsurerDiscountAmount = (totalGrossValue.add(totalPenaltyAmount)).multiply(totalGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                 } else {

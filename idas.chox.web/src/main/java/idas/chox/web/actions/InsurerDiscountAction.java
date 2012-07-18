@@ -30,17 +30,6 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     private int insurerId;
     private int choId;
     private String jsonData;
-    private String applyPenalties; // this is varibale added though it's already in the model because extjs sends checkbox value as string.
-
-    public String getApplyPenalties() {
-        return applyPenalties;
-    }
-
-    public void setApplyPenalties(String applyPenalties) {
-        if (applyPenalties != null && applyPenalties.equalsIgnoreCase("on") && model != null) {
-            model.setAppliedToPenalties(true);
-        }
-    }
 
     public int getDiscountId() {
         return discountId;
