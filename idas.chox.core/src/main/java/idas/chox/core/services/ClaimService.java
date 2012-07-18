@@ -1,6 +1,5 @@
 package idas.chox.core.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -98,4 +97,6 @@ public interface ClaimService extends DataService {
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId);
     
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId);
+
+    public String getOverlappingHire(Claim claim);
 }
