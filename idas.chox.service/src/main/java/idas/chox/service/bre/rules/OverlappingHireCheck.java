@@ -21,7 +21,7 @@ public class OverlappingHireCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isOverlappingHireCheck() && claim.getVehicleHire() != null && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
+        if (claim.getBreBand().isOverlappingHireCheck() && claim.getVehicleHire() != null) {
             /*
              * This rule will look at the hire/replacement vehicle's VRN, the VRN
              * will be compared to all claims submitted against the said Insurer only,
