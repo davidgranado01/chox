@@ -354,8 +354,7 @@ public class InvoiceSummaryReport implements Report {
               .append( "from (select case when EXTRACT(DAY FROM (audit.update_date - invoice.created_date)) is null then 0 else EXTRACT(DAY FROM (audit.update_date - invoice.created_date)) end as total_day ")
               .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false ")
               .append( "and audit.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') and not exists (select claim_id from audit_trail where reverted=false and status='ClaimClosed' ")
-              .append( "and claim_id=audit.claim_id) and not exists (select * from audit_trail where reverted=false and claim_id=audit.claim_id and new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') "); 
-            sb.append( "and update_date > audit.update_date) and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom")
+              .append( "and claim_id=audit.claim_id) and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom")
               .append( " and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
@@ -370,8 +369,7 @@ public class InvoiceSummaryReport implements Report {
               .append( "from (select case when EXTRACT(DAY FROM (audit.update_date - invoice.created_date)) is null then 0 else EXTRACT(DAY FROM (audit.update_date - invoice.created_date)) end as total_day ")
               .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false ")
               .append( "and audit.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') and not exists (select claim_id from audit_trail where reverted=false ")
-              .append( "and status='ClaimClosed' and claim_id=audit.claim_id) and not exists (select * from audit_trail where reverted=false ")
-              .append( "and claim_id=audit.claim_id and new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') and update_date > audit.update_date) ")
+              .append( "and status='ClaimClosed' and claim_id=audit.claim_id) ")
               .append( "and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom and :pInvUploadDateTo "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
@@ -390,8 +388,7 @@ public class InvoiceSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and not exists (select claim_id from audit_trail where reverted=false and status='ClaimClosed' and claim_id=audit.claim_id) ")
-              .append( "and not exists (select * from audit_trail where reverted=false and claim_id=audit.claim_id and new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ")
-              .append( "and update_date > audit.update_date) and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom ")
+              .append( "and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom ")
               .append( "and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) a ")
               .append( "where total_day > 60 and total_day <= 90) as InvoiceSettledCat60Days, ");
             
@@ -404,22 +401,20 @@ public class InvoiceSummaryReport implements Report {
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
-            sb.append( "and not exists (select claim_id from audit_trail where reverted=false and status='ClaimClosed' and claim_id=audit.claim_id) ")
-              .append( "and not exists (select * from audit_trail where reverted=false and claim_id=audit.claim_id and new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') ")
-              .append( "and update_date > audit.update_date) and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom ")
+            sb.append( "and not exists (select * from audit_trail where reverted=false and status='ClaimClosed' and claim_id=audit.claim_id) ")
+              .append( "and status in ('InvoicePaymentLogged', 'PaymentReceived', 'ManualInvoicePaid') where date(invoice.created_date) between :pInvUploadDateFrom ")
               .append( "and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) a ")
               .append( "where total_day > 90) as InvoiceSettledCat90Days, ");
             
             
             
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count ")
-              .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') "); 
+              .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status in ('InvoicePaymentLogged', 'ManualInvoicePaid') and audit.reverted=false "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
-            sb.append( "and not exists (select * from audit_trail where reverted=false and status in ('InvoicePaymentLogged', 'ManualInvoicePaid') and update_date > audit.update_date) ")
-              .append( "where date(invoice.created_date) between :pInvUploadDateFrom and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id ")
+            sb.append( "where date(invoice.created_date) between :pInvUploadDateFrom and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as averageNoDaysOfInvoiceSettlement, ");
             
             
@@ -461,7 +456,7 @@ public class InvoiceSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and chorganisation_id = insurer_chorganisation.chorganisation_id and date_trunc('day', created_date) between :pInvUploadDateFrom and :pInvUploadDateTo ")
-              .append( "and status = 'ClaimClosed' and claim_id not in (select distinct claim_id from audit_trail where reverted=false and new_status='InvoicePaymentLogged')) as noOfInvoicesClosed,");
+              .append( "and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as noOfInvoicesClosed,");
             
             
             
@@ -471,8 +466,7 @@ public class InvoiceSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and chorganisation_id = insurer_chorganisation.chorganisation_id and date_trunc('day', created_date) between :pInvUploadDateFrom ")
-              .append( "and :pInvUploadDateTo and status = 'ClaimClosed' and claim_id not in (select distinct claim_id from audit_trail where reverted=false ")
-              .append( "and new_status='InvoicePaymentLogged')) as valueOfInvoicesClosed,");
+              .append( "and :pInvUploadDateTo and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as valueOfInvoicesClosed,");
             
             
             
