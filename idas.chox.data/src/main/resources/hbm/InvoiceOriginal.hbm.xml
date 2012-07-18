@@ -32,14 +32,8 @@
         <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFeeOriginal"/>
         <property column="discount" name="discountOriginal"/>
         <property column="insurer_discount" name="insurerDiscountOriginal"/>
-        <property column="total_gross_insurer_discount" name="totalGrossInsurerDiscountOriginal"/>
-        <property column="repair_gross_insurer_discount" name="repairGrossInsurerDiscountOriginal"/>
-        <property column="hire_gross_insurer_discount" name="hireGrossInsurerDiscountOriginal"/>
         <property column="full_total_to_pay" name="fullTotalToPayOriginal"/>
         <property column="total_to_pay" name="totalToPayOriginal"/>
-<!--        <property column="original_full_total_to_pay" name="originalFullTotalToPayOriginal"/>-->
-<!--        <property column="original_total_to_pay" name="originalTotalToPayOriginal"/>-->
-       
         <property column="miscellaneous_fee" name="miscellaneousFeeOriginal"/>
         <property column="miscellaneous_qty" name="miscellaneousQtyOriginal"/>
         <property column="automatic_fee" name="automaticFeeOriginal"/>
@@ -68,9 +62,6 @@
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
        
-        
-       
-       
         <property column="hire_rate_charged_per_day" name="hireRateChargedPerDayOriginal"/>
         <property column="excess_amount_collected" name="excessAmountCollectedOriginal"/>
         <property column="vat_amount_collected" name="vatAmountCollectedOriginal"/>
@@ -80,7 +71,6 @@
         <property column="repair_penalty_percentage" name="repairPenaltyPercentageOriginal"/>
         <property column="total_penalty_charge" name="totalPenaltyChargeOriginal"/>
         <property column="penalty_alert_qty" name="penaltyAlertQtyOriginal"/>
-        
         
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         
