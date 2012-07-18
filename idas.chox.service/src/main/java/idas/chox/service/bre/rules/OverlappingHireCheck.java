@@ -11,7 +11,7 @@ import idas.chox.core.services.ClaimService;
 public class OverlappingHireCheck implements IBusinessRule {
 
     private String narrative = "";
-    private ClaimService service;
+    private ClaimService claimService;
     
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -32,7 +32,7 @@ public class OverlappingHireCheck implements IBusinessRule {
              * where the hire/replacement vehicle VRN is 'NK1' should be ignored.
              * 
              */
-            String insurerClaimNumber = service.getOverlappingHire(claim);
+            String insurerClaimNumber = claimService.getOverlappingHire(claim);
             boolean success = true;
             
             if (insurerClaimNumber != null) {
@@ -67,8 +67,8 @@ public class OverlappingHireCheck implements IBusinessRule {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 
-    public void setService(ClaimService service) {
-        this.service = service;
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
 }
