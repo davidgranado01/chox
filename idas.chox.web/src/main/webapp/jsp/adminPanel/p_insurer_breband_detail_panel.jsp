@@ -6,8 +6,8 @@
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
-        new Ext.ToolTip({ target: 'help-averageLabourRateStandard', html: 'Average amount charged per hour for repair for standard vehicles & vans. This is based on an average amount charged for both preferred repairers and all other repairers.</br> The standard vehicle and van classes are: all non-P and non S-classes'});
-        new Ext.ToolTip({ target: 'help-averageLabourRatePrestige', html: 'Average amount charged per hour for repair for prestige & special vehicles. This is based on an average amount charged for both preferred repairers and all other repairers.</br> The prestige and special veicle classes are: all P or S classes'});
+        new Ext.ToolTip({ target: 'help-averageLabourRateStandard', html: 'Average amount charged per hour for repair for Standard Vehicles & Vans. This is based on an average amount charged for both preferred repairers and all other repairers.</br>Vehicle classes considered \'Standard Vehicles & Vans\' are: S1-S7, M-M4, F1-F3, SP1-SP3, T1-T4, B1-B3. '});
+        new Ext.ToolTip({ target: 'help-averageLabourRatePrestige', html: 'Average amount charged per hour for repair for Prestige & Special Vehicles. This is based on an average amount charged for both preferred repairers and all other repairers.</br>Vehicle classes considered \'Prestige & Special Vehicles\' are: M5-M6, F4-F9, P1-P13, SP4-SP13, PV1-PV6, CV1-CV4, RV1-RV2, CP1-CP3, CS1-CS5, CM1-CM3, T5-T14 (PT9 & PT13), B4-B6. '});
         new Ext.ToolTip({ target: 'help-hireDayCeiling', html: 'Maximum allowable hire days.'});
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
