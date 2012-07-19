@@ -356,6 +356,7 @@
         var claimWorkgroupEnable = doWorkgroupCheck();
         var claimOwnershipEnable = doOwnershipCheck();
         var supervisorEscalation = doSupervisorEscalationCheck();
+        doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable);
 
         if(!claimWorkgroupEnable && !claimOwnershipEnable){
             $("#ClaimLockedHolder").hide();
@@ -382,14 +383,32 @@
             claimWorkgroupEnable = true;
             $("#AutomaticClaimRoutingHolder").slideDown();
             $("#tpiWorkgroupId").slideDown();
+            $("#manualInvoiceWorkgroupHolder").slideDown();
         }else{
             $("#AutomaticClaimRoutingHolder").hide();
             $("#tpiWorkgroupId").hide();
+            $("#manualInvoiceWorkgroupHolder").hide();
             $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
     }
 
+    function doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable){
+        
+        if($('form#formUpdateInsurerDetail input[name="uploadEnabled"]:checked').val()){
+            if (claimOwnershipEnable) {
+              $("#manualInvoiceOwnershipHolder").slideDown();  
+            }
+            if (claimWorkgroupEnable) {
+               $("#manualInvoiceWorkgroupHolder").slideDown(); 
+            }
+            
+        }else{
+            $("#manualInvoiceOwnershipHolder").hide();
+            $("#manualInvoiceWorkgroupHolder").hide();
+        }
+    }
+    
     function doTpiEnableCheck(){
         var tpiEnableEnable = false;
         if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
@@ -406,8 +425,10 @@
         if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
             claimOwnershipEnable = true;
             $("#TpiClaimOwnerId").slideDown();
+            $("#manualInvoiceOwnershipHolder").slideDown();
         }else{
             $("#TpiClaimOwnerId").hide();
+            $("#manualInvoiceOwnershipHolder").hide();
         }
         return claimOwnershipEnable;
     }
@@ -614,8 +635,8 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Claim Upload</label>
-                                        <s:checkbox name="uploadEnabled" value="uploadEnabled"/>
+                                        <label class="chox-form-std-label">Enable Manual Invoices</label>
+                                        <s:checkbox name="uploadEnabled" value="uploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                                 <td>
@@ -720,7 +741,7 @@
 	                            
 	                            <tr>
                                     <td>
-                                        <div class="chox-form-item">
+                                        <div class="chox-form-item" id="manualInvoiceWorkgroupHolder">
                                             <label class="chox-form-std-label">Enable Manual Invoice Workgroups</label>
                                             <s:checkbox name="enableManualInvoiceWorkgroups" value="enableManualInvoiceWorkgroups" />
                                         </div>
@@ -728,7 +749,7 @@
 	                               </tr>
 	                               <tr>
                                     <td>
-                                        <div class="chox-form-item">
+                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
                                             <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" value="enableManualInvoiceOwnership" />
                                         </div>
