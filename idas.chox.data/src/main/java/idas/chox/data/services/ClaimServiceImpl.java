@@ -1256,6 +1256,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                                 .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN);
 
             criteria.add(Restrictions.ne("id", claim.getId()));
+            criteria.add(Restrictions.ne("customer.claimReference", claim.getCustomer().getClaimReference()));
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
             criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
