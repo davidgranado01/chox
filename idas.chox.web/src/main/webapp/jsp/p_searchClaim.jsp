@@ -933,7 +933,7 @@
                 ]
             });
 
-            var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonString" escape="false"/>');
+            var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonStringWithNull" escape="false"/>');
             var liabilityStatusesStore = new Ext.data.Store({
                 data : liabilityStatuses,
                 reader : liabilityStatusesJsonReader

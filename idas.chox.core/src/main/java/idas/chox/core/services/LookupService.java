@@ -11,7 +11,7 @@ public interface LookupService {
                             boolean isTpiEnabled, boolean isManualInvoiceAllowed,
                             boolean isSubscriberActivated);
     
-    public List<LookupItem> getLiabilityStatuses();
+    public List<LookupItem> getLiabilityStatuses(boolean withNull);
     
     public List<LookupItem> getClaimTypes();
 
