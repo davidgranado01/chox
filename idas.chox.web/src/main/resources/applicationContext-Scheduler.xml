@@ -73,6 +73,7 @@
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="xlsFileParser" ref="xlsFileParser"/>
         <property name="claimService" ref="claimService" />
+        <property name="invoiceService" ref="invoiceService" />
         <property name="mailUtil" ref="mailUtil" />
 		
         <property name="emailAccount" value="${emailAccount}"/>
