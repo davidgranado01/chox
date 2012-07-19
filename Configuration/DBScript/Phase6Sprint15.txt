@@ -858,3 +858,25 @@ ALTER TABLE bre_band ADD COLUMN overlapping_hire_check boolean not null default 
 --- End of 6.15.7 ---
 ---------------------
 
+
+----------------------------------------------------------------------------------------------------------
+--- BUG#1859 Production - Total To Pay Updated Incorrectly When Liability Repudiated & Auto Pens Apply ---
+----------------------------------------------------------------------------------------------------------
+
+UPDATE 
+     invoice
+SET
+     total_to_pay = 0.00,
+     last_modified_by = 999,
+     last_modified_date = now(),
+     version = invoice.version + 1
+FROM 
+     claim c
+WHERE 
+     c.invoice_id = invoice.id
+     AND invoice.total_to_pay > 0 
+     AND c.liability_status = 4; 
+
+----------------------
+--- End of BUG#1859 --
+----------------------
