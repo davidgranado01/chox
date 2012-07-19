@@ -146,6 +146,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
                     LOG.debug("Claim status reverted and saved - updating statusModifiedDate to '{}'", auditTrail.getCreatedDate());
                     claim.setStatusModifiedDate(auditTrail.getCreatedDate());
+                    claim.setPreviousStatus(auditTrail.getOriginalStatus());
                     super.save(claim);
                     LOG.debug("Claim status modified date saved.");
                 }
