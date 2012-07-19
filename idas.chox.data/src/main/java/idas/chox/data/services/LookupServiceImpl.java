@@ -53,10 +53,14 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
-    public List<LookupItem> getLiabilityStatuses() {
+    public List<LookupItem> getLiabilityStatuses(boolean withNull) {
         List<LookupItem> items = new ArrayList<LookupItem>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
-            items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
+            if (!withNull && s.getLiablityValue() == 0) continue;
+            else if (withNull && s.getLiablityValue() == 0)
+                items.add(new LookupItem("(Not Specified)", Integer.toString(s.getLiablityValue())));
+            else
+                items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
         }
         return items;
     }

@@ -178,8 +178,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
     
     public List<LookupItem> getLiabilityStatusesAsLookupItem() {
+        return getLiabilityStatusesAsLookupItem(false);
+    }
+    
+    public List<LookupItem> getLiabilityStatusesAsLookupItem(boolean withNull) {
         if (liabilityStatusesLookupItem == null) {
-            liabilityStatusesLookupItem = this.lookupService.getLiabilityStatuses();
+            liabilityStatusesLookupItem = this.lookupService.getLiabilityStatuses(withNull);
         }
         return liabilityStatusesLookupItem;
     }
@@ -211,7 +215,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getLiabilityStatusesJsonString() {
-        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem()).toString();
+        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem(false)).toString();
+        return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + liabilityStatusesJson + "}";
+    }
+
+    public String getLiabilityStatusesJsonStringWithNull() {
+        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatusesAsLookupItem(true)).toString();
         return "{totalCount:" + liabilityStatusesLookupItem.size() + ", results:" + liabilityStatusesJson + "}";
     }
 

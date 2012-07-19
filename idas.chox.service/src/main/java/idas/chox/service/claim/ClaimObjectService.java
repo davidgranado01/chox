@@ -26,11 +26,13 @@ public class ClaimObjectService {
      * @return the dropDownList
      */
 
-    public Map getLiabilityStatusMap() {
+    public Map getLiabilityStatusMap(boolean withNulls) {
         if (dropDownMap == null) {
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
-            for (int i = 0; i < arr.length; i++) {
+            int start = 1;
+            if (withNulls) start=0;
+            for (int i = start; i < arr.length; i++) {
                 dropDownMap.put(arr[i].getLiablityValue(), arr[i]);
             }
         }
