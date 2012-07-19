@@ -90,8 +90,6 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
         invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
-//        invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
-//        invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getDateFromNode(element, "date-invoiced"));
@@ -127,13 +125,6 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalLossFeeNet(BigDecimal.ZERO);
         invoice.setTotalLossFeeVat(BigDecimal.ZERO);
         invoice.setAutoPenaltyStart(new Date());
-
-        claimResult.getClaim().setInvoice(invoice);
-        getBordereauReaderContext().getClaimService().updateLiabilityPayment(claimResult.getClaim());
-        // Now remove from invoice. This is necessary as some of the invoice sub-sections may not be valid.
-        // We'll therefore store the invoice in the claimResult for now and add it back into the claim
-        // once all subsections have been validated (and before the activity processing)
-        claimResult.getClaim().setInvoice(null);
 
         claimResult.setInvoice(invoice);
     }
