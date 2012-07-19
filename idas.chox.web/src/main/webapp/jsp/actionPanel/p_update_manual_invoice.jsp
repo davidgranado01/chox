@@ -60,7 +60,7 @@ Ext.onReady(function(){
 	                }
 	            },select : function () {
                     validateComboBox()
-                },
+                }
 	            
 	        }
 	    });
