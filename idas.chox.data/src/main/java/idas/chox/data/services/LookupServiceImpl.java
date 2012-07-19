@@ -58,7 +58,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         for (LiabilityStatus s : LiabilityStatus.values()) {
             if (!withNull && s.getLiablityValue() == 0) continue;
             else if (withNull && s.getLiablityValue() == 0)
-                items.add(new LookupItem("(Not Specified)", Integer.toString(s.getLiablityValue())));
+                items.add(new LookupItem("<i>(Not Specified)</i>", Integer.toString(s.getLiablityValue())));
             else
                 items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
         }

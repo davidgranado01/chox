@@ -223,7 +223,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Map getLiabilityStatusDropDownMap() {
-        return claimObjectService.getLiabilityStatusMap(false);
+        if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL)
+            return claimObjectService.getLiabilityStatusMap(false);
+        return claimObjectService.getLiabilityStatusMap(true);
     }
 
     public String getHirePenaltyPercentage() {
