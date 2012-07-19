@@ -18,41 +18,50 @@ import idas.chox.core.model.LiabilityStatus;
  */
 public class ClaimObjectService {
 
-    private Map dropDownMap;
-    private Map dropDownMapSearch;
+    private Map<Integer,String> dropDownMapWithNulls;
+    private Map<Integer,String> dropDownMap;
+//    private Map dropDownMapSearch;
     private static final Logger LOG = LoggerFactory.getLogger(ClaimObjectService.class);
 
     /**
      * @return the dropDownList
      */
 
-    public Map getLiabilityStatusMap(boolean withNulls) {
-        if (dropDownMap == null) {
+    public Map<Integer,String> getLiabilityStatusMap(boolean withNulls) {
+        if (!withNulls && dropDownMap == null) {
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
-            int start = 1;
-            if (withNulls) start=0;
-            for (int i = start; i < arr.length; i++) {
-                dropDownMap.put(arr[i].getLiablityValue(), arr[i]);
+            for (int i = 1; i < arr.length; i++) {
+                dropDownMap.put(arr[i].getLiablityValue(), arr[i].toString());
             }
         }
-        return dropDownMap;
+        else if (withNulls && dropDownMapWithNulls == null) {
+            dropDownMapWithNulls = new HashMap();
+            LiabilityStatus[] arr = LiabilityStatus.values();
+            for (int i = 0; i < arr.length; i++) {
+                if (i==0)
+                    dropDownMapWithNulls.put(arr[i].getLiablityValue(), "-- Please Select --");
+                else
+                    dropDownMapWithNulls.put(arr[i].getLiablityValue(), arr[i].toString());
+            }
+        }
+        return withNulls ? dropDownMapWithNulls: dropDownMap ;
     }
 
     /**
      * @return the dropDownList
      */
 
-    public Map getLiabilityStatusSearchMap() {
-        if (dropDownMapSearch == null) {
-            dropDownMapSearch = new HashMap();
-            LiabilityStatus[] arr = LiabilityStatus.values();
-            for (int i = 1; i < arr.length; i++) {
-                dropDownMapSearch.put(arr[i].getLiablityValue(), arr[i]);
-            }
-        }
-        return dropDownMapSearch;
-    }
+//    public Map getLiabilityStatusSearchMap() {
+//        if (dropDownMapSearch == null) {
+//            dropDownMapSearch = new HashMap();
+//            LiabilityStatus[] arr = LiabilityStatus.values();
+//            for (int i = 1; i < arr.length; i++) {
+//                dropDownMapSearch.put(arr[i].getLiablityValue(), arr[i]);
+//            }
+//        }
+//        return dropDownMapSearch;
+//    }
 
     public Claim cloneClaimForSupplementaryInvoice(Claim claim) {
 
