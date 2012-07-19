@@ -875,7 +875,8 @@ FROM
 WHERE 
      c.invoice_id = invoice.id
      AND invoice.total_to_pay > 0 
-     AND c.liability_status = 4; 
+     AND c.liability_status = 4
+     AND c.claim_type NOT IN (4,5,6);
 
 ----------------------
 --- End of BUG#1859 --
