@@ -484,10 +484,11 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             LOG.debug("full total to pay before insurer discount is {}.", inv.getFullTotalToPay());
             LOG.debug("insurer discount original {}.", inv.getInsurerDiscount());
             inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getInsurerDiscount()).subtract(insurerDiscountAmount));
-            claimService.updateLiabilityPayment(claim);
             LOG.debug("total to pay after insurer discount applied {}.", inv.getFullTotalToPay());
             inv.setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
         }
+        // update total to pay regardless of insurer discounts enabled. 
+        claimService.updateLiabilityPayment(claim);
     }
     
     @Override

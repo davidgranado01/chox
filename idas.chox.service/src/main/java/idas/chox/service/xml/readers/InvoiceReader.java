@@ -101,6 +101,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGrossInsurerDiscount(BigDecimal.ZERO);
         invoice.setHireGrossInsurerDiscount(BigDecimal.ZERO);
         invoice.setRepairGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setTotalToPay(BigDecimal.ZERO);
 
         // PRE-DEFINED
         invoice.setHireGross(BigDecimal.ZERO);
