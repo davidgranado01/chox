@@ -1,9 +1,11 @@
-package idas.chox.web;
+package idas.chox.data;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 
 public class ExcelClaim {
@@ -77,7 +79,7 @@ public class ExcelClaim {
     private String claimThirdPartyPolicyNumber;
     private String claimThirdPartyVehicleManufacturer;
     private String claimThirdPartyVehicleModel;
-    private String claimthirdPartyVehicleRegistration;
+    private String claimThirdPartyVehicleRegistration;
     private String claimThirdPartyVehicleClassName;
     private String claimCustomerDamage;
     private String claimCustomerIsUsable;
@@ -164,10 +166,189 @@ public class ExcelClaim {
     private String claimHireMonitoringDetailNonProvisionReason;
     private Date claimHireMonitoringDetailNextReviewDate;
 
+    public ExcelClaim(Map data) {
+        claimStatus = (String) data.get("status");
+        claimType = (ClaimType.values()[ (Integer)data.get("claim_type")]).toString();
+        claimChoReference = (String) data.get("cho_reference");
+        claimChorganisationName = (String) data.get("chorg_name");
+        claimWorkgroupName= (String) data.get("workgroup_name");
+        claimStatusModifiedDate = (Date) data.get("status_modified_date");
+        claimIdemnity = (BigDecimal) data.get("indeminty_amount");
+        claimLiabilityStatus = (LiabilityStatus.values()[ (Integer)data.get("liability_status")]).toString();
+        claimPercentageLiabilityAccepted = (BigDecimal) data.get("percentage_liability_accepted");
+        claimPercentageLiabilityCho = (BigDecimal) data.get("percentage_liability_cho");
+        claimManagingRepair = ((Boolean) data.get("managing_repair")) ? "Yes" : "No";
+        claimPolicyHolderContactDate = (Date) data.get("policy_holder_contact_date");
+        claimCreditAgreementDate = (Date) data.get("credit_agreement_date");
+        claimGtaNoticeDate = (Date) data.get("gta_notice_date");
+        claimClaimNumber = (String) data.get("claim_number");
+        claimClaimOwnerDisplayName = (String) data.get("claim_owner");
+        claimCustomerTitle = (String) data.get("customer_title");
+        claimCustomerFirstName = (String) data.get("customer_first_name");
+        claimCustomerLastName = (String) data.get("customer_last_name");
+        claimCustomerAddress1 = (String) data.get("customer_address1");
+        claimCustomerAddress2 = (String) data.get("customer_address2");
+        claimCustomerAddress3 = (String) data.get("customer_address3");
+        claimCustomerAddress4 = (String) data.get("customer_address4");
+        claimCustomerAddress5 = (String) data.get("customer_address5");
+        claimCustomerPostcode = (String) data.get("customer_postcode");
+        claimCustomerTelephoneDay = (String) data.get("customer_telephone_day");
+        claimCustomerTelephoneEvening = (String) data.get("customer_telephone_evening");
+        claimCustomerEmail = (String) data.get("customer_email");
+        claimCustomerInsurerName = (String) data.get("customer_insurer_name");
+        claimCustomerPolicyNumber = (String) data.get("customer_policy_number");
+        claimCustomerClaimReference = (String) data.get("customer_claim_reference");
+        claimCustomerComprehensive = ((Boolean) data.get("customer_comprehensive")) ? "Yes" : "No";
+        claimCustomerVehicleManufacturer = (String) data.get("customer_vehicle_manufacturer");
+        claimCustomerVehicleModel = (String) data.get("customer_vehicle_model");
+        claimCustomerVehicleRegistration = (String) data.get("customer_vehicle_registration");
+        claimCustomerVehicleYear = (String) data.get("customer_vehicle_year");
+        claimCustomerVehicleClassName = (String) data.get("customer_vehicle_class");
+        claimCustomerLocation = (String) data.get("customer_location");
+        claimCustomerHpiVehicleManufacturer = (String) data.get("customer_hpi_vehicle_manufacturer");
+        claimCustomerHpiVehicleModel = (String) data.get("customer_hpi_vehicle_model");
+        claimCustomerHpiVehicleYear = (String) data.get("customer_hpi_vehicle_year");
+        claimCustomerHpiFirstRegistration = (Date) data.get("customer_hpi_vehicle_first_registration");
+        claimCustomerHpiVehicleCapacity = (String) data.get("customer_hpi_vehicle_capacity");
+        claimCustomerHpiVehicleDoorplan = (String) data.get("customer_hpi_vehicle_doorplan");
+        claimCustomerHpiVehicleTransmission = (String) data.get("customer_hpi_vehicle_transmission");
+        claimCustomerCanAccessOtherVehicleDesc = ((Boolean) data.get("customer_access_other_vehicle")) ? "Yes" : "No";
+        claimCustomerOtherVehicleUsedDesc = ((Boolean) data.get("customer_other_vehicle_used")) ? "Yes" : "No";
+        claimCustomerOtherVehicle = (String) data.get("customer_other_vehicle");
+        claimCustomerCourtesyCarEntitledDesc = ((Boolean) data.get("customer_courtesy_car")) ? "Yes" : "No";
+        claimCustomerSpecificVehicleRequiredDesc = ((Boolean) data.get("customer_specific_vehicle")) ? "Yes" : "No";
+        claimCustomerSpecificVehicleReason = (String) data.get("customer_specific_vehicle_reason");
+        claimCustomerTypeVehicleRequired = (String) data.get("customer_vehicle_type_required");
+        claimCustomerSpecialRequirements = (String) data.get("customer_special_requirements");
+        claimCustomerAverageDailyMileage = (String) data.get("customer_average_daily_mileage");
+        claimCustomerDamage = (String) data.get("customer_damage");
+        claimCustomerIsUsable = ((Boolean) data.get("customer_is_usable")) ? "Yes" : "No";
+        claimCustomerIsTotalLoss = ((Boolean) data.get("customer_is_total_loss")) ? "Yes" : "No";
+        claimCustomerInitialECD = (Date) data.get("customer_initial_ecd");
+        claimThirdPartyTitle = (String) data.get("tp_title");
+        claimThirdPartyFirstName = (String) data.get("tp_first_name");
+        claimThirdPartyLastName = (String) data.get("tp_last_name");
+        claimThirdPartyAddress1 = (String) data.get("tp_address1");
+        claimThirdPartyAddress2 = (String) data.get("tp_address2");
+        claimThirdPartyAddress3 = (String) data.get("tp_address3");
+        claimThirdPartyAddress4 = (String) data.get("tp_address4");
+        claimThirdPartyAddress5 = (String) data.get("tp_address5");
+        claimThirdPartyPostcode = (String) data.get("tp_postcode");
+        claimThirdPartyTelephoneDay = (String) data.get("tp_telephone_day");
+        claimThirdPartyTelephoneEvening = (String) data.get("tp_telephone_evening");
+        claimThirdPartyEmail = (String) data.get("tp_email");
+        claimThirdPartyInsurerName = (String) data.get("tp_insurer_name");
+        claimThirdPartyPolicyNumber = (String) data.get("tp_policy_number");
+        claimThirdPartyVehicleManufacturer = (String) data.get("tp_vehicle_manufacturer");
+        claimThirdPartyVehicleModel = (String) data.get("tp_vehicle_model");
+        claimThirdPartyVehicleRegistration = (String) data.get("tp_vehicle_registration");
+        claimThirdPartyVehicleClassName = (String) data.get("tp_vehicle_class");
+        claimIncidentDate = (Date) data.get("incident_date");
+        claimIncidentLocation = (String) data.get("incident_location");
+        claimIncidentIsPoliceInvolved = ((Boolean) data.get("incident_is_police_involved")) ? "Yes" : "No";
+        claimIncidentIncidentDescription = (String) data.get("incident_description");
+        claimWitnessName = (String) data.get("witness_name");
+        claimWitnessAddress1 = (String) data.get("witness_address1");
+        claimWitnessAddress2 = (String) data.get("witness_address2");
+        claimWitnessAddress3 = (String) data.get("witness_address3");
+        claimWitnessAddress4 = (String) data.get("witness_address4");
+        claimWitnessAddress5 = (String) data.get("witness_address5");
+        claimWitnessPostcode = (String) data.get("witness_postcode");
+        claimWitnessTelephoneDay = (String) data.get("witness_telephone_day");
+        claimWitnessTelephoneEvening = (String) data.get("witness_telephone_evening");
+        claimWitnessEmail = (String) data.get("witness_email");
+        claimInjuryName = (String) data.get("injury_name");
+        claimInjuryAddress1 = (String) data.get("injury_address1");
+        claimInjuryAddress2 = (String) data.get("injury_address2");
+        claimInjuryAddress3 = (String) data.get("injury_address3");
+        claimInjuryAddress4 = (String) data.get("injury_address4");
+        claimInjuryAddress5 = (String) data.get("injury_address5");
+        claimInjuryPostcode = (String) data.get("injury_postcode");
+        claimInjuryTelephoneDay = (String) data.get("injury_evening_day");
+        claimInjuryTelephoneEvening = (String) data.get("injury_telephone_evening");
+        claimInjuryEmail = (String) data.get("injury_email");
+        claimSolicitorName = (String) data.get("injury_solicitor_name");
+        claimSolicitorAddress1 = (String) data.get("injury_solicitor_address1");
+        claimSolicitorAddress2 = (String) data.get("injury_solicitor_address2");
+        claimSolicitorAddress3 = (String) data.get("injury_solicitor_address3");
+        claimSolicitorAddress4 = (String) data.get("injury_solicitor_address4");
+        claimSolicitorAddress5 = (String) data.get("injury_solicitor_address5");
+        claimSolicitorPostcode = (String) data.get("injury_solicitor_postcode");
+        claimSolicitorTelephone = (String) data.get("injury_solicitor_telephone");
+        claimSolicitorEmail = (String) data.get("injury_solicitor_email");
+        claimEngineerReportLabourAmount = (BigDecimal) data.get("er_labour_amount");
+        claimEngineerReportRepairAmount = (BigDecimal) data.get("er_repair_amount");
+        claimEngineerReportDays = (Integer) data.get("er_days");
+        claimEngineerReportIsUsable = ((Boolean) data.get("er_is_usable")) ? "Yes" : "No";
+        claimEngineerReportName = (String) data.get("er_name");
+        claimEngineerReportCompany = (String) data.get("er_company");
+        claimEngineerReportAddress1 = (String) data.get("er_address1");
+        claimEngineerReportAddress2 = (String) data.get("er_address2");
+        claimEngineerReportAddress3 = (String) data.get("er_address3");
+        claimEngineerReportAddress4 = (String) data.get("er_address4");
+        claimEngineerReportAddress5 = (String) data.get("er_address5");
+        claimEngineerReportPostcode = (String) data.get("er_postcode");
+        claimEngineerReportTelephone = (String) data.get("er_telephone");
+        claimEngineerReportEmail = (String) data.get("er_email");
+        claimVehicleHireVehicleManufacturer = (String) data.get("vh_vehicle_manufacturer");
+        claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
+        claimVehicleHireVehicleRegistration = (String) data.get("vh_vehicle_registration");
+        claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
+        claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
+        claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
+        claimVehicleHireDays = (Integer) data.get("vh_days");
+        claimVehicleHireCollectionReason = (String) data.get("vh_collection_reason");
+        claimVehicleHireHpiVehicleManufacturer = (String) data.get("vh_hpi_vehicle_manufacturer");
+        claimVehicleHireHpiVehicleModel = (String) data.get("vh_hpi_vehicle_model");
+        claimVehicleHireHpiVehicleYear = (String) data.get("vh_hpi_vehicle_year");
+        claimVehicleHireHpiFirstRegistration = (Date) data.get("vh_hpi_vehicle_registration");
+        claimVehicleHireHpiVehicleCapacity = (String) data.get("vh_hpi_vehicle_capacity");
+        claimVehicleHireHpiVehicleDoorplan = (String) data.get("vh_hpi_vehicle_doorplan");
+        claimVehicleHireHpiVehicleTransmission = (String) data.get("vh_hpi_vehicle_transmission");
+        claimHireMonitoringDetailNameOfRepairer = (String) data.get("hmd_name_of_repairer");
+        claimHireMonitoringDetailRepairBookInDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailRepairAuthorisedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailRepairCommencedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailInspectionBookedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailInspectionDate = (Date) data.get("hmd_ hmd_");
+        claimHireMonitoringDetailNameOfIme = (String) data.get("");
+        claimHireMonitoringDetailRepairCompletionDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailIsTotalLostCheck = ((Boolean) data.get("hmd_")) ? "Yes" : "No";
+        claimHireMonitoringDetailTotalLossOfferMadeDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailTotalLossOfferAcceptedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailTotalLossOfferCheckIssuedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailTotalLossOfferCheckReceivedDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailLabourRate = (BigDecimal) data.get("hmd_");
+        claimHireMonitoringDetailLabourHour = (BigDecimal) data.get("hmd_");
+        claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_");
+        claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_");
+        claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_");
+        claimHireMonitoringDetailNameOfRepairer = (String) data.get("hmd_name_of_repairer");
+        claimHireMonitoringDetailRepairBookInDate = (Date) data.get("hmd_repair_book_in_date");
+        claimHireMonitoringDetailRepairAuthorisedDate = (Date) data.get("hmd_repair_authorised_date");
+        claimHireMonitoringDetailRepairCommencedDate = (Date) data.get("hmd_repair_commenced_date");
+        claimHireMonitoringDetailInspectionBookedDate = (Date) data.get("hmd_inspection_booked_date");
+        claimHireMonitoringDetailInspectionDate = (Date) data.get("hmd_inspection_date");
+        claimHireMonitoringDetailNameOfIme = (String) data.get("hmd_name_of_ime");
+        claimHireMonitoringDetailRepairCompletionDate = (Date) data.get("hmd_repair_completion_date");
+        claimHireMonitoringDetailIsTotalLostCheck = ((Boolean)data.get("hmd_is_total_lost_check")) ? "Yes" : "No";
+        claimHireMonitoringDetailTotalLossOfferMadeDate = (Date) data.get("hmd_total_loss_offer_made");
+        claimHireMonitoringDetailTotalLossOfferAcceptedDate = (Date) data.get("hmd_total_loss_offer_accepted");
+        claimHireMonitoringDetailTotalLossOfferCheckIssuedDate = (Date) data.get("hmd_total_loss_check_issued");
+        claimHireMonitoringDetailTotalLossOfferCheckReceivedDate = (Date) data.get("hmd_total_loss_check_received");
+        claimHireMonitoringDetailLabourRate = (BigDecimal) data.get("hmd_labour_rate");
+        claimHireMonitoringDetailLabourHour = (BigDecimal) data.get("hmd_labour_hour");
+        claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_labour_cost");
+        claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_non_provision_reason");
+        claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_next_review_date");
+    }
 
 
 
-    public void setClaim(Claim claim) {
+    /*
+     * No longer used
+     */
+    private void setClaim(Claim claim) {
         this.claimStatus = claim.getStatus();
         this.claimType = claim.getClaimType().toString();
         this.claimChoReference = claim.getChoReference();
@@ -310,7 +491,7 @@ public class ExcelClaim {
             this.claimThirdPartyPolicyNumber = claim.getThirdParty().getPolicyNumber();
             this.claimThirdPartyVehicleManufacturer = claim.getThirdParty().getVehicleManufacturer();
             this.claimThirdPartyVehicleModel = claim.getThirdParty().getVehicleModel();
-            this.claimthirdPartyVehicleRegistration = claim.getThirdParty().getVehicleRegistration();
+            this.claimThirdPartyVehicleRegistration = claim.getThirdParty().getVehicleRegistration();
             if (claim.getThirdParty().getVehicleClass() != null)
                 this.claimThirdPartyVehicleClassName = claim.getThirdParty().getVehicleClass().getName();
             else
@@ -333,7 +514,7 @@ public class ExcelClaim {
             this.claimThirdPartyPolicyNumber = "";
             this.claimThirdPartyVehicleManufacturer = "";
             this.claimThirdPartyVehicleModel = "";
-            this.claimthirdPartyVehicleRegistration = "";
+            this.claimThirdPartyVehicleRegistration = "";
             this.claimThirdPartyVehicleClassName = "";
         }
         if (claim.getIncident() != null) {
@@ -1192,7 +1373,7 @@ public class ExcelClaim {
         return claimWorkgroupName;
     }
 
-    public String getClaimthirdPartyVehicleRegistration() {
-        return claimthirdPartyVehicleRegistration;
+    public String getClaimThirdPartyVehicleRegistration() {
+        return claimThirdPartyVehicleRegistration;
     }
 }

@@ -1,4 +1,4 @@
-package idas.chox.web;
+package idas.chox.data;
 
 import idas.chox.core.model.Invoice;
 

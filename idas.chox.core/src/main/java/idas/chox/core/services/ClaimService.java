@@ -10,6 +10,12 @@ public interface ClaimService extends DataService {
 
     public Claim getClaim(int id);
 
+    public List getExcelClaims(List<Integer> ids);
+    public List getExcelInvoices(List<Integer> ids);
+    public List getExcelComments(List<Integer> ids);
+    public List getExcelHistory(List<Integer> ids);
+    public List getExcelClaimCycle(List<Integer> ids);
+
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
 
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
