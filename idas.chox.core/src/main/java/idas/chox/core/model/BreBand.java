@@ -223,7 +223,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     }
 
     public int getEngineerInspectionDelayDaysNonMobile() {
-        return engineerInspectionDelayDaysMobile;
+        return engineerInspectionDelayDaysNonMobile;
     }
 
     public void setEngineerInspectionDelayDaysNonMobile(int engineerInspectionDelayDaysNonMobile) {

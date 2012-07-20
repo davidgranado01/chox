@@ -221,7 +221,14 @@ fieldset div
     width: 170px;
     background-color:#e4e4e4;
 }
-.chox-ttxt-readonly-EngineerInspectionDelayVariable
+.chox-ttxt-readonly-EngineerInspectionDelayVariableMobile
+{
+    border: 1px solid #B5B8C8;
+    padding: 1px 3px;
+    width: 170px;
+    background-color:#e4e4e4;
+}
+.chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile
 {
     border: 1px solid #B5B8C8;
     padding: 1px 3px;

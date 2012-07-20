@@ -443,10 +443,10 @@
                         <div class="section-name">Labour Cost/hours</div>
                         <div class="status-info">
                             <b>Labour Cost Calculation:</b><br/>
-                            (((Labour Cost/Current Average Labour Rate Per Hour)/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle to Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
+                            (((Labour Cost/Current Average Labour Rate Per Hour)/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle to Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Mobile or Non-Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
                             <br/><br/>
                             <b>Labour Hours Calculation:</b><br/>
-                            ((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
+                            ((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Mobile or Non-Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
@@ -569,7 +569,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
@@ -593,7 +593,7 @@
 
                         <div class="status-info">
                             <b>Engineer Estimation Rule:</b><br/>
-                            Mobile Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Mobile or Non-Mobile Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
 
                         <div class="chox-form-item">
@@ -607,6 +607,10 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
                             <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
