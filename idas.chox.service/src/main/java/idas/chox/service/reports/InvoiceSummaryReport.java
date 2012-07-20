@@ -451,7 +451,7 @@ public class InvoiceSummaryReport implements Report {
             
             
             
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id "); 
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice invoice where insurer_id = insurer_chorganisation.insurer_id "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
@@ -461,7 +461,7 @@ public class InvoiceSummaryReport implements Report {
             
             
             
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id "); 
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice invoice where insurer_id = insurer_chorganisation.insurer_id "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
@@ -471,7 +471,7 @@ public class InvoiceSummaryReport implements Report {
             
             
             
-            sb.append("(select case when sum(total_penalty_charge) is null then 0.00 else sum(total_penalty_charge) end as no_sum from rpt_claim_invoice ")
+            sb.append("(select case when sum(total_penalty_charge) is null then 0.00 else sum(total_penalty_charge) end as no_sum from rpt_claim_invoice invoice ")
               .append( "where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id "); 
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
