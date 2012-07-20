@@ -1173,7 +1173,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Invoice invoice = claim.getInvoice();
         ClaimType claimType = claim.getClaimType();
         if (invoice != null) {
-            if (!claim.getClaimType().isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
@@ -1253,10 +1253,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 && claim.getVehicleHire().getVehicleRegistration().length() > 0
                 && !claim.getVehicleHire().getVehicleRegistration().equals("NK1")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN);
+                                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+                                .createAlias("this.customer", "cust", CriteriaSpecification.LEFT_JOIN);
 
             criteria.add(Restrictions.ne("id", claim.getId()));
-            criteria.add(Restrictions.ne("customer.claimReference", claim.getCustomer().getClaimReference()));
+            criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
             criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
