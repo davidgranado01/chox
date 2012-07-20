@@ -20,6 +20,7 @@ import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+
 public class InvoiceSummaryReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceSummaryReport.class);
@@ -456,7 +457,7 @@ public class InvoiceSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and chorganisation_id = insurer_chorganisation.chorganisation_id and date_trunc('day', created_date) between :pInvUploadDateFrom and :pInvUploadDateTo ")
-              .append( "and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as noOfInvoicesClosed,");
+              .append( "and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id=invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as noOfInvoicesClosed,");
             
             
             
@@ -466,7 +467,7 @@ public class InvoiceSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and chorganisation_id = insurer_chorganisation.chorganisation_id and date_trunc('day', created_date) between :pInvUploadDateFrom ")
-              .append( "and :pInvUploadDateTo and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as valueOfInvoicesClosed,");
+              .append( "and :pInvUploadDateTo and status = 'ClaimClosed' and not exists (select * from audit_trail a where a.claim_id=invoice.claim_id and a.reverted=false and a.new_status='InvoicePaymentLogged')) as valueOfInvoicesClosed,");
             
             
             
