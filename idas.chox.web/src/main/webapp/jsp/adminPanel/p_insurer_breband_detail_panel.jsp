@@ -79,11 +79,11 @@
 
         // C11 - Engineer Inspection Delay Variable (Days)
         var iCCDEngineerInspectionDelayDaysMobile = $("#CCDEngineerInspectionDelayDaysMobile").val();
-        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDaysMobile);
+        $(".chox-ttxt-readonly-EngineerInspectionDelayVariableMobile").val(iCCDEngineerInspectionDelayDaysMobile);
 
         // C11 - Engineer Inspection Delay Variable (Days)
         var iCCDEngineerInspectionDelayDaysNonMobile = $("#CCDEngineerInspectionDelayDaysNonMobile").val();
-        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDaysNonMobile);
+        $(".chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile").val(iCCDEngineerInspectionDelayDaysNonMobile);
 
         // C12 - Collection of Vehicle from garage Variable (Days)
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
@@ -486,15 +486,15 @@
 
                         <div class="status-info">
                             <b>Repair Duration Calculation:</b><br/>
-                            ECD + Take Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            ECD + Take Mobile Vehicle To Garage Variable + Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
                             <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                            <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
@@ -506,7 +506,7 @@
 
                         <div class="status-info">
                             <b>ECD Calculation:</b><br/>
-                            Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                             <br/><br/>
                             Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
                         </div>
@@ -519,8 +519,8 @@
                             <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                            <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
@@ -539,11 +539,11 @@
                         <div class="section-name">Repair Duration Rule for Non-Mobile Vehicle with ECD</div>
                         <div class="status-info">
                             <b>Repair Duration Calculation:</b><br/>
-                            ECD + Take Non-Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            ECD + Take Non-Mobile Vehicle To Garage Variable + Non-Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                            <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
@@ -559,7 +559,7 @@
 
                         <div class="status-info">
                             <b>ECD Calculation:</b><br/>
-                            Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Non-Mobile Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                             <br/><br/>
                             Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
                         </div>
@@ -568,7 +568,7 @@
                             <input type="text" class="chox-ttxt" id="CCDIsNotMobileDayAllowance" name="isNotMobileDayAllowance" value="<s:property value="isNotMobileDayAllowance" />" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
                             <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
@@ -593,7 +593,7 @@
 
                         <div class="status-info">
                             <b>Engineer Estimation Rule:</b><br/>
-                            Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Mobile Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
 
                         <div class="chox-form-item">
@@ -605,8 +605,8 @@
                             <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                            <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
