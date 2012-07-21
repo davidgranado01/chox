@@ -2032,8 +2032,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else {
                 LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
             }
-            invoiceService.applyInsurerDiscounts(claim, null, false);
-
         }
 
         return SUCCESS;
