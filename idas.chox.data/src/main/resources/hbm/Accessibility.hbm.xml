@@ -16,6 +16,8 @@
         <property column="check_supplier_ownership" name="checkSupplierClaimOwnershipEnabled"/>
         <property column="check_fnol_enabled" name="checkFnolEnabled"/>
         <property column="check_engineer_enabled" name="checkEngineerEnabled"/>
+        <property column="check_manual_inv_workgroup_enabled" name="checkManualInvoiceWrokgroupEnabled"/>
+        <property column="check_manual_inv_claimownership_enabled" name="checkManualInvoiceClaimOwnershipEnabled"/>
         <set lazy="extra" name="AccessibilityItem">
             <key column="accessibility_id"/>
             <one-to-many class="idas.chox.core.model.AccessibilityItem"/>

@@ -594,6 +594,13 @@ public class ApplicationAccessibility {
             if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
                 accessRight = 0;
             }
+            if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                accessRight = 0;
+            }
+            if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && !claim.getInsurer().isEnableManualInvoiceOwnership()) {
+                accessRight = 0;
+            }
+
             if (accessRight >= 2) {
                 LOG.debug("Before editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
@@ -635,6 +642,13 @@ public class ApplicationAccessibility {
                 if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && user.isCHO() && !user.getChorganisation().isClaimOwnershipEnable()) {
                     accessRight = 0;
                 }
+                if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && !user.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                    accessRight = 0;
+                }
+                if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && !user.getInsurer().isEnableManualInvoiceOwnership()) {
+                    accessRight = 0;
+                }
+
                 roleMap.put(aItem.getRole().trim(), accessRight);
             }
 

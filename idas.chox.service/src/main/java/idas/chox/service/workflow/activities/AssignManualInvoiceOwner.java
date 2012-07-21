@@ -1,35 +1,37 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class AssignManualInvoiceOwner extends BaseActivity {
 
-    private int manualInvoiceWorkgroupId;
+    private int oasWorkgroupId;
     private int claimOwnerId;
     private WebUser claimOwner;
     private Workgroup workgroup;
     private boolean workgroupsEnabled;
     private boolean ownershipEnabled;
-
+    private int workgroupId;
+    
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         workgroupsEnabled = claim.getInsurer().isEnableManualInvoiceWorkgroups();
         ownershipEnabled = claim.getInsurer().isEnableManualInvoiceOwnership();
 
-        if (workgroupsEnabled && manualInvoiceWorkgroupId <= 0) {
-            throw new Exception("Invalid workgroup id. workgroupId : " + manualInvoiceWorkgroupId);
+        if (workgroupsEnabled && oasWorkgroupId <= 0) {
+            throw new Exception("Invalid workgroup id. workgroupId : " + oasWorkgroupId);
         } else if (workgroupsEnabled) {
-            workgroup = (Workgroup) getDataService().get(Workgroup.class, manualInvoiceWorkgroupId);
+            workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
                 throw new Exception("Invalid workgroup id. workgroup is null.");
             }
@@ -41,7 +43,7 @@ public class AssignManualInvoiceOwner extends BaseActivity {
 
         if (ownershipEnabled && claimOwnerId <= 0) {
             throw new Exception("Invalid user id. id : " + claimOwnerId);
-        } else if (ownershipEnabled){
+        } else if (ownershipEnabled) {
             claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
             if (claimOwner == null) {
                 throw new Exception("Invalid user id. claimOwner is null");
@@ -62,18 +64,39 @@ public class AssignManualInvoiceOwner extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        boolean updateOnly = false;
+        
+        if (!claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)) {
+            updateOnly = true;
+        }
+        
+        WebUser oldClaimOwner = null;
+        String oldClaimOwnerName = "-";
+        if (claim.getClaimOwner() != null) {
+            oldClaimOwner = claim.getClaimOwner();
+            oldClaimOwnerName = oldClaimOwner.getFullName();
+        }
+
         if (ownershipEnabled) {
             claim.setClaimOwner(claimOwner);
         }
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
         }
-        if(claim.isManualInvoiceApproved()){
-            claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-        } else {
-            claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+
+        if (!updateOnly) {
+            if (claim.isManualInvoiceApproved()) {
+                claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+            } else {
+                claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+            }
         }
-        if (ownershipEnabled && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+        
+        if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner) && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+            String noteMsg = "Insurer Claims Handler changed from '" + oldClaimOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").";
+            Comment comment = Comment.New(0, noteMsg);
+            claim.addComment(comment);
+        } else if (ownershipEnabled && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
             Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
         }
@@ -82,6 +105,10 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_PAID);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
     }
 
     public int getClaimOwnerId() {
@@ -97,14 +124,23 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     }
 
     public void setWorkgroupIdField(int workgroupIdField) {
-        this.manualInvoiceWorkgroupId = workgroupIdField;
+        this.oasWorkgroupId = workgroupIdField;
     }
 
-    public int getManualInvoiceWorkgroupId() {
-        return manualInvoiceWorkgroupId;
+    public int getOasWorkgroupId() {
+        return oasWorkgroupId;
     }
 
-    public void setManualInvoiceWorkgroupId(int manualInvoiceWorkgroupId) {
-        this.manualInvoiceWorkgroupId = manualInvoiceWorkgroupId;
+    public void setOasWorkgroupId(int oasWorkgroupId) {
+        this.oasWorkgroupId = oasWorkgroupId;
     }
+
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.oasWorkgroupId = workgroupId;
+    }
+    
 }

@@ -92,7 +92,7 @@ Ext.onReady(function(){
             renderTo: 'workgroupComboDiv',
             valueField: 'text',
             id: 'workgroupComboId',
-            hiddenName: 'manualInvoiceWorkgroupId',
+            hiddenName: 'oasWorkgroupId',
             displayField:'value',
             typeAhead: true,
             mode: 'local',

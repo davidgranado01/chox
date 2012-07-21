@@ -29,6 +29,10 @@
         var grid;
         var ds;
         var exportIntervelId;
+        var doClaimOwnerAction;
+        var doClaimRoutedAction;
+        var doInsurerClaimOwnerAction;
+        var manualInvoiceFilter;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -65,13 +69,14 @@
                 Ext.form.ComboBox.superclass.setValue.call(this, text);
                 this.value = v;
             }});
-        
+
         
             Ext.QuickTips.init();
             loadDataFromSession();
             setupGrid();
             setupTabPanels();
             grid.render('gridHolder');
+            updateManualInvoiceBatchUpdate(Ext.state.Manager.get("grid_filterName"));
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl);
@@ -245,6 +250,8 @@
             Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
             function executeFilterByOrg(filterName,gridTitle, orgId) {
+                
+                updateManualInvoiceBatchUpdate(filterName);
                 Ext.state.Manager.set("grid_isInboxShowHistory",true);
                 isInboxShowHistory = true;
                 Ext.state.Manager.set("grid_filterName",filterName);
@@ -253,7 +260,44 @@
                 doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
 
             }
+            
+            function updateManualInvoiceBatchUpdate(filterName) {
+            
+                // MANUAL INVOICE BATCH UPDATE LOGIC
 
+                if (filterName == 'ManualInvoiceContested' || filterName == 'ManualInvoiceBRERejected' || filterName == 'ManualInvoiceBREApproved' || filterName == 'ManualInvoicesToBeAssigned') {
+                   Ext.state.Manager.set("manualInvoiceFilter",true);
+                   if (filterName == 'ManualInvoicesToBeAssigned') {
+                        doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
+                        doClaimRoutedAction.setText('Route Claim(s)');
+                        doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
+                    } else {
+                        doClaimOwnerAction.setText('Update Claim(s) Workgroup And Claim Owner');
+                        doClaimRoutedAction.setText('Re-Route Claim(s)');
+                        doInsurerClaimOwnerAction.setText('Update Claim(s) Owner');
+                    }
+                    
+                    if (!(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))) {
+                        doClaimRoutedAction.setHidden(true);
+                    } else {
+                        doClaimRoutedAction.setHidden(false);
+                    }
+                    if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) && <s:property value="enableManualInvoiceOwnership"/>)) {
+                        doInsurerClaimOwnerAction.setHidden(true);
+                    } else {
+                        doInsurerClaimOwnerAction.setHidden(false);
+                    }
+                }else {
+                    Ext.state.Manager.set("manualInvoiceFilter",false);
+                    doClaimOwnerAction.setText('Assign Claim(s) Owner');
+                    doClaimRoutedAction.setText('Route Claim(s)'); 
+                    doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
+                    doClaimRoutedAction.setHidden(<s:property value="isCHO"/>);
+                    doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
+                }
+                // MANUAL INVOICE BATCH UPDATE CODE ENDS.
+            }
+            
             function refreshFilterPanel() {
                 var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
                 var param = {"filterOrgId":currentOrg};
@@ -391,9 +435,11 @@
                 Ext.state.Manager.set("search_grid_limit", 0);
                 isInboxShowHistory = false;
                 isSearchShowHistory = false;
+                manualInvoiceFilter = false;
         </s:if><s:else >
                 isInboxShowHistory = Ext.state.Manager.get("grid_isInboxShowHistory");
                 isSearchShowHistory = Ext.state.Manager.get("grid_isSearchShowHistory");
+                manualInvoiceFilter = Ext.state.Manager.get("manualInvoiceFilter");
         </s:else>
             }
 
@@ -412,9 +458,10 @@
 
                 /**** BATCH UPDATE - ROUTE CLAIM ********************************/
                 var claimRoutedSelectionDlg;
-                var doClaimRoutedAction = new Ext.Action({
+                doClaimRoutedAction = new Ext.Action({
                     text: 'Route Claim(s)',
                     hidden:<s:property value="isCHO"/>,
+//                             || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))),
                     handler: function(){
 
                         if(!claimRoutedSelectionDlg)
@@ -499,11 +546,15 @@
                                                 });
                                                 var idsParam = selectedIDs.join(",");
                                                 $('form#routeClaimForm input[name="selectedClaimIds"]').val(idsParam);
-
+                                                if (manualInvoiceFilter) {
+                                                    $('form#routeClaimForm input[name="name"]').val('assignManualInvoiceOwner');
+                                                } else {
+                                                    $('form#routeClaimForm input[name="name"]').val('assignWorkgroup');
+                                                }
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
-                                                        formData[1].value = workgroupCombo.getValue();
+                                                        formData[2].value = workgroupCombo.getValue();
                                                     },
                                                     success:function(){
                                                         sm2.clearSelections();
@@ -801,14 +852,14 @@
                     }
                 });
 
-                /**** BATCH UPDATE - ASSIGN CLAIM OWNER ********************************/
+                /**** BATCH UPDATE - ASSIGN CLAIM OWNER (both claimOwnership and workgroup should be enabled)******/
 
 
                 var claimOwnerSelectionDlg;
-                var doClaimOwnerAction = new Ext.Action({
-                    text: 'Assign Claim(s) Owner',
+                doClaimOwnerAction = new Ext.Action({
+                    text: 'Assign Claim(s) Workgroup And Claim Owner',
                     hidden: <s:property value="isCHO"/> 
-                        || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>),
+                        || !(<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>),
                     handler: function(){
 
                         if(!claimOwnerSelectionDlg)
@@ -952,18 +1003,20 @@
                                                 });
                                                 var idsParam = selectedIDs.join(",");
                                                 $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
-
+                                                if (manualInvoiceFilter) {
+                                                    $("#ownershipClaimFormNameId").val('assignManualInvoiceOwner');
+                                                } else {
+                                                    $("#ownershipClaimFormNameId").val('assignOwner');
+                                                }
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
                                                         if(isInsurerWorkgroupEnable) {
-                                                            formData[1].value = workgroupCombo.getValue();
-                                                            formData[2].value = claimOwnerCombo.getValue();
+                                                            formData[2].value = workgroupCombo.getValue();
+                                                            formData[3].value = claimOwnerCombo.getValue();
                                                         }
                                                         else {
-                                                            // This needs checking - could be [1] or [2] ?
-                                                            //                                                        console.log("Changing value (for claim owner) '" + formData[1].value + "' to :" + claimOwnerCombo.getValue());
-                                                            formData[1].value = claimOwnerCombo.getValue();
+                                                            formData[2].value = claimOwnerCombo.getValue();
                                                         }
                                                     },
                                                     success:function(){
@@ -1071,12 +1124,10 @@
 
 
                 var insurerClaimOwnerSelectionDlg;
-                var doInsurerClaimOwnerAction = new Ext.Action({
+                doInsurerClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Owner',
-                    hidden:(<s:property value="isCHO"/> 
-                        || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                        || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) 
-                        || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+                    hidden:<s:property value="isCHO"/> || (!manualInvoiceFilter && !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+//                                || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) && <s:property value="enableManualInvoiceOwnership"/>)),
                     handler: function(){
 
                         if(!insurerClaimOwnerSelectionDlg)
@@ -1101,9 +1152,10 @@
                             var claimOwnerCombo = new Ext.form.ComboBox({
                                 store : claimOwnerStore,
                                 width: 220,
-                                renderTo: 'claimOwnerClaimHandlerRoleUserDropDownDiv',
+                                renderTo: 'claimOwnerClaimHandlerRoleUserDropDownDiv1',
                                 valueField : 'id',
-                                id : 'claimOwnerId',
+                                id : 'claimOwnerId1',
+                                hiddenName : 'claimOwnerId',
                                 displayField :'name',
                                 typeAhead : true,
                                 forceSelection: true,
@@ -1121,7 +1173,7 @@
                             });
 
                             insurerClaimOwnerSelectionDlg =  new Ext.Window({
-                                applyTo:'claimOwnerSelectionDlgHolder',
+                                applyTo:'claimOwnerSelectionDlgHolder1',
                                 layout:'fit',
                                 width:410,
                                 height:280,
@@ -1131,26 +1183,30 @@
                                 title: 'Assign Claim(s) Owner',
                                 resizable : false,
                                 items: new Ext.Panel({
-                                    applyTo: 'claimOwnerSelectionPanel'
+                                    applyTo: 'claimOwnerSelectionPanel1'
                                 }),
                                 buttons: [{
                                         text:'Ok',
                                         handler:function(){
-                                            if(document.getElementById('claimOwnerId').value === "--- Please Select ---"){
+                                            if(document.getElementById('claimOwnerId1').value === "--- Please Select ---"){
                                                 Ext.Msg.alert("","please select Claim Owner");
-                                            }else if(document.getElementById('claimOwnerId').value!=''){
+                                            }else if(document.getElementById('claimOwnerId1').value!=''){
                                                 var selectedRecords =  sm2.getSelections();
                                                 var selectedIDs = $.map(selectedRecords, function(n){
                                                     return n.json.id;
                                                 });
                                                 var idsParam = selectedIDs.join(",");
-                                                $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
-
+                                                $('form#ownershipClaimForm1 input[name="selectedClaimIds"]').val(idsParam);
+                                                if (manualInvoiceFilter) {
+                                                    $("#ownershipClaimFormNameId1").val('assignManualInvoiceOwner');
+                                                } else {
+                                                    $("#ownershipClaimFormNameId1").val('assignOwner');
+                                                }
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
 
-                                                        formData[1].value = claimOwnerCombo.getValue();
+                                                        formData[2].value = claimOwnerCombo.getValue();
 
                                                     },
                                                     success:function(){
@@ -1162,7 +1218,7 @@
                                                     }
                                                 };
 
-                                                $("form#ownershipClaimForm").ajaxSubmit(submitOption);
+                                                $("form#ownershipClaimForm1").ajaxSubmit(submitOption);
                                             }
                                         }
                                     },{
@@ -1170,7 +1226,7 @@
                                         handler: function(){
                                             // hide the error message box, which could be displayed,
                                             // so that it doesn't appear when we're opened again
-                                            $("#ownershipClaimFormMessageBox").hide();
+                                            $("#ownershipClaimFormMessageBox1").hide();
                                             insurerClaimOwnerSelectionDlg.hide();
                                         }
                                     }]
@@ -1208,7 +1264,8 @@
 
                 var updateInsurerClaimOwnershipSelectionDlg;
                 var doUpdateInsurerClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Owner',
-                    hidden: (<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+                    hidden: (<s:property value="isCHO"/> 
+                        || !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
                     handler: function(){
 
                         if(!updateInsurerClaimOwnershipSelectionDlg)
@@ -1307,7 +1364,8 @@
 
                 var updateClaimOwnershipSelectionDlg;
                 var doUpdateClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Workgroup And Claim Owner',
-                    hidden: (<s:property value="isCHO"/> || (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>) || (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+                    hidden: (<s:property value="isCHO"/> 
+                        || !(<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
                     handler: function(){
 
                         if(!updateClaimOwnershipSelectionDlg)
@@ -1732,8 +1790,9 @@
 
     <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
         <div id="claimRoutedSelectionPanel">
-            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignWorkgroup" class="XXentity-form">
+            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
+                <input name="name" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
@@ -1753,8 +1812,9 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignOwner" class="XXentity-form">
+                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden"/>
+                <input name="name" id="ownershipClaimFormNameId" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
@@ -1771,6 +1831,28 @@
                     </tr>
                     <tr>
                         <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
+                    </tr>
+                </table>
+                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+            </form>
+        </div>
+    </div>
+            
+    <div id="claimOwnerSelectionDlgHolder1" class="x-hidden">
+        <div id="claimOwnerSelectionPanel1">
+                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
+                <input name="selectedClaimIds" type="hidden"/>
+                <input name="name" id="ownershipClaimFormNameId1" type="hidden"/>
+                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                    </tr>
+                    <tr>
+                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                        <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv1"></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><div id="ownershipClaimFormMessageBox1" class="action-error-msg"/></td>
                     </tr>
                 </table>
                 <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
