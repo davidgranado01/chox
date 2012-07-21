@@ -16,6 +16,24 @@ public class Accessibility implements Serializable {
     private boolean checkSupplierClaimOwnershipEnabled;
     private boolean checkFnolEnabled;
     private boolean checkEngineerEnabled;
+    private boolean checkManualInvoiceWrokgroupEnabled;
+    private boolean checkManualInvoiceClaimOwnershipEnabled;
+
+    public boolean isCheckManualInvoiceClaimOwnershipEnabled() {
+        return checkManualInvoiceClaimOwnershipEnabled;
+    }
+
+    public void setCheckManualInvoiceClaimOwnershipEnabled(boolean checkManualInvoiceClaimOwnershipEnabled) {
+        this.checkManualInvoiceClaimOwnershipEnabled = checkManualInvoiceClaimOwnershipEnabled;
+    }
+
+    public boolean isCheckManualInvoiceWrokgroupEnabled() {
+        return checkManualInvoiceWrokgroupEnabled;
+    }
+
+    public void setCheckManualInvoiceWrokgroupEnabled(boolean checkManualInvoiceWrokgroupEnabled) {
+        this.checkManualInvoiceWrokgroupEnabled = checkManualInvoiceWrokgroupEnabled;
+    }
 
     public boolean isOwnershipCheck() {
         return ownershipCheck;
