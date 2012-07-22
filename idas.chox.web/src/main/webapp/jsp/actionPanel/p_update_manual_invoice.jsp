@@ -10,16 +10,23 @@ var isInvoiceOwnershipEnable = false;
 var workgroupCombo;
 var claimOwnerStore;
 var claimOwnerCombo;
-var isManualInvoiceStatus = false;
 
 Ext.onReady(function(){
-	isManualInvoiceStatus = ('<s:property value="status"/>' == 'ManualInvoiceUnassigned');
+   
+    
     insurerId = '<s:property value="insurer.id"/>';
-    isWorkgroupEnable = ('<s:property value="insurer.enableManualInvoiceWorkgroups"/>' == 'true');
-    isInvoiceOwnershipEnable = ('<s:property value="insurer.enableManualInvoiceOwnership"/>' == 'true');
+    
+    if (<s:property value="insurer.enableManualInvoiceWorkgroups"/> && <s:property value="insurer.workgroupEnable"/>) {
+        isWorkgroupEnable = true;
+    }
+        
+    if (<s:property value="insurer.enableManualInvoiceOwnership"/> && <s:property value="insurer.claimOwnershipEnable"/>) {
+        isInvoiceOwnershipEnable = true;
+    }
+        
 
     // Add claim owner combo box
-    if(isManualInvoiceStatus && isInvoiceOwnershipEnable) {
+    if(isInvoiceOwnershipEnable) {
 	    var claimOwnerReader = new Ext.data.JsonReader({
 	        totalProperty: 'totalCount',
 	        root: 'results',
@@ -68,7 +75,7 @@ Ext.onReady(function(){
     }
 
     
-    if(isManualInvoiceStatus && isWorkgroupEnable) {
+    if(isWorkgroupEnable) {
         selectedWorkgroupId = '<s:property value="workgroup.id"/>';
         var wgrpJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -83,7 +90,8 @@ Ext.onReady(function(){
         var workgroupStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
             ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":insurerId}}),
-            reader: wgrpJsonReader
+            reader: wgrpJsonReader,
+             listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
         });
 
         workgroupCombo = new Ext.form.ComboBox({
@@ -113,13 +121,14 @@ Ext.onReady(function(){
                         selectedWorkgroupId = '<s:property value="workgroup.id"/>';
                         this.clearValue(); 
                         workgroupCombo.setValue(selectedWorkgroupId);
-                        doRenderClaimHandlerDropDown(selectedWorkgroupId);
+                        <s:if test="insurer.enableManualInvoiceOwnership">
+                            doRenderClaimHandlerDropDown(selectedWorkgroupId);
+                        </s:if>
                     }
                 }
             }
         });
         workgroupStore.load({ params : {"orgId":insurerId}});
-        workgroupCombo.setValue(selectedWorkgroupId);
     }
 
 });
@@ -157,14 +166,6 @@ function validateComboBox(){
         
 }
 
-function doUpdateManualInvoice(action){
-    
-    actionPanel.registerAction(action);
-    Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-    $("form#updateManualInvoicePaymentForm").submit();
-    
-}
-
 function assignClaimSubmit(){
 	actionPanel.registerAction("assignManualInvoiceOwner");
     if (validateComboBox()) {
@@ -180,108 +181,78 @@ function assignClaimSubmit(){
     <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
         <s:if test="status.equalsIgnoreCase('ManualInvoiceUnassigned')">
             <fieldset class="x-fieldset"><legend>Manual Invoice Ownership - Action Required</legend>
-        </s:if>
-        <s:else>
-            <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
-        </s:else>
-            <div>
-                <s:hidden id="claimId" name="id" />
-                <s:hidden id="name" name="name" />
-                
-                <s:if test="status.equalsIgnoreCase('ManualInvoiceUnassigned')">
-                
-                    <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
-	                    <div class="status-info">Please assign the
-							Workgroup and claim owner for this claim and click on the 'Assign
-							Owner' button.
-						</div>
+            </s:if>
+            <s:else>
+                <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
+                </s:else>
+                <div>
+                    <s:hidden id="claimId" name="id" />
+                    <s:hidden id="name" name="name" />
+                        
+                    <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.workgroupEnable && insurer.claimOwnershipEnable">
+                        <div class="status-info">Please assign the
+                            Workgroup and claim owner for this claim and click on the 'Assign
+                            Owner' button.
+                        </div>
                     </s:if>
-                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership">
+                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable && !insurer.enableManualInvoiceOwnership">
                         <div class="status-info">
                             Please assign the Workgroup for this claim and click on the 'Assign Workgroup' button. 
                         </div>
                     </s:elseif>
-                     <s:elseif test="!insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
+                    <s:elseif test="!insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                         <div class="status-info">
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                         </div>
                     </s:elseif>
+                    <s:elseif test="insurer.enableManualInvoiceWorkgroups || insurer.enableManualInvoiceOwnership">
+                        <div class="status-info">'Workgroups' or 'Claim Ownership' are disabled for this insurer.
+                        </div>
+                    </s:elseif>
                     <s:else>
-                        <div class="status-info">'Enable Manual Invoice Workgroups' and 'Enable Manual Invoice Ownership' are disabled for this insurer.
+                        <div class="status-info">'Manual Invoice Workgroups' and 'Manual Invoice Ownership' are disabled for this insurer.
                         </div>
                     </s:else>
-                    
-                    
-                     <div class="status-control-set">
-                            <table class="status-table" border="0" cellpadding="0" cellspacing="0">
-                                <s:if test="insurer.enableManualInvoiceWorkgroups">
-                                    <tr>
-                                        <td align="right" width="10%"><label>Workgroup : </label></td>
-                                        <td width="20%"><div id="workgroupComboDiv"/></td>
-                                        <td width="70%"></td>
-                                    </tr>
-                                </s:if>
-                                <s:if test="insurer.enableManualInvoiceOwnership">
-	                                <tr>
-	                                    <td align="right" width="10%"><label>Claim Owner : </label></td>
-	                                    <td width="20%"><div id="claimOwnerComboDiv"></div></td>
-	                                    <td width="70%"></td>
-	                                </tr>
-                                </s:if>
+                        
+                    <div class="status-control-set">
+                        <table class="status-table" border="0" cellpadding="0" cellspacing="0">
+                            <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable">
+                                <tr>
+                                    <td align="right" width="10%"><label>Workgroup : </label></td>
+                                    <td width="20%"><div id="workgroupComboDiv"/></td>
+                                    <td width="70%"></td>
+                                </tr>
+                            </s:if>
+                            <s:if test="insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
+                                <tr>
+                                    <td align="right" width="10%"><label>Claim Owner : </label></td>
+                                    <td width="20%"><div id="claimOwnerComboDiv"></div></td>
+                                    <td width="70%"></td>
+                                </tr>
+                            </s:if>
                                 
-                                <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership)
-                                              || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
-			                        <tr>
-                                        <td colspan="3" class="" nowrap >
-                                            <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignClaimSubmit();"/>
-                                        </td>
-                                    </tr>
-			                    </s:if>
-			                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership">
-			                        <tr>
-                                        <td colspan="3" class="" nowrap >
-                                            <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignClaimSubmit();"/>
-                                        </td>
-                                    </tr>
-			                    </s:elseif>
+                            <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable)
+                                  || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
+                                <tr>
+                                    <td colspan="3" class="" nowrap >
+                                        <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignClaimSubmit();"/>
+                                    </td>
+                                </tr>
+                            </s:if>
+                            <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership && insurer.workgroupEnable">
+                                <tr>
+                                    <td colspan="3" class="" nowrap >
+                                        <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignClaimSubmit();"/>
+                                    </td>
+                                </tr>
+                            </s:elseif>
                                 
-                            </table>
-                    <div class="chox-form-submit-result"></div>
-                    <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
-                </s:if>
-                <s:else>
-		                <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested')">
-		                    <div class="status-info">
-		                        If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system. 
-		                        Once the payment has been made please click on the 'Manual Invoice Paid' button.  
-		                        However if the invoice has been contested with the CHO then click on the 'Invoice Contested With CHO' button to move the claim to a holding status until an agreement has been reached.
-		                    </div>
-		                </s:if>
-		                <s:else>
-		                    <div class="status-info">
-		                        Please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Manual Invoice Paid' button.
-		                    </div>
-		                </s:else>
-		                <div class="status-info-submit">
-		                    <table>
-		                <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested')">
-		                        <tr>
-		                            <td colspan="2" class="choice" nowrap="true">
-		                                <input type="button" id="UMIPFormId" value="Manual Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
-		                                <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="doUpdateManualInvoice('updateManualInvoiceContested');" />
-		                            </td>
-		                        </tr>
-		                </s:if>
-		                <s:else>
-		                        <tr>
-		                            <td><input type="button" id="UMIPFormId" value="Manual Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" /></td>
-		                        </tr>
-		                </s:else>
-	                </s:else>
-                    </table>
+                        </table>
+                        <div class="chox-form-submit-result"></div>
+                        <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+            </fieldset>
+            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

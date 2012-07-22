@@ -183,7 +183,7 @@ public class ApplicationAccessibility {
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Extra Action Access rights for '{}' is {}", accessibilityKey, accessRight);
             LOG.debug("accessibility.isCheckWorkgroupEnabled(): {}, claim.getInsurer().isWorkgroupEnable(): {}", accessibility.isCheckWorkgroupEnabled(), claim.getInsurer().isWorkgroupEnable());
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable() && !ClaimStatus.isManualStatus(claim.getStatus())) {
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
                 LOG.debug("accessRight made to 0 in WORKGROUP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
@@ -203,20 +203,15 @@ public class ApplicationAccessibility {
                 accessRight = 0;
                 LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER) && claim.getInsurer().isWorkgroupEnable() && !ClaimStatus.isManualStatus(claim.getStatus())) {
+            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER) && claim.getInsurer().isWorkgroupEnable()) {
                  accessRight = 0;
             }
-            //in case of manual invoice ownership assigment
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER) 
-                    && (!claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups()) 
-                    && ClaimStatus.isManualStatus(claim.getStatus())){
-                    accessRight = 0;
-            }
-            //in case of manual invoice workgroup and ownership assigment
-            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
-                    && !claim.getInsurer().isEnableManualInvoiceWorkgroups() && ClaimStatus.isManualStatus(claim.getStatus())) {
+            
+            if (accessRight > 0 && actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                    && !(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                    && !(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())) {
                 accessRight = 0;
-                LOG.debug("accessRight made to 0 in WORKGROUP CHECK  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
             if (accessRight >= 2) {
