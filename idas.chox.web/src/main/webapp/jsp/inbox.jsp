@@ -268,6 +268,7 @@
                 if (filterName == 'ManualInvoiceContested' || filterName == 'ManualInvoiceBRERejected' 
                     || filterName == 'ManualInvoiceBREApproved' || filterName == 'ManualInvoicesToBeAssigned') {
                    Ext.state.Manager.set("manualInvoiceFilter",true);
+                   manualInvoiceFilter = true;
                    if (filterName == 'ManualInvoicesToBeAssigned') {
                         doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
                         doClaimRoutedAction.setText('Route Claim(s)');
