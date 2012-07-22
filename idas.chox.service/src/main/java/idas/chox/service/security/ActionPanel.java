@@ -30,6 +30,7 @@ public class ActionPanel {
     public static final String ASSIGN_INVOICE_OWNERSHIP = "assignInvoiceOwnership";
     public static final String UPDATE_LIABILITY = "updateLiability";
     public static final String UPDATE_MANUAL_INVOICE = "updateManualInvoice";
+    public static final String UPDATE_MANUAL_INVOICE_WG_AND_OWNER = "updateManualInvoiceWorkgroupAndOwner";
 
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
@@ -57,6 +58,7 @@ public class ActionPanel {
         action.add(ASSIGN_CLAIM_OWNERSHIP);
         action.add(UPDATE_LIABILITY);
         action.add(ASSIGN_INVOICE_OWNERSHIP);
+        action.add(UPDATE_MANUAL_INVOICE_WG_AND_OWNER);
         action.add(UPDATE_MANUAL_INVOICE);
         return action;
     }
