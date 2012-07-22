@@ -18,6 +18,7 @@ public class ExtraAction {
     public static final String MARK_SUPPLEMENTARY_INVOICED_CLAIM = "markSupplementaryInvoicedClaim";
     public static final String PENALTY_CHARGE_CONFIGURATION = "penaltyChargeConfiguration";
     public static final String INVOICE_REVIEW_REQUIRED = "invoiceReviewRequired";
+    public static final String ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER = "updateManualInvWorkgroupClaimOwner";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -34,6 +35,7 @@ public class ExtraAction {
         action.add(MARK_SUPPLEMENTARY_INVOICED_CLAIM);
         action.add(PENALTY_CHARGE_CONFIGURATION);
         action.add(INVOICE_REVIEW_REQUIRED);
+        action.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
 
         return action;
     }
@@ -67,6 +69,8 @@ public class ExtraAction {
             returnStr = "Penalty Charge Configuration";
         } else if (extraAction.equalsIgnoreCase(INVOICE_REVIEW_REQUIRED)) {
             returnStr = "Flag Claim For Review At Invoice Stage";
+        } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)) {
+            returnStr = "Update manual invoice Workgroup/Claim Owner";
         }
         return returnStr;
     }

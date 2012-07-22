@@ -265,7 +265,8 @@
             
                 // MANUAL INVOICE BATCH UPDATE LOGIC
 
-                if (filterName == 'ManualInvoiceContested' || filterName == 'ManualInvoiceBRERejected' || filterName == 'ManualInvoiceBREApproved' || filterName == 'ManualInvoicesToBeAssigned') {
+                if (filterName == 'ManualInvoiceContested' || filterName == 'ManualInvoiceBRERejected' 
+                    || filterName == 'ManualInvoiceBREApproved' || filterName == 'ManualInvoicesToBeAssigned') {
                    Ext.state.Manager.set("manualInvoiceFilter",true);
                    if (filterName == 'ManualInvoicesToBeAssigned') {
                         doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
@@ -277,12 +278,14 @@
                         doInsurerClaimOwnerAction.setText('Update Claim(s) Owner');
                     }
                     
-                    if (!(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))) {
+                    if (!(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> 
+                        && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))) {
                         doClaimRoutedAction.setHidden(true);
                     } else {
                         doClaimRoutedAction.setHidden(false);
                     }
-                    if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) && <s:property value="enableManualInvoiceOwnership"/>)) {
+                    if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) 
+                        && <s:property value="enableManualInvoiceOwnership"/>)) {
                         doInsurerClaimOwnerAction.setHidden(true);
                     } else {
                         doInsurerClaimOwnerAction.setHidden(false);
@@ -293,7 +296,8 @@
                     doClaimRoutedAction.setText('Route Claim(s)'); 
                     doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
                     doClaimRoutedAction.setHidden(<s:property value="isCHO"/>);
-                    doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
+                    doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> 
+                        && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
                 }
                 // MANUAL INVOICE BATCH UPDATE CODE ENDS.
             }

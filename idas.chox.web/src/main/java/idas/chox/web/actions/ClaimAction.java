@@ -648,6 +648,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getUpdateManualInvWorkgroupClaimOwner() {
+        return SUCCESS;
+    }
+    
     public String getEscalateUnassignedClaim() {
         return SUCCESS;
     }
