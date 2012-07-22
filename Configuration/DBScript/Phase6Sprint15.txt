@@ -61,6 +61,10 @@ ALTER TABLE claim ADD COLUMN manual_invoice_approved boolean default false;
 
 --- BATCH UPDATE ACTION SQL ------
 
+ALTER TABLE accessibility ADD COLUMN check_manual_inv_workgroup_enabled BOOLEAN DEFAULT FALSE;
+ALTER TABLE accessibility ADD COLUMN check_manual_inv_claimownership_enabled BOOLEAN DEFAULT FALSE;
+
+
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled) SELECT 'batch.claimOwnership.ManualInvoiceUnassigned', false, false, true, true, true, true;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled) SELECT 'batch.insurerClaimOwnership.ManualInvoiceUnassigned', false, false, false, true, false, true;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled) SELECT 'batch.routeClaims.ManualInvoiceUnassigned', false, false, true, false, true, false;
