@@ -231,8 +231,8 @@ function assignClaimSubmit(){
                                 </tr>
                             </s:if>
                                 
-                            <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable)
-                                  || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership">
+                            <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable && insurer.workgroupEnable)
+                                  || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
                                         <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignClaimSubmit();"/>
