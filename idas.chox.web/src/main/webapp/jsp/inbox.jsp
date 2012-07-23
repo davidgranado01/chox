@@ -293,14 +293,26 @@
                     }
                 }else {
                     Ext.state.Manager.set("manualInvoiceFilter",false);
+                    manualInvoiceFilter = false;
                     doClaimOwnerAction.setText('Assign Claim(s) Owner');
-                    doClaimRoutedAction.setText('Route Claim(s)'); 
                     doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
-                    doClaimRoutedAction.setHidden(<s:property value="isCHO"/>);
                     doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> 
                         && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
+                   
+                   // Route Claim BATCH UPDATE LOGIC
+                    if (filterName != 'NewClaimsToBerouted') {
+                        doClaimRoutedAction.setText('Re-Route Claim(s)'); 
+                        if (<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>)) {
+                            doClaimRoutedAction.setHidden(true);
+                        } else {
+                            doClaimRoutedAction.setHidden(false); 
+                        }
+                    } else {
+                        doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
+                        doClaimRoutedAction.setText('Route Claim(s)'); 
+                    }
+                    // Route Claim BATCH UPDATE LOGIC ENDS.
                 }
-                // MANUAL INVOICE BATCH UPDATE CODE ENDS.
             }
             
             function refreshFilterPanel() {
@@ -466,6 +478,7 @@
                 doClaimRoutedAction = new Ext.Action({
                     text: 'Route Claim(s)',
                     hidden:<s:property value="isCHO"/>,
+//                                || !(<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>),
 //                             || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))),
                     handler: function(){
 

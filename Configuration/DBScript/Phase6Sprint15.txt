@@ -183,6 +183,114 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'extraAction.updateManualInvWorkgroupClaimOwner.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateManualInvWorkgroupClaimOwner.ManualInvoicePaid';
 
+ -- BUG#1848 --
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.AwaitingCarHireInfo', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.AwaitingInvoiceData', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.AwaitingInvoicePayment', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.AwaitingLiabilityResolution', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.AwaitingLitigationOutcome', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimPending', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimReferredToEngineer', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimRejected', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimRejectionContested', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimUnacknowledgedRouted', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ClaimUpdatedByEngineer', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ContestedInvoiceReferredToCHO', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.ContestedInvoiceReferredToInsurer', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceApprovedByBRE', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceDataCalculationIncorrect', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceEscalated', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceEscalatedToHandler', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoicePaymentLogged', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceReferredToClaimsHandler', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.InvoiceReferredToEngineer', false, false, true, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled) SELECT 'batch.routeClaims.PaymentReceived', false, false, true, false;
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.AwaitingCarHireInfo';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.AwaitingCarHireInfo';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.AwaitingCarHireInfo';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.AwaitingInvoiceData';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.AwaitingInvoiceData';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.AwaitingInvoiceData';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.AwaitingInvoicePayment';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.AwaitingInvoicePayment';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.AwaitingLitigationOutcome';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimPending';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimPending';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimPending';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimReferredToEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimReferredToEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimReferredToEngineer';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimRejected';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimRejected';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimRejected';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimRejectionContested';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimRejectionContested';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimRejectionContested';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimUnacknowledgedRouted';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ClaimUpdatedByEngineer';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceEscalated';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceEscalated';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceEscalated';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoicePaymentLogged';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoicePaymentLogged';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoicePaymentLogged';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.InvoiceReferredToEngineer';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 0, id from accessibility where name= 'batch.routeClaims.PaymentReceived';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.PaymentReceived';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.PaymentReceived';
+
 ---------------
 --END OF 6.15.1 
 ---------------
