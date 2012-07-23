@@ -551,15 +551,16 @@
                                                 });
                                                 var idsParam = selectedIDs.join(",");
                                                 $('form#routeClaimForm input[name="selectedClaimIds"]').val(idsParam);
-                                                if (manualInvoiceFilter) {
-                                                    $('form#routeClaimForm input[name="name"]').val('assignManualInvoiceOwner');
-                                                } else {
-                                                    $('form#routeClaimForm input[name="name"]').val('assignWorkgroup');
-                                                }
+
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
-                                                        formData[2].value = workgroupCombo.getValue();
+                                                        formData[1].value = workgroupCombo.getValue();
+                                                        if (manualInvoiceFilter) {
+                                                            formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
+                                                        } else {
+                                                            formData.push({ name: 'name', value: 'assignWorkgroup' });
+                                                        }
                                                     },
                                                     success:function(){
                                                         sm2.clearSelections();
@@ -1008,20 +1009,21 @@
                                                 });
                                                 var idsParam = selectedIDs.join(",");
                                                 $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
-                                                if (manualInvoiceFilter) {
-                                                    $("#ownershipClaimFormNameId").val('assignManualInvoiceOwner');
-                                                } else {
-                                                    $("#ownershipClaimFormNameId").val('assignOwner');
-                                                }
+    
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
                                                         if(isInsurerWorkgroupEnable) {
-                                                            formData[2].value = workgroupCombo.getValue();
-                                                            formData[3].value = claimOwnerCombo.getValue();
+                                                            formData[1].value = workgroupCombo.getValue();
+                                                            formData[2].value = claimOwnerCombo.getValue();
                                                         }
                                                         else {
-                                                            formData[2].value = claimOwnerCombo.getValue();
+                                                            formData[1].value = claimOwnerCombo.getValue();
+                                                        }
+                                                        if (manualInvoiceFilter) {
+                                                            formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
+                                                        } else {
+                                                            formData.push({ name: 'name', value: 'assignOwner' });
                                                         }
                                                     },
                                                     success:function(){
@@ -1202,16 +1204,19 @@
                                                 });
                                                 var idsParam = selectedIDs.join(",");
                                                 $('form#ownershipClaimForm1 input[name="selectedClaimIds"]').val(idsParam);
-                                                if (manualInvoiceFilter) {
-                                                    $("#ownershipClaimFormNameId1").val('assignManualInvoiceOwner');
-                                                } else {
-                                                    $("#ownershipClaimFormNameId1").val('assignOwner');
-                                                }
+                                                
                                                 var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
 
-                                                        formData[2].value = claimOwnerCombo.getValue();
+                                                        formData[1].value = claimOwnerCombo.getValue();
+                                                        if (manualInvoiceFilter) {
+                                                            formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
+                                                        } else {
+                                                            formData.push({ name: 'name', value: 'assignOwner' });
+                                                        }
+                                                        
+                                                        
 
                                                     },
                                                     success:function(){
@@ -1797,7 +1802,6 @@
         <div id="claimRoutedSelectionPanel">
             <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
-                <input name="name" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
@@ -1819,7 +1823,6 @@
         <div id="claimOwnerSelectionPanel">
                 <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden"/>
-                <input name="name" id="ownershipClaimFormNameId" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
@@ -1847,7 +1850,6 @@
         <div id="claimOwnerSelectionPanel1">
                 <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden"/>
-                <input name="name" id="ownershipClaimFormNameId1" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
