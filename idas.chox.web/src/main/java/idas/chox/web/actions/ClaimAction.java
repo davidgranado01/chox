@@ -1589,12 +1589,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<String> actions = ExtraAction.getExtraActions();
         extraActionList = new ArrayList<LookupItem>();
         for (String action : actions) {
-
+            String extraActionDescription = null;
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
             LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
             if (accessRight >= 2) {
-                String extraActionDescription = ExtraAction.getExtraActionName(action);
+                
+                if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                        && !claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                    extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP);
+                } else if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                        && claim.getInsurer().isEnableManualInvoiceOwnership() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                    extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER);
+                } else {
+                    extraActionDescription = ExtraAction.getExtraActionName(action);
+                }
+                
                 extraActionList.add(new LookupItem(action, extraActionDescription));
             }
         }

@@ -19,6 +19,12 @@ public class ExtraAction {
     public static final String PENALTY_CHARGE_CONFIGURATION = "penaltyChargeConfiguration";
     public static final String INVOICE_REVIEW_REQUIRED = "invoiceReviewRequired";
     public static final String ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER = "updateManualInvWorkgroupClaimOwner";
+    /*
+     * ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP, ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER do not have entries in the database. 
+     * This is used to change the more action lable name depending upon manual invoice workgroup or claim ownership enabled.
+     */
+    public static final String ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP = "updateManualInvWorkgroup";
+    public static final String ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER = "updateManualInvClaimOwner";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -70,7 +76,11 @@ public class ExtraAction {
         } else if (extraAction.equalsIgnoreCase(INVOICE_REVIEW_REQUIRED)) {
             returnStr = "Flag Claim For Review At Invoice Stage";
         } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)) {
-            returnStr = "Update manual invoice Workgroup/Claim Owner";
+            returnStr = "Update Manual Invoice Workgroup/Claim Owner";
+        } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP)) {
+            returnStr = "Update Manual Invoice Workgroup";
+        } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER)) {
+            returnStr = "Update Manual Invoice Claim Owner";
         }
         return returnStr;
     }
