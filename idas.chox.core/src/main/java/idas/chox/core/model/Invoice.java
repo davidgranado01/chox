@@ -1476,33 +1476,76 @@ public class Invoice extends Entity implements Serializable {
         this.finalPayment = finalPayment;
     }
 
-
     public String getRepairPenaltyPercentageApplied() {
-        if (getRepairGross() != null && getRepairGross().compareTo(BigDecimal.ZERO) >= 1
-                && getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
-            /*
-             * Calculate the appliedRepairPenaltyPercentage using the Hire Gross
-             */
-            BigDecimal appliedRepairPenaltyPercentage = getRepairPenaltyCharge().multiply(BigDecimal.valueOf(100)).divide((getRepairGross()), 2, RoundingMode.HALF_UP);
-            LOG.debug("actualRepairPenaltyPercentage : {}, appliedRepairPenaltyPercentage : {}", getRepairPenaltyPercentage(), appliedRepairPenaltyPercentage);
-            return appliedRepairPenaltyPercentage.toString().concat("%");
+        BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
+        if (appliedRepairPenaltyPercentageValue != null) {
+            return appliedRepairPenaltyPercentageValue.toString().concat("%");
         }
         return null;
     }
 
-
     public String getHirePenaltyPercentageApplied() {
-        String appliedHirePenaltyPercentageString = null;
+        BigDecimal appliedHirePenaltyPercentageValue = getHirePenaltyPercentageAppliedValue();
+        if (appliedHirePenaltyPercentageValue != null) {
+            return appliedHirePenaltyPercentageValue.toString().concat("%");
+        }
+        return null;
+    }
+
+    public BigDecimal getHirePenaltyPercentageAppliedValue() {
         if (getHireGross() != null && getHireGross().compareTo(BigDecimal.ZERO) >= 1
                 && getHirePenaltyCharge() != null && getHirePenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
             /*
              * Calculate the appliedHirePenaltyPercentage using the Hire Gross
              */
-            BigDecimal appliedHirePenaltyPercentage = getHirePenaltyCharge().multiply(BigDecimal.valueOf(100)).divide((getHireGross()), 2, RoundingMode.HALF_UP);
-            LOG.debug("actualHirePenaltyPercentage : {}, appliedHirePenaltyPercentage : {}", getHirePenaltyPercentage(), appliedHirePenaltyPercentage);
-            appliedHirePenaltyPercentageString = appliedHirePenaltyPercentage.toString().concat("%");
+            BigDecimal appliedHirePenaltyPercentageValue = getHirePenaltyCharge().multiply(BigDecimal.valueOf(100)).divide((getHireGross()), 2, RoundingMode.HALF_UP);
+            LOG.debug("actualHirePenaltyPercentage : {}, appliedHirePenaltyPercentage : {}", getHirePenaltyPercentage(), appliedHirePenaltyPercentageValue);
+            return appliedHirePenaltyPercentageValue;
         }
-        return appliedHirePenaltyPercentageString;
+        return null;
+    }
+
+    public BigDecimal getRepairPenaltyPercentageAppliedValue() {
+        if (getRepairGross() != null && getRepairGross().compareTo(BigDecimal.ZERO) >= 1
+                && getRepairPenaltyCharge() != null && getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) >= 1) {
+            /*
+             * Calculate the appliedRepairPenaltyPercentage using the Hire Gross
+             */
+            BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyCharge().multiply(BigDecimal.valueOf(100)).divide((getRepairGross()), 2, RoundingMode.HALF_UP);
+            LOG.debug("actualRepairPenaltyPercentage : {}, appliedRepairPenaltyPercentage : {}", getRepairPenaltyPercentage(), appliedRepairPenaltyPercentageValue);
+            return appliedRepairPenaltyPercentageValue;
+        }
+        return null;
+    }
+    
+    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart) {
+
+        BigDecimal appliedHirePenaltyPercentageValue = getHirePenaltyPercentageAppliedValue();
+        if (appliedHirePenaltyPercentageValue != null) {
+            for (PenaltyPercentage hirePenaltyPercentage : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
+                if (hirePenaltyPercentage.getPercentage().equals(getHirePenaltyPercentage())) {
+                    if (hirePenaltyPercentage.getPercentageValue().compareTo(appliedHirePenaltyPercentageValue) != 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isAppliedRepairPenaltyPercentageDifferent() {
+
+        BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
+        if (appliedRepairPenaltyPercentageValue != null) {
+            for (PenaltyPercentage repairPenaltyPercentage : PenaltyPercentage.getRepairPenaltyPercentages()) {
+                if (repairPenaltyPercentage.getPercentage().equals(getRepairPenaltyPercentage())) {
+                    if (repairPenaltyPercentage.getPercentageValue().compareTo(appliedRepairPenaltyPercentageValue) != 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }

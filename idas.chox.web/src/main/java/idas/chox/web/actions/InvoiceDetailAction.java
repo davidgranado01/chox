@@ -1395,6 +1395,23 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+    public boolean isAppliedHirePenaltyPercentageDifferent() {
+        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
+        return invoice.isAppliedHirePenaltyPercentageDifferent(hireStart);
+    }
+
+    public boolean isAppliedRepairPenaltyPercentageDifferent() {
+        return invoice.isAppliedRepairPenaltyPercentageDifferent();
+    }
+    
+    public String getRepairPenaltyPercentageApplied() {
+        return invoice.getRepairPenaltyPercentageApplied();
+    }
+
+    public String getHirePenaltyPercentageApplied() {
+        return invoice.getHirePenaltyPercentageApplied();
+    }
+    
     public BigDecimal getInterimPaymentReceived() {
         LOG.debug("getInterimPaymentReceived is being called inside InvoiceDetailAction and returning value is {}", invoice.getInterimPaymentReceived());
         if (invoice.getInterimPaymentReceived() == null) {
@@ -2642,9 +2659,4 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         claimService.updateLiabilityPayment(claim);
 
     }
-
-    public String getHirePenaltyPercentageApplied() {
-        return invoice.getHirePenaltyPercentageApplied();
-    }
-    
 }
