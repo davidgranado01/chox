@@ -18,6 +18,7 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
+import java.util.Date;
 
 
 /**
@@ -548,11 +549,12 @@ public class ClaimFileReportData {
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
-            if (invoice.getHirePenaltyPercentageApplied() != null && !currentUser.isCHO()) 
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
+            if (invoice.isAppliedHirePenaltyPercentageDifferent(hireStart) && !currentUser.isCHO()) 
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
-            if (invoice.getRepairPenaltyPercentageApplied() != null && !currentUser.isCHO())
+            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO())
                 invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
             invoiceFullTotalToPay = invoice.getFullTotalToPay();
