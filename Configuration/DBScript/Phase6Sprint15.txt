@@ -291,6 +291,23 @@ INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL
 INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_COM', 2, id from accessibility where name= 'batch.routeClaims.PaymentReceived';
 INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ROLE_INS_MNG', 2, id from accessibility where name= 'batch.routeClaims.PaymentReceived';
 
+
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.InvoiceUnassigned',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.AwaitingLitigationOutcome',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.ManualInvoiceBREApproved',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.ManualInvoiceBRERejected',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.ManualInvoiceContested',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.ManualInvoicePaid',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('notification.ClaimNumberNotification.ManualInvoiceUnassigned',false,false);
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.InvoiceUnassigned';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.ManualInvoiceContested';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.ManualInvoicePaid';
+INSERT INTO accessibility_item(role, access_right, accessibility_id) SELECT 'ALL', 1, id from accessibility where name= 'notification.ClaimNumberNotification.ManualInvoiceUnassigned';
+
 ---------------
 --END OF 6.15.1 
 ---------------
