@@ -362,6 +362,7 @@ public class ExcelGeneratorAction extends BaseAction {
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
 
+        
         Runnable r = new Runnable() {
 
             @Override

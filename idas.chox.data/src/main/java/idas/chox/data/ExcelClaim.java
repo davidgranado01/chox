@@ -174,7 +174,7 @@ public class ExcelClaim {
         claimWorkgroupName= (String) data.get("workgroup_name");
         claimStatusModifiedDate = (Date) data.get("status_modified_date");
         claimIdemnity = (BigDecimal) data.get("indeminty_amount");
-        claimLiabilityStatus = (LiabilityStatus.values()[ (Integer)data.get("liability_status")]).toString();
+        claimLiabilityStatus = (LiabilityStatus.values()[ (Short)data.get("liability_status")]).toString();
         claimPercentageLiabilityAccepted = (BigDecimal) data.get("percentage_liability_accepted");
         claimPercentageLiabilityCho = (BigDecimal) data.get("percentage_liability_cho");
         claimManagingRepair = ((Boolean) data.get("managing_repair")) ? "Yes" : "No";
@@ -212,11 +212,27 @@ public class ExcelClaim {
         claimCustomerHpiVehicleCapacity = (String) data.get("customer_hpi_vehicle_capacity");
         claimCustomerHpiVehicleDoorplan = (String) data.get("customer_hpi_vehicle_doorplan");
         claimCustomerHpiVehicleTransmission = (String) data.get("customer_hpi_vehicle_transmission");
-        claimCustomerCanAccessOtherVehicleDesc = ((Boolean) data.get("customer_access_other_vehicle")) ? "Yes" : "No";
-        claimCustomerOtherVehicleUsedDesc = ((Boolean) data.get("customer_other_vehicle_used")) ? "Yes" : "No";
+        Boolean canAccessOtherVehicle = (Boolean) data.get("customer_access_other_vehicle");
+        if (canAccessOtherVehicle == null)
+            claimCustomerCanAccessOtherVehicleDesc = "";
+        else
+            claimCustomerCanAccessOtherVehicleDesc = canAccessOtherVehicle ? "Yes" : "No";
+        Boolean otherVehicleUsed = (Boolean) data.get("customer_other_vehicle_used");
+        if (otherVehicleUsed == null)
+            claimCustomerOtherVehicleUsedDesc = "";
+        else
+            claimCustomerOtherVehicleUsedDesc = otherVehicleUsed ? "Yes" : "No";
         claimCustomerOtherVehicle = (String) data.get("customer_other_vehicle");
-        claimCustomerCourtesyCarEntitledDesc = ((Boolean) data.get("customer_courtesy_car")) ? "Yes" : "No";
-        claimCustomerSpecificVehicleRequiredDesc = ((Boolean) data.get("customer_specific_vehicle")) ? "Yes" : "No";
+        Boolean courtesyCarEntitled = (Boolean) data.get("customer_courtesy_car");
+        if (courtesyCarEntitled == null)
+            claimCustomerCourtesyCarEntitledDesc = "";
+        else
+            claimCustomerCourtesyCarEntitledDesc = courtesyCarEntitled ? "Yes" : "No";
+        Boolean specificVehicleRequiredDesc = (Boolean) data.get("customer_specific_vehicle");
+        if (specificVehicleRequiredDesc == null)
+            claimCustomerSpecificVehicleRequiredDesc = "";
+        else
+            claimCustomerSpecificVehicleRequiredDesc = specificVehicleRequiredDesc ? "Yes" : "No";
         claimCustomerSpecificVehicleReason = (String) data.get("customer_specific_vehicle_reason");
         claimCustomerTypeVehicleRequired = (String) data.get("customer_vehicle_type_required");
         claimCustomerSpecialRequirements = (String) data.get("customer_special_requirements");
@@ -276,10 +292,19 @@ public class ExcelClaim {
         claimSolicitorPostcode = (String) data.get("injury_solicitor_postcode");
         claimSolicitorTelephone = (String) data.get("injury_solicitor_telephone");
         claimSolicitorEmail = (String) data.get("injury_solicitor_email");
+
         claimEngineerReportLabourAmount = (BigDecimal) data.get("er_labour_amount");
         claimEngineerReportRepairAmount = (BigDecimal) data.get("er_repair_amount");
-        claimEngineerReportDays = (Integer) data.get("er_days");
-        claimEngineerReportIsUsable = ((Boolean) data.get("er_is_usable")) ? "Yes" : "No";
+        BigDecimal days = (BigDecimal) data.get("er_days");
+        if (days == null)
+            claimEngineerReportDays = null;
+        else
+            claimEngineerReportDays = Integer.valueOf(days.intValue());
+        Boolean isUsable = (Boolean) data.get("er_is_usable");
+        if (isUsable == null)
+            claimEngineerReportIsUsable = "";
+        else
+            claimEngineerReportIsUsable = isUsable ? "Yes" : "No";
         claimEngineerReportName = (String) data.get("er_name");
         claimEngineerReportCompany = (String) data.get("er_company");
         claimEngineerReportAddress1 = (String) data.get("er_address1");
@@ -290,13 +315,19 @@ public class ExcelClaim {
         claimEngineerReportPostcode = (String) data.get("er_postcode");
         claimEngineerReportTelephone = (String) data.get("er_telephone");
         claimEngineerReportEmail = (String) data.get("er_email");
+
         claimVehicleHireVehicleManufacturer = (String) data.get("vh_vehicle_manufacturer");
         claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
         claimVehicleHireVehicleRegistration = (String) data.get("vh_vehicle_registration");
         claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
         claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
         claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
-        claimVehicleHireDays = (Integer) data.get("vh_days");
+        days = (BigDecimal) data.get("vh_days");
+        if (days == null)
+            claimVehicleHireDays = null;
+        else
+            claimVehicleHireDays = Integer.valueOf(days.intValue());
+//        claimVehicleHireDays = ((BigDecimal) data.get("vh_days")).intValue();
         claimVehicleHireCollectionReason = (String) data.get("vh_collection_reason");
         claimVehicleHireHpiVehicleManufacturer = (String) data.get("vh_hpi_vehicle_manufacturer");
         claimVehicleHireHpiVehicleModel = (String) data.get("vh_hpi_vehicle_model");
@@ -305,24 +336,7 @@ public class ExcelClaim {
         claimVehicleHireHpiVehicleCapacity = (String) data.get("vh_hpi_vehicle_capacity");
         claimVehicleHireHpiVehicleDoorplan = (String) data.get("vh_hpi_vehicle_doorplan");
         claimVehicleHireHpiVehicleTransmission = (String) data.get("vh_hpi_vehicle_transmission");
-        claimHireMonitoringDetailNameOfRepairer = (String) data.get("hmd_name_of_repairer");
-        claimHireMonitoringDetailRepairBookInDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailRepairAuthorisedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailRepairCommencedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailInspectionBookedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailInspectionDate = (Date) data.get("hmd_ hmd_");
-        claimHireMonitoringDetailNameOfIme = (String) data.get("");
-        claimHireMonitoringDetailRepairCompletionDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailIsTotalLostCheck = ((Boolean) data.get("hmd_")) ? "Yes" : "No";
-        claimHireMonitoringDetailTotalLossOfferMadeDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailTotalLossOfferAcceptedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailTotalLossOfferCheckIssuedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailTotalLossOfferCheckReceivedDate = (Date) data.get("hmd_");
-        claimHireMonitoringDetailLabourRate = (BigDecimal) data.get("hmd_");
-        claimHireMonitoringDetailLabourHour = (BigDecimal) data.get("hmd_");
-        claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_");
-        claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_");
-        claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_");
+
         claimHireMonitoringDetailNameOfRepairer = (String) data.get("hmd_name_of_repairer");
         claimHireMonitoringDetailRepairBookInDate = (Date) data.get("hmd_repair_book_in_date");
         claimHireMonitoringDetailRepairAuthorisedDate = (Date) data.get("hmd_repair_authorised_date");
@@ -331,7 +345,12 @@ public class ExcelClaim {
         claimHireMonitoringDetailInspectionDate = (Date) data.get("hmd_inspection_date");
         claimHireMonitoringDetailNameOfIme = (String) data.get("hmd_name_of_ime");
         claimHireMonitoringDetailRepairCompletionDate = (Date) data.get("hmd_repair_completion_date");
-        claimHireMonitoringDetailIsTotalLostCheck = ((Boolean)data.get("hmd_is_total_lost_check")) ? "Yes" : "No";
+        
+        Boolean isTotalLostCheck = (Boolean) data.get("hmd_is_total_lost_check");
+        if (isTotalLostCheck == null)
+            claimHireMonitoringDetailIsTotalLostCheck = "";
+        else
+            claimHireMonitoringDetailIsTotalLostCheck = isTotalLostCheck ? "Yes" : "No";
         claimHireMonitoringDetailTotalLossOfferMadeDate = (Date) data.get("hmd_total_loss_offer_made");
         claimHireMonitoringDetailTotalLossOfferAcceptedDate = (Date) data.get("hmd_total_loss_offer_accepted");
         claimHireMonitoringDetailTotalLossOfferCheckIssuedDate = (Date) data.get("hmd_total_loss_check_issued");

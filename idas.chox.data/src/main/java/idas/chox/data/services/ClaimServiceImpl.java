@@ -1284,6 +1284,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
         
+    @Override
     public List<ExcelClaim> getExcelClaims(List<Integer> ids) {
         List<ExcelClaim> results = new ArrayList<ExcelClaim>(ids.size());
         StringBuilder sb = new StringBuilder();
@@ -1309,7 +1310,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .append(" tp.title as tp_title, tp.first_name as tp_first_name, tp.last_name as tp_last_name,")
             .append(" tp.address1 as tp_address1, tp.address2 as tp_address2, tp.address3 as tp_address3, tp.address4 as tp_address4, tp.address5 as tp_address5, ")
             .append(" tp.postcode as tp_postcode, tp.telephone_day as tp_telephone_day, tp.telephone_evening as tp_telephone_evening, tp.email as tp_email,")
-            .append(" tp_insurer.name as tp_insurer_name, tp.policy_number as tp_policy_number, -- tp.claim_reference as tp_claim_reference not used,")
+            .append(" tp_insurer.name as tp_insurer_name, tp.policy_number as tp_policy_number, ")
             .append(" tp.vehicle_manufacturer as tp_vehicle_manufacturer, tp.vehicle_model as tp_vehicle_model,")
             .append(" tp.vehicle_registration as tp_vehicle_registration, tp_vc.name as tp_vehicle_class,")
             .append(" inc. date as incident_date, inc.location as incident_location, inc.is_police_involved as incident_is_police_involved, inc.incident_description as incident_description,")
@@ -1339,36 +1340,114 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .append(" from claim c")
             .append("     join chorganisation cho on (c.chorganisation_id = cho.id)")
             .append("     left outer join workgroup w on (c.workgroup_id = w.id)")
-            .append(" left outer join web_user wu on (c.claim_owner_id = wu.id)")
-            .append(" left outer join customer cust on (c.customer_id = cust.id)")
-            .append(" left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)")
-            .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
-            .append(" left outer join vehicle_class tp_vc on (cust.vehicle_class_id = tp_vc.id)")
-            .append(" left outer join insurer tp_insurer on (tp.insurer_id = tp_insurer.id)")
-            .append(" left outer join incident inc on (c.incident_id = inc.id)")
-            .append(" left outer join witness wit on (inc.id = wit.incident_id)")
-            .append(" left outer join injury inj on (inc.id = inj.incident_id)")
-            .append(" left outer join engineer_report er on (c.engineer_report_id = er.id)")
-            .append(" left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
-            .append(" left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
-            .append(" left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
-            .append(" where c.id in (:claimIds)");
+            .append("     left outer join web_user wu on (c.claim_owner_id = wu.id)")
+            .append("     left outer join customer cust on (c.customer_id = cust.id)")
+            .append("     left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)")
+            .append("     left outer join third_party tp on (c.third_party_id = tp.id)")
+            .append("     left outer join vehicle_class tp_vc on (cust.vehicle_class_id = tp_vc.id)")
+            .append("     left outer join insurer tp_insurer on (tp.insurer_id = tp_insurer.id)")
+            .append("     left outer join incident inc on (c.incident_id = inc.id)")
+            .append("     left outer join witness wit on (inc.id = wit.incident_id)")
+            .append("     left outer join injury inj on (inc.id = inj.incident_id)")
+            .append("     left outer join engineer_report er on (c.engineer_report_id = er.id)")
+            .append("     left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
+            .append("     left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
+            .append("     left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
+//            .append(" where c.id in ( :claimIds )");
+            .append(" where c.id in (");
 
-        Map paramMap = new HashMap(1);
-        paramMap.put("claimIds", ids);
+        boolean first = true;
+        for (Integer id : ids) {
+            if (!first)
+                sb.append(", ").append(id.toString());
+            else {
+                sb.append(id.toString());
+                first = false;
+            }
+        }            
+        sb.append(")");
 
-        List result = this.externalQuery(sb.toString(), paramMap);
+//        Map paramMap = new HashMap();
+//        paramMap.put("claimIds", ids);
+
+        LOG.debug("Querying for claim details...\n{}", sb.toString());
+//        List result = this.externalQuery(sb.toString(), paramMap);
+        List result = this.externalQuery(sb.toString());
+        LOG.debug("Got details - building data objects");
 
         for(Object obj : result)
             results.add(new ExcelClaim((Map)obj));
 
+        LOG.debug("Returning results.");
         return results;
     }
     
     @Override
     public List<ExcelInvoice> getExcelInvoices(List<Integer> ids) {
         List<ExcelInvoice> results = new ArrayList<ExcelInvoice>(ids.size());
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append("select ")
+            .append(" c.status as claimstatus, c.cho_reference as choreference, tp.claim_reference as thirdpartyclaimreference,")
+            .append(" i.created_date as createddate, i.auto_penalty_start as autopenaltystart, i.miscellaneous_fee as miscellaneousfee,")
+            .append(" i.automatic_fee as automaticfee, i.automatic_qty as automaticqty, i.additional_driver_fee as additionaldriverfee,")
+            .append(" i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,")
+            .append(" i.estate_fee as estatefee, i.estate_qty as estateqty, i.baby_seat_fee as babyseatfee, i.baby_seat_qty as babyseatqty,")
+            .append(" i.tow_bars_fee as towbarsfee, i.tow_bars_qty as towbarsqty, i.non_standard_insurance_premium_fee as nonstandardinsurancepremiumfee,")
+            .append(" i.non_standard_insurance_premium_qty as nonstandardinsurancepremiumqty, i.cover_note_required as covernoterequired,")
+            .append(" i.admin_fee as adminfee, i.admin_qty as adminqty, i.roof_rack_fee as roofrackfee, i.roof_rack_qty as roofrackqty,")
+            .append(" i.dual_control_fee as dualcontrolfee, i.dual_control_qty as dualcontrolqty, i.delivery_collection_fee as deliverycollectionfee,")
+            .append(" i.delivery_collection_qty as deliverycollectionqty, i.excess_amount_collected as excessamountcollected,")
+            .append(" i.vat_amount_collected as vatamountcollected, i.handling_invoice_no as handlinginvoiceno,")
+            .append(" i.claims_handling_invoice_amount as  claimshandlinginvoiceamount, i.claim_invoice_no as claiminvoiceno,")
+            .append(" i.hire_rate_charged_per_day as hireratechargedperday, i.hire_net as hirenet, i.hire_vat as hirevat,")
+            .append(" i.hire_gross as hiregross, i.repair_net as repairnet, i.repair_vat as repairvat, i.repair_gross as repairgross,")
+            .append(" i.engineer_fee_net as engineerfeenet, i.engineer_fee_vat as engineerfeevat, i.engineer_fee_gross as engineerfeegross,")
+            .append(" i.total_loss_net as totallossfeenet, i.total_loss_vat as totallossfeevat, i.total_loss_gross as totallossfeegross,")
+            .append(" i.storage_recovery_net as storagerecoverynet, i.storage_recovery_vat as storagerecoveryvat, i.storage_recovery_gross as storagerecoverygross,")
+            .append(" i.deduction_for_claims_handling_fee as deductionforclaimshandlingfee, i.hire_penalty_charge as hirepenaltycharge,")
+            .append(" i.hire_penalty_percentage as hirepenaltypercentage, i.repair_penalty_charge as repairpenaltycharge,")
+            .append(" i.repair_penalty_percentage as repairpenaltypercentage, i.total_penalty_charge as totalpenaltycharge,")
+            .append(" i.total_net as totalnet, i.total_vat as totalvat, i.total_gross as totalgross, i.discount as discount,")
+            .append(" i.insurer_discount as insurerdiscount, i.full_total_to_pay as fulltotaltopay, io.full_total_to_pay as original_fulltotaltopay,")
+            .append(" i.total_to_pay as totaltopay, io.total_to_pay as original_totaltopay, i.interim_payment_made as interimpaymentmade,")
+            .append(" i.interim_payment_received as interimpaymentreceived, i.date_invoiced as dateinvoiced, i.hire_gross_paid as hiregrosspaid,")
+            .append(" i.repair_gross_paid as repairgrosspaid, i.engineer_fee_gross_paid as engineerfeegrosspaid, i.total_loss_fee_gross_paid as totallossfeegrosspaid,")
+            .append(" i.storage_recovery_gross_paid as storagerecoverygrosspaid, i.hire_penalty_charge_paid as hirepenaltychargepaid,")
+            .append(" i.repair_penalty_charge_paid as repairpenaltychargepaid, i.claim_handler_charge_paid as claimhandlerchargepaid,")
+            .append(" i.deduction_claim_handler_fee_paid as deductionclaimhandlerfeepaid, i.cho_discount_fee_paid as chodiscountfeepaid,")
+            .append(" i.insurer_discount_fee_paid as insurerdiscountfeepaid, i.final_payment as finalpayment")
+            .append(" from claim c")
+            .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
+            .append(" join invoice i on (c.invoice_id = i.id)")
+            .append(" join invoice_original io on (i.invoice_original_id = io.id)")
+
+//            .append(" where c.id in ( :claimIds )");
+            .append(" where c.id in (");
+
+        boolean first = true;
+        for (Integer id : ids) {
+            if (!first)
+                sb.append(", ").append(id.toString());
+            else {
+                sb.append(id.toString());
+                first = false;
+            }
+        }            
+        sb.append(")");
+
+//        Map paramMap = new HashMap();
+//        paramMap.put("claimIds", ids);
+
+        LOG.debug("Querying for invoice details...\n{}", sb.toString());
+//        List result = this.externalQuery(sb.toString(), paramMap);
+        List result = this.externalQuery(sb.toString());
+        LOG.debug("Got invoice details - building data objects");
+
+        for(Object obj : result)
+            results.add(new ExcelInvoice((Map)obj, this.getCurrentUser().isCHO()));
+
+        LOG.debug("Returning results.");
+
         return results;
     }
     
