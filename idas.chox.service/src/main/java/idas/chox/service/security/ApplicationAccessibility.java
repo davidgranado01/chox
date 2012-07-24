@@ -207,9 +207,19 @@ public class ApplicationAccessibility {
                  accessRight = 0;
             }
             
+            /*
+             * If any of this condition !(insurerWorkgroupEnabled or
+             * insurerClaimOwnershipEnabled) or !(manualInvoiceWorkgroupEnabled
+             * or manualInvoiceClaimOwnershipEnabled) is true then disable the
+             * manual invoice extra action. And this condiont is equal to
+             * (insurerWorkgroupDisabled and insurerClaimOwnershipDisabled) or
+             * (manualInvoiceWorkgroupDisabled and
+             * manualInvoiceClaimOwnershipDisabled).
+             *
+             */
             if (accessRight > 0 && actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                    && !(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
-                    && !(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())) {
+                    && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                    || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
                 accessRight = 0;
                 LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
