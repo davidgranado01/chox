@@ -543,7 +543,7 @@
         </div>
     </s:if>
     
-    <s:if test="notificationAccessibility.awaitingLitigationOutcomeNotificationAccessibility">
+    <s:if test="notificationAccessibility.awaitingLitigationOutcomeNotificationAccessibility && !isInsurer">
         <s:action name="getAwaitingLitigationOutcomeAlert" namespace="/prv/p" executeResult="true">
             <s:param name="claimId"><s:property value="id" /></s:param>
         </s:action>
