@@ -416,11 +416,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             if (hireGrossInsurerDiscountEnabled) {
                 hireGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isHireGrossDiscountAppliedToPenalties) {
-                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-                    BigDecimal hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
-                    LOG.debug("HireGross Discount applied to Penalties and calculated hirePenaltyAmount for hirePenaltyPercentage {} = {}", inv.getHirePenaltyPercentage(),hirePenaltyAmount);
-                    hireGrossInsurerDiscountAmount = (inv.getHireGross().add(hirePenaltyAmount)).multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-                    LOG.debug("Calculated hireGrossInsurerDiscountAmount ((hireGross+hirePenalty)*(hireGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getHireGross(),hirePenaltyAmount,hireGrossInsurerDiscountPercentage,hireGrossInsurerDiscountAmount});
+                    hireGrossInsurerDiscountAmount = (inv.getHireGross().add(inv.getHirePenaltyCharge())).multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+                    LOG.debug("Calculated hireGrossInsurerDiscountAmount ((hireGross+hirePenalty)*(hireGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getHireGross(),inv.getHirePenaltyCharge(),hireGrossInsurerDiscountPercentage,hireGrossInsurerDiscountAmount});
                 } else {
                     hireGrossInsurerDiscountAmount = inv.getHireGross().multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                     LOG.debug("Calculated hireGrossInsurerDiscountAmount (hireGross*(hireGrossInsurerDiscountPercentage/100)) ({}*({}/100)) = {}", new Object[]{inv.getHireGross(),hireGrossInsurerDiscountPercentage,hireGrossInsurerDiscountAmount});
@@ -444,10 +441,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             if (repairGrossInsurerDiscountEnabled) {
                 repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isRepairGrossDiscountAppliedToPenalties) {
-                    BigDecimal repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
-                    LOG.debug("RepairGross Discount applied to Penalties and calculated repairPenaltyAmount for repairPenaltyPercentage {} = {}", inv.getRepairPenaltyPercentage(),repairPenaltyAmount);
-                    repairGrossInsurerDiscountAmount = (inv.getRepairGross().add(repairPenaltyAmount)).multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-                    LOG.debug("Calculated repairGrossInsurerDiscountAmount ((repairGross+repairPenalty)*(repairGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getRepairGross(),repairPenaltyAmount,repairGrossInsurerDiscountPercentage,repairGrossInsurerDiscountAmount});
+                    repairGrossInsurerDiscountAmount = (inv.getRepairGross().add(inv.getRepairPenaltyCharge())).multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+                    LOG.debug("Calculated repairGrossInsurerDiscountAmount ((repairGross+repairPenalty)*(repairGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getRepairGross(),inv.getRepairPenaltyCharge(),repairGrossInsurerDiscountPercentage,repairGrossInsurerDiscountAmount});
                 } else {
                     repairGrossInsurerDiscountAmount = inv.getRepairGross().multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                     LOG.debug("Calculated repairGrossInsurerDiscountAmount (repairGross*(repairGrossInsurerDiscountPercentage/100)) ({}*({}/100)) = {}", new Object[]{inv.getRepairGross(),repairGrossInsurerDiscountPercentage,repairGrossInsurerDiscountAmount});
