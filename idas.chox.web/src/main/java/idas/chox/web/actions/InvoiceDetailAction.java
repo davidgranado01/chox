@@ -365,15 +365,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getFinalPayment();
     }
 
-    public boolean getCanShowPenaltyChargesPaidField() {
-        if ((claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
-                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-                && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1
-                || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public String getActionResult() {

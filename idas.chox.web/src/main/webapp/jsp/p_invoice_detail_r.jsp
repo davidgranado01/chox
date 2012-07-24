@@ -328,13 +328,6 @@
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="totalPenaltyCharge" /></label></td>
                                 </tr>
-                                <s:if test="canShowPenaltyChargesPaidField">
-                                <tr>
-                                    <td><label class="std-label-ro">Penalty Charges Paid?</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:if test="penaltyChargesPaid==true">Yes</s:if><s:else>No</s:else></label></td>
-                                </tr>
-                                </s:if>
                                 <tr>
                                     <td><label class="std-label-ro">Insurer Discount</label></td>
                                     <td>&nbsp;</td>
