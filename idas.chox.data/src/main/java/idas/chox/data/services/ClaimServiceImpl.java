@@ -1257,18 +1257,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                                 .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
                                 .createAlias("this.customer", "cust", CriteriaSpecification.LEFT_JOIN);
 
-            criteria.add(Restrictions.ne("id", claim.getId()));
-            criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
+            criteria.add(Restrictions.ne("choReference", claim.getChoReference()));
+            // Ignore blank customer claim numbers (i.e. they should not prevent an overlap match) - bug#1887
+            if (claim.getCustomer().getClaimReference() != null && claim.getCustomer().getClaimReference().length() > 0)
+                criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
             criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))
                     .add(Restrictions.between("vh.rentalEnd", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd())));
  
+            LOG.debug("Overlapping query is: {}", criteria.toString());
             List<Claim> claims = findByCriteria(criteria);
             if (claims.size() > 0) {
                 insurerClaimNumber = claims.get(0).getClaimNumber();
             }
 
+        } else {
+            LOG.debug("NO overlapping hire query ran");
         }
         return insurerClaimNumber;
     }

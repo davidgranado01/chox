@@ -7,8 +7,11 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OverlappingHireCheck implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(OverlappingHireCheck.class);
 
     private String narrative = "";
     private ClaimService claimService;
@@ -22,6 +25,7 @@ public class OverlappingHireCheck implements IBusinessRule {
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
         if (claim.getBreBand().isOverlappingHireCheck() && claim.getVehicleHire() != null) {
+            LOG.debug("In rule OverlappingHireCheck for claim {}....", claim.getChoReference());
             /*
              * This rule will look at the hire/replacement vehicle's VRN, the VRN
              * will be compared to all claims submitted against the said Insurer only,
@@ -32,16 +36,20 @@ public class OverlappingHireCheck implements IBusinessRule {
              * where the hire/replacement vehicle VRN is 'NK1' should be ignored.
              * 
              */
+            LOG.debug("In rule OverlappingHireCheck for claim {}....", claim.getChoReference());
             String insurerClaimNumber = claimService.getOverlappingHire(claim);
             boolean success = true;
             
             if (insurerClaimNumber != null) {
                 success = false;
                 narrative = "Overlapping Hire - replacement hire vehicle on hire during overlapping periods as indicated on claim " + insurerClaimNumber + ".";
+            } else {
+                LOG.debug("OverlappingHireCheck BRE rule passed for claim {}....", claim.getChoReference());
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
         } else {
+            LOG.debug("OverlappingHireCheck BRE rule skipped for claim {}....", claim.getChoReference());
             narrative = "";
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
         }
