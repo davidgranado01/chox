@@ -63,6 +63,8 @@ public class InvoiceStatusReportViewData {
     private Integer noOfManualInvoicesPaid;
     private BigDecimal valOfManualInvoicesPaid;
     private Integer noOfManualInvoicesApproved;
+    private Integer noOfManualInvoicesInToBeAssigned;
+    private BigDecimal valOfManualInvoicesInToBeAssigned;
     private BigDecimal valOfManualInvoicesApproved;
     private Integer noOfManualInvoicesRejected;
     private BigDecimal valOfManualInvoicesRejected;
@@ -132,6 +134,8 @@ public class InvoiceStatusReportViewData {
 
         result.setNoOfManualInvoicesPaid(((BigInteger) data.get("no_manual_invoices_paid_current_month".toLowerCase())).intValue());
         result.setValOfManualInvoicesPaid((BigDecimal) data.get("val_manual_invoices_paid_current_month".toLowerCase()));
+        result.setNoOfManualInvoicesInToBeAssigned(((BigInteger) data.get("no_manual_invoices_in_to_be_assigned_current_month".toLowerCase())).intValue());
+        result.setValOfManualInvoicesInToBeAssigned((BigDecimal) data.get("val_manual_invoices_in_to_be_assigned_current_month".toLowerCase()));
         result.setNoOfManualInvoicesApproved(((BigInteger) data.get("no_manual_invoices_approved_current_month".toLowerCase())).intValue());
         result.setValOfManualInvoicesApproved((BigDecimal) data.get("val_manual_invoices_approved_current_month".toLowerCase()));
         result.setNoOfManualInvoicesRejected(((BigInteger) data.get("no_manual_invoices_rejected_current_month".toLowerCase())).intValue());
@@ -642,5 +646,20 @@ public class InvoiceStatusReportViewData {
     public void setValOfInvoicesInLitigationStatus(BigDecimal valOfInvoicesInLitigationStatus) {
         this.valOfInvoicesInLitigationStatus = valOfInvoicesInLitigationStatus;
     }
-    
+
+    public Integer getNoOfManualInvoicesInToBeAssigned() {
+        return noOfManualInvoicesInToBeAssigned;
+    }
+
+    public void setNoOfManualInvoicesInToBeAssigned(Integer noOfManualInvoicesInToBeAssigned) {
+        this.noOfManualInvoicesInToBeAssigned = noOfManualInvoicesInToBeAssigned;
+    }
+
+    public BigDecimal getValOfManualInvoicesInToBeAssigned() {
+        return valOfManualInvoicesInToBeAssigned;
+    }
+
+    public void setValOfManualInvoicesInToBeAssigned(BigDecimal valOfManualInvoicesInToBeAssigned) {
+        this.valOfManualInvoicesInToBeAssigned = valOfManualInvoicesInToBeAssigned;
+    }
 }
