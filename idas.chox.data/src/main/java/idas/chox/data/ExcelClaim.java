@@ -261,7 +261,11 @@ public class ExcelClaim {
         claimThirdPartyVehicleClassName = (String) data.get("tp_vehicle_class");
         claimIncidentDate = (Date) data.get("incident_date");
         claimIncidentLocation = (String) data.get("incident_location");
-        claimIncidentIsPoliceInvolved = ((Boolean) data.get("incident_is_police_involved")) ? "Yes" : "No";
+        Boolean isPoliceInvolved = (Boolean) data.get("incident_is_police_involved");
+        if (isPoliceInvolved == null)
+            claimIncidentIsPoliceInvolved = "";
+        else
+            claimIncidentIsPoliceInvolved = isPoliceInvolved ? "Yes" : "No";
         claimIncidentIncidentDescription = (String) data.get("incident_description");
         claimWitnessName = (String) data.get("witness_name");
         claimWitnessAddress1 = (String) data.get("witness_address1");

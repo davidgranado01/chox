@@ -1,5 +1,9 @@
 package idas.chox.data;
 
+import idas.chox.core.util.DateHelper;
+import java.util.Date;
+import java.util.Map;
+
 
 /**
  *
@@ -13,44 +17,35 @@ public class ExcelClaimCycle {
     private String status;
     private String reverted;
 
-    public String getChoReference() {
-        return choReference;
+    public ExcelClaimCycle(Map data) {
+        choReference = (String) data.get("choreference");
+        modifiedDate = DateHelper.getLocalDateTimeFormat().format((Date) data.get("modifieddate"));
+        modifiedBy = (String) data.get("modifiedby");
+        status = (String) data.get("status");
+        Boolean rev = (Boolean) data.get("reverted");
+        if (rev == null)
+            reverted = "";
+        else
+            reverted = rev ? "Yes" : "";        
     }
 
-    public void setChoReference(String choReference) {
-        this.choReference = choReference;
+    public String getChoReference() {
+        return choReference;
     }
 
     public String getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
     public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public String getReverted() {
+     public String getReverted() {
         return reverted;
-    }
-
-    public void setReverted(String reverted) {
-        this.reverted = reverted;
     }
 
     public String getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }

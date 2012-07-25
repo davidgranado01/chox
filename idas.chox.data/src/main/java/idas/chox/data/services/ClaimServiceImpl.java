@@ -1458,15 +1458,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
             .append(" c.cho_reference as choreference, h.process_date as processdate,")
-            .append(" h.rule_id as ruleid, h.type as type, h.narrative as narrative")
+            .append(" h.rule_id as ruleid, h.type as type, h.narrative as narrative,")
             .append(" h.is_public as ispublic")
             .append(" from claim c")
             .append(" join invoice i on (c.invoice_id = i.id)")
             .append(" join history h on (c.id = h.claim_id)")
             .append(" where h.type != 'INFO'")
 
-//            .append(" where c.id in ( :claimIds )");
-            .append(" where c.id in (");
+//            .append(" and c.id in ( :claimIds )");
+            .append(" and c.id in (");
 
         boolean first = true;
         for (Integer id : ids) {
@@ -1500,15 +1500,94 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     @Override
     public List<ExcelComment> getExcelComments(List<Integer> ids) {
-        List<ExcelComment> results = new ArrayList<ExcelComment>(ids.size()*5);
+        StringBuilder sb = new StringBuilder();
+        sb.append("select ")
+            .append("     c.cho_reference as choreference, n.created_date as createddate,")
+            .append("     wu.last_name || ' ' || wu.first_name as createdby, ")
+            .append("     n.comment as comment, n.visibility_type as visibilitytype")
+            .append(" from claim c")
+            .append(" join comment n on (c.id = n.claim_id)")
+            .append(" left outer join web_user wu on (n.created_by = wu.id)")
+            .append(" where n.reverted = false")
+
+//            .append(" and c.id in ( :claimIds )");
+            .append(" and c.id in (");
+
+        boolean first = true;
+        for (Integer id : ids) {
+            if (!first)
+                sb.append(", ").append(id.toString());
+            else {
+                sb.append(id.toString());
+                first = false;
+            }
+        }            
+        sb.append(") ");
+        sb.append(" order by  choreference, createddate");
+
+//        Map paramMap = new HashMap();
+//        paramMap.put("claimIds", ids);
+
+        LOG.debug("Querying for BRE history details...\n{}", sb.toString());
+//        List result = this.externalQuery(sb.toString(), paramMap);
+        List result = this.externalQuery(sb.toString());
+        LOG.debug("Got BRE history details - building data objects");
+
+        List<ExcelComment> results = new ArrayList<ExcelComment>(result.size());
+        for(Object obj : result) {
+            ExcelComment comment = new ExcelComment((Map)obj);
+            if ((getCurrentUser().isCHO() && comment.getVisibilityType() == 1)
+                    || (getCurrentUser().isAnInsurer() && comment.getVisibilityType() == 2))
+                continue;
+
+            results.add(new ExcelComment((Map)obj));
+        }
+
         
         return results;
     }
     
     @Override
     public List<ExcelClaimCycle> getExcelClaimCycle(List<Integer> ids) {
-        List<ExcelClaimCycle> results = new ArrayList<ExcelClaimCycle>(ids.size()*10);
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append("select ")
+            .append(" c.cho_reference as choreference, a.created_date as modifieddate,")
+            .append(" case when ins.name is not null then wu.first_name || ' ' || wu.last_name || ' (' || ins.name || ')'")
+            .append("       else case when cho.name is not null then wu.first_name || ' ' || wu.last_name || ' (' || cho.name || ')'")
+            .append("            else wu.first_name || ' ' || wu.last_name end end as modifiedby,")
+            .append(" a.new_status as status, a.reverted as reverted")
+            .append(" from claim c")
+            .append(" join audit_trail a on (c.id = a.claim_id)")
+            .append(" left outer join web_user wu on (a.created_by = wu.id)")
+            .append(" left outer join insurer ins on (wu.insurer_id = ins.id)")
+            .append(" left outer join chorganisation cho on (wu.chorganisation_id = cho.id)")
+//            .append(" where c.id in ( :claimIds )");
+            .append(" where c.id in (");
+
+        boolean first = true;
+        for (Integer id : ids) {
+            if (!first)
+                sb.append(", ").append(id.toString());
+            else {
+                sb.append(id.toString());
+                first = false;
+            }
+        }            
+        sb.append(") ");
+        sb.append(" order by  choreference, modifieddate");
+
+//        Map paramMap = new HashMap();
+//        paramMap.put("claimIds", ids);
+
+        LOG.debug("Querying for claim cycle details...\n{}", sb.toString());
+//        List result = this.externalQuery(sb.toString(), paramMap);
+        List result = this.externalQuery(sb.toString());
+        LOG.debug("Got claim cycle details - building data objects");
+
+        List<ExcelClaimCycle> results = new ArrayList<ExcelClaimCycle>(result.size());
+        for(Object obj : result)
+            results.add(new ExcelClaimCycle((Map)obj));
+
         return results;
     }
     
