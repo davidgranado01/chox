@@ -387,6 +387,7 @@
         }else{
             $("#AutomaticClaimRoutingHolder").hide();
             $("#tpiWorkgroupId").hide();
+            $('form#formUpdateInsurerDetail input[name="enableManualInvoiceWorkgroups"]').attr('checked', false);
             $("#manualInvoiceWorkgroupHolder").hide();
             $("select#autoRoutingEnableDropDownId").val("");
         }
@@ -428,6 +429,7 @@
             $("#manualInvoiceOwnershipHolder").slideDown();
         }else{
             $("#TpiClaimOwnerId").hide();
+            $('form#formUpdateInsurerDetail input[name="enableManualInvoiceOwnership"]').attr('checked', false);
             $("#manualInvoiceOwnershipHolder").hide();
         }
         return claimOwnershipEnable;
@@ -743,7 +745,7 @@
                                     <td>
                                         <div class="chox-form-item" id="manualInvoiceWorkgroupHolder">
                                             <label class="chox-form-std-label">Enable Manual Invoice Workgroups</label>
-                                            <s:checkbox name="enableManualInvoiceWorkgroups" value="enableManualInvoiceWorkgroups" />
+                                            <s:checkbox name="enableManualInvoiceWorkgroups" id="enableManualInvoiceWorkgroupCheckboxId" value="enableManualInvoiceWorkgroups" />
                                         </div>
                                     </td>
 	                               </tr>
@@ -751,7 +753,7 @@
                                     <td>
                                         <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
                                             <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
-                                            <s:checkbox name="enableManualInvoiceOwnership" value="enableManualInvoiceOwnership" />
+                                            <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
                                     </td>
                                 </tr>

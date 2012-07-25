@@ -117,9 +117,9 @@ Ext.onReady(function(){
                         selectedWorkgroupId = '<s:property value="workgroup.id"/>';
                         this.clearValue(); 
                         workgroupCombo.setValue(selectedWorkgroupId);
-                        <s:if test="insurer.enableManualInvoiceOwnership">
-                            doRenderClaimHandlerDropDown(selectedWorkgroupId);
-                        </s:if>
+                        if (isInvoiceOwnershipEnable) {
+                           doRenderClaimHandlerDropDown(selectedWorkgroupId); 
+                        }
                     }
                 }
             }
@@ -191,24 +191,16 @@ function assignClaimSubmit(){
                             Owner' button.
                         </div>
                     </s:if>
-                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable && !insurer.enableManualInvoiceOwnership">
+                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable && (!insurer.enableManualInvoiceOwnership || !insurer.claimOwnershipEnable)">
                         <div class="status-info">
                             Please assign the Workgroup for this claim and click on the 'Assign Workgroup' button. 
                         </div>
                     </s:elseif>
-                    <s:elseif test="!insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
+                    <s:elseif test="(!insurer.enableManualInvoiceWorkgroups && !insurer.workgroupEnable) && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                         <div class="status-info">
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                         </div>
                     </s:elseif>
-                    <s:elseif test="insurer.enableManualInvoiceWorkgroups || insurer.enableManualInvoiceOwnership">
-                        <div class="status-info">'Workgroups' or 'Claim Ownership' are disabled for this insurer.
-                        </div>
-                    </s:elseif>
-                    <s:else>
-                        <div class="status-info">'Manual Invoice Workgroups' and 'Manual Invoice Ownership' are disabled for this insurer.
-                        </div>
-                    </s:else>
                         
                     <div class="status-control-set">
                         <table class="status-table" border="0" cellpadding="0" cellspacing="0">

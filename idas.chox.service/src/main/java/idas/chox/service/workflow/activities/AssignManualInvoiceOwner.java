@@ -29,8 +29,12 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         
         super.validate(claim);
-        workgroupsEnabled = claim.getInsurer().isEnableManualInvoiceWorkgroups();
-        ownershipEnabled = claim.getInsurer().isEnableManualInvoiceOwnership();
+        if (claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().isWorkgroupEnable()) {
+            workgroupsEnabled = true;
+        }
+        if (claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().isClaimOwnershipEnable()) {
+            ownershipEnabled = true;
+        }
 
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
             throw new Exception("Invalid workgroup id. workgroupId : " + oasWorkgroupId);
