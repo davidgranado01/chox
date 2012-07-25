@@ -65,10 +65,7 @@ Ext.onReady(function(){
 	                    claimOwnerId = -1;
 	                    validateComboBox()
 	                }
-	            },select : function () {
-                    validateComboBox()
-                }
-	            
+	            }
 	        }
 	    });
 	    claimOwnerStore.load({ params : {"workgroupId":-1, "insurerId":insurerId}});
@@ -114,7 +111,6 @@ Ext.onReady(function(){
             	<s:if test="insurer.enableManualInvoiceOwnership">
                     doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                 </s:if>
-                validateComboBox();
                 },
                 blur: function () {
                     if(this.getRawValue() == "") {
