@@ -1,34 +1,51 @@
 package idas.chox.data;
 
-import idas.chox.core.model.History;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 /**
  *
  * @author seeni
  */
 public class ExcelHistory {
+    String choReference;
+    Date processDate;
+    String ruleId;
+    String type;
+    String narrative;
+    Boolean visibleToCHO;
 
-    private List<History> histories;
-
-    public List<History> getHistories() {
-        return histories;
+    public ExcelHistory(Map data) {
+        choReference = (String) data.get("choreference");
+        processDate = (Date) data.get("processdate");
+        ruleId = (String) data.get("ruleid");
+        type = (String) data.get("type");
+        narrative = (String) data.get("narrative");
+        visibleToCHO = (Boolean) data.get("ispublic");
     }
 
-    public void setHistories(List<History> histories, boolean isCHO) {
-        History history;
-        List<History> newHistories = new ArrayList();
-        if (histories != null) {
-            Iterator iterator = histories.iterator();
-            while (iterator.hasNext()) {
-                history = (History) iterator.next();
-                if (!(history.getType().equals("INFO")) && (history.getIsPublic() || !isCHO)) {
-                    newHistories.add(history);
-                }
-            }
-        }
-        this.histories = newHistories;
+    public String getChoReference() {
+        return choReference;
     }
+
+    public Boolean isVisibleToCHO() {
+        return visibleToCHO;
+    }
+
+    public String getNarrative() {
+        return narrative;
+    }
+
+    public Date getProcessDate() {
+        return processDate;
+    }
+
+    public String getRuleId() {
+        return ruleId;
+    }
+
+    public String getType() {
+        return type;
+    }
+    
 }

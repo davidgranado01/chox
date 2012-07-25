@@ -1353,7 +1353,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .append("     left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
             .append("     left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
             .append("     left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
-//            .append(" where c.id in ( :claimIds )");
+//            .append(" where c.id in ( :claimIds ) ");
             .append(" where c.id in (");
 
         boolean first = true;
@@ -1365,7 +1365,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 first = false;
             }
         }            
-        sb.append(")");
+        sb.append(") ");
+//        sb.append(" order by ?");
 
 //        Map paramMap = new HashMap();
 //        paramMap.put("claimIds", ids);
@@ -1433,7 +1434,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 first = false;
             }
         }            
-        sb.append(")");
+        sb.append(") ");
+        sb.append(" order by createddate");
 
 //        Map paramMap = new HashMap();
 //        paramMap.put("claimIds", ids);
@@ -1452,15 +1454,53 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
     
     @Override
-    public List<ExcelComment> getExcelComments(List<Integer> ids) {
-        List<ExcelComment> results = new ArrayList<ExcelComment>(ids.size()*5);
-        
+    public List<ExcelHistory> getExcelHistory(List<Integer> ids) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select ")
+            .append(" c.cho_reference as choreference, h.process_date as processdate,")
+            .append(" h.rule_id as ruleid, h.type as type, h.narrative as narrative")
+            .append(" h.is_public as ispublic")
+            .append(" from claim c")
+            .append(" join invoice i on (c.invoice_id = i.id)")
+            .append(" join history h on (c.id = h.claim_id)")
+            .append(" where h.type != 'INFO'")
+
+//            .append(" where c.id in ( :claimIds )");
+            .append(" where c.id in (");
+
+        boolean first = true;
+        for (Integer id : ids) {
+            if (!first)
+                sb.append(", ").append(id.toString());
+            else {
+                sb.append(id.toString());
+                first = false;
+            }
+        }            
+        sb.append(") ");
+        sb.append(" order by choreference, processdate, ruleid");
+
+//        Map paramMap = new HashMap();
+//        paramMap.put("claimIds", ids);
+
+        LOG.debug("Querying for BRE history details...\n{}", sb.toString());
+//        List result = this.externalQuery(sb.toString(), paramMap);
+        List result = this.externalQuery(sb.toString());
+        LOG.debug("Got BRE history details - building data objects");
+
+        List<ExcelHistory> results = new ArrayList<ExcelHistory>(result.size());
+        for(Object obj : result) {
+            ExcelHistory history = new ExcelHistory((Map)obj);
+            if (!getCurrentUser().isCHO() ||  history.isVisibleToCHO())
+                results.add(history);
+        }
+
         return results;
     }
     
     @Override
-    public List<ExcelHistory> getExcelHistory(List<Integer> ids) {
-        List<ExcelHistory> results = new ArrayList<ExcelHistory>(ids.size()*5);
+    public List<ExcelComment> getExcelComments(List<Integer> ids) {
+        List<ExcelComment> results = new ArrayList<ExcelComment>(ids.size()*5);
         
         return results;
     }
