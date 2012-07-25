@@ -1079,6 +1079,22 @@ public class InvoiceStatusReport implements Report {
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
               .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+              .append( "and c.status = 'ManualInvoiceUnassigned' ")
+              .append(createdDateRestriction)
+              .append( ")  as no_manual_invoices_in_to_be_assigned_current_month, ");
+            
+            sb.append("(select COALESCE(sum(i.total_gross),0.0) from claim c, invoice i ")
+              .append( "where c.invoice_id = i.id ")
+              .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+              .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+              .append( "and c.status = 'ManualInvoiceUnassigned' ")
+              .append(createdDateRestriction)
+              .append( ")  as val_manual_invoices_in_to_be_assigned_current_month, ");
+        
+            sb.append("(select count(*) from claim c, invoice i ")
+              .append( "where c.invoice_id = i.id ")
+              .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+              .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
               .append( "and c.status = 'ManualInvoiceBREApproved' ")
               .append(createdDateRestriction)
               .append(") as no_manual_invoices_approved_current_month, ");
