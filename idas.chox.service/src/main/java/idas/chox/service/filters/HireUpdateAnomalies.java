@@ -14,6 +14,7 @@ public class HireUpdateAnomalies extends BaseFilter {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setIsAnomalies(true);
         claimSearchCriteria.setShowOpenClaimsOnly(true);
+        claimSearchCriteria.setIsManual(getIsManualFilter());
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());

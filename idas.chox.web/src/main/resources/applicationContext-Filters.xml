@@ -382,11 +382,12 @@
         <property name="name" value="Manual Invoices To Be Assigned"/>
         <property name="key" value="ManualInvoicesToBeAssigned"/>
         <property name="status" value="ManualInvoiceUnassigned"/>
+        <property name="isManualFilter" value="true"/>
         <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckOwnership" value="true"/>
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
@@ -395,9 +396,10 @@
         <property name="name" value="Manual Invoices Approved By BRE"/>
         <property name="key" value="ManualInvoiceBREApproved"/>
         <property name="status" value="ManualInvoiceBREApproved"/>
-        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isManualFilter" value="true"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -408,9 +410,10 @@
         <property name="name" value="Manual Invoices Rejected By BRE"/>
         <property name="key" value="ManualInvoiceBRERejected"/>
         <property name="status" value="ManualInvoiceBRERejected"/>
-        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isManualFilter" value="true"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -421,9 +424,10 @@
         <property name="name" value="Manual Invoices Contested With CHO"/>
         <property name="key" value="ManualInvoiceContested"/>
         <property name="status" value="ManualInvoiceContested"/>
-        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isManualFilter" value="true"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>

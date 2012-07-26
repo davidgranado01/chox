@@ -45,6 +45,30 @@ public class RoleHelper {
         return false;
     }
 
+    public static boolean isManualWorkgroupValidationEnabledUser(WebUser user) {
+        if (isInsurerUser(user)) {
+
+            if (user.getInsurer().isEnableManualInvoiceWorkgroups()) {
+
+                if (user.getRoles() != null) {
+
+                    if (user.getRoles().size() > 0) {
+                        Iterator itr = user.getRoles().iterator();
+                        while (itr.hasNext()) {
+                            WebUserRole webUserrole = (WebUserRole) itr.next();
+                            if (webUserrole.isWorkgroupRelated()) {
+                                return true;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return false;
+    }
+
     /*****************************************************
      * OWNERSHIP
      *****************************************************/
@@ -81,6 +105,27 @@ public class RoleHelper {
                                 isManager = true;
                         }
                         return isEnabled && !isManager;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isManualOwnershipValidationEnabledUser(WebUser user) {
+
+        if (isInsurerUser(user)) {
+            if (user.getInsurer().isEnableManualInvoiceOwnership()) {
+                if (user.getRoles() != null) {
+                    if (user.getRoles().size() > 0) {
+                        Iterator itr = user.getRoles().iterator();
+                        while (itr.hasNext()) {
+                            WebUserRole webUserrole = (WebUserRole) itr.next();
+                            if (webUserrole.isOwnershipRelated()) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }

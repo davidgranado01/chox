@@ -59,6 +59,7 @@ public interface Filter {
     boolean getIsCheckOwnership();
     boolean getIsCheckFnol();
     boolean getIsCheckEngineers();
+    boolean getIsManualFilter();
 
     ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
 }

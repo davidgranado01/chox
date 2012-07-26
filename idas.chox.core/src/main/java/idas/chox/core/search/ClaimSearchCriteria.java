@@ -55,6 +55,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean penaltyChargesAppliedOnly;
     private Set<Integer> claimOwnerIds;;
     private Set<Integer> supplierClaimOwnerIds;
+    private boolean isManual;
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
     private boolean isSupplierOwnerShipCheck;
@@ -505,4 +506,12 @@ public class ClaimSearchCriteria implements Serializable {
 	public void setEscalatedToSupervisor(boolean isEscalatedToSupervisor) {
 		this.isEscalatedToSupervisor = isEscalatedToSupervisor;
 	}
+
+    public boolean isIsManual() {
+        return isManual;
+    }
+
+    public void setIsManual(boolean isManual) {
+        this.isManual = isManual;
+    }
 }

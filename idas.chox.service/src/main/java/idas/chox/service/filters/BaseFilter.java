@@ -8,6 +8,7 @@ public abstract class BaseFilter implements Filter {
 
     private ClaimService claimService;
     private Integer count;
+    private boolean isManualFilter = false;
     private boolean isFilterWorkGroup = false;
     private boolean isFilterOwnership = false;
     private boolean isFilterSupplierOwnership = false;
@@ -82,20 +83,12 @@ public abstract class BaseFilter implements Filter {
     @Override
     public abstract ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
 
-   // setcount removed for bug#964
-    
-//    @Override
-//    public Integer getCount() {
-//        return count;
-//    }
-//
-//    @Override
-//    public void setCount(Integer count) {
-//        this.count = count;
-//    }
 
-//    @Override
-//    public String getDescription() {
-//        return String.format("%s (%d)", getName(), getCount().intValue());
-//    }
+    public boolean getIsManualFilter() {
+        return isManualFilter;
+    }
+
+    public void setIsManualFilter(boolean isManualFilter) {
+        this.isManualFilter = isManualFilter;
+    }
 }

@@ -575,19 +575,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
-        if (searchCriteria.getIsWorkgroupCheck()) {
+        if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
             }
         }
 
-        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer()) {
+        if (searchCriteria.getIsWorkgroupCheck() && searchCriteria.isIsManual()) {
+            if (RoleHelper.isManualWorkgroupValidationEnabledUser(getCurrentUser())) {
+                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
+            }
+        }
+
+        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & !searchCriteria.isIsManual()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
 
-        if (searchCriteria.getIsSupplierOwnerShipCheck() && !getCurrentUser().isAnInsurer() && !getCurrentUser().isCHOXAdmin()) {
+        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer() & searchCriteria.isIsManual()) {
+            if (RoleHelper.isManualOwnershipValidationEnabledUser(getCurrentUser())) {
+                criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
+            }
+        }
+
+        if (searchCriteria.getIsSupplierOwnerShipCheck() && getCurrentUser().isCHO()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
                         Restrictions.isNull("supplierClaimOwner.id")));

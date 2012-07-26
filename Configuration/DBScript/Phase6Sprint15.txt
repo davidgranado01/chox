@@ -5,9 +5,10 @@ ALTER TABLE insurer ADD COLUMN enable_manual_invoice_workgroups boolean default 
 ALTER TABLE insurer ADD COLUMN enable_manual_invoice_ownership boolean default false;
 
 INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check) VALUES ('filter.ManualInvoicesToBeAssigned',false,false);
-INSERT INTO accessibility_item (role, access_right, accessibility_id) VALUES ('ROLE_INS_UPLOAD', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
+INSERT INTO accessibility_item (role, access_right, accessibility_id) VALUES ('ROLE_INS_CR', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
 INSERT INTO accessibility_item (role, access_right, accessibility_id) VALUES ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
 INSERT INTO accessibility_item (role, access_right, accessibility_id) VALUES ('ROLE_INS_MI', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
+INSERT INTO accessibility_item (role, access_right, accessibility_id) VALUES ('ROLE_INS_COM', 1, (select id from accessibility where name='filter.ManualInvoicesToBeAssigned'));
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.ManualInvoicesToBeAssigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.ManualInvoicesToBeAssigned';
 
