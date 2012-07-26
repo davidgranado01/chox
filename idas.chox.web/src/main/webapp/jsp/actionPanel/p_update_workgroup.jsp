@@ -58,9 +58,8 @@ function validateComboBox(){
     var mesBox = $("#WorkgroupAssignmentMessageBox");
     mesBox.empty();
     var selectedComboValue = Ext.getCmp('workgroupComboId').getValue();
-    alert(selectedComboValue)
-    if (selectedComboValue == null && selectedComboValue <= 0) {
-        mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
+    if (selectedComboValue == '' && selectedComboValue <= 0) {
+        mesBox.append("You Must Select A 'Workgroup'.").show();
         return false;
     } else {
         mesBox.text("").show();
@@ -81,12 +80,13 @@ function assignClaimSubmit(){
 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form  id="updateWorkgroupForm" name="updateWorkgroupForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+    <form  id="updateWorkgroupForm" name="updateWorkgroupForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action?" method="POST">
         <fieldset class="x-fieldset"><legend>Update Workgroup - Action Required</legend>
             <div>
                 <div class="status-info">Please select a Workgroup for this claim and click on the ’Update Workgroup’ button.
                 </div>
                 <div class="status-control-set">
+                    <s:hidden id="name" name="name" />
                     <table class="status-table" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td align="right" width="10%"><label>Workgroup : </label></td>
