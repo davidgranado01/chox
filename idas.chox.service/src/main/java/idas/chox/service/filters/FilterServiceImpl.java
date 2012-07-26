@@ -31,14 +31,8 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         if (!filter.getIsManualFilter() && filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
                             LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
                             continue;
-                        } else if (filter.getIsManualFilter() && filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isEnableManualInvoiceWorkgroups()) {
-                            LOG.debug("Not adding queue '{}' as manual invoice workgroups not enabled.", filter.getName());
-                            continue;
                         } else if (!filter.getIsManualFilter() && filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
                             LOG.debug("Not adding queue '{}' as claim ownership not enabled.", filter.getName());
-                            continue;
-                        } else if (filter.getIsManualFilter() && filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isEnableManualInvoiceOwnership()) {
-                            LOG.debug("Not adding queue '{}' as manual invoice claim ownership not enabled.", filter.getName());
                             continue;
                         } else if (filter.getIsCheckFnol() && webUser.isAnInsurer() && !webUser.getInsurer().isFnolEnable()) {
                             LOG.debug("Not adding queue '{}' as FNOL not enabled.", filter.getName());
@@ -49,9 +43,9 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
-                        } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED) && webUser.isAnInsurer()
+                        } else if (filter.getIsManualFilter()  && webUser.isAnInsurer()
                                 && (!webUser.getInsurer().isUploadEnabled() || !(webUser.getInsurer().isEnableManualInvoiceWorkgroups() || webUser.getInsurer().isEnableManualInvoiceOwnership()))) {
-                                LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
+                                LOG.debug("Not adding queue '{}' as Insurer Upload not enabled or workgroups/.", filter.getName());
                                 continue;
                         } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED)
                                                                                                   || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_CONTESTED))
@@ -66,6 +60,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                                 LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                                 continue;
                         } 
+                        
                      
                         LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);
