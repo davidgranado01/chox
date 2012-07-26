@@ -250,11 +250,11 @@
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
                                     <div id="vehicleClassDropDownDiv" class="chox-form-item"></div>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Hire Net Ceiling</label>
+                                        <label class="chox-form-std-label">Hire Net Ceiling<span class="mandatory">*</span></label>
                                         <input id="hireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />"/>
                                     </div>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Repair Net Ceiling</label>
+                                        <label class="chox-form-std-label">Repair Net Ceiling<span class="mandatory">*</span></label>
                                         <input id="repairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />"/>
                                     </div>
                                     <div class="chox-form-button">
@@ -284,11 +284,11 @@
                         <label id="editVehicleClassName"></label>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-pop">Hire Net Ceiling</label>
+                        <label class="chox-form-pop">Hire Net Ceiling<span class="mandatory">*</span></label>
                         <input id="hireNetCeiling" name="hireNetCeiling"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-pop">Repair Net Ceiling</label>
+                        <label class="chox-form-pop">Repair Net Ceiling<span class="mandatory">*</span></label>
                         <input id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

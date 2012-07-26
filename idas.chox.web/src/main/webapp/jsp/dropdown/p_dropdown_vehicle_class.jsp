@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<label class="chox-form-std-label">Vehicle Class</label>
+<label class="chox-form-std-label">Vehicle Class<span class="mandatory">*</span></label>
 <s:select
     id="vehicleClassId"
     name="vehicleClassId"
