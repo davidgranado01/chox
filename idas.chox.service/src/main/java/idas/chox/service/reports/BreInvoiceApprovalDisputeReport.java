@@ -726,8 +726,11 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             BreInvoiceApprovalDisputedRoRData rorData = new BreInvoiceApprovalDisputedRoRData();
             
             Map<Integer, BigDecimal> listOfCommLineData = breInvoiceApprovalDisputeCumulativeData.getDisputedApprovalReasonsMap();
-            rorData.setCommlineData(listOfCommLineData.get(ror.getId()));
-            
+            if (listOfCommLineData != null) {
+                rorData.setCommlineData(listOfCommLineData.get(ror.getId()));
+            } else {
+                rorData.setCommlineData(BigDecimal.ZERO);
+            }
             List<BigDecimal> lineData = new ArrayList<BigDecimal>();
             for(BreInvoiceApprovalDisputedData disData : breInvoiceApproval){
                 if(disData.getDisputedApprovalReasonsMap() != null)
