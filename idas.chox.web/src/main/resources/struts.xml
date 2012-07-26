@@ -500,6 +500,10 @@
             <result name="success">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
+        <action name="updateClaimWorkgroup" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroup">
+            <result name="success">/jsp/actionPanel/p_update_workgroup.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
 
        <!-- BATCH UPDATE !-->
         <action name="doClaimOwnershipUpdateAction" class="idas.chox.web.actions.BatchUpdateAction" method="doClaimOwnershipUpdateAction">

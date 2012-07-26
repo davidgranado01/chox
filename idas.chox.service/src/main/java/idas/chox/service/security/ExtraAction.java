@@ -25,6 +25,7 @@ public class ExtraAction {
      */
     public static final String ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP = "updateManualInvWorkgroup";
     public static final String ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER = "updateManualInvClaimOwner";
+    public static final String UPDATE_CLAIM_WORKGROUP = "updateClaimWorkgroup";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -42,7 +43,7 @@ public class ExtraAction {
         action.add(PENALTY_CHARGE_CONFIGURATION);
         action.add(INVOICE_REVIEW_REQUIRED);
         action.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
-
+        action.add(UPDATE_CLAIM_WORKGROUP);
         return action;
     }
 
@@ -81,6 +82,8 @@ public class ExtraAction {
             returnStr = "Update Manual Invoice Workgroup";
         } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER)) {
             returnStr = "Update Manual Invoice Claim Owner";
+        } else if (extraAction.equalsIgnoreCase(UPDATE_CLAIM_WORKGROUP)) {
+            returnStr = "Update Workgroup";
         }
         return returnStr;
     }

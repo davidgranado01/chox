@@ -1,0 +1,110 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<script type="text/javascript">
+
+var selectedWorkgroupId = -1;
+var insurerId = -1;
+var isWorkgroupEnable = false;
+
+Ext.onReady(function(){
+   
+    
+    insurerId = '<s:property value="insurer.id"/>';
+        
+    
+    if(<s:property value="insurer.workgroupEnable"/>) {
+        selectedWorkgroupId = '<s:property value="workgroup.id"/>';
+        var wgrpJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
+
+        var workgroupStore = new Ext.data.Store({
+            proxy : new Ext.data.HttpProxy
+            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":insurerId}}),
+            reader: wgrpJsonReader,
+             listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
+        });
+
+        var workgroupCombo = new Ext.form.ComboBox({
+            store: workgroupStore,
+            width: 200,
+            renderTo: 'workgroupComboDiv',
+            valueField: 'text',
+            id: 'workgroupComboId',
+            hiddenName: 'workgroupId',
+            displayField:'value',
+            typeAhead: true,
+            mode: 'local',
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            forceSelection: true,
+            listWidth: 200,
+            selectOnFocus: true,
+            forceSelection : true
+        });
+        workgroupStore.load({ params : {"orgId":insurerId}});
+    }
+
+});
+
+
+function validateComboBox(){
+    var mesBox = $("#WorkgroupAssignmentMessageBox");
+    mesBox.empty();
+    var selectedComboValue = Ext.getCmp('workgroupComboId').getValue();
+    alert(selectedComboValue)
+    if (selectedComboValue == null && selectedComboValue <= 0) {
+        mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
+        return false;
+    } else {
+        mesBox.text("").show();
+        return true;
+    }
+        
+}
+
+function assignClaimSubmit(){
+	actionPanel.registerAction("assignWorkgroup");
+    if (validateComboBox()) {
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+        $("#updateWorkgroupForm").submit();
+    }
+}
+
+</script>
+
+
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
+    <form  id="updateWorkgroupForm" name="updateWorkgroupForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+        <fieldset class="x-fieldset"><legend>Update Workgroup - Action Required</legend>
+            <div>
+                <div class="status-info">Please select a Workgroup for this claim and click on the ’Update Workgroup’ button.
+                </div>
+                <div class="status-control-set">
+                    <table class="status-table" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td align="right" width="10%"><label>Workgroup : </label></td>
+                            <td width="20%"><div id="workgroupComboDiv"/></td>
+                            <td width="70%"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="" nowrap >
+                                <input type="button" id="miAssignButton" value="Update Workgroup" onclick="return assignClaimSubmit();"/>
+                            </td>
+                        </tr>
+                            
+                    </table>
+                    <div class="chox-form-submit-result"></div>
+                    <div class="action-error-msg" id="WorkgroupAssignmentMessageBox"></div>
+                </div>
+            </div>
+        </fieldset>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+    </form>
+</div>

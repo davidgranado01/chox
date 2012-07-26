@@ -224,6 +224,12 @@ public class ApplicationAccessibility {
                 LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
+            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
+                    && claim.getInsurer().isClaimOwnershipEnable()) {
+                accessRight = 0;
+                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
+            }
+            
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
                 LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
