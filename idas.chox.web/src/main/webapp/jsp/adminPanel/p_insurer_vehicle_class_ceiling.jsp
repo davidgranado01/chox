@@ -284,11 +284,11 @@
                         <label id="editVehicleClassName"></label>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-pop">Hire Net Ceiling<span class="mandatory">*</span></label>
+                        <label class="chox-form-pop">Hire Net Ceiling</label>
                         <input id="hireNetCeiling" name="hireNetCeiling"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-pop">Repair Net Ceiling<span class="mandatory">*</span></label>
+                        <label class="chox-form-pop">Repair Net Ceiling</label>
                         <input id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
