@@ -484,13 +484,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 -- Apply Penalty Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       claimRecord30D.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
+      0,
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
@@ -505,14 +506,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.hire_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || hireInsDis.discount_percentage
@@ -705,13 +706,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 -- Apply Penalty Comment
 
     INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
     SELECT 
       claimRecord60D.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
+      0,
       0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
                                       || ' have been applied to the invoice as the age of the invoice has exceeded ' 
@@ -876,8 +878,6 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
   ROWS 1000;
-ALTER FUNCTION applyautopenaltycharge(integer, integer)
-  OWNER TO chox;
 GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox;
 GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO public;
 GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox_user;
