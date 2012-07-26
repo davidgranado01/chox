@@ -64,8 +64,9 @@ public class AssignManualInvoiceOwner extends BaseActivity {
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD)
-                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MI)) {
+                && !securityInfoProvider.getIsCHOXAdmin()
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM)
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }

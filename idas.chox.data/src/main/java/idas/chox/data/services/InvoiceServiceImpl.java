@@ -476,21 +476,13 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 LOG.debug("totalGrossValue (totalGross - grossValueCombined) ({} - {} = {})", new Object[]{inv.getTotalGross(),grossValueCombined,totalGrossValue});
 
                 if (isTotalGrossDiscountAppliedToPenalties) {
-                    BigDecimal hirePenaltyAmount = BigDecimal.ZERO;
-                    BigDecimal repairPenaltyAmount = BigDecimal.ZERO;
-                    
-                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-                    if (!isHireGrossDiscountAppliedToPenalties)
-                        hirePenaltyAmount = calculateHirePenaltyCharge(inv, inv.getHirePenaltyPercentage(), hireStart);
-                    if (!isRepairGrossDiscountAppliedToPenalties)
-                        repairPenaltyAmount = calculateRepairPenaltyCharge(inv, inv.getRepairPenaltyPercentage());
-                    BigDecimal totalPenaltyAmount = hirePenaltyAmount.add(repairPenaltyAmount);
-                    LOG.debug("totalGross Discount applied to Penalties and calculated totalPenaltyAmount  (hirepenalty+repairPenalty) {} + {} = {}", new Object[]{hirePenaltyAmount,repairPenaltyAmount,totalPenaltyAmount});
-                    totalGrossInsurerDiscountAmount = (totalGrossValue.add(totalPenaltyAmount)).multiply(totalGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-                    LOG.debug("Calculated totalGrossInsurerDiscountAmount ((totalGrossValue+totalPenaltyAmount)*(totalGrossInsurerDiscountPercentage/100)) (({}+{})*({}/100)) = {}", new Object[]{totalGrossValue,totalPenaltyAmount,totalGrossInsurerDiscountPercentage,totalGrossInsurerDiscountAmount});
+                    totalGrossInsurerDiscountAmount = (totalGrossValue.add(inv.getTotalPenaltyCharge())).multiply(totalGrossInsurerDiscountPercentage
+                            .divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+                    LOG.debug("Calculated totalGrossInsurerDiscountAmount ((totalGrossValue+totalPenaltyAmount)*(totalGrossInsurerDiscountPercentage/100)) (({}+{})*({}/100)) = {}", 
+                            new Object[]{totalGrossValue, inv.getTotalPenaltyCharge(), totalGrossInsurerDiscountPercentage, totalGrossInsurerDiscountAmount});
                 } else {
                     totalGrossInsurerDiscountAmount = totalGrossValue.multiply(totalGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-                    LOG.debug("Calculated totalGrossInsurerDiscountAmount ((totalGrossValue)*(totalGrossInsurerDiscountPercentage/100)) ({}*({}/100)) = {}", new Object[]{totalGrossValue,totalGrossInsurerDiscountPercentage,totalGrossInsurerDiscountAmount});
+                    LOG.debug("Calculated totalGrossInsurerDiscountAmount ((totalGrossValue)*(totalGrossInsurerDiscountPercentage/100)) ({}*({}/100)) = {}", new Object[]{totalGrossValue, totalGrossInsurerDiscountPercentage, totalGrossInsurerDiscountAmount});
                 }
                 
                 if (canAddComment && user != null && totalGrossInsurerDiscountAmount.compareTo(inv.getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1))) != 0 
