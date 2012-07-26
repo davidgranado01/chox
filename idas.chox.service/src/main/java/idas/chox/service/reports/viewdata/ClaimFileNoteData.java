@@ -3,8 +3,11 @@ package idas.chox.service.reports.viewdata;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.core.util.DateHelper;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  *
@@ -35,7 +38,7 @@ public class ClaimFileNoteData {
                         claimFileNoteData.createdBy = comment.getCreatedBy().getFullName();
                     }
                     claimFileNoteData.createdOn = DateHelper.getLocalDateTimeFormat().format(comment.getCreatedDate());
-                    claimFileNoteData.note = comment.getComment();
+                    claimFileNoteData.note = StringEscapeUtils.unescapeHtml(comment.getComment());
                     claimFileNoteData.number = noteNumber++;
                     claimFileNoteDataList.add(claimFileNoteData);
                 }

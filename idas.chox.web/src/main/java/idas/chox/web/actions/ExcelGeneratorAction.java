@@ -34,6 +34,7 @@ import java.util.Map;
 
 import net.sf.jxls.transformer.XLSTransformer;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -263,6 +264,8 @@ public class ExcelGeneratorAction extends BaseAction {
                     if (c.getRaisedBy() != null) {
                         c.setCreatedBy(c.getRaisedBy());
                     }
+                    if(c.getComment() != null)
+                        c.setComment(StringEscapeUtils.unescapeHtml(c.getComment()));
                     comments.add(c);
                 }
             }
