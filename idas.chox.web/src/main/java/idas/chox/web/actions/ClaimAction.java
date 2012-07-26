@@ -1301,11 +1301,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getFormattedInsLiab() {
-        return claim.getPercentageLiabilityAccepted() == null || claim.getPercentageLiabilityAccepted().equals(new BigDecimal("0.00")) ? BigDecimal.ZERO : claim.getPercentageLiabilityAccepted();
+        return claim.getPercentageLiabilityAccepted() == null || claim.getPercentageLiabilityAccepted().equals(new BigDecimal("0.00")) ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityAccepted();
     }
 
     public BigDecimal getFormattedChoLiab() {
-        return claim.getPercentageLiabilityCho() == null || claim.getPercentageLiabilityCho().equals(new BigDecimal("0.00")) ? BigDecimal.ZERO : claim.getPercentageLiabilityCho();
+        return claim.getPercentageLiabilityCho() == null || claim.getPercentageLiabilityCho().equals(new BigDecimal("0.00")) ? BigDecimal.ZERO.setScale(2) : claim.getPercentageLiabilityCho();
     }
 
     public int getId() {
