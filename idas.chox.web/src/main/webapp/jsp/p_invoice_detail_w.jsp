@@ -16,7 +16,9 @@
     var tpi_insurer_premium_vat_rate= '<s:property value="tpiInsurancePremiumVatUsed"/>';
     var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
-    var insurerDiscountApplied= '<s:property value="insurerDiscountPercentageApplied"/>';
+    var hireInsurerDiscountApplied = '<s:property value="hireInsurerDiscountCalculated"/>';
+    var repairInsurerDiscountApplied = '<s:property value="repairInsurerDiscountCalculated"/>';
+    var totalInsurerDiscountApplied = '<s:property value="totalInsurerDiscountCalculated"/>';
     
     var noteMessageDiv=null;
     var tpiClaimChk;
@@ -403,18 +405,29 @@
             }
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                <s:if test="tpiClaim">
-                    Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+parseFloat(hire_vat_rate).toFixed(2)+'%<br/>  Repair VAT: '+parseFloat(repair_vat_rate).toFixed(2)+
-                        '% <br/> Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+
-                        '% <br/>Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+
-                        '% <br/>Insurance Premium VAT: '+parseFloat(tpi_insurer_premium_vat_rate).toFixed(2)+
-                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'%<br>');
-                </s:if><s:else>
-                    Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+parseFloat(hire_vat_rate).toFixed(2)+'%<br/>  Repair VAT: '+parseFloat(repair_vat_rate).toFixed(2)+
-                        '% <br/> Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+
-                        '% <br/>Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+
-                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'%<br>');
-                </s:else>
+                var vatCalculationText = '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
+                    +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
+                    +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'
+                    +'Hire VAT: '+parseFloat(hire_vat_rate).toFixed(2)+'%<br/>'
+                    +'Repair VAT: '+parseFloat(repair_vat_rate).toFixed(2)+'% <br/> '
+                    +'Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>' 
+                    +'Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+'% <br/>' 
+                    +'Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+'% <br/>';
+                            
+            <s:if test="tpiClaim">
+                        vatCalculationText = vatCalculationText + 'Insurance Premium VAT: '+parseFloat(tpi_insurer_premium_vat_rate).toFixed(2)+ '% <br/>';
+            </s:if>
+                
+                if (hireInsurerDiscountApplied > 0) {
+                    vatCalculationText = vatCalculationText + 'Hire Insurer Discount: '+parseFloat(hireInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                }
+                if (repairInsurerDiscountApplied > 0) {
+                    vatCalculationText = vatCalculationText + 'Repair Insurer Discount: '+parseFloat(repairInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                }
+                if (totalInsurerDiscountApplied > 0) {
+                    vatCalculationText = vatCalculationText + 'Total Insurer Discount: '+parseFloat(totalInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                }
+                Ext.MessageBox.alert('VAT Rates Used', vatCalculationText);
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);
             }

@@ -77,7 +77,19 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysAwaitingLiabilityResolution;
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
-    
+
+    public BigDecimal getHireInsurerDiscountCalculated() {
+        return invoice.getHireInsurerDiscountCalculated();
+    }
+
+    public BigDecimal getRepairInsurerDiscountCalculated() {
+        return invoice.getRepairInsurerDiscountCalculated();
+    }
+
+    public BigDecimal getTotalInsurerDiscountCalculated() {
+        return invoice.getTotalInsurerDiscountCalculated();
+    }
+
     public void setInvoiceService(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
@@ -2636,7 +2648,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
 
         invoiceService.applyInsurerDiscounts(claim, null, false);
-        setInsurerDiscountPercentageApplied(invoice.getAverageInsurerDiscountPercentageApplied());
         fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());

@@ -232,14 +232,32 @@ public class Invoice extends Entity implements Serializable {
     private Date autoPenaltyStart;
     private Integer autoPenaltyAlertQty;
     private InvoiceOriginal invoiceOriginal;
-    private BigDecimal averageInsurerDiscountPercentageApplied = BigDecimal.ZERO;
+    private BigDecimal hireInsurerDiscountCalculated = BigDecimal.ZERO;
+    private BigDecimal repairInsurerDiscountCalculated = BigDecimal.ZERO;
+    private BigDecimal totalInsurerDiscountCalculated = BigDecimal.ZERO;
 
-    public BigDecimal getAverageInsurerDiscountPercentageApplied() {
-        return averageInsurerDiscountPercentageApplied;
+    public BigDecimal getHireInsurerDiscountCalculated() {
+        return hireInsurerDiscountCalculated;
     }
 
-    public void setAverageInsurerDiscountPercentageApplied(BigDecimal averageInsurerDiscountPercentageApplied) {
-        this.averageInsurerDiscountPercentageApplied = averageInsurerDiscountPercentageApplied;
+    public void setHireInsurerDiscountCalculated(BigDecimal hireInsurerDiscountCalculated) {
+        this.hireInsurerDiscountCalculated = hireInsurerDiscountCalculated;
+    }
+
+    public BigDecimal getRepairInsurerDiscountCalculated() {
+        return repairInsurerDiscountCalculated;
+    }
+
+    public void setRepairInsurerDiscountCalculated(BigDecimal repairInsurerDiscountCalculated) {
+        this.repairInsurerDiscountCalculated = repairInsurerDiscountCalculated;
+    }
+
+    public BigDecimal getTotalInsurerDiscountCalculated() {
+        return totalInsurerDiscountCalculated;
+    }
+
+    public void setTotalInsurerDiscountCalculated(BigDecimal totalInsurerDiscountCalculated) {
+        this.totalInsurerDiscountCalculated = totalInsurerDiscountCalculated;
     }
 
     public BigDecimal getTotalGrossInsurerDiscount() {
