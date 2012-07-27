@@ -168,7 +168,12 @@
    
 </script>
 <fieldset class="x-fieldset">
-    <legend>Service Commencing</legend>
+<s:if test="insurerIsWorkgroupEnabled">
+    <legend>Workgroup and Claim Owner Workflow Report</legend>
+</s:if>
+<s:else>
+    <legend>Claim Owner Workflow Report</legend>
+</s:else>
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
 
