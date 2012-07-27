@@ -31,35 +31,12 @@ public class InvoiceRejectionAcceptTest extends BaseTest{
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void testInvoiceRejectionAccept() throws Throwable {
 
+        Invoice invoice = invoiceService.getInvoice(999);
+        
         Claim claim = new Claim();
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer); 
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
-        Invoice invoice = new Invoice();
-        invoice.setDateInvoiced(new Date());
-        invoice.setHireNet(BigDecimal.ONE);
-        invoice.setHireVat(BigDecimal.ZERO);
-        invoice.setHireGross(BigDecimal.ZERO);
-        invoice.setRepairNet(BigDecimal.ONE);
-        invoice.setRepairVat(BigDecimal.ZERO);
-        invoice.setRepairGross(BigDecimal.ZERO);
-        invoice.setEngineerFeeNet(BigDecimal.ONE);
-        invoice.setEngineerFeeVat(BigDecimal.ZERO);
-        invoice.setEngineerFeeGross(BigDecimal.ZERO);
-        invoice.setStorageRecoveryNet(BigDecimal.ZERO);
-        invoice.setStorageRecoveryVat(BigDecimal.ZERO);
-        invoice.setStorageRecoveryGross(BigDecimal.ZERO);
-        invoice.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
-        invoice.setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
-        invoice.setTotalNet(BigDecimal.ONE);
-        invoice.setTotalVat(BigDecimal.ZERO);
-        invoice.setTotalGross(BigDecimal.ZERO);
-        invoice.setDiscount(BigDecimal.ZERO);
-        invoice.setTotalToPay(BigDecimal.TEN);
-        invoice.setFullTotalToPay(BigDecimal.TEN);
-//        invoice.setOriginalFullTotalToPay(BigDecimal.TEN);
-//        invoice.setOriginalTotalToPay(BigDecimal.TEN);
-        invoice.setInsurerDiscount(BigDecimal.ZERO);
         claim.setInvoice(invoice);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         InvoiceRejectionAccept activity = (InvoiceRejectionAccept) activityFactory.getActivity("acceptRejectedInvoice");
