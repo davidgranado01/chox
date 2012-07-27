@@ -15,8 +15,10 @@ public class AssignWorkgroupTest extends BaseTest{
     @Test(expected = InvalidClaimStatusException.class)
     public void testAssignworkGroupInvalidStatus() throws Exception {
 
+        Insurer insurer = insurerService.getInsurer(3);
         Claim claim = new Claim();
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        claim.setInsurer(insurer);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         Activity activity = activityFactory.getActivity("assignWorkgroup");
         activity.process(claim);
     }

@@ -210,7 +210,12 @@
 
 </script>
 <fieldset class="x-fieldset">
+<s:if test="insurerIsWorkgroupEnabled">
     <legend>Workgroup and Owner BRE Invoice Approval Dispute Report</legend>
+</s:if>
+<s:else>
+    <legend>Claim Owner BRE Invoice Approval Dispute Report</legend>
+</s:else>
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
 
