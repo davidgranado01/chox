@@ -312,8 +312,8 @@ ALTER TABLE invoice ADD COLUMN hire_gross_insurer_discount numeric(10,2) NOT NUL
 
 DROP FUNCTION applyautopenaltycharge(integer, integer);
 
-CREATE OR REPLACE FUNCTION applyautopenaltycharge(useridnumber integer, claimid integer)
-  RETURNS SETOF claim AS
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) 
+	RETURNS SETOF claim AS 
 $BODY$
 
 DECLARE
@@ -326,8 +326,10 @@ ClaimsId integer;
 invoiceCount30D int;
 invoiceCount60D int;
 invoiceCount90D int;
+hireStartDate30D date;
 hirepenalPer30D NUMERIC;
 hirepenalPer30DVal NUMERIC(8,3);
+hireStartDate60D date;
 hirepenalPer60D NUMERIC;
 hirepenalPer60DVal NUMERIC(8,3);
 repairpenalPer30D NUMERIC;
@@ -338,10 +340,6 @@ repairpenalPer60DVal NUMERIC(8,3);
 BEGIN
 ClaimsId = claimId;
 userId = userIdNumber;
-hirepenalPer30D = 7.5;
-hirepenalPer30DVal = hirepenalPer30D/100;
-hirepenalPer60D = 15;
-hirepenalPer60DVal = hirepenalPer60D/100;
 repairpenalPer30D = 2.5;
 repairpenalPer30DVal = repairpenalPer30D/100;
 repairpenalPer60D = 5;
@@ -349,10 +347,6 @@ repairpenalPer60DVal = repairpenalPer60D/100;
 invoiceCount30D = 0;
 invoiceCount60D = 0;
 invoiceCount90D = 0;
-
-RAISE NOTICE 'userid : % , hirepenalPer30DVal : %,  hirepenalPer60DVal: %,  repairpenalPer30DVal: %, repairpenalPer60DVal : %',userId,hirepenalPer30DVal,hirepenalPer60DVal,repairpenalPer30DVal,repairpenalPer60DVal;
-
--- Apply penalty for invoice over 30 days.
 
 FOR claimRecord30D IN 
 SELECT * 
@@ -382,6 +376,16 @@ WHERE
 
 LOOP
 
+hireStartDate30D = (SELECT rental_start FROM vehicle_hire WHERE id = claimRecord30D.vehicle_hire_id)::date;
+
+hirepenalPer30D = CASE WHEN(
+    (CASE WHEN hireStartDate30D is not null then hireStartDate30D else (select date_invoiced from invoice where id = claimRecord30D.invoice_id) END) 
+    < '2012-06-15'::date) THEN 7.5::NUMERIC ELSE 12.5::numeric END;
+hirepenalPer30DVal = hirepenalPer30D/100;
+
+RAISE NOTICE 'hireStartDate30D %', hireStartDate30D;
+RAISE NOTICE 'hirepenalPer30D %', hirepenalPer30D;
+RAISE NOTICE 'hirepenalPer30DVal %',hirepenalPer30DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_reference;
 
@@ -464,7 +468,7 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 -- Apply Penalty Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment,version)  
    SELECT 
       claimRecord30D.id,
       userId,
@@ -472,11 +476,9 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
       userId,
       now() + interval '0.1 sec',
       0,
-      0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer30DVal) + (i.repair_gross * repairpenalPer30DVal))::NUMERIC(10,2) 
-                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (current_date - i.auto_penalty_start::Date) 
-                                      || ' days.'
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 30 days.', 
+     0
    FROM 
      invoice i
    WHERE
@@ -513,14 +515,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 -- Apply Repair Gross Insurer Discount Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.repair_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || repairInsDis.discount_percentage
@@ -543,14 +545,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.total_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || totalInsDis.discount_percentage
@@ -603,6 +605,16 @@ WHERE
 
 LOOP
 
+hireStartDate60D = (SELECT rental_start FROM vehicle_hire WHERE id = claimRecord60D.vehicle_hire_id);
+
+hirepenalPer60D = CASE WHEN(
+    (CASE WHEN hireStartDate60D is not null THEN hireStartDate60D ELSE (select date_invoiced from invoice where id = claimRecord60D.invoice_id) end)::date
+    < '2012-06-15'::date) THEN 15::NUMERIC ELSE 20::numeric END;
+hirepenalPer60DVal = hirepenalPer60D/100;
+
+RAISE NOTICE 'hireStartDate60D %', hireStartDate60D;
+RAISE NOTICE 'hirepenalPer60D %', hirepenalPer60D;
+RAISE NOTICE 'hirepenalPer60DVal %', hirepenalPer60DVal;
 
 RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_reference;
 
@@ -686,7 +698,7 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 -- Apply Penalty Comment
 
     INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment,version)  
     SELECT 
       claimRecord60D.id,
       userId,
@@ -694,11 +706,9 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
       userId,
       now() + interval '0.1 sec',
       0,
-      0,
       'Automatic penalty charges of £' ||  ((i.hire_gross * hirepenalPer60DVal) + (i.repair_gross * repairpenalPer60DVal))::NUMERIC(10,2) 
-                                      || ' have been applied to the invoice as the age of the invoice has exceeded ' 
-                                      || (current_date - i.auto_penalty_start::Date)
-                                      || ' days.'
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 60 days.',
+      0
     FROM 
       invoice i
     WHERE
@@ -708,14 +718,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.hire_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || hireInsDis.discount_percentage
@@ -735,14 +745,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 -- Apply Repair Gross Insurer Discount Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.repair_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || repairInsDis.discount_percentage
@@ -765,14 +775,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.total_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || totalInsDis.discount_percentage
@@ -855,12 +865,9 @@ RAISE NOTICE 'total no of claims updated for invoice > 90 days : % ',invoiceCoun
 RETURN ;
 END;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100
-  ROWS 1000;
-GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox;
-GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO public;
-GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox_user;
+LANGUAGE plpgsql;
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox;
+GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(userIdNumber integer, claimId integer) TO chox_user;
 
 ---------------
 --END OF 6.15.2 
