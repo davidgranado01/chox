@@ -229,7 +229,7 @@
                                 listKey="id"
                                 listValue="name"
                                 headerKey="-1"
-                                headerValue="--- ALL ---"
+                                headerValue="--- Please Select ---"
                                 emptyOption="false">
                             </s:select><input type="button" value="Add New Workgroup" onclick="javascript: doAddNewWorkgroup();"/>
                         </td>
