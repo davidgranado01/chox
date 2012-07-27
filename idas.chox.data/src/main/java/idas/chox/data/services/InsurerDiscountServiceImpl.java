@@ -63,6 +63,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId, insurerDiscountTypeValue);
         if (hm.get("success") != Boolean.TRUE) {
+            evict(insurerDiscount); // this is to prevent from dbInterceptor saving dirty field to the existing model.
             return hm;
         }
         
