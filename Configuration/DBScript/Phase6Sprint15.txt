@@ -513,14 +513,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 -- Apply Repair Gross Insurer Discount Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.repair_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || repairInsDis.discount_percentage
@@ -543,14 +543,14 @@ RAISE NOTICE 'Cho Reference for invoice > 30 days : % ',claimRecord30D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.total_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || totalInsDis.discount_percentage
@@ -708,14 +708,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.hire_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || hireInsDis.discount_percentage
@@ -735,14 +735,14 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 -- Apply Repair Gross Insurer Discount Comment
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
       now() + interval '0.1 sec',
       userId,
       now() + interval '0.1 sec',
-      0,
+      0,0,
       'A discount of £' ||  (i.repair_gross_insurer_discount*-1)::NUMERIC(10,2) 
                                       || ' (' 
                                       || repairInsDis.discount_percentage
@@ -765,7 +765,7 @@ RAISE NOTICE 'Cho Reference for invoice > 60 days : % ',claimRecord60D.cho_refer
 
 
    INSERT INTO comment
-      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment)  
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
    SELECT 
       c.id,
       userId,
