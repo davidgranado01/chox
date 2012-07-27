@@ -348,6 +348,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
         if (claim.getInsurer().isInsurerDiscountEnable()) {
             Invoice inv = claim.getInvoice();
+            if (inv.getCreatedDate() == null)
+                inv.setCreatedDate(new Date());
             BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
             BigDecimal totalGrossInsurerDiscountAmount = BigDecimal.ZERO;
             BigDecimal repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
