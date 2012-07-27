@@ -43,15 +43,13 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
-                        } else if (filter.getIsManualFilter()  && webUser.isAnInsurer()
-                                && (!webUser.getInsurer().isUploadEnabled() || !(webUser.getInsurer().isEnableManualInvoiceWorkgroups() || webUser.getInsurer().isEnableManualInvoiceOwnership()))) {
-                                LOG.debug("Not adding queue '{}' as Insurer Upload not enabled or workgroups/.", filter.getName());
-                                continue;
-                        } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED)
-                                                                                                  || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_CONTESTED))
-                                && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
+                        } else if (filter.getIsManualFilter() && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
                             LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
                             continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED) && webUser.isAnInsurer()
+                                && !webUser.getInsurer().isEnableManualInvoiceWorkgroups() && !webUser.getInsurer().isEnableManualInvoiceOwnership()) {
+                                LOG.debug("Not adding queue '{}' as Manual Invoice workgroups/ownership not enabled.", filter.getName());
+                                continue;
                         } else if (filter.getKey().equals(Filter.FILTER_REJECTED_SUBSCRIBER_CLAIMS)
                                 && webUser.isCHO() && !webUser.getChorganisation().isEnableSubscriberClaims()) {
                             LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
