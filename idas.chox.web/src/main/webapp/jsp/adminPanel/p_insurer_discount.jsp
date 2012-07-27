@@ -13,7 +13,7 @@
     var insurerDiscountSupplierFilterCombo;
     var insurerDiscountTypeCombo;
     var insurerDiscountRowEditor;
-    var insurerDiscountDefaultDropdownValue={'value':'--- Please Select ---','text':-1};
+//    var insurerDiscountDefaultDropdownValue={'value':'--- Please Select ---','text':-1};
     var choId = -1;
     var discountTypeId = -1;
     var insdiscountFromDateEditor;
@@ -85,8 +85,7 @@
         insurerDiscountMysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
         insurerDiscountSuppliersStore = new Ext.data.Store({
             data : insurerDiscountMysuppliers,
-            reader : insurerDiscountSuppliersJsonReader,
-            listeners: {load: function() {this.insert(0, new Ext.data.Record(insurerDiscountDefaultDropdownValue));}}
+            reader : insurerDiscountSuppliersJsonReader
         });
         
         
@@ -134,7 +133,8 @@
 
         insurerDiscountSupplierFilterCombo = new Ext.form.ComboBox({
             store : insurerDiscountSuppliersStore,
-            id:'insurerDiscountSupplierId',
+//            id:'insurerDiscountSupplierId',
+            name : 'insurerDiscountSupplierId',
             width: 150,
             listWidth: 150,
             valueField : 'text',
@@ -142,7 +142,7 @@
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
-            valueNotFoundText : '--- Please Select ---',
+//            valueNotFoundText : '--- Please Select ---',
             renderTo : 'insurerDiscountSuppliers',
             listeners: {
                 select: function () {
@@ -157,12 +157,13 @@
                 }
             }
         });
-        insurerDiscountSupplierFilterCombo.setValue('--- Please Select ---');
+//        insurerDiscountSupplierFilterCombo.setValue('--- Please Select ---');
         
         
         insurerDiscountTypeCombo = new Ext.form.ComboBox({
                 store : insurerDiscountTypeStore,
-                id:'insurerDiscountTypeComboId',
+//                id:'insurerDiscountTypeComboIdId',
+                name : 'insurerDiscountTypeComboId',
                 width: 95,
                 listWidth: 95,
                 valueField : 'text',
@@ -304,15 +305,15 @@
             plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true,editor: insdiscountFromDateEditor},
-                {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,editor: insdiscountToDateEditor},
-                {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
-                {header: "Discount Type", width: 60, dataIndex: 'insurerDiscountType',  sortable: true, resizable: true, editor: insdiscountTypeEditor},
-                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: true, resizable: true,editor: {xtype: 'checkbox', listeners:{beforeshow:function(){this.setValue(applyToPenaltiesChecked)}}}},
-                {header: "CHO Name", width: 170, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
-                {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
-                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
-                {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
+                {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: false, resizable: false, editor: insdiscountFromDateEditor},
+                {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: false, resizable: false,editor: insdiscountToDateEditor},
+                {header: "Discount", width: 60, dataIndex: 'discount',  sortable: false, resizable: false,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
+                {header: "Discount Type", width: 60, dataIndex: 'insurerDiscountType',  sortable: false, resizable: false, editor: insdiscountTypeEditor},
+                {header: "Apply To Penalties", width: 60, dataIndex: 'appliedToPenalties',  sortable: false, resizable: false,editor: {xtype: 'checkbox', listeners:{beforeshow:function(){this.setValue(applyToPenaltiesChecked)}}}},
+                {header: "CHO Name", width: 170, dataIndex: 'choName', sortable: false, resizable: false,editable : false},
+                {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: false, resizable: false,editable : false},
+                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: false,editable : false},
+                {header: "Action", width: 70, dataIndex: 'Remove', sortable: false, resizable: false,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'insurerDiscount_gridviewGridPanel',
             height:300,
@@ -320,7 +321,58 @@
         });
 
         insurerDiscount_loadGridViewList();
-
+        
+        $.validator.addMethod(
+        	    "checkCHOId",
+        	    function(value, element) {
+//                        var choId = insurerDiscountSupplierFilterCombo.getValue();
+                        if (choId==-1 || choId == null || choId ==  '' || choId == 0) {
+                            return false;
+                        }
+                    return true;
+                }
+        );
+         
+        $.validator.addMethod(
+        	    "checkDiscountType",
+        	    function(value, element) {
+//                        var discountTypeId = insurerDiscountTypeCombo.getValue();
+                        if (discountTypeId==-1 || discountTypeId == null || discountTypeId ==  '' || discountTypeId == 0){
+                            return false;
+                        }
+                    return true;
+                }
+        );
+            
+            
+        $("#insurerDiscountForm").validate(
+        {
+            errorLabelContainer: "#CDInsurerinsurerDiscountMessageBox",
+            rules: {
+            	
+                insurerDiscountTypeComboId : {checkDiscountType:true},
+                insurerDiscountSupplierId : { checkCHOId:true },
+                dateFrom :{required:true, dateITA:true, max:function(){
+                	var sd = Ext.get('InsurerDiscountDateFromId').getValue().split("/");
+                    var ed = Ext.get('InsurerDiscountDateToId').getValue().split("/");
+                    var time = new Date(sd[2],sd[1] - 1 ,sd[0]).getTime() - new Date(ed[2],ed[1] - 1 ,ed[0]).getTime();
+	                if(time > 0)
+                        return true;
+	                }
+                },
+                dateTo :{required:true, dateITA:true},
+                discountPercentage : {required:true,number:true, max:100}
+                
+            },
+            messages: {
+                dateFrom : {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'", max:"'Date To' can't be before 'Date From'"},
+                dateTo : {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"},
+                discountPercentage : {required:"A value must be supplied for 'Discount Percentage'", max :"Maximum allowed discount is 100%"},
+                insurerDiscountTypeComboId : {checkDiscountType : "Please select a Discount Type from the drop-down list"},
+                insurerDiscountSupplierId : {checkCHOId : "Please select a CHO from the drop-down list"}
+            }
+        });
+        
     });
     
     function clearValidation(){
@@ -412,37 +464,9 @@
         var insurerDiscountDateFrom = $("#InsurerDiscountDateFromId").val();
         var insurerDiscountDateTo = $("#InsurerDiscountDateToId").val();
         var insurerDiscountapplyPenalties = Ext.getCmp('applyPenaltiesToInsurerTypeId').getValue();
-        
-        
-        if(choId==-1 || choId == null || choId ==  '' || choId == 0){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please select a CHO from the drop-down list"); 
-        }
-        else if(insurerDiscountDateFrom==null || insurerDiscountDateFrom==""){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Date From'");
-        }
-        else if(insurerDiscountDateTo==null || insurerDiscountDateTo==""){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Date To'");
-        }
-        else if(insurerDiscountPercentage==null || insurerDiscountPercentage==""){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Discount Percentage'");
-        }
-        else if(discountTypeId==-1 || discountTypeId == null || discountTypeId ==  '' || discountTypeId == 0){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please select a Discount Type from the drop-down list"); 
-        }
-        else if(!Ext.getCmp('InsurerDiscountDateFromId').validate()){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("The 'Date From' value should be before the 'Date To' value");
-        }
-        else if(insurerDiscountPercentage>100){
-            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Maximum allowed discount is 100%");
-        }
-        else {
+
+        if ($("form#insurerDiscountForm").valid()) {
+
             var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
             var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage, "insurerDiscountType" : discountTypeId, "appliedToPenalties": insurerDiscountapplyPenalties};
             ajax.loadHtml2(url, param, function(responseText, statusText){
@@ -454,7 +478,8 @@
                         Ext.getCmp('InsurerDiscountDateFromId').reset();
                         Ext.getCmp('InsurerDiscountDateToId').reset();
                         Ext.getCmp('insurerDiscountPercentageId').reset();
-                        Ext.getCmp('insurerDiscountTypeComboId').reset();
+//                        insurerDiscountTypeCombo.reset();
+//                        Ext.getCmp('insurerDiscountTypeComboIdId').reset();
                         Ext.getCmp('applyPenaltiesToInsurerTypeId').reset();
 //                        Ext.getCmp('insurerDiscountSupplierId').reset();
                         clearValidation();
@@ -479,6 +504,7 @@
     
 </script>
 <div class="sub-admin-tab-css">
+    
     <div class="status-info">
         This tab allows you to setup discounts for CHOs. The discount can be off the hire, repair and/or total as submitted by the CHO and you can also select the period the discount should be applied from and to, the period will be based on the date the invoice was submitted into CHOX by the CHO. If the invoice is amended by the CHO then the discount will be applied to the revised amount(s).
     </div>
@@ -486,6 +512,7 @@
     <div class="grid-view-header">
         <div class="admin-bre-band-detail-section">
             <div class="section-name">Insurer Discount</div>
+            <form id="insurerDiscountForm" class="XXentity-form" name="insurerDiscountForm" action="POST">
             <table width="100%">
                 <tr>
                     <td width ="16%">
@@ -528,6 +555,7 @@
                     </td>
                 </tr>
             </table>
+            </form>
             &nbsp;
             <table width="100%">
                 <tr>
