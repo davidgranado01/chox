@@ -13,7 +13,7 @@
     var insurerDiscountSupplierFilterCombo;
     var insurerDiscountTypeCombo;
     var insurerDiscountRowEditor;
-    var insurerDiscountDefaultDropdownValue={'value':'--- ALL ---','text':-1};
+    var insurerDiscountDefaultDropdownValue={'value':'--- Please Select ---','text':-1};
     var choId = -1;
     var discountTypeId = -1;
     var insdiscountFromDateEditor;
@@ -94,7 +94,7 @@
             id:"insurerDiscountPercentageId",
             name:"discountPercentage",
             width:40,
-            allowBlank:false,
+//            allowBlank:false,
             allowNegative : false,
             maxValue : 100,
             renderTo:'discountPercentageId'
@@ -106,7 +106,7 @@
             name: 'dateFrom',
             renderTo: 'discountDateFromId',
             width: 95,
-            allowBlank: false,
+//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true,
             vtype: 'daterange',
@@ -118,7 +118,7 @@
             name: 'dateTo',
             renderTo: 'discountDateToId',
             width: 95,
-            allowBlank: false,
+//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true,
             vtype: 'daterange',
@@ -142,7 +142,7 @@
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
-            valueNotFoundText : '--- ALL ---',
+            valueNotFoundText : '--- Please Select ---',
             renderTo : 'insurerDiscountSuppliers',
             listeners: {
                 select: function () {
@@ -157,7 +157,7 @@
                 }
             }
         });
-        insurerDiscountSupplierFilterCombo.setValue('--- ALL ---');
+        insurerDiscountSupplierFilterCombo.setValue('--- Please Select ---');
         
         
         insurerDiscountTypeCombo = new Ext.form.ComboBox({
@@ -170,7 +170,7 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                allowBlank : false,
+//                allowBlank : false,
                 renderTo : 'discountTypeComboId',
                 listeners: {
                 select: function () {
@@ -188,7 +188,7 @@
         insdiscountFromDateEditor = new Ext.form.DateField({
             id : 'insdisfromdateId',
             name: 'insdateFrom',
-            allowBlank: false,
+//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true
             ,listeners: {
@@ -207,7 +207,7 @@
         insdiscountToDateEditor = new Ext.form.DateField({
             id : 'insdistodateId',
             name: 'insdateTo',
-            allowBlank: false,
+//            allowBlank: false,
             format: 'd/m/Y',
             showWeekNumber: true
             ,listeners: {change : function(){
@@ -230,7 +230,7 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                allowBlank : false,
+//                allowBlank : false,
                 fieldLabel : 'Type',
                 name : ''
         });
@@ -536,8 +536,9 @@
                     </td>
                 </tr>  
             </table>
+            <div id="CDInsurerinsurerDiscountMessageBox" class="chox-form-submit-result"></div>
         </div>
     </div>
-    <div id="CDInsurerinsurerDiscountMessageBox" class="chox-form-submit-result"></div>
+    
     <div id="insurerDiscount_gridviewGridPanel"></div>
 </div>
