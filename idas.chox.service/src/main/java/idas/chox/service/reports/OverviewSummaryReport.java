@@ -44,8 +44,8 @@ public class OverviewSummaryReport implements Report {
 
         HashMap reportParameters = new HashMap();
 
-        String userOrgLabel = "";
-        String userOrgName = "";
+        String userOrgLabel;
+        String userOrgName;
 
         // currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
         currentUser = ((WebUser) externalParameter.get("CurrentUser"));
@@ -1002,7 +1002,7 @@ public class OverviewSummaryReport implements Report {
 
     private List<OverviewSummaryLineItem> processTotalAverageSection(List<OverviewSummaryLineItem> reportLines) {
 
-        String sqlStatement1 = "";
+        String sqlStatement1;
         StringBuilder sb = new StringBuilder();
 
         sb.append("select ");
@@ -1035,8 +1035,8 @@ public class OverviewSummaryReport implements Report {
         
 
         if (currentUser.getInsurer()!=null) {
-            sb.append("from insurer insurer where insurer.id=:pUserOrgId ");
-            sqlStatement1 = "invoice.insurer_id=insurer.id ";
+            sb.append("from insurer insurer, chorganisation chorganisation where insurer.id=:pUserOrgId ");
+            sqlStatement1 = "invoice.insurer_id=insurer.id and invoice.chorganisation_id=chorganisation.id and chorganisation.insurer_upload_only=false";
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
             if(selectedOwnerId>0 )
