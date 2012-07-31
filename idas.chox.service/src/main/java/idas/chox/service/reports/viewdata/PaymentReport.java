@@ -29,6 +29,7 @@ public class PaymentReport {
     private BigDecimal totaltoPay = new BigDecimal(0.00);
     private BigDecimal insurerPercentage = new BigDecimal(0.00);
     private BigDecimal choPercentage = new BigDecimal(0.00);
+    private BigDecimal lessInsurerDiscount = new BigDecimal(0.00);
     
     public static PaymentReport getObject(Map data) {
         PaymentReport result = new PaymentReport();
@@ -48,6 +49,7 @@ public class PaymentReport {
         result.setTotalVAT((BigDecimal) data.get("total_vat".toLowerCase())); 
         result.setTotalGross((BigDecimal) data.get("total_gross".toLowerCase())); 
         result.setLessDiscount((BigDecimal) data.get("discount".toLowerCase())); 
+        result.setLessInsurerDiscount((BigDecimal) data.get("insurer_discount".toLowerCase()));
         result.setLessExcessCollected((BigDecimal) data.get("excess_amount_collected".toLowerCase())); 
         result.setLessVATCollected((BigDecimal) data.get("vat_amount_collected".toLowerCase())); 
         result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase()));
@@ -222,28 +224,34 @@ public class PaymentReport {
     }
 
     public BigDecimal getInsurerPercentage() {
-		return insurerPercentage;
-	}
+        return insurerPercentage;
+    }
 
-	public void setInsurerPercentage(BigDecimal insurerPercentage) {
-		this.insurerPercentage = insurerPercentage;
-	}
+    public void setInsurerPercentage(BigDecimal insurerPercentage) {
+        this.insurerPercentage = insurerPercentage;
+    }
 
-	public BigDecimal getChoPercentage() {
-		return choPercentage;
-	}
+    public BigDecimal getChoPercentage() {
+        return choPercentage;
+    }
 
-	public void setChoPercentage(BigDecimal choPercentage) {
-		this.choPercentage = choPercentage;
-	}
+    public void setChoPercentage(BigDecimal choPercentage) {
+        this.choPercentage = choPercentage;
+    }
 
-	public String getVehicleRegistrationNo() {
+    public String getVehicleRegistrationNo() {
         return vehicleRegistrationNo;
     }
 
     public void setVehicleRegistrationNo(String vehicleRegistrationNo) {
         this.vehicleRegistrationNo = vehicleRegistrationNo;
     }
-    
-    
+
+    public BigDecimal getLessInsurerDiscount() {
+        return lessInsurerDiscount;
+    }
+
+    public void setLessInsurerDiscount(BigDecimal lessInsurerDiscount) {
+        this.lessInsurerDiscount = lessInsurerDiscount;
+    }
 }
