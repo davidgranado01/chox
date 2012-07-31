@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExcelInvoice {
+    private static final Logger LOG = LoggerFactory.getLogger(ExcelInvoice.class);
 
     String claimStatus;
     String choReference;
@@ -149,13 +152,25 @@ public class ExcelInvoice {
         repairPenaltyCharge = (BigDecimal) data.get("repairpenaltycharge");
         hirePenaltyPercentageString = (String) data.get("hirepenaltypercentage");
         repairPenaltyPercentageString = (String) data.get("repairpenaltypercentage");
-        if (!isCHO && hirePenaltyPercentageString != null && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
+        if (!isCHO && hirePenaltyPercentageString != null && hirePenaltyPercentageString.endsWith("%") && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
+          try {
+            BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.substring(0,hirePenaltyPercentageString.length()-2));
             BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
-            hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+            if (actualPercentage.compareTo(givenPercentage) != 0)
+                hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+          } catch (Exception ex) {
+              LOG.error("Error determining actual hire penalty %: ", ex);
+          }
         }
-        if (!isCHO && repairPenaltyPercentageString != null && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
+        if (!isCHO && repairPenaltyPercentageString != null && repairPenaltyPercentageString.endsWith("%") && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
+          try {
+            BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.substring(0,hirePenaltyPercentageString.length()-2));
             BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
-            repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+            if (actualPercentage.compareTo(givenPercentage) != 0)
+                repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+          } catch (Exception ex) {
+              LOG.error("Error determining actual repair penalty %: ", ex);
+          }
         }
 
         totalPenaltyCharge = (BigDecimal) data.get("totalpenaltycharge");

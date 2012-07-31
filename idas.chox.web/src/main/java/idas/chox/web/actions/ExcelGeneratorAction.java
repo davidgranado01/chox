@@ -158,8 +158,8 @@ public class ExcelGeneratorAction extends BaseAction {
             if (c != null && c.getLimit() > 0) {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List<Claim> claims = searchResult.getResult();
-//                if (claims.size() > 0 && claims.size() <= 10000) {
-                    LOG.debug("Total No of Claims : '{}'", claims.size());
+                LOG.debug("Total No of Claims : '{}'", claims.size());
+                if (claims.size() > 0 && claims.size() <= 10000) {
                     List claimIds = new ArrayList<Integer>(claims.size());
                     for(Claim claim : claims)
                         claimIds.add(claim.getId());
@@ -173,10 +173,9 @@ public class ExcelGeneratorAction extends BaseAction {
                     }
                     rtnStr = SUCCESS;
 
-//                } else if (claims.size() > 10000) {
-//                    setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 9,000 claims, please refine your search.");
-//                    LOG.debug("claimSizeError is setup with the value:   '{}'", getClaimSizeError());
-//                }
+                } else if (claims.size() > 10000) {
+                    setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
+                }
             }
         }
 
@@ -356,7 +355,7 @@ public class ExcelGeneratorAction extends BaseAction {
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
-        final File reportFile = File.createTempFile("excel_", ".xls");
+        final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
  //       final String reportFileName = System.getProperty("java.io.tmpdir") + File.pathSeparator + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
