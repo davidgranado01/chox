@@ -276,7 +276,13 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getSuppliers();
+            if (reportName.equals(ReportFactory.BRE_INVOICE_APPROVAL_DISPUTE_RPT)
+                    || reportName.equals(ReportFactory.TEAM_SITE_BRE_INVOICE_RPT)
+                    || reportName.equals(ReportFactory.WORKGROUP_OWNER_BRE_RPT)) {
+                suppliers = this.lookupService.getSuppliers(true); // exclude manual CHO.
+            } else {
+                suppliers = this.lookupService.getSuppliers(false); // include manual CHO.
+            }
         }
         return suppliers;
     }

@@ -248,7 +248,7 @@ public class InboxAction extends BaseAction {
 
     public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getSuppliers();
+            suppliers = this.lookupService.getSuppliers(false); // inlucde manual CHO.
         }
         return suppliers;
     }

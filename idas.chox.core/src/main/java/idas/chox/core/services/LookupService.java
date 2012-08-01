@@ -1,5 +1,6 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
 import java.util.List;
@@ -29,9 +30,9 @@ public interface LookupService {
 
     public List getAllSuppliers();
 
-    public List getSuppliers(Integer insurerId);
+    public List getSuppliers(Integer insurerId, boolean excludeManualCHO);
 
-    public List getSuppliers();
+    public List<Chorganisation> getSuppliers(boolean excludeManualCHO);
 
     public List getInsurers();
 

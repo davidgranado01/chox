@@ -16,7 +16,6 @@ import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.ReasonOfRejectionTemplateService;
 import idas.chox.core.util.LookupItemTextComparator;
 import idas.chox.core.util.RoleHelper;
 
@@ -249,7 +248,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     @Override
-    public List<Chorganisation> getSuppliers() {
+    public List<Chorganisation> getSuppliers(boolean excludeManualCHO) {
 
         WebUser currentUser = getCurrentUser();
 
@@ -259,7 +258,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             return findByCriteria(criteria, true);
 
         } else if (currentUser.isAnInsurer()) {
-            return getSuppliers(currentUser.getInsurer().getId());
+            return getSuppliers(currentUser.getInsurer().getId(),excludeManualCHO);
         } else {
             LOG.error("Trying to get suppliers for a CHO user ({})", currentUser.getDisplayName());
             return new ArrayList<Chorganisation>();

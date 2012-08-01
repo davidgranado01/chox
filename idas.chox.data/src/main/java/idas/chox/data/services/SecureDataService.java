@@ -77,7 +77,7 @@ public class SecureDataService extends BaseDataService {
     
     public Set<Integer> getSupplierIds() {
         Set<Integer> ids = new HashSet<Integer>();
-        Iterator itr = getSuppliers(this.getSecurityInfoProvider().getCurrentUser().getInsurer().getId()).iterator();
+        Iterator itr = getSuppliers(this.getSecurityInfoProvider().getCurrentUser().getInsurer().getId(),false).iterator();
 
         while (itr.hasNext()) {
             Chorganisation cho = (Chorganisation) itr.next();
@@ -127,7 +127,7 @@ public class SecureDataService extends BaseDataService {
 
     }
     
-    public List<Chorganisation> getSuppliers(Integer insurerId) {
+    public List<Chorganisation> getSuppliers(Integer insurerId, boolean excludeManualCHO) {
 
         List<Chorganisation> results = new ArrayList<Chorganisation>();
 
@@ -143,7 +143,11 @@ public class SecureDataService extends BaseDataService {
             StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from chorganisation ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
-            sb.append("where a.status=true and b.insurer_id=:pInsurerId order by a.name");
+            sb.append("where a.status=true and b.insurer_id=:pInsurerId ");
+            if (excludeManualCHO) {
+                sb.append("and a.insurer_upload_only=false ");
+            }
+            sb.append("order by a.name");
 
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);

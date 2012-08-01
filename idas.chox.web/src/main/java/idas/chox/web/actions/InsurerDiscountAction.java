@@ -81,9 +81,9 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
             if (getIsAdmin()) {
-                suppliers = this.lookupService.getSuppliers(this.insurerId);
+                suppliers = this.lookupService.getSuppliers(this.insurerId,false); // inlucde manual CHO.
             } else if (getIsInsurer()) {
-                suppliers = this.lookupService.getSuppliers();
+                suppliers = this.lookupService.getSuppliers(false); // inlucde manual CHO.
             }
         }
         return suppliers;
