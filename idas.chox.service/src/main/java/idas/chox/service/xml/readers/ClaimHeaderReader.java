@@ -160,7 +160,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', Subscriber' or 'Insurer vs Insurer'.");
+                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', 'Subscriber' or 'Insurer vs Insurer'.");
                 claim.setChoReference(choReferenceNumber);
                 claimResult.setClaim(claim);
             } else if (RentalStatus.isOffHiredRentalStatus(rentalStatus)) {
