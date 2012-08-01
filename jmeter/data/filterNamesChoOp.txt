@@ -1,0 +1,10 @@
+RejectedClaims
+ClaimsAwaitingHireMonitoringInformation
+AwaitingInvoiceData
+LiabilityUpdate
+IncorrectInvoiceDataCalculations
+ContestedInvoicesReferredToCHO
+PenaltyChargesApplied
+InvoicePaymentLogged
+InterimPayment
+AwaitingLitigationOutcome
