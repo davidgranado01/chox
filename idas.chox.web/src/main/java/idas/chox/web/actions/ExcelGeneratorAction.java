@@ -1,22 +1,5 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Comment;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.search.ClaimSearchCriteria;
-import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.VehicleHireService;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.DeleteOnCloseFileInputStream;
-import idas.chox.web.ExcelClaim;
-import idas.chox.web.ExcelClaimCycle;
-import idas.chox.web.ExcelHistory;
-import idas.chox.web.ExcelInvoice;
-import idas.chox.web.viewdata.AuditTrailViewData;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,19 +10,27 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.jxls.transformer.XLSTransformer;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
+
+import net.sf.jxls.transformer.XLSTransformer;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.search.ClaimSearchCriteria;
+import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.VehicleHireService;
+import idas.chox.core.util.DeleteOnCloseFileInputStream;
+import idas.chox.data.*;
+
 
 public class ExcelGeneratorAction extends BaseAction {
 
@@ -157,7 +148,7 @@ public class ExcelGeneratorAction extends BaseAction {
 
         String rtnStr = ERROR;
         claimSizeError = null;
-        ClaimSearchCriteria c = null;
+        ClaimSearchCriteria c;
 //        ByteArrayOutputStream buf = null;
 
         if (getSession() != null) {
@@ -166,12 +157,14 @@ public class ExcelGeneratorAction extends BaseAction {
 
             if (c != null && c.getLimit() > 0) {
                 SearchResult searchResult = claimService.searchClaims(c);
-                List claims = searchResult.getResult();
+                List<Claim> claims = searchResult.getResult();
+                LOG.debug("Total No of Claims : '{}'", claims.size());
                 if (claims.size() > 0 && claims.size() <= 10000) {
-                    LOG.debug("Total No of Claims : '{}'", claims.size());
-
+                    List claimIds = new ArrayList<Integer>(claims.size());
+                    for(Claim claim : claims)
+                        claimIds.add(claim.getId());
                     try {
-                        if (!generateXML(claims))
+                        if (!generateXML(claimIds))
                             LOG.info("Report cancelled");
                     } catch (Exception ex) {
                         LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
@@ -181,8 +174,7 @@ public class ExcelGeneratorAction extends BaseAction {
                     rtnStr = SUCCESS;
 
                 } else if (claims.size() > 10000) {
-                    setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 9,000 claims, please refine your search.");
-                    LOG.debug("claimSizeError is setup with the value:   '{}'", getClaimSizeError());
+                    setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
                 }
             }
         }
@@ -196,105 +188,163 @@ public class ExcelGeneratorAction extends BaseAction {
         return reportDefinationFilePath;
     }
 
-    private boolean generateXML(List<Claim> claims) throws Exception {
+    private boolean generateXML(List<Integer> claimIds) throws Exception {
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
-        int noClaims = claims.size();
+        int noClaims = claimIds.size();
         int processedClaim = 0;
-        LOG.info("Exporting to excel with {} claims.", claims.size());
+        LOG.info("Exporting to excel with {} claims.", noClaims);
 
-        List<ExcelHistory> histories = new ArrayList<ExcelHistory>(noClaims * 5);
-        List<Comment> comments = new ArrayList<Comment>(noClaims * 5);
-        List<ExcelClaimCycle> claimCycle = new ArrayList<ExcelClaimCycle>(noClaims * 10);
-        List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>(noClaims);
-        List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>(noClaims);
+        List<ExcelClaim> excelClaims = claimService.getExcelClaims(claimIds);
 
-        ExcelClaim excelClaim;
-        ExcelInvoice excelInvoice;
-        ExcelHistory excelHistory;
-        for (Claim claim : claims) {
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-            }
-            excelClaim = new ExcelClaim();
-            excelInvoice = new ExcelInvoice();
-            excelHistory = new ExcelHistory();
-            excelClaim.setClaim(claim);
-
-            if (claim.getInvoice() != null) {
-                Invoice inv = claim.getInvoice();
-                excelInvoice.setInvoice(inv);
-                if (getIsCHO()) {
-                    excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-                    excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-                } else {
-                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-                    if (inv.isAppliedHirePenaltyPercentageDifferent(hireStart))
-                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
-                                .concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
-                    else
-                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-                    if (inv.isAppliedRepairPenaltyPercentageDifferent())
-                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [actual:").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
-                    else
-                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-                }
-                excelInvoice.setChoReference(claim.getChoReference());
-                excelInvoice.setClaimStatus(claim.getStatus());
-                if (claim.getThirdParty() != null) {
-                    excelInvoice.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
-                }
-                invoices.add(excelInvoice);
-            }
-
-            if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
-                excelHistory.setHistories(claim.getHistories(), isCho);
-                histories.add(excelHistory);
-            }
-
-            excelClaims.add(excelClaim);
-
-            // GET COMMENT BY CLAIM ID;
-            if (claim.getComments() != null && !claim.getComments().isEmpty()) {
-                for (Comment c : claim.getComments()) {
-                    if (c.isReverted() || ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer))) {
-                        continue;
-                    }
-                    if (c.getRaisedBy() != null) {
-                        c.setCreatedBy(c.getRaisedBy());
-                    }
-                    if(c.getComment() != null)
-                        c.setComment(StringEscapeUtils.unescapeHtml(c.getComment()));
-                    comments.add(c);
-                }
-            }
-
-            // Add AuditTrail / claim cycle
-            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId(), true);
-            for (AuditTrail a : auditTrail) {
-                ExcelClaimCycle cycle = new ExcelClaimCycle();
-                cycle.setChoReference(claim.getChoReference());
-                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
-                cycle.setModifiedDate(DateHelper.getLocalDateTimeFormat().format(a.getUpdateDate()));
-                cycle.setStatus(a.getNewStatus());
-                cycle.setReverted(a.getReverted() == true ? "Yes" : "");
-                claimCycle.add(cycle);
-            }
-            claimService.evict(claim);
-            processedClaim += 1;
-            if (isExportClaimOperationCancelled()) {
-//                break;
-                synchronized (getSession()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                }
-                return false;
-            }
-
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
-                getSession().put("numberOfClaimsProcessed", processedClaim);
+                getSession().put("numberOfClaimsProcessed", null);
             }
+            return false;
         }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
+        List<ExcelHistory> histories = claimService.getExcelHistory(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
+        List<ExcelComment> comments = claimService.getExcelComments(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+        List<ExcelClaimCycle> claimCycle = claimService.getExcelClaimCycle(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
+        List<ExcelInvoice> invoices = claimService.getExcelInvoices(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
+//        ExcelClaim excelClaim;
+//        ExcelInvoice excelInvoice;
+//        ExcelHistory excelHistory;
+//        for (Claim claim : claims) {
+//            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+//                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+//                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+//            }
+//            excelClaim = new ExcelClaim();
+//            excelInvoice = new ExcelInvoice();
+//            excelHistory = new ExcelHistory();
+//            excelClaim.setClaim(claim);
+//
+//            if (claim.getInvoice() != null) {
+//                Invoice inv = claim.getInvoice();
+//                excelInvoice.setInvoice(inv);
+//                if (getIsCHO()) {
+//                    excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
+//                    excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
+//                } else {
+//                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
+//                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() 
+//                            && inv.getHirePenaltyPercentageApplied() != null)
+//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
+//                                .concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
+//                    else
+//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
+//                    if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
+//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [actual:").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
+//                    else
+//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
+//                }
+//                excelInvoice.setChoReference(claim.getChoReference());
+//                excelInvoice.setClaimStatus(claim.getStatus());
+//                if (claim.getThirdParty() != null) {
+//                    excelInvoice.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
+//                }
+//                invoices.add(excelInvoice);
+//            }
+//
+//            if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
+//                excelHistory.setHistories(claim.getHistories(), isCho);
+//                histories.add(excelHistory);
+//            }
+//
+//            excelClaims.add(excelClaim);
+//
+//            // GET COMMENT BY CLAIM ID;
+//            if (claim.getComments() != null && !claim.getComments().isEmpty()) {
+//                for (Comment c : claim.getComments()) {
+//                    if (c.isReverted() || ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer))) {
+//                        continue;
+//                    }
+//                    if (c.getRaisedBy() != null) {
+//                        c.setCreatedBy(c.getRaisedBy());
+//                    }
+//                    comments.add(c);
+//                }
+//            }
+//
+//            // Add AuditTrail / claim cycle
+//            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId(), true);
+//            for (AuditTrail a : auditTrail) {
+//                ExcelClaimCycle cycle = new ExcelClaimCycle();
+//                cycle.setChoReference(claim.getChoReference());
+//                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
+//                cycle.setModifiedDate(DateHelper.getLocalDateTimeFormat().format(a.getUpdateDate()));
+//                cycle.setStatus(a.getNewStatus());
+//                cycle.setReverted(a.getReverted() == true ? "Yes" : "");
+//                claimCycle.add(cycle);
+//            }
+//            claimService.evict(claim);
+//            processedClaim += 1;
+//            if (isExportClaimOperationCancelled()) {
+////                break;
+//                synchronized (getSession()) {
+//                    getSession().put("numberOfClaimsProcessed", null);
+//                }
+//                return false;
+//            }
+//
+//            synchronized (getSession()) {
+//                getSession().put("numberOfClaimsProcessed", processedClaim);
+//            }
+//        }
 
         final Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
@@ -305,12 +355,13 @@ public class ExcelGeneratorAction extends BaseAction {
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
-        final File reportFile = File.createTempFile("excel_", ".xls");
+        final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
  //       final String reportFileName = System.getProperty("java.io.tmpdir") + File.pathSeparator + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
 
+        
         Runnable r = new Runnable() {
 
             @Override
