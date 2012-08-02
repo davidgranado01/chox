@@ -1,14 +1,19 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimType;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.util.DateHelper;
@@ -19,24 +24,21 @@ import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportObject;
-import java.io.ByteArrayOutputStream;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 
 public class OverviewSummaryReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private Date dataStart;
     private Date dataEnd;
-    WebUser currentUser;
+    private WebUser currentUser;
     private Integer userOrgId = -1;
-    boolean isWorkgroupEnabled = false;
-    Integer selectedWorkgroupId = -1;
-    String selectedWorkgroupName;
-    String selectedClaimOwnerName;
-    Integer selectedOwnerId = -1;
+    private boolean isWorkgroupEnabled = false;
+    private Integer selectedWorkgroupId = -1;
+    private String selectedWorkgroupName;
+    private String selectedClaimOwnerName;
+    private Integer selectedOwnerId = -1;
     
 
     @Override
@@ -1036,7 +1038,7 @@ public class OverviewSummaryReport implements Report {
 
         if (currentUser.getInsurer()!=null) {
             sb.append("from insurer insurer, chorganisation chorganisation where insurer.id=:pUserOrgId ");
-            sqlStatement1 = "invoice.insurer_id=insurer.id and invoice.chorganisation_id=chorganisation.id and chorganisation.insurer_upload_only=false";
+            sqlStatement1 = "invoice.insurer_id=insurer.id and invoice.chorganisation_id=chorganisation.id and chorganisation.insurer_upload_only=false ";
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
             if(selectedOwnerId>0 )
