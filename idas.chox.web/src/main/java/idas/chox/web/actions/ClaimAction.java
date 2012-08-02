@@ -206,6 +206,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.nonce = nonce;
     }
 
+    public int getActivityMonitorRequestInterval() {
+        return service.getActivityMonitorRequestInterval();
+    }
+    
+    public boolean isEnableActivityMonitor() {
+        return service.isEnableActivityMonitor();
+    }
+    
     public int getActionSelected() {
         return actionSelected;
     }
