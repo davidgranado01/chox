@@ -1,5 +1,13 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -11,13 +19,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.MenuAccessibility;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InboxAction extends BaseAction {
 
@@ -34,6 +36,14 @@ public class InboxAction extends BaseAction {
     private List<Chorganisation> suppliers;
     private boolean showSplash;
     private String jsonData;
+
+    public int getActivityMonitorRequestInterval() {
+        return claimService.getActivityMonitorRequestInterval();
+    }
+
+    public boolean isEnableActivityMonitor() {
+        return claimService.isEnableActivityMonitor();
+    }
 
     public String getJsonData() {
         return jsonData;
