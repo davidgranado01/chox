@@ -24,13 +24,17 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
         final ActionContext context = invocation.getInvocationContext();
         final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
-        // Don't add to streaming requests
+        // Don't add to streaming requests or static content
         if (response != null
                 && request != null
                 && !request.getServletPath().contains("downloadExcelReport")
                 && !request.getServletPath().contains("doExportAttachment")
                 && !request.getServletPath().contains("doExportExcel")
-                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
+                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")
+                && !request.getServletPath().contains("ext")
+                && !request.getServletPath().contains("jquery")
+                && !request.getServletPath().contains("css")
+                && !request.getServletPath().contains("images")) {
             // This action is never cached and is always downloaded; even with
             // back/forward buttons.
             response.setHeader("Cache-control", "no-cache, no-store");
