@@ -30,11 +30,7 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
                 && !request.getServletPath().contains("downloadExcelReport")
                 && !request.getServletPath().contains("doExportAttachment")
                 && !request.getServletPath().contains("doExportExcel")
-                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")
-                && !request.getServletPath().contains("ext")
-                && !request.getServletPath().contains("jquery")
-                && !request.getServletPath().contains("css")
-                && !request.getServletPath().contains("images")) {
+                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
             // This action is never cached and is always downloaded; even with
             // back/forward buttons.
             response.setHeader("Cache-control", "no-cache, no-store");
@@ -42,8 +38,6 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
             response.setHeader("Expires", "-1");
 
         } else if (response != null && request != null) {
-            response.setHeader("Cache-control", "cache");//not a valid header
-            response.setHeader("Pragma", "cache");//not a valid header
             response.setHeader("Expires", "-1");
         }
 
