@@ -105,4 +105,8 @@ public interface ClaimService extends DataService {
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId);
 
     public String getOverlappingHire(Claim claim);
+    
+    public int getActivityMonitorRequestInterval();
+    
+    public boolean isEnableActivityMonitor();
 }

@@ -40,6 +40,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
+    private boolean enableActivityMonitor;
+    private int activityMonitorRequestInterval;
+
+    @Override
+    public int getActivityMonitorRequestInterval() {
+        return activityMonitorRequestInterval;
+    }
+
+    public void setActivityMonitorRequestInterval(int activityMonitorRequestInterval) {
+        this.activityMonitorRequestInterval = activityMonitorRequestInterval;
+    }
+
+    @Override
+    public boolean isEnableActivityMonitor() {
+        return enableActivityMonitor;
+    }
+
+    public void setEnableActivityMonitor(boolean enableActivityMonitor) {
+        this.enableActivityMonitor = enableActivityMonitor;
+    }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;

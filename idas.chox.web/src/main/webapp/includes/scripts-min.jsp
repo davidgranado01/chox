@@ -10,13 +10,14 @@
 <script src="<%= request.getContextPath()%>/scripts/extjs/ext-all-3.4.0-min.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/SuperBoxSelect-min.js" type="text/javascript"></script>
 
-<script src="<%= request.getContextPath()%>/scripts/general-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/Application-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/ui-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/ajax-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/common/choxcommon-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/report-min.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/inbox-min.js" type="text/javascript"></script>
+<%-- <script src="<%= request.getContextPath()%>/scripts/general-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/Application-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/ui-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/ajax-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/common/choxcommon-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/report-min.js" type="text/javascript"></script> --%>
+<%-- <script src="<%= request.getContextPath()%>/scripts/inbox-min.js" type="text/javascript"></script> --%>
+<script src="<%= request.getContextPath()%>/scripts/chox-all-min.js" type="text/javascript"></script>
 <script type="text/javascript">
     var contextPath = '<%= request.getContextPath()%>';
 </script>
