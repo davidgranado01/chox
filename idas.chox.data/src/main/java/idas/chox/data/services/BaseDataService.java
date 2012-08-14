@@ -4,15 +4,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
 
@@ -117,6 +121,21 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         return count;
     }
 
+    public Integer totalCount(Criteria criteria) {
+        criteria.setProjection(Projections.rowCount());
+        List totalCountResult = criteria.list();
+        criteria.setProjection(null);
+        return ((Long) totalCountResult.get(0)).intValue();
+    }
+    
+    public void addSort(Criteria criteria, String sort, String dir) {
+        if (dir.equalsIgnoreCase("desc")) {
+            criteria.addOrder(Order.desc(sort));
+        } else {
+            criteria.addOrder(Order.asc(sort));
+        }
+    }
+    
     @Override
     public Object get(final Class c, final int id) {
 

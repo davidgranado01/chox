@@ -1,23 +1,22 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Entity;
-import idas.chox.core.model.Task;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.model.WebUserUserRole;
-import idas.chox.core.model.WebUserWorkgroup;
-import idas.chox.core.services.TaskService;
-import idas.chox.core.services.WebUserUserRoleService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.*;
+import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.*;
+import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.TaskService;
+import idas.chox.core.services.WebUserUserRoleService;
 
 /**
  *
@@ -33,23 +32,23 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return getTasks(null, false, false, false);
+    public SearchResult getAllTasks(int start, int limit, String sort, String dir) {
+        return getTasks(null, false, false, false, start, limit, sort, dir);
     }
 
     @Override
-    public List<Task> getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups) {
-        return getTasks(webUserId, false, hasOwnership, hasWorkgroups);
+    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir) {
+        return getTasks(webUserId, false, hasOwnership, hasWorkgroups, start, limit, sort, dir);
     }
 
     @Override
-    public List<Task> getIncompleteTasks() {
-        return getTasks(null, true, false, false);
+    public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir) {
+        return getTasks(null, true, false, false, start, limit, sort, dir);
     }
 
     @Override
-    public List<Task> getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups) {
-        return getTasks(webUserId, true, hasOwnership, hasWorkgroups);
+    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir) {
+        return getTasks(webUserId, true, hasOwnership, hasWorkgroups, start, limit, sort, dir);
     }
 
     @Override
@@ -246,173 +245,183 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         this.save(task);
     }
 
-    private List<Task> getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups) {
+    private SearchResult getTasks(WebUser user, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir) {
+        
         boolean isCHO = false;
-        List<Task> results = null;
-
-        LOG.debug("hasOwnership={}, hasWorkgroups={}", hasOwnership, hasWorkgroups);
-        DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
-        if (incompleteOnly) {
-            LOG.debug("Restricting to incomplete tasks");
-            criteria.add(Restrictions.eq("complete", Boolean.FALSE));
-        }
+        List<Task> results = new ArrayList<Task>();
+        List<HashMap> resultMap;
+        Integer totalCount = 0;
+        
         try {
+
+            Criteria criteria = getSession().createCriteria(Task.class)
+                    .createAlias("this.claim", "c", CriteriaSpecification.LEFT_JOIN); // left join used here for sorting the task by claim.choReference.
+            
+            
+            if (incompleteOnly) {
+                LOG.debug("Restricting to incomplete tasks");
+                criteria.add(Restrictions.eq("complete", Boolean.FALSE));
+            }
             // Add visibility restrictions
             if (user != null) {
                 LOG.debug("Getting tasks for user with id={} ('{}')", user.getId(), user.getFullName());
+                
+               
+                // Restrict to private tasks that user owns
+                Criterion privateTasks = Restrictions.conjunction()
+                        .add(Restrictions.eq("visibility", 1))
+                        .add(Restrictions.eq("createdBy", user));
+                
+                
+                
                 if (user.getChorganisation() != null) {
                     isCHO = true;
                 }
-                LOG.debug("isCHO={}", isCHO);
-                // Restrict to private tasks that user owns
-                criteria.add(Restrictions.eq("visibility", 1));
-//            criteria.createCriteria("createdBy").add(Restrictions.eq("id", user.getId()));
-                criteria.add(Restrictions.eq("createdBy", user));
-//            criteria.add(Restrictions.eq("createdBy", user.getId()));
-                results = findByCriteria(criteria);
-                LOG.debug("Found {} private tasks", results.size());
-                if (isCHO) { // user is a CHO user
-                    LOG.debug("User is a CHO");
+                if (isCHO) {
+                    
+                    // declare subqueries which will be used in Criterion.
+                    DetachedCriteria choUsers = DetachedCriteria.forClass(WebUser.class)
+                            .setProjection(Property.forName("id"))
+                            .add(Restrictions.eq("chorganisation", user.getChorganisation()));
+
+                    DetachedCriteria claimsUserOwns = DetachedCriteria.forClass(Claim.class)
+                            .setProjection(Property.forName("id"))
+                            .add(Restrictions.eq("supplierClaimOwner", user));
+                    
+                    DetachedCriteria claimsNotAssignedToUser = DetachedCriteria.forClass(Claim.class)
+                            .setProjection(Property.forName("id"))
+                            .add(Restrictions.isNull("supplierClaimOwner"))
+                            .add(Restrictions.eq("chorganisation", user.getChorganisation()));
+                    
                     // Add CHO internal tasks with no claim number
-                    DetachedCriteria criteria2 = DetachedCriteria.forClass(Task.class);
-                    if (incompleteOnly) {
-                        criteria2.add(Restrictions.eq("complete", Boolean.FALSE));
-                    }
-                    criteria2.add(Restrictions.eq("insurer", Boolean.FALSE));
-                    criteria2.add(Restrictions.eq("visibility", 2));
-                    criteria2.add(Restrictions.isNull("claim"));
-                    criteria2.createCriteria("createdBy").add(Restrictions.eq("chorganisation", user.getChorganisation()));
-                    List<Task> results2 = findByCriteria(criteria2);
-                    LOG.debug("Found {} CHO internal tasks with no claim number", results2.size());
-                    results.addAll(results2);
+                    Criterion internalTasksWithNoClaimNumber = Restrictions.conjunction()
+                            .add(Restrictions.eq("insurer", Boolean.FALSE))
+                            .add(Restrictions.eq("visibility", 2))
+                            .add(Restrictions.isNull("claim"))
+                            .add(Subqueries.propertyIn("createdBy", choUsers));
 
                     // Add CHO internal tasks on claims user owns
-                    DetachedCriteria criteria3 = DetachedCriteria.forClass(Task.class);
-                    if (incompleteOnly) {
-                        criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
-                    }
-                    criteria3.add(Restrictions.eq("insurer", Boolean.FALSE));
-                    criteria3.add(Restrictions.eq("visibility", 2));
-//                criteria3.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-//                criteria3.createCriteria("claim").createCriteria("supplierClaimOwner").add(Restrictions.eq("id", user.getId()));
-                    criteria3.createCriteria("claim").add(Restrictions.eq("supplierClaimOwner", user));
-                    List<Task> results3 = findByCriteria(criteria3);
-                    LOG.debug("Found {} CHO internal tasks on claims user owns", results3.size());
-                    results.addAll(results3);
+                    Criterion internalTasksOnClaimsUserOwns = Restrictions.conjunction()
+                            .add(Restrictions.eq("insurer", Boolean.FALSE))
+                            .add(Restrictions.eq("visibility", 2))
+                            .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
 
                     // Add Insurer external tasks on claims user own
-                    DetachedCriteria criteria5 = DetachedCriteria.forClass(Task.class);
-                    if (incompleteOnly) {
-                        criteria5.add(Restrictions.eq("complete", Boolean.FALSE));
-                    }
-                    criteria5.add(Restrictions.eq("insurer", Boolean.TRUE));
-                    criteria5.add(Restrictions.eq("visibility", 3));
-//                criteria5.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-                    criteria5.createCriteria("claim").add(Restrictions.eq("supplierClaimOwner", user));
-                    List<Task> results5 = findByCriteria(criteria5);
-                    LOG.debug("Found {} Insurer external tasks on claims user owns", results5.size());
-                    results.addAll(results5);
+                    Criterion externalTasksOnClaimsUserOwns = Restrictions.conjunction()
+                            .add(Restrictions.eq("insurer", Boolean.TRUE))
+                            .add(Restrictions.eq("visibility", 3))
+                            .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
+                    // declare default Criterion restriction to avoid null value when below if condition not passed. 
+                    Criterion internalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
+                    Criterion externalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
+                    
                     // Add tasks on claims nobody owns to users with an ownership based role only
                     List<WebUserUserRole> webUserUserRoles = webUserUserRoleService.getMappedUserRole(user.getId());
                     for (WebUserUserRole webUserUserRole : webUserUserRoles) {
                         if (webUserUserRole.getWebUserRole().isOwnershipRelated()) {
+                            
                             LOG.debug("Getting tasks for users role {}", webUserUserRole.getWebUserRole().getName());
+                            
                             // Add CHO internal tasks on claims nobody owns (but of this CHO)
-                            DetachedCriteria criteria4 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria4.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria4.add(Restrictions.eq("insurer", Boolean.FALSE));
-                            criteria4.add(Restrictions.eq("visibility", 2));
-                            criteria4.createCriteria("claim").add(Restrictions.eq("chorganisation", user.getChorganisation())).add(Restrictions.isNull("supplierClaimOwner"));
-//                        criteria4.createCriteria("claim").add(Restrictions.isNull("supplierClaimOwner"));
-                            List<Task> results4 = findByCriteria(criteria4);
-                            LOG.debug("Found {} CHO internal tasks on claims nobody owns", results4.size());
-                            results.addAll(results4);
+                            internalTasksOnClaimsNobodyOwns = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.FALSE))
+                                    .add(Restrictions.eq("visibility", 2))
+                                    .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
 
                             // Add Insurer external tasks on claims nobody owns
-                            DetachedCriteria criteria6 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria6.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria6.add(Restrictions.eq("insurer", Boolean.TRUE));
-                            criteria6.add(Restrictions.eq("visibility", 3));
-                            criteria6.createCriteria("claim").add(Restrictions.eq("chorganisation", user.getChorganisation())).add(Restrictions.isNull("supplierClaimOwner"));
-//                        criteria6.createCriteria("claim").add(Restrictions.isNull("supplierClaimOwner"));
-                            List<Task> results6 = findByCriteria(criteria6);
-                            LOG.debug("Found {} Insurer external tasks on claims nobody owns", results6.size());
-                            results.addAll(results6);
+                            externalTasksOnClaimsNobodyOwns = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                    .add(Restrictions.eq("visibility", 3))
+                                    .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
                         }
                     }
-
+                    
+                    // add all Criterion together to make final query.
+                    criteria.add(Restrictions.disjunction()
+                            .add(privateTasks)
+                            .add(internalTasksWithNoClaimNumber)
+                            .add(internalTasksOnClaimsUserOwns)
+                            .add(externalTasksOnClaimsUserOwns)
+                            .add(internalTasksOnClaimsNobodyOwns)
+                            .add(externalTasksOnClaimsNobodyOwns));
+                    
                 } else { // user is an Insurer user
-                    LOG.debug("User is an Insurer");
-                    // First, get list of users roles
-//                List<WebUserRole> webUserRole = getUserRoles(user);
+
                     List<WebUserUserRole> webUserUserRoles = webUserUserRoleService.getMappedUserRole(user.getId());
 
+                    // declare default Criterion restriction to avoid null value when below if condition not passed. 
+                    Criterion internalTasksWithNoClaimsAssigned = Restrictions.eq("id", -1);
+                    Criterion internalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.eq("id", -1);
+                    Criterion internalTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.eq("id", -1);
+                    Criterion externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.eq("id", -1);
+                    Criterion internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.eq("id", -1);
+                    Criterion internalTaskesAssignedToThisRoleAndNoWorkgroup = Restrictions.eq("id", -1);
+                    Criterion extTskAssignedToThisRoleOnClaimsAssignedToWG = Restrictions.eq("id", -1);
+                    Criterion intTskAssignedToClaimAndThisRole = Restrictions.eq("id", -1);
+                    Criterion extTskAssingedToRole = Restrictions.eq("id", -1);
+                    
                     for (WebUserUserRole webUserUserRole : webUserUserRoles) {
                         LOG.debug("Getting tasks for users role {}", webUserUserRole.getWebUserRole().getName());
+                        
+                        // declare subqueries which will be used in Criterion.
+                        
+                        DetachedCriteria insurerUsers = DetachedCriteria.forClass(WebUser.class)
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.eq("insurer", user.getInsurer()));
+                        
+                        DetachedCriteria claimsUserOwns = DetachedCriteria.forClass(Claim.class)
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.eq("claimOwner", user));
+                        
+                        DetachedCriteria claimsNotAssignedToUser = DetachedCriteria.forClass(Claim.class)
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.isNull("claimOwner"))
+                                .add(Restrictions.eq("insurer", user.getInsurer()));
+                        
+                        DetachedCriteria claimsNotAssignedToWorkgroup = DetachedCriteria.forClass(Claim.class)
+                                .setProjection(Property.forName("id"))
+                                .add(Restrictions.isNull("workgroup"))
+                                .add(Restrictions.eq("insurer", user.getInsurer()));
+                        
+                        
 
                         // Add all Insurer internal tasks with no claim assigned to this role that user is in
-                        DetachedCriteria criteria2 = DetachedCriteria.forClass(Task.class);
-                        if (incompleteOnly) {
-                            criteria2.add(Restrictions.eq("complete", Boolean.FALSE));
-                        }
-                        criteria2.add(Restrictions.eq("insurer", Boolean.TRUE));
-                        criteria2.add(Restrictions.eq("visibility", 2));
-                        criteria2.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-                        criteria2.add(Restrictions.isNull("claim"));
-                        criteria2.createCriteria("createdBy").add(Restrictions.eq("insurer", user.getInsurer()));
-                        List<Task> results2 = findByCriteria(criteria2);
-                        LOG.debug("Found {} Insurer internal tasks with no claim number", results2.size());
-                        results.addAll(results2);
+                        internalTasksWithNoClaimsAssigned = Restrictions.conjunction()
+                                .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                .add(Restrictions.eq("visibility", 2))
+                                .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                .add(Restrictions.isNull("claim"))
+                                .add(Subqueries.propertyIn("createdBy", insurerUsers));
+
 
                         if (webUserUserRole.getWebUserRole().isOwnershipRelated() && hasOwnership) {
                             // Claim Ownership is enabled for the Insurer and this is an ownership-related role
                             LOG.debug("Ownership related role with ownership enabled");
+                            
                             // Add all Insurer internal tasks assigned to this role on claims user owns
-                            DetachedCriteria criteria3 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria3.add(Restrictions.eq("insurer", Boolean.TRUE));
-                            criteria3.add(Restrictions.eq("visibility", 2));
-                            criteria3.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-                            criteria3.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-                            List<Task> results3 = findByCriteria(criteria3);
-                            LOG.debug("Found {} Insurer (with ownership) internal tasks assigned to {} on claims user owns", results3.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results3);
+                            internalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                    .add(Restrictions.eq("visibility", 2))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
                             // Add all Insurer internal tasks assigned to this role on claims no-one owns
-                            DetachedCriteria criteria5 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria5.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria5.add(Restrictions.eq("insurer", Boolean.TRUE));
-                            criteria5.add(Restrictions.eq("visibility", 2));
-                            criteria5.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                            criteria3.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-                            criteria5.createCriteria("claim").add(Restrictions.isNull("claimOwner")).add(Restrictions.eq("insurer", user.getInsurer()));
-//                        criteria5.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
-                            List<Task> results5 = findByCriteria(criteria5);
-                            LOG.debug("Found {} Insurer (with ownership) internal tasks assigned to claims with no ownership for role {}", results5.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results5);
+                            internalTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                    .add(Restrictions.eq("visibility", 2))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
+
 
                             // Add all CHO external tasks assigned to role on claims user owns
-                            DetachedCriteria criteria4 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria4.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria4.add(Restrictions.eq("insurer", Boolean.FALSE));
-                            criteria4.add(Restrictions.eq("visibility", 3));
-                            criteria4.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-                            criteria4.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-                            List<Task> results4 = findByCriteria(criteria4);
-                            LOG.debug("Found {} CHO external tasks assigned to {} on claims user owns", results4.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results4);
+                            externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.FALSE))
+                                    .add(Restrictions.eq("visibility", 3))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", claimsUserOwns));
+
                         } else if (webUserUserRole.getWebUserRole().isWorkgroupRelated() && hasWorkgroups) {
                             // Workgroups are enabled for the Insurer and the role is workgroup related
                             LOG.debug("Workgroup related role with workgroups enabled");
@@ -420,101 +429,95 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             // Lets first get the users workgroups
                             List<Integer> userWorkgroups = getUserWorkgroupIds(user);
                             LOG.debug("User in role {} belongs to {} workgroups", webUserUserRole.getWebUserRole().getName(), userWorkgroups.size());
+                            
+                            // declare subquery which will be used in Criterion.
+                            DetachedCriteria claimsWithThisWG = DetachedCriteria.forClass(Claim.class)
+                                        .setProjection(Property.forName("id"))
+                                        .createCriteria("workgroup")
+                                        .add(Restrictions.in("id", userWorkgroups));
+                            
                             if (userWorkgroups.size() > 0) {
-                                DetachedCriteria criteria3 = DetachedCriteria.forClass(Task.class);
-                                if (incompleteOnly) {
-                                    criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
-                                }
-                                criteria3.add(Restrictions.eq("insurer", Boolean.TRUE));
-                                criteria3.add(Restrictions.eq("visibility", 2));
-                                criteria3.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                            criteria3.createCriteria("claim").add(Restrictions.in("workgroup", userWorkgroups));
-                                criteria3.createCriteria("claim").createCriteria("workgroup").add(Restrictions.in("id", userWorkgroups));
+                                
+                                internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.conjunction()
+                                        .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                        .add(Restrictions.eq("visibility", 2))
+                                        .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                        .add(Subqueries.propertyIn("claim", claimsWithThisWG));  
 
-                                List<Task> results3 = findByCriteria(criteria3);
-                                LOG.debug("Found {} Insurer (with workgroups) internal tasks assigned to {} on claims assigned to workgroup of user", results3.size(), webUserUserRole.getWebUserRole().getName());
-                                results.addAll(results3);
+
                             } else {
                                 LOG.debug("User not assigned to any workgroups - skipping internal tasks on claims assigned to workgroup");
                             }
 
                             // Add all Insurer internal tasks assigned to role on claims with no workgroup yet assigned
-                            DetachedCriteria criteria5 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria5.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria5.add(Restrictions.eq("insurer", Boolean.TRUE));
-                            criteria5.add(Restrictions.eq("visibility", 2));
-                            criteria5.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                        criteria5.createCriteria("claim").add(Restrictions.in("workgroup", userWorkgroups));
-                            criteria5.createCriteria("claim").add(Restrictions.isNull("workgroup")).add(Restrictions.eq("insurer", user.getInsurer()));
-//                        criteria5.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
-
-                            List<Task> results5 = findByCriteria(criteria5);
-                            LOG.debug("Found {} Insurer (with workgroups) internal tasks assigned to {} on claims with no workgroup yet assigned", results5.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results5);
+                            internalTaskesAssignedToThisRoleAndNoWorkgroup = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                    .add(Restrictions.eq("visibility", 2))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", claimsNotAssignedToWorkgroup));  
 
                             // Add all CHO external tasks assigned to this role on claims assigned to a workgroup that the user is in
                             if (userWorkgroups.size() > 0) {
-                                DetachedCriteria criteria4 = DetachedCriteria.forClass(Task.class);
-                                if (incompleteOnly) {
-                                    criteria4.add(Restrictions.eq("complete", Boolean.FALSE));
-                                }
-                                criteria4.add(Restrictions.eq("insurer", Boolean.FALSE));
-                                criteria4.add(Restrictions.eq("visibility", 3));
-                                criteria4.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                            criteria4.createCriteria("claim").add(Restrictions.in("workgroup", userWorkgroups));
-                                criteria4.createCriteria("claim").createCriteria("workgroup").add(Restrictions.in("id", userWorkgroups));
+                                
+                                extTskAssignedToThisRoleOnClaimsAssignedToWG = Restrictions.conjunction()
+                                        .add(Restrictions.eq("insurer", Boolean.FALSE))
+                                        .add(Restrictions.eq("visibility", 3))
+                                        .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                        .add(Subqueries.propertyIn("claim", claimsWithThisWG));  
 
-                                List<Task> results4 = findByCriteria(criteria4);
-                                LOG.debug("Found {} CHO external (to Insurer with workgroups)  tasks assigned to {} on claims assigned to workgroup of user", results4.size(), webUserUserRole.getWebUserRole().getName());
-                                results.addAll(results4);
                             }
                         } else { // no ownership and no workgroups
-                            // Add all Insurer internal tasks assigned to a claim and this role
+                            
                             LOG.debug("No ownership or workgroups for role");
-                            DetachedCriteria criteria3 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria3.add(Restrictions.eq("insurer", Boolean.TRUE));
-                            criteria3.add(Restrictions.eq("visibility", 2));
-                            criteria3.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                        criteria3.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-//                        criteria3.add(Restrictions.isNotNull("claim"));
-                            criteria3.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
-                            List<Task> results3 = findByCriteria(criteria3);
-                            LOG.debug("Found {} Insurer (no ownership, no workgroups) internal tasks assigned to {} and a claim", results3.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results3);
+                            
+                            // Add all Insurer internal tasks assigned to a claim and this role
+                            intTskAssignedToClaimAndThisRole = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.TRUE))
+                                    .add(Restrictions.eq("visibility", 2))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", insurerUsers));  
 
                             // Add all CHO external tasks assigned to role
-                            DetachedCriteria criteria4 = DetachedCriteria.forClass(Task.class);
-                            if (incompleteOnly) {
-                                criteria4.add(Restrictions.eq("complete", Boolean.FALSE));
-                            }
-                            criteria4.add(Restrictions.eq("insurer", Boolean.FALSE));
-                            criteria4.add(Restrictions.eq("visibility", 3));
-                            criteria4.add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()));
-//                            criteria4.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
-                            criteria4.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
-                            List<Task> results4 = findByCriteria(criteria4);
-                            LOG.debug("Found {} CHO external tasks assigned to {} (with Insurer having no claim ownership & no workgroups", results4.size(), webUserUserRole.getWebUserRole().getName());
-                            results.addAll(results4);
+                            extTskAssingedToRole = Restrictions.conjunction()
+                                    .add(Restrictions.eq("insurer", Boolean.FALSE))
+                                    .add(Restrictions.eq("visibility", 3))
+                                    .add(Restrictions.eq("visibilityRole", webUserUserRole.getWebUserRole().getName()))
+                                    .add(Subqueries.propertyIn("claim", insurerUsers));  
                         }
                     }
-                }
 
-            } else { // No user specified - get all tasks
-                LOG.debug("Getting all tasks (no user specified)");
-                results = findByCriteria(criteria);
-                LOG.debug("Found {} tasks", results.size());
+                    // add all Criterion together to make final query.
+                    criteria.add(Restrictions.disjunction()
+                            .add(internalTasksWithNoClaimsAssigned)
+                            .add(internalTasksAssignedToThisRoleOnClaimsUserOwns)
+                            .add(internalTasksAssignedToThisRoleOnClaimsNobodyOwns)
+                            .add(externalTasksAssignedToThisRoleOnClaimsUserOwns)
+                            .add(internalTaskesAssignedToThisRoleAndWorkgroup)
+                            .add(internalTaskesAssignedToThisRoleAndNoWorkgroup)
+                            .add(extTskAssignedToThisRoleOnClaimsAssignedToWG)
+                            .add(intTskAssignedToClaimAndThisRole)
+                            .add(extTskAssingedToRole));
+                }
+            } 
+            
+            totalCount = totalCount(criteria);
+            
+            criteria.setFirstResult(start);
+            criteria.setMaxResults(limit);
+            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+            sortTasks(criteria, sort, dir);
+            resultMap = criteria.list();
+            
+            for (HashMap m : resultMap) {
+                results.add((Task) m.get("this"));
             }
+            LOG.debug("Found {} tasks (including duplicates) - removing any duplicates", results.size());
+            results = removeDuplicateTasks(results);
+            
         } catch (Exception ex) {
-            LOG.error("Exception caught retrieving visible tasks: {}", ex.getMessage());
+            LOG.error("Exception caught retrieving visible tasks: ", ex);
         }
-        LOG.debug("Found {} tasks (including duplicates) - removing any duplicates", results.size());
-//        LOG.debug("Found {} tasks.", results.size());
-        return removeDuplicateTasks(results);
+        return new SearchResult(results, totalCount);
     }
 
     /****************
@@ -536,6 +539,28 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     return restrictedList;
     }
      ******************/
+    
+    private void sortTasks(Criteria criteria, String sort, String dir) {
+
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("choReference")) {
+                addSort(criteria, "c.choReference", dir);
+            } else if (sort.equalsIgnoreCase("dueDate")) {
+                addSort(criteria, "dueDate", dir);
+            } else if (sort.equalsIgnoreCase("type")) {
+                addSort(criteria, "type", dir);
+            } else if (sort.equalsIgnoreCase("description")) {
+                addSort(criteria, "description", dir);
+            } else if (sort.equalsIgnoreCase("createdDate")) {
+                addSort(criteria, "createdDate", dir);
+            } else if (sort.equalsIgnoreCase("createdBy")) {
+                addSort(criteria, "createdBy", dir);
+            }
+        } else {
+            criteria.addOrder(Order.desc("dueDate"));
+        }
+    }
+    
     private List<Integer> getUserWorkgroupIds(WebUser user) {
         // return a list of roles allocated to the user
         List<Integer> userWorkgroupIds = new ArrayList<Integer>();
@@ -552,7 +577,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         return userWorkgroupIds;
     }
 
-    private List<Task> getTasks(int webUserId, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups) {
+    private SearchResult getTasks(int webUserId, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir) {
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -561,7 +586,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("No such user.");
             }
         }
-        return getTasks(webUser, incompleteOnly, hasOwnership, hasWorkgroups);
+        return getTasks(webUser, incompleteOnly, hasOwnership, hasWorkgroups, start, limit, sort, dir);
     }
 
     private List<Task> getTasksByClaim(int webUserId, int claimId, boolean incompleteOnly) {
