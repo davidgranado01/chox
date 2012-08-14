@@ -53,13 +53,11 @@
         var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
         var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
         var claimId = <s:property value="id" />;
-
         activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
-
-        <s:if test="isChoxAdmin!=true">
-            activityMonitor.pingServer();
+        <s:if test="isChoxAdmin!=true && enableActivityMonitor">
+            activityMonitor.pingServer(<s:property value="activityMonitorRequestInterval"/>);
         </s:if>
-
+        
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,

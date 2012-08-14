@@ -9,6 +9,8 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
+        <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
+        <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
     </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
