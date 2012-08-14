@@ -79,8 +79,8 @@
             updateManualInvoiceBatchUpdate(Ext.state.Manager.get("grid_filterName"));
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl, checkStatusIUrl);
-
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl); 
+            
         <s:if test="isCHO" > 
                 document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Insurer Filter : &nbsp;&nbsp;';
 
@@ -337,7 +337,6 @@
             function searchClaim(canSearchForData){
 
                 var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-;
                 if (Ext.getCmp('searchScreenSupplierComboId'))
                     var supplierIds = Ext.getCmp('searchScreenSupplierComboId').getValue().split(",");
 
@@ -1681,13 +1680,13 @@
                 grid.hide();
                 Ext.fly('gridPanel').addClass('x-hide-display');
                 Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
-                activityMonitor.clearViewingStatus();
+                activityMonitor.clearViewingStatus(); 
             
                 if(tab.title == 'Inbox' || tab.title == 'Search'){
-        <s:if test="isChoxAdmin!=true">
-                    activityMonitor.refreshViewingStatus();
-        </s:if>
-
+                    <s:if test="isChoxAdmin!=true && enableActivityMonitor">
+                            activityMonitor.refreshViewingStatus(<s:property value="activityMonitorRequestInterval"/>);
+                    </s:if>
+   
                     grid.show();
                     Ext.fly('gridPanel').removeClass('x-hide-display');
                     // below code is hack to clear search screen size being set up by extjs when switch between other tabs. (to-do item 6.10.5).

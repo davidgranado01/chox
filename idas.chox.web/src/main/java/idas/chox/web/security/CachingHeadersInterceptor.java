@@ -24,7 +24,7 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
         final ActionContext context = invocation.getInvocationContext();
         final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
-        // Don't add to streaming requests
+        // Don't add to streaming requests or static content
         if (response != null
                 && request != null
                 && !request.getServletPath().contains("downloadExcelReport")
@@ -38,8 +38,6 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
             response.setHeader("Expires", "-1");
 
         } else if (response != null && request != null) {
-            response.setHeader("Cache-control", "cache");//not a valid header
-            response.setHeader("Pragma", "cache");//not a valid header
             response.setHeader("Expires", "-1");
         }
 

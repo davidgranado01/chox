@@ -1,5 +1,5 @@
 var activityMonitor = function(){
-    var interval = 5000;
+//    var interval = 5000;
     var enable = true;
     var pingServiceUrl;
     var checkStatusUrl;
@@ -11,7 +11,7 @@ var activityMonitor = function(){
             this.checkStatusUrl = checkStatusUrl;
             this.claimId = claimId;
         },
-        refreshViewingStatus : function() {
+        refreshViewingStatus : function(interval) {
             if(enable){
                 var x = [];
                 $("input[name='viewingId']").each(function (i) {
@@ -45,7 +45,7 @@ var activityMonitor = function(){
         clearViewingStatus : function() {
             clearTimeout(t);
         },
-        pingServer : function(){
+        pingServer : function(interval){
             if(enable){
                 Ext.Ajax.request({
                     url:this.pingServiceUrl,
