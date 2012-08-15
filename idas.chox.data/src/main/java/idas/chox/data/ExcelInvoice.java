@@ -154,22 +154,23 @@ public class ExcelInvoice {
         repairPenaltyPercentageString = (String) data.get("repairpenaltypercentage");
         if (!isCHO && hirePenaltyPercentageString != null && hirePenaltyPercentageString.endsWith("%") && hirePenaltyCharge != null && hireGross != null && hireGross.compareTo(BigDecimal.ZERO) > 0) {
           try {
-            BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.substring(0,hirePenaltyPercentageString.length()-2));
+            BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
             BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
             if (actualPercentage.compareTo(givenPercentage) != 0)
                 hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
           } catch (Exception ex) {
-              LOG.error("Error determining actual hire penalty %: ", ex);
+              LOG.error("Error determining actual hire penalty % for string {}: ", hirePenaltyPercentageString, ex);
           }
         }
+        
         if (!isCHO && repairPenaltyPercentageString != null && repairPenaltyPercentageString.endsWith("%") && repairPenaltyCharge != null && repairGross != null && repairGross.compareTo(BigDecimal.ZERO) > 0) {
           try {
-            BigDecimal givenPercentage = new BigDecimal(repairPenaltyPercentageString.substring(0,repairPenaltyPercentageString.length()-2));
+            BigDecimal givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
             BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
             if (actualPercentage.compareTo(givenPercentage) != 0)
                 repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
           } catch (Exception ex) {
-              LOG.error("Error determining actual repair penalty %: ", ex);
+              LOG.error("Error determining actual repair penalty % for string {}: ", repairPenaltyPercentageString, ex);
           }
         }
 
