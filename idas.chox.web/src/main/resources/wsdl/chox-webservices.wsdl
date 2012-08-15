@@ -643,6 +643,7 @@
                     <xsd:enumeration value="ManualInvoiceBREApproved"/>
                     <xsd:enumeration value="ManualInvoiceBRERejected"/>
                     <xsd:enumeration value="ManualInvoiceContested"/>
+                    <xsd:enumeration value="ManualInvoiceUnassigned"/>
                     <xsd:enumeration value="AwaitingLitigationOutcome"/>
                     <xsd:enumeration value="ManualInvoicePaid"/>
                     <xsd:enumeration value="PaymentReceived"/>
