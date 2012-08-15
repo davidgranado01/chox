@@ -76,7 +76,7 @@
                                 <include>**/extjs/SuperBoxSelect-min.js</include>
                               </includes>
                               <!--  When libraries are updated remember to change the name/version of aggregates js file -->
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs.js</output>
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-1.0.js</output>
                          </aggregation>
                          <aggregation>
                               <insertNewLine>true</insertNewLine>
@@ -91,7 +91,7 @@
                                 <include>**/inbox-min.js</include>
                                 <include>**/scripts/chox-aggregated-min.js</include>
                               </includes>
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall.js</output>
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0.js</output>
                          </aggregation>
                          <!--  CSS agggregation  -->
                          <aggregation>
@@ -104,7 +104,7 @@
                                 <include>**/superboxselect-min.css</include>
                               </includes>
                               <!--  When libraries are updated remember to change the name/version of aggregates css file -->
-                              <output>${project.build.directory}/${project.build.finalName}/css/libs.css</output>
+                              <output>${project.build.directory}/${project.build.finalName}/css/libs-1.0.css</output>
                          </aggregation>
                     </aggregations>
                 </configuration>             
