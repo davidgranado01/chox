@@ -1,5 +1,3 @@
-<link href="<%= request.getContextPath()%>/css/chox-min.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="<%= request.getContextPath()%>/css/ext-all-3.4.0-min.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="<%= request.getContextPath()%>/css/ext-roweditor-3.4.0-min.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="<%= request.getContextPath()%>/css/ext-statusbar-3.4.0-min.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="<%= request.getContextPath()%>/css/superboxselect-min.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="<%= request.getContextPath()%>/css/chox-1.0-min.css" rel="stylesheet" type="text/css" media="all"/>
+<!-- This file is generated with yui-aggregator so don't forget to change the version of the file inside of pom.xml -->
+<link href="<%= request.getContextPath()%>/css/libs-1.0.css" rel="stylesheet" type="text/css" media="all"/>
