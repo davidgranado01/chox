@@ -25,7 +25,9 @@ public class CachingResponseFilter implements Filter {
 		final HttpServletRequest request = (HttpServletRequest) req;
 		
 		if (response != null && request != null 
-				&& (request.getServletPath().contains("ext") || request.getServletPath().contains("jquery"))){
+				&& (request.getServletPath().contains("ext") 
+				        || request.getServletPath().contains("jquery")) 
+				        || request.getServletPath().contains("libs")){
 			
 			Calendar cal = new GregorianCalendar();
 			cal.add(Calendar.YEAR, 1); //1 year for libraries
