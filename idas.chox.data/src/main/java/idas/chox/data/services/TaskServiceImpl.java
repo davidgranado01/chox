@@ -392,7 +392,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     DetachedCriteria claimsBelongsToUserInsurer = DetachedCriteria.forClass(Claim.class)
                             .setProjection(Property.forName("id"))
                             .add(Restrictions.eq("insurer", user.getInsurer()));
-
+                    
+                    // get visibilityRoles depends upon the workgroup and ownership.
                     for (WebUserUserRole webUserUserRole : webUserUserRoles) {
                         
                         LOG.debug("Getting tasks for users role {}", webUserUserRole.getWebUserRole().getName());
@@ -424,6 +425,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         }
                     }
 
+                    // declare Criterian depends upon the visibilityRole
                     if (webUserUserRoles.size() > 0) {
 
                         // Add all Insurer internal tasks with no claim assigned to this role that user is in
