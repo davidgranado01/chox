@@ -89,6 +89,10 @@ public class InboxAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String getInboxTabPanel() {
+        return SUCCESS;
+    }
+    
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
             menuAccessibility = applicationAccessibility.getMenuAccessibility(super.getAuthenticatedUser());
