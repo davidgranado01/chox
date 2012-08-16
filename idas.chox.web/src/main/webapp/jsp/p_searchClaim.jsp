@@ -1,13 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="idas.chox.core.search.ClaimSearchCriteria" %> <!--  Needed to access the CLAIM_OWNER_NOT_ASSIGNED constant -->
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-<s:if test="#parameters.devp || development">
-    <script src="<%= request.getContextPath()%>/scripts/SuperBoxSelect.js" type="text/javascript"></script>
-</s:if>
-<s:else>
-    <script src="<%= request.getContextPath()%>/scripts/SuperBoxSelect-min.js" type="text/javascript"></script>
-</s:else>
            
 <script type="text/javascript">
 
