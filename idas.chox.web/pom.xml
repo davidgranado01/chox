@@ -55,7 +55,59 @@
 		              <goal>compress</goal>
 		            </goals>
 		          </execution>
-		        </executions>        
+		        </executions>
+		        <configuration>
+                  <aggregations>
+                        <!--  JS aggregation  -->
+                        <aggregation>
+                              <insertNewLine>true</insertNewLine>
+                              <removeIncluded>false</removeIncluded>
+                              <includes>
+                                <include>**/jquery/jquery-1.7.1-min.js</include>
+                                <include>**/jquery/jquery.form-min.js</include>
+                                <include>**/jquery/jquery.validate-min.js</include>
+                                <include>**/jquery/jquery.blockUI-min.js</include>
+                                <include>**/query/jquery.metadata-min.js</include>
+                                <include>**/extjs/ext-jquery-adapter-min.js</include>
+                                <include>**/jquery/additional-methods-min.js</include>
+                                <include>**/jquery/jquery.timer-min.js</include>
+                                <include>**/extjs/ext-base-3.4.0-min.js</include>
+                                <include>**/extjs/ext-all-3.4.0-min.js</include>
+                                <include>**/extjs/SuperBoxSelect-min.js</include>
+                              </includes>
+                              <!--  When libraries are updated remember to change the name/version of aggregates js file -->
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-1.0.js</output>
+                         </aggregation>
+                         <aggregation>
+                              <insertNewLine>true</insertNewLine>
+                              <removeIncluded>false</removeIncluded>
+                              <includes>
+                                <include>**/general-min.js</include>
+                                <include>**/Application-min.js</include>
+                                <include>**/ui-min.js</include>
+                                <include>**/ajax-min.js</include>
+                                <include>**/choxcommon-min.js</include>
+                                <include>**/report-min.js</include>
+                                <include>**/inbox-min.js</include>
+                                <include>**/scripts/chox-aggregated-min.js</include>
+                              </includes>
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0.js</output>
+                         </aggregation>
+                         <!--  CSS agggregation  -->
+                         <aggregation>
+                              <insertNewLine>true</insertNewLine>
+                              <removeIncluded>false</removeIncluded>
+                              <includes>
+                                <include>**/ext-all-3.4.0-min.css</include>
+                                <include>**/ext-roweditor-3.4.0-min.css</include>
+                                <include>**/ext-statusbar-3.4.0-min.css</include>
+                                <include>**/superboxselect-min.css</include>
+                              </includes>
+                              <!--  When libraries are updated remember to change the name/version of aggregates css file -->
+                              <output>${project.build.directory}/${project.build.finalName}/css/libs-1.0.css</output>
+                         </aggregation>
+                    </aggregations>
+                </configuration>             
        		</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
