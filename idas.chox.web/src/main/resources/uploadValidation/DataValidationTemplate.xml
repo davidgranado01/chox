@@ -654,7 +654,7 @@
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
         <data-length>16</data-length>
-        <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <reg-exp>^([\d]|[a-z]|[A-Z]).*$</reg-exp>
     </customerdetail-vehicle-registration>
 
     <customerdetail-vehicle-manufacturer>
@@ -1035,7 +1035,7 @@
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
         <data-length>16</data-length>
-        <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <reg-exp>^([\d]|[a-z]|[A-Z]).*$</reg-exp>
     </thirdpartydetails-vehicle-registration>
 
     <thirdpartydetails-vehicle-manufacturer>
@@ -2311,7 +2311,7 @@
         <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
         <data-length>16</data-length>
-        <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <reg-exp>^([\d]|[a-z]|[A-Z]).*$</reg-exp>
     </vehiclehiredetails-vehicle-registration>
 
     <vehiclehiredetails-vehicle-manufacturer>

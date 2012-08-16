@@ -330,7 +330,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
         Criteria criteria = buildSearchCriteria(searchCriteria);
-        Integer totalCount = countClaims(criteria);
+        Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());
 
         if (!sort.isEmpty() && !dir.isEmpty()) {
@@ -413,7 +413,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
-        return countClaims(criteria);
+        return totalCount(criteria);
     }
 
     @Override
@@ -564,14 +564,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         return isExist;
 
-    }
-
-    private Integer countClaims(Criteria criteria) {
-        criteria.setProjection(Projections.rowCount());
-        List totalCountResult = criteria.list();
-        criteria.setProjection(null);
-
-        return ((Long) totalCountResult.get(0)).intValue();
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
@@ -954,14 +946,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return criteria;
     }
 
-    private void addSort(Criteria criteria, String sort, String dir) {
-        if (dir.equalsIgnoreCase("desc")) {
-            criteria.addOrder(Order.desc(sort));
-        } else {
-            criteria.addOrder(Order.asc(sort));
-        }
-    }
-
     @Override
     public String getDaysWithCHOForReview(int id) {
         LOG.debug("Getting number of days claim was with CHO for review");
@@ -1231,7 +1215,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
-        Claim claim = (Claim) this.getClaim(claimId);
+        Claim claim = this.getClaim(claimId);
 
         if(isClaimInClosedStatus(claim)){
             return 0;
@@ -1241,7 +1225,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
-        return countClaims(criteria).intValue();
+        return totalCount(criteria).intValue();
     }
     
     private boolean isClaimInClosedStatus(Claim claim) {
@@ -1265,7 +1249,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
         Criteria criteria = getSession().createCriteria(Claim.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
-        return countClaims(criteria).intValue();
+        return totalCount(criteria).intValue();
     }
 
     @Override
@@ -1312,9 +1296,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.status_modified_date, c.indeminty_amount,")
             .append(" c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
+            .append(" wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner,")
             .append(" cust.first_name as customer_first_name, cust.last_name as customer_last_name, cust.address1 as customer_address1, cust.address2 as customer_address2,")
             .append(" cust.address3 as customer_address3, cust.address4 as customer_address4, cust.address5 as customer_address5, cust.postcode as customer_postcode,")
             .append(" cust.telephone_day as customer_telephone_day, cust.telephone_evening as customer_telephone_evening, cust.email as customer_email,")
+            .append(" cust.age as customer_age, cust.occupation as customer_occupation, cust.policy_usage as customer_policy_usage,")
             .append(" cust.insurer_name as customer_insurer_name, cust.policy_number as customer_policy_number, cust.claim_reference as customer_claim_reference,")
             .append(" cust.comprehensive as customer_comprehensive, cust.vehicle_manufacturer as customer_vehicle_manufacturer, cust.vehicle_model as customer_vehicle_model,")
             .append(" cust.vehicle_registration as customer_vehicle_registration, cust.vehicle_year as customer_vehicle_year, cust_vc.name as customer_vehicle_class,")
@@ -1356,11 +1342,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .append(" hmd.repair_completion_date as hmd_repair_completion_date, hmd.is_total_lost_check as hmd_is_total_lost_check, hmd.total_loss_offer_made as hmd_total_loss_offer_made,")
             .append(" hmd.total_loss_offer_accepted as hmd_total_loss_offer_accepted, hmd.total_loss_check_issued as hmd_total_loss_check_issued,")
             .append(" hmd.total_loss_check_received as hmd_total_loss_check_received, hmd.labour_rate as hmd_labour_rate, hmd.labour_hour as hmd_labour_hour,")
+            .append(" hmd.is_repair_only_check as claim_repair_only_check, hmd.is_non_fault_insurer_managing_repair as claim_non_fault_insurer_repair,")
             .append(" hmd.labour_cost as hmd_labour_cost, hmd.non_provision_reason as hmd_non_provision_reason, hmd.next_review_date as hmd_next_review_date")
             .append(" from claim c")
             .append("     join chorganisation cho on (c.chorganisation_id = cho.id)")
             .append("     left outer join workgroup w on (c.workgroup_id = w.id)")
             .append("     left outer join web_user wu on (c.claim_owner_id = wu.id)")
+            .append("     left outer join web_user wuc on (c.cho_claim_owner_id = wuc.id)")
             .append("     left outer join customer cust on (c.customer_id = cust.id)")
             .append("     left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)")
             .append("     left outer join third_party tp on (c.third_party_id = tp.id)")

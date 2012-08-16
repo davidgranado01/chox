@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Task;
+import idas.chox.core.search.SearchResult;
 import java.util.List;
 
 /**
@@ -8,10 +9,10 @@ import java.util.List;
  * @author John
  */
 public interface TaskService {
-    public List<Task> getAllTasks();
-    public List<Task> getIncompleteTasks();
-    public List<Task> getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups);
-    public List<Task> getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups);
+    public SearchResult getAllTasks(int start, int limit, String sort, String dir);
+    public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir);
+    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir);
+    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir);
     public List<Task> getAllTasksByClaim(int claimId);
     public List<Task> getIncompleteTasksByClaim(int claimId);
     public List<Task> getIncompleteTasksByClaim(int webUserId, int claimId);

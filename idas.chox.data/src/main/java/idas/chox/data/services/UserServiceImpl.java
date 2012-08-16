@@ -1,25 +1,26 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.PasswordHistory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
-import org.hibernate.criterion.Projections;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -171,21 +172,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return users;
     }
 
-    private void addSort(Criteria criteria, String sort, String dir) {
-        if (dir.equalsIgnoreCase("desc")) {
-            criteria.addOrder(Order.desc(sort));
-        } else {
-            criteria.addOrder(Order.asc(sort));
-        }
-    }
-
-    private Integer countClaims(Criteria criteria) {
-        criteria.setProjection(Projections.rowCount());
-        List totalCountResult = criteria.list();
-        criteria.setProjection(null);
-        return ((Long) totalCountResult.get(0)).intValue();
-    }
-
     @Override
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir) {
         List<WebUser> users = new ArrayList<WebUser>();
@@ -227,7 +213,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             }
         }
 
-        Integer totalCount = countClaims(criteria);
+        Integer totalCount = totalCount(criteria);
 
 
         criteria.setFirstResult(start);
