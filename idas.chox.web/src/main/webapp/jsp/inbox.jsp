@@ -33,6 +33,7 @@
         var doClaimRoutedAction;
         var doInsurerClaimOwnerAction;
         var manualInvoiceFilter;
+        var dashboardActionName;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -70,7 +71,12 @@
                 this.value = v;
             }});
 
-        
+            <s:if test="isInsurer">
+                dashboardActionName = "showInsurerBoardHeader";
+            </s:if>
+            <s:if test="isCHO">
+                dashboardActionName = "showChoBoardHeader";
+            </s:if>
             Ext.QuickTips.init();
             loadDataFromSession();
             setupGrid();
@@ -79,107 +85,8 @@
             updateManualInvoiceBatchUpdate(Ext.state.Manager.get("grid_filterName"));
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl, checkStatusIUrl); 
-            
-        <s:if test="isCHO" > 
-                document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Insurer Filter : &nbsp;&nbsp;';
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl);
 
-                var insurersJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'text'},
-                        {name: 'value'}
-                    ]
-                });
-
-                var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
-                var insurersStore = new Ext.data.Store({
-                    data : myinsurers,
-                    reader : insurersJsonReader,
-                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
-                });
-
-
-                var insurerFilterCombo = new Ext.form.ComboBox({
-                    store : insurersStore,
-                    //                    renderTo: 'orgFilterDiv',
-                    id:'filterOrgId',
-                    autoHeight: true,
-                    autoWidth: false,
-                    width: 180,
-                    listWidth: 180,
-                    valueField : 'value',
-                    displayField :'text',
-                    typeAhead : true,
-                    mode : 'local',
-                    triggerAction : 'all',
-                    valueNotFoundText : '--- ALL ---',
-                    selectOnFocus : true,
-                    listeners: {
-                        select: reloadQueues,
-                        blur: function () {
-                            if(this.getRawValue() == "" ) {
-                                this.clearValue();
-                                reloadQueues();
-                            }
-                        }
-                    }
-                });
-                
-                insurerFilterCombo.render('orgFilterDiv');
-                insurerFilterCombo.setValue(-1);              
-        </s:if>
-
-        <s:elseif test="isInsurer" > 
-            if (document.getElementById('queueOrgFilter')) {
-                document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;CHO Filter : &nbsp;&nbsp;';
-            
-                var suppliersJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'text'},
-                        {name:'value'}
-                    ]
-                });
-
-                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
-                var suppliersStore = new Ext.data.Store({
-                    data : mysuppliers,
-                    reader : suppliersJsonReader,
-                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
-                });
-
-                var supplierFilterCombo = new Ext.form.ComboBox({
-                    store : suppliersStore,
-                    //                renderTo: 'orgFilterDiv',
-                    id:'filterOrgId',
-                    width: 180,
-                    listWidth: 180,
-                    valueField : 'value',
-                    displayField :'text',
-                    typeAhead : true,
-                    mode : 'local',
-                    triggerAction : 'all',
-                    valueNotFoundText : '--- ALL ---',
-                    selectOnFocus : true,
-                    listeners: {
-                        select: reloadQueues,
-                        blur: function () {
-                            if(this.getRawValue() == "" ) {
-                                this.clearValue();
-                                reloadQueues();
-                            }
-                        }
-                    }
-                });
-                supplierFilterCombo.render('orgFilterDiv');
-                supplierFilterCombo.setValue(-1);
-            }
-        </s:elseif>
                 //        else
                 //            document.getElementById('queueOrgFilter').innerHTML  = '';
 
@@ -1615,11 +1522,11 @@
                     autoheight:true,
                     activeTab: selectedIndex,
                     items:[
-                        {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
+                        {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getInboxTabPanel.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
-                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
+                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/"+dashboardActionName+".action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'Claim/Invoice Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
@@ -1636,8 +1543,8 @@
                         autoheight: true,
                         activeTab: selectedIndex,
                         items:[
-                            {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                            {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
+                            {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/"+dashboardActionName+".action?rdn="+getRandomNumber(), scripts:true}},
+                            {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getInboxTabPanel.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'searchPanelTab', id:'searchPanelTabId', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                             {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
@@ -1771,32 +1678,8 @@
 <div id="inboxScreenDiv">
     <div id="tabPanel"></div>
 
-    <div id="boardPanelTab" class="x-hide-display">
-        <div id="boardPanel">
-            <s:if test="isInsurer">
-                <s:action name="showInsurerBoardHeader" namespace="/prv/p" executeResult="true" />
-            </s:if>
-            <s:if test="isCHO">
-                <s:action name="showChoBoardHeader" namespace="/prv/p" executeResult="true" />
-            </s:if>
-        </div>
-    </div>
-
-    <div id="filterPanelTab" class="x-hide-display">
-        <div id="filterPanel" style="float: left;">
-            <label id="queueOrgFilter" style="float: left;"></label>
-            <div id="orgFilterDiv"></div>
-            <div id="filterPanel2">
-                <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
-            </div>
-        </div>
-        <s:if test="taskManagementEnabled">
-            <div id="taskPanelDiv">
-                <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
-            </div>
-        </s:if>
-    </div>
-
+    <div id="boardPanelTab" class="x-hide-display"></div>
+    <div id="filterPanelTab" class="x-hide-display"></div>
     <div id="searchPanelTab" class="x-hide-display"></div>
     <div id="reportPanelTab" class="x-hide-display"></div>
     <div id="adminPanelTab" class="x-hide-display"></div>

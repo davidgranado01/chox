@@ -381,6 +381,9 @@
         <action name="getFilterRecordCounters" class="idas.chox.web.actions.FilterRecordCounterAction">
             <result>/jsp/p_get_filter_record_counters.jsp</result>
         </action>
+        <action name="getInboxTabPanel" class="idas.chox.web.actions.InboxAction" method="getInboxTabPanel">
+            <result>/jsp/p_inbox_tab_panel.jsp</result>
+        </action>
         <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction">
             <result>/jsp/p_task_panel.jsp</result>
         </action>

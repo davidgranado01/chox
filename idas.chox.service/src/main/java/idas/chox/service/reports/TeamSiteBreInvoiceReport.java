@@ -169,7 +169,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                      * No of Invoices uploaded
                      */
                     sb.append("(select count(*) from claim c, invoice i, workgroup w ")
-                      .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
+                      .append("where c.invoice_id=i.id and c.workgroup_id=w.id and c.claim_type != 10 ")
                       .append("and w.status=true and w.site = :pSite ")
                       .append("and w.team = :pTeam and w.insurer_id = :pInsurerId ");
                       if(selectedCHOId>0){

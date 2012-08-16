@@ -1,19 +1,21 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Task;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.TaskService;
-import idas.chox.web.TaskComparator;
-import idas.chox.web.viewdata.TaskViewData;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import net.sf.json.JSONArray;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Task;
+import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.TaskService;
+import idas.chox.web.viewdata.TaskViewData;
 
 /**
  *
@@ -123,7 +125,6 @@ public class TasksAction extends BaseAction {
     public String getJsonArrayData() {
         if (jObject != null) {
             String jsonString = "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
-//            LOG.debug("Returning json string: '{}'", jsonString);
             return jsonString;
         }
         return "";
@@ -139,9 +140,13 @@ public class TasksAction extends BaseAction {
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted) {
-            tasks = taskService.getIncompleteTasks();
+            SearchResult searchResult = taskService.getIncompleteTasks(start, limit, sort, dir);
+            tasks = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
         } else {
-            tasks = taskService.getAllTasks();
+            SearchResult searchResult = taskService.getAllTasks(start, limit, sort, dir);
+            tasks = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
         }
 
         for (Task c : tasks) {
@@ -151,25 +156,8 @@ public class TasksAction extends BaseAction {
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
-        // sorting and limiting the record
-        TaskComparator comparator = new TaskComparator(sort);
-        if (!sort.isEmpty() && !dir.isEmpty()) {
-            {
-                LOG.debug("sort and dir is not emty and their value is {} {}", sort, dir);
-                try {
-                    Collections.sort(viewData, comparator);
-                } catch (Exception ex) {
-                    LOG.debug("Exception is thrown in sorting the task {}", ex.getMessage());
-                }
-                if (dir.equalsIgnoreCase("desc")) {
-                    Collections.reverse(viewData);
-                }
-            }
-
-        }
-        totalCount = viewData.size();
         LOG.debug("total task size is {}", totalCount);
-        this.jObject = JSONArray.fromObject(viewData.subList(start, (start + limit)<totalCount? start+limit : totalCount));
+        this.jObject = JSONArray.fromObject(viewData);
         return SUCCESS;
     }
 
@@ -184,15 +172,23 @@ public class TasksAction extends BaseAction {
         LOG.debug("Calling taskService to get all visible tasks");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
+                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir);
+                tasks = searchResult.getResult();
+                totalCount = searchResult.getTotalCount();
             } else {
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
+                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir);
+                tasks = searchResult.getResult();
+                totalCount = searchResult.getTotalCount();
             }
         } else {
             if (this.getIsCHO()) {
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
+                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir);
+                tasks = searchResult.getResult();
+                totalCount = searchResult.getTotalCount();
             } else {
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
+                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir);
+                tasks = searchResult.getResult();
+                totalCount = searchResult.getTotalCount();
             }
         }
 
@@ -202,48 +198,8 @@ public class TasksAction extends BaseAction {
             }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
-
-        // sorting and limiting the record
-        TaskComparator comparator = new TaskComparator(sort);
-        if (!sort.isEmpty() && !dir.isEmpty()) {
-            {
-                Collections.sort(viewData, comparator);
-                if (dir.equalsIgnoreCase("desc")) {
-                    Collections.reverse(viewData);
-                }
-            }
-
-        }
-        totalCount = viewData.size();
-
-        this.jObject = JSONArray.fromObject(viewData.subList(start, (start + limit)<totalCount? start+limit : totalCount));
-        return SUCCESS;
-    }
-
-    public String getTasks() {
-        boolean showInsurerRole = false;
-
-        if (getIsInsurer() || getIsChoxAdmin()) {
-            showInsurerRole = true;
-        }
-
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
-        LOG.debug("Calling taskService to get all tasks");
-        if (hideCompleted) {
-            tasks = taskService.getIncompleteTasks();
-        } else {
-            tasks = taskService.getAllTasks();
-        }
-
-        for (Task c : tasks) {
-            if (c.getRaisedBy() != null) {
-                c.setCreatedBy(c.getRaisedBy());
-            }
-            viewData.add(new TaskViewData(c, showInsurerRole));
-        }
-
+        
         this.jObject = JSONArray.fromObject(viewData);
-//        LOG.debug("Returning tasks: '{}'", jObject.toString());
         return SUCCESS;
     }
 
@@ -272,7 +228,6 @@ public class TasksAction extends BaseAction {
         }
 
         this.jObject = JSONArray.fromObject(viewData);
-//        LOG.debug("Returning tasks: '{}'", jObject.toString());
         return SUCCESS;
     }
 
@@ -300,42 +255,6 @@ public class TasksAction extends BaseAction {
         }
 
         this.jObject = JSONArray.fromObject(viewData);
-//        LOG.debug("Returning tasks: '{}'", jObject.toString());
-        return SUCCESS;
-    }
-
-    public String getVisibleTasks() {
-        boolean showInsurerRole = false;
-
-        if (getIsInsurer() || getIsChoxAdmin()) {
-            showInsurerRole = true;
-        }
-
-        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
-        LOG.debug("Calling taskService to get all visible tasks");
-        if (hideCompleted) {
-            if (this.getIsCHO()) {
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
-            } else {
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
-            }
-        } else {
-            if (this.getIsCHO()) {
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
-            } else {
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
-            }
-        }
-
-        for (Task c : tasks) {
-            if (c.getRaisedBy() != null) {
-                c.setCreatedBy(c.getRaisedBy());
-            }
-            viewData.add(new TaskViewData(c, showInsurerRole));
-        }
-
-        this.jObject = JSONArray.fromObject(viewData);
-//        LOG.debug("Returning tasks: '{}'", jObject.toString());
         return SUCCESS;
     }
 
