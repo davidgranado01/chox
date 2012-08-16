@@ -37,6 +37,7 @@ public class ClaimFileReportData {
     private String liabilityStatus;
     private String contactDate;
     private String claimOwner;
+    private String supplierClaimOwner;
     private String workgroup;
     private BigDecimal indemnityValue;
     private BigDecimal insurerLiabilityAgreed;
@@ -290,6 +291,8 @@ public class ClaimFileReportData {
             contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
         if (claim.getClaimOwner() != null)
             claimOwner = claim.getClaimOwner().getFullName();
+        if (claim.getSupplierClaimOwner() != null)
+            supplierClaimOwner = claim.getSupplierClaimOwner().getFullName();
         if (claim.getWorkgroup() != null)
             workgroup = claim.getWorkgroup().getName();
         indemnityValue = claim.getIndemnityAmount();
@@ -2590,6 +2593,10 @@ public class ClaimFileReportData {
 
     public void setPaymentDetailsInsurerDiscountFeePaid(BigDecimal paymentDetailsInsurerDiscountFeePaid) {
         this.paymentDetailsInsurerDiscountFeePaid = paymentDetailsInsurerDiscountFeePaid;
+    }
+
+    public String getSupplierClaimOwner() {
+        return supplierClaimOwner;
     }
 
 }

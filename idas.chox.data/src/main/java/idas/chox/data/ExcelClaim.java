@@ -25,6 +25,7 @@ public class ExcelClaim {
     private Date claimGtaNoticeDate;
     private String claimClaimNumber;
     private String claimClaimOwnerDisplayName;
+    private String claimSupplierClaimOwnerDisplayName;
     private String claimCustomerTitle;
     private String claimCustomerFirstName;
     private String claimCustomerLastName;
@@ -37,6 +38,9 @@ public class ExcelClaim {
     private String claimCustomerTelephoneDay;
     private String claimCustomerTelephoneEvening;
     private String claimCustomerEmail;
+    private Integer claimCustomerAge;
+    private String claimCustomerOccupation;
+    private String claimCustomerPolicyUsage;
     private String claimCustomerInsurerName;
     private String claimCustomerPolicyNumber;
     private String claimCustomerClaimReference;
@@ -162,6 +166,8 @@ public class ExcelClaim {
     private Date claimHireMonitoringDetailTotalLossOfferCheckReceivedDate;
     private BigDecimal claimHireMonitoringDetailLabourRate;
     private BigDecimal claimHireMonitoringDetailLabourHour;
+    private String claimRepairOnlyCheck;
+    private String claimNonFaultInsurerRepair;
     private BigDecimal claimHireMonitoringDetailLabourCost;
     private String claimHireMonitoringDetailNonProvisionReason;
     private Date claimHireMonitoringDetailNextReviewDate;
@@ -183,6 +189,7 @@ public class ExcelClaim {
         claimGtaNoticeDate = (Date) data.get("gta_notice_date");
         claimClaimNumber = (String) data.get("claim_number");
         claimClaimOwnerDisplayName = (String) data.get("claim_owner");
+        claimSupplierClaimOwnerDisplayName = (String) data.get("claim_supplier_owner");
         claimCustomerTitle = (String) data.get("customer_title");
         claimCustomerFirstName = (String) data.get("customer_first_name");
         claimCustomerLastName = (String) data.get("customer_last_name");
@@ -195,6 +202,9 @@ public class ExcelClaim {
         claimCustomerTelephoneDay = (String) data.get("customer_telephone_day");
         claimCustomerTelephoneEvening = (String) data.get("customer_telephone_evening");
         claimCustomerEmail = (String) data.get("customer_email");
+        claimCustomerAge = (Integer) data.get("customer_age");
+        claimCustomerOccupation = (String) data.get("customer_occupation");
+        claimCustomerPolicyUsage = (String) data.get("customer_policy_usage");
         claimCustomerInsurerName = (String) data.get("customer_insurer_name");
         claimCustomerPolicyNumber = (String) data.get("customer_policy_number");
         claimCustomerClaimReference = (String) data.get("customer_claim_reference");
@@ -361,6 +371,16 @@ public class ExcelClaim {
         claimHireMonitoringDetailTotalLossOfferCheckReceivedDate = (Date) data.get("hmd_total_loss_check_received");
         claimHireMonitoringDetailLabourRate = (BigDecimal) data.get("hmd_labour_rate");
         claimHireMonitoringDetailLabourHour = (BigDecimal) data.get("hmd_labour_hour");
+        Boolean isRepairCheckOnly = (Boolean) data.get("claim_repair_only_check");
+        if (isRepairCheckOnly == null)
+            claimRepairOnlyCheck = "";
+        else
+            claimRepairOnlyCheck = isRepairCheckOnly ? "Yes" : "No";
+        Boolean isNonFaultInsurerRepair = (Boolean) data.get("claim_non_fault_insurer_repair");
+        if (isNonFaultInsurerRepair == null)
+            claimNonFaultInsurerRepair = "";
+        else
+            claimNonFaultInsurerRepair = isNonFaultInsurerRepair ? "Yes" : "No";
         claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_labour_cost");
         claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_non_provision_reason");
         claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_next_review_date");
@@ -403,6 +423,10 @@ public class ExcelClaim {
             this.claimClaimOwnerDisplayName = claim.getClaimOwner().getDisplayName();
         else
             this.claimClaimOwnerDisplayName = "";
+        if (claim.getSupplierClaimOwner() != null)
+            this.claimSupplierClaimOwnerDisplayName = claim.getSupplierClaimOwner().getDisplayName();
+        else
+            this.claimSupplierClaimOwnerDisplayName = "";
         if (claim.getCustomer() != null) {
             this.claimCustomerTitle = claim.getCustomer().getTitle();
             this.claimCustomerFirstName = claim.getCustomer().getFirstName();
@@ -416,6 +440,9 @@ public class ExcelClaim {
             this.claimCustomerTelephoneDay = claim.getCustomer().getTelephoneDay();
             this.claimCustomerTelephoneEvening = claim.getCustomer().getTelephoneEvening();
             this.claimCustomerEmail = claim.getCustomer().getEmail();
+            this.claimCustomerAge = claim.getCustomer().getAge();
+            this.claimCustomerOccupation = claim.getCustomer().getOccupation();
+            this.claimCustomerPolicyUsage = claim.getCustomer().getPolicyUsage();
             this.claimCustomerInsurerName = claim.getCustomer().getInsurerName();
             this.claimCustomerPolicyNumber = claim.getCustomer().getPolicyNumber();
             this.claimCustomerClaimReference = claim.getCustomer().getClaimReference();
@@ -463,6 +490,9 @@ public class ExcelClaim {
             this.claimCustomerTelephoneDay = "";
             this.claimCustomerTelephoneEvening = "";
             this.claimCustomerEmail = "";
+            this.claimCustomerAge = 0;
+            this.claimCustomerOccupation = "";
+            this.claimCustomerPolicyUsage = "";
             this.claimCustomerInsurerName = "";
             this.claimCustomerPolicyNumber = "";
             this.claimCustomerClaimReference = "";
@@ -753,6 +783,8 @@ public class ExcelClaim {
             this.claimHireMonitoringDetailLabourCost = claim.getHireMonitoringDetail().getLabourCost();
             this.claimHireMonitoringDetailNonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason();
             this.claimHireMonitoringDetailNextReviewDate = claim.getHireMonitoringDetail().getNextReviewDate();
+            this.claimRepairOnlyCheck = claim.getHireMonitoringDetail().isIsRepairOnlyCheck() ? "Yes" : "No";
+            this.claimNonFaultInsurerRepair = claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair() ? "Yes" : "No";
         }
         else {
             this.claimHireMonitoringDetailNameOfRepairer = "";
@@ -773,6 +805,8 @@ public class ExcelClaim {
             this.claimHireMonitoringDetailLabourCost = null;
             this.claimHireMonitoringDetailNonProvisionReason = "";
             this.claimHireMonitoringDetailNextReviewDate = null;
+            this.claimRepairOnlyCheck = "";
+            this.claimNonFaultInsurerRepair = "";
         }
     }
 
@@ -794,6 +828,10 @@ public class ExcelClaim {
 
     public String getClaimClaimOwnerDisplayName() {
         return claimClaimOwnerDisplayName;
+    }
+    
+    public String getClaimSupplierClaimOwnerDisplayName() {
+        return claimSupplierClaimOwnerDisplayName;
     }
 
     public Date getClaimCreditAgreementDate() {
@@ -1399,4 +1437,25 @@ public class ExcelClaim {
     public String getClaimThirdPartyVehicleRegistration() {
         return claimThirdPartyVehicleRegistration;
     }
+
+    public Integer getClaimCustomerAge() {
+        return claimCustomerAge;
+    }
+
+    public String getClaimCustomerOccupation() {
+        return claimCustomerOccupation;
+    }
+
+    public String getClaimCustomerPolicyUsage() {
+        return claimCustomerPolicyUsage;
+    }
+
+    public String getClaimRepairOnlyCheck() {
+        return claimRepairOnlyCheck;
+    }
+
+    public String getClaimNonFaultInsurerRepair() {
+        return claimNonFaultInsurerRepair;
+    }
+
 }
