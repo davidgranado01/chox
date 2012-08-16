@@ -330,7 +330,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
         Criteria criteria = buildSearchCriteria(searchCriteria);
-        Integer totalCount = countClaims(criteria);
+        Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());
 
         if (!sort.isEmpty() && !dir.isEmpty()) {
@@ -413,7 +413,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
-        return countClaims(criteria);
+        return totalCount(criteria);
     }
 
     @Override
@@ -564,14 +564,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         return isExist;
 
-    }
-
-    private Integer countClaims(Criteria criteria) {
-        criteria.setProjection(Projections.rowCount());
-        List totalCountResult = criteria.list();
-        criteria.setProjection(null);
-
-        return ((Long) totalCountResult.get(0)).intValue();
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
@@ -954,14 +946,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return criteria;
     }
 
-    private void addSort(Criteria criteria, String sort, String dir) {
-        if (dir.equalsIgnoreCase("desc")) {
-            criteria.addOrder(Order.desc(sort));
-        } else {
-            criteria.addOrder(Order.asc(sort));
-        }
-    }
-
     @Override
     public String getDaysWithCHOForReview(int id) {
         LOG.debug("Getting number of days claim was with CHO for review");
@@ -1231,7 +1215,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId) {
-        Claim claim = (Claim) this.getClaim(claimId);
+        Claim claim = this.getClaim(claimId);
 
         if(isClaimInClosedStatus(claim)){
             return 0;
@@ -1241,7 +1225,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.eq("newStatus", ClaimStatus.CONTESTED_INVOICE_REF_TO_INS));
         criteria.add(Restrictions.eq("reverted", false));
         criteria.add(Restrictions.eq("claim.id", claimId));
-        return countClaims(criteria).intValue();
+        return totalCount(criteria).intValue();
     }
     
     private boolean isClaimInClosedStatus(Claim claim) {
@@ -1265,7 +1249,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public int getNoOfRejectedClaims(Integer reasonOfRejectionId) {
         Criteria criteria = getSession().createCriteria(Claim.class);
         criteria.add(Restrictions.eq("reasonOfRejection.id", reasonOfRejectionId));
-        return countClaims(criteria).intValue();
+        return totalCount(criteria).intValue();
     }
 
     @Override

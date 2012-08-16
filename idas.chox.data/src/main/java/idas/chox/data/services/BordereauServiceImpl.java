@@ -1,24 +1,23 @@
 package idas.chox.data.services;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.BordereauService;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BordereauServiceImpl extends SecureDataService implements BordereauService {
 
@@ -44,14 +43,6 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         return (Bordereau) getByCriteria(criteria);
     }
 
-    private void addSort(Criteria criteria, String sort, String dir) {
-        if (dir.equalsIgnoreCase("desc")) {
-            criteria.addOrder(Order.desc(sort));
-        } else {
-            criteria.addOrder(Order.asc(sort));
-        }
-    }
-
     @Override
     public SearchResult getUploadedFiles(WebUser webUser, int defaultDays, String sort, String dir, int start, int limit) {
 
@@ -74,7 +65,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
             }
         }
 
-        Integer totalCount = countClaims(criteria);
+        Integer totalCount = totalCount(criteria);
 
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("fileName")) {
@@ -119,13 +110,4 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         }
 
     }
-
-    private Integer countClaims(Criteria criteria) {
-        criteria.setProjection(Projections.rowCount());
-        List totalCountResult = criteria.list();
-        criteria.setProjection(null);
-        return ((Long) totalCountResult.get(0)).intValue();
-    }
-
-   
 }
