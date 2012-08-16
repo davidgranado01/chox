@@ -1135,10 +1135,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setTab(Integer tab) {
-    	if (tab > 0) {
+        if (tab >= 0) {
             getSession().put("tabIndex", tab);
-        } else if (!getSession().containsKey("tabIndex")) {
-            getSession().put("tabIndex", 0);
         }
     }
 
