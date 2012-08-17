@@ -74,9 +74,11 @@
                                 <include>**/extjs/ext-base-3.4.0-min.js</include>
                                 <include>**/extjs/ext-all-3.4.0-min.js</include>
                                 <include>**/extjs/SuperBoxSelect-min.js</include>
+                                <include>**/extjs/RowEditor-3.3.1-min.js</include>
+                                <include>**/extjs/ProgressBarPager-3.4.0-min.js</include>
                               </includes>
-                              <!--  When libraries are updated remember to change the name/version of aggregates js file -->
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-1.0.js</output>
+                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-1.0-min.js</output>
                          </aggregation>
                          <aggregation>
                               <insertNewLine>true</insertNewLine>
@@ -89,11 +91,13 @@
                                 <include>**/choxcommon-min.js</include>
                                 <include>**/report-min.js</include>
                                 <include>**/inbox-min.js</include>
-                                <include>**/scripts/chox-aggregated-min.js</include>
+                                <include>**/actionPanelLib-min.js</include>
+                                <include>**/activityMonitor-min.js</include>
                               </includes>
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0.js</output>
+                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0-min.js</output>
                          </aggregation>
-                         <!--  CSS agggregation  -->
+                         <!--  CSS aggregation  -->
                          <aggregation>
                               <insertNewLine>true</insertNewLine>
                               <removeIncluded>false</removeIncluded>
@@ -103,8 +107,8 @@
                                 <include>**/ext-statusbar-3.4.0-min.css</include>
                                 <include>**/superboxselect-min.css</include>
                               </includes>
-                              <!--  When libraries are updated remember to change the name/version of aggregates css file -->
-                              <output>${project.build.directory}/${project.build.finalName}/css/libs-1.0.css</output>
+                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
+                              <output>${project.build.directory}/${project.build.finalName}/css/libs-1.0-min.css</output>
                          </aggregation>
                     </aggregations>
                 </configuration>             

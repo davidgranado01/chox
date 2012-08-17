@@ -4,17 +4,6 @@
 <head>
     <title>CHOX</title>
     
-      <s:if test="#parameters.devp || development">
-          	<script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-		    <script src="<%= request.getContextPath()%>/scripts/extjs/ProgressBarPager-3.4.0.js" type="text/javascript"></script>
-		    <script src="<%= request.getContextPath()%>/scripts/extjs/RowEditor-3.3.1.js" type="text/javascript"></script>
-       </s:if>
-       <s:else>
-	        <script src="<%= request.getContextPath()%>/scripts/activityMonitor-min.js" type="text/javascript"></script>
-    		<script src="<%= request.getContextPath()%>/scripts/extjs/ProgressBarPager-3.4.0-min.js" type="text/javascript"></script>
-    		<script src="<%= request.getContextPath()%>/scripts/extjs/RowEditor-3.3.1-min.js" type="text/javascript"></script>
-       </s:else>
-   
     <script type="text/javascript">
 
         var defaultDropdownValue={'value':-1,'text':'--- ALL ---'};

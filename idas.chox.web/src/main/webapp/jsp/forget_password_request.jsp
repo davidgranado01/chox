@@ -3,17 +3,6 @@
 
 <head>
     <title>CHOX Welcome Page</title>
-    <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
-<%--     <script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.2.6.js" type="text/javascript" ></script> --%>
-    
-	<s:if test="#parameters.devp || development">
-		<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
-		<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js" type="text/javascript"></script>
-	</s:if>
-	<s:else>
-		<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form-min.js" type="text/javascript" ></script>
-		<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min-min.js" type="text/javascript"></script>
-	</s:else>
 
     <script type="text/javascript">
 
