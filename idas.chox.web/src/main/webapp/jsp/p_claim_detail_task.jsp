@@ -224,7 +224,7 @@
         // This is a hack!!! The default value for the visibility role is not set
         // so we'll do this in a timer'
         // ToDo: sort this out and do it ptoperly (by using the on load fucntion of the store)
-        setTimeout("setDefaultVisibilityRole()", 400);
+        setTimeout(function() { setDefaultVisibilityRole(); }, 400);
 
     });
 
@@ -273,7 +273,7 @@
                 }
             });
 
-          setTimeout("loadClaimTasks()", 100);
+          setTimeout(function() { loadClaimTasks(); }, 100);
 //          loadClaimTasks();
         }
         return false;

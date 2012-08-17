@@ -514,7 +514,7 @@
         // task grid until the grid is visible and has been refreshed,
         // so we'll add a timer to do this.'
         // ToDo: sort out scroll-bar problem and remove this timer
-        setTimeout("gridRefresh()", 100);
+//        setTimeout("gridRefresh()", 100);
       }
     });
 
@@ -538,16 +538,16 @@
         }
     }
 
-    function gridRefresh() {
-
-        if ($('#inboxPanelTabId').is(':visible')) {
-            tasksGrid.getView().refresh();
-        }
-        else { // if the grid is not visible, no point in refreshing.
-            // so we'll add another timed event to try again'
-            setTimeout("gridRefresh()", 500);
-        }
-    }
+//    function gridRefresh() {
+//
+//        if ($('#inboxPanelTabId').is(':visible')) {
+//            tasksGrid.getView().refresh();
+//        }
+//        else { // if the grid is not visible, no point in refreshing.
+//            // so we'll add another timed event to try again'
+//            setTimeout("gridRefresh()", 500);
+//        }
+//    }
     function loadTasks(){
         tasksDataStore.baseParams = {hideCompleted : hideCompleted }
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});

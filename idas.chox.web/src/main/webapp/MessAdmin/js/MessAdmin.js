@@ -299,7 +299,7 @@ function setAutorefresh(textfield) {
 	}
 	if (delay > 0) {
 		shouldRefreshPage = true;
-		window.setTimeout('autoReloadPage()', 1000*delay);
+		window.setTimeout(function() { autoReloadPage(); }, 1000*delay);
 	}
 	return true;
 }
