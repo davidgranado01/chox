@@ -33,7 +33,7 @@ public class ClaimViewState extends ViewState {
         for (Integer i : users.keySet()) {
             if (result == null)
                 result = new ArrayList<Integer>();
-            ViewState v = (ViewState) users.get(i);
+            ViewState v = users.get(i);
             if (!v.isExpired()) {
                 LOG.debug("adding user to result: {}", i);
                 result.add(i);

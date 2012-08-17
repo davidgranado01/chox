@@ -50,12 +50,13 @@
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
-        var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
-        var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
         var claimId = <s:property value="id" />;
-        activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
+        
         <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-            activityMonitor.pingServer(<s:property value="activityMonitorRequestInterval"/>);
+            var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
+            var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId, <s:property value="activityMonitorRequestInterval"/>);
+            activityMonitor.pingServer();
         </s:if>
         
         tabPanel1= new Ext.TabPanel({

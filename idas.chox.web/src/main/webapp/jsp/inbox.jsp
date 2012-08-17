@@ -83,10 +83,12 @@
             setupTabPanels();
             grid.render('gridHolder');
             updateManualInvoiceBatchUpdate(Ext.state.Manager.get("grid_filterName"));
-            var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
-            var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl, checkStatusIUrl);
-
+            <s:if test="isChoxAdmin!=true && enableActivityMonitor">
+                var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
+                var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
+                activityMonitor.setup(pingServerUrl, checkStatusIUrl, null, <s:property value="activityMonitorRequestInterval"/>);
+            </s:if>
+            
                 //        else
                 //            document.getElementById('queueOrgFilter').innerHTML  = '';
 
@@ -1591,7 +1593,7 @@
             
                 if(tab.title == 'Inbox' || tab.title == 'Search'){
                     <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-                            activityMonitor.refreshViewingStatus(<s:property value="activityMonitorRequestInterval"/>);
+                            activityMonitor.refreshViewingStatus();
                     </s:if>
    
                     grid.show();

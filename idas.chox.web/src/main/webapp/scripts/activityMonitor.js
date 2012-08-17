@@ -1,17 +1,18 @@
 var activityMonitor = function(){
-//    var interval = 5000;
+    var interval;
     var enable = true;
     var pingServiceUrl;
     var checkStatusUrl;
     var claimId;
     var t;
     return {
-        setup : function(pingServiceUrl,checkStatusUrl,claimId){
+        setup : function(pingServiceUrl,checkStatusUrl,claimId, intervalTime) {
             this.pingServiceUrl = pingServiceUrl;
             this.checkStatusUrl = checkStatusUrl;
             this.claimId = claimId;
+            this.interval = intervalTime;
         },
-        refreshViewingStatus : function(interval) {
+        refreshViewingStatus : function() {
             if(enable){
                 var x = [];
                 $("input[name='viewingId']").each(function (i) {
@@ -39,13 +40,13 @@ var activityMonitor = function(){
                         }
                     });
                 }
-                t=setTimeout('activityMonitor.refreshViewingStatus()',interval);
+                t=setTimeout(function() { activityMonitor.refreshViewingStatus(); }, this.interval); 
             }
         },
         clearViewingStatus : function() {
             clearTimeout(t);
         },
-        pingServer : function(interval){
+        pingServer : function() {
             if(enable){
                 Ext.Ajax.request({
                     url:this.pingServiceUrl,
@@ -76,7 +77,7 @@ var activityMonitor = function(){
                         claimId :this.claimId
                     }
                 });
-                t=setTimeout("activityMonitor.pingServer()", interval);
+                t=setTimeout(function() { activityMonitor.pingServer(); }, this.interval); 
             }
         }
     };
