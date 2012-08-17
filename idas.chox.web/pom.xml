@@ -57,6 +57,7 @@
 		          </execution>
 		        </executions>
 		        <configuration>
+                <!-- For non-minimised (i.e. development=true) builds, the include order for js/css files is defined in the styles/scripts files. -->
                   <aggregations>
                         <!--  JS aggregation  -->
                         <aggregation>

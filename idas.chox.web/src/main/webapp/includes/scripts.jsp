@@ -12,7 +12,7 @@
 <script src="<%= request.getContextPath()%>/scripts/extjs/ProgressBarPager-3.4.0.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/RowEditor-3.3.1.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript"></script>
 
 <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
@@ -24,8 +24,6 @@
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
 
 <script type="text/javascript">
