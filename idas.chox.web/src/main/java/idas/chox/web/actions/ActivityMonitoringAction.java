@@ -1,14 +1,18 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.monitors.ClaimViewingMonitor;
 import idas.chox.web.viewdata.ViewingStatus;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
 
 public class ActivityMonitoringAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(ActivityMonitoringAction.class);
@@ -20,6 +24,7 @@ public class ActivityMonitoringAction extends BaseAction {
     private String claimIds;
     private ArrayList<ViewingStatus> statuses;
     private String method;
+    private ClaimService claimService;
 
     @Override
     public String execute() {
@@ -29,7 +34,7 @@ public class ActivityMonitoringAction extends BaseAction {
         LOG.debug("START Monitoring: claimId={}, userId={}", getClaimId(), currentUserID);
         LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
         ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
-        List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID);
+        List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
         LOG.debug("monitor.ping returned {} userIds.", userIds.size());
         usersViewingThisClaim = new ArrayList<String>();
         for (Integer id : userIds) {
@@ -129,5 +134,9 @@ public class ActivityMonitoringAction extends BaseAction {
 
     public void setClaimIds(String claimIds) {
         this.claimIds = claimIds;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }
