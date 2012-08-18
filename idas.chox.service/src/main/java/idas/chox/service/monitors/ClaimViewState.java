@@ -15,14 +15,14 @@ public class ClaimViewState extends ViewState {
 
     private ConcurrentHashMap<Integer, ViewState> users = new ConcurrentHashMap<Integer, ViewState>();
 
-    public ClaimViewState(Integer userId) {
-        super();
-        users.put(userId, new ViewState());
+    public ClaimViewState(Integer userId, long interval) {
+        super(interval);
+        users.put(userId, new ViewState(interval));
         LOG.debug("Created for user: {}", userId);
     }
 
-    public void ping(Integer userId) {
-        users.putIfAbsent(userId, new ViewState());
+    public void ping(Integer userId, long interval) {
+        users.putIfAbsent(userId, new ViewState(interval));
         users.get(userId).refresh();
         this.refresh();
         LOG.debug("User {} refreshed.", userId);

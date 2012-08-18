@@ -22,15 +22,15 @@ public class ClaimViewingMonitor {
         return instance;
     }
 
-    public List<Integer> ping(Integer claimId, String CompanyType, Integer orgId, Integer userId) {
+    public List<Integer> ping(Integer claimId, String CompanyType, Integer orgId, Integer userId, long interval) {
         String key = forStateKey(claimId, CompanyType, orgId);
 
         if (claims.containsKey(key)) {
             LOG.debug("Claim already exists in viewing monitor: {}", key);
-            ClaimViewState vs = (ClaimViewState) claims.get(key);
-            vs.ping(userId);
+            ClaimViewState vs = claims.get(key);
+            vs.ping(userId, interval);
         } else {
-            ClaimViewState vs = new ClaimViewState(userId);
+            ClaimViewState vs = new ClaimViewState(userId, interval);
             claims.putIfAbsent(key, vs);
             LOG.debug("Claim added to viewing monitor: {}", key);
         }        
