@@ -76,12 +76,9 @@ function openSupportFile(url, supportFile) {
 }
 
 function openFile(folderPath){
-
-    newwindow=window.open(folderPath, 'CHOX');
-    if (window.focus) {
-        newwindow.focus();
-    }
-
+    newwindow=window.open('about:blank', 'CHOX');
+    newwindow.document.location.href = folderPath;
+    newwindow.focus();
 }
 
 function getTodayDate(){
