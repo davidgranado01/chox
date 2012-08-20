@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -195,7 +196,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getPolicyNumber() {
-        return claim.getThirdParty().getPolicyNumber();
+        return StringEscapeUtils.escapeJavaScript(claim.getThirdParty().getPolicyNumber());
     }
 
     public String getNonce() {
