@@ -95,7 +95,7 @@ public class ExcelInvoice {
     public ExcelInvoice(Map data, boolean isCHO) {
         claimStatus = (String) data.get("claimstatus");
         choReference = (String) data.get("choreference");
-        thirdPartyClaimReference = (String) data.get("thirdpartyclaimceference");
+        thirdPartyClaimReference = (String) data.get("thirdpartyclaimreference");
         createdDate = (Date) data.get("createddate");
         autoPenaltyStart = (Date) data.get("autopenaltystart");
         miscellaneousFee = (BigDecimal) data.get("miscellaneousfee");
