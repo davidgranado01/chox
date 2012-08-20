@@ -577,7 +577,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     
     private void sortTasks(Criteria criteria, String sort, String dir) {
 
-        if (!sort.isEmpty() && !dir.isEmpty()) {
+        if (sort != null && dir !=null && !sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("choReference")) {
                 addSort(criteria, "c.choReference", dir);
             } else if (sort.equalsIgnoreCase("dueDate")) {
