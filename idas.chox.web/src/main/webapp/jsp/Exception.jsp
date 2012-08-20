@@ -1,11 +1,13 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=MacRoman">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Unexpected Error</title>
     </head>
+
     <body>
         <h2>An unexpected error has occurred</h2>
         <p>
@@ -19,8 +21,10 @@
             <s:property value="%{exception.message}"/>
         </p>
         <hr/>
+<%--
         <h3>Technical Details</h3>
-<%--<s:property value="%{exceptionStack}"/>--%>
+        <s:property value="%{exceptionStack}"/>
+--%>
 
     </body>
 </html>
