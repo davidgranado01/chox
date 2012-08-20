@@ -5,9 +5,16 @@
 <html>
 
     <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title><decorator:title default="CHOX"/></title>
-        <%@ include file="/includes/styles.jsp"%>
-        <%@ include file="/includes/scripts.jsp"%>
+        <s:if test="#parameters.devp || development">
+            <%@ include file="/includes/styles.jsp"%>
+            <%@ include file="/includes/scripts.jsp"%>
+        </s:if>
+        <s:else>
+            <%@ include file="/includes/styles-min.jsp"%>
+            <%@ include file="/includes/scripts-min.jsp"%>
+        </s:else>
         <decorator:head />
 
     </head>

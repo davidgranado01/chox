@@ -7,6 +7,7 @@
 <html>
 
     <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title><decorator:title default="CHOX"/></title>
 	       <s:if test="#parameters.devp || development">
 	           	<%@ include file="/includes/styles.jsp"%>
