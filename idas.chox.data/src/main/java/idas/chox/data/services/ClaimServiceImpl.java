@@ -1503,7 +1503,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
             .append("     c.cho_reference as choreference, n.created_date as createddate,")
-            .append("     wu.last_name || ' ' || wu.first_name as createdby, ")
+            .append("     wu.first_name || ' ' || wu.last_name as createdby, ")
             .append("     n.comment as comment, n.visibility_type as visibilitytype")
             .append(" from claim c")
             .append(" join comment n on (c.id = n.claim_id)")
