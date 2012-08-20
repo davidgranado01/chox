@@ -2,22 +2,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<s:if test="#parameters.devp || development">
-	<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
-</s:if>
-<s:else>
-	<script src="<%= request.getContextPath()%>/scripts/claim_detail-min.js" type="text/javascript"></script>
-</s:else>
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;
     var selectedTab=0;
     var notesTabLoaded = false;
     var taskTabLoaded = false;
-    var nonce = '<%= session.getAttribute("SessionNonce")%>';
-    var policyNumber = '<s:property value="%{@org.apache.commons.lang.StringEscapeUtils@escapeJavaScript(policyNumber)}" />';
-    
-    var mappedInsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -54,6 +44,9 @@
             activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId, <s:property value="activityMonitorRequestInterval"/>);
             activityMonitor.pingServer();
         </s:if>
+        
+        mappedInsurersStore.loadData(Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>'));
+        switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : '<%= session.getAttribute("SessionNonce")%>'}])
         
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',

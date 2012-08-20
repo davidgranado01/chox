@@ -85,15 +85,16 @@
                               <insertNewLine>true</insertNewLine>
                               <removeIncluded>false</removeIncluded>
                               <includes>
-                                <include>**/general-min.js</include>
                                 <include>**/Application-min.js</include>
-                                <include>**/ui-min.js</include>
-                                <include>**/ajax-min.js</include>
-                                <include>**/choxcommon-min.js</include>
-                                <include>**/report-min.js</include>
-                                <include>**/inbox-min.js</include>
                                 <include>**/actionPanelLib-min.js</include>
                                 <include>**/activityMonitor-min.js</include>
+                                <include>**/ajax-min.js</include>
+                                <include>**/claim_detail-min.js</include>
+                                <include>**/general-min.js</include>
+                                <include>**/inbox-min.js</include>
+                                <include>**/report-min.js</include>
+                                <include>**/ui-min.js</include>
+                                <include>**/common/choxcommon-min.js</include>
                               </includes>
                               <!--  When libraries are updated remember to change the name/version in js file as well as here -->
                               <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0-min.js</output>

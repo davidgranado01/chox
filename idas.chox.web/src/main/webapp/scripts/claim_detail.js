@@ -1,4 +1,7 @@
 var switchClaimWindow;
+var mappedInsurersStore;
+var switchClaimToMulInsForm;
+
 Ext.onReady(function(){
     Ext.QuickTips.init();
     Ext.form.Field.prototype.msgTarget = 'under';
@@ -17,13 +20,12 @@ Ext.onReady(function(){
         ]
     });
     
-    var mappedInsurersStore = new Ext.data.Store({
-        data : mappedInsurers,
+    mappedInsurersStore = new Ext.data.Store({
         reader : mappedInsurersJsonReader
     });
     
     
-    var switchClaimToMulInsForm = new Ext.FormPanel({
+    switchClaimToMulInsForm = new Ext.FormPanel({
         id: 'switchClaimForm-form',
         height : 150,
         frame:true,
@@ -52,7 +54,6 @@ Ext.onReady(function(){
             labelStyle: 'text-align:right;',
             id : 'policyNumberId',
             name: 'policyNumber',
-            value: policyNumber,
             allowBlank: false,
             blankText: 'Please enter a Policy Number'
         },{
@@ -63,8 +64,7 @@ Ext.onReady(function(){
         },{
             xtype : 'hidden',
             id : 'nonceId',
-            name : 'nonce',
-            value : nonce
+            name : 'nonce'
         }
         ],
         buttons:[{
