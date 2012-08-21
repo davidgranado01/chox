@@ -45,9 +45,15 @@
             activityMonitor.pingServer();
         </s:if>
         
-        mappedInsurersStore.loadData(Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>'));
-        switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : '<%= session.getAttribute("SessionNonce")%>'}])
-        
+        // mappedInsurersStore and switchClaimToMulInsForm are declared in claim_detail.js file.
+        <s:if test="isInsurer != true">
+            var mappedInsurersJsonString = '<s:property value="insurersJsonString" escape="false"/>';
+            if (mappedInsurersJsonString != '') {
+                mappedInsurersStore.loadData(Ext.util.JSON.decode(mappedInsurersJsonString));
+            }
+            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : '<%= session.getAttribute("SessionNonce")%>'}])
+        </s:if>
+
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,
