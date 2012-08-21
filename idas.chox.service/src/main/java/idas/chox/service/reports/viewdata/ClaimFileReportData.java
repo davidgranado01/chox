@@ -2615,20 +2615,20 @@ public class ClaimFileReportData {
         return supplierClaimOwner;
     }
 
-    public String isIsRepairOnlyCheck() {
-        return isRepairOnlyCheck;
-    }
-
-    public void setIsRepairOnlyCheck(String isRepairOnlyCheck) {
-        this.isRepairOnlyCheck = isRepairOnlyCheck;
-    }
-
-    public String isIsNFInsurerManagingRepair() {
+    public String getIsNFInsurerManagingRepair() {
         return isNFInsurerManagingRepair;
     }
 
     public void setIsNFInsurerManagingRepair(String isNFInsurerManagingRepair) {
         this.isNFInsurerManagingRepair = isNFInsurerManagingRepair;
+    }
+
+    public String getIsRepairOnlyCheck() {
+        return isRepairOnlyCheck;
+    }
+
+    public void setIsRepairOnlyCheck(String isRepairOnlyCheck) {
+        this.isRepairOnlyCheck = isRepairOnlyCheck;
     }
 
     public BigDecimal getOriginalInvoiceFullTotalToPay() {
