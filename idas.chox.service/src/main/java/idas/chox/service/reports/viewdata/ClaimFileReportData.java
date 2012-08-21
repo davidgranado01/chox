@@ -153,6 +153,8 @@ public class ClaimFileReportData {
     private BigDecimal hireMonLabourHours;
     private BigDecimal hireMonTotalLabourCost;
     private String hireMonNonProvisionReason;
+    private String isRepairOnlyCheck;
+    private String isNFInsurerManagingRepair;
     private String hireVehicleManufacturer;
     private String hireVehicleModel;
     private String hireVehicleRegistration;
@@ -203,7 +205,9 @@ public class ClaimFileReportData {
     private String invoiceRepairPenaltyChargePercentage;
     private String invoiceRepairPenaltyChargePercentageApplied;
     private BigDecimal invoiceFullTotalToPay;
+    private BigDecimal originalInvoiceFullTotalToPay;
     private BigDecimal invoiceTotalToPay;
+    private BigDecimal originalInvoiceTotalToPay;
     private BigDecimal invoiceExcessAmountCollected;
     private BigDecimal invoiceVATAmountCollected;
     private String invoiceDate;
@@ -464,6 +468,8 @@ public class ClaimFileReportData {
             hireMonLabourHours = hireMonitoringDetail.getLabourHour();
             hireMonTotalLabourCost = hireMonitoringDetail.getLabourCost();
             hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
+            isRepairOnlyCheck = hireMonitoringDetail.isIsRepairOnlyCheck() ? "Yes" : "No";
+            isNFInsurerManagingRepair = hireMonitoringDetail.isIsNFInsurerManagingRepair() ? "Yes" : "No";
             if (hireMonitoringDetail.getRepairAuthorisedDate() == null)
                 hireMonAuthorisedDate = "";
             else
@@ -562,6 +568,16 @@ public class ClaimFileReportData {
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
             invoiceFullTotalToPay = invoice.getFullTotalToPay();
             invoiceTotalToPay = invoice.getTotalToPay();
+            if (invoice.getInvoiceOriginal().getFullTotalToPayOriginal() != null) {
+                originalInvoiceFullTotalToPay = invoice.getInvoiceOriginal().getFullTotalToPayOriginal();
+            } else {
+                originalInvoiceFullTotalToPay = BigDecimal.ZERO;
+            }
+            if (invoice.getInvoiceOriginal().getTotalToPayOriginal() != null) {
+                originalInvoiceTotalToPay = invoice.getInvoiceOriginal().getTotalToPayOriginal();
+            } else {
+                originalInvoiceTotalToPay = BigDecimal.ZERO;
+            }
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
             invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
@@ -2597,6 +2613,38 @@ public class ClaimFileReportData {
 
     public String getSupplierClaimOwner() {
         return supplierClaimOwner;
+    }
+
+    public String getIsNFInsurerManagingRepair() {
+        return isNFInsurerManagingRepair;
+    }
+
+    public void setIsNFInsurerManagingRepair(String isNFInsurerManagingRepair) {
+        this.isNFInsurerManagingRepair = isNFInsurerManagingRepair;
+    }
+
+    public String getIsRepairOnlyCheck() {
+        return isRepairOnlyCheck;
+    }
+
+    public void setIsRepairOnlyCheck(String isRepairOnlyCheck) {
+        this.isRepairOnlyCheck = isRepairOnlyCheck;
+    }
+
+    public BigDecimal getOriginalInvoiceFullTotalToPay() {
+        return originalInvoiceFullTotalToPay;
+    }
+
+    public void setOriginalInvoiceFullTotalToPay(BigDecimal originalInvoiceFullTotalToPay) {
+        this.originalInvoiceFullTotalToPay = originalInvoiceFullTotalToPay;
+    }
+
+    public BigDecimal getOriginalInvoiceTotalToPay() {
+        return originalInvoiceTotalToPay;
+    }
+
+    public void setOriginalInvoiceTotalToPay(BigDecimal originalInvoiceTotalToPay) {
+        this.originalInvoiceTotalToPay = originalInvoiceTotalToPay;
     }
 
 }
