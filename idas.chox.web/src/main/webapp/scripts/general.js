@@ -70,6 +70,7 @@ function openHelpFile(url, helpFileRoleType, bespoke){
     }
 }
 
+
 function openSupportFile(url, supportFile) {
     var folderPath = url+ supportFile;
     openFile(folderPath);
@@ -77,10 +78,13 @@ function openSupportFile(url, supportFile) {
 
 function openFile(folderPath){
 
+//    newwindow=window.open(folderPath, 'CHOX');
     newwindow=window.open('about:blank', 'CHOX');
+    newwindow.onload=function(){
     newwindow.document.location.href = folderPath;
-    if (window.focus) {
+      if (window.focus) {
         newwindow.focus();
+      }
     }
 
 }
@@ -111,7 +115,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2012 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V5.15.1 - 20120802</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V5.15.2.rc3 - 20120821</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
     
     $.blockUI({
