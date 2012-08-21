@@ -12,7 +12,7 @@ public class ExcelInvoice {
 
     String claimStatus;
     String choReference;
-    String thirdPartyClaimReference;
+    String claimnumber;
     Date createdDate;
     Date autoPenaltyStart;
     BigDecimal miscellaneousFee;
@@ -95,7 +95,7 @@ public class ExcelInvoice {
     public ExcelInvoice(Map data, boolean isCHO) {
         claimStatus = (String) data.get("claimstatus");
         choReference = (String) data.get("choreference");
-        thirdPartyClaimReference = (String) data.get("claimnumber");
+        claimnumber = (String) data.get("claimnumber");
         createdDate = (Date) data.get("createddate");
         autoPenaltyStart = (Date) data.get("autopenaltystart");
         miscellaneousFee = (BigDecimal) data.get("miscellaneousfee");
@@ -505,8 +505,8 @@ public class ExcelInvoice {
         return storageRecoveryVat;
     }
 
-    public String getThirdPartyClaimReference() {
-        return thirdPartyClaimReference;
+    public String getClaimnumber() {
+        return claimnumber;
     }
 
     public BigDecimal getTotalGross() {
