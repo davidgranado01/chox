@@ -25,6 +25,7 @@
     var commentsDisabled = notesTabAccessibility == 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
+    var nonce = '<%= session.getAttribute("SessionNonce")%>';
  
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
@@ -51,7 +52,7 @@
             if (mappedInsurersJsonString != '') {
                 mappedInsurersStore.loadData(Ext.util.JSON.decode(mappedInsurersJsonString));
             }
-            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : '<%= session.getAttribute("SessionNonce")%>'}])
+            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : nonce}])
         </s:if>
 
         tabPanel1= new Ext.TabPanel({
