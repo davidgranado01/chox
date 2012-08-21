@@ -79,21 +79,16 @@ function openSupportFile(url, supportFile) {
 function openFile(folderPath){
 
 //    newwindow=window.open(folderPath, 'CHOX');
-    newwindow=window.open('about:blank', 'CHOX');
-    newwindow.onload=function(){
-        try {
-           newwindow.document.location.href = folderPath;
-        } catch (exc) {
-            newwindow.close();
-            newwindow = window.open('','CHOX');
-            newwindow.document.location.href = folderPath;
-        }
-        if (window.focus) {
-            newwindow.focus();
-        }
+    if (newwindow !== false) {
+        newwindow=window.open("", 'CHOX');
+        newwindow.close();
     }
-
+    newwindow=window.open(folderPath, 'CHOX');
+    if (window.focus) {
+            newwindow.focus();
+    }
 }
+
 
 function getTodayDate(){
     var now = new Date();
