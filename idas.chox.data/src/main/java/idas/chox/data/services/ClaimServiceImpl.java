@@ -1388,7 +1388,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         List<ExcelInvoice> results = new ArrayList<ExcelInvoice>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
-            .append(" c.status as claimstatus, c.cho_reference as choreference, tp.claim_reference as thirdpartyclaimreference,")
+            .append(" c.status as claimstatus, c.cho_reference as choreference, c.claim_number as claimnumber,")
             .append(" i.created_date as createddate, i.auto_penalty_start as autopenaltystart, i.miscellaneous_fee as miscellaneousfee,")
             .append(" i.automatic_fee as automaticfee, i.automatic_qty as automaticqty, i.additional_driver_fee as additionaldriverfee,")
             .append(" i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,")
@@ -1503,11 +1503,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         StringBuilder sb = new StringBuilder();
         sb.append("select ")
             .append("     c.cho_reference as choreference, n.created_date as createddate,")
-            .append("     wu.first_name || ' ' || wu.last_name as createdby, ")
+            .append(" case when ins.name is not null then wu.last_name || ', ' || wu.first_name || ' (' || ins.name || ')'")
+            .append("       else case when cho.name is not null then wu.last_name || ', ' || wu.first_name || ' (' || cho.name || ')'")
+            .append("            else wu.last_name || ', ' || wu.first_name end end as createdby,")
             .append("     n.comment as comment, n.visibility_type as visibilitytype")
             .append(" from claim c")
             .append(" join comment n on (c.id = n.claim_id)")
             .append(" left outer join web_user wu on (n.created_by = wu.id)")
+            .append(" left outer join insurer ins on (wu.insurer_id = ins.id)")
+            .append(" left outer join chorganisation cho on (wu.chorganisation_id = cho.id)")
             .append(" where n.reverted = false")
 
 //            .append(" and c.id in ( :claimIds )");

@@ -336,7 +336,7 @@ public class ExcelClaim {
         claimVehicleHireHpiVehicleManufacturer = (String) data.get("vh_hpi_vehicle_manufacturer");
         claimVehicleHireHpiVehicleModel = (String) data.get("vh_hpi_vehicle_model");
         claimVehicleHireHpiVehicleYear = (String) data.get("vh_hpi_vehicle_year");
-        claimVehicleHireHpiFirstRegistration = (Date) data.get("vh_hpi_vehicle_registration");
+        claimVehicleHireHpiFirstRegistration = (Date) data.get("vh_hpi_vehicle_first_registration");
         claimVehicleHireHpiVehicleCapacity = (String) data.get("vh_hpi_vehicle_capacity");
         claimVehicleHireHpiVehicleDoorplan = (String) data.get("vh_hpi_vehicle_doorplan");
         claimVehicleHireHpiVehicleTransmission = (String) data.get("vh_hpi_vehicle_transmission");
