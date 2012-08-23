@@ -44,6 +44,26 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+		    <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<!-- Associate the read-project-properties goal with the initialize phase, 
+						to read the properties file. -->
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>${basedir}/src/main/resources/application.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 	          <groupId>net.alchim31.maven</groupId>
 	          <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -78,8 +98,7 @@
                                 <include>**/extjs/RowEditor-3.3.1-min.js</include>
                                 <include>**/extjs/ProgressBarPager-3.4.0-min.js</include>
                               </includes>
-                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-1.0-min.js</output>
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/libs-${js.aggregator.libs}-min.js</output>
                          </aggregation>
                          <aggregation>
                               <insertNewLine>true</insertNewLine>
@@ -96,8 +115,7 @@
                                 <include>**/ui-min.js</include>
                                 <include>**/common/choxcommon-min.js</include>
                               </includes>
-                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
-                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-1.0-min.js</output>
+                              <output>${project.build.directory}/${project.build.finalName}/scripts/choxall-${js.aggregator.choxall}-min.js</output>
                          </aggregation>
                          <!--  CSS aggregation  -->
                          <aggregation>
@@ -109,8 +127,7 @@
                                 <include>**/ext-statusbar-3.4.0-min.css</include>
                                 <include>**/superboxselect-min.css</include>
                               </includes>
-                              <!--  When libraries are updated remember to change the name/version in js file as well as here -->
-                              <output>${project.build.directory}/${project.build.finalName}/css/libs-1.0-min.css</output>
+                              <output>${project.build.directory}/${project.build.finalName}/css/libs-${js.aggregator.libs}-min.css</output>
                          </aggregation>
                     </aggregations>
                 </configuration>             
