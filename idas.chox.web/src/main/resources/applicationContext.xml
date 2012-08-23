@@ -19,8 +19,8 @@
         <property name="url" value="${db.url}"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="initialSize" value="25"/>
-        <property name="maxActive" value="75"/>
+        <property name="initialSize" value="${db.initialSize}"/>
+        <property name="maxActive" value="${db.maxActive}"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
