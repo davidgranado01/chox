@@ -78,15 +78,15 @@ function openSupportFile(url, supportFile) {
 
 function openFile(folderPath){
 
-//    newwindow=window.open(folderPath, 'CHOX');
-    if (newwindow !== false) {
-        newwindow=window.open("", 'CHOX');
+    newwindow=window.open('', 'CHOX');
+    try {
+        newwindow.document.location.href = folderPath;
+    } catch(exc) {
         newwindow.close();
+        newwindow = window.open(folderPath, 'CHOX');
     }
-    newwindow=window.open(folderPath, 'CHOX');
-    if (window.focus) {
-            newwindow.focus();
-    }
+
+    newwindow.focus();
 }
 
 
@@ -105,10 +105,7 @@ function openChoxPolicyPage(url, name){
         folderPath = folderPath + '/chox_copyright.html';
     }
 
-    newwindow=window.open(folderPath, 'CHOX');
-    if (window.focus) {
-        newwindow.focus();
-    }
+    openFile(folderPath);
 }
 
 function onOpenAbout(){
@@ -116,7 +113,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2012 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V5.15.2 - 20120826</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V5.15.2 - 20120824</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
     
     $.blockUI({
