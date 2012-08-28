@@ -265,7 +265,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -287,7 +287,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -309,7 +309,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -331,7 +331,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -533,7 +533,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -555,7 +555,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -577,7 +577,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -599,7 +599,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -798,7 +798,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -820,7 +820,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -842,7 +842,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 
@@ -864,7 +864,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is Â£"));
 
     }
 

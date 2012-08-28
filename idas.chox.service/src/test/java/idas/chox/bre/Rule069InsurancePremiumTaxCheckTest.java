@@ -123,7 +123,7 @@ public class Rule069InsurancePremiumTaxCheckTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging £4.00 per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging Â£4.00 per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
