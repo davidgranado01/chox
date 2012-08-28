@@ -296,7 +296,7 @@ public class BillingService {
                hm.remove("success");
                hm.put("success", Boolean.FALSE);
                Map errors = new HashMap();
-               errors.put("scheduleName", "This CHO does not use a fixed transactional fee and no rate for this CHO is available in the CHO billing rates table. Either contact software support to add billing rates for this CHO or switch the billing method to ’Fixed Transactional Fee’ in the CHO configuration admin panel.");
+               errors.put("scheduleName", "This CHO does not use a fixed transactional fee and no rate for this CHO is available in the CHO billing rates table. Either contact software support to add billing rates for this CHO or switch the billing method to 'Fixed Transactional Fee' in the CHO configuration admin panel.");
                hm.put("errors", errors);
                return hm;
             }

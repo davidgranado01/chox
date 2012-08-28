@@ -519,10 +519,10 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     
     @Override
     public void addInsurerDiscountComment(Claim claim, BigDecimal insurerDiscountAmount, BigDecimal insurerDiscountPercentage, String insurerDiscountType, WebUser user) {
-        Comment comment = Comment.New(0, "A discount of £" + insurerDiscountAmount + " (" + insurerDiscountPercentage + "%) " + "has been applied to " + "the " + insurerDiscountType + " on this invoice based on the discount contract in place.");
+        Comment comment = Comment.New(0, "A discount of Â£" + insurerDiscountAmount + " (" + insurerDiscountPercentage + "%) " + "has been applied to " + "the " + insurerDiscountType + " on this invoice based on the discount contract in place.");
         comment.setRaisedBy(user);
         claim.addComment(comment);
-        LOG.debug("comment added for insurer discount = 'A discount of £{} ({}%) has been applied to the {} on this invoice based on the discount contract in place.'",new Object[]{insurerDiscountAmount,insurerDiscountPercentage,insurerDiscountType});
+        LOG.debug("comment added for insurer discount = 'A discount of Â£{} ({}%) has been applied to the {} on this invoice based on the discount contract in place.'",new Object[]{insurerDiscountAmount,insurerDiscountPercentage,insurerDiscountType});
     }
 
 }

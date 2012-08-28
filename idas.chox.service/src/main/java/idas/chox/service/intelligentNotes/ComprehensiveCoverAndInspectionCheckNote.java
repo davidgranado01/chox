@@ -30,7 +30,7 @@ public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote
 
     @Override
     public String getNote() {
-        return "The CHOÕs client does not have comprehensive insurance cover for their vehicle and the CHO is not managing the repair. Please arrange the vehicle inspection.";
+        return "The CHO's client does not have comprehensive insurance cover for their vehicle and the CHO is not managing the repair. Please arrange the vehicle inspection.";
     }
 
 }

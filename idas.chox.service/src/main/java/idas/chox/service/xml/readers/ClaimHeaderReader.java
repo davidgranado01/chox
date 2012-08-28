@@ -138,7 +138,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid hire-state found for for Insurer Upload: {}", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
             claimResult.setValid(false);
-            claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid value is ‘InsurerUpload’.");
+            claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid value is 'InsurerUpload'.");
             claim.setChoReference(choReferenceNumber);
             claimResult.setClaim(claim);
         } else if (securityInfoProvider.getIsINS()) {
@@ -160,7 +160,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', 'Subscriber' or 'Insurer vs Insurer'.");
+                claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', 'Subscriber' or 'Insurer vs Insurer'.");
                 claim.setChoReference(choReferenceNumber);
                 claimResult.setClaim(claim);
             } else if (RentalStatus.isOffHiredRentalStatus(rentalStatus)) {
@@ -284,7 +284,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setClaimParseStatus(ClaimParseStatus.TPI_NOT_RECOGNIZED);
             claimResult.setValid(false);
             LOG.warn("CHO is trying to upload a TPI invoice with an invalid hire-state field: {}", getTPIidentificationStringForInsurer(insurerAliasNames));
-            claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘" + getTPIidentificationStringForInsurer(insurerAliasNames) + "’ for third party intervention claims against this Insurer");
+            claimResult.getMessage().add("The value provided for the 'hire state' is incorrect, it must be '" + getTPIidentificationStringForInsurer(insurerAliasNames) + "' for third party intervention claims against this Insurer");
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             LOG.debug("Claim supplier reference already exists: {}", choReferenceNumber);
@@ -341,19 +341,19 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 }
 
             } else {
-                LOG.warn("Invalid rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                LOG.warn("Invalid rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                claimResult.getMessage().add("For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.");
                 claim.setChoReference(choReferenceNumber);
 
             }
 
         } else {
-            LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+            LOG.warn("Invalid new claim rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must already exists in the system.");
+            claimResult.getMessage().add("For 'Off Hired' claims/invoices to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 
@@ -579,10 +579,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the ‘More Actions’ menu to allow a Supplementary Invoice upload for this claim.");
+                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the 'More Actions' menu to allow a Supplementary Invoice upload for this claim.");
                             claim.setChoReference(choReferenceNumber);
                         } else {
-                            LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
+                            LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
                             claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                             claimResult.setValid(false);
                             claimResult.getMessage().add("No Invoice attached to original claim: for a Supplementary Invoice to be uploaded, the original claim must already have an Invoice attached.");
@@ -624,14 +624,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             claim.setChoReference(choReferenceNumber);
                         }
                     } else if (oldClaim != null) {
-                        LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
+                        LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
                         claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                         claimResult.setValid(false);
                         claimResult.getMessage().add("No Invoice attached to original claim: for a Supplementary Invoice to be uploaded, the original claim must already have an Invoice attached.");
                         claim.setChoReference(choReferenceNumber);
                     }
                 } else {
-                    LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already exists in the system.", rentalStatus);
+                    LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already exists in the system.", rentalStatus);
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                     claimResult.setValid(false);
                     claimResult.getMessage().add("Original claim does not exist: for supplementary invoices, an original claim must already exist in the system when linking claims via the customer claim number.");
@@ -652,10 +652,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 }
             }
         } else {
-            LOG.warn("Invalid Supplementary Invoice  - For ‘supplementary invoice’ invoices to be uploaded the customer claim reference should be present to upload against original claim.");
+            LOG.warn("Invalid Supplementary Invoice  - For 'supplementary invoice' invoices to be uploaded the customer claim reference should be present to upload against original claim.");
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_SCHEMA);
             claimResult.setValid(false);
-            claimResult.getMessage().add("Customer claim number is not valid: for supplementary invoices, the customer claim number cannot be empty or contain ‘NA’ or ‘N/A’.");
+            claimResult.getMessage().add("Customer claim number is not valid: for supplementary invoices, the customer claim number cannot be empty or contain 'NA' or 'N/A'.");
             claim.setChoReference(choReferenceNumber);
         }
         
@@ -680,17 +680,17 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     claim.setManagingRepair(managingRepair);
                 }
             } else {
-                LOG.warn("Invalid rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                LOG.warn("Invalid rental status: '{}' - For 'hire monitoring' claims to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                claimResult.getMessage().add("For 'hire monitoring' claims to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.");
                 claim.setChoReference(choReferenceNumber);
             }
         } else {
-            LOG.warn("Invalid hire state rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system", rentalStatus);
+            LOG.warn("Invalid hire state rental status: '{}' - For 'hire monitoring' claims to be uploaded the claims must be exists in the system", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must already exists in the system.");
+            claimResult.getMessage().add("For 'hire monitoring' claims to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 

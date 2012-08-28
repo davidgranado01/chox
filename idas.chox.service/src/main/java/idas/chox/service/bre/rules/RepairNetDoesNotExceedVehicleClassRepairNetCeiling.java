@@ -17,7 +17,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
     String narrative = "";
     String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
-    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+    DecimalFormat moneyFormat = new DecimalFormat("Â£0.00");
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {

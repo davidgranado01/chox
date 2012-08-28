@@ -94,7 +94,7 @@ public class ClaimRevert extends BaseActivity {
                 else
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
-                            + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
+                            + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of Â£"
                             + amountReceived + " as there is an amount outstanding. Please check " 
                             + "the payment details in your claim system and mark the claim as 'Invoice Payment Logged' when the outstanding amount has been paid.");
                 claim.addComment(comment);

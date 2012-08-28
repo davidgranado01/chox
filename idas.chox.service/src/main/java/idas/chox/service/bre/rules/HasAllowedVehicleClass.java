@@ -47,7 +47,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 try {
                     dailyHireRateCharged = cCalc.getDailyHireRateCharged();
                 } catch (Exception ex) {
-                    LOG.warn("Cannot determine  daily rate charged for claim '{}' - using £0.00: {}", claim.getChoReference(), ex.getMessage());
+                    LOG.warn("Cannot determine  daily rate charged for claim '{}' - using Â£0.00: {}", claim.getChoReference(), ex.getMessage());
                     dailyHireRateCharged = BigDecimal.ZERO;
                 }
                 // Next, get the allowed daily rate for the customers vehicle class

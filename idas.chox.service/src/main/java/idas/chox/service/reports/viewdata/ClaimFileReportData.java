@@ -584,13 +584,13 @@ public class ClaimFileReportData {
             if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0)
                 invoiceInterimPayment = "";
             else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
+                invoiceInterimPayment = "Â£" + invoiceInterimPaymentAmount.toString() + " (Received)";
             }
             else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) < 0) {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Only £" + invoice.getInterimPaymentReceived() + " Received)";
+                invoiceInterimPayment = "Â£" + invoiceInterimPaymentAmount.toString() + " (Only Â£" + invoice.getInterimPaymentReceived() + " Received)";
             }
             else {
-                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
+                invoiceInterimPayment = "Â£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
             }
             if (invoice.getDateInvoiced() != null)
                 invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
