@@ -35,6 +35,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private InputStream reportStream;
     private String reportName;
     private BaseDataService baseDataService;
+    private BaseDataService reportDataService;
     private LookupService lookupService;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
@@ -117,7 +118,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
         report.setExternalParameter(parametersMap);
-        report.setDataService(baseDataService);
+        if(report.canUseReportsSessionFactory()) {
+            report.setReportDataService(reportDataService);
+        } else {
+            report.setReportDataService(baseDataService);
+        }
 
         Calendar cal = Calendar.getInstance();
 
@@ -291,6 +296,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
         this.baseDataService = baseDataService;
     }
 
+    public void setReportDataService(BaseDataService baseDataService) {
+        this.reportDataService = baseDataService;
+    }
+    
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }

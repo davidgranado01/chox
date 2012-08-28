@@ -28,6 +28,10 @@ public class BillingInsurerReport implements Report {
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
     
+    @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
 
     @Override
     public void setExternalParameter(Map parameters) {
@@ -35,7 +39,7 @@ public class BillingInsurerReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

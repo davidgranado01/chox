@@ -24,6 +24,11 @@ public class InvoiceReport implements Report {
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
 
+    @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
     public InvoiceReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -179,7 +184,7 @@ public class InvoiceReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

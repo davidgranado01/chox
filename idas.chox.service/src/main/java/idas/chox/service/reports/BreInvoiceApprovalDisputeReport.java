@@ -36,6 +36,11 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
 
+    @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
     public BreInvoiceApprovalDisputeReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -46,7 +51,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

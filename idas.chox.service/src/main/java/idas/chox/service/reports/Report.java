@@ -9,7 +9,7 @@ public interface Report {
 
     void setExternalParameter(Map parameters);
 
-    void setDataService(BaseDataService baseDataService);
+    void setReportDataService(BaseDataService baseDataService);
 
     HashMap getReportParameters();
 
@@ -20,4 +20,6 @@ public interface Report {
     String getReportCode();
     
     public short[] getColumnsToHide();
+    
+    boolean canUseReportsSessionFactory();
 }

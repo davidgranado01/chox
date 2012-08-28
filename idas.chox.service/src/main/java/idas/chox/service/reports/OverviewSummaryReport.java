@@ -42,6 +42,11 @@ public class OverviewSummaryReport implements Report {
     
 
     @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
@@ -1224,7 +1229,7 @@ public class OverviewSummaryReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

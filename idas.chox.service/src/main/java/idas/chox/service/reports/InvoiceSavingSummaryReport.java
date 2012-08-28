@@ -26,6 +26,11 @@ public class InvoiceSavingSummaryReport implements Report {
     private BaseDataService baseDataService;
     WebUser user = new WebUser();
 
+    @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
     public InvoiceSavingSummaryReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -140,7 +145,7 @@ public class InvoiceSavingSummaryReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

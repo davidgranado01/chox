@@ -28,12 +28,17 @@ public class TeamWorkflowReport implements Report {
     private WebUser user = new WebUser();
 
     @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 

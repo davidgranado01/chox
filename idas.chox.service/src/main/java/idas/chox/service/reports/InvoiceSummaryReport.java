@@ -28,6 +28,11 @@ public class InvoiceSummaryReport implements Report {
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
 
+    @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+    
     public InvoiceSummaryReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -577,7 +582,7 @@ public class InvoiceSummaryReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
     

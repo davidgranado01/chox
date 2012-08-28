@@ -29,6 +29,11 @@ public class AdminWeeklyOverviewReport implements Report {
     private BaseDataService baseDataService;
 
     @Override
+    public boolean canUseReportsSessionFactory() {
+        return true;
+    }
+
+    @Override
     public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -39,7 +44,7 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
+    public void setReportDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 
