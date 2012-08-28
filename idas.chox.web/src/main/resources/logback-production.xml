@@ -171,6 +171,11 @@
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
+    <logger name="com.jolbox" level="WARN" additivity="false">
+        <appender-ref ref="H"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="R"/>
         <appender-ref ref="mail"/>
