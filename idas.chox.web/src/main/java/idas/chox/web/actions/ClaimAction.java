@@ -768,7 +768,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     return ERROR;
                 }
             } else {
-                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
+                LOG.error("Cannot update workgroup and owner of claim {}: claimOwner={}, workgroup={}", new Object[]{claim.getChoReference(), claimOwnerId, uosWorkgroupId});
                 return ERROR;
             }
 
@@ -810,7 +810,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 return SUCCESS;
 
             } else {
-                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
+                LOG.error("Cannot update owner of claim {} to claimOwner={}", claim.getChoReference(), claimOwnerId);
                 return ERROR;
             }
         } else {
@@ -834,7 +834,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
                         && !fPercentageLiabilityCho.add(fPercentageLiabilityAccepted).equals(new BigDecimal(100.0))) {
                     LOG.error("Liability not 100%: ins={}, cho={}", fPercentageLiabilityAccepted, fPercentageLiabilityCho);
-                    throw new AccessDeniedException("Total liability is not 100%");
+                    throw new Exception("Total liability is not 100%");
                 }
 
                 Comment comment = Comment.New(0, note);
@@ -850,7 +850,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         } catch (Exception ex) {
             LOG.error("Error updating liability status for claim {}: ", claim.getChoReference(), ex);
-            setActionError("An internal error occurred updating the liability status for this claim. Please contact CHOX support.");
+            handleException(ex);
+//            setActionError("An internal error occurred updating the liability status for this claim. Please contact CHOX support.");
             return ERROR;
         }
 
