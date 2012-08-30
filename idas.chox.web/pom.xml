@@ -129,6 +129,14 @@
                               </includes>
                               <output>${project.build.directory}/${project.build.finalName}/css/libs-${js.aggregator.libs}-min.css</output>
                          </aggregation>
+                         <aggregation>
+                              <insertNewLine>true</insertNewLine>
+                              <removeIncluded>false</removeIncluded>
+                              <includes>
+                                <include>**/chox-min.css</include>
+                              </includes>
+                              <output>${project.build.directory}/${project.build.finalName}/css/chox-${js.aggregator.choxall}-min.css</output>
+                         </aggregation>
                     </aggregations>
                 </configuration>             
        		</plugin>
