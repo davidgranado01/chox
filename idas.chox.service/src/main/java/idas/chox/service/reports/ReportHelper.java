@@ -1,14 +1,16 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
-import idas.chox.data.services.BaseDataService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.data.services.BaseDataService;
 
 public class ReportHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ReportHelper.class);

@@ -1,18 +1,21 @@
 package idas.chox.service.reports;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.ClaimFileBreData;
 import idas.chox.service.reports.viewdata.ClaimFileEcdData;
 import idas.chox.service.reports.viewdata.ClaimFileNoteData;
 import idas.chox.service.reports.viewdata.ClaimFileReportData;
-import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -23,13 +26,12 @@ public class ClaimFileReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimFileReport.class);
 
     Map externalParameter;
-//    List<String> reportParameterNames;
     private BaseDataService baseDataService;
-//    private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return false;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
     @Override
@@ -38,8 +40,8 @@ public class ClaimFileReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -88,6 +90,7 @@ public class ClaimFileReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public String getReportCode() {
         return "RPT100";
     }

@@ -1,32 +1,36 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.RoleHelper;
-import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.PaymentReport;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.RoleHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.PaymentReport;
 
 public class InvoiceReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
     public InvoiceReport() {
@@ -143,7 +147,7 @@ public class InvoiceReport implements Report {
             paramMap.put("pChorganisationId", creditHireId);
             paramMap.put("pInsurerId", insurerId);
 
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = (List) reportDataService.getReportData(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 
@@ -184,8 +188,8 @@ public class InvoiceReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override

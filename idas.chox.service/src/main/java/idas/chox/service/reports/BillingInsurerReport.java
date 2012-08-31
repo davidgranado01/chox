@@ -1,21 +1,24 @@
 package idas.chox.service.reports;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.BillingInsurer;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingInsurerReportObject;
 import idas.chox.service.reports.viewdata.BillingInsurerReportViewData;
-import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -24,13 +27,14 @@ import java.io.ByteArrayOutputStream;
 public class BillingInsurerReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingInsurerReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
-    
+    private ReportDataService reportDataService;
+
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     @Override
@@ -39,8 +43,8 @@ public class BillingInsurerReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -101,7 +105,7 @@ public class BillingInsurerReport implements Report {
             Map paramMap = new HashMap();
 
             paramMap.put("p_billing_insurer_id",bi.getId());
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = (List) reportDataService.getReportData(query, paramMap);
 
 
             for (Object o : result) {

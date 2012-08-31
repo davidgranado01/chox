@@ -1,20 +1,23 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimStatus;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.TeamWorkflowLineItem;
 import idas.chox.service.reports.viewdata.TeamWorkflowReportObject;
-import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -22,14 +25,15 @@ import java.io.ByteArrayOutputStream;
  */
 public class TeamWorkflowReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(TeamWorkflowReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
     @Override
@@ -38,8 +42,8 @@ public class TeamWorkflowReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+            List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
             for (Object o : result) {
                     Map data = (Map) o;
                     TeamWorkflowReportObject teamReportObject = new TeamWorkflowReportObject();
@@ -133,7 +137,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and team = :pTeam ");
                 }
                 sb.append("order by team");
-                result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
                 boolean first = true;
                 if (result.isEmpty())
                     teamReportObjects.remove(obj);
@@ -419,7 +423,7 @@ public class TeamWorkflowReport implements Report {
                     queryParameters.put("pCommencingDate", serviceCommencingDate);
                     LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map)detailData.get(0));

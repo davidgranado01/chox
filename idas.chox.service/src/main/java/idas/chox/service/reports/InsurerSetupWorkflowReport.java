@@ -1,19 +1,22 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.ClaimStatus;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InsurerSetupWorkflowReportObject;
-import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -22,14 +25,15 @@ import java.io.ByteArrayOutputStream;
 public class InsurerSetupWorkflowReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerSetupWorkflowReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
     @Override
@@ -38,8 +42,8 @@ public class InsurerSetupWorkflowReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -156,7 +160,7 @@ public class InsurerSetupWorkflowReport implements Report {
                 queryParameters.put("pInsurerId", insurerId);
                 queryParameters.put("pstartDate", startDate);
                 queryParameters.put("pendDate", endDate);
-                List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
                 // parse query results and add to workflowLineItem
                 if (detailData.size() > 0) {
                     object.updateObject((Map) detailData.get(0));

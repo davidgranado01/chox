@@ -1,17 +1,5 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.MathHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
-import idas.chox.service.reports.viewdata.ClaimRejection;
-import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
-import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,18 +10,32 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.MathHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
+import idas.chox.service.reports.viewdata.ClaimRejection;
+import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
+import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
+
 public class ClaimRejectedReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejectedReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
-    
+
     public ClaimRejectedReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -170,7 +172,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = (List) reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -265,7 +267,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = (List) reportDataService.getReportData(query, paramMap);
 
         Integer iClaimTotalCount = 0;
         Integer iClaimRejectedTotalCount = 0;
@@ -274,8 +276,8 @@ public class ClaimRejectedReport implements Report {
 
             Map data = (Map) o;
 
-            iClaimTotalCount = iClaimTotalCount + MathHelper.getIntegerValue(data.get("iTotal".toLowerCase()));
-            iClaimRejectedTotalCount = iClaimRejectedTotalCount + MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase()));
+            iClaimTotalCount += MathHelper.getIntegerValue(data.get("iTotal".toLowerCase()));
+            iClaimRejectedTotalCount += MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase()));
             orgNames.add(data.get("name").toString());
 
             ClaimRejectionLineItemDetail ReportColumnClaim = new ClaimRejectionLineItemDetail();
@@ -316,7 +318,7 @@ public class ClaimRejectedReport implements Report {
             
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = (List) reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.name from reason_of_rejection ror " +
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
@@ -330,7 +332,7 @@ public class ClaimRejectedReport implements Report {
             
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = (List) reportDataService.getReportData(query, paramMap);
         }
 
         int i = 0;
@@ -363,12 +365,10 @@ public class ClaimRejectedReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
-
     
     @Override
     public String getReportCode() {

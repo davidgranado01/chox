@@ -20,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
 import net.sf.json.JSONArray;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.core.util.TextHelper;
 import java.io.File;
@@ -35,7 +36,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private InputStream reportStream;
     private String reportName;
     private BaseDataService baseDataService;
-    private BaseDataService reportDataService;
+    private ReportDataService reportDataService;
     private LookupService lookupService;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
@@ -117,12 +118,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
             LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
+        
         report.setExternalParameter(parametersMap);
-        if(report.canUseReportsSessionFactory()) {
-            report.setReportDataService(reportDataService);
-        } else {
-            report.setReportDataService(baseDataService);
-        }
+        report.setBaseDataService(baseDataService);
+        report.setReportDataService(reportDataService);
 
         Calendar cal = Calendar.getInstance();
 
@@ -296,10 +295,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
         this.baseDataService = baseDataService;
     }
 
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.reportDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
-    
+   
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }

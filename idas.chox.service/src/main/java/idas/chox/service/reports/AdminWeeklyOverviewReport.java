@@ -1,14 +1,5 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.WeekSummary;
-import idas.chox.service.reports.viewdata.WeekSummaryReportObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,22 +7,30 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.WeekSummary;
+import idas.chox.service.reports.viewdata.WeekSummaryReportObject;
+
 public class AdminWeeklyOverviewReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(AdminWeeklyOverviewReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
-
-    @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
-    }
+    private ReportDataService reportDataService;
 
     @Override
     public ByteArrayOutputStream build() {
@@ -44,8 +43,13 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
+    public void setBaseDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
+    }
+
+    @Override
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -186,7 +190,7 @@ public class AdminWeeklyOverviewReport implements Report {
                 queryParameters.put("pInsId", selectedInsurerId);
                 queryParameters.put("pChorganisationId", selectedSupplierId);
 
-                List result = baseDataService.externalQuery(query, queryParameters);
+                List result = (List) reportDataService.getReportData(query, queryParameters);
 
                 for (Object o : result) {
 
@@ -194,9 +198,9 @@ public class AdminWeeklyOverviewReport implements Report {
                     data.put("weekCycleDate", DateHelper.getLocalDateFormat().format(startOfTheWeek));
                     WeekSummary weekSummary = WeekSummary.getObject(data);
 
-                    iClaimsNotificationAcceptedByInsurerHis = iClaimsNotificationAcceptedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();
-                    iClaimsInvoicedHis = iClaimsInvoicedHis + weekSummary.getClaimsInvoiced();
-                    iInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis + weekSummary.getClaimsPaid();
+                    iClaimsNotificationAcceptedByInsurerHis += weekSummary.getClaimsNotificationAcceptedByInsurer();
+                    iClaimsInvoicedHis += weekSummary.getClaimsInvoiced();
+                    iInvoicePaidByInsurerHis += weekSummary.getClaimsPaid();
                     weekSummary.setInvoicePaidAsPercentageOfInvoicing(iClaimsInvoicedHis, iInvoicePaidByInsurerHis);
 
                     weekSummaries.add(weekSummary);

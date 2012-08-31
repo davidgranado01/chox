@@ -1,49 +1,50 @@
 package idas.chox.service.reports;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.Map;
-import java.util.List;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.InvoiceStatusReportCummulativeData;
-import idas.chox.service.reports.viewdata.InvoiceStatusReportViewData;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.util.TextHelper;
-import idas.chox.core.model.Chorganisation;
-import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.InvoiceStatusReportCummulativeData;
+import idas.chox.service.reports.viewdata.InvoiceStatusReportViewData;
 
 public class InvoiceStatusReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceStatusReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
-    
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
-    
+
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
-    
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
-    
     private Chorganisation getChorganisation(int orgId) {
         Chorganisation chorg = new Chorganisation();
 
@@ -597,7 +598,7 @@ public class InvoiceStatusReport implements Report {
         paramMap1.put("pChorgId", choId);
         paramMap1.put("pInsurerId", insurerId);
 
-        List result1 = baseDataService.externalQuery(query1, paramMap1);
+        List result1 = (List) reportDataService.getReportData(query1, paramMap1);
 
         for (Object o : result1) {
             Map data = (Map) o;
@@ -1176,7 +1177,7 @@ public class InvoiceStatusReport implements Report {
             paramMap.put("pChorgId", choId);
             paramMap.put("pInsurerId", insurerId);
 
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = (List) reportDataService.getReportData(query, paramMap);
 
             for (Object o : result) {
                 Map data = (Map) o;

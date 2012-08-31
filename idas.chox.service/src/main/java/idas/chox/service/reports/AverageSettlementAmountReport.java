@@ -1,15 +1,5 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.IdLookupItem;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.AverageSettlementAmountDtlViewData;
-import idas.chox.service.reports.viewdata.AverageSettlementAmountReportObject;
-import idas.chox.service.reports.viewdata.AverageSettlementAmountRowData;
-import idas.chox.service.reports.viewdata.AverageSettlementAmountViewData;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,19 +7,33 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.AverageSettlementAmountDtlViewData;
+import idas.chox.service.reports.viewdata.AverageSettlementAmountReportObject;
+import idas.chox.service.reports.viewdata.AverageSettlementAmountRowData;
+import idas.chox.service.reports.viewdata.AverageSettlementAmountViewData;
 
 public class AverageSettlementAmountReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(AverageSettlementAmountReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
 
     @Override
-    public boolean canUseReportsSessionFactory() {
-        return true;
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
     public AverageSettlementAmountReport() {
@@ -212,7 +216,7 @@ public class AverageSettlementAmountReport implements Report {
 
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
-            List result = baseDataService.externalQuery(sb.toString(), extParameters, IdLookupItem.class);
+            List result = (List) reportDataService.getReportData(sb.toString(), extParameters, IdLookupItem.class);
 
             for (Object o : result) {
                 IdLookupItem data = (IdLookupItem) o;
@@ -257,7 +261,7 @@ public class AverageSettlementAmountReport implements Report {
         paramMap.put("pMonth", iMonth);
         paramMap.put("pYear", iYear);
 
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = (List) reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -279,8 +283,8 @@ public class AverageSettlementAmountReport implements Report {
     }
 
     @Override
-    public void setReportDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
