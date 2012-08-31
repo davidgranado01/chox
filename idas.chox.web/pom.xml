@@ -490,5 +490,10 @@
             <version>5.2</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.jolbox</groupId>
+            <artifactId>bonecp</artifactId>
+            <version>0.7.1.RELEASE</version>
+        </dependency>
 	</dependencies>
 </project>
