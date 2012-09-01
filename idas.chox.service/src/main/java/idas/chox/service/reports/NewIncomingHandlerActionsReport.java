@@ -121,7 +121,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
@@ -142,7 +142,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
@@ -194,7 +194,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 } 
                 
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = baseDataService.externalQuery(sb.toString(),
+                List result = reportDataService.getReportData(sb.toString(),
                         queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
@@ -380,7 +380,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
                     
-                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         handlerActionItem.updateObject((Map) detailData.get(0));

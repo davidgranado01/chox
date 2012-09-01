@@ -598,7 +598,7 @@ public class InvoiceStatusReport implements Report {
         paramMap1.put("pChorgId", choId);
         paramMap1.put("pInsurerId", insurerId);
 
-        List result1 = (List) reportDataService.getReportData(query1, paramMap1);
+        List result1 = reportDataService.getReportData(query1, paramMap1);
 
         for (Object o : result1) {
             Map data = (Map) o;
@@ -1177,7 +1177,7 @@ public class InvoiceStatusReport implements Report {
             paramMap.put("pChorgId", choId);
             paramMap.put("pInsurerId", insurerId);
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             for (Object o : result) {
                 Map data = (Map) o;

@@ -190,7 +190,7 @@ public class AdminWeeklyOverviewReport implements Report {
                 queryParameters.put("pInsId", selectedInsurerId);
                 queryParameters.put("pChorganisationId", selectedSupplierId);
 
-                List result = (List) reportDataService.getReportData(query, queryParameters);
+                List result = reportDataService.getReportData(query, queryParameters);
 
                 for (Object o : result) {
 

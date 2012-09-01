@@ -216,7 +216,7 @@ public class AverageSettlementAmountReport implements Report {
 
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
-            List result = (List) reportDataService.getReportData(sb.toString(), extParameters, IdLookupItem.class);
+            List result = reportDataService.getReportData(sb.toString(), extParameters, IdLookupItem.class);
 
             for (Object o : result) {
                 IdLookupItem data = (IdLookupItem) o;
@@ -261,7 +261,7 @@ public class AverageSettlementAmountReport implements Report {
         paramMap.put("pMonth", iMonth);
         paramMap.put("pYear", iYear);
 
-        List result = (List) reportDataService.getReportData(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;

@@ -147,7 +147,7 @@ public class InvoiceReport implements Report {
             paramMap.put("pChorganisationId", creditHireId);
             paramMap.put("pInsurerId", insurerId);
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 

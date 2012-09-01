@@ -167,12 +167,22 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <!-- reportsTransactionManager is handled programatically in the ReportDataServiceImpl class-->
     <bean id="reportsTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="reportsSessionFactory"/>
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    
+    <tx:advice id="reportTransactionAdvice" transaction-manager="reportsTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+        <aop:pointcut id="reportserviceMethods" expression="execution(* idas.chox.core.services.ReportDataService.*(..))"/>
+        <aop:advisor pointcut-ref="reportserviceMethods" advice-ref="reportTransactionAdvice"/>
+    </aop:config>
     
     <bean id="securityInfoProvider" class="idas.chox.web.security.WebSecurityInfoProvider"/>
 

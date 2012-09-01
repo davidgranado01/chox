@@ -744,7 +744,7 @@ public class OverviewSummaryReport implements Report {
             if(selectedOwnerId>0 )
                 paramMap.put("pOwnerId", selectedOwnerId);
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<OverviewSummaryReportByOrg> overviewSummaryReportByOrgs = new ArrayList<OverviewSummaryReportByOrg>();
 
@@ -1068,7 +1068,7 @@ public class OverviewSummaryReport implements Report {
         if(selectedOwnerId>0 )
                 paramMap.put("pOwnerId", selectedOwnerId);
 
-        List result = (List) reportDataService.getReportData(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;

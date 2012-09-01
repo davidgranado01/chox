@@ -147,7 +147,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     WorkgroupOwnerBreReportObject workflowReportObject = new WorkgroupOwnerBreReportObject();
@@ -186,7 +186,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
@@ -353,7 +353,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pEndDate", endDate);
 //                    LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map) detailData.get(0), reasonsOfRejection);
@@ -437,7 +437,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
@@ -447,7 +447,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     " (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
         
         for (Object o : result) {

@@ -105,7 +105,7 @@ public class OwnerPerformanceReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     OwnerPerformanceReportObject performanceReportObject = new OwnerPerformanceReportObject();
@@ -144,7 +144,7 @@ public class OwnerPerformanceReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
@@ -276,7 +276,7 @@ public class OwnerPerformanceReport implements Report {
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
                     LOG.debug("Query: {}", sb.toString());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     LOG.debug("Query 1: {}", sb.toString());
                     if (detailData.size() > 0) {
                         LOG.debug("inside creating bean with data");

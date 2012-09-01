@@ -142,7 +142,7 @@ public class InsurerPaymentReport implements Report {
             paramMap.put("pChorganisationId", iSupplierId);
             paramMap.put("pInsurerId", iInsurerId);
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 

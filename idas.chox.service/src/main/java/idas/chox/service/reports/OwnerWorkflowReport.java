@@ -119,7 +119,7 @@ public class OwnerWorkflowReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     OwnerWorkflowReportObject workflowReportObject = new OwnerWorkflowReportObject();
@@ -161,7 +161,7 @@ public class OwnerWorkflowReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
@@ -452,7 +452,7 @@ public class OwnerWorkflowReport implements Report {
                     queryParameters.put("pEndDate", endDate);
 //                    LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map)detailData.get(0));

@@ -534,7 +534,7 @@ public class InvoiceSummaryReport implements Report {
                 paramMap.put("selectedOrgId", selectedOrgId);
             }
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
 

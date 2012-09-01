@@ -160,7 +160,7 @@ public class InsurerSetupWorkflowReport implements Report {
                 queryParameters.put("pInsurerId", insurerId);
                 queryParameters.put("pstartDate", startDate);
                 queryParameters.put("pendDate", endDate);
-                List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                 // parse query results and add to workflowLineItem
                 if (detailData.size() > 0) {
                     object.updateObject((Map) detailData.get(0));

@@ -172,7 +172,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = (List) reportDataService.getReportData(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -267,7 +267,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = (List) reportDataService.getReportData(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         Integer iClaimTotalCount = 0;
         Integer iClaimRejectedTotalCount = 0;
@@ -318,7 +318,7 @@ public class ClaimRejectedReport implements Report {
             
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.name from reason_of_rejection ror " +
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
@@ -332,7 +332,7 @@ public class ClaimRejectedReport implements Report {
             
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
 
         int i = 0;

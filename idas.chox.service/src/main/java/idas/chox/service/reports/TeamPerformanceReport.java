@@ -109,7 +109,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+            List result = reportDataService.getReportData(sb.toString(), queryParameters);
             for (Object o : result) {
                     Map data = (Map) o;
                     TeamPerformanceReportObject teamReportObject = new TeamPerformanceReportObject();
@@ -130,7 +130,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and team = :pTeam ");
                 }
                 sb.append("order by team");
-                result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                result = reportDataService.getReportData(sb.toString(), queryParameters);
                 boolean first = true;
                 if (result.isEmpty())
                     teamReportObjects.remove(obj);
@@ -256,7 +256,7 @@ public class TeamPerformanceReport implements Report{
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
                     LOG.debug("Query: {}", sb.toString());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     LOG.debug("Query 1: {}", sb.toString());
                     if (detailData.size() > 0) {
                         LOG.debug("inside creating bean with data");

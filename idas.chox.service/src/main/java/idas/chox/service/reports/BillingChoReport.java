@@ -99,7 +99,7 @@ public class BillingChoReport implements Report {
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
-            List result = (List) reportDataService.getReportData(query,paramMap);
+            List result = reportDataService.getReportData(query,paramMap);
             List<BillingChoReportViewData> reportRows= new ArrayList<BillingChoReportViewData>();
             for (Object o : result) {
                 LOG.debug("Adding row...");

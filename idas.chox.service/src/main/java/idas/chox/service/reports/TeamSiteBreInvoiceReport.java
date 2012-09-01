@@ -134,7 +134,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+            List result = reportDataService.getReportData(sb.toString(), queryParameters);
             for (Object o : result) {
                     Map data = (Map) o;
                     TeamSiteBreInvoiceReportObject teamReportObject = new TeamSiteBreInvoiceReportObject();
@@ -155,7 +155,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("and team = :pTeam ");
                 }
                 sb.append("order by team");
-                result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                result = reportDataService.getReportData(sb.toString(), queryParameters);
                 boolean first = true;
                 if (result.isEmpty())
                     teamReportObjects.remove(obj);
@@ -332,7 +332,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                     }
                     LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map)detailData.get(0), reasonsOfRejection);
@@ -411,7 +411,7 @@ public class TeamSiteBreInvoiceReport implements Report {
                     "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
@@ -422,7 +422,7 @@ public class TeamSiteBreInvoiceReport implements Report {
             
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
         
         for (Object o : result) {

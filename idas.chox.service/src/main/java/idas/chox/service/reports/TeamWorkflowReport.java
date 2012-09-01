@@ -116,7 +116,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and team = :pTeam ");
             }
             sb.append("order by site");
-            List result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+            List result = reportDataService.getReportData(sb.toString(), queryParameters);
             for (Object o : result) {
                     Map data = (Map) o;
                     TeamWorkflowReportObject teamReportObject = new TeamWorkflowReportObject();
@@ -137,7 +137,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and team = :pTeam ");
                 }
                 sb.append("order by team");
-                result = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                result = reportDataService.getReportData(sb.toString(), queryParameters);
                 boolean first = true;
                 if (result.isEmpty())
                     teamReportObjects.remove(obj);
@@ -423,7 +423,7 @@ public class TeamWorkflowReport implements Report {
                     queryParameters.put("pCommencingDate", serviceCommencingDate);
                     LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = (List) reportDataService.getReportData(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map)detailData.get(0));

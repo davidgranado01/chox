@@ -296,7 +296,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         BreInvoiceApprovalDisputeCumulativeData breInvoiceApprovalDisputeCumulativeData = null;
 
-        List result = (List) reportDataService.getReportData(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             LOG.debug("inside for loop");
@@ -708,7 +708,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             paramMap1.put("pChorgId", choId);
             paramMap1.put("pInsurerId", insurerId);
 
-            List result1 = (List) reportDataService.getReportData(query1, paramMap1);
+            List result1 = reportDataService.getReportData(query1, paramMap1);
 
             for (int i = 0; i < result1.size(); i++) {
                 LOG.debug("results :" + result1.get(i));
@@ -776,7 +776,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
@@ -786,7 +786,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     "in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = (List) reportDataService.getReportData(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
         
         for (Object o : result) {

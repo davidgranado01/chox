@@ -105,7 +105,7 @@ public class BillingInsurerReport implements Report {
             Map paramMap = new HashMap();
 
             paramMap.put("p_billing_insurer_id",bi.getId());
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
 
             for (Object o : result) {

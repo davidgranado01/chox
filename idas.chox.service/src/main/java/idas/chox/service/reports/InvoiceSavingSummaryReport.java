@@ -107,7 +107,7 @@ public class InvoiceSavingSummaryReport implements Report {
             paramMap.put("pInvUploadDateFrom", dataStart);
             paramMap.put("pInvUploadDateTo", dataEnd);
 
-            List result = (List) reportDataService.getReportData(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             for (Object o : result) {
 
