@@ -15,6 +15,11 @@ public class ReportDataServiceImpl implements ReportDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportDataServiceImpl.class);
     private SessionFactory reportSessonFactory;
+    private SecureDataService dataService;
+
+    public void setDataService(SecureDataService dataService) {
+        this.dataService = dataService;
+    }
 
     public void setReportSessonFactory(SessionFactory reportSessonFactory) {
         this.reportSessonFactory = reportSessonFactory;
@@ -32,6 +37,9 @@ public class ReportDataServiceImpl implements ReportDataService {
 
     private List externalQuery(final String query, final Map parameters, Class entityClass) {
 
+        // free up the connection resource created for this request before long running report query execute.
+        dataService.getCurrentSession().disconnect(); 
+        
         SQLQuery q = reportSessonFactory.getCurrentSession().createSQLQuery(query);
 
         for (Object p : parameters.keySet()) {

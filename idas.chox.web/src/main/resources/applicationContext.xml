@@ -180,8 +180,8 @@
     </tx:advice>
     
     <aop:config>
-        <aop:pointcut id="reportserviceMethods" expression="execution(* idas.chox.core.services.ReportDataService.*(..))"/>
-        <aop:advisor pointcut-ref="reportserviceMethods" advice-ref="reportTransactionAdvice"/>
+        <aop:pointcut id="reportServiceMethods" expression="execution(* idas.chox.core.services.ReportDataService.*(..))"/>
+        <aop:advisor pointcut-ref="reportServiceMethods" advice-ref="reportTransactionAdvice"/>
     </aop:config>
     
     <bean id="securityInfoProvider" class="idas.chox.web.security.WebSecurityInfoProvider"/>
