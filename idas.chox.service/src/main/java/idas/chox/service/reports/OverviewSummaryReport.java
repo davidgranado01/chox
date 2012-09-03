@@ -774,7 +774,7 @@ public class OverviewSummaryReport implements Report {
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown generating Overview Summary Report: {} [user={}]", ex.getMessage(), currentUser.getId());
+            LOG.error("Exception thrown generating Overview Summary Report: [user={}]", currentUser.getId(), ex);
             LOG.error("Report params were: startDate={}, endDate={}", dataStart, dataEnd);
 //            throw ex;
 //            ex.printStackTrace();
@@ -809,59 +809,59 @@ public class OverviewSummaryReport implements Report {
                 Integer bTotalNoClaims = recordPerOrg.getTotal_no_claims_num();
                 Integer bTotalNoInvoices = recordPerOrg.getTotal_no_invoice_num();
 
-                noCountClaimAll = noCountClaimAll + bTotalNoClaims;
-                noCountInvoiceAll = noCountInvoiceAll + bTotalNoInvoices;
+                noCountClaimAll += bTotalNoClaims;
+                noCountInvoiceAll += bTotalNoInvoices;
 
                 switch (reportLine.getLineId()) {
                     case 1:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_claims_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_claims_val());
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 2:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_accepted_claims_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_accepted_claims_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_accepted_claims_num().floatValue(), bTotalNoClaims.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 3:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_rejected_claims_num());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_rejected_claims_num().floatValue(), bTotalNoClaims.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         break;
                     case 4:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_invoice_val());
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 5:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_approved_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_approved_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_approved_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 6:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_rejected_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_rejected_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_rejected_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 7:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_claim_cycle_day());
-                        totalDayAll = totalDayAll + (Integer) lineItemDetail.getTotalDay();
+                        totalDayAll += (Integer) lineItemDetail.getTotalDay();
                         break;
                     case 8:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_invoice_cycle_day());
-                        totalDayAll = totalDayAll + (Integer) lineItemDetail.getTotalDay();
+                        totalDayAll += (Integer) lineItemDetail.getTotalDay();
                         break;
                     case 9:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_hire_duration_day());
-                        totalDayAll = totalDayAll + (Integer) lineItemDetail.getTotalDay();
+                        totalDayAll += (Integer) lineItemDetail.getTotalDay();
                         break;
                     case 10:
                         lineItemDetail.setTotalValue(recordPerOrg.getAverage_hire_val());
@@ -883,98 +883,98 @@ public class OverviewSummaryReport implements Report {
                         lineItemDetail.setNoCount(recordPerOrg.getCredit_repair_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getCredit_repair_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getCredit_repair_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 15: // Credit Repair Paid
                         lineItemDetail.setNoCount(recordPerOrg.getCredit_repair_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getCredit_repair_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getCredit_repair_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 16: // S-Class
                         lineItemDetail.setNoCount(recordPerOrg.getS_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getS_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getS_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 17: // S-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getS_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getS_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getS_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 18: // P-Class
                         lineItemDetail.setNoCount(recordPerOrg.getP_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getP_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getP_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 19: // P-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getP_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getP_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getP_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 20: // MV-Class
                         lineItemDetail.setNoCount(recordPerOrg.getMv_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getMv_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getMv_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 21: // MV-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getMv_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getMv_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getMv_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 22: // M-Class
                         lineItemDetail.setNoCount(recordPerOrg.getM_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getM_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getM_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 23: // M-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getM_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getM_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getM_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 24: // SP-Class
                         lineItemDetail.setNoCount(recordPerOrg.getSp_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getSp_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getSp_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 25: // SP-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getSp_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getSp_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getSp_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 26: // Other-Class
                         lineItemDetail.setNoCount(recordPerOrg.getOther_class_no_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getOther_class_no_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getOther_class_no_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     case 27: // Other-Class Paid
                         lineItemDetail.setNoCount(recordPerOrg.getOther_class_no_paid_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getOther_class_no_paid_invoice_val());
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getOther_class_no_paid_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
-                        noCountAll = noCountAll + (Integer) lineItemDetail.getNoCount();
+                        noCountAll += (Integer) lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal) lineItemDetail.getTotalValue());
                         break;
                     default:
@@ -1021,7 +1021,7 @@ public class OverviewSummaryReport implements Report {
           .append( "between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceCycleForAllOrg, ");
         
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end ")
-          .append( "as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id ")
+          .append( "as no_count from rpt_claim_invoice invoice inner join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id ")
           .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireDurationForAllOrg, ");
         
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count ")
@@ -1395,7 +1395,7 @@ public class OverviewSummaryReport implements Report {
             wg = (Workgroup) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            LOG.error("Error getting workgroup for id={}: {}", workgroupId, e.getMessage());
+            LOG.error("Error getting workgroup for id={} ", workgroupId, e);
         }
 
         return wg;
@@ -1408,7 +1408,7 @@ public class OverviewSummaryReport implements Report {
             criteria.add(Restrictions.eq("id", ownerId));
             wu = (WebUser) baseDataService.getByCriteria(criteria);
         } catch (Throwable e) {
-            LOG.error("Error getting workgroup for id={}: {}", ownerId, e.getMessage());
+            LOG.error("Error getting workgroup for id={} ", ownerId, e);
         }
         return wu;
     }
