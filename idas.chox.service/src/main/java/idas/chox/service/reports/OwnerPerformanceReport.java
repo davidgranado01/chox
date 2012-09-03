@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
@@ -25,15 +26,21 @@ public class OwnerPerformanceReport implements Report {
     private Map externalParameter;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+   
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -98,7 +105,7 @@ public class OwnerPerformanceReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     OwnerPerformanceReportObject performanceReportObject = new OwnerPerformanceReportObject();
@@ -137,7 +144,7 @@ public class OwnerPerformanceReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
@@ -269,7 +276,7 @@ public class OwnerPerformanceReport implements Report {
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
                     LOG.debug("Query: {}", sb.toString());
-                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     LOG.debug("Query 1: {}", sb.toString());
                     if (detailData.size() > 0) {
                         LOG.debug("inside creating bean with data");

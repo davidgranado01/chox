@@ -91,6 +91,10 @@
     <bean id="dataService" class="idas.chox.data.services.SecureDataService" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="reportDataService" class="idas.chox.data.services.ReportDataServiceImpl" scope="prototype">
+        <property name="dataService" ref="dataService"/>
+        <property name="reportSessonFactory" ref="reportsSessionFactory"/>
+    </bean>
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
         <property name="reasonOfRejectionTemplateService" ref="reasonOfRejectionTemplateService"/>
         <property name="sessionFactory" ref="sessionFactory"/>

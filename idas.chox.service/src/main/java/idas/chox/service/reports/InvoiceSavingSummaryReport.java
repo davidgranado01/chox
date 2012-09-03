@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportObject;
@@ -21,11 +22,17 @@ import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportViewData;
 public class InvoiceSavingSummaryReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceSavingSummaryReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
-    WebUser user = new WebUser();
+    private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+    
     public InvoiceSavingSummaryReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -100,7 +107,7 @@ public class InvoiceSavingSummaryReport implements Report {
             paramMap.put("pInvUploadDateFrom", dataStart);
             paramMap.put("pInvUploadDateTo", dataEnd);
 
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             for (Object o : result) {
 
@@ -140,8 +147,8 @@ public class InvoiceSavingSummaryReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override

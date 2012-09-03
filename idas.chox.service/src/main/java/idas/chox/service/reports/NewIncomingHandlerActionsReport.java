@@ -1,15 +1,5 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.Workgroup;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.HandlerActionsReportObject;
-import idas.chox.service.reports.viewdata.HandlerActionsStatusLineItem;
-
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,21 +13,38 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.HandlerActionsReportObject;
+import idas.chox.service.reports.viewdata.HandlerActionsStatusLineItem;
+
 public class NewIncomingHandlerActionsReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewIncomingHandlerActionsReport.class);
-    Map<String, Object> externalParameter;
-    List<String> reportParameterNames;
+    private Map<String, Object> externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
 
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+    
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -114,7 +121,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
@@ -135,7 +142,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 }
                 sb.append("order by name");
                 
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     HandlerActionsReportObject actionReportObject = new HandlerActionsReportObject();
@@ -187,7 +194,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                 } 
                 
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = baseDataService.externalQuery(sb.toString(),
+                List result = reportDataService.getReportData(sb.toString(),
                         queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
@@ -373,7 +380,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
                     
-                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         handlerActionItem.updateObject((Map) detailData.get(0));

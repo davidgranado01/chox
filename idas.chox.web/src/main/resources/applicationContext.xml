@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
@@ -14,46 +14,8 @@
         <property name="location" value="classpath:application.properties"/>
     </bean>
 
-    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="org.postgresql.Driver"></property>
-        <property name="jdbcUrl" value="${db.url}"></property>
-        <property name="username" value="chox_user"/>
-        <property name="password" value="ch0xpa33"/>
-        <property name="partitionCount" value="${db.partitionCount}"/>
-        <property name="minConnectionsPerPartition" value="${db.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${db.maxConnectionsPerPartition}"/>
-        <property name="idleMaxAgeInMinutes" value="${db.idleMaxAgeInMinutes}"/>
-        <property name="acquireIncrement" value="5"/>
-        <property name="idleConnectionTestPeriodInMinutes" value="0"/>
-        <property name="statementsCacheSize" value="100"/>
-        <property name="releaseHelperThreads" value="3"/>
-        <property name="closeConnectionWatch" value="false"/>
-        <property name="logStatementsEnabled" value="false"/>
-        <property name="transactionRecoveryEnabled" value="false"/>
-        <property name="queryExecuteTimeLimitInMs" value="1000"/>
-        <property name="poolAvailabilityThreshold" value="10"/>
-        <property name="disableConnectionTracking" value="true"/>
-        <property name="connectionTimeoutInMs" value="0"/>
-    </bean>
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="entityInterceptor">
-            <ref bean="auditInterceptor"/>
-        </property>
-        <property name="dataSource">
-            <ref bean="dataSource" />
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <prop key="hibernate.cache.use_query_cache">true</prop>
-                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
-                <!-- <prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop> -->
-            </props>
-        </property>
-        <property name="mappingResources">
+    <bean id="mappingResource" class="java.util.ArrayList">
+        <constructor-arg>
             <list>
                 <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
@@ -113,9 +75,115 @@
                 <value>hbm/AuditEntry.hbm.xml</value>
                 <value>hbm/AdminFee.hbm.xml</value>
             </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="org.postgresql.Driver"></property>
+        <property name="jdbcUrl" value="${db.url}"></property>
+        <property name="username" value="chox_user"/>
+        <property name="password" value="ch0xpa33"/>
+        <property name="partitionCount" value="${db.partitionCount}"/>
+        <property name="minConnectionsPerPartition" value="${db.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${db.maxConnectionsPerPartition}"/>
+        <property name="idleMaxAgeInMinutes" value="${db.idleMaxAgeInMinutes}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="0"/>
+        <property name="statementsCacheSize" value="100"/>
+        <property name="releaseHelperThreads" value="3"/>
+        <property name="closeConnectionWatch" value="false"/>
+        <property name="logStatementsEnabled" value="false"/>
+        <property name="transactionRecoveryEnabled" value="false"/>
+        <property name="queryExecuteTimeLimitInMs" value="1000"/>
+        <property name="poolAvailabilityThreshold" value="10"/>
+        <property name="disableConnectionTracking" value="true"/>
+        <property name="connectionTimeoutInMs" value="0"/>
+    </bean>
+    
+    <bean id="reportsDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="org.postgresql.Driver"></property>
+        <property name="jdbcUrl" value="${db.reportUrl}"></property>
+        <property name="username" value="mi_user"/>
+        <property name="password" value="id4sch0x"/>
+        <property name="partitionCount" value="${db.reportPartitionCount}"/>
+        <property name="minConnectionsPerPartition" value="${db.reportMinConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${db.reportMaxConnectionsPerPartition}"/>
+        <property name="idleMaxAgeInMinutes" value="${db.reportIdleMaxAgeInMinutes}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="0"/>
+        <property name="statementsCacheSize" value="100"/>
+        <property name="releaseHelperThreads" value="3"/>
+        <property name="closeConnectionWatch" value="false"/>
+        <property name="logStatementsEnabled" value="false"/>
+        <property name="transactionRecoveryEnabled" value="false"/>
+        <property name="queryExecuteTimeLimitInMs" value="1000"/>
+        <property name="poolAvailabilityThreshold" value="10"/>
+        <property name="disableConnectionTracking" value="true"/>
+        <property name="connectionTimeoutInMs" value="0"/>
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="entityInterceptor">
+            <ref bean="auditInterceptor"/>
+        </property>
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+                <!-- <prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop> -->
+            </props>
+        </property>
+        <property name="mappingResources">
+            <ref bean="mappingResource" /> 
+        </property>
+    </bean>
+    
+    <bean id="reportsSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            </props>
+        </property>
+        <property name="dataSource">
+            <ref bean="reportsDataSource" />
+        </property>
+        <property name="mappingResources">
+            <ref bean="mappingResource" />
         </property>
     </bean>
 
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="reportsTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="reportsSessionFactory"/>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    
+    <tx:advice id="reportTransactionAdvice" transaction-manager="reportsTransactionManager">
+        <tx:attributes>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+        <aop:pointcut id="reportServiceMethods" expression="execution(* idas.chox.core.services.ReportDataService.*(..))"/>
+        <aop:advisor pointcut-ref="reportServiceMethods" advice-ref="reportTransactionAdvice"/>
+    </aop:config>
+    
     <bean id="securityInfoProvider" class="idas.chox.web.security.WebSecurityInfoProvider"/>
 
     <bean id="userDetailsService" class="idas.chox.web.security.WebUserService">
@@ -123,13 +191,6 @@
             <ref bean="userService" />
         </property>
     </bean>
-
-    <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
     <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>

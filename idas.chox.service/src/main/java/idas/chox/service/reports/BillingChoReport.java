@@ -1,11 +1,13 @@
 package idas.chox.service.reports;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -13,12 +15,13 @@ import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoRate;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingChoReportObject;
 import idas.chox.service.reports.viewdata.BillingChoReportViewData;
-import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -27,19 +30,23 @@ import java.io.ByteArrayOutputStream;
 public class BillingChoReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingChoReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
 
-
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+    
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -92,7 +99,7 @@ public class BillingChoReport implements Report {
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
-            List result = baseDataService.externalQuery(query,paramMap);
+            List result = reportDataService.getReportData(query,paramMap);
             List<BillingChoReportViewData> reportRows= new ArrayList<BillingChoReportViewData>();
             for (Object o : result) {
                 LOG.debug("Adding row...");
@@ -201,6 +208,7 @@ public class BillingChoReport implements Report {
         return billingChoRate.getFee();
     }
 
+    @Override
     public String getReportCode() {
         return "RPT010";
     }

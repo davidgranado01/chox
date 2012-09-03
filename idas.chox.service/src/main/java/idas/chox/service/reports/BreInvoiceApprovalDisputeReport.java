@@ -1,17 +1,5 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.MathHelper;
-import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputeCumulativeData;
-import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputedData;
-import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputedRoRData;
-
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,6 +13,19 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.MathHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputeCumulativeData;
+import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputedData;
+import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputedRoRData;
+
 /**
  *
  * @author rajareddydodda
@@ -32,10 +33,16 @@ import org.slf4j.LoggerFactory;
 public class BreInvoiceApprovalDisputeReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(BreInvoiceApprovalDisputeReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
 
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+    
     public BreInvoiceApprovalDisputeReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -46,10 +53,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
-
     
     private Chorganisation getChorganisation(int orgId) {
 
@@ -290,7 +296,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         BreInvoiceApprovalDisputeCumulativeData breInvoiceApprovalDisputeCumulativeData = null;
 
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             LOG.debug("inside for loop");
@@ -702,7 +708,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             paramMap1.put("pChorgId", choId);
             paramMap1.put("pInsurerId", insurerId);
 
-            List result1 = baseDataService.externalQuery(query1, paramMap1);
+            List result1 = reportDataService.getReportData(query1, paramMap1);
 
             for (int i = 0; i < result1.size(); i++) {
                 LOG.debug("results :" + result1.get(i));
@@ -770,7 +776,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
@@ -780,7 +786,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     "in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
         
         for (Object o : result) {

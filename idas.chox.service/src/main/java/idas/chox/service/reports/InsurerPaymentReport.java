@@ -1,31 +1,40 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.util.RoleHelper;
-import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.PaymentReport;
-import idas.chox.service.reports.viewdata.PaymentReportObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.services.ReportDataService;
+import idas.chox.core.util.RoleHelper;
+import idas.chox.core.util.TextHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.PaymentReport;
+import idas.chox.service.reports.viewdata.PaymentReportObject;
+
 public class InsurerPaymentReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerPaymentReport.class);
 
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
+    private ReportDataService reportDataService;
+
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
 
     public InsurerPaymentReport() {
         reportParameterNames = new ArrayList<String>();
@@ -133,7 +142,7 @@ public class InsurerPaymentReport implements Report {
             paramMap.put("pChorganisationId", iSupplierId);
             paramMap.put("pInsurerId", iInsurerId);
 
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 
@@ -169,8 +178,8 @@ public class InsurerPaymentReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override

@@ -165,7 +165,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         getHibernateTemplate().evict(object);
     }
 
-    protected Session getCurrentSession() {
+    public Session getCurrentSession() {
         return getSession();
     }
     

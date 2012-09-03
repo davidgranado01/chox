@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
 import idas.chox.core.util.TextHelper;
@@ -39,7 +40,12 @@ public class OverviewSummaryReport implements Report {
     private String selectedWorkgroupName;
     private String selectedClaimOwnerName;
     private Integer selectedOwnerId = -1;
-    
+    private ReportDataService reportDataService;
+
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
 
     @Override
     public HashMap getReportParameters() {
@@ -738,7 +744,7 @@ public class OverviewSummaryReport implements Report {
             if(selectedOwnerId>0 )
                 paramMap.put("pOwnerId", selectedOwnerId);
 
-            List result = baseDataService.externalQuery(query, paramMap);
+            List result = reportDataService.getReportData(query, paramMap);
 
             List<OverviewSummaryReportByOrg> overviewSummaryReportByOrgs = new ArrayList<OverviewSummaryReportByOrg>();
 
@@ -1062,7 +1068,7 @@ public class OverviewSummaryReport implements Report {
         if(selectedOwnerId>0 )
                 paramMap.put("pOwnerId", selectedOwnerId);
 
-        List result = baseDataService.externalQuery(query, paramMap);
+        List result = reportDataService.getReportData(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -1224,8 +1230,8 @@ public class OverviewSummaryReport implements Report {
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override

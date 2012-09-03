@@ -1,16 +1,21 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.ReasonOfRejection;
-
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
 import idas.chox.core.util.RoleHelper;
@@ -18,9 +23,6 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.WorkgroupOwnerBreLineItem;
 import idas.chox.service.reports.viewdata.WorkgroupOwnerBreReportObject;
-import java.io.ByteArrayOutputStream;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -29,19 +31,25 @@ import org.hibernate.criterion.Restrictions;
 public class WorkgroupOwnerBreInvoiceReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupOwnerBreInvoiceReport.class);
-    Map externalParameter;
-    List<String> reportParameterNames;
+    private Map externalParameter;
+    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
+    private ReportDataService reportDataService;
 
+    @Override
+    public void setBaseDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+    
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
     @Override
-    public void setDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
     }
 
     @Override
@@ -139,7 +147,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pOwnerId", selectedOwnerId);
                 }
                 sb.append("order by name");
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
                     WorkgroupOwnerBreReportObject workflowReportObject = new WorkgroupOwnerBreReportObject();
@@ -178,7 +186,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 }
                 sb.append("order by u.last_name");
                 LOG.debug("Querying for users with: {}", sb.toString());
-                List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
                 LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
@@ -345,7 +353,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pEndDate", endDate);
 //                    LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
-                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
                         workflowLineItem.updateObject((Map) detailData.get(0), reasonsOfRejection);
@@ -429,7 +437,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     "union select id, name from reason_of_rejection where status = true and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         } else {
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
@@ -439,7 +447,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     " (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());
-            result = baseDataService.externalQuery(query, paramMap);
+            result = reportDataService.getReportData(query, paramMap);
         }
         
         for (Object o : result) {

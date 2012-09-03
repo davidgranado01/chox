@@ -1,15 +1,19 @@
 package idas.chox.service.reports;
 
-import idas.chox.data.services.BaseDataService;
+import idas.chox.core.services.ReportDataService;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import idas.chox.data.services.BaseDataService;
 
 public interface Report {
 
     void setExternalParameter(Map parameters);
 
-    void setDataService(BaseDataService baseDataService);
+    void setReportDataService(ReportDataService reportDataService);
+    
+    void setBaseDataService(BaseDataService baseDataService);
 
     HashMap getReportParameters();
 
@@ -20,4 +24,5 @@ public interface Report {
     String getReportCode();
     
     public short[] getColumnsToHide();
+    
 }
