@@ -1037,8 +1037,8 @@ public class OverviewSummaryReport implements Report {
         
 
         if (currentUser.getInsurer()!=null) {
-            sb.append("from insurer insurer, chorganisation chorganisation where insurer.id=:pUserOrgId ");
-            sqlStatement1 = "invoice.insurer_id=insurer.id and invoice.chorganisation_id=chorganisation.id and chorganisation.insurer_upload_only=false ";
+            sb.append("from insurer insurer where insurer.id=:pUserOrgId ");
+            sqlStatement1 = "invoice.insurer_id=insurer.id and not exists (select * from chorganisation where insurer_upload_only=true and id=invoice.chorganisation_id) ";
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
             if(selectedOwnerId>0 )
