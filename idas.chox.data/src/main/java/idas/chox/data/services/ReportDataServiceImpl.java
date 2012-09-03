@@ -26,6 +26,11 @@ public class ReportDataServiceImpl implements ReportDataService {
     }
 
     @Override
+    public List getReportData(final String query) {
+        return externalQuery(query, null, null);
+    }
+    
+    @Override
     public List getReportData(final String query, final Map parameters) {
         return externalQuery(query, parameters, null);
     }
@@ -42,13 +47,15 @@ public class ReportDataServiceImpl implements ReportDataService {
         
         SQLQuery q = reportSessonFactory.getCurrentSession().createSQLQuery(query);
 
-        for (Object p : parameters.keySet()) {
-            String parameterName = (String) p;
-            LOG.debug("Setting parameter: {}", parameterName);
-            q.setParameter(parameterName, parameters.get(parameterName));
+        if (parameters != null) {
+            for (Object p : parameters.keySet()) {
+                String parameterName = (String) p;
+                LOG.debug("Setting parameter: {}", parameterName);
+                q.setParameter(parameterName, parameters.get(parameterName));
 
+            }
         }
-        LOG.debug("Running query...");
+        
         if (entityClass != null) {
             return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
         } else {

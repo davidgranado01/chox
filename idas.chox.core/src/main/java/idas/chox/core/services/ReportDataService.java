@@ -5,6 +5,8 @@ import java.util.Map;
 
 public interface ReportDataService {
 
+    public List getReportData(final String query);
+    
     public List getReportData(final String query, final Map parameters);
     
     public List getReportData(final String query, final Map parameters, Class entityClass);

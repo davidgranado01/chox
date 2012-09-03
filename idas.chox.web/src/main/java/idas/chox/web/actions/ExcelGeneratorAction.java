@@ -27,9 +27,12 @@ import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
+import idas.chox.data.services.SecureDataService;
+import idas.chox.service.reports.ClaimsGridExportReport;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -46,6 +49,16 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean writingToFile;
     private boolean exceptionThrown;
     private boolean directDownload;
+    private SecureDataService dataService;
+    private ReportDataService reportDataService;
+
+    public void setDataService(SecureDataService dataService) {
+        this.dataService = dataService;
+    }
+
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
+    }
 
     public boolean isDirectDownload() {
         return directDownload;
@@ -189,13 +202,18 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private boolean generateXML(List<Integer> claimIds) throws Exception {
+        
+        ClaimsGridExportReport gridExportReport = new ClaimsGridExportReport();
+        gridExportReport.setDataService(dataService);
+        gridExportReport.setReportDataService(reportDataService);
+        
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
         int noClaims = claimIds.size();
         int processedClaim = 0;
         LOG.info("Exporting to excel with {} claims.", noClaims);
 
-        List<ExcelClaim> excelClaims = claimService.getExcelClaims(claimIds);
+        List<ExcelClaim> excelClaims = gridExportReport.getExcelClaims(claimIds);
 
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -209,7 +227,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelHistory> histories = claimService.getExcelHistory(claimIds);
+        List<ExcelHistory> histories = gridExportReport.getExcelHistory(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -222,7 +240,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelComment> comments = claimService.getExcelComments(claimIds);
+        List<ExcelComment> comments = gridExportReport.getExcelComments(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -234,7 +252,7 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSession()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
-        List<ExcelClaimCycle> claimCycle = claimService.getExcelClaimCycle(claimIds);
+        List<ExcelClaimCycle> claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -247,7 +265,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelInvoice> invoices = claimService.getExcelInvoices(claimIds);
+        List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
