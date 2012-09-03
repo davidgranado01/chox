@@ -131,7 +131,7 @@
             errorLabelContainer: "#claimTaskFormMsgBox",
             rules: {
                 claimTaskDescription:{ required:true},
-                dueDate:{ required:true,dateITA: true},
+                dueDate:{ required:true},
                 taskTypeCombo:{ required:true},
                 claimVisibilityRoleCombo:{ required:true}
             },
@@ -281,14 +281,15 @@
     
     function validTaskCombo(){
     	var msgBox = $("#claimTaskFormMsgBox");
-    	var taskCombo = $("#claimTaskTypeComboId") 
-    	if(taskCombo.val() == "Please select a task type..."){
-    		msgBox.text("Please enter a 'Task Type'").show();
+    	var taskCombo = $("#claimTaskTypeComboId");
+    	if($("#claimTaskTypeComboId").val() == "Please select a task type..."){
+    		if($("#claimTaskFormMsgBox").html().indexOf("Please enter a 'Task Type'") == -1)
+    			  msgBox.append("Please enter a 'Task Type'\n<br/>").show();
     		$('#claimTaskForm').valid();
+    		msgBox.append(" ").show();
     		return false;
     	} else {
     		msgBox.text("").show();
-    		$('#claimTaskForm').valid();
     		return true;
     	}
     }
