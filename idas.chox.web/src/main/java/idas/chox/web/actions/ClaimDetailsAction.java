@@ -27,13 +27,4 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
         return DateHelper.getLocalDateTimeFormat().format(model.getCreditAgreementDate());
     }
 
-    public void setGtaNoticeDate(String gtaNoticeDate) {
-    	if(model != null)
-    		model.setGtaNoticeDate(DateHelper.Parse(gtaNoticeDate));
-    }
-    public void setCreditAgreementDate(String creditAgreementDate) {
-    	if(model != null)
-    		model.setCreditAgreementDate(DateHelper.Parse(creditAgreementDate));
-    }
-
 }

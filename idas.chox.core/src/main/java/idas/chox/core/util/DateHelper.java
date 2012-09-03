@@ -349,7 +349,7 @@ public class DateHelper {
      * @return the LocalDateTimeFormat
      */
     public static SimpleDateFormat getLocalDateTimeFormat() {
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
 
     /**
