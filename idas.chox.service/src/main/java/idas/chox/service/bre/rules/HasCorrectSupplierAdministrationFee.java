@@ -47,7 +47,7 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
             
             if (supplierAdminFee != null && supplierAdminFee.compareTo(adminFeeCeiling) > 0) {
                 success = false;
-                narrative = "CHO is charging £"+ supplierAdminFee +" for the Admin Fee, the allowed Admin Fee is £"+ adminFeeCeiling +".";
+                narrative = "CHO is charging Â£"+ supplierAdminFee +" for the Admin Fee, the allowed Admin Fee is Â£"+ adminFeeCeiling +".";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);

@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<s:if test="#parameters.devp || development">
+<s:if test="#parameters.devp || getText('development')">
 	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
 </s:if>
 <s:else>

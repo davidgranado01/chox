@@ -25,8 +25,8 @@ public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
 
             if (claim.getInvoice().getNonStandardInsurancePremiumFee().compareTo(claim.getBreBand().getNonStandardInsurancePremiumCeilingTolerance()) > 0) {
                 success = false;
-                narrative = "The CHO is charging £" + claim.getInvoice().getNonStandardInsurancePremiumFee()
-                        + " for the Non Standard Risk Insurance Premium and the allowed ceiling is £"
+                narrative = "The CHO is charging Â£" + claim.getInvoice().getNonStandardInsurancePremiumFee()
+                        + " for the Non Standard Risk Insurance Premium and the allowed ceiling is Â£"
                         + claim.getBreBand().getNonStandardInsurancePremiumCeilingTolerance() + ", please review.";
             }
 

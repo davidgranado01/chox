@@ -128,10 +128,10 @@ public class InvoicePaymentLogged extends BaseActivity {
                 invoice.setFinalPayment(invoice.getTotalToPay());
             }
             if (invoice.getTotalPenaltyCharge() != null && invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-                claim.addComment(Comment.New(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
+                claim.addComment(Comment.New(0, "A full payment amount of Â£" + invoice.getFinalPayment() + " has been made."));
                 invoice.setPenaltyChargesPaid(Boolean.TRUE);
             } else {
-                claim.addComment(Comment.New(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
+                claim.addComment(Comment.New(0, "A full payment amount of Â£" + invoice.getFinalPayment() + " has been made."));
                 invoice.setPenaltyChargesPaid(Boolean.FALSE);
             }
         } else {
@@ -153,11 +153,11 @@ public class InvoicePaymentLogged extends BaseActivity {
             invoice.setFinalPayment(finalPayment);
             invoice.setPenaltyChargesPaid(penaltyChargesPaid);
             if (!penaltyChargesPaid && invoice.getTotalPenaltyCharge() != null && invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-                claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + invoice.getTotalToPay() + " (penalty charges have not been paid)."));
+                claim.addComment(Comment.New(0, "A payment amount of Â£" + finalPayment + " has been made on a total of Â£" + invoice.getTotalToPay() + " (penalty charges have not been paid)."));
             } else if (total.compareTo(finalPayment) != 0) {
-                claim.addComment(Comment.New(0, "A payment amount of £" + finalPayment + " has been made on a total of £" + invoice.getTotalToPay()));
+                claim.addComment(Comment.New(0, "A payment amount of Â£" + finalPayment + " has been made on a total of Â£" + invoice.getTotalToPay()));
             } else {
-                claim.addComment(Comment.New(0, "A full payment amount of £" + finalPayment + " has been made."));
+                claim.addComment(Comment.New(0, "A full payment amount of Â£" + finalPayment + " has been made."));
             }
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);

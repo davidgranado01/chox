@@ -80,13 +80,13 @@
 
     <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"></property>
-        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/chox"></property>
+        <property name="jdbcUrl" value="${db.url}"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="partitionCount" value="3"/>
-        <property name="minConnectionsPerPartition" value="3"/>
-        <property name="maxConnectionsPerPartition" value="25"/>
-        <property name="idleMaxAgeInMinutes" value="60"/>
+        <property name="partitionCount" value="${db.partitionCount}"/>
+        <property name="minConnectionsPerPartition" value="${db.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${db.maxConnectionsPerPartition}"/>
+        <property name="idleMaxAgeInMinutes" value="${db.idleMaxAgeInMinutes}"/>
         <property name="acquireIncrement" value="5"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
@@ -96,19 +96,19 @@
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
         <property name="poolAvailabilityThreshold" value="10"/>
-        <property name="disableConnectionTracking" value="false"/>
+        <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
     </bean>
     
     <bean id="reportsDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"></property>
-        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/chox"></property>
+        <property name="jdbcUrl" value="${db.reportUrl}"></property>
         <property name="username" value="chox"/>
         <property name="password" value="id4sch0x"/>
-        <property name="partitionCount" value="3"/>
-        <property name="minConnectionsPerPartition" value="3"/>
-        <property name="maxConnectionsPerPartition" value="25"/>
-        <property name="idleMaxAgeInMinutes" value="60"/>
+        <property name="partitionCount" value="${db.reportPartitionCount}"/>
+        <property name="minConnectionsPerPartition" value="${db.reportMinConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${db.reportMaxConnectionsPerPartition}"/>
+        <property name="idleMaxAgeInMinutes" value="${db.reportIdleMaxAgeInMinutes}"/>
         <property name="acquireIncrement" value="5"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
@@ -118,7 +118,7 @@
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
         <property name="poolAvailabilityThreshold" value="10"/>
-        <property name="disableConnectionTracking" value="false"/>
+        <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
     </bean>
     
@@ -199,7 +199,7 @@
     </bean>
 
     <bean id="hpiCheck" class="idas.chox.core.hpi.Hpi" factory-method="getInstance">
-        <property name="active" value="true"/>
+        <property name="active" value="${hpi.active}"/>
         <property name="hpiUrl" value="http://www.hpixml.com/servlet/HpiGate1_0"/>
         <property name="efxidParam" value="0458006"/>
         <property name="passwordParam" value="EXCEL"/>

@@ -132,7 +132,7 @@
 
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="autoStartup" value="true" />
+        <property name="autoStartup" value="${scheduler.active}" />
         <property name="quartzProperties">
             <props>
                 <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>

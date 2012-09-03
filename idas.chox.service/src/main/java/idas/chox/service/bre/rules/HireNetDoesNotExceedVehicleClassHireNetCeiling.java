@@ -14,7 +14,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
 
     String narrative = "";
     String narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s for vehicle class %s.";
-    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+    DecimalFormat moneyFormat = new DecimalFormat("Â£0.00");
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {

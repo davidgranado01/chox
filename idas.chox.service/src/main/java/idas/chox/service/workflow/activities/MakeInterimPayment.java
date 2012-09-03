@@ -57,17 +57,17 @@ public class MakeInterimPayment extends BaseActivity {
             if (newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
                 comment = Comment.New(0, "The interim payment has been removed");
             } else if (claim.getInvoice().getInterimPaymentMade() != null) {
-                comment = Comment.New(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
+                comment = Comment.New(0, "The interim payment made has been modified to a new total of Â£" + newTotalInterimPayment.toString());
             } else {
-                comment = Comment.New(0, "An interim payment of £" + newTotalInterimPayment.toString() + " has been made.");
+                comment = Comment.New(0, "An interim payment of Â£" + newTotalInterimPayment.toString() + " has been made.");
             }
 
             claim.getInvoice().setInterimPaymentMade(newTotalInterimPayment);
         } else if (additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) > 0) {
             BigDecimal paymentSum = claim.getInvoice().getInterimPaymentMade().add(additionalInterimPayment);
             claim.getInvoice().setInterimPaymentMade(paymentSum);
-            comment = Comment.New(0, "An additional interim payment of £" + additionalInterimPayment.toString() + " has been made."
-                    + " The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
+            comment = Comment.New(0, "An additional interim payment of Â£" + additionalInterimPayment.toString() + " has been made."
+                    + " The total interim payment amount is now Â£" + claim.getInvoice().getInterimPaymentMade());
         }
         claim.addComment(comment);
     }

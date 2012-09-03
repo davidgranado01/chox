@@ -3,13 +3,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 
-
 <html>
 
     <head>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title><decorator:title default="CHOX"/></title>
-	       <s:if test="#parameters.devp || development">
+	       <s:if test="#parameters.devp || getText('development')">
 	           	<%@ include file="/includes/styles.jsp"%>
 	        	<%@ include file="/includes/scripts.jsp"%>
 	       </s:if>
@@ -19,6 +18,9 @@
 	       </s:else>
         <decorator:head />
 
+	<script type="text/javascript">
+		var generalChoxVersion = '<s:property value="getText('version.number')" />';
+	</script>
     </head>
 
     <body>

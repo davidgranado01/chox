@@ -46,11 +46,11 @@ public class SubscriberAdminFeeCheck implements IBusinessRule {
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else if (claim.getInvoice().getAdminFee() != null && !managingRepair && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingSubscriber()) > 0) {
                     success = false;
-                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is £" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
+                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is Â£" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
                     res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else if (claim.getInvoice().getAdminFee() != null && managingRepair && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingSubscriberManagingRepair()) > 0) {
                     success = false;
-                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is £" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
+                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Subscriber claims is Â£" + claim.getBreBand().getAdminFeeCeilingSubscriber() + ".";
                     res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
             } else {
                 narrative = "";

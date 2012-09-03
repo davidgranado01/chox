@@ -110,7 +110,7 @@ public class Rule044NonStandardRiskInsurancePremiumCheckTest extends TestCase {
         RuleEvaluation rv = new NonStandardRiskInsurancePremiumCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging £15.00 for the Non Standard Risk Insurance Premium and the allowed ceiling is £10.00, please review."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging Â£15.00 for the Non Standard Risk Insurance Premium and the allowed ceiling is Â£10.00, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 

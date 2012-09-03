@@ -1320,12 +1320,12 @@ public class OverviewSummaryReport implements Report {
 
         lineItem = new OverviewSummaryLineItem();
         lineItem.setLineId(14);
-        lineItem.setName("Credit Repair (£ = Repair Costs) - No. Invoices");
+        lineItem.setName("Credit Repair (Â£ = Repair Costs) - No. Invoices");
         summaries.add(lineItem);
 
         lineItem = new OverviewSummaryLineItem();
         lineItem.setLineId(15);
-        lineItem.setName("Credit Repair (£ = Repair Costs) - No. Paid Invoices");
+        lineItem.setName("Credit Repair (Â£ = Repair Costs) - No. Paid Invoices");
         summaries.add(lineItem);
 
         lineItem = new OverviewSummaryLineItem();

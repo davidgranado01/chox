@@ -116,7 +116,7 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
         System.out.println("RESULT: "+rv.getRelatedRule().getStatusAfterFailure());
          */
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £100.50 exceeds the Repair Net ceiling of £100.00."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed Â£100.50 exceeds the Repair Net ceiling of Â£100.00."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 

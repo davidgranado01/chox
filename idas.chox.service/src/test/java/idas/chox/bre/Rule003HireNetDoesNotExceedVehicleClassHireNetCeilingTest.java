@@ -111,7 +111,7 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £340.00 exceeds the Hire Net ceiling of £300.00 for vehicle class SP1."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed Â£340.00 exceeds the Hire Net ceiling of Â£300.00 for vehicle class SP1."));
         assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
