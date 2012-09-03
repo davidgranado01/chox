@@ -104,7 +104,7 @@
         <property name="driverClass" value="org.postgresql.Driver"></property>
         <property name="jdbcUrl" value="${db.reportUrl}"></property>
         <property name="username" value="mi_user"/>
-        <property name="password" value="id4sch0x"/>
+        <property name="password" value="ch0xpa33"/>
         <property name="partitionCount" value="${db.reportPartitionCount}"/>
         <property name="minConnectionsPerPartition" value="${db.reportMinConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${db.reportMaxConnectionsPerPartition}"/>
