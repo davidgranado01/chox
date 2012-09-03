@@ -19,10 +19,10 @@
         <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/chox"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="partitionCount" value="3"/>
+        <property name="partitionCount" value="4"/>
         <property name="minConnectionsPerPartition" value="3"/>
         <property name="maxConnectionsPerPartition" value="25"/>
-        <property name="idleMaxAgeInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="2"/>
         <property name="acquireIncrement" value="5"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
@@ -32,7 +32,7 @@
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
         <property name="poolAvailabilityThreshold" value="10"/>
-        <property name="disableConnectionTracking" value="false"/>
+        <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
     </bean>
 
