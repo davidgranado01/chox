@@ -33,6 +33,7 @@ import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.reports.ClaimsGridExportReport;
+import org.springframework.security.access.AccessDeniedException;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -150,6 +151,10 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public String doExportExcel() throws IOException {
 
+        if (!getCanExport()) {
+            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Export file.");
+        }
         synchronized (getSession()) {
             getSession().put("isExportFinished", false);
             getSession().put("cancelExportOperation", false);
@@ -278,92 +283,6 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-//        ExcelClaim excelClaim;
-//        ExcelInvoice excelInvoice;
-//        ExcelHistory excelHistory;
-//        for (Claim claim : claims) {
-//            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-//                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-//                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-//            }
-//            excelClaim = new ExcelClaim();
-//            excelInvoice = new ExcelInvoice();
-//            excelHistory = new ExcelHistory();
-//            excelClaim.setClaim(claim);
-//
-//            if (claim.getInvoice() != null) {
-//                Invoice inv = claim.getInvoice();
-//                excelInvoice.setInvoice(inv);
-//                if (getIsCHO()) {
-//                    excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-//                    excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-//                } else {
-//                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-//                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() 
-//                            && inv.getHirePenaltyPercentageApplied() != null)
-//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
-//                                .concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
-//                    else
-//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-//                    if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
-//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [actual:").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
-//                    else
-//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-//                }
-//                excelInvoice.setChoReference(claim.getChoReference());
-//                excelInvoice.setClaimStatus(claim.getStatus());
-//                if (claim.getThirdParty() != null) {
-//                    excelInvoice.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
-//                }
-//                invoices.add(excelInvoice);
-//            }
-//
-//            if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
-//                excelHistory.setHistories(claim.getHistories(), isCho);
-//                histories.add(excelHistory);
-//            }
-//
-//            excelClaims.add(excelClaim);
-//
-//            // GET COMMENT BY CLAIM ID;
-//            if (claim.getComments() != null && !claim.getComments().isEmpty()) {
-//                for (Comment c : claim.getComments()) {
-//                    if (c.isReverted() || ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer))) {
-//                        continue;
-//                    }
-//                    if (c.getRaisedBy() != null) {
-//                        c.setCreatedBy(c.getRaisedBy());
-//                    }
-//                    comments.add(c);
-//                }
-//            }
-//
-//            // Add AuditTrail / claim cycle
-//            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId(), true);
-//            for (AuditTrail a : auditTrail) {
-//                ExcelClaimCycle cycle = new ExcelClaimCycle();
-//                cycle.setChoReference(claim.getChoReference());
-//                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
-//                cycle.setModifiedDate(DateHelper.getLocalDateTimeFormat().format(a.getUpdateDate()));
-//                cycle.setStatus(a.getNewStatus());
-//                cycle.setReverted(a.getReverted() == true ? "Yes" : "");
-//                claimCycle.add(cycle);
-//            }
-//            claimService.evict(claim);
-//            processedClaim += 1;
-//            if (isExportClaimOperationCancelled()) {
-////                break;
-//                synchronized (getSession()) {
-//                    getSession().put("numberOfClaimsProcessed", null);
-//                }
-//                return false;
-//            }
-//
-//            synchronized (getSession()) {
-//                getSession().put("numberOfClaimsProcessed", processedClaim);
-//            }
-//        }
-
         final Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
@@ -375,7 +294,6 @@ public class ExcelGeneratorAction extends BaseAction {
         Calendar cal = Calendar.getInstance();
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
- //       final String reportFileName = System.getProperty("java.io.tmpdir") + File.pathSeparator + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
 
@@ -500,6 +418,11 @@ public class ExcelGeneratorAction extends BaseAction {
 
     @Override
     public String execute() {
+
+        if (!getCanExport()) {
+            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Export file.");
+        }
 
         if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");

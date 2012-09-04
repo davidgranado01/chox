@@ -95,3 +95,14 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO mi_user;
 ---------------------------------------------------
 -- End of mi_user for separate report data source 
 ---------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+-- 6.16.5 - Restrict access to 'Export To Excel' and 'Export Claim To Excel'
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN restrict_export boolean default false;
+ALTER TABLE chorganisation ADD COLUMN restrict_export boolean default false;
+
+---------------------------------------------------
+-- End of 6.16.5
+---------------------------------------------------

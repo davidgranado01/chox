@@ -1798,9 +1798,11 @@
         </div>
     </div>
     <div id="gridPanel" class="x-hide-display">
-        <div class="excel-export">
-            <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
-        </div>
+        <s:if test="canExport">
+            <div class="excel-export">
+                <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
+            </div>
+        </s:if>
     </div>
 
     <div id="xmlClaimsStatusGridDiv" class="x-hide-display">

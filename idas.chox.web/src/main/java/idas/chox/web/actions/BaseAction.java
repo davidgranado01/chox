@@ -234,6 +234,17 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return securityInfoProvider.getIsCHOXAdmin();
     }
 
+    public boolean getCanExport() {
+        boolean result = true;
+        if (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER)) {
+            result = !getAuthenticatedUser().getInsurer().isRestrictExport();
+        }
+        else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR)) {
+            result = !getAuthenticatedUser().getChorganisation().isRestrictExport();
+        }
+        return result;
+    }
+
     public boolean getIsSupportEnabled() {
         if (getAuthenticatedUser().getInsurer() != null) {
             return getAuthenticatedUser().getInsurer().isOnlineSupportEnable();
