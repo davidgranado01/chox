@@ -821,6 +821,10 @@
                                 <label class="chox-form-std-label">Disable Private Notes</label>
                                 <s:checkbox name="disablePrivateNotes" value="disablePrivateNotes" onclick="doToggleInsurerDiscount()" />
                             </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Restrict Export Functions For User Manager roles?</label>
+                                <s:checkbox name="restrictExport" value="restrictExport" />
+                            </div>
                          </fieldset>
                         
                         <div class="chox-form-button">

@@ -62,6 +62,7 @@ public class Insurer extends Entity implements Serializable {
     private Integer ecdIncreaseTriggerPercentage;
     private boolean enableManualInvoiceWorkgroups;
     private boolean enableManualInvoiceOwnership;
+    private boolean restrictExport;
 
     public String getBlockedMessage() {
         return blockedMessage;
@@ -563,6 +564,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setEnableManualInvoiceOwnership(boolean enableManualInvoiceOwnership) {
         this.enableManualInvoiceOwnership = enableManualInvoiceOwnership;
+    }
+
+    public boolean isRestrictExport() {
+        return restrictExport;
+    }
+
+    public void setRestrictExport(boolean restrictExport) {
+        this.restrictExport = restrictExport;
     }
 
 }

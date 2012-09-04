@@ -110,6 +110,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
             getSession().put("reportFileLocation", null);
         }
 
+        if ("ClaimFileReport-Excel".equals(reportName) && !getCanExport()) {
+            LOG.error("Illegal attempt to generate Claim File Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Claim File Report.");
+        }
+
         final Report report = ReportFactory.getReportByName(reportName);
         LOG.debug("Report generated from the reportfactory");
         if (!getReportAccessibility().canAccess(report.getReportCode())) {

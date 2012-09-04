@@ -502,9 +502,11 @@
                             </div>
                         </td>
                         <td align="right">
-                            <div>
-                                <a href="javascript:claimReport();">Export Claim To Excel</a>
-                            </div>
+                            <s:if test="canExport">
+                                <div>
+                                    <a href="javascript:claimReport();">Export Claim To Excel</a>
+                                </div>
+                            </s:if>
                         </td>
                     </tr>
                 </table>

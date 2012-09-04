@@ -66,6 +66,7 @@ public class Chorganisation extends Entity implements Serializable {
     private int blockTime;
     private boolean disablePrivateNotes;
     private String blockedMessage;
+    private boolean restrictExport;
 
     public String getBlockedMessage() {
         return blockedMessage;
@@ -457,5 +458,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setDisablePrivateNotes(boolean disablePrivateNotes) {
         this.disablePrivateNotes = disablePrivateNotes;
+    }
+
+    public boolean isRestrictExport() {
+        return restrictExport;
+    }
+
+    public void setRestrictExport(boolean restrictExport) {
+        this.restrictExport = restrictExport;
     }
 }

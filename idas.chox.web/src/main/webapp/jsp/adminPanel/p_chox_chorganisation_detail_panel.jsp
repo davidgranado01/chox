@@ -506,6 +506,12 @@
                                         <s:checkbox name="disablePrivateNotes" value="disablePrivateNotes" onclick="doToggleInsurerDiscount()" />
                                     </div>
                                 </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Restrict Export Functions<br/> For Operative Users?</label>
+                                        <s:checkbox name="restrictExport" value="restrictExport" />
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                         <div class="chox-form-button">

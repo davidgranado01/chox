@@ -57,6 +57,7 @@
     <property column="enable_manual_invoice_workgroups" name="enableManualInvoiceWorkgroups" not-null="true"/>
     <property column="enable_manual_invoice_ownership" name="enableManualInvoiceOwnership" not-null="true"/>
     <property column="ecd_increase_trigger" name="ecdIncreaseTriggerPercentage" not-null="true"/>
+    <property column="restrict_export" name="restrictExport" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

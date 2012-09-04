@@ -30,6 +30,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
+import org.springframework.security.access.AccessDeniedException;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -137,6 +138,10 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public String doExportExcel() throws IOException {
 
+        if (!getCanExport()) {
+            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Export file.");
+        }
         synchronized (getSession()) {
             getSession().put("isExportFinished", false);
             getSession().put("cancelExportOperation", false);

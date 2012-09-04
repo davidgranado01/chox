@@ -1,0 +1,5 @@
+--------------------------------------------------------------------------------
+-- 6.16.5 - Restrict access to 'Export To Excel' and 'Export Claim To Excel'
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN restrict_export boolean default false;
+ALTER TABLE chorganisation ADD COLUMN restrict_export boolean default false;
