@@ -47,10 +47,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private boolean isTotalLostCheck;
     private boolean isRepairOnlyCheck;
     private boolean isNFInsurerManagingRepair;
-
-
-
-
+    private Boolean clientVatRegistered;
 
     private Date totalLossOfferMadeDate;
     private Date totalLossOfferAcceptedDate;
@@ -83,6 +80,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private Date repairCompletionDateLastModified;
     private Date isRepairOnlyCheckLastModified;
     private Date isNFInsurerManagingRepairLastModified;
+    private Date clientVatRegisteredLastModified;
 
     /**
      * Method 'HireMonitoringDetail'
@@ -552,7 +550,31 @@ public class HireMonitoringDetail extends Entity implements Serializable {
         this.isNFInsurerManagingRepairLastModified = isNFInsurerManagingRepairLastModified;
     }
 
-   
+    public Boolean getClientVatRegistered() {
+        return clientVatRegistered;
+    }
+
+    public String getClientVatRegisteredDesc() {
+        if (clientVatRegistered == null) {
+            return "";
+        } else {
+            return clientVatRegistered ? "Yes" : "No";
+        }
+    }
+
+    public void setClientVatRegistered(Boolean clientVatRegistered) {
+        this.clientVatRegistered = clientVatRegistered;
+    }
+
+    public Date getClientVatRegisteredLastModified() {
+        return clientVatRegisteredLastModified;
+    }
+
+    public void setClientVatRegisteredLastModified(Date clientVatRegisteredLastModified) {
+        this.clientVatRegisteredLastModified = clientVatRegisteredLastModified;
+    }
+
+
 
   
 }

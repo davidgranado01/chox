@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------------
+-- 6.16.4 - New field on 'Hire Monitoring' tab 'Is your client VAT registered?'
+--------------------------------------------------------------------------------
+ALTER TABLE hire_monitoring_detail ADD COLUMN client_vat_registered boolean default null;
+ALTER TABLE hire_monitoring_detail ADD COLUMN client_vat_registered_last_modified timestamp without time zone;
+
+--------------------------------------------------------------------------------
+-- End of 6.16.4 
+--------------------------------------------------------------------------------

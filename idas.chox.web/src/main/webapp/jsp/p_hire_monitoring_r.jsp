@@ -129,6 +129,14 @@
             closable: true,
             draggable:true
         });
+        new Ext.ToolTip({
+            target: 'dateClientVatRegistered_r_Id',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="clientVatRegisteredLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
    
     }
 
@@ -380,22 +388,33 @@
 
 
             <s:if test="isNFInsurerManagingRepairLastModified != null">
-
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img  src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
-
             </s:if>
             <s:else>
-
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
+            </s:else>
 
+            <s:if test="clientVatRegisteredLastModified != null">
+                <tr>
+                    <td><label class="std-label-ro">Is your client VAT registered?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /> <img  src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
+                </tr>
+            </s:if>
+            <s:else>
+                <tr>
+                    <td><label class="std-label-ro">Is your client VAT registered?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
+                </tr>
             </s:else>
 
 

@@ -24,6 +24,7 @@
     <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
     <property column="is_repair_only_check" name="isRepairOnlyCheck" not-null="true"/>
     <property column="is_non_fault_insurer_managing_repair" name="isNFInsurerManagingRepair" not-null="true"/>
+    <property column="client_vat_registered" name="clientVatRegistered" not-null="false"/>
     <property column="total_loss_offer_made" name="totalLossOfferMadeDate"/>
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
     <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
@@ -44,8 +45,9 @@
     <property column="total_loss_check_issued_last_modified" name="totalLossCheckIssuedLastModified"/>
     <property column="total_loss_check_received_last_modified" name="totalLossCheckReceivedLastModified"/>
     <property column="repair_completion_date_last_modified" name="repairCompletionDateLastModified"/>
-    <property column="is_Repair_Only_Check_Last_Modified" name="isRepairOnlyCheckLastModified"/>
-    <property column="isNF_Insurer_Repair_Last_Modified" name="isNFInsurerManagingRepairLastModified"/>
+    <property column="is_Repair_Only_Check_mast_modified" name="isRepairOnlyCheckLastModified"/>
+    <property column="isNF_Insurer_Repair_last_modified" name="isNFInsurerManagingRepairLastModified"/>
+    <property column="client_vat_registered_last_modified" name="clientVatRegisteredLastModified"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
   </class>
