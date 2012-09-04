@@ -59,11 +59,7 @@
         if($("form#invoiceReferredToClaimsHandler").valid()){
 
             if (action=='rejectInvoice') {
-                var reasonOfRejection = $("#appInvRefEngReasonOfRejectionId").val();
-                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})) {
-                    return;
-                }
-                else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})){
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})){
                     return;
                 }
             }
@@ -105,10 +101,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
                     </s:if>
                     <s:else>
-                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment or reject the invoice.
+                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice or reject the invoice.
                     </s:else>
                 </div>
                 <div class="status-control-set">
@@ -146,7 +142,7 @@
                         <tr>
                             <td colspan="4" class="choice">
                                 <input type="button" id="AIRBERejectInvoiceButtonId"value="Reject Invoice"  onclick="return doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
-                                <input type="button" id="AIRBEClearForPaymentButtonId"value="Clear For Payment" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
+                                <input type="button" id="AIRBEClearForPaymentButtonId"value="Agree Quantum" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
                                     <input type="button" id="AIRBEReferToEngineerButtonId"value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
                                 </s:if>

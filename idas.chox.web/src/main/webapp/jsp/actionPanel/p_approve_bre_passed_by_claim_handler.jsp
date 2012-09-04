@@ -62,7 +62,7 @@
         if($("form#invoiceEscalatedToCh").valid()){
             if (action=='rejectInvoice') {
                 var reasonOfRejection = $("#appBrePassCHReasonOfRejectionId").val();
-                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceEscalatedToCh").submit();}else{return false;}})) {
+                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceEscalatedToCh").submit();}else{return false;}})) {
                     return;
                 }
                 else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this invoice?',function(btn){if(btn=='yes'){$("form#invoiceEscalatedToCh").submit();}else{return false;}})){
@@ -106,10 +106,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
+                        Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to agree the quantum for the invoice, refer the claim to an Engineer or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
                     </s:if>
                     <s:else>
-                        Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to progress the claim for payment or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
+                        Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to agree the quantum for the invoice or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
                     </s:else>
                 </div>
                 <div class="status-control-set">
@@ -147,7 +147,7 @@
                         <tr>
                             <td colspan="4" class="choice">
                                 <input type="button" id="abpbchRejectInvoiceButtonId" value="Reject Invoice"  onclick="return doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
-                                <input type="button" id="abpbchClearForPaymentButtonId"  value="Clear For Payment" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
+                                <input type="button" id="abpbchClearForPaymentButtonId"  value="Agree Quantum" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
                                     <input type="button"  id="abpbchReferToEngineerButtonId" value="Refer To Engineer" onclick="return doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
                                 </s:if>
