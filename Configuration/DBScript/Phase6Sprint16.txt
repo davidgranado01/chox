@@ -106,3 +106,57 @@ ALTER TABLE chorganisation ADD COLUMN restrict_export boolean default false;
 ---------------------------------------------------
 -- End of 6.16.5
 ---------------------------------------------------
+--------------------------------------------------------------------------------
+-- 6.16.6 - Automated Task to prompt ECD field completion
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN allow_missing_ecd_auto_tasks boolean default false;
+
+CREATE OR REPLACE FUNCTION addMissingEcdTask(integer)
+  RETURNS boolean AS
+$BODY$
+
+DECLARE
+userId int;
+
+BEGIN
+
+userId=$1;
+
+insert into task(claim_id, due_date, task_type, description, insurer,
+                 visibility, visibility_role, created_by, created_date,
+                 last_modified_by, last_modified_date, version)
+select c.id, now() + interval '2 days', 'ECD Missing',
+      'It is over 6 days since the Hire Start Date and no ECD has been added by the CHO, please review.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)
+             left outer join customer cu on (c.customer_id = cu.id),
+     insurer ins, chorganisation cho,
+     bre_band_organisation bbo, bre_band bb
+where c.insurer_id = ins.id
+  and c.chorganisation_id = cho.id
+  and ins.is_task_management_enable = true
+  and bb.insurer_id = ins.id
+  and bb.id = bbo.band_id
+  and bbo.chorganisation_id = cho.id
+  and bb.allow_missing_ecd_auto_tasks = true
+  and (cu is null or cu.initial_ecd is null)
+  and not exists (select * from hire_monitoring_ecd where claim_id = c.id and ecd_date is not null)
+  and (vh is null or extract(epoch from now() - vh.rental_start)/(3600*24.0) > 6.0)
+  and c.status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
+                   'SubscriberClaimRejected', 'ClaimRejectionContested', 'AwaitingCarHireInfo',
+                   'AwaitingInvoiceData', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL',
+                   'ClaimPending', 'ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')
+  and not exists (select * from task where claim_id = c.id and task_type = 'ECD Missing');
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+GRANT EXECUTE ON FUNCTION addMissingEcdTask(integer) TO chox_user;
+
+
+--------------------------------------------------------------------------------
+-- End of 6.16.6 
+--------------------------------------------------------------------------------

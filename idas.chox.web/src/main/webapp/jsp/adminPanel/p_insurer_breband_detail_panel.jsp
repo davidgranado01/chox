@@ -405,7 +405,7 @@
                     </div>
                             
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Automated Tasks For Repair Documentation</div>
+                        <div class="section-name">Automated Tasks</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="allowNotManagingRepairAutomatedTasks" value="allowNotManagingRepairAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Tasks For The CHO When Credit Repair Costs Are Submitted And Not Managing Repair</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the CHO uploads an invoice with a charge for credit repair costs and they did not manage the repair then an automated task will be raised advising the CHO to upload documentation to support the repair costs.</div>
@@ -413,6 +413,10 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="allowManagingRepairAutomatedTasks" value="allowManagingRepairAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Tasks For The CHO When Credit Repair Costs Are Submitted And Managing Repair</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the CHO uploads an invoice with a charge for credit repair costs and they managed the repair then an automated task will be raised advising the CHO to upload documentation to support the repair costs.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowMissingECDAutomatedTasks" value="allowMissingECDAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Task For The Insurer When No ECD Is Present And Six Days Have Passed Since The Hire Start Date</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If a claim is at status Awaiting Car Hire Info with a Hire Start Date 6 days in the past an automated task will be generated to the Insurer to contact the CHO when no ECD is present on the claim.</div>
                         </div>
                     </div>
                   </div>
