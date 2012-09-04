@@ -57,7 +57,7 @@
             if (action=='rejectInvoice') {
                 var reasonOfRejection = $("#appBrePassClaimReasonOfRejectionId").val();
                 
-                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#approveBREPassedClaim").submit();}else{return false;}})) {
+                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#approveBREPassedClaim").submit();}else{return false;}})) {
                     return;
                 }
                 else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this invoice?',function(btn){if(btn=='yes'){$("form#approveBREPassedClaim").submit();}else{return false;}})){
@@ -102,10 +102,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
                     </s:if>
                     <s:else>
-                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment or reject the invoice.
+                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice or reject the invoice.
                     </s:else>
                 </div>
                 <div class="status-control-set">
@@ -141,7 +141,7 @@
                         <tr>
                             <td colspan="4" class="choice">
                                 <input type="button" id="ABPCRejectInvoiceButtonId" value="Reject Invoice"  onclick="return doApproveBREPassedClaimSubmit('rejectInvoice');" />
-                                <input type="button" id="ABPCClearForPaymentButtonId" value="Clear For Payment" onclick="return doApproveBREPassedClaimSubmit('acceptInvoice');"  />
+                                <input type="button" id="ABPCClearForPaymentButtonId" value="Agree Quantum" onclick="return doApproveBREPassedClaimSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
                                     <input type="button" id="ABPCReferToEngineerButtonId" value="Refer To Engineer" onclick="return doApproveBREPassedClaimSubmit('invoiceReferToEng');"  />
                                 </s:if>
