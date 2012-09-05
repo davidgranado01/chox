@@ -132,6 +132,12 @@ public class Upload {
                 if (isXmlBordereau(fileName)) {
                     UploadBordereau.process(uploadService, fileName);
                 }
+                else if (optionsBean.isReopen()) {
+                    ReopenClaim.process(uploadService, fileName);
+                }
+                else if (optionsBean.isClose()) {
+                    CloseClaim.process(uploadService, fileName);
+                }
                 else {
                     PaymentReceived.process(uploadService, fileName);
                 }
