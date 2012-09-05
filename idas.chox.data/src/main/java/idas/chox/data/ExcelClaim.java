@@ -168,6 +168,7 @@ public class ExcelClaim {
     private BigDecimal claimHireMonitoringDetailLabourHour;
     private String claimRepairOnlyCheck;
     private String claimNonFaultInsurerRepair;
+    private String claimClientVatRegistered;
     private BigDecimal claimHireMonitoringDetailLabourCost;
     private String claimHireMonitoringDetailNonProvisionReason;
     private Date claimHireMonitoringDetailNextReviewDate;
@@ -381,6 +382,11 @@ public class ExcelClaim {
             claimNonFaultInsurerRepair = "";
         else
             claimNonFaultInsurerRepair = isNonFaultInsurerRepair ? "Yes" : "No";
+        Boolean clientVatRegistered = (Boolean) data.get("claim_client_vat_registered");
+        if (clientVatRegistered == null)
+            claimClientVatRegistered = "";
+        else
+            claimClientVatRegistered = clientVatRegistered ? "Yes" : "No";
         claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_labour_cost");
         claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_non_provision_reason");
         claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_next_review_date");
@@ -785,6 +791,7 @@ public class ExcelClaim {
             this.claimHireMonitoringDetailNextReviewDate = claim.getHireMonitoringDetail().getNextReviewDate();
             this.claimRepairOnlyCheck = claim.getHireMonitoringDetail().isIsRepairOnlyCheck() ? "Yes" : "No";
             this.claimNonFaultInsurerRepair = claim.getHireMonitoringDetail().isIsNFInsurerManagingRepair() ? "Yes" : "No";
+            this.claimClientVatRegistered = claim.getHireMonitoringDetail().getClientVatRegisteredDesc();
         }
         else {
             this.claimHireMonitoringDetailNameOfRepairer = "";
@@ -807,6 +814,7 @@ public class ExcelClaim {
             this.claimHireMonitoringDetailNextReviewDate = null;
             this.claimRepairOnlyCheck = "";
             this.claimNonFaultInsurerRepair = "";
+            this.claimClientVatRegistered = "";
         }
     }
 
@@ -1456,6 +1464,10 @@ public class ExcelClaim {
 
     public String getClaimNonFaultInsurerRepair() {
         return claimNonFaultInsurerRepair;
+    }
+
+    public String getClaimClientVatRegistered() {
+        return claimClientVatRegistered;
     }
 
 }
