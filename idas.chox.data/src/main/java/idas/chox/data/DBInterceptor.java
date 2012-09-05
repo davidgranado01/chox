@@ -104,6 +104,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             Integer indexOfIsRepairOnlyCheckLastModified = null;
             Integer indexOfIsNFInsurerManagingRepair = null;
             Integer indexOfIsNFInsurerManagingRepairLastModified = null;
+            Integer indexOfClientVatRegistered = null;
+            Integer indexOfClientVatRegisteredLastModified = null;
 
             for (int i = 0; i < propertyNames.length; i++) {
 
@@ -172,26 +174,25 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                     if (indexOfRepairCompletionDate != null) {
                         state[i] = DateHelper.getCurrentDateTime();
                     }
-
-
                 } else if ("isRepairOnlyCheckLastModified".equals(propertyNames[i])) {
 
                     indexOfIsRepairOnlyCheckLastModified = i;
                     if (indexOfIsRepairOnlyCheck != null) {
                         state[i] = DateHelper.getCurrentDateTime();
                     }
-
-
                 } else if ("isNFInsurerManagingRepairLastModified".equals(propertyNames[i])) {
 
                     indexOfIsNFInsurerManagingRepairLastModified = i;
                     if (indexOfIsNFInsurerManagingRepair != null) {
                         state[i] = DateHelper.getCurrentDateTime();
                     }
+                } else if ("clientVatRegisteredLastModified".equals(propertyNames[i])) {
 
-
+                    indexOfClientVatRegisteredLastModified = i;
+                    if (indexOfClientVatRegistered != null) {
+                        state[i] = DateHelper.getCurrentDateTime();
+                    }
                 } else if ("repairBookInDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfRepairBookInDate = i;
@@ -199,10 +200,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         if (indexOfRepairBookInDateLastModified != null) {
                             state[indexOfRepairBookInDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("repairAuthorisedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfRepairAuthorisedDate = i;
@@ -210,10 +209,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         if (indexOfRepairAuthorisedDateLastModified != null) {
                             state[indexOfRepairAuthorisedDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("repairCommencedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfRepairCommencedDate = i;
@@ -221,10 +218,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         if (indexOfRepairCommencedDateLastModified != null) {
                             state[indexOfRepairCommencedDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("isTotalLostCheck".equals(propertyNames[i])) {
-
                     String status = state[i].toString();
                     if (status != null && status.equals("true")) {
                         indexOfIsTotalLostCheck = i;
@@ -235,113 +230,92 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
                     }
                 } else if ("totalLossOfferMadeDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfTotalLossOfferMadeDate = i;
-
                         if (indexOfTotalLossOfferMadeLastModified != null) {
                             state[indexOfTotalLossOfferMadeLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("totalLossOfferAcceptedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfTotalLossOfferAcceptedDate = i;
-
                         if (indexOfTotalLossOfferAcceptedLastModified != null) {
                             state[indexOfTotalLossOfferAcceptedLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("totalLossOfferCheckIssuedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfTotalLossOfferCheckIssuedDate = i;
-
                         if (indexOfTotalLossCheckIssuedLastModified != null) {
                             state[indexOfTotalLossCheckIssuedLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("totalLossOfferCheckReceivedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfTotalLossOfferCheckReceivedDate = i;
-
                         if (indexOfTotalLossCheckReceivedLastModified != null) {
                             state[indexOfTotalLossCheckReceivedLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("inspectionBookedDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfInspectionBookedDate = i;
-
                         if (indexOfInspectionBookedDateLastModified != null) {
                             state[indexOfInspectionBookedDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("inspectionDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfInspectionDate = i;
-
                         if (indexOfInspectionDateLastModified != null) {
                             state[indexOfInspectionDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("repairCompletionDate".equals(propertyNames[i])) {
-
                     Date status = (Date) state[i];
                     if (status != null) {
                         indexOfRepairCompletionDate = i;
-
                         if (indexOfRepairCompletionDateLastModified != null) {
                             state[indexOfRepairCompletionDateLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("isRepairOnlyCheck".equals(propertyNames[i])) {
-
                     String status = state[i].toString();
                     if (status != null && status.equals("true")) {
                         indexOfIsRepairOnlyCheck = i;
-
                         if (indexOfIsRepairOnlyCheckLastModified != null) {
                             state[indexOfIsRepairOnlyCheckLastModified] = DateHelper.getCurrentDateTime();
                         }
-
                     }
                 } else if ("isNFInsurerManagingRepair".equals(propertyNames[i])) {
-
                     String status = state[i].toString();
                     if (status != null && status.equals("true")) {
                         indexOfIsNFInsurerManagingRepair = i;
-
                         if (indexOfIsNFInsurerManagingRepairLastModified != null) {
                             state[indexOfIsNFInsurerManagingRepairLastModified] = DateHelper.getCurrentDateTime();
                         }
-
+                    }
+                } else if ("clientVatRegistered".equals(propertyNames[i])) {
+                    String status = state[i].toString();
+                    if (status != null && status.equals("true")) {
+                        indexOfClientVatRegistered = i;
+                        if (indexOfClientVatRegisteredLastModified != null) {
+                            state[indexOfClientVatRegisteredLastModified] = DateHelper.getCurrentDateTime();
+                        }
                     }
                 }
-
-
             }
-
         }
-        return true;
 
+        return true;
     }
+
 
     @Override
     public boolean onFlushDirty(Object entity, Serializable id, Object[] state1,
