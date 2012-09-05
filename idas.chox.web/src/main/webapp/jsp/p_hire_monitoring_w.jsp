@@ -552,15 +552,14 @@
             <s:if test="clientVatRegisteredLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">
-                        Is your client VAT <br> registered?&nbsp;&nbsp;&nbsp; </label>
+                        Is Your Client VAT <br> Registered?&nbsp;&nbsp;&nbsp; </label>
                     <table><tr><td><s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">
-                        Is your client VAT registered?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegisteredId" /></label>
+                        Is Your Client VAT Registered?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegisteredId" /></label>
                         <s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" />
                 </div>
             </s:else>

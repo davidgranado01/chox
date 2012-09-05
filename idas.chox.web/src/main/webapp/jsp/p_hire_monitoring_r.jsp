@@ -404,14 +404,14 @@
 
             <s:if test="clientVatRegisteredLastModified != null">
                 <tr>
-                    <td><label class="std-label-ro">Is your client VAT registered?</label></td>
+                    <td><label class="std-label-ro">Is Your Client VAT Registered?</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /> <img  src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
-                    <td><label class="std-label-ro">Is your client VAT registered?</label></td>
+                    <td><label class="std-label-ro">Is Your Client VAT Registered?</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
                 </tr>

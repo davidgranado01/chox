@@ -1,8 +1,11 @@
 package idas.chox.service.reports.viewdata;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Customer;
@@ -18,7 +21,6 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
-import java.util.Date;
 
 
 /**
@@ -155,6 +157,7 @@ public class ClaimFileReportData {
     private String hireMonNonProvisionReason;
     private String isRepairOnlyCheck;
     private String isNFInsurerManagingRepair;
+    private String clientVatRegistered;
     private String hireVehicleManufacturer;
     private String hireVehicleModel;
     private String hireVehicleRegistration;
@@ -470,6 +473,7 @@ public class ClaimFileReportData {
             hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
             isRepairOnlyCheck = hireMonitoringDetail.isIsRepairOnlyCheck() ? "Yes" : "No";
             isNFInsurerManagingRepair = hireMonitoringDetail.isIsNFInsurerManagingRepair() ? "Yes" : "No";
+            clientVatRegistered = hireMonitoringDetail.getClientVatRegisteredDesc();
             if (hireMonitoringDetail.getRepairAuthorisedDate() == null)
                 hireMonAuthorisedDate = "";
             else
@@ -2645,6 +2649,10 @@ public class ClaimFileReportData {
 
     public void setOriginalInvoiceTotalToPay(BigDecimal originalInvoiceTotalToPay) {
         this.originalInvoiceTotalToPay = originalInvoiceTotalToPay;
+    }
+
+    public String getClientVatRegistered() {
+        return clientVatRegistered;
     }
 
 }
