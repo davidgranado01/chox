@@ -571,7 +571,7 @@
                 /**** BATCH UPDATE - CLEAN FOR PAYMENT ********************************/
                 var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
                 ({
-                    text: 'Approve Claim(s) For Payment',
+                    text: 'Agree Quantum on Invoice(s)',
                     hidden:<s:property value="isCHO"/>,
                     handler: function(){
 
