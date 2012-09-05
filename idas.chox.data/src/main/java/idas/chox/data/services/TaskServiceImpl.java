@@ -90,10 +90,21 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("No such user.");
             }
         }
+        
+        // Check that if the task is on a claim, then the webuser belongs to the same org as that of the claim
+        if (task.getClaim() != null) {
+            if ((webUser.isCHO() && webUser.getChorganisation().getId().intValue() != task.getClaim().getChorganisation().getId().intValue())
+                    || (webUser.isAnInsurer() && webUser.getInsurer().getId().intValue() != task.getClaim().getInsurer().getId().intValue())) {
+                LOG.error("User trying to complete a task from a different organisation: webUserId={}, taskId={}", webUserId, taskId);
+                throw new IllegalArgumentException("You are not authorised to mark this task as complete.");
+            }
+        }
+        
         // Check that user can mark task as complete:
         //       true if user created task
         //       true if no visibility role defined
         //       true if role defined and user is in role
+        //       true if user is a manager
         //       false otherwise
         boolean canComplete = false;
 
@@ -102,6 +113,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         } else if ((task.getVisibilityRole() == null || task.getVisibilityRole().length() == 0) && task.getVisibility()!= 1) {
             canComplete = true;
         } else if (userInRole(webUser, task.getVisibilityRole())) {
+            canComplete = true;
+        } else if (userInRole(webUser, WebUserRole.ROLE_CH_MNG) || userInRole(webUser, WebUserRole.ROLE_INS_MNG)) {
             canComplete = true;
         }
 
@@ -113,10 +126,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         if (task.getRelatedTask() != null) {
             LOG.debug("Marking related task as complete: {}", task.getRelatedTask().getId());
-//            task = (Task)get(Task.class, task.getRelatedTask().getId());
-//            if (task != null && !task.getComplete()) {
             markTaskAsComplete(task.getRelatedTask());
-//            }
         }
     }
 
@@ -638,7 +648,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
     private List<Task> getTasksByClaim(WebUser user, int claimId, boolean incompleteOnly) {
         boolean isCHO = false;
-        List<Task> results = null;
+        List<Task> results;
 
         if (user != null && user.getChorganisation() != null) {
             isCHO = true;
@@ -775,11 +785,10 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     }
 
     private List<Task> getAutoCompletedTasksByClaim(int claimId) {
-        List<Task> results = new ArrayList<Task>();
         DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.add(Restrictions.eq("autoCompleted", true));
-        results = findByCriteria(criteria);
+        List<Task> results = findByCriteria(criteria);
         LOG.debug("Found {} auto-completed tasks", results.size());
 
         return results;
