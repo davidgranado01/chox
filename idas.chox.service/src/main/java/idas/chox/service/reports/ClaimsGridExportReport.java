@@ -296,6 +296,7 @@ public class ClaimsGridExportReport {
             .append(" hmd.total_loss_offer_accepted as hmd_total_loss_offer_accepted, hmd.total_loss_check_issued as hmd_total_loss_check_issued,")
             .append(" hmd.total_loss_check_received as hmd_total_loss_check_received, hmd.labour_rate as hmd_labour_rate, hmd.labour_hour as hmd_labour_hour,")
             .append(" hmd.is_repair_only_check as claim_repair_only_check, hmd.is_non_fault_insurer_managing_repair as claim_non_fault_insurer_repair,")
+            .append(" hmd.client_vat_registered as claim_client_vat_registered,")
             .append(" hmd.labour_cost as hmd_labour_cost, hmd.non_provision_reason as hmd_non_provision_reason, hmd.next_review_date as hmd_next_review_date")
             .append(" from claim c")
             .append("     join chorganisation cho on (c.chorganisation_id = cho.id)")
