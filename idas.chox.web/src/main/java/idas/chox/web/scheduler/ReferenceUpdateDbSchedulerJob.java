@@ -53,7 +53,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
             int status = getClaimService().updateQueuedTicket(queuedTicket,
                                     getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
-            String statusString = null;
+            String statusString;
             if (status == 0) {
                 statusString = "Updated";
             } else if (status == 1) {

@@ -21,7 +21,7 @@
 	
     <bean id="mailUtil" class="idas.chox.web.scheduler.MailUtil" scope="singleton"/>
     
-            <!--  Reference update from queud token -->
+    <!--  Reference update from queued token -->
     <bean id="referenceUpdateDbJob" class="idas.chox.web.scheduler.ReferenceUpdateDbSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="claimService" ref="claimService" />
@@ -39,7 +39,8 @@
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
     </bean>
 	
-        <!--  CHO Reference Update from email-->
+
+    <!--  CHO Reference Update from email-->
     <bean id="referenceUpdateEmailJob" class="idas.chox.web.scheduler.ReferenceUpdateEmailSchedulerJob">
         <property name="imapMailReceiver" ref="imapMailReceiver"/>
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -62,12 +63,10 @@
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
-		
     </bean>
         
 
-        
-        <!--  Penalty Charge Start Date Update -->
+    <!--  Penalty Charge Start Date Update -->
     <bean id="penaltyStartDateUpdateEmailJob" class="idas.chox.web.scheduler.PenaltyChargeUpdateEmailSchedulerJob">
         <property name="imapMailReceiver" ref="imapMailReceiver"/>
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -92,7 +91,31 @@
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
 		
     </bean>
-	
+    
+    <!--  Stored Procedure call: addMissingEcdTask -->
+    <bean id="addMissingEcdTaskJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="addMissingEcdTask"/>
+    </bean>
+
+    <!--  Stored Procedure call: addMissingEcdTask -->
+    <bean id="addInvoicePenaltyTaskJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="addInvoicePenaltyTask"/>
+    </bean>
+
+    <!--  Stored Procedure call: applyAutoPenaltyCharge -->
+    <bean id="applyAutoPenaltyChargeJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="applyAutoPenaltyCharge"/>
+    </bean>
+
+    <!--  Stored Procedure call: updateDashboard -->
+    <bean id="updateDashboardJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="updateDashboard"/>
+    </bean>
+
     <bean id="referenceUpdateDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="referenceUpdateDbJob" />
         <property name="targetMethod" value="execute" />
@@ -107,6 +130,30 @@
 
     <bean id="penaltyStartDateUpdateEmailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="penaltyStartDateUpdateEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="addMissingEcdTaskJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="addMissingEcdTaskJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="addInvoicePenaltyTaskJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="addInvoicePenaltyTaskJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="applyAutoPenaltyChargeJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="applyAutoPenaltyChargeJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="updateDashboardJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="updateDashboardJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
@@ -129,6 +176,22 @@
         <property name="jobDetail" ref="penaltyStartDateUpdateEmailJobDetail" /> 
         <property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
     </bean> 
+    <bean id="addMissingEcdTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="addMissingEcdTaskJobDetail" /> 
+        <property name="cronExpression" value="0 15 5 ? * 1-7" /> 
+    </bean> 
+    <bean id="addInvoicePenaltyTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="addInvoicePenaltyTaskJobDetail" /> 
+        <property name="cronExpression" value="0 17 5 ? * 1-7" /> 
+    </bean> 
+    <bean id="applyAutoPenaltyChargeTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="applyAutoPenaltyChargeJobDetail" /> 
+        <property name="cronExpression" value="0 1 0 ? * 1-7" /> 
+    </bean> 
+    <bean id="updateDashboardTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="updateDashboardJobDetail" /> 
+        <property name="cronExpression" value="0 30 6,10,12,14,16,18 ? * 1-7" /> 
+    </bean> 
 
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -144,6 +207,10 @@
                 <ref bean="referenceUpdateMailJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
                 <ref bean="penaltyStartDateUpdateEmailJobDetail" />
+                <ref bean="addMissingEcdTaskJobDetail" />
+                <ref bean="addInvoicePenaltyTaskJobDetail" />
+                <ref bean="applyAutoPenaltyChargeJobDetail" />
+                <ref bean="updateDashboardJobDetail" />
             </list>
         </property>
         <property name="triggers">
@@ -152,6 +219,10 @@
                 <ref bean="cronRefMailUpdateTriggerWeekend" />
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
+                <ref bean="addMissingEcdTaskTriggerWeek" />
+                <ref bean="addInvoicePenaltyTaskTriggerWeek" />
+                <ref bean="applyAutoPenaltyChargeTriggerWeek" />
+                <ref bean="updateDashboardTriggerWeek" />
             </list>
         </property>
     </bean>

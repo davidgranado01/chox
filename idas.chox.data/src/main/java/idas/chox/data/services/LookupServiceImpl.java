@@ -1,19 +1,6 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.BreBand;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.model.ReasonOfDelay;
-import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserWorkgroup;
-import idas.chox.core.model.Workgroup;
+import idas.chox.core.model.*;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.util.LookupItemTextComparator;
@@ -379,5 +366,90 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 	public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
 		this.reasonOfRejectionService = reasonOfRejectionService;
 	}
+
+    
+    @Override
+    public List<Insurer> getInsurers(Integer choId) {
+
+        List<Insurer> results = new ArrayList<Insurer>();
+
+        if (choId == null) {
+            LOG.error("Cannot get insurers for null choId.");
+            return results;
+        }
+
+
+        try {
+
+            List result;
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("select a.id as id, a.name as name from insurer ");
+            sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id and b.status=true ");
+            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId order by a.name");
+
+            Map extParameters = new HashMap();
+
+            extParameters.put("pChorganisationId", choId);
+
+            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
+
+            for (Object o : result) {
+                IdLookupItem data = (IdLookupItem) o;
+                Insurer item = new Insurer();
+                item.setId(data.getId());
+                item.setName(data.getName());
+                results.add(item);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Exception caught getting Insurers for CHO with ID={}: {}", choId, ex.getMessage());
+        }
+
+        return results;
+
+    }
+    
+    @Override
+    public List<Chorganisation> getSuppliers(Integer insurerId, boolean excludeManualCHO) {
+
+        List<Chorganisation> results = new ArrayList<Chorganisation>();
+
+        if (insurerId == null) {
+            LOG.error("Cannot get suppliers for null insurerId.");
+            return results;
+        }
+
+        try {
+
+            List result;
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("select a.id as id, a.name as name from chorganisation ");
+            sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
+            sb.append("where a.status=true and b.insurer_id=:pInsurerId ");
+            if (excludeManualCHO) {
+                sb.append("and a.insurer_upload_only=false ");
+            }
+            sb.append("order by a.name");
+
+            Map extParameters = new HashMap();
+            extParameters.put("pInsurerId", insurerId);
+            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
+
+            for (Object o : result) {
+                IdLookupItem data = (IdLookupItem) o;
+                Chorganisation item = new Chorganisation();
+                item.setId(data.getId());
+                item.setName(data.getName());
+                results.add(item);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Exception caught getting suppliers for insurer with ID={}: {}", insurerId, ex.getMessage());
+        }
+
+        return results;
+    }
 
 }
