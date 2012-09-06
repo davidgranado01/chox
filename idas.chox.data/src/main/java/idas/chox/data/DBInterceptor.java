@@ -440,6 +440,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             Integer indexOfIsRepairOnlyCheckLastModified = null;
             Integer indexOfIsNFInsurerManagingRepair = null;
             Integer indexOfIsNFInsurerManagingRepairLastModified = null;
+            Integer indexOfClientVatRegistered = null;
+            Integer indexOfClientVatRegisteredLastModified = null;
 
             for (int i = 0; i < propertyNames.length; i++) {
 
@@ -680,9 +682,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
                 }
 
-
-
-
                 else if ("inspectionDate".equals(propertyNames[i])) {
 
                     Date newStatus = (Date) state1[i];
@@ -756,7 +755,30 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         state1[i] = DateHelper.getCurrentDateTime();
                     }
                 }
-            }
+
+                else if ("clientVatRegistered".equals(propertyNames[i])) {
+
+                    String newStatus = state1[i].toString();
+                    String oldStatus = state2[i].toString();
+                    LOG.debug("newStatus   " + newStatus);
+                    LOG.debug("oldStatus   " + oldStatus);
+
+                    if ((newStatus != null && oldStatus != null && !newStatus.equals(oldStatus)) || (newStatus != null && oldStatus == null) || (newStatus == null && oldStatus != null)) {
+                        indexOfClientVatRegistered = i;
+                        if (indexOfClientVatRegisteredLastModified != null) {
+                            state1[indexOfClientVatRegisteredLastModified] = DateHelper.getCurrentDateTime();
+                        }
+                    }
+                }
+                else if ("clientVatRegisteredLastModified".equals(propertyNames[i])) {
+
+                    indexOfClientVatRegisteredLastModified = i;
+
+                    if (indexOfClientVatRegistered != null) {
+                        state1[i] = DateHelper.getCurrentDateTime();
+                    }
+                }
+}
         }
 
         return true;
