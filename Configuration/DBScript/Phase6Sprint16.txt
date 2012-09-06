@@ -51,7 +51,7 @@ GRANT EXECUTE ON FUNCTION addMissingEcdTask(integer) TO chox_user;
 --
 -- Grant chox_user execute permission on functions called through the scheduler
 --
-GRANT EXECUTE ON FUNTION updateDashboard(integer) TO chox_user;
+GRANT EXECUTE ON FUNCTION updateDashboard(integer) TO chox_user;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE dashboard TO chox_user;
 
 --------------------------------------------------------------------------------
