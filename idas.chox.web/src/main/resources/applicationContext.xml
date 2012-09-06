@@ -103,7 +103,7 @@
     <bean id="reportsDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"></property>
         <property name="jdbcUrl" value="${db.reportUrl}"></property>
-        <property name="username" value="mi_user"/>
+        <property name="username" value="chox_mi"/>
         <property name="password" value="ch0xpa33"/>
         <property name="partitionCount" value="${db.reportPartitionCount}"/>
         <property name="minConnectionsPerPartition" value="${db.reportMinConnectionsPerPartition}"/>
