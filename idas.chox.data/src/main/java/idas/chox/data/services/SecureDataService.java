@@ -1,27 +1,25 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.IdLookupItem;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.model.WebUser;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.model.WebUser;
 
 public class SecureDataService extends BaseDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SecureDataService.class);
     private SecurityInfoProvider securityInfoProvider;
 
+    
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
-
         this.securityInfoProvider = provider;
 
         if (this.securityInfoProvider != null && this.securityInfoProvider.getCurrentUser() != null) {
@@ -29,7 +27,19 @@ public class SecureDataService extends BaseDataService {
         }
     }
 
-    public void initGlobalFilter() {
+
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return this.securityInfoProvider;
+    }
+
+  
+    public WebUser getCurrentUser() {
+        return getSecurityInfoProvider().getCurrentUser();
+    }
+
+
+
+    private void initGlobalFilter() {
         if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
 
             if (this.getSecurityInfoProvider().getIsCHO()) {
@@ -56,49 +66,19 @@ public class SecureDataService extends BaseDataService {
         }
     }
 
-    public WebUser getCurrentUser() {
-        return getSecurityInfoProvider().getCurrentUser();
-    }
 
-    public SecurityInfoProvider getSecurityInfoProvider() {
-        return this.securityInfoProvider;
-    }
-
-    public Set<Integer> getInsurerIds() {
+    private Set<Integer> getInsurerIds() {
         Set<Integer> ids = new HashSet<Integer>();
-        Iterator itr = getInsurers(this.getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()).iterator();
 
-        while (itr.hasNext()) {
-            Insurer ins = (Insurer) itr.next();
-            ids.add(ins.getId());
-        }
-        return ids;
-    }
-    
-    public Set<Integer> getSupplierIds() {
-        Set<Integer> ids = new HashSet<Integer>();
-        Iterator itr = getSuppliers(this.getSecurityInfoProvider().getCurrentUser().getInsurer().getId(),false).iterator();
-
-        while (itr.hasNext()) {
-            Chorganisation cho = (Chorganisation) itr.next();
-            ids.add(cho.getId());
-        }
-        return ids;
-    }
-    
-    public List<Insurer> getInsurers(Integer choId) {
-
-        List<Insurer> results = new ArrayList<Insurer>();
-
+        Integer choId = this.getSecurityInfoProvider().getCurrentUser().getChorganisation().getId();
         if (choId == null) {
             LOG.error("Cannot get insurers for null choId.");
-            return results;
+            return ids;
         }
 
 
         try {
-
-            List result = new ArrayList();
+            List result;
 
             StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from insurer ");
@@ -113,27 +93,23 @@ public class SecureDataService extends BaseDataService {
 
             for (Object o : result) {
                 IdLookupItem data = (IdLookupItem) o;
-                Insurer item = new Insurer();
-                item.setId(data.getId());
-                item.setName(data.getName());
-                results.add(item);
+                ids.add(data.getId());
             }
 
         } catch (Exception ex) {
             LOG.error("Exception caught getting Insurers for CHO with ID={}: {}", choId, ex.getMessage());
         }
 
-        return results;
-
+        return ids;
     }
     
-    public List<Chorganisation> getSuppliers(Integer insurerId, boolean excludeManualCHO) {
+    private Set<Integer> getSupplierIds() {
+        Set<Integer> ids = new HashSet<Integer>();
 
-        List<Chorganisation> results = new ArrayList<Chorganisation>();
-
+        Integer insurerId = this.getSecurityInfoProvider().getCurrentUser().getInsurer().getId();
         if (insurerId == null) {
             LOG.error("Cannot get suppliers for null insurerId.");
-            return results;
+            return ids;
         }
 
         try {
@@ -144,7 +120,7 @@ public class SecureDataService extends BaseDataService {
             sb.append("select a.id as id, a.name as name from chorganisation ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
             sb.append("where a.status=true and b.insurer_id=:pInsurerId ");
-            if (excludeManualCHO) {
+            if (false) { // use to exclude manual CHOs
                 sb.append("and a.insurer_upload_only=false ");
             }
             sb.append("order by a.name");
@@ -155,17 +131,14 @@ public class SecureDataService extends BaseDataService {
 
             for (Object o : result) {
                 IdLookupItem data = (IdLookupItem) o;
-                Chorganisation item = new Chorganisation();
-                item.setId(data.getId());
-                item.setName(data.getName());
-                results.add(item);
+                ids.add(data.getId());
             }
 
         } catch (Exception ex) {
             LOG.error("Exception caught getting suppliers for insurer with ID={}: {}", insurerId, ex.getMessage());
         }
 
-        return results;
+        return ids;
     }
 
 }

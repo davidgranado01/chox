@@ -91,6 +91,54 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         s.close();
     }
 
+    public void callUpdateDashboard(int userId) throws SQLException {
+        LOG.debug("Calling stored procedure updateDashboard({})....", userId);
+        this.getCurrentSession().flush();
+        Statement s = this.getCurrentSession().connection().createStatement();
+        try {
+            int result = s.executeUpdate("select updateDashboard(" + userId + ")");
+        }
+        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+        catch (SQLException ex) {
+            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+                throw ex;
+        }
+        this.getCurrentSession().flush();
+        s.close();
+    }
+
+    public void callAddMissingEcdTask(int userId) throws SQLException {
+        LOG.debug("Calling stored procedure addMissingEcdTask({})....", userId);
+        this.getCurrentSession().flush();
+        Statement s = this.getCurrentSession().connection().createStatement();
+        try {
+            int result = s.executeUpdate("select addMissingEcdTask(" + userId + ")");
+        }
+        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+        catch (SQLException ex) {
+            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+                throw ex;
+        }
+        this.getCurrentSession().flush();
+        s.close();
+    }
+
+    public void callAddInvoicePenaltyTask(int userId) throws SQLException {
+        LOG.debug("Calling stored procedure addInvoicePenaltyTask({})....", userId);
+        this.getCurrentSession().flush();
+        Statement s = this.getCurrentSession().connection().createStatement();
+        try {
+            int result = s.executeUpdate("select addInvoicePenaltyTask(" + userId + ")");
+        }
+        // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
+        catch (SQLException ex) {
+            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+                throw ex;
+        }
+        this.getCurrentSession().flush();
+        s.close();
+    }
+
     public void callUpdateUserService(int insurerId) throws SQLException {
 //        Statement s = this.getCurrentSession().connection().createStatement();
 //        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
