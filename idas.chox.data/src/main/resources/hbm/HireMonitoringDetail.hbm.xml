@@ -45,7 +45,7 @@
     <property column="total_loss_check_issued_last_modified" name="totalLossCheckIssuedLastModified"/>
     <property column="total_loss_check_received_last_modified" name="totalLossCheckReceivedLastModified"/>
     <property column="repair_completion_date_last_modified" name="repairCompletionDateLastModified"/>
-    <property column="is_Repair_Only_Check_mast_modified" name="isRepairOnlyCheckLastModified"/>
+    <property column="is_Repair_Only_Check_last_modified" name="isRepairOnlyCheckLastModified"/>
     <property column="isNF_Insurer_Repair_last_modified" name="isNFInsurerManagingRepairLastModified"/>
     <property column="client_vat_registered_last_modified" name="clientVatRegisteredLastModified"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
