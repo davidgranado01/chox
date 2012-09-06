@@ -288,14 +288,12 @@
         <div class="form-container" id="hireMonitoringWId">
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Next Review Date</label>
+                <label class="chox-form-std-label2">Next Review Date</label>
                 <span id="nextReviewDatePH"></span>
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label>&nbsp;</div>
+                <label class="chox-form-std-label2">Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label>&nbsp;</div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Name Of Repairer</label>
@@ -303,37 +301,27 @@
 
 
             <s:if test="inspectionBookedDateLastModified!=null">
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Inspection Booked Date </label>
-                    <table><tr> <td><div class="chox-form-std-label-dateId" id="inspectionBookedDatePH"></div></td><td> <img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /> </td></tr></table>
+                    <label class="chox-form-std-label2">Inspection Booked Date </label>
+                    <table><tr> <td><div class="chox-form-std-label-dateId" id="inspectionBookedDatePH"></div></td><td> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="inspectionBookedDateId" /> </td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Inspection Booked Date <img style="display:none" src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /></label>
+                    <label class="chox-form-std-label2">Inspection Booked Date <img style="display:none" src="../images/sign_info.png" width="13" alt="info" height="13" id="inspectionBookedDateId" /></label>
                     <span id="inspectionBookedDatePH"></span>
                 </div>
             </s:else>
 
-
-
             <s:if  test="inspectionDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Inspection Date </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="inspectionDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="inspectionDateId" /></td></tr></table>
+                    <label class="chox-form-std-label2">Inspection Date </label>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="inspectionDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="inspectionDateId" /></td></tr></table>
                 </div>
-
-
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Inspection Date <img style="display:none" src="../images/sign_info.png" width="13" height="13" id="inspectionDateId" /> </label>
+                    <label class="chox-form-std-label2">Inspection Date <img style="display:none" src="../images/sign_info.png" width="13" height="13" alt="info" id="inspectionDateId" /> </label>
                     <span id="inspectionDatePH"></span>
                 </div>
             </s:else>
@@ -341,131 +329,103 @@
             <s:if test="repairAuthorisedDateLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Repair Authorised </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairAuthorisedDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairAuthorisedDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairAuthorisedId" /></td></tr></table>
                 </div>
-
             </s:if>
-
             <s:else>
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised <img  style="display:none" src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></label>
+                    <label class="chox-form-std-label2">Date Repair Authorised <img  style="display:none" src="../images/sign_info.png" width="13" alt="info" height="13" id="dateRepairAuthorisedId" /></label>
                     <span id="repairAuthorisedDatePH"></span>
                 </div>
-
             </s:else>
-
 
             <s:if test="repairBookInDateLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Repair Book In Date </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairBookInDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="repairBookInDateId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairBookInDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="repairBookInDateId" /></td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
                 <div class="chox-form-item" >
-                    <label class="chox-form-std-label2">Repair Book In Date <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="repairBookInDateId" /></label>
+                    <label class="chox-form-std-label2">Repair Book In Date <img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="repairBookInDateId" /></label>
                     <span id="repairBookInDatePH"></span>
                 </div>
-
             </s:else>
-
-
 
             <s:if test="repairCommencedDateLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Repair Commenced </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairCommencedDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateRepairCommencedId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairCommencedDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairCommencedId" /></td></tr></table>
                 </div>
-
             </s:if>
-
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Commenced <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairCommencedId" /></label>
+                    <label class="chox-form-std-label2">Date Repair Commenced <img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="dateRepairCommencedId" /></label>
                     <span id="repairCommencedDatePH"></span>
                 </div>
-
-
             </s:else>
 
             <s:if test="repairCompletionDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Repair Completion Date </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairCompletionDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="repairCompletionDateId" /></td></tr></table>
+                    <label class="chox-form-std-label2">Repair Completion Date </label>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="repairCompletionDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="repairCompletionDateId" /></td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Repair Completion Date <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="repairCompletionDateId" /></label>
+                    <label class="chox-form-std-label2">Repair Completion Date <img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="repairCompletionDateId" /></label>
                     <span id="repairCompletionDatePH"></span>
                 </div>
             </s:else>
 
             <s:if test="isTotalLostCheckLastModified!=null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Is Total Loss? </label>
-                    <table><tr><td><s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/></td><td><img src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></td></tr></table>
+                    <label class="chox-form-std-label2">Is Total Loss? </label>
+                    <table><tr><td><s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/></td><td><img src="../images/sign_info.png" width="13" alt="info" height="13" id="isTotalLossId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Is Total Loss? <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></label>
-                        <s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/>
+                    <label class="chox-form-std-label2">Is Total Loss? <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="isTotalLossId" /></label>
+                    <s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/>
                 </div>
             </s:else>
-
-
 
             <s:if test="totalLossOfferMadeLastModified!=null">
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Total Loss Offer Made </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferMadeDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMadeId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferMadeDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferMadeId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Made <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMadeId" /></label>
+                    <label class="chox-form-std-label2">Date Total Loss Offer Made <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferMadeId" /></label>
                     <span id="totalLossOfferMadeDatePH"></span>
                 </div>
-
             </s:else>
-
 
             <s:if test="totalLossOfferAcceptedLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Total Loss Offer Accepted </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferAcceptedDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAcceptedId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferAcceptedDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferAcceptedId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted <img style="display: none"src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAcceptedId" /></label>
+                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferAcceptedId" /></label>
                     <span id="totalLossOfferAcceptedDatePH"></span>
                 </div>
             </s:else>
 
-
             <s:if test="totalLossCheckIssuedLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Total Loss Cheque Issued </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferCheckIssuedDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssuedId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferCheckIssuedDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeIssuedId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
-
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssuedId" /></label>
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeIssuedId" /></label>
                     <span id="totalLossOfferCheckIssuedDatePH"></span>
                 </div>
             </s:else>
@@ -473,35 +433,34 @@
             <s:if test="totalLossCheckReceivedLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Total Loss Cheque Received </label>
-                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferCheckReceivedDatePH"></div></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceivedId" /></td></tr></table>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="totalLossOfferCheckReceivedDatePH"></div></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeReceivedId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Received <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceivedId" /></label>
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Received <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeReceivedId" /></label>
                     <span id="totalLossOfferCheckReceivedDatePH"></span>
                 </div>
             </s:else>
 
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Name of IME</label>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringnameOfImeId" name="nameOfIme" value="<s:property value="nameOfIme" />"/>
+            </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Name of IME</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringnameOfImeId" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
+                <label class="chox-form-std-label2">Labour Rate (Per Hour)</label>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourRateId" name="labourRate" value="<s:property value="labourRate" />"/>
+            </div>
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Labour Hours</label>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourHourId" name="labourHour" value="<s:property value="labourHour" />"/>
+            </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Labour Rate (Per Hour)</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourRateId" name="labourRate" id="labourRate" value="<s:property value="labourRate" />"/></div>
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Labour Hours</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourHourId" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
-
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Total Labour Cost</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourCostId" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/>
+                <label class="chox-form-std-label2">Total Labour Cost</label>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourCostId" name="labourCost" value="<s:property value="labourCost" />"/>
             </div>
 
             <div class="chox-form-item">
@@ -512,55 +471,46 @@
                           listValue="value"
                           headerValue="-- Please Select --"
                           emptyOption="false" cssStyle="width:230px"></s:select>
-                </div><br/>
-
-
+            </div>
+            <br/>
 
             <s:if test="isRepairOnlyCheckLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Repair Only (No Hire)? </label>
-                    <table><tr><td><s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
+                    <label class="chox-form-std-label2">Repair Only (No Hire)? </label>
+                    <table><tr><td><s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
-                        <s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
+                    <label class="chox-form-std-label2">Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
+                    <s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
                 </div>
             </s:else>
 
 
             <s:if test="isNFInsurerManagingRepairLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">
-                        Non-Fault Insurer Managing <br> Repair?&nbsp;&nbsp;&nbsp; </label>
-                    <table><tr><td><s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></td></tr></table>
+                    <label class="chox-form-std-label3">Non-Fault Insurer Managing <br> Repair?&nbsp;&nbsp;&nbsp; </label>
+                    <table><tr><td><s:checkbox id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" /></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></td></tr></table>
                 </div>
-
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">
-                        Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
-                        <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
+                    <label class="chox-form-std-label3">Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
+                    <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
                 </div>
             </s:else>
 
             <s:if test="clientVatRegisteredLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">
-                        Is Your Client VAT <br> Registered?&nbsp;&nbsp;&nbsp; </label>
-                    <table><tr><td><s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
+                    <label class="chox-form-std-label3">Is Your Client VAT <br> Registered?&nbsp;&nbsp;&nbsp; </label>
+                    <table><tr><td><s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" alt="info" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">
-                        Is Your Client VAT Registered?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateClientVatRegisteredId" /></label>
-                        <s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" />
+                    <label class="chox-form-std-label3">Is Your Client VAT Registered?<img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="dateClientVatRegisteredId" /></label>
+                    <s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" />
                 </div>
             </s:else>
 
@@ -569,8 +519,12 @@
             <div class="chox-form-item-button">
                 <input type="button"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
-            <div id="HMmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
-            <div id="HMsuccessBox" class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div id="HMmessageBox" style="text-align:center" class="action-error-msg">
+                <s:property value="actionError" />
+            </div>
+            <div id="HMsuccessBox" class="chox-form-submit-result">
+                <s:property value="actionResult" />
+            </div>
 
         </div>
 
