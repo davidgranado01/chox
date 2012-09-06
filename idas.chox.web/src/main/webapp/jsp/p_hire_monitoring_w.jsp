@@ -490,31 +490,29 @@
 
             <s:if test="isNFInsurerManagingRepairLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">Non-Fault Insurer Managing <br> Repair?&nbsp;&nbsp;&nbsp; </label>
+                    <label class="chox-form-std-label3">Non-Fault Insurer Managing Repair?</label>
                     <table><tr><td><s:checkbox id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" /></td><td><img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">Non-Fault Insurer Managing <br> Repair?<img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
+                    <label class="chox-form-std-label3">Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
                     <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
                 </div>
             </s:else>
-            <br/>
 
             <s:if test="clientVatRegisteredLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">Is Your Client VAT <br> Registered?&nbsp;&nbsp;&nbsp; </label>
+                    <label class="chox-form-std-label3">Is Your Client VAT Registered?</label>
                     <table><tr><td><s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" alt="info" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label3">Is Your Client VAT <br> Registered?<img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="dateClientVatRegisteredId" /></label>
+                    <label class="chox-form-std-label3">Is Your Client VAT Registered?<img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="dateClientVatRegisteredId" /></label>
                     <s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" />
                 </div>
             </s:else>
-            <br/>
 
             <div class="chox-form-item-button">
                 <input type="button"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
