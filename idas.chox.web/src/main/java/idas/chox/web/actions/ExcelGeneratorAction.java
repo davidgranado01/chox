@@ -39,6 +39,7 @@ import org.springframework.security.access.AccessDeniedException;
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
+    private static final int MAX_EXPORT_SIZE = 65535; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
     private VehicleHireService vehicleHireService;
@@ -49,6 +50,7 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exportCanceled;
     private boolean writingToFile;
     private boolean exceptionThrown;
+    private boolean tooManyRows;
     private boolean directDownload;
     private SecureDataService dataService;
     private ReportDataService reportDataService;
@@ -78,6 +80,14 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public void setExceptionOccured(boolean exceptionOccured) {
         this.exceptionThrown = exceptionOccured;
+    }
+
+    public boolean isTooManyRows() {
+        return tooManyRows;
+    }
+
+    public void setTooManyRows(boolean tooManyRows) {
+        this.tooManyRows = tooManyRows;
     }
 
     public boolean isWritingToFile() {
@@ -129,7 +139,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     public String getJsonData() {
-        return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + "}";
+        return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + ",tooManyRows:" + tooManyRows + "}";
     }
 
     public void setTab(int tab) {
@@ -226,8 +236,16 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (excelClaims.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
+        
         synchronized (getSession()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
@@ -239,6 +257,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (histories.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -252,6 +277,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (comments.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -264,6 +296,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -277,6 +316,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (invoices.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -368,7 +414,6 @@ public class ExcelGeneratorAction extends BaseAction {
                 throw new Exception("Error Generating Report.");
         }
 
-//        excelMap.clear();
         return true;
     }
 
@@ -392,6 +437,10 @@ public class ExcelGeneratorAction extends BaseAction {
                     setExceptionOccured(Boolean.FALSE);
                 } else
                     setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                if (getSession().get("tooManyRows") == null)
+                    setTooManyRows(Boolean.FALSE);
+                else
+                    setTooManyRows((Boolean) getSession().get("tooManyRows"));
             }
         }
         return SUCCESS;
