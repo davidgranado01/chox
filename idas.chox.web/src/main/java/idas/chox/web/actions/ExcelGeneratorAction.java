@@ -36,6 +36,7 @@ import org.springframework.security.access.AccessDeniedException;
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
+    private static final int MAX_EXPORT_SIZE = 65535; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
     private VehicleHireService vehicleHireService;
@@ -46,6 +47,7 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exportCanceled;
     private boolean writingToFile;
     private boolean exceptionThrown;
+    private boolean tooManyRows;
     private boolean directDownload;
 
     public boolean isDirectDownload() {
@@ -65,6 +67,14 @@ public class ExcelGeneratorAction extends BaseAction {
 
     public void setExceptionOccured(boolean exceptionOccured) {
         this.exceptionThrown = exceptionOccured;
+    }
+
+    public boolean isTooManyRows() {
+        return tooManyRows;
+    }
+
+    public void setTooManyRows(boolean tooManyRows) {
+        this.tooManyRows = tooManyRows;
     }
 
     public boolean isWritingToFile() {
@@ -116,7 +126,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     public String getJsonData() {
-        return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + "}";
+        return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + ",tooManyRows:" + tooManyRows + "}";
     }
 
     public void setTab(int tab) {
@@ -208,8 +218,16 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (excelClaims.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
+        
         synchronized (getSession()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
@@ -221,6 +239,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (histories.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -234,6 +259,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (comments.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -246,6 +278,13 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
@@ -259,97 +298,19 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
+        } else if (invoices.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("isExportFinished", true);
+                getSession().put("tooManyRows", true);
+            }
+            return false; 
         }
 
         synchronized (getSession()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-//        ExcelClaim excelClaim;
-//        ExcelInvoice excelInvoice;
-//        ExcelHistory excelHistory;
-//        for (Claim claim : claims) {
-//            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-//                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-//                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-//            }
-//            excelClaim = new ExcelClaim();
-//            excelInvoice = new ExcelInvoice();
-//            excelHistory = new ExcelHistory();
-//            excelClaim.setClaim(claim);
-//
-//            if (claim.getInvoice() != null) {
-//                Invoice inv = claim.getInvoice();
-//                excelInvoice.setInvoice(inv);
-//                if (getIsCHO()) {
-//                    excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-//                    excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-//                } else {
-//                    Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : inv.getDateInvoiced();
-//                    if (inv.getHirePenaltyPercentage() != null && !inv.getHirePenaltyPercentage().isEmpty() 
-//                            && inv.getHirePenaltyPercentageApplied() != null)
-//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage().concat(" [actual:")
-//                                .concat(inv.getHirePenaltyPercentageApplied()).concat("]"));
-//                    else
-//                        excelInvoice.setHirePenaltyPercentageString(inv.getHirePenaltyPercentage());
-//                    if (inv.getRepairPenaltyPercentage() != null && !inv.getRepairPenaltyPercentage().isEmpty() && inv.getRepairPenaltyPercentageApplied() != null)
-//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage().concat(" [actual:").concat(inv.getRepairPenaltyPercentageApplied()).concat("]"));
-//                    else
-//                        excelInvoice.setRepairPenaltyPercentageString(inv.getRepairPenaltyPercentage());
-//                }
-//                excelInvoice.setChoReference(claim.getChoReference());
-//                excelInvoice.setClaimStatus(claim.getStatus());
-//                if (claim.getThirdParty() != null) {
-//                    excelInvoice.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
-//                }
-//                invoices.add(excelInvoice);
-//            }
-//
-//            if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
-//                excelHistory.setHistories(claim.getHistories(), isCho);
-//                histories.add(excelHistory);
-//            }
-//
-//            excelClaims.add(excelClaim);
-//
-//            // GET COMMENT BY CLAIM ID;
-//            if (claim.getComments() != null && !claim.getComments().isEmpty()) {
-//                for (Comment c : claim.getComments()) {
-//                    if (c.isReverted() || ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer))) {
-//                        continue;
-//                    }
-//                    if (c.getRaisedBy() != null) {
-//                        c.setCreatedBy(c.getRaisedBy());
-//                    }
-//                    comments.add(c);
-//                }
-//            }
-//
-//            // Add AuditTrail / claim cycle
-//            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId(), true);
-//            for (AuditTrail a : auditTrail) {
-//                ExcelClaimCycle cycle = new ExcelClaimCycle();
-//                cycle.setChoReference(claim.getChoReference());
-//                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
-//                cycle.setModifiedDate(DateHelper.getLocalDateTimeFormat().format(a.getUpdateDate()));
-//                cycle.setStatus(a.getNewStatus());
-//                cycle.setReverted(a.getReverted() == true ? "Yes" : "");
-//                claimCycle.add(cycle);
-//            }
-//            claimService.evict(claim);
-//            processedClaim += 1;
-//            if (isExportClaimOperationCancelled()) {
-////                break;
-//                synchronized (getSession()) {
-//                    getSession().put("numberOfClaimsProcessed", null);
-//                }
-//                return false;
-//            }
-//
-//            synchronized (getSession()) {
-//                getSession().put("numberOfClaimsProcessed", processedClaim);
-//            }
-//        }
 
         final Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
@@ -437,7 +398,6 @@ public class ExcelGeneratorAction extends BaseAction {
                 throw new Exception("Error Generating Report.");
         }
 
-//        excelMap.clear();
         return true;
     }
 
@@ -461,6 +421,10 @@ public class ExcelGeneratorAction extends BaseAction {
                     setExceptionOccured(Boolean.FALSE);
                 } else
                     setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                if (getSession().get("tooManyRows") == null)
+                    setTooManyRows(Boolean.FALSE);
+                else
+                    setTooManyRows((Boolean) getSession().get("tooManyRows"));
             }
         }
         return SUCCESS;

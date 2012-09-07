@@ -2,7 +2,7 @@ function doExportExcel(){
     if(!ds.getCount()){
         Ext.Msg.alert('','No record found, Please try again');
     }else{
-        if( ds.getTotalCount()<=10000){
+        if( ds.getTotalCount()<=6000){
                 if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                     Ext.MessageBox.show({
                         title        : 'Exporting Claims...', 
@@ -32,7 +32,7 @@ function doExportExcel(){
                 }
         }
         else{
-        	Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.');
+        	Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
         }
     }
 }
@@ -91,8 +91,17 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
                     });
-                }
-                else if(ds.getTotalCount()>=resp.exportedClaimCount){
+                }else if(resp.tooManyRows){
+                    Ext.MessageBox.hide();
+                    exportToExcelIntervelId=window.clearInterval(exportToExcelIntervelId);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported claims.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }else if(ds.getTotalCount()>=resp.exportedClaimCount){
                                 
                     var i = resp.exportedClaimCount/ds.getTotalCount();
                     if(resp.writingToFile){
@@ -140,21 +149,6 @@ function doNotShowBrowserWarning(){
     });
 }
             
-function isOffPeak(){
-            
-    var currentTime = new Date();
-    var hours = currentTime.getHours();
-    var minutes = currentTime.getMinutes();
-
-    if (hours < 9 || hours > 17 || (hours == 17 && minutes >= 30)) {
-            return true;
-    } else{ 
-            return false;
-    }
-        
-    
-}
-
 function loadDirectExportToExcelStatus(){
     Ext.Ajax.request({
         url:contextPath+'/prv/p/updateExportClaimsCount.action',
@@ -171,6 +165,16 @@ function loadDirectExportToExcelStatus(){
                     Ext.MessageBox.show({
                         title: 'Error',
                         msg: 'Unexpected error occured. Please contact Chox Support.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }else if(resp.tooManyRows){
+                    Ext.MessageBox.hide();
+                    directExportToExcelStatusIntervelId=window.clearInterval(directExportToExcelStatusIntervelId);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: 'This data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported claims.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
