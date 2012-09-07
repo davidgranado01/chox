@@ -20,9 +20,8 @@ insert into task(claim_id, due_date, task_type, description, insurer,
 select c.id, now() + interval '2 days', 'ECD Missing',
       'It is over 6 days since the Hire Start Date and no ECD has been added by the CHO, please review.',
        true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
-from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)
-             left outer join customer cu on (c.customer_id = cu.id),
-     insurer ins, chorganisation cho,
+from claim c left outer join customer cu on (c.customer_id = cu.id),
+     vehicle_hire vh, insurer ins, chorganisation cho,
      bre_band_organisation bbo, bre_band bb
 where c.insurer_id = ins.id
   and c.chorganisation_id = cho.id
@@ -31,13 +30,14 @@ where c.insurer_id = ins.id
   and bb.id = bbo.band_id
   and bbo.chorganisation_id = cho.id
   and bb.allow_missing_ecd_auto_tasks = true
+  and c.vehicle_hire_id = vh.id
   and (cu is null or cu.initial_ecd is null)
-  and not exists (select * from hire_monitoring_ecd where claim_id = c.id and ecd_date is not null)
-  and (vh is null or extract(epoch from now() - vh.rental_start)/(3600*24.0) > 6.0)
+  and not exists (select * from hire_monitoring_ecd where claim_id = c.id)
+  and extract(epoch from now() - vh.rental_start)/(3600*24.0) > 6.0
   and c.status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted',
-                   'SubscriberClaimRejected', 'ClaimRejectionContested', 'AwaitingCarHireInfo',
-                   'AwaitingInvoiceData', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL',
-                   'ClaimPending', 'ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')
+                   'ClaimRejectionContested', 'AwaitingCarHireInfo',
+                   'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimPending',
+		   'ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')
   and not exists (select * from task where claim_id = c.id and task_type = 'ECD Missing');
 
 return true;

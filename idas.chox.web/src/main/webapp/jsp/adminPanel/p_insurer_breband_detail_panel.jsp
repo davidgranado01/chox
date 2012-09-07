@@ -416,7 +416,7 @@
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="allowMissingECDAutomatedTasks" value="allowMissingECDAutomatedTasks" /></div><label class="chox-form-std-label"><b>Set Automated Task For The Insurer When No ECD Is Present And Six Days Have Passed Since The Hire Start Date</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If a claim is at status Awaiting Car Hire Info with a Hire Start Date 6 days in the past an automated task will be generated to the Insurer to contact the CHO when no ECD is present on the claim.</div>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If a claim is at the hire monitoring stage with a Hire Start Date 6 days in the past an automated task will be generated to the Insurer to contact the CHO when no ECD is present on the claim.</div>
                         </div>
                     </div>
                   </div>
