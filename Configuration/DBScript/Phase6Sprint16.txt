@@ -10,86 +10,83 @@ CREATE ROLE mi_user LOGIN
   
 -- grant permission for all tables --
  
-GRANT SELECT ON TABLE accessibility TO mi_user;
-GRANT SELECT ON TABLE accessibility_item TO mi_user;
-GRANT SELECT ON TABLE admin_fee TO mi_user;
-GRANT SELECT ON TABLE attachment TO mi_user;
-GRANT SELECT ON TABLE attachment_type TO mi_user;
-GRANT SELECT ON TABLE audit_history TO mi_user;
-GRANT SELECT ON TABLE audit_trail TO mi_user;
-GRANT SELECT ON TABLE automatic_routing TO mi_user;
-GRANT SELECT ON TABLE automatic_routing_by_vehice_class TO mi_user;
-GRANT SELECT ON TABLE billing_cho TO mi_user;
-GRANT SELECT ON TABLE billing_cho_detail TO mi_user;
-GRANT SELECT ON TABLE billing_cho_rate TO mi_user;
-GRANT SELECT ON TABLE billing_insurer TO mi_user;
-GRANT SELECT ON TABLE billing_insurer_detail TO mi_user;
-GRANT SELECT ON TABLE bordereau TO mi_user;
-GRANT SELECT ON TABLE bre_band TO mi_user;
-GRANT SELECT ON TABLE bre_band_organisation TO mi_user;
-GRANT SELECT ON TABLE chorganisation TO mi_user;
-GRANT SELECT ON TABLE chorganisation_alias TO mi_user;
-GRANT SELECT ON TABLE claim TO mi_user;
-GRANT SELECT ON TABLE comment TO mi_user;
-GRANT SELECT ON TABLE customer TO mi_user;
-GRANT SELECT ON TABLE dashboard TO mi_user;
-GRANT SELECT ON TABLE engineer_report TO mi_user;
-GRANT SELECT ON TABLE hire_monitoring_detail TO mi_user;
-GRANT SELECT ON TABLE hire_monitoring_ecd TO mi_user;
-GRANT SELECT ON TABLE history TO mi_user;
-GRANT SELECT ON TABLE incident TO mi_user;
-GRANT SELECT ON TABLE injury TO mi_user;
-GRANT SELECT ON TABLE insurer TO mi_user;
-GRANT SELECT ON TABLE insurer_alias TO mi_user;
-GRANT SELECT ON TABLE insurer_chorganisation TO mi_user;
-GRANT SELECT ON TABLE insurer_discount TO mi_user;
-GRANT SELECT ON TABLE insurer_name_alias TO mi_user;
-GRANT SELECT ON TABLE invoice TO mi_user;
-GRANT SELECT ON TABLE invoice_original TO mi_user;
-GRANT SELECT ON TABLE ip_whitelist TO mi_user;
-GRANT SELECT ON TABLE notification TO mi_user;
-GRANT SELECT ON TABLE password_history TO mi_user;
-GRANT SELECT ON TABLE queued_ticket TO mi_user;
-GRANT SELECT ON TABLE reason_of_delay TO mi_user;
-GRANT SELECT ON TABLE reason_of_rejection TO mi_user;
-GRANT SELECT ON TABLE reason_of_rejection_template TO mi_user;
-GRANT SELECT ON TABLE task TO mi_user;
-GRANT SELECT ON TABLE third_party TO mi_user;
-GRANT SELECT ON TABLE uploaded_claims_detail TO mi_user;
-GRANT SELECT ON TABLE user_service TO mi_user;
-GRANT SELECT ON TABLE vehicle_class TO mi_user;
-GRANT SELECT ON TABLE vehicle_class_ceiling TO mi_user;
-GRANT SELECT ON TABLE vehicle_class_price TO mi_user;
-GRANT SELECT ON TABLE vehicle_class_price_special_rate TO mi_user;
-GRANT SELECT ON TABLE vehicle_hire TO mi_user;
-GRANT SELECT ON TABLE web_bordereau TO mi_user;
-GRANT SELECT ON TABLE web_user TO mi_user;
-GRANT SELECT ON TABLE web_user_role TO mi_user;
-GRANT SELECT ON TABLE web_user_user_role TO mi_user;
-GRANT SELECT ON TABLE web_user_workgroup TO mi_user;
-GRANT SELECT ON TABLE week_start TO mi_user;
-GRANT SELECT ON TABLE witness TO mi_user;
-GRANT SELECT ON TABLE workgroup TO mi_user;
-GRANT SELECT ON TABLE workgroup_service TO mi_user;
+GRANT SELECT ON TABLE accessibility TO chox_mi;
+GRANT SELECT ON TABLE accessibility_item TO chox_mi;
+GRANT SELECT ON TABLE admin_fee TO chox_mi;
+GRANT SELECT ON TABLE attachment TO chox_mi;
+GRANT SELECT ON TABLE attachment_type TO chox_mi;
+GRANT SELECT ON TABLE audit_history TO chox_mi;
+GRANT SELECT ON TABLE audit_trail TO chox_mi;
+GRANT SELECT ON TABLE automatic_routing TO chox_mi;
+GRANT SELECT ON TABLE automatic_routing_by_vehice_class TO chox_mi;
+GRANT SELECT ON TABLE billing_cho TO chox_mi;
+GRANT SELECT ON TABLE billing_cho_detail TO chox_mi;
+GRANT SELECT ON TABLE billing_cho_rate TO chox_mi;
+GRANT SELECT ON TABLE billing_insurer TO chox_mi;
+GRANT SELECT ON TABLE billing_insurer_detail TO chox_mi;
+GRANT SELECT ON TABLE bordereau TO chox_mi;
+GRANT SELECT ON TABLE bre_band TO chox_mi;
+GRANT SELECT ON TABLE bre_band_organisation TO chox_mi;
+GRANT SELECT ON TABLE chorganisation TO chox_mi;
+GRANT SELECT ON TABLE chorganisation_alias TO chox_mi;
+GRANT SELECT ON TABLE claim TO chox_mi;
+GRANT SELECT ON TABLE comment TO chox_mi;
+GRANT SELECT ON TABLE customer TO chox_mi;
+GRANT SELECT ON TABLE dashboard TO chox_mi;
+GRANT SELECT ON TABLE engineer_report TO chox_mi;
+GRANT SELECT ON TABLE hire_monitoring_detail TO chox_mi;
+GRANT SELECT ON TABLE hire_monitoring_ecd TO chox_mi;
+GRANT SELECT ON TABLE history TO chox_mi;
+GRANT SELECT ON TABLE incident TO chox_mi;
+GRANT SELECT ON TABLE injury TO chox_mi;
+GRANT SELECT ON TABLE insurer TO chox_mi;
+GRANT SELECT ON TABLE insurer_alias TO chox_mi;
+GRANT SELECT ON TABLE insurer_chorganisation TO chox_mi;
+GRANT SELECT ON TABLE insurer_discount TO chox_mi;
+GRANT SELECT ON TABLE insurer_name_alias TO chox_mi;
+GRANT SELECT ON TABLE invoice TO chox_mi;
+GRANT SELECT ON TABLE invoice_original TO chox_mi;
+GRANT SELECT ON TABLE ip_whitelist TO chox_mi;
+GRANT SELECT ON TABLE notification TO chox_mi;
+GRANT SELECT ON TABLE password_history TO chox_mi;
+GRANT SELECT ON TABLE queued_ticket TO chox_mi;
+GRANT SELECT ON TABLE reason_of_delay TO chox_mi;
+GRANT SELECT ON TABLE reason_of_rejection TO chox_mi;
+GRANT SELECT ON TABLE reason_of_rejection_template TO chox_mi;
+GRANT SELECT ON TABLE task TO chox_mi;
+GRANT SELECT ON TABLE third_party TO chox_mi;
+GRANT SELECT ON TABLE uploaded_claims_detail TO chox_mi;
+GRANT SELECT ON TABLE user_service TO chox_mi;
+GRANT SELECT ON TABLE vehicle_class TO chox_mi;
+GRANT SELECT ON TABLE vehicle_class_ceiling TO chox_mi;
+GRANT SELECT ON TABLE vehicle_class_price TO chox_mi;
+GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_mi;
+GRANT SELECT ON TABLE vehicle_hire TO chox_mi;
+GRANT SELECT ON TABLE web_bordereau TO chox_mi;
+GRANT SELECT ON TABLE web_user TO chox_mi;
+GRANT SELECT ON TABLE web_user_role TO chox_mi;
+GRANT SELECT ON TABLE web_user_user_role TO chox_mi;
+GRANT SELECT ON TABLE web_user_workgroup TO chox_mi;
+GRANT SELECT ON TABLE week_start TO chox_mi;
+GRANT SELECT ON TABLE witness TO chox_mi;
+GRANT SELECT ON TABLE workgroup TO chox_mi;
+GRANT SELECT ON TABLE workgroup_service TO chox_mi;
 
 -- grant permission for views --
 
-GRANT SELECT ON TABLE rpt_all_claim_with_invoice TO mi_user;
-GRANT SELECT ON TABLE rpt_claim_audit_trail TO mi_user;
-GRANT SELECT ON TABLE rpt_claim_invoice TO mi_user;
-GRANT SELECT ON TABLE vw_claim_monthly_summary TO mi_user;
-GRANT SELECT ON TABLE vw_claim_weekly_summary TO mi_user;
+GRANT SELECT ON TABLE rpt_all_claim_with_invoice TO chox_mi;
+GRANT SELECT ON TABLE rpt_claim_audit_trail TO chox_mi;
+GRANT SELECT ON TABLE rpt_claim_invoice TO chox_mi;
+GRANT SELECT ON TABLE vw_claim_monthly_summary TO chox_mi;
+GRANT SELECT ON TABLE vw_claim_weekly_summary TO chox_mi;
 
 -- grant permission for functions --
 
-GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO mi_user;
-GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO mi_user;
-GRANT EXECUTE ON FUNCTION sqlgetdayofmonth() TO mi_user;
+GRANT EXECUTE ON FUNCTION sqlgetdayofmonth() TO chox_mi;
 GRANT EXECUTE ON FUNCTION sqlgetdayofweek() TO mi_user;
-GRANT EXECUTE ON FUNCTION taskexportreport(character varying, numeric) TO mi_user;
-GRANT EXECUTE ON FUNCTION update_user_service(integer) TO mi_user;
-GRANT EXECUTE ON FUNCTION update_workgroup_service(integer) TO mi_user;
-GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO mi_user;
+GRANT EXECUTE ON FUNCTION taskexportreport(character varying, numeric) TO chox_mi;
+GRANT EXECUTE ON FUNCTION update_user_service(integer) TO chox_mi;
+GRANT EXECUTE ON FUNCTION update_workgroup_service(integer) TO chox_mi;
 
 
 --------------------------------------------------------------------------------
@@ -176,6 +173,7 @@ GRANT EXECUTE ON FUNCTION addMissingEcdTask(integer) TO chox_user;
 GRANT EXECUTE ON FUNCTION updateDashboard(integer) TO chox_user;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE dashboard TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE dashboard2_id_seq TO chox_user;
+
 --------------------------------------------------------------------------------
 -- End of 6.16.6 
 --------------------------------------------------------------------------------
