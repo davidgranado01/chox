@@ -2,12 +2,10 @@ package idas.chox.web.actions;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -27,9 +25,12 @@ import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
+import idas.chox.data.services.SecureDataService;
+import idas.chox.service.reports.ClaimsGridExportReport;
 import org.springframework.security.access.AccessDeniedException;
 
 
@@ -49,6 +50,16 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exceptionThrown;
     private boolean tooManyRows;
     private boolean directDownload;
+    private SecureDataService dataService;
+    private ReportDataService reportDataService;
+
+    public void setDataService(SecureDataService dataService) {
+        this.dataService = dataService;
+    }
+
+    public void setReportDataService(ReportDataService reportDataService) {
+        this.reportDataService = reportDataService;
+    }
 
     public boolean isDirectDownload() {
         return directDownload;
@@ -211,13 +222,18 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private boolean generateXML(List<Integer> claimIds) throws Exception {
+        
+        ClaimsGridExportReport gridExportReport = new ClaimsGridExportReport();
+        gridExportReport.setDataService(dataService);
+        gridExportReport.setReportDataService(reportDataService);
+        
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
         int noClaims = claimIds.size();
         int processedClaim = 0;
         LOG.info("Exporting to excel with {} claims.", noClaims);
 
-        List<ExcelClaim> excelClaims = claimService.getExcelClaims(claimIds);
+        List<ExcelClaim> excelClaims = gridExportReport.getExcelClaims(claimIds);
 
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -238,7 +254,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelHistory> histories = claimService.getExcelHistory(claimIds);
+        List<ExcelHistory> histories = gridExportReport.getExcelHistory(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -257,7 +273,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelComment> comments = claimService.getExcelComments(claimIds);
+        List<ExcelComment> comments = gridExportReport.getExcelComments(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -275,7 +291,7 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSession()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
-        List<ExcelClaimCycle> claimCycle = claimService.getExcelClaimCycle(claimIds);
+        List<ExcelClaimCycle> claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -294,7 +310,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-        List<ExcelInvoice> invoices = claimService.getExcelInvoices(claimIds);
+        List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
             synchronized (getSession()) {
@@ -313,7 +329,6 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
-
         final Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
@@ -325,7 +340,6 @@ public class ExcelGeneratorAction extends BaseAction {
         Calendar cal = Calendar.getInstance();
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
- //       final String reportFileName = System.getProperty("java.io.tmpdir") + File.pathSeparator + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
 
@@ -453,15 +467,22 @@ public class ExcelGeneratorAction extends BaseAction {
 
     @Override
     public String execute() {
+        String result;
+ 
+        if (!getCanExport()) {
+            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Export file.");
+        }
 
         if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");
             try {
-                doExportExcel();
+                result = doExportExcel();
             } catch (Exception ex) {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                 getSession().put("exceptionThrown", true);
+                result = ERROR;
             }
         }
 
@@ -470,34 +491,22 @@ public class ExcelGeneratorAction extends BaseAction {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     excelStream = new DeleteOnCloseFileInputStream(reportFile);
+                    result = SUCCESS;
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
-                    createEmptyReport();
+                    excelStream=null;
+                    result = ERROR;
                 }
                 getSession().put("reportFileLocation", null);
             } else {
-                createEmptyReport();
+                excelStream=null;
+                result = ERROR;
             }
-            return SUCCESS;
         }
+        
+        return result;
     }
 
-    private void createEmptyReport() {
-        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-        try {
-            File emptyFile = File.createTempFile("emptyExcel_", ".xls");
-            emptyFile.deleteOnExit();
-            PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occured, Please contact Chox support.");
-            printWriter.close();
-            excelStream = new DeleteOnCloseFileInputStream(emptyFile);
-//            deleteReportFile("emptyFile");
-        } catch (FileNotFoundException ex) {
-            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown {}", ex.getMessage(), ex);
-        }
-    }
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
