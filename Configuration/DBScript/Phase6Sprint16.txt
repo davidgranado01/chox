@@ -53,7 +53,7 @@ GRANT EXECUTE ON FUNCTION addMissingEcdTask(integer) TO chox_user;
 --
 GRANT EXECUTE ON FUNCTION updateDashboard(integer) TO chox_user;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE dashboard TO chox_user;
-
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE dashboard2_id_seq TO chox_user;
 --------------------------------------------------------------------------------
 -- End of 6.16.6 
 --------------------------------------------------------------------------------
