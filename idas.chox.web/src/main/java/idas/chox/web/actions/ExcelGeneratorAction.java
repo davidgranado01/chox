@@ -306,7 +306,6 @@ public class ExcelGeneratorAction extends BaseAction {
         } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
             synchronized (getSession()) {
                 getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("isExportFinished", true);
                 getSession().put("tooManyRows", true);
             }
             return false; 
@@ -326,7 +325,6 @@ public class ExcelGeneratorAction extends BaseAction {
         } else if (invoices.size() > MAX_EXPORT_SIZE) {
             synchronized (getSession()) {
                 getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("isExportFinished", true);
                 getSession().put("tooManyRows", true);
             }
             return false; 
