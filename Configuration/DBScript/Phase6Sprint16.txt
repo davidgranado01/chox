@@ -1,12 +1,6 @@
---------------------------------------------------------------------------------
--- mi_user for separate report data source 
---------------------------------------------------------------------------------
-
--- create mi_user --
-
-CREATE ROLE mi_user LOGIN
-  ENCRYPTED PASSWORD 'ch0xpa33'
-  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+----------------------------------------------
+-- 6.16.7 seperate dataSource for MI queries
+----------------------------------------------
   
 -- grant permission for all tables --
  
@@ -83,16 +77,14 @@ GRANT SELECT ON TABLE vw_claim_weekly_summary TO chox_mi;
 -- grant permission for functions --
 
 GRANT EXECUTE ON FUNCTION sqlgetdayofmonth() TO chox_mi;
-GRANT EXECUTE ON FUNCTION sqlgetdayofweek() TO mi_user;
+GRANT EXECUTE ON FUNCTION sqlgetdayofweek() TO chox_mi;
 GRANT EXECUTE ON FUNCTION taskexportreport(character varying, numeric) TO chox_mi;
 GRANT EXECUTE ON FUNCTION update_user_service(integer) TO chox_mi;
 GRANT EXECUTE ON FUNCTION update_workgroup_service(integer) TO chox_mi;
 
-
---------------------------------------------------------------------------------
--- End of mi_user for separate report data source 
---------------------------------------------------------------------------------
-
+---------------------------------------------------
+-- End of 6.16.7 seperate dataSource for MI queries 
+---------------------------------------------------
 
 
 --------------------------------------------------------------------------------
