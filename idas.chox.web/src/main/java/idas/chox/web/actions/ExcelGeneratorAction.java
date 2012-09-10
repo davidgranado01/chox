@@ -192,15 +192,22 @@ public class ExcelGeneratorAction extends BaseAction {
                     for(Claim claim : claims)
                         claimIds.add(claim.getId());
                     try {
-                        if (!generateXML(claimIds))
-                            LOG.info("Report cancelled");
+                        if (!generateXML(claimIds)) {
+                            if (getSession().get("tooManyRows") != null) {
+                                LOG.info("Report cannot be generated as row-count exceeded {}", MAX_EXPORT_SIZE);
+                                setClaimSizeError("This data export will exceed the maximum number of allowable rows in Excel (65,536).");
+                            }
+                            else {
+                                LOG.debug("Report cancelled");
+                            }
+                        }
+                        else
+                            rtnStr = SUCCESS;
                     } catch (Exception ex) {
                         LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
                         setClaimSizeError("Error encountered generating report.");
                         return rtnStr;
                     }
-                    rtnStr = SUCCESS;
-
                 } else if (claims.size() > 10000) {
                     setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
                 }
