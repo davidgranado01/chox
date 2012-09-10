@@ -302,7 +302,9 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         }
                     }
                 } else if ("clientVatRegistered".equals(propertyNames[i])) {
-                    String status = state[i].toString();
+                    String status = null;
+                    if (state[i] != null)
+                        status = state[i].toString();
                     if (status != null && status.equals("true")) {
                         indexOfClientVatRegistered = i;
                         if (indexOfClientVatRegisteredLastModified != null) {
@@ -759,7 +761,9 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                 else if ("clientVatRegistered".equals(propertyNames[i])) {
 
                     String newStatus = state1[i].toString();
-                    String oldStatus = state2[i].toString();
+                    String oldStatus = null;
+                    if (state2[i] != null)
+                        oldStatus = state2[i].toString();
                     LOG.debug("newStatus   " + newStatus);
                     LOG.debug("oldStatus   " + oldStatus);
 
