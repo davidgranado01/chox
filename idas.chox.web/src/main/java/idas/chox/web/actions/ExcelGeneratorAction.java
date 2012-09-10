@@ -2,12 +2,10 @@ package idas.chox.web.actions;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -469,6 +467,12 @@ public class ExcelGeneratorAction extends BaseAction {
 
     @Override
     public String execute() {
+        String result;
+ 
+        if (!getCanExport()) {
+            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
+            throw new AccessDeniedException("Illegal attempt to generate Export file.");
+        }
 
         if (!getCanExport()) {
             LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
@@ -478,11 +482,12 @@ public class ExcelGeneratorAction extends BaseAction {
         if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");
             try {
-                doExportExcel();
+                result = doExportExcel();
             } catch (Exception ex) {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                 getSession().put("exceptionThrown", true);
+                result = ERROR;
             }
         }
 
@@ -491,34 +496,22 @@ public class ExcelGeneratorAction extends BaseAction {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
                     excelStream = new DeleteOnCloseFileInputStream(reportFile);
+                    result = SUCCESS;
                 } catch (Exception ex) {
                     LOG.error("exception in generating report {}", ex.getMessage(), ex);
-                    createEmptyReport();
+                    excelStream=null;
+                    result = ERROR;
                 }
                 getSession().put("reportFileLocation", null);
             } else {
-                createEmptyReport();
+                excelStream=null;
+                result = ERROR;
             }
-            return SUCCESS;
         }
+        
+        return result;
     }
 
-    private void createEmptyReport() {
-        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-        try {
-            File emptyFile = File.createTempFile("emptyExcel_", ".xls");
-            emptyFile.deleteOnExit();
-            PrintWriter printWriter = new PrintWriter(emptyFile);
-            printWriter.print("Unexpected error occured, Please contact Chox support.");
-            printWriter.close();
-            excelStream = new DeleteOnCloseFileInputStream(emptyFile);
-//            deleteReportFile("emptyFile");
-        } catch (FileNotFoundException ex) {
-            LOG.error("file not found exception thrown {}", ex.getMessage(), ex);
-        } catch (Exception ex) {
-            LOG.error("Exception thrown {}", ex.getMessage(), ex);
-        }
-    }
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
