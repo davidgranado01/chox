@@ -27,11 +27,11 @@ public class FilterRecordCounterAction extends BaseAction {
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
             if (getIsCHO())
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(filterOrgId, -1)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1)).intValue()));
             else if (getIsInsurer())
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(-1, filterOrgId)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId)).intValue()));
             else
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(-1, -1)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1)).intValue()));
             filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }

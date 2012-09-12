@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------------
+-- 6.16.3 - Final Invoice Review Queue
+--------------------------------------------------------------------------------
+ALTER TABLE claim ADD COLUMN final_review_cho boolean not null default false;
+ALTER TABLE claim ADD COLUMN final_review_date_cho timestamp without time zone;
+ALTER TABLE claim ADD COLUMN final_review_by_cho integer;
+ALTER TABLE claim ADD COLUMN final_review_ins boolean not null default false;
+ALTER TABLE claim ADD COLUMN final_review_date_ins timestamp without time zone;
+ALTER TABLE claim ADD COLUMN final_review_by_ins integer;
+
+--
+-- Define Accessibility for new queues
+--
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'filter.FinalReviewCho', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'filter.FinalReviewIns', false, false;
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ALL', 0, (select id from accessibility where name = 'filter.FinalReviewCho');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ALL', 0, (select id from accessibility where name = 'filter.FinalReviewIns');
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_INS_CH', 1, (select id from accessibility where name = 'filter.FinalReviewIns');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_INS_MNG', 1, (select id from accessibility where name = 'filter.FinalReviewIns');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_INS_MI', 1, (select id from accessibility where name = 'filter.FinalReviewIns');
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHO_OPR', 1, (select id from accessibility where name = 'filter.FinalReviewCho');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHO_MNG', 1, (select id from accessibility where name = 'filter.FinalReviewCho');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHO_MI', 1, (select id from accessibility where name = 'filter.FinalReviewCho');
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN', 1, (select id from accessibility where name = 'filter.FinalReviewCho');
+
+--
+-- Define Accessibility for 'More Actions'
+--
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.finalReview.AwaitingLiabilityResolution', false, false;
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ALL', 0, (select id from accessibility where name = 'extraAction.finalReview.AwaitingLiabilityResolution');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.finalReview.AwaitingLiabilityResolution');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.finalReview.AwaitingLiabilityResolution');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHO_OPR', 2, (select id from accessibility where name = 'extraAction.finalReview.AwaitingLiabilityResolution');
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHO_MNG', 2, (select id from accessibility where name = 'extraAction.finalReview.AwaitingLiabilityResolution');
+
+--
+-- Add visibility of AwaitingLiabilityResolution queue to CHOX Admin
+--
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+    SELECT 'ROLE_CHOX_ADMIN', 1, (select id from accessibility where name = 'filter.AwaitingLiabilityResolution');
+
+--------------------------------------------------------------------------------
+-- End of 6.16.3 
+--------------------------------------------------------------------------------

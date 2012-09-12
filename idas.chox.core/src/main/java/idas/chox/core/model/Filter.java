@@ -61,5 +61,5 @@ public interface Filter {
     boolean getIsCheckEngineers();
     boolean getIsManualFilter();
 
-    ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
+    ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId);
 }

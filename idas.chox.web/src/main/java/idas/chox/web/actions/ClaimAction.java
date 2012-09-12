@@ -129,6 +129,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String statusMsg = null;
     private boolean showMessage = false;
     private boolean showErrorMessage = false;
+    private boolean finalReviewRequired;
+    private String finalReviewReason;
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -149,11 +151,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setStatusMsg(String statusMsg) {
         if (statusMsg != null && !statusMsg.isEmpty()) {
             this.statusMsg = statusMsg;
-            if (statusMsg.contains("Error"))
+            if (statusMsg.contains("Error")) {
                 showErrorMessage = true;
-            else
+            } else {
                 showMessage = true;
+            }
         }
+    }
+
+    public String getFinalReviewReason() {
+        return finalReviewReason;
+    }
+
+    public void setFinalReviewReason(String finalReviewReason) {
+        this.finalReviewReason = finalReviewReason;
     }
 
     public Date getAutoPenaltyStart() {
@@ -210,11 +221,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public int getActivityMonitorRequestInterval() {
         return service.getActivityMonitorRequestInterval();
     }
-    
+
     public boolean isEnableActivityMonitor() {
         return service.isEnableActivityMonitor();
     }
-    
+
     public int getActionSelected() {
         return actionSelected;
     }
@@ -232,8 +243,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Map getLiabilityStatusDropDownMap() {
-        if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL)
+        if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL) {
             return claimObjectService.getLiabilityStatusMap(false);
+        }
         return claimObjectService.getLiabilityStatusMap(true);
     }
 
@@ -331,7 +343,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getInterimPaymentMade() {
-        return claim.getInvoice().getInterimPaymentMade() == null ? BigDecimal.ZERO.setScale(2): claim.getInvoice().getInterimPaymentMade();
+        return claim.getInvoice().getInterimPaymentMade() == null ? BigDecimal.ZERO.setScale(2) : claim.getInvoice().getInterimPaymentMade();
     }
 
     public void setInterimPaymentMade(BigDecimal interimPaymentMade) {
@@ -339,7 +351,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getInterimPaymentReceived() {
-        return interimPaymentReceived == null ? BigDecimal.ZERO.setScale(2): interimPaymentReceived;
+        return interimPaymentReceived == null ? BigDecimal.ZERO.setScale(2) : interimPaymentReceived;
     }
 
     public void setInterimPaymentReceived(BigDecimal interimPaymentReceived) {
@@ -434,7 +446,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String updateInvoiceReviewRequired() {
         try {
@@ -445,10 +457,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim = service.updateClaimWithInvalidSessionVersion(claim);
             setActionError(ex.getMessage());
             return ERROR;
-        } 
+        }
         return SUCCESS;
     }
-    
+
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -516,9 +528,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
             totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
             invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
-            
-            invoiceService.applyInsurerDiscounts(claim,userService.findByUserName("system"),true);
-            
+
+            invoiceService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+
             if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
                 invoice.setPenaltyAlertQty(invoiceService.calculatePenaltyAlertQty(invoice) >= 3 ? -1 : invoiceService.calculatePenaltyAlertQty(invoice));
             }
@@ -533,7 +545,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return result;
     }
-    
+
     public boolean getIsShowPenaltyChargeAlert() {
         boolean result = false;
         boolean allowPenaltyCharges = true;
@@ -623,7 +635,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getInvoiceReviewRequiredPanel() {
         return SUCCESS;
     }
-    
+
+    public String getFinalReviewPanel() {
+        return SUCCESS;
+    }
+
     public String getUpdateLiability() {
         LOG.debug("Id " + id + " " + claim.getChoReference());
         if (claim != null) {
@@ -646,11 +662,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getUpdateClaimWorkgroup() {
         return SUCCESS;
     }
-    
+
     public String getUpdateManualInvWorkgroupClaimOwner() {
         return SUCCESS;
     }
-    
+
     public String getEscalateUnassignedClaim() {
         return SUCCESS;
     }
@@ -722,6 +738,50 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return ERROR;
         }
 
+        return SUCCESS;
+    }
+
+    public String updateFinalReview() {
+        // Only update if flag value has changed
+        if ((getAuthenticatedUser().isCHO() && finalReviewRequired != claim.isFinalReviewCho())
+                || (getAuthenticatedUser().isAnInsurer() && finalReviewRequired != claim.isFinalReviewIns())) {
+            
+        try {
+            if (finalReviewRequired && (finalReviewReason == null || finalReviewReason.equals("-1"))) {
+                LOG.error("No final review reason given: {}", finalReviewReason);
+                throw new Exception("No Final Review Reason Specified");
+            }
+            if (getAuthenticatedUser().isCHO()) {
+                claim.setFinalReviewCho(finalReviewRequired);
+                if (finalReviewRequired) {
+                    claim.addComment(Comment.New(2, "Final Review Reason: " + finalReviewReason));
+                    claim.setFinalReviewByCho(getAuthenticatedUser());
+                    claim.setFinalReviewDateCho(new Date());
+                } else {
+                    claim.setFinalReviewByCho(null);
+                    claim.setFinalReviewDateCho(null);
+                }
+            } else if (getAuthenticatedUser().isAnInsurer()) {
+                claim.setFinalReviewIns(finalReviewRequired);
+                if (finalReviewRequired) {
+                    claim.addComment(Comment.New(1, "Final Review Reason: " + finalReviewReason));
+                    claim.setFinalReviewByIns(getAuthenticatedUser());
+                    claim.setFinalReviewDateIns(new Date());
+                } else {
+                    claim.setFinalReviewByIns(null);
+                    claim.setFinalReviewDateIns(null);
+                }
+            } else {
+                LOG.error("Non insurer/cho marking claim {} for final review?", claim.getChoReference());
+                return ERROR;
+            }
+            service.updateClaim(claim);
+        } catch (Exception ex) {
+            LOG.error("Error marking claim {} for final review:", claim.getChoReference(), ex);
+            handleException(ex);
+            return ERROR;
+        }
+        }
         return SUCCESS;
     }
 
@@ -821,7 +881,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateSaveLiabilityStatus() {
         LOG.debug("updateSaveLiabilityStatus");
-//        String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
         String note;
         if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
             note = "Liability status changed to '" + fLiabilityStatus + "'";
@@ -851,7 +910,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             LOG.error("Error updating liability status for claim {}: ", claim.getChoReference(), ex);
             handleException(ex);
-//            setActionError("An internal error occurred updating the liability status for this claim. Please contact CHOX support.");
             return ERROR;
         }
 
@@ -1507,28 +1565,53 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return insurers;
     }
-    
+
     public List<ReasonOfRejection> getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
         }
         return reasonOfClaimRejections;
     }
-    
+
     public List<ReasonOfRejection> getReasonOfClaimRejectionsRestricted() {
         if (reasonOfClaimRejectionsRestricted == null) {
             reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getInsurerIdForReasonOfRejection());
         }
         return reasonOfClaimRejectionsRestricted;
     }
-    
+
+    public void setFinalReviewRequired(boolean finalReviewRequired) {
+        this.finalReviewRequired = finalReviewRequired;
+    }
+
+    public boolean getFinalReviewRequired() {
+        if (getAuthenticatedUser().isCHO()) {
+            return claim.isFinalReviewCho();
+        } else if (getAuthenticatedUser().isAnInsurer()) {
+            return claim.isFinalReviewIns();
+        }
+
+        LOG.error("Attempt to retrieve final rview status for a user that is neithr an insurer or a CHO.");
+        return false;
+    }
+
+    public List<LookupItem> getFinalReviewReasons() {
+        List<LookupItem> reasons = new ArrayList<LookupItem>(4);
+
+        reasons.add(new LookupItem("Final Liability Stance", "Final Liability Stance"));
+        reasons.add(new LookupItem("Final Quantum Offer", "Final Quantum Offer"));
+        reasons.add(new LookupItem("Indemnity Issues", "Indemnity Issues"));
+        reasons.add(new LookupItem("Other", "Other"));
+        return reasons;
+    }
+
     public JSONArray getJsonReasonOfClaimRejectionDesc() {
-    	if (reasonOfClaimRejections == null) {
+        if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
         }
-    	List<LookupItem> rorItems = new ArrayList<LookupItem>();
-    	for (ReasonOfRejection ror : reasonOfClaimRejections) {
-    		rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
+        List<LookupItem> rorItems = new ArrayList<LookupItem>();
+        for (ReasonOfRejection ror : reasonOfClaimRejections) {
+            rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
         return JSONArray.fromObject(rorItems);
     }
@@ -1539,18 +1622,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return reasonOfInvoiceRejections;
     }
-    
+
     public JSONArray getJsonReasonOfInvoiceRejectionDesc() {
-    	if (reasonOfInvoiceRejections == null) {
+        if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection());
         }
-    	List<LookupItem> rorItems = new ArrayList<LookupItem>();
-    	for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
-    		rorItems.add(new LookupItem(ror.getId().toString(),  ror.getDescription()));
+        List<LookupItem> rorItems = new ArrayList<LookupItem>();
+        for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
+            rorItems.add(new LookupItem(ror.getId().toString(), ror.getDescription()));
         }
-    	return JSONArray.fromObject(rorItems);
+        return JSONArray.fromObject(rorItems);
     }
-    
+
     public String getActionPanel() {
 
         List<String> actions = ActionPanel.getPanelActions();
@@ -1561,8 +1644,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
                 /*
-                 *  It's moved from ActionPanel list and called separately via claimdetail.jsp page.
-                 *  Not sure this is correct if so please delete in future (updated 21/12/2011).
+                 * It's moved from ActionPanel list and called separately via
+                 * claimdetail.jsp page. Not sure this is correct if so please
+                 * delete in future (updated 21/12/2011).
                  */
 //                if (action.equals("updatePenaltyCharges")) {
 //                    LOG.debug("Setting properties for penalty charge panel....");
@@ -1587,12 +1671,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<String> actions = ExtraAction.getExtraActions();
         extraActionList = new ArrayList<LookupItem>();
         for (String action : actions) {
-            String extraActionDescription = null;
+            String extraActionDescription;
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
             LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
             if (accessRight >= 2) {
-                
+
                 if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
                         && !claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
                     extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP);
@@ -1602,7 +1686,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 } else {
                     extraActionDescription = ExtraAction.getExtraActionName(action);
                 }
-                
+
                 extraActionList.add(new LookupItem(action, extraActionDescription));
             }
         }
@@ -1670,7 +1754,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-
     public BigDecimal getPaymentDetailsCHODiscount() {
         return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
     }
@@ -1688,25 +1771,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean isPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
             return true;
-        
+        }
+
         return false;
     }
-    
+
     public boolean getPenaltyChargeApplied() {
-        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0)
+        if (claim.getInvoice() != null && claim.getInvoice().getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
             return true;
-        
+        }
+
         return false;
     }
-    
+
     public BigDecimal getEngineerFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-           if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getEngineerFeeGross();
-            else
+            } else {
                 return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1714,10 +1800,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getHireGross();
-            else
+            } else {
                 return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1725,10 +1812,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHirePenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getHirePenaltyCharge();
-            else
+            } else {
                 return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1736,10 +1824,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getRepairGross();
-            else
+            } else {
                 return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1747,10 +1836,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairPenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getRepairPenaltyCharge();
-            else
+            } else {
                 return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1758,10 +1848,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getStorageRecoveryGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getStorageRecoveryGross();
-            else
+            } else {
                 return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1769,10 +1860,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getTotalLossFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()))
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
                 return claim.getInvoice().getTotalLossFeeGross();
-            else
+            } else {
                 return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
         } else {
             return BigDecimal.ZERO;
         }
@@ -1781,43 +1873,42 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public BigDecimal getProjectedFinalPayment() {
         BigDecimal projectedFinalPayment = null;
         if (claim.getInvoice() != null) {
-        	projectedFinalPayment = claim.getInvoice().getTotalToPay().subtract(getInterimPaymentMade());
-        } 
-        
+            projectedFinalPayment = claim.getInvoice().getTotalToPay().subtract(getInterimPaymentMade());
+        }
+
         return projectedFinalPayment;
     }
-    
+
     public BigDecimal getFinalPayment() {
         if (claim.getInvoice() != null && finalPayment == null) {
-        	finalPayment = claim.getInvoice().getFinalPayment();
-        } 
-        
+            finalPayment = claim.getInvoice().getFinalPayment();
+        }
+
         return finalPayment;
     }
-    
+
     public BigDecimal getFinalPaymentOrTotal() {
         BigDecimal finalPaymentOrTotal = finalPayment;
         if (claim.getInvoice() != null && finalPaymentOrTotal == null) {
-        	finalPaymentOrTotal = claim.getInvoice().getFinalPayment();
+            finalPaymentOrTotal = claim.getInvoice().getFinalPayment();
             if (finalPaymentOrTotal == null) {
                 finalPaymentOrTotal = claim.getInvoice().getTotalToPay();
-                if (claim.getInvoice().getInterimPaymentMade() != null)
+                if (claim.getInvoice().getInterimPaymentMade() != null) {
                     finalPaymentOrTotal = finalPaymentOrTotal.subtract(claim.getInvoice().getInterimPaymentMade());
+                }
             }
-        } 
-        
+        }
+
         return finalPaymentOrTotal;
     }
-    
-    public BigDecimal getTotalToPay(){
-    	 if (claim.getInvoice() != null) {
-         	return claim.getInvoice().getTotalToPay();
-         } else {
-             return BigDecimal.ZERO;
-         }
-    }
-    
 
+    public BigDecimal getTotalToPay() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getTotalToPay();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
 
     // </editor-fold>
     public ButtonAccessibility getButtonAccessibility() {
@@ -1915,7 +2006,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean isAtInvoicePaymentLogged() {
         return ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus());
     }
-    
+
     public boolean isPaymentLoggedOverDays() {
         Date loggedDate = claim.getStatusModifiedDate();
 
@@ -1938,7 +2029,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     /*
-     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     * This method will exclude the current claim's insurer. This is used in
+     * Switch claim to multiple insurer functionality.
      */
     public List getMappedInsurers() {
 
@@ -1959,7 +2051,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     /*
-     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     * This method will exclude the current claim's insurer. This is used in
+     * Switch claim to multiple insurer functionality.
      */
     public String getInsurersJsonString() {
         List<LookupItem> luItems = new ArrayList<LookupItem>(getMappedInsurers().size());
@@ -1996,7 +2089,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getCalculatedHirePenaltyChargeAmount() {
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-        return invoiceService.calculateHirePenaltyCharge(claim.getInvoice(),getCalculatedHirePenaltyPercentage(), hireStart);
+        return invoiceService.calculateHirePenaltyCharge(claim.getInvoice(), getCalculatedHirePenaltyPercentage(), hireStart);
     }
 
     public BigDecimal getCalculatedRepairPenaltyChargeAmount() {
@@ -2034,12 +2127,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Date invoiceCreationDate = claim.getInvoice().getCreatedDate();
             Date penaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
             // Set both times to 00:00:00
-            if (invoiceCreationDate != null)
+            if (invoiceCreationDate != null) {
                 invoiceCreationDate = DateHelper.setStartOfDay(invoiceCreationDate);
-            if (penaltyStartDate != null)
+            }
+            if (penaltyStartDate != null) {
                 penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
+            }
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
-            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[] {autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
+            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[]{autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
             if (this.getIsCHO() && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
                 LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
                 this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
@@ -2078,7 +2173,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public BigDecimal getRepairGross() {
         return claim.getInvoice().getRepairGross();
     }
-    
+
     public Integer getVersion() {
         LOG.debug("getVersion returning claimVersion={}", claimVersion);
         return claimVersion;
@@ -2088,11 +2183,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (getIsCHO() && claim.getInvoice().getAutoPenaltyStart().compareTo(DateHelper.removeTime(claim.getInvoice().getCreatedDate())) >= 0) {
             return true;
         }
-        
+
         return false;
     }
-    
-    
+
     @Override
     public void validate() {
 
@@ -2108,46 +2202,90 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-	public BigDecimal getOutstandingInterimPayment() {
+    public BigDecimal getOutstandingInterimPayment() {
         interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
-		if(interimPaymentReceived == null)
-			interimPaymentReceived = BigDecimal.ZERO;
+        if (interimPaymentReceived == null) {
+            interimPaymentReceived = BigDecimal.ZERO;
+        }
         interimPaymentMade = claim.getInvoice().getInterimPaymentMade();
-		if(interimPaymentMade == null)
-			interimPaymentMade = BigDecimal.ZERO;
-		return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
-	}
-	
-	/**
-	 * Returns Insurer's id (in case of chox admin we get Insurer's id from claim)
-	 * return int id
-	 */
-	private int getInsurerIdForReasonOfRejection(){
-	    int id = -1;
-	    if(getAuthenticatedUser().getInsurer() != null)
-	        id = getAuthenticatedUser().getInsurer().getId().intValue();
-	    if(claim.getInsurer() != null)
-	        id = claim.getInsurer().getId().intValue();
-	    return id;
-	}
+        if (interimPaymentMade == null) {
+            interimPaymentMade = BigDecimal.ZERO;
+        }
+        return interimPaymentMade.subtract(interimPaymentReceived).setScale(2);
+    }
+
+    /**
+     * Returns Insurer's id (in case of chox admin we get Insurer's id from
+     * claim) return int id
+     */
+    private int getInsurerIdForReasonOfRejection() {
+        int insurerIdt = -1;
+        if (getAuthenticatedUser().getInsurer() != null) {
+            insurerIdt = getAuthenticatedUser().getInsurer().getId().intValue();
+        }
+        if (claim.getInsurer() != null) {
+            insurerIdt = claim.getInsurer().getId().intValue();
+        }
+        return insurerIdt;
+    }
 
     public boolean getIsEscalatedToSupervisor() {
-        if(getAuthenticatedUser().isCHO()){
+        if (getAuthenticatedUser().isCHO()) {
             return false;
         } else if (getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isSupervisorEnable()
-                && isInsurerAllowedForSupervisorQueue() 
-                && isEscalatedToSupervisor(getAuthenticatedUser().getInsurer().getDaysBeforeEscalated(), getAuthenticatedUser().getInsurer().getTimesInStatusContested())){
+                && isInsurerAllowedForSupervisorQueue()
+                && isEscalatedToSupervisor(getAuthenticatedUser().getInsurer().getDaysBeforeEscalated(), getAuthenticatedUser().getInsurer().getTimesInStatusContested())) {
             return true;
-        } else if(getAuthenticatedUser().isCHOXAdmin() && claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable() 
-                && isEscalatedToSupervisor(claim.getInsurer().getDaysBeforeEscalated(), claim.getInsurer().getTimesInStatusContested()))
-            return  true;
+        } else if (getAuthenticatedUser().isCHOXAdmin() && claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable()
+                && isEscalatedToSupervisor(claim.getInsurer().getDaysBeforeEscalated(), claim.getInsurer().getTimesInStatusContested())) {
+            return true;
+        }
         return false;
     }
-    
-    private boolean isInsurerAllowedForSupervisorQueue(){
-        for(Object userRole : getAuthenticatedUser().getRoles()){
+
+    public boolean getIsFinalReview() {
+        if (getAuthenticatedUser().isCHO() && claim.isFinalReviewCho()) {
+            return true;
+        } else if (getAuthenticatedUser().isAnInsurer() && claim.isFinalReviewIns()) {
+            return true;
+        } else if (getAuthenticatedUser().isCHOXAdmin() && (claim.isFinalReviewCho() || claim.isFinalReviewIns())) {
+            return true;
+        }
+        return false;
+    }
+
+    public String getFinalReviewMessage() {
+        if (getAuthenticatedUser().isCHO()) {
+            return "This invoice had a final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateCho())
+                    + " by " + claim.getFinalReviewByCho().getFullName() + ".";
+        } else if (getAuthenticatedUser().isAnInsurer()) {
+            return "This invoice had a final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
+                    + " by " + claim.getFinalReviewByIns().getFullName() + ".";
+        } else if (getAuthenticatedUser().isCHOXAdmin() && claim.isFinalReviewCho() && claim.isFinalReviewIns()) {
+            return "This invoice had a CHO final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
+                    + " by " + claim.getFinalReviewByIns().getFullName()
+                    + " and an Insurer final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
+                    + " by " + claim.getFinalReviewByIns().getFullName() + ".";
+        } else if (getAuthenticatedUser().isCHOXAdmin() && claim.isFinalReviewCho() && !claim.isFinalReviewIns()) {
+            return "This invoice had a CHO final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
+                    + " by " + claim.getFinalReviewByIns().getFullName() + ".";
+        } else if (getAuthenticatedUser().isCHOXAdmin() && !claim.isFinalReviewCho() && claim.isFinalReviewIns()) {
+            return "This invoice had an Insurer final review on "
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
+                    + " by " + claim.getFinalReviewByIns().getFullName() + ".";
+        }
+        return null;
+    }
+
+    private boolean isInsurerAllowedForSupervisorQueue() {
+        for (Object userRole : getAuthenticatedUser().getRoles()) {
             WebUserRole role = (WebUserRole) userRole;
-            if(role.getName().contains(WebUserRole.ROLE_INS_MNG)
+            if (role.getName().contains(WebUserRole.ROLE_INS_MNG)
                     || role.getName().contains(WebUserRole.ROLE_INS_SUP)
                     || role.getName().contains(WebUserRole.ROLE_INS_MI)) {
                 return true;
@@ -2155,10 +2293,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return false;
     }
-    
-    private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction){
-        if(service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
-                || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction){
+
+    private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction) {
+        if (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
+                || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction) {
             return true;
         }
         return false;
