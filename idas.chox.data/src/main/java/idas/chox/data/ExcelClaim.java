@@ -172,6 +172,8 @@ public class ExcelClaim {
     private BigDecimal claimHireMonitoringDetailLabourCost;
     private String claimHireMonitoringDetailNonProvisionReason;
     private Date claimHireMonitoringDetailNextReviewDate;
+    private String claimFinalReviewCho;
+    private String claimFinalReviewIns;
 
     public ExcelClaim(Map data) {
         claimStatus = (String) data.get("status");
@@ -223,6 +225,8 @@ public class ExcelClaim {
         claimCustomerHpiVehicleCapacity = (String) data.get("customer_hpi_vehicle_capacity");
         claimCustomerHpiVehicleDoorplan = (String) data.get("customer_hpi_vehicle_doorplan");
         claimCustomerHpiVehicleTransmission = (String) data.get("customer_hpi_vehicle_transmission");
+        claimFinalReviewCho = ((Boolean) data.get("final_review_cho")) ? "Yes" : "No";
+        claimFinalReviewIns = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
         Boolean canAccessOtherVehicle = (Boolean) data.get("customer_access_other_vehicle");
         if (canAccessOtherVehicle == null)
             claimCustomerCanAccessOtherVehicleDesc = "";
@@ -1468,6 +1472,14 @@ public class ExcelClaim {
 
     public String getClaimClientVatRegistered() {
         return claimClientVatRegistered;
+    }
+    
+    public String getClaimFinalReviewCho() {
+        return claimFinalReviewCho;
+    }
+
+    public String getClaimFinalReviewIns() {
+        return claimFinalReviewIns;
     }
 
 }

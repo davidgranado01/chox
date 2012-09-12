@@ -335,6 +335,9 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("claimHistories", histories);
         excelMap.put("comments", comments);
         excelMap.put("cycle", claimCycle);
+        excelMap.put("isCho", isCho);
+        excelMap.put("isIns", isInsurer);
+        excelMap.put("isChoxAdmin", getIsChoxAdmin());
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
