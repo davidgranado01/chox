@@ -1584,17 +1584,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.finalReviewRequired = finalReviewRequired;
     }
 
-    public boolean getFinalReviewRequired() {
-        if (getAuthenticatedUser().isCHO()) {
-            return claim.isFinalReviewCho();
-        } else if (getAuthenticatedUser().isAnInsurer()) {
-            return claim.isFinalReviewIns();
-        }
-
-        LOG.error("Attempt to retrieve final rview status for a user that is neithr an insurer or a CHO.");
-        return false;
-    }
-
     public List<LookupItem> getFinalReviewReasons() {
         List<LookupItem> reasons = new ArrayList<LookupItem>(4);
 
@@ -2243,16 +2232,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    public boolean getIsFinalReview() {
-        if (getAuthenticatedUser().isCHO() && claim.isFinalReviewCho()) {
-            return true;
-        } else if (getAuthenticatedUser().isAnInsurer() && claim.isFinalReviewIns()) {
-            return true;
-        } else if (getAuthenticatedUser().isCHOXAdmin() && (claim.isFinalReviewCho() || claim.isFinalReviewIns())) {
-            return true;
+    public boolean isFinalReviewRequired() {
+        if (getAuthenticatedUser().isCHO()) {
+            return claim.isFinalReviewCho();
+        } else if (getAuthenticatedUser().isAnInsurer()) {
+            return claim.isFinalReviewIns();
+        } else if (getAuthenticatedUser().isCHOXAdmin()) {
+            return claim.isFinalReviewIns() || claim.isFinalReviewCho();
         }
+
         return false;
     }
+
 
     public String getFinalReviewMessage() {
         if (getAuthenticatedUser().isCHO()) {
@@ -2279,7 +2270,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
                     + " by " + claim.getFinalReviewByIns().getFullName() + ".";
         }
-        return null;
+        return "No final Review";
     }
 
     private boolean isInsurerAllowedForSupervisorQueue() {

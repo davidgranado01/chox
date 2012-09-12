@@ -534,7 +534,7 @@
         <s:action name="getClaimEscalatedToSupervisorAlert" namespace="/prv/p" executeResult="true"></s:action>
     </s:if>
 
-    <s:if test="isFinalReview">
+    <s:if test="finalReviewRequired">
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
             <div class="status-info">
                 <s:property value="finalReviewMessage" />
