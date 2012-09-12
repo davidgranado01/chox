@@ -2662,6 +2662,10 @@ public class ClaimFileReportData {
     public String getClientVatRegistered() {
         return clientVatRegistered;
     }
+    
+    public String getFinalReview() {
+        return finalReview;
+    }
 
 }
 
