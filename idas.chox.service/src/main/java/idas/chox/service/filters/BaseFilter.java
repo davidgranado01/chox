@@ -81,9 +81,13 @@ public abstract class BaseFilter implements Filter {
     }
 
     @Override
-    public abstract ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCho, int insurerId, int choId) {
+        return getClaimSearchCriteria(insurerId, choId);
+    }
 
+    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {return null;};
 
+    @Override
     public boolean getIsManualFilter() {
         return isManualFilter;
     }

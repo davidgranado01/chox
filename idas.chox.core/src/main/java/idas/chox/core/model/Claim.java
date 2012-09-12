@@ -58,7 +58,13 @@ public class Claim extends Entity implements Serializable {
     private List<History> histories;
     private List<Comment> comments;
     private boolean manualInvoiceApproved;
-    
+    private boolean finalReviewCho;
+    private boolean finalReviewIns;
+    private Date finalReviewDateCho;
+    private Date finalReviewDateIns;
+    private WebUser finalReviewByCho;
+    private WebUser finalReviewByIns;
+
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
@@ -730,4 +736,53 @@ public class Claim extends Entity implements Serializable {
     public void setManualInvoiceApproved(boolean manualInvoiceApproved) {
         this.manualInvoiceApproved = manualInvoiceApproved;
     }
+
+    public boolean isFinalReviewCho() {
+        return finalReviewCho;
+    }
+
+    public void setFinalReviewCho(boolean finalReviewCho) {
+        this.finalReviewCho = finalReviewCho;
+    }
+
+    public boolean isFinalReviewIns() {
+        return finalReviewIns;
+    }
+
+    public void setFinalReviewIns(boolean finalReviewIns) {
+        this.finalReviewIns = finalReviewIns;
+    }
+
+    public WebUser getFinalReviewByCho() {
+        return finalReviewByCho;
+    }
+
+    public void setFinalReviewByCho(WebUser finalReviewByCho) {
+        this.finalReviewByCho = finalReviewByCho;
+    }
+
+    public WebUser getFinalReviewByIns() {
+        return finalReviewByIns;
+    }
+
+    public void setFinalReviewByIns(WebUser finalReviewByIns) {
+        this.finalReviewByIns = finalReviewByIns;
+    }
+
+    public Date getFinalReviewDateCho() {
+        return finalReviewDateCho;
+    }
+
+    public void setFinalReviewDateCho(Date finalReviewDateCho) {
+        this.finalReviewDateCho = finalReviewDateCho;
+    }
+
+    public Date getFinalReviewDateIns() {
+        return finalReviewDateIns;
+    }
+
+    public void setFinalReviewDateIns(Date finalReviewDateIns) {
+        this.finalReviewDateIns = finalReviewDateIns;
+    }
+
 }

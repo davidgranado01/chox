@@ -145,10 +145,8 @@ public class ClaimRejectedReport implements Report {
                         sb.append("(select count(*) from claim, audit_trail a where claim.id=a.claim_id and a.reverted=false and (a.new_status='ClaimRejectionAccepted' or (a.new_status = 'AwaitingCarHireInfo' and a.original_status='SubscriberClaimRejected')) and a.claim_reason_of_rejection in")
                         .append("(select id from reason_of_rejection where name = '").append(cRejected.getName()).append("' and insurer_id=insurer.id) and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
                         .append(cRejected.getId()).append(", ");
-                    }
-                        
+                    }    
                 }
-                System.out.println(sb.toString());
             }
 
         if (isIns) {

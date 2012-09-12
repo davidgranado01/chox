@@ -942,6 +942,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.le("lastModifiedDate", cal.getTime()));
             }
         }
+        
+        /*
+         * Final Review
+         */
+        // First, check if both flags are non-null (NB. must be CHOX Admin and both flags must be equal!
+        if (searchCriteria.isFinalReviewCho() != null && searchCriteria.isFinalReviewIns() != null) {
+            if (searchCriteria.isFinalReviewIns()) // Or them
+                criteria.add(Restrictions.disjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
+                    .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
+            else // And them
+                criteria.add(Restrictions.conjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
+                    .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
+        } else if (searchCriteria.isFinalReviewCho() != null) {
+            criteria.add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho().booleanValue()));
+        } else if (searchCriteria.isFinalReviewIns() != null) {
+            criteria.add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns().booleanValue()));
+        }
         return criteria;
     }
 
