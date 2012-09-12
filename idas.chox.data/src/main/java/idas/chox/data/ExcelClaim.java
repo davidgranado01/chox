@@ -172,10 +172,9 @@ public class ExcelClaim {
     private BigDecimal claimHireMonitoringDetailLabourCost;
     private String claimHireMonitoringDetailNonProvisionReason;
     private Date claimHireMonitoringDetailNextReviewDate;
-    private String claimFinalReviewCho;
-    private String claimFinalReviewIns;
+    private String claimFinalReview;
 
-    public ExcelClaim(Map data) {
+    public ExcelClaim(Map data, Boolean isIns) {
         claimStatus = (String) data.get("status");
         claimType = (ClaimType.values()[ (Integer)data.get("claim_type")]).toString();
         claimChoReference = (String) data.get("cho_reference");
@@ -225,8 +224,14 @@ public class ExcelClaim {
         claimCustomerHpiVehicleCapacity = (String) data.get("customer_hpi_vehicle_capacity");
         claimCustomerHpiVehicleDoorplan = (String) data.get("customer_hpi_vehicle_doorplan");
         claimCustomerHpiVehicleTransmission = (String) data.get("customer_hpi_vehicle_transmission");
-        claimFinalReviewCho = ((Boolean) data.get("final_review_cho")) ? "Yes" : "No";
-        claimFinalReviewIns = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
+        if (isIns == null) {
+            claimFinalReview = (((Boolean) data.get("final_review_cho")) ? "Yes" : "No") + "(CHO), "
+                    + (((Boolean) data.get("final_review_ins")) ? "Yes" : "No") + "(Ins)";
+        } else if (isIns) {
+            claimFinalReview = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
+        }  else { // CHO
+            claimFinalReview = ((Boolean) data.get("final_review_cho")) ? "Yes" : "No";
+        }
         Boolean canAccessOtherVehicle = (Boolean) data.get("customer_access_other_vehicle");
         if (canAccessOtherVehicle == null)
             claimCustomerCanAccessOtherVehicleDesc = "";
@@ -1474,12 +1479,8 @@ public class ExcelClaim {
         return claimClientVatRegistered;
     }
     
-    public String getClaimFinalReviewCho() {
-        return claimFinalReviewCho;
-    }
-
-    public String getClaimFinalReviewIns() {
-        return claimFinalReviewIns;
+    public String getClaimFinalReview() {
+        return claimFinalReview;
     }
 
 }

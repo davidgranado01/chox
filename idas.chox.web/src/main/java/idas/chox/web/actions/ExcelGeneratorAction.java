@@ -233,7 +233,12 @@ public class ExcelGeneratorAction extends BaseAction {
         int processedClaim = 0;
         LOG.info("Exporting to excel with {} claims.", noClaims);
 
-        List<ExcelClaim> excelClaims = gridExportReport.getExcelClaims(claimIds);
+        Boolean isIns = null;
+        if (this.getIsInsurer())
+            isIns = Boolean.TRUE;
+        else if (this.getIsCHO())
+            isIns = Boolean.FALSE;
+        List<ExcelClaim> excelClaims = gridExportReport.getExcelClaims(claimIds, isIns);
 
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -335,9 +340,6 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("claimHistories", histories);
         excelMap.put("comments", comments);
         excelMap.put("cycle", claimCycle);
-        excelMap.put("isCho", isCho);
-        excelMap.put("isIns", isInsurer);
-        excelMap.put("isChoxAdmin", getIsChoxAdmin());
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();

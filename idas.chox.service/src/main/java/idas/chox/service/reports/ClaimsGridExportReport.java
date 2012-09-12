@@ -242,7 +242,7 @@ public class ClaimsGridExportReport {
         return results;
     }
     
-    public List<ExcelClaim> getExcelClaims(List<Integer> ids) {
+    public List<ExcelClaim> getExcelClaims(List<Integer> ids, Boolean isIns) {
         List<ExcelClaim> results = new ArrayList<ExcelClaim>(ids.size());
         StringBuilder sb = new StringBuilder();
         sb.append("select")
@@ -339,7 +339,7 @@ public class ClaimsGridExportReport {
         LOG.debug("Got details - building data objects");
 
         for(Object obj : result)
-            results.add(new ExcelClaim((Map)obj));
+            results.add(new ExcelClaim((Map)obj, isIns));
 
         LOG.debug("Returning results.");
         return results;
