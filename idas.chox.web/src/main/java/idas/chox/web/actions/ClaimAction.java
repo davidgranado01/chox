@@ -2256,15 +2256,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     + " by " + claim.getFinalReviewByIns().getFullName() + ".";
         } else if (getAuthenticatedUser().isCHOXAdmin() && claim.isFinalReviewCho() && claim.isFinalReviewIns()) {
             return "This invoice had a CHO final review on "
-                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
-                    + " by " + claim.getFinalReviewByIns().getFullName()
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateCho())
+                    + " by " + claim.getFinalReviewByCho().getFullName()
                     + " and an Insurer final review on "
                     + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
                     + " by " + claim.getFinalReviewByIns().getFullName() + ".";
         } else if (getAuthenticatedUser().isCHOXAdmin() && claim.isFinalReviewCho() && !claim.isFinalReviewIns()) {
             return "This invoice had a CHO final review on "
-                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
-                    + " by " + claim.getFinalReviewByIns().getFullName() + ".";
+                    + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateCho())
+                    + " by " + claim.getFinalReviewByCho().getFullName() + ".";
         } else if (getAuthenticatedUser().isCHOXAdmin() && !claim.isFinalReviewCho() && claim.isFinalReviewIns()) {
             return "This invoice had an Insurer final review on "
                     + DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateIns())
