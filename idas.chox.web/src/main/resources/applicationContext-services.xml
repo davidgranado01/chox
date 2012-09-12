@@ -224,6 +224,8 @@
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
                 <ref bean="AwaitingLiabilityResolution" />
+                <ref bean="FinalReviewCho" />
+                <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoicesToBeAssigned" />

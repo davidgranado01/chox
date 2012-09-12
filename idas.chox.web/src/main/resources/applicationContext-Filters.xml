@@ -445,5 +445,31 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
+
+     <bean id="FinalReviewCho" class="idas.chox.service.filters.FinalReview" >
+        <property name="name" value="Invoices With Final Review"/>
+        <property name="key" value="FinalReviewCho"/>
+        <property name="status" value="AwaitingLiabilityResolution"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
     
+     <bean id="FinalReviewIns" class="idas.chox.service.filters.FinalReview" >
+        <property name="name" value="Invoices With Final Review"/>
+        <property name="key" value="FinalReviewIns"/>
+        <property name="status" value="AwaitingLiabilityResolution"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
 </beans>

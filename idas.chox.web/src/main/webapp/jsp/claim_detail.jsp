@@ -532,6 +532,14 @@
         <s:action name="getClaimEscalatedToSupervisorAlert" namespace="/prv/p" executeResult="true"></s:action>
     </s:if>
 
+    <s:if test="isFinalReview">
+        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+            <div class="status-info">
+                <s:property value="finalReviewMessage" />
+            </div> 
+        </div>
+    </s:if>
+
     <s:if test="notificationAccessibility.userViewingNotificationAccessibility">
         <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">
             This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
