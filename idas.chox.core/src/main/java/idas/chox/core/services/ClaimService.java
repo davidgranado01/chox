@@ -10,7 +10,7 @@ public interface ClaimService extends DataService {
 
     public Claim getClaim(int id);
 
-    public List getExcelClaims(List<Integer> ids);
+    public List getExcelClaims(List<Integer> ids, Boolean isIns);
     public List getExcelInvoices(List<Integer> ids);
     public List getExcelComments(List<Integer> ids);
     public List getExcelHistory(List<Integer> ids);
