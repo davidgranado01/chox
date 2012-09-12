@@ -274,8 +274,8 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsChoDiscountFeePaid;
     private BigDecimal paymentDetailsInsurerDiscountFeePaid;
     private BigDecimal paymentDetailsFinalPayment;
-    
     private String claimType;
+    private String finalReview;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
@@ -291,6 +291,14 @@ public class ClaimFileReportData {
             liabilityStatus = "";
         else
             liabilityStatus = claim.getLiabilityStatus().toString();
+        if (currentUser.isAnInsurer()) {
+            finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
+        } else if (currentUser.isCHO()) {
+            finalReview = claim.isFinalReviewCho() ? "Yes" : "No";
+        } else if (currentUser.isCHOXAdmin()) {
+            finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
+                    + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
+        }
         if (claim.getPolicyHolderContactDate() != null)
             contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
         if (claim.getClaimOwner() != null)
@@ -2645,6 +2653,10 @@ public class ClaimFileReportData {
 
     public void setOriginalInvoiceTotalToPay(BigDecimal originalInvoiceTotalToPay) {
         this.originalInvoiceTotalToPay = originalInvoiceTotalToPay;
+    }
+
+    public String getFinalReview() {
+        return finalReview;
     }
 
 }
