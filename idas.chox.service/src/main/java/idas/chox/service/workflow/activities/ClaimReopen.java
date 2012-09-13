@@ -39,9 +39,11 @@ public class ClaimReopen extends BaseActivity {
         LOG.debug("Re-opening (reverting) claim: {} (id={})", claim.getChoReference(), claim.getId());
         if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim re-opened for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
-//        claim.setStatus(claim.getPreviousStatus());
-        // Close open tasks on claim
-            taskService.autoUndoCompleteTasksForClaim(claim.getId());
+            // Re-open automatically closed tasks on a re-opened claim
+            if (!ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
+                    && ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
+                    && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus()))
+                taskService.autoUndoCompleteTasksForClaim(claim.getId());
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
                             claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)

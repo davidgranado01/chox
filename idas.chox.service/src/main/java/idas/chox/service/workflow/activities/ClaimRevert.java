@@ -79,14 +79,14 @@ public class ClaimRevert extends BaseActivity {
         if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}",
                     new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
-            if (reOpenTasks)
+            if (reOpenTasks && !reCloseTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             else if (reCloseTasks)
                 taskService.autoCompleteTasksForClaim(claim.getId());
             // Make sure we have a BRE Band
             if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus()) && getCurrentUser().isCHO()) {
                 // CHO has reverted back from InvoicePaymentLogged - add a note
-                Comment comment = null;
+                Comment comment;
                 if (amountReceived == null)
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)

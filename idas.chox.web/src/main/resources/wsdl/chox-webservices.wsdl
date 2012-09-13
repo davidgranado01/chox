@@ -293,7 +293,7 @@
 
             <xsd:complexType name="RentalVehicle">
                 <xsd:sequence>
-                    <xsd:element name="vehicle-registration" type="chx:VRN"/>
+                    <xsd:element name="vehicle-registration" type="chx:String8"/>
                     <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
                     <xsd:element name="vehicle-model" type="chx:String64"/>
                     <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty"/>
