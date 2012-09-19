@@ -1,19 +1,17 @@
 package idas.chox.web.ws;
 
-import com.idaschox.services.chox.Result;
+
 import javax.jws.WebService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.idaschox.services.chox.Chox;
-import com.idaschox.services.chox.SubmissionResult;
-import com.idaschox.services.chox.UploadService;
-//import javax.xml.bind.JAXBElement;
-//import javax.xml.namespace.QName;
+
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import com.idaschox.services.chox.*;
 
 /**
  *
@@ -56,6 +54,13 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
 
         UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
         return uploadServiceBean.reopenClaim(supplierReference);
+    }
+    
+    @Override
+    public Result updateECD(EcdParam ecdParam) {
+
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.updateECD(ecdParam);
     }
 
     @Override

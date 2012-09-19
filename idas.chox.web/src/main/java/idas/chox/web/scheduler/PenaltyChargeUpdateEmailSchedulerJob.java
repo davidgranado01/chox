@@ -4,15 +4,26 @@ package idas.chox.web.scheduler;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.util.DateHelper;
 import org.springframework.security.access.annotation.Secured;
+
+import idas.chox.core.services.SchedulerPrivilegedUserService;
+import idas.chox.core.util.DateHelper;
 
 public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
+    private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
 
+    @Override
+    public void execute() throws JobExecutionException {
+        setPrivilegedUsers(schedulerPrivilegedUserService.getPenaltyChargeUpdatePrivilegedUsers());
+        super.execute();
+    }
+    
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -90,5 +101,9 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
+    }
+
+    public void setSchedulerPrivilegedUserService(SchedulerPrivilegedUserService schedulerPrivilegedUserService) {
+        this.schedulerPrivilegedUserService = schedulerPrivilegedUserService;
     }
 }

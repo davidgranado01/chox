@@ -35,6 +35,7 @@
             <xsd:element name="supplierReference1" type="chx:SupplierReference"/>
             <xsd:element name="supplierReference2" type="chx:SupplierReference"/>
             <xsd:element name="result" type="chx:Result"/>
+            <xsd:element name="ecdParam" type="chx:ECDParam"/>
 
     <!-- Type Definitions -->
             <!-- Non-empty string -->
@@ -144,7 +145,7 @@
             <xsd:simpleType name="DateTime-or-empty">
                 <xsd:union memberTypes="xsd:dateTime chx:Empty-string" />
             </xsd:simpleType>
-
+            
             <xsd:simpleType name="YesNoType">
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Y"/>
@@ -730,6 +731,15 @@
                     <xsd:element name="errorMessage" minOccurs="0" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
+            
+            <xsd:complexType name="ECDParam">
+                <xsd:sequence>
+                    <xsd:element name="supplierReference" type="chx:NonEmptyString"/>
+                    <xsd:element name="ecdDate" type="xsd:dateTime"/>
+                    <xsd:element name="delayReason" type="chx:NonEmptyString"/>
+                    <xsd:element name="supportingNote" type="chx:NonEmptyString"/>
+                </xsd:sequence>
+            </xsd:complexType>
 
         </xsd:schema>
 
@@ -759,6 +769,10 @@
     <wsdl:message name="result">
         <wsdl:part element="chx:result" name="result" />
     </wsdl:message>
+    
+    <wsdl:message name="ecdParam">
+        <wsdl:part element="chx:ecdParam" name="ecdParam" />
+    </wsdl:message>
 
     <wsdl:portType name="UploadService">
         <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
@@ -784,7 +798,11 @@
             <wsdl:input message="tns:supplierReference2" name="supplierReference"/>
             <wsdl:output message="tns:result" name="result"/>
         </wsdl:operation>
-
+        
+        <wsdl:operation name="updateECD">
+            <wsdl:input message="tns:ecdParam" name="ecdParam"/>
+            <wsdl:output message="tns:result" name="result"/>
+        </wsdl:operation>
 
     </wsdl:portType>
 
@@ -837,6 +855,16 @@
             </wsdl:output>
         </wsdl:operation>
 
+        <wsdl:operation name="updateECD">
+            <soap:operation soapAction="http://www.idaschox.com/services/UploadService/updateECD" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
     </wsdl:binding>
 
 

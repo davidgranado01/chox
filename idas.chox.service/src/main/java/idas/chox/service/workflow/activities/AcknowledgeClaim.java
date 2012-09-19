@@ -8,7 +8,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
-import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

@@ -13,7 +13,7 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 import java.util.ArrayList;
 
 public class ClaimPending extends BaseActivity {

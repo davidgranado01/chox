@@ -15,7 +15,7 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 public class ClaimReferToFnol extends BaseActivity {
 

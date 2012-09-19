@@ -1,4 +1,4 @@
-package idas.chox.service.notifications;
+package idas.chox.data.notifications;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Notification;

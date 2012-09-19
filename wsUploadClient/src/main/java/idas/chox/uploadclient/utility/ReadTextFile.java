@@ -1,4 +1,4 @@
-package idas.chox.uploadclient;
+package idas.chox.uploadclient.utility;
 
 import java.io.*;
 

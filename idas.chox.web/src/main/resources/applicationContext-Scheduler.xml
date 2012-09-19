@@ -47,16 +47,15 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
 		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
 		
         <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
-        <property name="privilegedUsers" value="${refUpdate_privilegedUsers}"/>
         <property name="bccReceivers" value="${refUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${refUpdate_emailSubject}"/>
-        <property name="updateUserName" value="${refUpdate_updateUserName}"/>
-        <property name="updatePassword" value="${refUpdate_updatePassword}"/>
 		
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
@@ -75,17 +74,41 @@
         <property name="claimService" ref="claimService" />
         <property name="invoiceService" ref="invoiceService" />
         <property name="mailUtil" ref="mailUtil" />
+        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
 		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
 		
         <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
-        <property name="privilegedUsers" value="${penUpdate_privilegedUsers}"/>
         <property name="bccReceivers" value="${penUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${penUpdate_emailSubject}"/>
-        <property name="updateUserName" value="${penUpdate_updateUserName}"/>
-        <property name="updatePassword" value="${penUpdate_updatePassword}"/>
+
+        <property name="smtpHostName" value="${smtpHostName}"/>
+        <property name="smtpPort" value="${smtpPort}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
+        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
 		
+    </bean>
+    
+    <bean id="ecdUpdateEmailJob" class="idas.chox.web.scheduler.ECDUpdateSchedulerJob">
+        <property name="imapMailReceiver" ref="imapMailReceiver"/>
+        <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
+        <property name="xlsFileParser" ref="xlsFileParser"/>
+        <property name="claimService" ref="claimService" />
+        <property name="mailUtil" ref="mailUtil" />
+        <property name="securityInfoProvider" ref="securityInfoProvider" />
+        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+		
+        <property name="emailAccount" value="${emailAccount}"/>
+        <property name="emailAccountPassword" value="${emailAccountPassword}"/>
+		
+        <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
+        <property name="bccReceivers" value="${ECDUpdate_bccReceivers}"/>
+        <property name="emailSubject" value="${ECDUpdate_emailSubject}"/>
+
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
@@ -110,28 +133,39 @@
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
+    
+    <bean id="ecdUpdateMailJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="ecdUpdateEmailJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
 
 	<!-- Cron Trigger -->
-    <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
     </bean> 
-    <bean id="cronRefMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="cronRefMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 0,30 7-19 ? * 2-6" /> 
     </bean> 
-    <bean id="cronRefMailUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="cronRefMailUpdateTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 0,30 8-14 ? * 1,7" /> 
     </bean> 
         
-    <bean id="cronPenaltyMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="cronPenaltyMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="penaltyStartDateUpdateEmailJobDetail" /> 
         <property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
     </bean> 
+    
+    <bean id="cronECDMailUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
+        <property name="cronExpression" value="0 6/30 7-19 ? * 2-6" /> 
+    </bean> 
 
 
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="schedulerFactoryBeanWithShutdownDelay" class="idas.chox.web.scheduler.SchedulerFactoryBeanWithShutdownDelay" destroy-method="destroy">
         <property name="autoStartup" value="${scheduler.active}" />
         <property name="quartzProperties">
             <props>
@@ -144,6 +178,7 @@
                 <ref bean="referenceUpdateMailJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
                 <ref bean="penaltyStartDateUpdateEmailJobDetail" />
+                <ref bean="ecdUpdateMailJobDetail" />
             </list>
         </property>
         <property name="triggers">
@@ -152,8 +187,9 @@
                 <ref bean="cronRefMailUpdateTriggerWeekend" />
                 <ref bean="cronPenaltyMailUpdateTriggerWeek" />
                 <ref bean="cronRefDbUpdateTriggerWeek" />
+                <ref bean="cronECDMailUpdateTrigger" />
             </list>
         </property>
     </bean>
-    
+
 </beans>

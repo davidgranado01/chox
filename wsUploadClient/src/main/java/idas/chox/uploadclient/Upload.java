@@ -3,25 +3,33 @@ package idas.chox.uploadclient;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import com.idaschox.services.chox.UploadService;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import java.io.File;
-import java.io.FileReader;
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.kohsuke.args4j.CmdLineException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.InputStream;
-import java.util.List;
-import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.kohsuke.args4j.CmdLineParser;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.idaschox.services.chox.UploadService;
+
+import idas.chox.uploadclient.activity.CloseClaim;
+import idas.chox.uploadclient.activity.ECDUpdate;
+import idas.chox.uploadclient.activity.PaymentReceived;
+import idas.chox.uploadclient.activity.ReopenClaim;
+import idas.chox.uploadclient.activity.UploadBordereau;
 
 /**
  *
@@ -128,8 +136,10 @@ public class Upload {
                 }
                 
             } else {
-                // File exists - is it a claim bordereau file or a list of CHO references?
-                if (isXmlBordereau(fileName)) {
+                if (optionsBean.isUpdateECD() && fileName.endsWith("xls")) {
+                    ECDUpdate.process(uploadService, fileName);
+                }
+                else if (isXmlBordereau(fileName)) {
                     UploadBordereau.process(uploadService, fileName);
                 }
                 else {

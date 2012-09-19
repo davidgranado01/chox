@@ -16,4 +16,6 @@ public interface HireMonitoringEcdService {
     public void saveHireMonitoringEcd(HireMonitoringEcd engineerReport);
 
     public Date getLatestHireMonitoringECDDate(Claim claim);
+    
+    public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd, boolean isUpdateInsurer);
 }

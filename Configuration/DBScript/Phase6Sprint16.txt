@@ -1,0 +1,21 @@
+--------------------------------------------------
+-- 6.16.2 - Ability to update ECDs through Excel
+--------------------------------------------------
+
+CREATE TABLE email_update_user
+(
+id serial NOT NULL,
+email character varying(256) NOT NULL,
+user_name character varying(256) NOT NULL,
+password character varying(256) NOT NULL,
+ecd_update boolean DEFAULT false,
+ref_update boolean DEFAULT false,
+penalty_update boolean DEFAULT false
+);
+GRANT SELECT ON TABLE email_update_user TO chox_user;
+
+
+----------------------
+--- End of 6.16.2 --
+----------------------
+

@@ -236,4 +236,22 @@ public class ClaimStatus {
                 || status.equals(ClaimStatus.MANUAL_INVOICE_PAID)
                 || status.equals(ClaimStatus.MANUAL_INVOICE_REJECTED);
     }
+    
+    public static List<String> getPreInvoiceStatus() {
+        
+        List<String> preInvoiceStatus = new ArrayList<String>();
+        preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
+        preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_ROUTED);
+        preInvoiceStatus.add(CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        preInvoiceStatus.add(CLAIM_REFERRED_TO_FNOL);
+        preInvoiceStatus.add(CLAIM_REF_TO_ENG);
+        preInvoiceStatus.add(CLAIM_UPDATE_BY_ENG);
+        preInvoiceStatus.add(CLAIM_AWAITING_CAR_HIRE_INFO);
+        preInvoiceStatus.add(CLAIM_AWAITING_INVOICE_DATA);
+        preInvoiceStatus.add(CLAIM_REJECTION_CONTESTED);
+        preInvoiceStatus.add(CLAIM_REJECTED);
+        preInvoiceStatus.add(SUBSCRIBER_CLAIM_REJECTED);
+        preInvoiceStatus.add(CLAIM_PENDING);
+        return preInvoiceStatus;
+    }
 }

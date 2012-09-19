@@ -1,4 +1,4 @@
-package idas.chox.service.notifications;
+package idas.chox.data.notifications;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,8 @@
-package idas.chox.web.scheduler;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.uploadclient.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,3 +136,4 @@ public class XlsFileParser {
     
      
 }
+
