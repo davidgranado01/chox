@@ -4,6 +4,8 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.util.DateHelper;
+
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,10 +24,8 @@ public class HistoryViewData implements Comparable<HistoryViewData> {
     private boolean isOld;
 
     public HistoryViewData(History history) {
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
         this.id = history.getId();
-        this.createdDate = dateFormat.format(history.getCreatedDate());
+        this.createdDate =  DateHelper.getLocalDateTimeFormat().format(history.getCreatedDate());
         this.narrative = history.getNarrative();
         this.isOld = history.getIsOld();
         

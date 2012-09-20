@@ -21,10 +21,8 @@ public class CommentViewData {
     private String delete = "";
 
     public CommentViewData(Comment comment,WebUser authenticatedUser) {
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
         this.id = comment.getId();
-        this.createdDate = dateFormat.format(comment.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(comment.getCreatedDate());
         this.comment = comment.getComment();
         this.visibilityType = comment.getVisibilityType();
 

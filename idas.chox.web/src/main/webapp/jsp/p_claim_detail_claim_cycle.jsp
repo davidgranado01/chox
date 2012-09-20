@@ -17,7 +17,7 @@
             fields:
                 [
                 {name:'reverted'},
-                {name:'modifiedDate', type: 'date', dateFormat: 'd/m/Y H:i:s'},
+                {name:'modifiedDate', type: 'date', dateFormat: 'd/m/Y H:i'},
                 {name:'modifiedBy'},
                 {name:'status'}
             ]
@@ -29,7 +29,7 @@
             reader:auditTrailJsonReader
         });
 
-        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i:s');
+        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
         auditTrailData.setDefaultSort('modifiedDate', 'desc');
 
         auditGrid = new Ext.grid.GridPanel({

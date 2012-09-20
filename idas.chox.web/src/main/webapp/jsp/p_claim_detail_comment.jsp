@@ -30,7 +30,7 @@
             totalProperty: 'totalCount', root: 'results', fields:[
                 {name:'id'},
                 {name:'createdBy'},
-                {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y H:i:s'},
+                {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y H:i'},
                 {name:'comment'},
                 {name:'visibilityType'},
                 {name:'delete'}]
@@ -42,7 +42,7 @@
         });
 
         commentsDataStore.setDefaultSort('id', 'desc');
-        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i:s');
+        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
 
         commentsGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:commentOnClick},
