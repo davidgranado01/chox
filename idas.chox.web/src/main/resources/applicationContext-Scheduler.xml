@@ -205,19 +205,19 @@
         <property name="jobDetail" ref="penaltyStartDateUpdateEmailJobDetail" /> 
         <property name="cronExpression" value="0 7/5 17-18 ? * 2-6" /> 
     </bean> 
-    <bean id="addMissingEcdTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="addMissingEcdTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="addMissingEcdTaskJobDetail" /> 
         <property name="cronExpression" value="0 15 5 ? * 1-7" /> 
     </bean> 
-    <bean id="addInvoicePenaltyTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="addInvoicePenaltyTaskTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="addInvoicePenaltyTaskJobDetail" /> 
         <property name="cronExpression" value="0 17 5 ? * 1-7" /> 
     </bean> 
-    <bean id="applyAutoPenaltyChargeTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="applyAutoPenaltyChargeTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="applyAutoPenaltyChargeJobDetail" /> 
         <property name="cronExpression" value="0 1 0 ? * 1-7" /> 
     </bean> 
-    <bean id="updateDashboardTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="updateDashboardTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateDashboardJobDetail" /> 
         <property name="cronExpression" value="0 30 6,10,12,14,16,18 ? * 1-7" /> 
     </bean>
