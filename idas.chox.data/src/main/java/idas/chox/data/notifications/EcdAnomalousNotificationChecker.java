@@ -1,10 +1,11 @@
-package idas.chox.service.notifications;
+package idas.chox.data.notifications;
+
+import java.util.Date;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Notification;
 import idas.chox.core.notifications.AnomalousCheck;
 import idas.chox.core.util.DateHelper;
-import java.util.Date;
 
 /**
  *

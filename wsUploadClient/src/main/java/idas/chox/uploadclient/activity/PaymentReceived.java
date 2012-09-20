@@ -1,14 +1,16 @@
-package idas.chox.uploadclient;
+package idas.chox.uploadclient.activity;
 
-import com.idaschox.services.chox.Result;
-import com.idaschox.services.chox.UploadService;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.idaschox.services.chox.Result;
+import com.idaschox.services.chox.UploadService;
 
 /**
  *

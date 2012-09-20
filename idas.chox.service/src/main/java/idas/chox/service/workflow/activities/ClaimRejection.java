@@ -16,7 +16,7 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 public class ClaimRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejection.class);

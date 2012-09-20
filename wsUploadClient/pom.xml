@@ -118,6 +118,14 @@
             <name>Repository for library[metro]</name>
         </repository>
     </repositories-->
+<!--    <repositories>
+        <repository>
+            <url>http://repo1.maven.org/maven2/</url>
+            <id>swing-layout</id>
+            <layout>default</layout>
+            <name>Repository for library Library[swing-layout]</name>
+        </repository>
+    </repositories>-->
     <pluginRepositories>
         <pluginRepository>
             <name>java.net</name>
@@ -180,6 +188,17 @@
             <version>2.0.16</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
+            <type>jar</type>
+        </dependency>
+<!--        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-layout</artifactId>
+            <version>1.0.3</version>
+        </dependency>-->
     </dependencies>
 
     <reporting>

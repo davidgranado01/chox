@@ -1,16 +1,17 @@
 package idas.chox.web.ws;
 
-import idas.chox.web.security.WebUserService;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
+
 import org.apache.ws.security.WSPasswordCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import idas.chox.web.security.WebUserService;
 
 /**
  *

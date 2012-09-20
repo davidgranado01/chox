@@ -1,18 +1,20 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.ReasonOfDelay;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.service.notifications.ClaimAnomalousChecker;
-import idas.chox.service.notifications.EcdUpdatedNotification;
-import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.ReasonOfDelay;
+import idas.chox.core.services.HireMonitoringEcdService;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.ReasonOfDelayService;
+import idas.chox.data.notifications.ClaimAnomalousChecker;
+import idas.chox.service.security.ApplicationAccessibility;
 
 /**
  *
@@ -28,6 +30,7 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
     private int reasonOfDelayId = -1;
     private ClaimAnomalousChecker newECDAddedChecker;
     private boolean isUpdateInsurer;
+    private HireMonitoringEcdService hireMonitoringEcdService;
 
     @Override
     String getTabName() {
@@ -49,13 +52,7 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
             if (reasonOfDelayId > 0) {
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());
-                claim.addHireMonitoringEcd(model);
-                List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
-                claim.AddNotifications(newECDAddedChecker.getAnomalousChecks(), notifications);
-
-                if (isIsUpdateInsurer()) {
-                    claim.AddNotification(new EcdUpdatedNotification());
-                }
+                hireMonitoringEcdService.addNewHireMonitoringEcd(claim, model, isIsUpdateInsurer());
                 // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.
                 updateModelInSession(Arrays.asList(claim));
                 super.updateModel();
@@ -150,5 +147,9 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
 
     public void setReasonOfDelayId(int reasonOfDelayId) {
         this.reasonOfDelayId = reasonOfDelayId;
+    }
+
+    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
+        this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
 }

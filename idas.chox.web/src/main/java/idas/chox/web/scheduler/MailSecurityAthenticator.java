@@ -9,6 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import idas.chox.core.model.EmailUpdateUser;
+
 public class MailSecurityAthenticator {
 
 	private static final Logger LOG = LoggerFactory
@@ -22,16 +24,16 @@ public class MailSecurityAthenticator {
 	 * @param String sender 
 	 * @return
 	 */
-	public boolean isPrivilegedSender(List<String> listOfPrivilegedSenders,
+	public EmailUpdateUser isPrivilegedSender(List<EmailUpdateUser> listOfPrivilegedSenders,
 			String sender) {
-		for (String priviligedSender : listOfPrivilegedSenders) {
-			if (priviligedSender.trim().equalsIgnoreCase(sender.trim())) {
+		for (EmailUpdateUser priviligedSender : listOfPrivilegedSenders) {
+			if (priviligedSender.getEmail().trim().equalsIgnoreCase(sender.trim())) {
                 LOG.debug("Sender '{}' is authenticated.", sender);
-				return true;
+				return priviligedSender;
 			}
 		}
 		LOG.debug("Email sender with address '{}' is not authenticated.", sender);
-		return false;
+		return null;
 	}
 
 	/**

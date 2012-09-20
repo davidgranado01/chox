@@ -1,15 +1,20 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.services.HireMonitoringEcdService;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.HireMonitoringEcdService;
+import idas.chox.data.notifications.ClaimAnomalousChecker;
+import idas.chox.data.notifications.EcdUpdatedNotification;
 
 /**
  *
@@ -17,6 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class HireMonitoringEcdServiceImpl extends SecureDataService implements HireMonitoringEcdService {
 
+    private ClaimAnomalousChecker newECDAddedChecker;
+    private ClaimService claimService;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setNewECDAddedChecker(ClaimAnomalousChecker claimAnomalousChecker) {
+        this.newECDAddedChecker = claimAnomalousChecker;
+    }
+     
     @Override
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringEcd.class);
@@ -64,4 +80,20 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
 
         return returnECD;
     }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd, boolean isUpdateInsurer) {
+        
+        claim.addHireMonitoringEcd(ecd);
+        List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
+        claim.AddNotifications(newECDAddedChecker.getAnomalousChecks(), notifications);
+
+        if (isUpdateInsurer) {
+            claim.AddNotification(new EcdUpdatedNotification());
+        }
+        
+        claimService.save(claim);
+    }
+
 }

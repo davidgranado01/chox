@@ -1,3 +1,24 @@
+-------------------------------------------------
+-- 6.16.2 - Ability to update ECDs through Excel
+--------------------------------------------------
+
+CREATE TABLE email_update_user
+(
+id serial NOT NULL,
+email character varying(256) NOT NULL,
+user_name character varying(256) NOT NULL,
+password character varying(256) NOT NULL,
+ecd_update boolean DEFAULT false,
+ref_update boolean DEFAULT false,
+penalty_update boolean DEFAULT false
+);
+GRANT SELECT ON TABLE email_update_user TO chox_user;
+
+
+----------------------
+--- End of 6.16.2 --
+----------------------
+
 --------------------------------------------------------------------------------
 -- 6.16.3 - Final Invoice Review Queue
 --------------------------------------------------------------------------------
@@ -241,4 +262,5 @@ GRANT EXECUTE ON FUNCTION update_workgroup_service(integer) TO chox_mi;
 ---------------------------------------------------
 -- End of 6.16.7 seperate dataSource for MI queries 
 ---------------------------------------------------
+
 

@@ -1,18 +1,19 @@
 package idas.chox.web.scheduler;
 
-import static org.junit.Assert.assertEquals;
-import idas.chox.web.BaseWebTest;
-
-import java.util.List;
 import java.util.Properties;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import idas.chox.core.model.EmailUpdateUser;
+import idas.chox.core.services.SchedulerPrivilegedUserService;
+import idas.chox.web.BaseWebTest;
 
 
 public class MailSecurityAthenticatorTest extends BaseWebTest {
@@ -22,7 +23,10 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
 	
 	@Autowired
 	private MailUtil mailUtil;
-	
+        
+        @Autowired
+        private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
+        
 	private Properties props;
 	
 	private static final String sender =  "patrik.bego@sherwoodcompliance.co.uk";
@@ -42,8 +46,10 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
      */
     @Test
     public void testIsPrivilegedSender()  {
-        List<String> listOfPrivilegedSenders = mailUtil.parseStringToList(props.getProperty("penUpdate_privilegedUsers"), ",");
-        boolean result = mailSecurityAthenticator.isPrivilegedSender(listOfPrivilegedSenders, sender);
+        boolean result = false;
+        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(schedulerPrivilegedUserService.getPenaltyChargeUpdatePrivilegedUsers(), sender);
+        if (schedulerPrivilegedUser != null)
+            result = true;
         assertEquals(true, result);
     }
 

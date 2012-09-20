@@ -1,25 +1,31 @@
-package idas.chox.uploadclient;
+package idas.chox.uploadclient.activity;
 
-import com.idaschox.services.chox.Chox;
-import com.idaschox.services.chox.SubmissionResult;
-import com.idaschox.services.chox.UploadService;
-import java.io.IOException;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.InputStream;
-import java.util.List;
+
+import com.idaschox.services.chox.Chox;
+import com.idaschox.services.chox.SubmissionResult;
+import com.idaschox.services.chox.UploadService;
+import idas.chox.uploadclient.MyErrorListener;
+import idas.chox.uploadclient.MyFilter;
+import idas.chox.uploadclient.utility.ReadTextFile;
 
 
 /**
@@ -77,7 +83,7 @@ public class UploadBordereau {
                     }
                     continue;
                 }
-                LOG.debug("Processing claim file: '" + filename + "'");
+                LOG.debug("Processing claim file: '{}'.", filename);
 
 
                 File tmpFile = filenames[i];
@@ -87,10 +93,11 @@ public class UploadBordereau {
 
                 if (tmpFile.exists()) {
 
-                    LOG.debug("Upload file created: '" + tmpFile.getPath() + "'");
+                    LOG.debug("Upload file created: '{}'.", tmpFile.getPath());
                     String xml2Upload = ReadTextFile.getContents(tmpFile);
                     LOG.trace("    Contents of file to be uploaded:\n<<<<<<<<<<<<< start >>>>>>>>>>>>>\n{}"
                             + "\n<<<<<<<<<<<<<  End  >>>>>>>>>>>>>", xml2Upload);
+
 
                     try {
 
@@ -129,6 +136,7 @@ public class UploadBordereau {
                 LOG.info("    Process Status: {}", result.getProcessStatus());
                 LOG.info("    Claim Status: {}", result.getClaimStatus());
                 LOG.info("    Upload Status: {}", result.getUploadStatus());
+
                 if (result.getMessages() != null) {
                     List<String> messages = result.getMessages().getMessages();
                     for (String m : messages) {

@@ -4,15 +4,26 @@ package idas.chox.web.scheduler;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.util.DateHelper;
 import org.springframework.security.access.annotation.Secured;
+
+import idas.chox.core.services.SchedulerPrivilegedUserService;
+import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
+    private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
 
+    @Override
+    public void execute() throws JobExecutionException {
+        setPrivilegedUsers(schedulerPrivilegedUserService.getReferenceNumberUpdatePrivilegedUsers());
+        super.execute();
+    }
+    
     @Secured({"ROLE_CHO"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -35,7 +46,7 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 String oldReference = cells.get(0).trim();
                 String newReference = cells.get(1).trim();
 
-                if (oldReference != null && !oldReference.equals("")) {
+                if (oldReference != null && !oldReference.isEmpty() && newReference != null && !newReference.isEmpty()) {
                     int status = getClaimService().updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
                     String statusString = null;
                     if (status == 0)
@@ -97,6 +108,10 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
+    }
+
+    public void setSchedulerPrivilegedUserService(SchedulerPrivilegedUserService schedulerPrivilegedUserService) {
+        this.schedulerPrivilegedUserService = schedulerPrivilegedUserService;
     }
 
 }

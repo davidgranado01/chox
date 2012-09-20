@@ -1,32 +1,33 @@
 package idas.chox.web.ws;
 
-import com.idaschox.services.chox.Result;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.idaschox.services.chox.Chox;
-import com.idaschox.services.chox.ClaimProcessStatus;
-import com.idaschox.services.chox.ClaimStatus;
-import com.idaschox.services.chox.ClaimUploadStatus;
-import com.idaschox.services.chox.SubmissionResult;
+import org.springframework.security.access.AccessDeniedException;
+
+import com.idaschox.services.chox.*;
 import com.idaschox.services.chox.SubmissionResult.Messages;
-//import javax.xml.bind.JAXBElement;
-//import javax.xml.namespace.QName;
+
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import org.springframework.security.access.AccessDeniedException;
 
 
 public class UploadServiceBean {
@@ -38,7 +39,10 @@ public class UploadServiceBean {
     private UploadClaimXMLService uploadClaimXMLService;
     private ClaimService claimService;
     private WebBordereauService webBordereauService;
+    private HireMonitoringEcdService hireMonitoringEcdService;
     private ActivityFactory activityFactory;
+    private SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     
      public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
         this.uploadClaimXMLService = uploadClaimXMLService;
@@ -55,7 +59,10 @@ public class UploadServiceBean {
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
-    
+
+    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
+        this.hireMonitoringEcdService = hireMonitoringEcdService;
+    }
     
     public SubmissionResult uploadBordereau(Chox chox) {
         SubmissionResult result = new SubmissionResult();
@@ -368,5 +375,51 @@ public class UploadServiceBean {
 
         return result;
     }
+    
+    public Result updateECD(EcdParam ecdParam) {
 
+        Result result = new Result();
+        Claim claim = null;
+        String supplierReference = ecdParam.getSupplierReference();
+        Date ecdDate = ecdParam.getEcdDate().toGregorianCalendar().getTime();
+        String delayReason = ecdParam.getDelayReason();
+        String supportingNote = ecdParam.getSupportingNote();
+        
+        try {
+            claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
+            boolean isValidStatus = false;
+            if (claim == null) {
+                LOG.debug("No Such Claim Reference {}", supplierReference);
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+            } else {
+                for (String status : idas.chox.core.model.ClaimStatus.getPreInvoiceStatus()) {
+                    if (!claim.getStatus().equals(status)) {
+                        isValidStatus = true;
+                        break;
+                    }
+                }
+                if (!isValidStatus) {
+                    result.setStatus(false);
+                    result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
+                } else {
+                    HireMonitoringEcd ecd = new HireMonitoringEcd();
+                    ecd.setEcdDate(ecdDate);
+                    ecd.setReason(delayReason);
+                    ecd.setSupportingNote(supportingNote);
+                    LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecd.getEcdDate().toString(), ecd.getReason(), ecd.getSupportingNote()});
+                    hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd, true);
+                    result.setStatus(true);
+                }
+            }
+        } catch (AccessDeniedException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Error processing request: " + ex.getMessage());
+        }
+
+        return result;
+    }
 }

@@ -27,6 +27,8 @@ public class Options {
     private boolean close;
     @Option(name = "-reopen", usage = "Re-open claim(s)")
     private boolean reopen;
+    @Option(name = "-ecdupdate", usage = "update ECD")
+    private boolean updateECD;
 
     
     public List<String> getArguments() {
@@ -75,6 +77,14 @@ public class Options {
 
     public void setReopen(boolean reopen) {
         this.reopen = reopen;
+    }
+
+    public boolean isUpdateECD() {
+        return updateECD;
+    }
+
+    public void setUpdateECD(boolean updateECD) {
+        this.updateECD = updateECD;
     }
 
 }

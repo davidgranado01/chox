@@ -1,10 +1,5 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InvoiceService;
-import idas.chox.core.util.EmailHelper;
-
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -14,10 +9,21 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import idas.chox.core.model.EmailUpdateUser;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InvoiceService;
+import idas.chox.core.util.EmailHelper;
 
 /**
  *
@@ -30,11 +36,9 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private XlsFileParser xlsFileParser;
     private String emailAccount;
     private String emailAccountPassword;
-    private String updateUserName;
-    private String updatePassword;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private MailUtil mailUtil;
-    private String privilegedUsers;
+    private List<EmailUpdateUser> privilegedUsers;
     private String bccReceivers;
     private String emailSubject;
     private String smtpHostName;
@@ -46,13 +50,16 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private InvoiceService invoiceService;
     private SecurityInfoProvider securityInfoProvider;
     protected static final String email_date_format = "dd MMMM yyyy";
+    private boolean existingTransaction;
+    private Session session;
+    private SessionFactory sessionFactory;
 
     protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
     
     protected abstract String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap);
 
     @Override
-    public final void execute() throws JobExecutionException {
+    public void execute() throws JobExecutionException {
         String sender = null;
         try {
             InternetAddress internetAddress = new InternetAddress();
@@ -65,8 +72,9 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
             for (Message message : listOfmails) {
                 sender = mailUtil.getSender(message);
-                if (mailSecurityAthenticator.isPrivilegedSender(mailUtil.parseStringToList(privilegedUsers, ","), sender)) {
-                    mailSecurityAthenticator.authenticateSender(updateUserName, updatePassword);
+                EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(privilegedUsers, sender);
+                if (schedulerPrivilegedUser != null) {
+                    mailSecurityAthenticator.authenticateSender(schedulerPrivilegedUser.getUserName(), schedulerPrivilegedUser.getPassword());
                     List<InputStream> attachmentStreams = imapMailReceiver.fetchAttachements(message, "xls");
                     Map<Integer, List<String>> xlsDataMap = null;
                     try {
@@ -133,14 +141,6 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         this.emailAccountPassword = emailAccountPassword;
     }
 
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
-    }
-
-    public void setUpdatePassword(String updatePassword) {
-        this.updatePassword = updatePassword;
-    }
-
     public void setMailSecurityAthenticator(
             MailSecurityAthenticator mailSecurityAthenticator) {
         this.mailSecurityAthenticator = mailSecurityAthenticator;
@@ -150,10 +150,10 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         this.mailUtil = mailUtil;
     }
 
-    public void setPrivilegedUsers(String privilegedUsers) {
+    public void setPrivilegedUsers(List<EmailUpdateUser> privilegedUsers) {
         this.privilegedUsers = privilegedUsers;
     }
-
+    
     public void setBccReceivers(String bccReceivers) {
         this.bccReceivers = bccReceivers;
     }
@@ -212,5 +212,28 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
+    }
+    
+    public void handleHibernateTransactionIntricacies() {
+        session = SessionFactoryUtils.getSession(sessionFactory, true);
+        existingTransaction = SessionFactoryUtils.isSessionTransactional(session, sessionFactory);
+        if (existingTransaction) {
+            LOG.info("Found thread-bound Session for Quartz job");
+        } else {
+            TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        }
+    }
+
+    public void releaseHibernateSessionConditionally() {
+        if (existingTransaction) {
+            LOG.info("Not closing pre-bound Hibernate Session after TransactionalQuartzTask");
+        } else {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            SessionFactoryUtils.releaseSession(session, sessionFactory);
+        }
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

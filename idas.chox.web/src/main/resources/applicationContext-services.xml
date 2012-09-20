@@ -279,4 +279,14 @@
         <property name="claimService" ref="claimService" />
     </bean>
     
+    <bean id="schedulerPrivilegedUserService" class="idas.chox.data.services.SchedulerPrivilegedUserServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="newECDAddedChecker" ref="newECDAddedChecker"/>
+        <property name="claimService" ref="claimService"/>
+    </bean>
+    
 </beans>
