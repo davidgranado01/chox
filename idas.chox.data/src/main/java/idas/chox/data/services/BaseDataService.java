@@ -80,7 +80,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         this.getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
-            int result = s.executeUpdate("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
+            s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
@@ -92,11 +92,11 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public void callUpdateDashboard(int userId) throws SQLException {
-        LOG.debug("Calling stored procedure updateDashboard({})....", userId);
+        LOG.debug("Calling stored procedure updatedashboard({})....", userId);
         this.getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
-            int result = s.executeUpdate("select updateDashboard(" + userId + ")");
+            s.execute("select updateDashboard(" + userId + ")");
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
@@ -112,7 +112,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         this.getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
-            int result = s.executeUpdate("select addMissingEcdTask(" + userId + ")");
+            s.execute("select addMissingEcdTask(" + userId + ")");
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
@@ -128,7 +128,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         this.getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
-            int result = s.executeUpdate("select addInvoicePenaltyTask(" + userId + ")");
+            s.execute("select addInvoicePenaltyTask(" + userId + ")");
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
