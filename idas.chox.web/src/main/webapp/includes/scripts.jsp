@@ -13,6 +13,7 @@
 <script src="<%= request.getContextPath()%>/scripts/extjs/RowEditor-3.3.1.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/additional-methods.js" type="text/javascript"></script>
 
 <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
