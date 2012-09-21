@@ -71,6 +71,10 @@ public class ECDUpdate {
                         String ecdDelayReason = cells.get(2).trim();
                         if (ecdDelayReason.isEmpty()) {
                             statusString.append(" No ECD Reason Provided.");
+                        } else {
+                            if (ecdDelayReason.length() > 50) {
+                                statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
+                            }
                         }
 
                         String ecdDelaySuppNote = cells.get(3).trim();

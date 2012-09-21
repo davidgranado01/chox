@@ -1,7 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,6 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
     private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
     private HireMonitoringEcdService hireMonitoringEcdService;
-    private SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     
 
@@ -66,6 +64,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
 
                 String referenceNumber = cells.get(0).trim();
 
+                /* Check is valid referenceNumber provided and claim is in valid status.*/
                 if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
                     statusString.append(" No Claim Reference Provided.");
                 } else {
@@ -88,28 +87,36 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                     }
                 }
                 
+                /* Check is valid ecdDate provided and parse the string date to java date.*/
                 Date ecdDate = null;
                 if (cells.get(1).trim().isEmpty()) {
                     statusString.append(" No ECD Date Provided.");
                 } else {
                     try {
-                        ecdDate = dateFormate.parse(cells.get(1).trim());
+                        ecdDate = DateHelper.getLocalDateFormat().parse(cells.get(1).trim());
                     } catch (ParseException ex) {
                         statusString.append(" Invalid Format For ECD Date.");
                         LOG.error("parse exception thrown for given date {}", cells.get(1).trim(), ex);
                     }
                 }
 
+                /* Check is valid ecdDelayReason provided and it has valid length(<=50 character).*/
                 String ecdDelayReason = cells.get(2).trim();
                 if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
-                    statusString.append(" No ECD Reason Provided.");
+                    statusString.append(" No ECD Delay Reason Provided.");
+                } else {
+                    if (ecdDelayReason.length() > 50) {
+                        statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
+                    }
                 }
 
+                /* Check is valid ecdDelaySuppNote provided.*/
                 String ecdDelaySuppNote = cells.get(3).trim();
                 if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
                     statusString.append(" No Supporting Note Provided.");
                 }
 
+                /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty()) {
                     try {
                         HireMonitoringEcd ecd = new HireMonitoringEcd();
@@ -120,13 +127,14 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd, true);
                         statusString.append("Success: Updated.");
                     } catch (Exception ex) {
-                        statusString.append(" An Internal Error Occurred.");
+                        statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");
                         LOG.error("Exception occured when adding new ECD via email scheduler ecd update job", ex);
                     }
                 } else {
                     statusString.insert(0, "Failed:");
                 }
 
+                /* update the result message into column 5 for each row.*/
                 if (xlsDataMap.get(row).size() < 5) {
                     xlsDataMap.get(row).add(statusString.toString());
                 } else {

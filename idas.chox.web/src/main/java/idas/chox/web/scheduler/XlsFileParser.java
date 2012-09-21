@@ -2,7 +2,6 @@ package idas.chox.web.scheduler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.apache.poi.hssf.usermodel.*;
@@ -13,10 +12,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.util.DateHelper;
+
 public class XlsFileParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(XlsFileParser.class);
-    private SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
     private static final int CELLS_PER_ROW = 4;
 
     /**
@@ -114,7 +114,7 @@ public class XlsFileParser {
                 if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)) {
                     LOG.debug("cell is date formated");
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
-                    cellStringList.add(dateFormate.format(date));
+                    cellStringList.add(DateHelper.getLocalDateFormat().format(date));
                 } else if (myCell != null) {
                     myCell.setCellType(Cell.CELL_TYPE_STRING);
                     cellStringList.add(myCell.getStringCellValue().trim());
