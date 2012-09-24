@@ -128,9 +128,9 @@ public class ECDUpdate {
         }
 
         if (!result.isStatus()) {
-            LOG.error("Failed : ECD update for Claim '{}' : {} ", ecdParam.getSupplierReference(), result.getErrorMessage());
+            LOG.error("Failed : '{}' : {} ", ecdParam.getSupplierReference(), result.getErrorMessage());
         } else {
-            LOG.info("Success : ECD updated for Claim with CHO reference '{}'", ecdParam.getSupplierReference());
+            LOG.info("Success : '{}' : Updated", ecdParam.getSupplierReference());
         }
     }
 }

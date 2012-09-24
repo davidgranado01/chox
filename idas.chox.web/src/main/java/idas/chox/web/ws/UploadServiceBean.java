@@ -391,7 +391,7 @@ public class UploadServiceBean {
             if (claim == null) {
                 LOG.debug("No Such Claim Reference {}", supplierReference);
                 result.setStatus(false);
-                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+                result.setErrorMessage("No Such Claim Reference '" + supplierReference + "'.");
             } else {
                 for (String status : idas.chox.core.model.ClaimStatus.getPreInvoiceStatus()) {
                     if (!claim.getStatus().equals(status)) {
@@ -401,7 +401,7 @@ public class UploadServiceBean {
                 }
                 if (!isValidStatus) {
                     result.setStatus(false);
-                    result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
+                    result.setErrorMessage("Invalid Claim Status '" + claim.getStatus()+"'.");
                 } else {
                     HireMonitoringEcd ecd = new HireMonitoringEcd();
                     ecd.setEcdDate(ecdDate);
