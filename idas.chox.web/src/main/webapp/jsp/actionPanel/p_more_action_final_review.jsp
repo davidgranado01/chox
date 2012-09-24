@@ -21,9 +21,11 @@
             {
                 errorLabelContainer: "#UpdateFinalReviewMessageBox",
                 rules: {
+                    finalReviewRequired : {required:true},
                     finalReviewReason:{required:true}
                 },
                 messages: {
+                    finalReviewRequired: {required:"You must select 'Final Review Required?'"},
                     finalReviewReason: {required:"You must select a 'Final Review Reason'"}
                 }
             });
