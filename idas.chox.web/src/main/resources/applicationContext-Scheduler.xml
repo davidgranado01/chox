@@ -29,9 +29,9 @@
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="bccReceivers" value="${queuedTicketUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${refUpdate_emailSubject}"/>
-        <property name="updateUserName" value="${refUpdate_updateUserName}"/>
-        <property name="updatePassword" value="${refUpdate_updatePassword}"/>
-        <property name="queuedTicketUpdateReceivers" value="${queueTicketUpdate_receivers}"/>
+        <property name="updateUserName" value="${queuedTicketUpdate_UserName}"/>
+        <property name="updatePassword" value="${queuedTicketUpdate_Password}"/>
+        <property name="queuedTicketUpdateReceivers" value="${queuedTicketUpdate_receivers}"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
