@@ -43,7 +43,7 @@ public class Upload {
     private static final String DEFAULT_PASSWORD = "C0mpliance";
 
     private static void printUsageAndExit() {
-        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|ecdupdate] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File>)...");
+        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|paymentreceived|ecdupdate] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File>)...");
         System.exit(-1);
     }
 
@@ -131,7 +131,7 @@ public class Upload {
                 else if (optionsBean.isReopen()) {
                     ReopenClaim.process(uploadService, fileName);
                 }
-                else {
+                else if(optionsBean.isPaymentReceived()) {
                     PaymentReceived.process(uploadService, fileName);
                 }
                 
@@ -139,17 +139,17 @@ public class Upload {
                 if (optionsBean.isUpdateECD() && fileName.endsWith("xls")) {
                     ECDUpdate.process(uploadService, fileName);
                 }
-                else if (isXmlBordereau(fileName)) {
-                    UploadBordereau.process(uploadService, fileName);
-                }
                 else if (optionsBean.isReopen()) {
                     ReopenClaim.process(uploadService, fileName);
                 }
                 else if (optionsBean.isClose()) {
                     CloseClaim.process(uploadService, fileName);
                 }
-                else {
+                else if(optionsBean.isPaymentReceived()) {
                     PaymentReceived.process(uploadService, fileName);
+                }
+                else if (isXmlBordereau(fileName)) {
+                    UploadBordereau.process(uploadService, fileName);
                 }
             }
         }

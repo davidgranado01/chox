@@ -29,6 +29,8 @@ public class Options {
     private boolean reopen;
     @Option(name = "-ecdupdate", usage = "update ECD")
     private boolean updateECD;
+    @Option(name = "-paymentreceived", usage = "Payment Received")
+    private boolean paymentReceived;
 
     
     public List<String> getArguments() {
@@ -85,6 +87,14 @@ public class Options {
 
     public void setUpdateECD(boolean updateECD) {
         this.updateECD = updateECD;
+    }
+
+    public boolean isPaymentReceived() {
+        return paymentReceived;
+    }
+
+    public void setPaymentReceived(boolean paymentReceived) {
+        this.paymentReceived = paymentReceived;
     }
 
 }
