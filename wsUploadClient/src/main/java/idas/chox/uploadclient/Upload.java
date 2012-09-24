@@ -43,7 +43,7 @@ public class Upload {
     private static final String DEFAULT_PASSWORD = "C0mpliance";
 
     private static void printUsageAndExit() {
-        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number>)...");
+        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen|ecdupdate] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number> | <ECD Update Excel File>)...");
         System.exit(-1);
     }
 
