@@ -101,10 +101,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
+                        This claim and it's related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
                     </s:if>
                     <s:else>
-                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice or reject the invoice.
+                        This claim and it's related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to agree the quantum for the invoice or reject the invoice.
                     </s:else>
                 </div>
                 <div class="status-control-set">
