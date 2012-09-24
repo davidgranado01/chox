@@ -10,17 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
-import idas.chox.core.services.SchedulerPrivilegedUserService;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
-    private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
 
     @Override
     public void execute() throws JobExecutionException {
-        setPrivilegedUsers(schedulerPrivilegedUserService.getReferenceNumberUpdatePrivilegedUsers());
+        setPrivilegedUsers(getEmailUpdateUserService().getReferenceNumberUpdatePrivilegedUsers());
+        setPrivilegedUsers(getEmailUpdateUserService().getRefBccReceiver());
         super.execute();
     }
     
@@ -109,9 +108,4 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
     }
-
-    public void setSchedulerPrivilegedUserService(SchedulerPrivilegedUserService schedulerPrivilegedUserService) {
-        this.schedulerPrivilegedUserService = schedulerPrivilegedUserService;
-    }
-
 }

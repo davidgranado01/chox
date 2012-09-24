@@ -12,7 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.model.EmailUpdateUser;
-import idas.chox.core.services.SchedulerPrivilegedUserService;
+import idas.chox.core.services.EmailUpdateUserService;
 import idas.chox.web.BaseWebTest;
 
 
@@ -25,7 +25,7 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
 	private MailUtil mailUtil;
         
         @Autowired
-        private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
+        private EmailUpdateUserService emailUpdateUserService;
         
 	private Properties props;
 	
@@ -47,7 +47,7 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
     @Test
     public void testIsPrivilegedSender()  {
         boolean result = false;
-        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(schedulerPrivilegedUserService.getPenaltyChargeUpdatePrivilegedUsers(), sender);
+        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(emailUpdateUserService.getPenaltyChargeUpdatePrivilegedUsers(), sender);
         if (schedulerPrivilegedUser != null)
             result = true;
         assertEquals(true, result);

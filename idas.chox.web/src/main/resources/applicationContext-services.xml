@@ -270,7 +270,7 @@
         <property name="claimService" ref="claimService" />
     </bean>
     
-    <bean id="schedulerPrivilegedUserService" class="idas.chox.data.services.SchedulerPrivilegedUserServiceImpl" scope="prototype">
+    <bean id="emailUpdateUserService" class="idas.chox.data.services.EmailUpdateUserServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

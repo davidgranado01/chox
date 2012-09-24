@@ -10,6 +10,11 @@ public class EmailUpdateUser extends Entity implements Serializable {
     private boolean ecdUpdate;
     private boolean refUpdate;
     private boolean penaltyUpdate;
+    private boolean refBccReceiver;
+    private boolean ecdBccReceiver;
+    private boolean penaltyBccReceiver;
+    private boolean errorMessageReciver;
+    private boolean active;
 
     public boolean isEcdUpdate() {
         return ecdUpdate;
@@ -59,4 +64,43 @@ public class EmailUpdateUser extends Entity implements Serializable {
         this.refUpdate = refUpdate;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isEcdBccReceiver() {
+        return ecdBccReceiver;
+    }
+
+    public void setEcdBccReceiver(boolean ecdBccReceiver) {
+        this.ecdBccReceiver = ecdBccReceiver;
+    }
+
+    public boolean isPenaltyBccReceiver() {
+        return penaltyBccReceiver;
+    }
+
+    public void setPenaltyBccReceiver(boolean penaltyBccReceiver) {
+        this.penaltyBccReceiver = penaltyBccReceiver;
+    }
+
+    public boolean isRefBccReceiver() {
+        return refBccReceiver;
+    }
+
+    public void setRefBccReceiver(boolean refBccReceiver) {
+        this.refBccReceiver = refBccReceiver;
+    }
+
+    public boolean isErrorMessageReciver() {
+        return errorMessageReciver;
+    }
+
+    public void setErrorMessageReciver(boolean errorMessageReciver) {
+        this.errorMessageReciver = errorMessageReciver;
+    }
 }

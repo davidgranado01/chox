@@ -76,4 +76,4 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         return oResult;
     }
-}
+    }
