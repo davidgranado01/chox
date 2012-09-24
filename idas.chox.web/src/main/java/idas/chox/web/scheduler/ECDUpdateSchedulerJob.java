@@ -17,14 +17,13 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.HireMonitoringEcdService;
-import idas.chox.core.services.SchedulerPrivilegedUserService;
 import idas.chox.core.util.DateHelper;
 
 
 public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
-    private SchedulerPrivilegedUserService schedulerPrivilegedUserService;
+    
     private HireMonitoringEcdService hireMonitoringEcdService;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     
@@ -34,7 +33,8 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
        
         try {
             handleHibernateTransactionIntricacies();
-            super.setPrivilegedUsers(schedulerPrivilegedUserService.getECDUpdatePrivilegedUsers());
+            super.setPrivilegedUsers(getEmailUpdateUserService().getECDUpdatePrivilegedUsers());
+            super.setBccReceivers(getEmailUpdateUserService().getECDBccReceiver());
             super.execute();
         } catch (Exception ex) {
             LOG.error("exception thrown when processing ECD Update Sheduler job.", ex);
@@ -188,11 +188,6 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
         return true;
     }
     
-
-    public void setSchedulerPrivilegedUserService(SchedulerPrivilegedUserService schedulerPrivilegedUserService) {
-        this.schedulerPrivilegedUserService = schedulerPrivilegedUserService;
-    }
-
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }

@@ -24,9 +24,9 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 // TODO: investigate why we cannot access properties directly - if we do this we get null values
 //            LOG.debug("queuedTicketUpdateReceivers: {}", queuedTicketUpdateReceivers);
 //            LOG.debug("queuedTicketUpdateReceivers: {}", getQueuedTicketUpdateReceivers());
-            LOG.debug("properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}, {}", 
+            LOG.debug("properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}", 
                     new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
-                            getSmtpEmailUser(), getSmtpEmailPassword(), getErrorMessageReceivers(),
+                            getSmtpEmailUser(), getSmtpEmailPassword(), 
                             getUpdateUserName(),getUpdatePassword(),getQueuedTicketUpdateReceivers()});
             super.execute();
             List<QueuedTicket> queuedTickets = getClaimService().getQueuedTicket();

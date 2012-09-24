@@ -23,6 +23,7 @@ import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InvoiceService;
+import idas.chox.core.services.EmailUpdateUserService;
 import idas.chox.core.util.EmailHelper;
 
 /**
@@ -39,13 +40,13 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private MailSecurityAthenticator mailSecurityAthenticator;
     private MailUtil mailUtil;
     private List<EmailUpdateUser> privilegedUsers;
-    private String bccReceivers;
+    private List<EmailUpdateUser> bccReceivers;
     private String emailSubject;
     private String smtpHostName;
     private String smtpPort;
     private String smtpEmailUser;
     private String smtpEmailPassword;
-    private String errorMessageReceivers;
+    private List<EmailUpdateUser> errorMessageReceivers;
     private ClaimService claimService;
     private InvoiceService invoiceService;
     private SecurityInfoProvider securityInfoProvider;
@@ -53,6 +54,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private boolean existingTransaction;
     private Session session;
     private SessionFactory sessionFactory;
+    private EmailUpdateUserService emailUpdateUserService;
 
     protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
     
@@ -65,7 +67,9 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
             InternetAddress internetAddress = new InternetAddress();
             internetAddress.setAddress(emailAccount);
             internetAddress.setPersonal(emailAccountPassword);
-
+            
+            errorMessageReceivers = emailUpdateUserService.getErrorMessageReceiver();
+            
             imapMailReceiver.setFrom(internetAddress);
 
             List<Message> listOfmails = imapMailReceiver.receiveMailsWithAttacment(emailSubject);
@@ -82,15 +86,16 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
                             xlsDataMap = xlsFileParser.readExcelFile(attachemt);
                             Map<Integer, List<String>> resultMap = doJob(xlsDataMap,sender);
                             String emailMessage = buildMessage(sender, emailSubject, resultMap);
-                            sendMail(sender, bccReceivers, "RE: " + emailSubject, emailMessage);
+                            LOG.info("Bcc receiver size is {}",bccReceivers.size());
+                            sendMail(sender.split(","), getArrayOfUsersFromList(bccReceivers), "RE: " + emailSubject, emailMessage);
                         }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown processing scheduler job from sender {} with subject '{}'\n",
                                 new Object[]{sender, emailSubject, ex});
-                        sendMail(errorMessageReceivers,null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
+                        sendMail(getArrayOfUsersFromList(errorMessageReceivers), null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
                     }
                 } else {
-                    sendMail(errorMessageReceivers, bccReceivers,
+                    sendMail(getArrayOfUsersFromList(errorMessageReceivers), getArrayOfUsersFromList(bccReceivers),
                             "Update request received from unauthorised user",
                             "Supplier reference update request received from unauthorised user '" + sender + "'");
                 }
@@ -107,13 +112,13 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         }
     }
     
-    protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
+    protected final void sendMail(String[] receiver, String[] bccReceiver, String subject, String emailMessage) {
         try {
             EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
-            if (!bccReceiver.isEmpty()) {
-                emailHelper.postMail(subject, emailMessage, (String[]) mailUtil.parseStringToList(receiver, ",").toArray(), (String[]) mailUtil.parseStringToList(bccReceiver, ",").toArray());
+            if (bccReceiver != null && bccReceiver.length > 0) {
+                emailHelper.postMail(subject, emailMessage, receiver, bccReceiver);
             } else {
-                emailHelper.postMail(subject, emailMessage, (String[]) mailUtil.parseStringToList(receiver, ",").toArray());
+                emailHelper.postMail(subject, emailMessage, receiver);
             }
         } catch (UnsupportedEncodingException e) {
             LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
@@ -153,10 +158,6 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     public void setPrivilegedUsers(List<EmailUpdateUser> privilegedUsers) {
         this.privilegedUsers = privilegedUsers;
     }
-    
-    public void setBccReceivers(String bccReceivers) {
-        this.bccReceivers = bccReceivers;
-    }
 
     public void setEmailSubject(String emailSubject) {
         this.emailSubject = emailSubject;
@@ -182,12 +183,8 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         this.smtpEmailPassword = smtpEmailPassword;
     }
 
-    public void setErrorMessageReceivers(String errorMessageReceivers) {
-        this.errorMessageReceivers = errorMessageReceivers;
-    }
-
-    public String getBccReceivers() {
-        return bccReceivers;
+    public void setBccReceivers(List<EmailUpdateUser> bccReceivers) {
+        this.bccReceivers = bccReceivers;
     }
 
     public ClaimService getClaimService() {
@@ -214,6 +211,14 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         this.securityInfoProvider = securityInfoProvider;
     }
     
+    public void setEmailUpdateUserService(EmailUpdateUserService emailUpdateUserService) {
+        this.emailUpdateUserService = emailUpdateUserService;
+    }
+
+    public EmailUpdateUserService getEmailUpdateUserService() {
+        return emailUpdateUserService;
+    }
+    
     public void handleHibernateTransactionIntricacies() {
         session = SessionFactoryUtils.getSession(sessionFactory, true);
         existingTransaction = SessionFactoryUtils.isSessionTransactional(session, sessionFactory);
@@ -235,5 +240,18 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+    
+    private String[] getArrayOfUsersFromList(List<EmailUpdateUser> emailUpdateUsers) {
+        String[] arrayOfUsers = new String[0];
+        if (emailUpdateUsers != null) {
+            arrayOfUsers = new String[emailUpdateUsers.size()];
+            int i = 0;
+            for (EmailUpdateUser updateUser : emailUpdateUsers) {
+                arrayOfUsers[i] = updateUser.getEmail();
+                i++;
+            }            
+        }        
+        return arrayOfUsers;
     }
 }

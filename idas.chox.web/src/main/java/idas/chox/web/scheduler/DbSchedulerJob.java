@@ -1,16 +1,19 @@
 package idas.chox.web.scheduler;
 
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.EmailHelper;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import javax.mail.MessagingException;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -27,7 +30,6 @@ public abstract class DbSchedulerJob implements SchedulerJob {
     private String smtpPort;
     private String smtpEmailUser;
     private String smtpEmailPassword;
-    private String errorMessageReceivers;
     private ClaimService claimService;
     private SecurityInfoProvider securityInfoProvider;
     private String updateUserName;
@@ -40,13 +42,12 @@ public abstract class DbSchedulerJob implements SchedulerJob {
     @Override
     public void execute() throws JobExecutionException {
 // TODO: investigate why we cannot access properties directly - if we do this we get null values
-        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}, {}, {}, {}, {}", 
+        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}, {}, {}, {}", 
                     new Object[]{bccReceivers, emailSubject, smtpHostName, smtpPort, smtpEmailUser,
-                            smtpEmailPassword, errorMessageReceivers,
-                            updateUserName, updatePassword});
-        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}", 
+                            smtpEmailPassword, updateUserName, updatePassword});
+        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}", 
                     new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
-                            getSmtpEmailUser(), getSmtpEmailPassword(), getErrorMessageReceivers(),
+                            getSmtpEmailUser(), getSmtpEmailPassword(), 
                             getUpdateUserName(),getUpdatePassword()});
         getMailSecurityAthenticator().authenticateSender(getUpdateUserName(), getUpdatePassword()); 
     }
@@ -94,14 +95,6 @@ public abstract class DbSchedulerJob implements SchedulerJob {
 
     public void setEmailSubject(String emailSubject) {
         this.emailSubject = emailSubject;
-    }
-
-    public String getErrorMessageReceivers() {
-        return errorMessageReceivers;
-    }
-
-    public void setErrorMessageReceivers(String errorMessageReceivers) {
-        this.errorMessageReceivers = errorMessageReceivers;
     }
 
     public MailSecurityAthenticator getMailSecurityAthenticator() {

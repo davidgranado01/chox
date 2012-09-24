@@ -27,7 +27,6 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
         <property name="bccReceivers" value="${queuedTicketUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${refUpdate_emailSubject}"/>
         <property name="updateUserName" value="${refUpdate_updateUserName}"/>
@@ -53,9 +52,6 @@
 		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-		
-        <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
-        <property name="bccReceivers" value="${refUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${refUpdate_emailSubject}"/>
 		
         <property name="smtpHostName" value="${smtpHostName}"/>
@@ -73,14 +69,11 @@
         <property name="claimService" ref="claimService" />
         <property name="invoiceService" ref="invoiceService" />
         <property name="mailUtil" ref="mailUtil" />
-        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
         <property name="sessionFactory" ref="sessionFactory"/>
 		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-		
-        <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
-        <property name="bccReceivers" value="${penUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${penUpdate_emailSubject}"/>
 
         <property name="smtpHostName" value="${smtpHostName}"/>
@@ -97,15 +90,12 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
 		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-		
-        <property name="errorMessageReceivers" value="${errorMessage_receivers}"/>
-        <property name="bccReceivers" value="${ECDUpdate_bccReceivers}"/>
         <property name="emailSubject" value="${ECDUpdate_emailSubject}"/>
 
         <property name="smtpHostName" value="${smtpHostName}"/>

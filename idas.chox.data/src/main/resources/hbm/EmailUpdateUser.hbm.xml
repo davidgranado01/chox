@@ -15,6 +15,11 @@
     <property column="ecd_update" name="ecdUpdate" />
     <property column="ref_update" name="refUpdate" />
     <property column="penalty_update" name="penaltyUpdate" />
+    <property column="ecd_bcc" name="ecdBccReceiver" />
+    <property column="ref_bcc" name="refBccReceiver" />
+    <property column="penalty_bcc" name="penaltyBccReceiver" />
+    <property column="error_message" name="errorMessageReciver" />
+    <property column="active" name="active" />
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

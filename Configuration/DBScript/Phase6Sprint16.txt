@@ -10,10 +10,29 @@ user_name character varying(256) NOT NULL,
 password character varying(256) NOT NULL,
 ecd_update boolean DEFAULT false,
 ref_update boolean DEFAULT false,
-penalty_update boolean DEFAULT false
+penalty_update boolean DEFAULT false,
+ref_bcc boolean DEFAULT false,
+ecd_bcc boolean DEFAULT false,
+penalty_bcc boolean DEFAULT false,
+error_message boolean DEFAULT false,
+active boolean DEFAULT true,
+version integer,
+created_by integer NOT NULL,
+created_date timestamp without time zone NOT NULL DEFAULT now(),
+last_modified_by integer NOT NULL,
+last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GRANT SELECT ON TABLE email_update_user TO chox_user;
 
+insert into email_update_user (email,user_name,password,ecd_update, ecd_bcc, ref_update, ref_bcc, penalty_update, penalty_bcc, error_message, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'seeni.shanmugam@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                           true, true, true, true, true, true, true, 0, 999, now(), 999, now();
 
 ----------------------
 --- End of 6.16.2 --
