@@ -44,7 +44,7 @@ public class ECDUpdate {
 
                         if (cells.size() < 4) {
                             //ignore row
-                            LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
+                            LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
                             continue;
                         }
 
@@ -128,7 +128,7 @@ public class ECDUpdate {
         }
 
         if (!result.isStatus()) {
-            LOG.error("Failed : ECD update failed for  Claim '{}' ", ecdParam.getSupplierReference(), result.getErrorMessage());
+            LOG.error("Failed : ECD update for Claim '{}' : {} ", ecdParam.getSupplierReference(), result.getErrorMessage());
         } else {
             LOG.info("Success : ECD updated for Claim with CHO reference '{}'", ecdParam.getSupplierReference());
         }
