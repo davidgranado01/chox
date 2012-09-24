@@ -47,7 +47,7 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="schedulerPrivilegedUserService" ref="schedulerPrivilegedUserService" />
+        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
         <property name="sessionFactory" ref="sessionFactory"/>
 		
         <property name="emailAccount" value="${emailAccount}"/>
