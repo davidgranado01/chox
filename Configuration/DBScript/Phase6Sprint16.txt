@@ -30,9 +30,47 @@ CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
 );
 GRANT SELECT ON TABLE email_update_user TO chox_user;
 
-insert into email_update_user (email,user_name,password,ecd_update, ecd_bcc, ref_update, ref_bcc, penalty_update, penalty_bcc, error_message, version, created_by , 
+insert into email_update_user (email,user_name,password, ref_update, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'subscribers@erac.com', 'admin@erac.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();
+
+insert into email_update_user (email,user_name,password, ref_bcc, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'Christopher.J.Smith@ehi.com', 'admin@erac.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();
+
+insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'elliot.roberts@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', 
+                                                                                         true, true, 0, 999, now(), 999, now(); 
+
+insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'elliot.roberts@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                         true, 0, 999, now(), 999, now();                                                                                                                                                          
+
+insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'ben.richmond@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', 
+                                                                                         true, true, 0, 999, now(), 999, now();
+
+insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'ben.richmond@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                         true, 0, 999, now(), 999, now();                                                                                           
+
+insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'Deborah.Pascaru@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', 
+                                                                                         true, true, 0, 999, now(), 999, now();
+                                                                                           
+insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'Deborah.Pascaru@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                         true, 0, 999, now(), 999, now();
+                                                                                           
+insert into email_update_user (email,user_name,password, ref_bcc, penalty_bcc, error_message, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'john.dowson@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                         true, true, true, 0, 999, now(), 999, now();
+
+insert into email_update_user (email,user_name,password, error_message, version, created_by , 
+                             created_date, last_modified_by, last_modified_date) select 'patrik.bego@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
+                                                                                         true, 0, 999, now(), 999, now();     
+
+insert into email_update_user (email,user_name,password, error_message, version, created_by , 
                              created_date, last_modified_by, last_modified_date) select 'seeni.shanmugam@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
-                                                                                           true, true, true, true, true, true, true, 0, 999, now(), 999, now();
+                                                                                         true, 0, 999, now(), 999, now();
 
 ----------------------
 --- End of 6.16.2 --
