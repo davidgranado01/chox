@@ -389,19 +389,19 @@ public class UploadServiceBean {
             claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
             boolean isValidStatus = false;
             if (claim == null) {
-                LOG.debug("No Such Claim Reference {}", supplierReference);
+                LOG.debug("{} : No Such Claim Reference.", supplierReference);
                 result.setStatus(false);
-                result.setErrorMessage("No Such Claim Reference '" + supplierReference + "'.");
+                result.setErrorMessage(supplierReference +" : No Such Claim Reference.");
             } else {
                 for (String status : idas.chox.core.model.ClaimStatus.getPreInvoiceStatus()) {
-                    if (!claim.getStatus().equals(status)) {
+                    if (claim.getStatus().equals(status)) {
                         isValidStatus = true;
                         break;
                     }
                 }
                 if (!isValidStatus) {
                     result.setStatus(false);
-                    result.setErrorMessage("Invalid Claim Status '" + claim.getStatus()+"'.");
+                    result.setErrorMessage(supplierReference + " : Invalid Claim Status '" + claim.getStatus()+"'.");
                 } else {
                     HireMonitoringEcd ecd = new HireMonitoringEcd();
                     ecd.setEcdDate(ecdDate);

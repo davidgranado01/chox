@@ -225,8 +225,8 @@ public class ExcelClaim {
         claimCustomerHpiVehicleDoorplan = (String) data.get("customer_hpi_vehicle_doorplan");
         claimCustomerHpiVehicleTransmission = (String) data.get("customer_hpi_vehicle_transmission");
         if (isIns == null) {
-            claimFinalReview = (((Boolean) data.get("final_review_cho")) ? "Yes" : "No") + "(CHO), "
-                    + (((Boolean) data.get("final_review_ins")) ? "Yes" : "No") + "(Ins)";
+            claimFinalReview = (((Boolean) data.get("final_review_cho")) ? "Yes" : "No") + " (CHO), "
+                    + (((Boolean) data.get("final_review_ins")) ? "Yes" : "No") + " (Ins)";
         } else if (isIns) {
             claimFinalReview = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
         }  else { // CHO

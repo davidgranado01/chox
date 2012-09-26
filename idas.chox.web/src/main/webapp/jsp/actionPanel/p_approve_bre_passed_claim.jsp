@@ -102,10 +102,10 @@
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
-                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
+                        This claim and its related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice, reject the invoice or refer the invoice to an Engineer.
                     </s:if>
                     <s:else>
-                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice or reject the invoice.
+                        This claim and its related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to agree the quantum for the invoice or reject the invoice.
                     </s:else>
                 </div>
                 <div class="status-control-set">
