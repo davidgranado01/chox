@@ -394,7 +394,7 @@ public class UploadServiceBean {
                 result.setErrorMessage(supplierReference +" : No Such Claim Reference.");
             } else {
                 for (String status : idas.chox.core.model.ClaimStatus.getPreInvoiceStatus()) {
-                    if (!claim.getStatus().equals(status)) {
+                    if (claim.getStatus().equals(status)) {
                         isValidStatus = true;
                         break;
                     }

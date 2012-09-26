@@ -76,7 +76,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         statusString.append(" No Such Claim Reference.");
                     } else {
                         for (String status : ClaimStatus.getPreInvoiceStatus()) {
-                            if (!claim.getStatus().equals(status)) {
+                            if (claim.getStatus().equals(status)) {
                                 isValidStatus = true;
                                 break;
                             }
