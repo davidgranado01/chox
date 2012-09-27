@@ -5,24 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
+import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
 
-    @Override
-    public void execute() throws JobExecutionException {
-        setPrivilegedUsers(getEmailUpdateUserService().getReferenceNumberUpdatePrivilegedUsers());
-        setPrivilegedUsers(getEmailUpdateUserService().getRefBccReceiver());
-        super.execute();
-    }
-    
     @Secured({"ROLE_CHO"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -107,5 +100,15 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
+    }
+
+    @Override
+    protected List<EmailUpdateUser> getPrivilegedUsers() {
+        return getEmailUpdateUserService().getReferenceNumberUpdatePrivilegedUsers();
+    }
+
+    @Override
+    protected List<EmailUpdateUser> getBccReceivers() {
+        return getEmailUpdateUserService().getRefBccReceiver();
     }
 }

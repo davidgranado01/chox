@@ -57,8 +57,11 @@ public class ECDUpdate {
                         }
 
                         Date ecdDate = null;
+                        dateFormate.setLenient(false);
                         if (cells.get(1).trim().isEmpty()) {
                             statusString.append(" No ECD Date Provided.");
+                        } else if (cells.get(1).trim().length() != dateFormate.toPattern().length()) {
+                            statusString.append(" Invalid Format For ECD Date.");
                         } else {
                             try {
                                 ecdDate = dateFormate.parse(cells.get(1).trim());
