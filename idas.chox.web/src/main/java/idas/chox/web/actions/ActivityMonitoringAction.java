@@ -38,8 +38,8 @@ public class ActivityMonitoringAction extends BaseAction {
         LOG.debug("monitor.ping returned {} userIds.", userIds.size());
         usersViewingThisClaim = new ArrayList<String>();
         for (Integer id : userIds) {
-            if (id != currentUserID) {
-                WebUser user = userService.getWebUser(id);
+            WebUser user = userService.getWebUser(id);
+            if (id != currentUserID && isSameInsurer(user, currentUserID)) {
                 usersViewingThisClaim.add(user.toString());
                 LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
             }
@@ -47,6 +47,13 @@ public class ActivityMonitoringAction extends BaseAction {
         
         method = "execute";
         return SUCCESS;
+    }
+
+    private boolean isSameInsurer(WebUser newUser, int currentUserID) {
+        WebUser currentUser = userService.getWebUser(currentUserID);
+        if(newUser.isAnInsurer() && currentUser.isAnInsurer() && newUser.getInsurer() != currentUser.getInsurer())
+            return false;
+        return true;
     }
 
     public String checkViewingStatus() {
