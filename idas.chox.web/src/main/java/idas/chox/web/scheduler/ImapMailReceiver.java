@@ -90,8 +90,8 @@ public class ImapMailReceiver {
 								&& retrieveBySubject) {
 							return true;
 						}
-					} catch (MessagingException e) {
-						LOG.error("Cannot retrieve mails with given search term. {} " , e.getMessage());
+					} catch (MessagingException ex) {
+						LOG.error("Cannot retrieve mails with given search term. {} " , ex);
 					}
 					return false;
 				}

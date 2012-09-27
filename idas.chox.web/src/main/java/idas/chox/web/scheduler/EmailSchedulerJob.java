@@ -22,8 +22,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.EmailUpdateUserService;
+import idas.chox.core.services.InvoiceService;
 import idas.chox.core.util.EmailHelper;
 
 /**
@@ -39,8 +39,6 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     private String emailAccountPassword;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private MailUtil mailUtil;
-    private List<EmailUpdateUser> privilegedUsers;
-    private List<EmailUpdateUser> bccReceivers;
     private String emailSubject;
     private String smtpHostName;
     private String smtpPort;
@@ -59,11 +57,16 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
     
     protected abstract String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap);
+    
+    protected abstract List<EmailUpdateUser> getPrivilegedUsers();
+    
+    protected abstract List<EmailUpdateUser> getBccReceivers();
 
     @Override
     public void execute() throws JobExecutionException {
         String sender = null;
         try {
+            handleHibernateTransactionIntricacies();
             InternetAddress internetAddress = new InternetAddress();
             internetAddress.setAddress(emailAccount);
             internetAddress.setPersonal(emailAccountPassword);
@@ -76,7 +79,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
             for (Message message : listOfmails) {
                 sender = mailUtil.getSender(message);
-                EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(privilegedUsers, sender);
+                EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(getPrivilegedUsers(), sender);
                 if (schedulerPrivilegedUser != null) {
                     mailSecurityAthenticator.authenticateSender(schedulerPrivilegedUser.getUserName(), schedulerPrivilegedUser.getPassword());
                     List<InputStream> attachmentStreams = imapMailReceiver.fetchAttachements(message, "xls");
@@ -86,8 +89,8 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
                             xlsDataMap = xlsFileParser.readExcelFile(attachemt);
                             Map<Integer, List<String>> resultMap = doJob(xlsDataMap,sender);
                             String emailMessage = buildMessage(sender, emailSubject, resultMap);
-                            LOG.info("Bcc receiver size is {}",bccReceivers.size());
-                            sendMail(sender.split(","), getArrayOfUsersFromList(bccReceivers), "RE: " + emailSubject, emailMessage);
+                            LOG.info("Bcc receiver size is {}",getBccReceivers().size());
+                            sendMail(sender.split(","), getArrayOfUsersFromList(getBccReceivers()), "RE: " + emailSubject, emailMessage);
                         }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown processing scheduler job from sender {} with subject '{}'\n",
@@ -95,9 +98,9 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
                         sendMail(getArrayOfUsersFromList(errorMessageReceivers), null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
                     }
                 } else {
-                    sendMail(getArrayOfUsersFromList(errorMessageReceivers), getArrayOfUsersFromList(bccReceivers),
+                    sendMail(getArrayOfUsersFromList(errorMessageReceivers), getArrayOfUsersFromList(getBccReceivers()),
                             "Update request received from unauthorised user",
-                            "Supplier reference update request received from unauthorised user '" + sender + "'");
+                            "Update request received from unauthorised user '" + sender + "'");
                 }
             }
 
@@ -106,9 +109,10 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         } catch (AccessDeniedException e) {
             LOG.error("The user is nor authorized to update cho_reference number: {} \n", e.getMessage(), e);
         } catch (Exception e) {
-            LOG.error("An exception was thrown during a scheduler reference update: {} \n", e.getMessage(), e);
+            LOG.error("An exception was thrown during a email scheduler update: {} \n", e.getMessage(), e);
         } finally {
             imapMailReceiver.clean();
+            releaseHibernateSessionConditionally();
         }
     }
     
@@ -155,10 +159,6 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
         this.mailUtil = mailUtil;
     }
 
-    public void setPrivilegedUsers(List<EmailUpdateUser> privilegedUsers) {
-        this.privilegedUsers = privilegedUsers;
-    }
-
     public void setEmailSubject(String emailSubject) {
         this.emailSubject = emailSubject;
     }
@@ -181,10 +181,6 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
     public void setSmtpEmailPassword(String smtpEmailPassword) {
         this.smtpEmailPassword = smtpEmailPassword;
-    }
-
-    public void setBccReceivers(List<EmailUpdateUser> bccReceivers) {
-        this.bccReceivers = bccReceivers;
     }
 
     public ClaimService getClaimService() {
@@ -214,7 +210,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
     public void setEmailUpdateUserService(EmailUpdateUserService emailUpdateUserService) {
         this.emailUpdateUserService = emailUpdateUserService;
     }
-
+    
     public EmailUpdateUserService getEmailUpdateUserService() {
         return emailUpdateUserService;
     }

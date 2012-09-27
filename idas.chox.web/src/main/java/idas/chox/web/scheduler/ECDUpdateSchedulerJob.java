@@ -1,20 +1,19 @@
 package idas.chox.web.scheduler;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.util.DateHelper;
@@ -25,25 +24,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
     
     private HireMonitoringEcdService hireMonitoringEcdService;
-    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
-    
-
-    @Override
-    public void execute() throws JobExecutionException {
-       
-        try {
-            handleHibernateTransactionIntricacies();
-            super.setPrivilegedUsers(getEmailUpdateUserService().getECDUpdatePrivilegedUsers());
-            super.setBccReceivers(getEmailUpdateUserService().getECDBccReceiver());
-            super.execute();
-        } catch (Exception ex) {
-            LOG.error("exception thrown when processing ECD Update Sheduler job.", ex);
-        } finally {
-            releaseHibernateSessionConditionally();
-        }
-
-    }
-    
+        
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
@@ -59,62 +40,24 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                     LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
                     continue;
                 }
-                Claim claim = null;
+                
                 StringBuilder statusString = new StringBuilder();
 
-                String referenceNumber = cells.get(0).trim();
-
                 /* Check is valid referenceNumber provided and claim is in valid status.*/
-                if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
-                    statusString.append(" No Claim Reference Provided.");
-                } else {
-                    claim = getClaimService().getClaimByCHOReferenceNumber(referenceNumber);
-                    boolean isValidStatus = false;
-
-                    if (claim == null) {
-                        LOG.debug("No Such Claim Reference {}", referenceNumber);
-                        statusString.append(" No Such Claim Reference.");
-                    } else {
-                        for (String status : ClaimStatus.getPreInvoiceStatus()) {
-                            if (claim.getStatus().equals(status)) {
-                                isValidStatus = true;
-                                break;
-                            }
-                        }
-                        if (!isValidStatus) {
-                            statusString.append(" Invalid Claim Status '").append(claim.getStatus()).append("'.");
-                        }
-                    }
-                }
+                String referenceNumber = cells.get(0).trim();
+                Claim claim = validateClaimReferenceNumber(referenceNumber, statusString);
                 
                 /* Check is valid ecdDate provided and parse the string date to java date.*/
-                Date ecdDate = null;
-                if (cells.get(1).trim().isEmpty()) {
-                    statusString.append(" No ECD Date Provided.");
-                } else {
-                    try {
-                        ecdDate = DateHelper.getLocalDateFormat().parse(cells.get(1).trim());
-                    } catch (ParseException ex) {
-                        statusString.append(" Invalid Format For ECD Date.");
-                        LOG.error("parse exception thrown for given date {}", cells.get(1).trim(), ex);
-                    }
-                }
+                String ecdDateString = cells.get(1).trim();
+                Date ecdDate = validateEcdDate(ecdDateString, statusString);
 
                 /* Check is valid ecdDelayReason provided and it has valid length(<=50 character).*/
                 String ecdDelayReason = cells.get(2).trim();
-                if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
-                    statusString.append(" No ECD Delay Reason Provided.");
-                } else {
-                    if (ecdDelayReason.length() > 50) {
-                        statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
-                    }
-                }
+                validateEcdDelayReason(ecdDelayReason, statusString);
 
                 /* Check is valid ecdDelaySuppNote provided.*/
                 String ecdDelaySuppNote = cells.get(3).trim();
-                if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
-                    statusString.append(" No Supporting Note Provided.");
-                }
+                validateEcdDelaySupportNote(ecdDelaySuppNote, statusString);
 
                 /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty()) {
@@ -176,21 +119,79 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
         return emailMsg.toString();
     }
 
-    private boolean regexExpressionChecker(String regex, String dataValue) {
+    private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
         
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(dataValue);
+        Claim claim = null;
+        if (referenceNumber.isEmpty()) {
+            statusString.append(" No Claim Reference Provided.");
+        } else {
+            claim = getClaimService().getClaimByCHOReferenceNumber(referenceNumber);
+            boolean isValidStatus = false;
 
-        if (!m.find()) {
-            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
-            return false;
+            if (claim == null) {
+                LOG.debug("No Such Claim Reference {}", referenceNumber);
+                statusString.append(" No Such Claim Reference.");
+            } else {
+                for (String status : ClaimStatus.getPreInvoiceStatus()) {
+                    if (claim.getStatus().equals(status)) {
+                        isValidStatus = true;
+                        break;
+                    }
+                }
+                if (!isValidStatus) {
+                    statusString.append(" Invalid Claim Status '").append(claim.getStatus()).append("'.");
+                }
+            }
         }
-        return true;
+        return claim;
+    }
+    
+    private Date validateEcdDate(String ecdDateString, StringBuilder statusString) {
+        Date ecdDate = null;
+        SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
+        sdf.setLenient(false);
+        if (ecdDateString.isEmpty()) {
+            statusString.append(" No ECD Date Provided.");
+        } else if (ecdDateString.length() != sdf.toPattern().length()) {
+            statusString.append(" Invalid Format For ECD Date.");
+        } else {
+            try {
+                ecdDate = sdf.parse(ecdDateString);
+            } catch (ParseException ex) {
+                statusString.append(" Invalid Format For ECD Date.");
+                LOG.error("parse exception thrown for given date {}", ecdDateString, ex);
+            }
+        }
+        return ecdDate;
+    }
+    
+    private void validateEcdDelayReason(String ecdDelayReason, StringBuilder statusString) {
+        if (ecdDelayReason.isEmpty()) {
+            statusString.append(" No ECD Delay Reason Provided.");
+        } else {
+            if (ecdDelayReason.length() > 50) {
+                statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
+            }
+        }
+    }
+    
+    private void validateEcdDelaySupportNote(String ecdDelaySuppNote, StringBuilder statusString) {
+        if (ecdDelaySuppNote.isEmpty()) {
+            statusString.append(" No Supporting Note Provided.");
+        }
     }
     
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
 
-    
+    @Override
+    protected List<EmailUpdateUser> getPrivilegedUsers() {
+        return getEmailUpdateUserService().getECDUpdatePrivilegedUsers();
+    }
+
+    @Override
+    protected List<EmailUpdateUser> getBccReceivers() {
+        return getEmailUpdateUserService().getECDBccReceiver();
+    }
 }
