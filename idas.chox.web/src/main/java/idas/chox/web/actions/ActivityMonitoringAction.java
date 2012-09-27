@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONArray;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
@@ -39,7 +40,7 @@ public class ActivityMonitoringAction extends BaseAction {
         usersViewingThisClaim = new ArrayList<String>();
         for (Integer id : userIds) {
             WebUser user = userService.getWebUser(id);
-            if (id != currentUserID && isSameInsurer(user, currentUserID)) {
+            if (id != currentUserID && isSameInsurer(user, currentUserID) && isSameCHO(user, getClaimId())) {
                 usersViewingThisClaim.add(user.toString());
                 LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
             }
@@ -51,8 +52,19 @@ public class ActivityMonitoringAction extends BaseAction {
 
     private boolean isSameInsurer(WebUser newUser, int currentUserID) {
         WebUser currentUser = userService.getWebUser(currentUserID);
-        if(newUser.isAnInsurer() && currentUser.isAnInsurer() && newUser.getInsurer() != currentUser.getInsurer())
+        if(newUser.isAnInsurer() && currentUser.isAnInsurer() && newUser.getInsurer() != currentUser.getInsurer()){
+            LOG.warn("Different insurer ({}) is trying to be displayed in insurers ({}) activity panel.", newUser.getFullName() ,currentUser.getFullName());
             return false;
+        }
+        return true;
+    }
+    
+    private boolean isSameCHO(WebUser newUser, int claimId) {
+        Claim claim = claimService.getClaim(claimId);
+        if(newUser.isCHO() && claim.getChorganisation() != newUser.getChorganisation()){
+            LOG.warn("Different CHO ({}) is trying to be displayed in activity panel, for the claim with a cho_reference: {}", newUser.getFullName() , claim.getChoReference());
+            return false;
+        }
         return true;
     }
 
