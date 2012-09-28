@@ -1,19 +1,18 @@
 package idas.chox.web.scheduler;
 
-import java.util.Properties;
-
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-
 import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.services.EmailUpdateUserService;
 import idas.chox.web.BaseWebTest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class MailSecurityAthenticatorTest extends BaseWebTest {
@@ -24,8 +23,8 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
 	@Autowired
 	private MailUtil mailUtil;
         
-        @Autowired
-        private EmailUpdateUserService emailUpdateUserService;
+    @Autowired
+    private EmailUpdateUserService emailUpdateUserService;
         
 	private Properties props;
 	
@@ -33,8 +32,8 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
 	
 	@Before
     public void setProperties() throws Exception {
-		Resource resource = new ClassPathResource("/applicationTest.properties");
-    	props = PropertiesLoaderUtils.loadProperties(resource);
+		//Resource resource = new ClassPathResource("/applicationTest.properties");
+    	//props = PropertiesLoaderUtils.loadProperties(resource);
     }
 	
 	@After
@@ -47,7 +46,12 @@ public class MailSecurityAthenticatorTest extends BaseWebTest {
     @Test
     public void testIsPrivilegedSender()  {
         boolean result = false;
-        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(emailUpdateUserService.getPenaltyChargeUpdatePrivilegedUsers(), sender);
+        // XXX this needs to be updated so that we will get the list of users from the database
+        EmailUpdateUser emailUpdateUser = new EmailUpdateUser();
+        emailUpdateUser.setEmail("patrik.bego@sherwoodcompliance.co.uk");
+        List<EmailUpdateUser> emailUpdateUserList = new ArrayList<EmailUpdateUser>();
+        emailUpdateUserList.add(emailUpdateUser);
+        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(emailUpdateUserList, sender);
         if (schedulerPrivilegedUser != null)
             result = true;
         assertEquals(true, result);
