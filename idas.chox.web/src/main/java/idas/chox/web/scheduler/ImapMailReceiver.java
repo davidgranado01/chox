@@ -91,7 +91,7 @@ public class ImapMailReceiver {
 							return true;
 						}
 					} catch (MessagingException ex) {
-						LOG.error("Cannot retrieve mails with given search term. {} " , ex);
+						LOG.error("Cannot retrieve mails with given search term." , ex);
 					}
 					return false;
 				}
