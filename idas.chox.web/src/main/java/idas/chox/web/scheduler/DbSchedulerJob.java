@@ -41,6 +41,7 @@ public abstract class DbSchedulerJob implements SchedulerJob {
         
     @Override
     public void execute() throws JobExecutionException {
+        LOG.info("Calling DB Scheduler Job : '{}'.", getClass().getSimpleName());
 // TODO: investigate why we cannot access properties directly - if we do this we get null values
         LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}, {}, {}, {}", 
                     new Object[]{bccReceivers, emailSubject, smtpHostName, smtpPort, smtpEmailUser,
