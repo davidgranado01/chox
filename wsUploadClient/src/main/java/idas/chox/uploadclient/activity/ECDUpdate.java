@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.idaschox.services.chox.EcdParam;
 import com.idaschox.services.chox.Result;
 import com.idaschox.services.chox.UploadService;
+
 import idas.chox.uploadclient.utility.XMLGregorianCalendarConverter;
 import idas.chox.uploadclient.utility.XlsFileParser;
 
@@ -24,6 +27,7 @@ public class ECDUpdate {
 
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdate.class);
     private static SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+    private static String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
 
     public static void process(UploadService uploadService, String file) {
 
@@ -52,7 +56,7 @@ public class ECDUpdate {
 
                         String referenceNumber = cells.get(0).trim();
 
-                        if (referenceNumber.isEmpty()) {
+                        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
                             statusString.append(" No Claim Reference Provided.");
                         }
 
@@ -72,7 +76,7 @@ public class ECDUpdate {
                         }
 
                         String ecdDelayReason = cells.get(2).trim();
-                        if (ecdDelayReason.isEmpty()) {
+                        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
                             statusString.append(" No ECD Reason Provided.");
                         } else {
                             if (ecdDelayReason.length() > 50) {
@@ -81,7 +85,7 @@ public class ECDUpdate {
                         }
 
                         String ecdDelaySuppNote = cells.get(3).trim();
-                        if (ecdDelaySuppNote.isEmpty()) {
+                        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
                             statusString.append(" No Supporting Note Provided.");
                         }
 
@@ -135,5 +139,16 @@ public class ECDUpdate {
         } else {
             LOG.info("Success : '{}' : Updated", ecdParam.getSupplierReference());
         }
+    }
+    
+    public static boolean regexExpressionChecker(String regex, String dataValue) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(dataValue);
+
+        if (!m.find()) {
+            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
+            return false;
+        }
+        return true;
     }
 }
