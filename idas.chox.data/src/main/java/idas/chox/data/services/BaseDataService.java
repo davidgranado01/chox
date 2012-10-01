@@ -139,6 +139,34 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         s.close();
     }
 
+    public void callUpdateWorkflowTables(int userId) throws SQLException {
+        LOG.debug("Calling stored procedure update_user_service({})....", userId);
+        this.getCurrentSession().flush();
+        Statement s = this.getCurrentSession().connection().createStatement();
+        try {
+            s.execute("select update_user_service(3)");
+            s.execute("select update_workgroup_service(3)");
+            s.execute("select update_user_service(6)");
+            s.execute("selselect update_workgroup_service(6)");
+            s.execute("select update_user_service(18)");
+            s.execute("select update_workgroup_service(18)");
+            s.execute("select update_user_service(19)");
+            s.execute("select update_workgroup_service(19)");
+            s.execute("select update_user_service(20)");
+            s.execute("select update_workgroup_service(20)");
+            s.execute("select update_user_service(22)");
+            s.execute("select update_workgroup_service(22)");
+            s.execute("select update_user_service(23)");
+            s.execute("select update_workgroup_service(23)");
+        }
+        catch (SQLException ex) {
+            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+                throw ex;
+        }
+        this.getCurrentSession().flush();
+        s.close();
+  }
+    
     public void callUpdateUserService(int insurerId) throws SQLException {
 //        Statement s = this.getCurrentSession().connection().createStatement();
 //        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
