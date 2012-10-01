@@ -115,6 +115,12 @@
         <property name="baseDataService" ref="baseDataService" />
         <property name="storedProcName" value="updateDashboard"/>
     </bean>
+    
+    <!--  Stored Procedure call: updateDashboard -->
+    <bean id="updateWorkflowTablesJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="baseDataService" />
+        <property name="storedProcName" value="updateWorkflowTables"/>
+    </bean>
 
     <bean id="referenceUpdateDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="referenceUpdateDbJob" />
@@ -157,6 +163,12 @@
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
+    
+    <bean id="updateWorkflowTablesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="updateWorkflowTablesJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
 
 	<!-- Cron Trigger -->
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
@@ -192,6 +204,10 @@
         <property name="jobDetail" ref="updateDashboardJobDetail" /> 
         <property name="cronExpression" value="0 30 6,10,12,14,16,18 ? * 1-7" /> 
     </bean> 
+    <bean id="updateWorkflowTablesTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="updateWorkflowTablesJobDetail" /> 
+        <property name="cronExpression" value="0 30 23 ? * 1-7" /> 
+    </bean> 
 
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -211,6 +227,7 @@
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
                 <ref bean="updateDashboardJobDetail" />
+                <ref bean="updateWorkflowTablesJobDetail" />
             </list>
         </property>
         <property name="triggers">
@@ -223,6 +240,7 @@
                 <ref bean="addInvoicePenaltyTaskTriggerWeek" />
                 <ref bean="applyAutoPenaltyChargeTriggerWeek" />
                 <ref bean="updateDashboardTriggerWeek" />
+                <ref bean="updateWorkflowTablesTriggerWeek" />
             </list>
         </property>
     </bean>
