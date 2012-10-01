@@ -226,7 +226,7 @@
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 6/30 7-19 ? * 2-6" /> 
     </bean> 
-    <bean id="updateWorkflowTablesTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+    <bean id="updateWorkflowTablesTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateWorkflowTablesJobDetail" /> 
         <property name="cronExpression" value="0 30 23 ? * 1-7" /> 
     </bean> 
