@@ -332,13 +332,13 @@
                 }
             });
 
-            var hireDateFromPicker = new Ext.form.DateField({
-                name: 'hireDateFrom',
-                renderTo: 'hireDateFromDiv',
+            var rentalStartDatePicker = new Ext.form.DateField({
+                name: 'rentalStartDate',
+                renderTo: 'rentalStartDateDiv',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
-                value: '<s:date format="dd/MM/yyyy" name="hireDateFrom" />',
+                value: '<s:date format="dd/MM/yyyy" name="rentalStartDate" />',
                 showWeekNumber: true,
                 listeners:{
                     specialkey:function (el, e) {
@@ -352,13 +352,13 @@
                 }
             });
 
-            var hireDateToPicker = new Ext.form.DateField({
-                name: 'hireDateTo',
-                renderTo: 'hireDateToDiv',
+            var rentalEndDatePicker = new Ext.form.DateField({
+                name: 'rentalEndDate',
+                renderTo: 'rentalEndDateDiv',
                 width: 120,
                 allowBlank: true,
                 format: 'd/m/Y',
-                value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+                value: '<s:date format="dd/MM/yyyy" name="rentalEndDate" />',
                 showWeekNumber: true,
                 listeners:{
                     specialkey:function (el, e) {
@@ -1325,10 +1325,10 @@
                 <td><div id="invoiceUploadDateToDiv" ></div></td>
             </tr>
             <tr>
-                <td nowrap><label>Hire Date From</label></td>
-                <td><div id="hireDateFromDiv" ></div></td>
-                <td nowrap><label>Hire Date To</label></td>
-                <td><div id="hireDateToDiv"></div></td>
+                <td nowrap><label>Hire Start Date From</label></td>
+                <td><div id="rentalStartDateDiv" ></div></td>
+                <td nowrap><label>Hire Start Date To</label></td>
+                <td><div id="rentalEndDateDiv"></div></td>
             </tr>
             <s:if test="isCHO">
                 <tr>

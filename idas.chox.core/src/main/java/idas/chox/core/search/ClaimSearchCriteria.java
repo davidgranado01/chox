@@ -35,8 +35,8 @@ public class ClaimSearchCriteria implements Serializable {
     private Date statusModifiedDateTo;
     private Date invoiceUploadDateFrom;
     private Date invoiceUploadDateTo;
-    private Date hireDateFrom;
-    private Date hireDateTo;
+    private Date rentalStartDate;
+    private Date rentalEndDate;
     private Date lastModifiedDateFrom;
     private Date lastModifiedDateTo;
     private Set<Integer> workgroupIds;
@@ -86,8 +86,8 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("statusModifiedDateTo=").append(statusModifiedDateTo).append("\n")
                 .append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n")
                 .append("invoiceUploadDateTo=").append(invoiceUploadDateTo).append("\n")
-                .append("hireDateFrom=").append(hireDateFrom).append("\n")
-                .append("hireDateTo=").append(hireDateTo).append("\n")
+                .append("hireDateFrom=").append(rentalStartDate).append("\n")
+                .append("hireDateTo=").append(rentalEndDate).append("\n")
                 .append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n")
                 .append("lastModifiedDateTo=").append(lastModifiedDateTo).append("\n");
         if (workgroupIds != null)
@@ -323,20 +323,20 @@ public class ClaimSearchCriteria implements Serializable {
         this.invoiceUploadDateTo = invoiceUploadDateTo;
     }
 
-    public Date getHireDateFrom() {
-        return hireDateFrom;
+    public Date getRentalStartDate() {
+        return rentalStartDate;
     }
 
-    public void setHireDateFrom(Date hireDateFrom) {
-        this.hireDateFrom = hireDateFrom;
+    public void setRentalStartDate(Date rentalStartDate) {
+        this.rentalStartDate = rentalStartDate;
     }
 
-    public Date getHireDateTo() {
-        return hireDateTo;
+    public Date getRentalEndDate() {
+        return rentalEndDate;
     }
 
-    public void setHireDateTo(Date hireDateTo) {
-        this.hireDateTo = hireDateTo;
+    public void setRentalEndDate(Date rentalEndDate) {
+        this.rentalEndDate = rentalEndDate;
     }
 
     public boolean getIsAnomalies() {
