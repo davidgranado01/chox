@@ -31,6 +31,9 @@ public class StoredProcSchedulerJob implements SchedulerJob {
             else if ("updateDashboard".equals(storedProcName)) {
                 baseDataService.callUpdateDashboard(999);
             }
+            else if ("updateWorkflowTables".equals(storedProcName)) {
+                baseDataService.callUpdateWorkflowTables(999);
+            }
         } catch (Exception ex) {
             LOG.error("Exception thrown calling stored proc '{}' in scheduler job:", storedProcName, ex);
         }
