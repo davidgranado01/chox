@@ -145,6 +145,10 @@
         <appender-ref ref="S"/>
         <appender-ref ref="CYCLIC" />
     </logger>
+    <logger name="org.springframework.scheduling" level="INFO" additivity="false">
+        <appender-ref ref="Q"/>
+        <appender-ref ref="CYCLIC" />
+    </logger>
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
