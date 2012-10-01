@@ -64,6 +64,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
 
     @Override
     public void execute() throws JobExecutionException {
+        LOG.info("Calling Email Scheduler Job : '{}'.", getClass().getSimpleName());
         String sender = null;
         try {
             handleHibernateTransactionIntricacies();

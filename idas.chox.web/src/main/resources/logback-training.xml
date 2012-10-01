@@ -147,6 +147,13 @@
     </logger>
     <logger name="org.springframework.scheduling" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
+    </logger>
+    <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
+        <appender-ref ref="Q"/>
+        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
