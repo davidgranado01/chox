@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
     
     private HireMonitoringEcdService hireMonitoringEcdService;
+    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
         
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     @Override
@@ -122,7 +125,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
         
         Claim claim = null;
-        if (referenceNumber.isEmpty()) {
+        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
             statusString.append(" No Claim Reference Provided.");
         } else {
             claim = getClaimService().getClaimByCHOReferenceNumber(referenceNumber);
@@ -166,7 +169,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     }
     
     private void validateEcdDelayReason(String ecdDelayReason, StringBuilder statusString) {
-        if (ecdDelayReason.isEmpty()) {
+        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
             statusString.append(" No ECD Delay Reason Provided.");
         } else {
             if (ecdDelayReason.length() > 50) {
@@ -176,7 +179,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     }
     
     private void validateEcdDelaySupportNote(String ecdDelaySuppNote, StringBuilder statusString) {
-        if (ecdDelaySuppNote.isEmpty()) {
+        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
             statusString.append(" No Supporting Note Provided.");
         }
     }
@@ -193,5 +196,16 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     @Override
     protected List<EmailUpdateUser> getBccReceivers() {
         return getEmailUpdateUserService().getECDBccReceiver();
+    }
+    
+    private boolean regexExpressionChecker(String regex, String dataValue) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(dataValue);
+
+        if (!m.find()) {
+            LOG.debug("Invalid data for regex '{}': {}", regex, dataValue);
+            return false;
+        }
+        return true;
     }
 }
