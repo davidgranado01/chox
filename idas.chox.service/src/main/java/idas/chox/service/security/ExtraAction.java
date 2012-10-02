@@ -65,7 +65,7 @@ public class ExtraAction {
         } else if (extraAction.equalsIgnoreCase(MAKE_INTERIM_PAYMENT)) {
             returnStr = "Make Interim Payment";
         } else if (extraAction.equalsIgnoreCase(UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
-            returnStr = "Update To Interim Payment Received Full & Final";
+            returnStr = "Update Interim Payment Received";
         } else if (extraAction.equalsIgnoreCase(PAYMENT_RECEIVED)) {
             returnStr = "Update To Payment Received";
         } else if (extraAction.equalsIgnoreCase(UPDATE_INSURER_CLAIM_OWNER)) {

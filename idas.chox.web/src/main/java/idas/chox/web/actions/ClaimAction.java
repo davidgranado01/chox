@@ -1664,6 +1664,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
             LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
+
             if (accessRight >= 2) {
 
                 if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)

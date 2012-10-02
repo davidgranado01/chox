@@ -12,7 +12,7 @@
             		max: <s:property value="interimPaymentMade" />,
                     required:true,
                     number: true,
-                    min: 0.01
+                    min: 0
                 }
             },
             messages: {
@@ -20,7 +20,7 @@
             		number: "Invalid 'Interim Payment Received' Format",
                     required:"You Must Supply A Value for the 'Interim Payment Received'",
                     max: "The 'Interim Payment Received' Cannot Be Bigger Than The Total Interim Amount Paid",
-                    min: "The 'Interim Payment Received' Must Be Bigger Than 0"
+                    min: "The 'Interim Payment Received' Must Be 0 or Bigger"
                 }
             }
         });
@@ -51,41 +51,25 @@
                     <table class="status-table">
                      	<tr>
                             <td colspan="4">
-			             	<div class="status-info">
-                                <s:if test="interimPaymentReceived > 0">
-			                   		A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received).
-                                    <s:if test="outstandingInterimPayment > 0">
-                                        Enter the new total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
-                                    </s:if>
-                                    <s:else>
-                                        Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
-                                    </s:else>
-			                   </s:if>
-			                   <s:else>
-			                   	    A total interim amount of £<s:property value="interimPaymentMade" /> has been paid.
-                                    <s:if test="outstandingInterimPayment > 0">
-                                        Enter the total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status.
-                                    </s:if>
-                                    <s:else>
-                                        Clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
-                                    </s:else>
-			                   </s:else>
-			            	</div>
+			             	    <div class="status-info">
+                                    <s:if test="interimPaymentReceived > 0">
+			                   		  A total interim amount of £<s:property value="interimPaymentMade" /> has been paid (£<s:property value="interimPaymentReceived" /> so far received).
+                                      Enter the new total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status. 
+			                        </s:if>
+			                        <s:else>
+			                   	      A total interim amount of £<s:property value="interimPaymentMade" /> has been paid.
+                                      Enter the total amount received and click the 'Interim Payment Received' button. Alternatively, clicking the 'Interim Payment Accepted Full & Final' button will accept the total interim amount paid as a final payment and move the claim to the 'PaymentReceived' status.
+			                        </s:else>
+			            	    </div>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap>
-                                <label >Interim Payment Received</label></td><td nowrap>
-                                <s:if test="outstandingInterimPayment > 0">
-                                    £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />"/>
-                                </s:if>
-                                <s:else>
-                                    £&nbsp;<input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />" readonly="readonly"/>
-                                </s:else>
-
-                                <s:if test="outstandingInterimPayment > 0">
+                                <label>Interim Payment Received</label>
+                            </td>
+                            <td nowrap>
+                                    <label>£&nbsp;</label><input type="text" class="chox-ttxt" id="partialInterimPayment" name="partialInterimPayment" value="<s:property value="interimPaymentMade" />"/>
                                     <input type="button" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
-                                </s:if>
                                 	<input type="button" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
                             </td>
                             <td></td><td></td>
