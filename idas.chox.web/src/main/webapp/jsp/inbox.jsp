@@ -252,8 +252,8 @@
 
                 var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
                 var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
-                var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
-                var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
+                var rentalStartDate = Ext.query('*[name$=rentalStartDate]')[0].value;
+                var rentalEndDate = Ext.query('*[name$=rentalEndDate]')[0].value;
                 var statuses = Ext.getCmp('statusSearchScreenComboId').getValue().split(",");
 
                 if (Ext.getCmp('searchScreenWorkgroupComboId'))
@@ -294,8 +294,8 @@
                     statusModifiedDateTo :  statusModifiedDateTo,
                     invoiceUploadDateFrom : invoiceUploadDateFrom,
                     invoiceUploadDateTo : invoiceUploadDateTo,
-                    hireDateFrom : hireDateFrom,
-                    hireDateTo : hireDateTo,
+                    rentalStartDate : rentalStartDate,
+                    rentalEndDate : rentalEndDate,
                     statuses : statuses,
                     workgroupIds : workgroupIds,
                     reviewRequiredDateFrom : reviewRequiredDateFrom,
