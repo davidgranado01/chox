@@ -901,24 +901,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
-        if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
+        if (searchCriteria.getRentalStartDate() != null || searchCriteria.getRentalEndDate() != null) {
 
-            if (searchCriteria.getHireDateFrom() != null) {
+            if (searchCriteria.getRentalStartDate() != null) {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(searchCriteria.getHireDateFrom());
+                cal.setTime(searchCriteria.getRentalStartDate());
                 cal.set(Calendar.HOUR_OF_DAY, 0);
                 cal.set(Calendar.MINUTE, 0);
                 cal.set(Calendar.SECOND, 0);
-                criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime())).add(Restrictions.le("vh.rentalEnd", cal.getTime()));
+                criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime()));
             }
-
-            if (searchCriteria.getHireDateTo() != null) {
+            
+            if (searchCriteria.getRentalEndDate() != null) {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(searchCriteria.getHireDateTo());
+                cal.setTime(searchCriteria.getRentalEndDate());
                 cal.set(Calendar.HOUR_OF_DAY, 23);
                 cal.set(Calendar.MINUTE, 59);
                 cal.set(Calendar.SECOND, 59);
-                criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime())).add(Restrictions.le("vh.rentalEnd", cal.getTime()));
+                criteria.add(Restrictions.le("vh.rentalStart", cal.getTime()));
             }
         }
 
