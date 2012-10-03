@@ -76,7 +76,7 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
             
             imapMailReceiver.setFrom(internetAddress);
 
-            List<Message> listOfmails = imapMailReceiver.receiveMailsWithAttacment(emailSubject);
+            List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(emailSubject);
 
             for (Message message : listOfmails) {
                 sender = mailUtil.getSender(message);
@@ -86,11 +86,17 @@ public abstract class EmailSchedulerJob implements SchedulerJob{
                     List<InputStream> attachmentStreams = imapMailReceiver.fetchAttachements(message, "xls");
                     Map<Integer, List<String>> xlsDataMap = null;
                     try {
-                        for (InputStream attachemt : attachmentStreams) {
-                            xlsDataMap = xlsFileParser.readExcelFile(attachemt);
-                            Map<Integer, List<String>> resultMap = doJob(xlsDataMap,sender);
-                            String emailMessage = buildMessage(sender, emailSubject, resultMap);
-                            LOG.info("Bcc receiver size is {}",getBccReceivers().size());
+                        if(attachmentStreams.size() > 0){
+                            for (InputStream attachemt : attachmentStreams) {
+                                xlsDataMap = xlsFileParser.readExcelFile(attachemt);
+                                Map<Integer, List<String>> resultMap = doJob(xlsDataMap,sender);
+                                String emailMessage = buildMessage(sender, emailSubject, resultMap);
+                                LOG.info("Bcc receiver size is {}",getBccReceivers().size());
+                                sendMail(sender.split(","), getArrayOfUsersFromList(getBccReceivers()), "RE: " + emailSubject, emailMessage);
+                            }
+                        } else {
+                            String emailMessage = buildMessage(sender, emailSubject, null);
+                            LOG.info("Mail ({}) with sender ({}) has no attachments",emailSubject, sender);
                             sendMail(sender.split(","), getArrayOfUsersFromList(getBccReceivers()), "RE: " + emailSubject, emailMessage);
                         }
                     } catch (Exception ex) {

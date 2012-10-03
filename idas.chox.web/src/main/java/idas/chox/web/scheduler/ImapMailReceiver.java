@@ -51,7 +51,7 @@ public class ImapMailReceiver {
 	 * @param Strign emailSubject - used as a search criteria for emails. 
 	 * @return List<Message> - list of mails 
 	 */
-	public List<Message> receiveMailsWithAttacment(final String emailSubject) {
+	public List<Message> receiveMailsWithSubject(final String emailSubject) {
 
 		List<Message> listOfMails = null;
 
@@ -81,13 +81,11 @@ public class ImapMailReceiver {
 				@Override
 				public boolean match(Message message) {
 					try {
-						//If email subject is given we search by it, otherwise we just pass it as true and retrieve all unseen messages
-						//with attachements.
-						boolean retrieveBySubject = emailSubject != null ? message.getSubject().trim().replace(" ", "").equalsIgnoreCase(emailSubject.trim().replace(" ", "")) : true;
-                        LOG.debug("Found message with subject='{}', contentType='{}', seen={}", new Object[] {message.getSubject(), message.getContentType(), message.isSet(Flags.Flag.SEEN)});
+					    //we search for all unseen mails with given subject
+ 						boolean retrieveBySubject = emailSubject != null ? message.getSubject().trim().replace(" ", "").equalsIgnoreCase(emailSubject.trim().replace(" ", "")) : true;
                         if (!message.isSet(Flags.Flag.SEEN)
-								&& message.getContentType().toUpperCase().contains("MULTIPART") 
 								&& retrieveBySubject) {
+                            LOG.debug("Found message with subject='{}', contentType='{}', seen={}", new Object[] {message.getSubject(), message.getContentType(), message.isSet(Flags.Flag.SEEN)});
 							return true;
 						}
 					} catch (MessagingException ex) {
@@ -127,19 +125,21 @@ public class ImapMailReceiver {
 
 		List<InputStream> listOfAttachements = new ArrayList<InputStream>();
 		try {
-			Multipart mp = (Multipart) message.getContent();
-            LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
-                    new Object[]{message.getFrom().toString(), mp.getContentType(), mp.getCount()});
-			for (int i = 0, n = mp.getCount(); i < n; i++) {
-				Part part = mp.getBodyPart(i);
-
-				String fileName = part.getFileName(); 
-                LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
-                        new Object[] {fileName, mp.getContentType(), fileFormat});
-				if (fileName != null && fileName.endsWith(fileFormat)) {
-					listOfAttachements.add((InputStream) part.getInputStream());
-				}
-			}
+		    if(message.getContent() instanceof Multipart){
+    			Multipart mp = (Multipart) message.getContent();
+                LOG.debug("Getting attachment from message from '{}', contentType='{}', count={}",
+                        new Object[]{message.getFrom().toString(), mp.getContentType(), mp.getCount()});
+    			for (int i = 0, n = mp.getCount(); i < n; i++) {
+    				Part part = mp.getBodyPart(i);
+    
+    				String fileName = part.getFileName(); 
+                    LOG.debug("Found file '{}' with contentType='{}' - matching to format '{}'",
+                            new Object[] {fileName, mp.getContentType(), fileFormat});
+    				if (fileName != null && fileName.endsWith(fileFormat)) {
+    					listOfAttachements.add((InputStream) part.getInputStream());
+    				}
+    			}
+		    }
 		} catch (MessagingException e) {
 			LOG.error("Error fetching attachment - cannot make connection to the given host: {} ",
 					e.getMessage(), e);

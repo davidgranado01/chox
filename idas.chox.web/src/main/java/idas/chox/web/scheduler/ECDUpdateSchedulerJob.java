@@ -117,6 +117,9 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                 }
             }
   
+        } else {
+            emailMsg.append("No attachement on email, please check and re-submit.");
+            emailMsg.append("-----------------------------------------------------------------------------------------------\n");
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
         return emailMsg.toString();
