@@ -760,7 +760,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
                 else if ("clientVatRegistered".equals(propertyNames[i])) {
 
-                    String newStatus = state1[i].toString();
+                    String newStatus = state1[i] != null ? state1[i].toString() : null;
                     String oldStatus = null;
                     if (state2[i] != null)
                         oldStatus = state2[i].toString();
