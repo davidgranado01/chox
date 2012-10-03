@@ -2127,6 +2127,10 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
+GRANT TRUNCATE ON dashboard TO public;
+GRANT TRUNCATE ON dashboard TO chox;
+GRANT TRUNCATE ON dashboard TO chox_user;
+
 ---------------------------------------------------
 -- End of Removed 'analyze' from dashboard procedure
 ---------------------------------------------------
