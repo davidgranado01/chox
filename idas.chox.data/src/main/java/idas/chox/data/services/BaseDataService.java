@@ -147,7 +147,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             s.execute("select update_user_service(3)");
             s.execute("select update_workgroup_service(3)");
             s.execute("select update_user_service(6)");
-            s.execute("selselect update_workgroup_service(6)");
+            s.execute("select update_workgroup_service(6)");
             s.execute("select update_user_service(18)");
             s.execute("select update_workgroup_service(18)");
             s.execute("select update_user_service(19)");
