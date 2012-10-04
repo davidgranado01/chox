@@ -144,20 +144,8 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         this.getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
-            s.execute("select update_user_service(3)");
-            s.execute("select update_workgroup_service(3)");
-            s.execute("select update_user_service(6)");
-            s.execute("select update_workgroup_service(6)");
-            s.execute("select update_user_service(18)");
-            s.execute("select update_workgroup_service(18)");
-            s.execute("select update_user_service(19)");
-            s.execute("select update_workgroup_service(19)");
-            s.execute("select update_user_service(20)");
-            s.execute("select update_workgroup_service(20)");
-            s.execute("select update_user_service(22)");
-            s.execute("select update_workgroup_service(22)");
-            s.execute("select update_user_service(23)");
-            s.execute("select update_workgroup_service(23)");
+            s.execute("select update_user_service(id) from insurer where status=true");
+            s.execute("select update_workgroup_service(id) from insurer where status=true");
         }
         catch (SQLException ex) {
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
