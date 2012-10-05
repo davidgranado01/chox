@@ -1,5 +1,6 @@
 package idas.chox.core.hpi;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import javax.xml.parsers.*;
 import org.xml.sax.InputSource;
@@ -26,6 +27,22 @@ public class HpiResponse {
     private String transmission;
     private Date firstRegistration;
 
+    public static HpiResponse parseResponse(InputStream stream) throws HpiException {
+        String response;
+        
+        // Convert the stream to a string
+        LOG.debug("Parsing HPI response from input stream....");
+        try {
+            response = new java.util.Scanner(stream).useDelimiter("\\A").next();
+        } catch (Exception ex) {
+            LOG.error("Error parsing HPI response: {}", ex.getMessage(), ex);
+            response="";
+        }
+        LOG.debug("Parsing HPI response from string: {}", response);
+        return HpiResponse.parseResponse(response);
+    }
+
+    
     public static HpiResponse parseResponse(String responseBody) throws HpiException {
         HpiResponse response = new HpiResponse();
 
