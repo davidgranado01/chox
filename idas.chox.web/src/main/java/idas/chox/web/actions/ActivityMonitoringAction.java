@@ -40,8 +40,17 @@ public class ActivityMonitoringAction extends BaseAction {
         for (Integer id : userIds) {
             if (id != currentUserID) {
                 WebUser user = userService.getWebUser(id);
-                usersViewingThisClaim.add(user.toString());
                 LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
+                if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
+                        && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
+                   || (getAuthenticatedUser().isCHO() && user.isCHO()
+                        && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
+                    LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim {}",
+                            new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
+                } else {
+                    LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
+                    usersViewingThisClaim.add(user.toString());
+                }
             }
         }
         
@@ -94,6 +103,7 @@ public class ActivityMonitoringAction extends BaseAction {
         this.userService = userService;
     }
 
+    @Override
     public String getActionResult() {
         return actionResult;
     }
