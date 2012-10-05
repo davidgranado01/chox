@@ -7,21 +7,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpVersion;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +27,9 @@ import org.slf4j.LoggerFactory;
  * @author John
  */
 public class Hpi {
+
     private static final Logger LOG = LoggerFactory.getLogger(Hpi.class);
-
-//    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static String today;
-
 //    private static final String hpiUrl = "http://www.q.hpixml.com/servlet/HpiGate1_0";
 //    private static final String efxidParam = "0503522";
 //    private static final String passwordParam = "t3sting";
@@ -43,7 +38,6 @@ public class Hpi {
     private static final String functionParam = "SEARCH";
     private static final String deviceTypeParam = "XM";
     private static Hpi instance = new Hpi();
-
     private Map<String, String> params;
     private List<String> session;
     private HttpClient httpClient;
@@ -54,24 +48,25 @@ public class Hpi {
     private boolean active = false;
 
     private Hpi() {
-       // Create and initialize HTTP parameters
-        HttpParams httpParams = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(httpParams, 10);
-        HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
-
-        // Create and initialize scheme registry
+        // Create and initialize HTTP parameters
         SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(
-                new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
+//        schemeRegistry.register(new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
 
+        PoolingClientConnectionManager cm = new PoolingClientConnectionManager(schemeRegistry);
+        // Increase max total connection to 20
+        cm.setMaxTotal(20);
+        // Increase default max connection per route to 20
+        cm.setDefaultMaxPerRoute(20);
+
+        
         // Create an HttpClient with the ThreadSafeClientConnManager.
         // This connection manager must be used if more than one thread will
         // be using the HttpClient.
-        ClientConnectionManager cm = new ThreadSafeClientConnManager(httpParams, schemeRegistry);
-        httpClient = new DefaultHttpClient(cm, httpParams);
+        httpClient = new DefaultHttpClient(cm);
 
 //        httpclient = new HttpClient(new MultiThreadedHttpConnectionManager());
-        LOG.debug("HPI I/F class has been created (url={})", hpiUrl);
+        LOG.info("HPI I/F class has been created (url={})", hpiUrl);
     }
 
     public static Hpi getInstance() {
@@ -102,7 +97,6 @@ public class Hpi {
         this.passwordParam = passwordParam;
     }
 
-
     private String getURL(String vrn) {
         return getURL(vrn, null);
     }
@@ -110,15 +104,16 @@ public class Hpi {
     private String getURL(String vrn, String sessionId) {
         char joinChar = '?';
         StringBuilder sb = new StringBuilder(hpiUrl);
-        for(Map.Entry<String, String> mapEntry : params.entrySet()) {
+        for (Map.Entry<String, String> mapEntry : params.entrySet()) {
             String key = mapEntry.getKey();
             String value = mapEntry.getValue();
             sb.append(joinChar).append(key).append("=").append(value);
             joinChar = '&';
         }
         sb.append(joinChar).append("vrm=").append(vrn.toLowerCase());
-        if (sessionId != null)
+        if (sessionId != null) {
             sb.append(joinChar).append("SessionNo=").append(sessionId);
+        }
 
         return sb.toString();
 
@@ -130,8 +125,7 @@ public class Hpi {
         if (!active) {
             LOG.debug("HPI check functionality has been disabled.");
             throw new HpiException("HPI check functionality has been de-activated.");
-        }
-        else if (params == null) {
+        } else if (params == null) {
             params = new HashMap<String, String>();
             params.put("forward", "YES");
             params.put("XML", "YES");
@@ -147,29 +141,47 @@ public class Hpi {
             today = getDate();
             session = new ArrayList<String>();
             LOG.info("New HPI session list created for today={}", today);
-        }
-        else {
+        } else {
             sessionId = getSession();
-            if (sessionId != null)
+            if (sessionId != null) {
                 LOG.debug("Using todays session '{}'", sessionId);
-            else
+            } else {
                 LOG.debug("No sessions available - a new one will be created.");
+            }
         }
 
         String url = getURL(vrn, sessionId);
 
         HttpGet httpget = new HttpGet(url);
 
-        LOG.debug("executing HPI request with sessionId={} : {} ", sessionId, httpget.getURI());
+        LOG.info("Executing HPI request with sessionId={} : {} ", sessionId, httpget.getURI());
 
         // Create a response handler
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         String responseBody = null;
+        HpiResponse hpiResponse = null;
         try {
-            responseBody = httpClient.execute(httpget, responseHandler);
+//            responseBody = httpClient.execute(httpget, responseHandler);
+            HttpResponse response = httpClient.execute(httpget);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                // do something useful with the entity
+                hpiResponse = HpiResponse.parseResponse(entity.getContent());
+                saveSession(hpiResponse.getSessionId());
+            }
+            // ensure the connection gets released to the manager
+            EntityUtils.consume(entity);
         } catch (IOException ex) {
-            LOG.warn("IOException thrown during HPI call: {}", ex.getMessage());
+            LOG.warn("IOException thrown during HPI call: {}", ex.getMessage(), ex);
+            httpget.abort();
             throw new HpiException("Error calling HPI: " + ex.getMessage());
+        } catch (Exception ex) {
+            LOG.warn("Exception thrown during HPI call: {}", ex.getMessage(), ex);
+            httpget.abort();
+            throw new HpiException("Error calling HPI: " + ex.getMessage());
+        } finally {
+            LOG.info("HPI request completed");
+            httpget.releaseConnection();
         }
 
         LOG.debug("----------------------------------------");
@@ -181,12 +193,7 @@ public class Hpi {
         // immediate deallocation of all system resources
 //        httpclient.getConnectionManager().shutdown();
 
-        // Parse response
-        HpiResponse response = HpiResponse.parseResponse(responseBody);
-
-        saveSession(response.getSessionId());
-
-        return response;
+        return hpiResponse;
     }
 
     private synchronized String getSession() {
@@ -196,9 +203,10 @@ public class Hpi {
 
         return null;
     }
+
     private synchronized void saveSession(String sessionId) {
-            session.add(sessionId);
-            LOG.debug("Session saved: {}", sessionId);
+        session.add(sessionId);
+        LOG.debug("Session saved: {}", sessionId);
     }
 
     private static String getDate() {
@@ -220,5 +228,4 @@ public class Hpi {
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("Clone is not allowed.");
     }
-
 }
