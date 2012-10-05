@@ -1,60 +1,81 @@
 package idas.chox.web.scheduler;
 
-import static org.junit.Assert.assertEquals;
-import idas.chox.core.model.EmailUpdateUser;
-import idas.chox.core.services.EmailUpdateUserService;
-import idas.chox.web.BaseWebTest;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.services.SchedulerJobService;
+import idas.chox.web.BaseWebTest;
 
 public class MailSecurityAthenticatorTest extends BaseWebTest {
-    
-	@Autowired
-	private MailSecurityAthenticator mailSecurityAthenticator;
-	
-	@Autowired
-	private MailUtil mailUtil;
-        
+
     @Autowired
-    private EmailUpdateUserService emailUpdateUserService;
-        
-	private Properties props;
-	
-	private static final String sender =  "patrik.bego@sherwoodcompliance.co.uk";
-	
-	@Before
+    private MailSecurityAthenticator mailSecurityAthenticator;
+    @Autowired
+    private SchedulerJobService schedulerJobService;
+
+    @Before
     public void setProperties() throws Exception {
-		//Resource resource = new ClassPathResource("/applicationTest.properties");
-    	//props = PropertiesLoaderUtils.loadProperties(resource);
+        //Resource resource = new ClassPathResource("/applicationTest.properties");
+        //props = PropertiesLoaderUtils.loadProperties(resource);
     }
-	
-	@After
+
+    @After
     public void clean() {
     }
-	
+
     /**
      * Test of isPrivilegedSender method, of class MailSecurityAthenticator.
      */
     @Test
-    public void testIsPrivilegedSender()  {
+    public void testEcdUpdatePrivilegedSenders() {
         boolean result = false;
-        // XXX this needs to be updated so that we will get the list of users from the database
-        EmailUpdateUser emailUpdateUser = new EmailUpdateUser();
-        emailUpdateUser.setEmail("patrik.bego@sherwoodcompliance.co.uk");
-        List<EmailUpdateUser> emailUpdateUserList = new ArrayList<EmailUpdateUser>();
-        emailUpdateUserList.add(emailUpdateUser);
-        EmailUpdateUser schedulerPrivilegedUser = mailSecurityAthenticator.isPrivilegedSender(emailUpdateUserList, sender);
-        if (schedulerPrivilegedUser != null)
-            result = true;
+        String sender = "elliot.roberts@sherwoodcompliance.co.uk";
+        for (SchedulerJob schedulerJob : schedulerJobService.getSchedulerJobs(ECDUpdateSchedulerJob.JOB_NAME)) {
+            if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
+                result = true;
+            }
+        }
+        assertEquals(true, result);
+    }
+    
+    @Test
+    public void testReferenceUpdatePrivilegedSenders() {
+        boolean result = false;
+        String sender = "elliot.roberts@sherwoodcompliance.co.uk";
+        for (SchedulerJob schedulerJob : schedulerJobService.getSchedulerJobs(ReferenceUpdateEmailSchedulerJob.JOB_NAME)) {
+            if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
+                result = true;
+            }
+        }
         assertEquals(true, result);
     }
 
+    @Test
+    public void testPenaltyUpdatePrivilegedSenders() {
+        boolean result = false;
+        String sender = "elliot.roberts@sherwoodcompliance.co.uk";
+        for (SchedulerJob schedulerJob : schedulerJobService.getSchedulerJobs(PenaltyChargeUpdateEmailSchedulerJob.JOB_NAME)) {
+            if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
+                result = true;
+            }
+        }
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testDbReferenceUpdatePrivilegedSenders() {
+        boolean result = false;
+        String sender = "elliot.roberts@sherwoodcompliance.co.uk";
+        for (SchedulerJob schedulerJob : schedulerJobService.getSchedulerJobs(ReferenceUpdateDbSchedulerJob.JOB_NAME)) {
+            if (mailSecurityAthenticator.isPrivilegedSender(schedulerJob.getPrivilegedUsers(), sender)) {
+                result = true;
+            }
+        }
+        assertEquals(true, result);
+    }
 }

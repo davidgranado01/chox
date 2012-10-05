@@ -1,88 +1,80 @@
 package idas.chox.web.scheduler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashMap;
-import org.springframework.security.access.annotation.Secured;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.quartz.JobExecutionException;
-import idas.chox.core.util.DateHelper;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.QueuedTicket;
+import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateDbSchedulerJob.class);
+//    private static final String emailSubject = "Queued Tokens Update Results";
+    public static final String JOB_NAME = "DB_REFERENCE_UPDATE";
 
-    private String queuedTicketUpdateReceivers;
-
+    @Secured({"ROLE_CHO"})
     @Override
-    public final void execute() throws JobExecutionException {
+    public final Map<Integer, List<String>> doJob() {
+
+        Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
+
+        List<QueuedTicket> queuedTickets = getClaimService().getQueuedTicket();
+
         try {
-// TODO: investigate why we cannot access properties directly - if we do this we get null values
-//            LOG.debug("queuedTicketUpdateReceivers: {}", queuedTicketUpdateReceivers);
-//            LOG.debug("queuedTicketUpdateReceivers: {}", getQueuedTicketUpdateReceivers());
-            LOG.debug("properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}, {}", 
-                    new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
-                            getSmtpEmailUser(), getSmtpEmailPassword(), 
-                            getUpdateUserName(),getUpdatePassword(),getQueuedTicketUpdateReceivers()});
-            super.execute();
-            List<QueuedTicket> queuedTickets = getClaimService().getQueuedTicket();
             if (queuedTickets.size() > 0) {
-                    LOG.debug("total found QueuedTicket is {}", queuedTickets.size());
-                    Map<Integer, List<String>> resultMap = doJob(queuedTickets);
-                    String emailMessage = buildMessage(getEmailSubject(), resultMap);
-                    sendMail(getQueuedTicketUpdateReceivers(), getBccReceivers(), "RE: " + getEmailSubject(), emailMessage.toString());
+                LOG.debug("total found QueuedTicket is {}", queuedTickets.size());
+
+                int i = 1;
+                for (QueuedTicket queuedTicket : queuedTickets) {
+
+                    int status = getClaimService().updateQueuedTicket(queuedTicket,
+                            getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
+                    String statusString;
+                    if (status == 0) {
+                        statusString = "Updated";
+                    } else if (status == 1) {
+                        statusString = "Failed - Ticket number already exists";
+                    } else if (status == 2) {
+                        statusString = "Failed - Reservation number doesn't exist";
+                    } else if (status == 3) {
+                        statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
+                    } else {
+                        statusString = "Failed - an internal error occurred";
+                    }
+                    List<String> cellStringList = new ArrayList<String>();
+                    cellStringList.add(queuedTicket.getOldReference());
+                    cellStringList.add(queuedTicket.getNewReference());
+                    cellStringList.add(statusString);
+                    cellStringList.add(queuedTicket.getSender());
+                    cellStringList.add(DateHelper.getSdf().format(queuedTicket.getCreatedDate()));
+                    xlsDataMap.put(i++, cellStringList);
+                    LOG.debug("CHO reference updated: {} -> {} : {} [{}]",
+                            new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(),
+                                statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
+                }
+
             } else {
                 LOG.debug("no queuedTickets found");
             }
         } catch (Exception ex) {
             LOG.error("exception on ReferenceUpdateDbSchedulerJob", ex);
         }
-    }
-
-    @Secured({"ROLE_CHO"})
-    @Override
-    public final Map<Integer, List<String>> doJob(List<QueuedTicket> queuedTickets) {
-        
-        Map<Integer, List<String>> xlsDataMap = new HashMap<Integer, List<String>>();
-        int i = 1;
-        for (QueuedTicket queuedTicket : queuedTickets) {
-
-            int status = getClaimService().updateQueuedTicket(queuedTicket,
-                                    getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
-            String statusString;
-            if (status == 0) {
-                statusString = "Updated";
-            } else if (status == 1) {
-                statusString = "Failed - Ticket number already exists";
-            } else if (status == 2) {
-                statusString = "Failed - Reservation number doesn't exist";
-            } else if (status == 3) {
-                statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
-            } else {
-                statusString = "Failed - an internal error occurred";
-            }
-            List<String> cellStringList = new ArrayList<String>();
-            cellStringList.add(queuedTicket.getOldReference());
-            cellStringList.add(queuedTicket.getNewReference());
-            cellStringList.add(statusString);
-            cellStringList.add(queuedTicket.getSender());
-            cellStringList.add(DateHelper.getSdf().format(queuedTicket.getCreatedDate()));
-            xlsDataMap.put(i++, cellStringList);
-            LOG.debug("CHO reference updated: {} -> {} : {} [{}]",
-                    new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(),
-                                 statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
-        }
         return xlsDataMap;
     }
 
-    public final String buildMessage(String subject, Map<Integer, List<String>> xlsDataMap) {
+    @Override
+    public String buildMessage(String subject, Map<Integer, List<String>> xlsDataMap) {
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
-        emailMsg.append("Subject: Queued Tokens Update Results.").append("\n");
+        emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
             emailMsg.append("Date Added    Sender                                 Original CHO Reference    New CHO Reference    Status\n");
@@ -118,11 +110,8 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
         return emailMsg.toString();
     }
 
-    public void setQueuedTicketUpdateReceivers(String queuedTicketUpdateReceivers) {
-        this.queuedTicketUpdateReceivers = queuedTicketUpdateReceivers;
+    @Override
+    protected List<SchedulerJob> getDBSchedulerJobs() {
+        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
-    public String getQueuedTicketUpdateReceivers() {
-        return queuedTicketUpdateReceivers;
-    }
-
 }

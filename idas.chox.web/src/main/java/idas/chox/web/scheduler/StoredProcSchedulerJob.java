@@ -10,7 +10,7 @@ import idas.chox.data.services.BaseDataService;
  *
  * @author John
  */
-public class StoredProcSchedulerJob implements SchedulerJob {
+public class StoredProcSchedulerJob implements Scheduler {
     private static final Logger LOG = LoggerFactory.getLogger(StoredProcSchedulerJob.class);
     private String storedProcName;
     private BaseDataService baseDataService;

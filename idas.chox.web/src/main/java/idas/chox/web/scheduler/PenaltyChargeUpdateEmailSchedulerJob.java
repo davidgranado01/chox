@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
-import idas.chox.core.model.EmailUpdateUser;
+import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.util.DateHelper;
 
 public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
+    public static final String JOB_NAME = "PENALTY_UPDATE";
     
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
@@ -38,7 +39,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 }
                 String choReference = cells.get(0).trim();
 
-                if (choReference != null && !choReference.equals("")) {
+                if (choReference != null && !choReference.isEmpty()) {
                     referenceNumber = choReference;
                     boolean isUpdateSuccessful = getInvoiceService().setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
@@ -70,7 +71,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By Email: ").append(email).append("\n");
         emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format)).append("\n");
-        emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
+        emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
             emailMsg.append("CHO Reference               Status\n");
@@ -99,12 +100,7 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    protected List<EmailUpdateUser> getPrivilegedUsers() {
-        return getEmailUpdateUserService().getPenaltyChargeUpdatePrivilegedUsers();
-    }
-
-    @Override
-    protected List<EmailUpdateUser> getBccReceivers() {
-        return getEmailUpdateUserService().getPenaltyBccReceiver();
+    protected List<SchedulerJob> getEmailSchedulerJobs() {
+        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

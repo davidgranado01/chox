@@ -26,15 +26,11 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="bccReceivers" value="${queuedTicketUpdate_bccReceivers}"/>
-        <property name="emailSubject" value="${refUpdate_emailSubject}"/>
-        <property name="updateUserName" value="${queuedTicketUpdate_UserName}"/>
-        <property name="updatePassword" value="${queuedTicketUpdate_Password}"/>
-        <property name="queuedTicketUpdateReceivers" value="${queuedTicketUpdate_receivers}"/>
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="schedulerJobService" ref="schedulerJobService" />
     </bean>
 	
 
@@ -46,13 +42,10 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="sessionFactory" ref="sessionFactory"/>
-		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-        <property name="emailSubject" value="${refUpdate_emailSubject}"/>
-		
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
@@ -68,13 +61,10 @@
         <property name="claimService" ref="claimService" />
         <property name="invoiceService" ref="invoiceService" />
         <property name="mailUtil" ref="mailUtil" />
-        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="sessionFactory" ref="sessionFactory"/>
-		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-        <property name="emailSubject" value="${penUpdate_emailSubject}"/>
-
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
@@ -89,14 +79,11 @@
         <property name="claimService" ref="claimService" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
-        <property name="emailUpdateUserService" ref="emailUpdateUserService" />
+        <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
-		
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
-        <property name="emailSubject" value="${ECDUpdate_emailSubject}"/>
-
         <property name="smtpHostName" value="${smtpHostName}"/>
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>

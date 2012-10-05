@@ -2,7 +2,7 @@ package idas.chox.web.scheduler;
 
 import org.quartz.JobExecutionException;
 
-public interface SchedulerJob {
+public interface Scheduler {
 
     public void execute() throws JobExecutionException;
     

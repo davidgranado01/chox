@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
-import idas.chox.core.model.EmailUpdateUser;
+import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.util.DateHelper;
 
 public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateEmailSchedulerJob.class);
+    public static final String JOB_NAME = "REFERENCE_UPDATE";
 
     @Secured({"ROLE_CHO"})
     @Override
@@ -73,7 +74,7 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By Email: ").append(email).append("\n");
         emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format)).append("\n");
-        emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
+        emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
             emailMsg.append("Original CHO Reference    New CHO Reference    Status\n");
@@ -106,12 +107,7 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
     }
 
     @Override
-    protected List<EmailUpdateUser> getPrivilegedUsers() {
-        return getEmailUpdateUserService().getReferenceNumberUpdatePrivilegedUsers();
-    }
-
-    @Override
-    protected List<EmailUpdateUser> getBccReceivers() {
-        return getEmailUpdateUserService().getRefBccReceiver();
+    protected List<SchedulerJob> getEmailSchedulerJobs() {
+        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

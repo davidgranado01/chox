@@ -2,19 +2,16 @@
 -- 6.16.2 - Ability to update ECDs through Excel
 --------------------------------------------------------------------------------
 
-CREATE TABLE email_update_user
+CREATE TABLE schedulerjob
 (
 id serial NOT NULL,
-email character varying(256) NOT NULL,
-user_name character varying(256) NOT NULL,
-password character varying(256) NOT NULL,
-ecd_update boolean DEFAULT false,
-ref_update boolean DEFAULT false,
-penalty_update boolean DEFAULT false,
-ref_bcc boolean DEFAULT false,
-ecd_bcc boolean DEFAULT false,
-penalty_bcc boolean DEFAULT false,
-error_message boolean DEFAULT false,
+login_username character varying(256) NOT NULL,
+login_password character varying(256) NOT NULL,
+jobname character varying(256) NOT NULL,
+emailsubject character varying(256) NOT NULL,
+autheriseduser character varying NOT NULL,
+bcc_receiver character varying NOT NULL,
+errormessage_receiver character varying NOT NULL,
 active boolean DEFAULT true,
 version integer,
 created_by integer NOT NULL,
@@ -28,51 +25,34 @@ CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
       REFERENCES web_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-GRANT SELECT ON TABLE email_update_user TO chox_user;
+GRANT SELECT ON TABLE schedulerjob TO chox_user;
 
-insert into email_update_user (email,user_name,password, ref_update, version, created_by , created_date, last_modified_by, last_modified_date)
-    select 'subscribers@erac.com', 'admin@erac.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();
 
-insert into email_update_user (email,user_name,password, ref_bcc, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'Christopher.J.Smith@ehi.com', 'admin@erac.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();
+insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+       select 'admin@erac.com', 'Ch0xAdm1n', 'REFERENCE_UPDATE', 'ENTERPRISE-CHOX Reservation Ticket Conversion',
+       'subscribers@erac.com,elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
+       'Christopher.J.Smith@ehi.com,elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 
+       'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'elliot.roberts@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', 
-                                                                                         true, true, 0, 999, now(), 999, now(); 
+insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+       select 'admin@chox.com', 'Ch0xAdm1n', 'PENALTY_UPDATE', 'Update Penalty Charge Start Date Request',
+       'elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
+       'john.dowson@sherwoodcompliance.co.uk', 
+       'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'elliot.roberts@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();                                                                                                                                                          
+insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+       select 'admin@erac.com', 'Ch0xAdm1n', 'DB_REFERENCE_UPDATE', 'ENTERPRISE-Queued Tokens Update Results',
+       'elliot.roberts@sherwoodcompliance.co.uk', 
+       'ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
+       'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'ben.richmond@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', true, true, 0, 999, now(), 999, now();
 
-insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'ben.richmond@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();                                                                                           
+insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+       select 'admin@chox.com', 'Ch0xAdm1n', 'ECD_UPDATE', 'CHOX Support Email: ECD Update Request',
+       'elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
+       'john.dowson@sherwoodcompliance.co.uk', 
+       'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into email_update_user (email,user_name,password, ref_update, ref_bcc, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'Deborah.Pascaru@sherwoodcompliance.co.uk', 'admin@erac.com', 'Ch0xAdm1n', true, true, 0, 999, now(), 999, now();
-                                                                                           
-insert into email_update_user (email,user_name,password, penalty_update, version, created_by , 
-                               created_date, last_modified_by, last_modified_date) select 'Deborah.Pascaru@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', 
-                                                                                         true, 0, 999, now(), 999, now();
-                                                                                           
-insert into email_update_user (email,user_name,password, ref_bcc, penalty_bcc, error_message, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'john.dowson@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', true, true, true, 0, 999, now(), 999, now();
-
-insert into email_update_user (email,user_name,password, error_message, version, created_by , 
-                               created_date, last_modified_by, last_modified_date) 
-    select 'patrik.bego@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();     
-
-insert into email_update_user (email,user_name,password, error_message, version, created_by , 
-                               created_date, last_modified_by, last_modified_date)
-    select 'seeni.shanmugam@sherwoodcompliance.co.uk', 'admin@chox.com', 'Ch0xAdm1n', true, 0, 999, now(), 999, now();
 
 ----------------------
 --- End of 6.16.2 --

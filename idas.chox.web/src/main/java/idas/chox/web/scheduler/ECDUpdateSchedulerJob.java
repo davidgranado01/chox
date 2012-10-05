@@ -15,8 +15,8 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.EmailUpdateUser;
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.util.DateHelper;
 
@@ -27,6 +27,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     
     private HireMonitoringEcdService hireMonitoringEcdService;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
+    public static final String JOB_NAME = "ECD_UPDATE";
         
     @Secured({"ROLE_CHO", "ROLE_CHOX_ADMIN"})
     @Override
@@ -98,7 +99,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
         emailMsg.append("======================================================================\n");
         emailMsg.append("Submitted By Email: ").append(email).append("\n");
         emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format)).append("\n");
-        emailMsg.append("Subject: ").append(getEmailSubject()).append("\n");
+        emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
         if (xlsDataMap != null) {
             emailMsg.append("Reference Number           Message\n");
@@ -165,7 +166,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                 ecdDate = sdf.parse(ecdDateString);
             } catch (ParseException ex) {
                 statusString.append(" Invalid Format For ECD Date.");
-                LOG.error("parse exception thrown for given date {}", ecdDateString, ex);
+                LOG.warn("parse exception thrown for given date {}", ecdDateString, ex);
             }
         }
         return ecdDate;
@@ -190,16 +191,6 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
-
-    @Override
-    protected List<EmailUpdateUser> getPrivilegedUsers() {
-        return getEmailUpdateUserService().getECDUpdatePrivilegedUsers();
-    }
-
-    @Override
-    protected List<EmailUpdateUser> getBccReceivers() {
-        return getEmailUpdateUserService().getECDBccReceiver();
-    }
     
     private boolean regexExpressionChecker(String regex, String dataValue) {
         Pattern p = Pattern.compile(regex);
@@ -210,5 +201,10 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected List<SchedulerJob> getEmailSchedulerJobs() {
+        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
     }
 }

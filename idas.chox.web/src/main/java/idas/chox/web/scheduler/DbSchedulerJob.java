@@ -9,78 +9,94 @@ import javax.mail.MessagingException;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
-import idas.chox.core.model.QueuedTicket;
+import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.EmailHelper;
 
 /**
  *
  * @author Seeni
  */
-public abstract class DbSchedulerJob implements SchedulerJob {
+public abstract class DbSchedulerJob implements Scheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(DbSchedulerJob.class);
     protected static final String email_date_format = "dd MMMM yyyy";
     private MailUtil mailUtil;
-    private String bccReceivers;
-    private String emailSubject;
     private String smtpHostName;
     private String smtpPort;
     private String smtpEmailUser;
     private String smtpEmailPassword;
     private ClaimService claimService;
     private SecurityInfoProvider securityInfoProvider;
-    private String updateUserName;
-    private String updatePassword;
     private MailSecurityAthenticator mailSecurityAthenticator;
+    private SchedulerJobService schedulerJobService;
     
 
-    public abstract Map<Integer, List<String>> doJob(List<QueuedTicket> queuedTickets);
+    public abstract Map<Integer, List<String>> doJob();
+    
+    protected abstract List<SchedulerJob> getDBSchedulerJobs();
+    
+    protected abstract String buildMessage(String subject, Map<Integer, List<String>> xlsDataMap);
         
     @Override
     public void execute() throws JobExecutionException {
+        
+        String loginUsername = null;
+        String loginPassword = null;
+        
         LOG.info("Calling DB Scheduler Job : '{}'.", getClass().getSimpleName());
 // TODO: investigate why we cannot access properties directly - if we do this we get null values
-        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}, {}, {}, {}", 
-                    new Object[]{bccReceivers, emailSubject, smtpHostName, smtpPort, smtpEmailUser,
-                            smtpEmailPassword, updateUserName, updatePassword});
-        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}, {}, {}", 
-                    new Object[]{getBccReceivers(), getEmailSubject(), getSmtpHostName(), getSmtpPort(),
-                            getSmtpEmailUser(), getSmtpEmailPassword(), 
-                            getUpdateUserName(),getUpdatePassword()});
-        getMailSecurityAthenticator().authenticateSender(getUpdateUserName(), getUpdatePassword()); 
-    }
-
-
-    protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
+        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}",
+                new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword});
+        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}",
+                new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword()});
         try {
-            EmailHelper emailHelper = new EmailHelper(getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword());
-            if (!bccReceiver.isEmpty()) {
-                emailHelper.postMail(subject, emailMessage, (String[]) getMailUtil().parseStringToList(receiver, ",").toArray(), (String[]) getMailUtil().parseStringToList(bccReceiver, ",").toArray());
-            } else {
-                emailHelper.postMail(subject, emailMessage, (String[]) getMailUtil().parseStringToList(receiver, ",").toArray());
+            LOG.info("Total no of {} with different subjects are {}.", getClass().getSimpleName(), getDBSchedulerJobs().size());
+            for (SchedulerJob schedulerJob : getDBSchedulerJobs()) {
+                
+                LOG.info("{} with subject {} process started.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
+                LOG.debug("login user name is : {} for {} job.", schedulerJob.getLoginUserName(), getClass().getSimpleName());
+                loginUsername = schedulerJob.getLoginUserName();
+                loginPassword = schedulerJob.getLoginPassword();
+                getMailSecurityAthenticator().authenticateSender(loginUsername, loginPassword);
+                Map<Integer, List<String>> resultMap = doJob();
+                String emailMessage = buildMessage(schedulerJob.getEmailSubject(), resultMap);
+                sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), schedulerJob.getEmailSubject(), emailMessage.toString());
+                LOG.info("{} with subject {} process finished.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
+                
             }
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword(), e});
-        } catch (MessagingException e) {
-            LOG.error("Messaging Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword(), e});
+        } catch (AccessDeniedException e) {
+            LOG.error("The user is not authorized to update {} for given user name {} and password {} \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
+        } catch (Exception e) {
+            LOG.error("An exception was thrown during a {} update: ", getClass().getSimpleName(), e);
         }
     }
 
 
-    public String getBccReceivers() {
-        return bccReceivers;
+    protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
+        String[] receivers = receiver != null ? receiver.split(",") : null;
+        String[] bccReceivers = bccReceiver != null ? bccReceiver.split(",") : null;
+        LOG.debug("sending mails to receivers {} and bccreceivers {} ", receivers, bccReceivers);
+        try {
+            EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
+            if (bccReceiver != null && bccReceivers.length > 0) {
+                emailHelper.postMail(subject, emailMessage, receivers, bccReceivers);
+            } else {
+                emailHelper.postMail(subject, emailMessage, receivers);
+            }
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
+                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
+        } catch (MessagingException e) {
+            LOG.error("Messaging Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
+                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
+        }
     }
 
-
-    public void setBccReceivers(String bccReceivers) {
-        this.bccReceivers = bccReceivers;
-    }
-    
 
     public ClaimService getClaimService() {
         return claimService;
@@ -88,14 +104,6 @@ public abstract class DbSchedulerJob implements SchedulerJob {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public String getEmailSubject() {
-        return emailSubject;
-    }
-
-    public void setEmailSubject(String emailSubject) {
-        this.emailSubject = emailSubject;
     }
 
     public MailSecurityAthenticator getMailSecurityAthenticator() {
@@ -154,20 +162,12 @@ public abstract class DbSchedulerJob implements SchedulerJob {
         this.smtpPort = smtpPort;
     }
 
-    public String getUpdatePassword() {
-        return updatePassword;
+    public SchedulerJobService getSchedulerJobService() {
+        return schedulerJobService;
     }
 
-    public void setUpdatePassword(String updatePassword) {
-        this.updatePassword = updatePassword;
+    public void setSchedulerJobService(SchedulerJobService schedulerJobService) {
+        this.schedulerJobService = schedulerJobService;
     }
-
-    public String getUpdateUserName() {
-        return updateUserName;
-    }
-
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
-    }
-
+    
 }
