@@ -52,7 +52,9 @@ public abstract class EmailSchedulerJob implements Scheduler{
     private SchedulerJobService schedulerJobService;
     private InvoiceService invoiceService;
     private ClaimService claimService;
-
+    private String hostName;
+    private ServerConfig serverConfig;
+    
     protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
     
     protected abstract String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap);
@@ -65,6 +67,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
         String sender = null;
         String loginUsername = null;
         String loginPassword = null;
+        String emailSubject;
         
         try {
             handleHibernateTransactionIntricacies();
@@ -74,11 +77,21 @@ public abstract class EmailSchedulerJob implements Scheduler{
             internetAddress.setPersonal(emailAccountPassword);
             imapMailReceiver.setFrom(internetAddress);
             
-            LOG.info("{} having {} subjects.", getClass().getSimpleName(), getEmailSchedulerJobs().size());
+            LOG.info("{} has {} subjects.", getClass().getSimpleName(), getEmailSchedulerJobs().size());
             for (SchedulerJob schedulerJob : getEmailSchedulerJobs()) {
-                
-                LOG.info("{} with subject {} process started.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
-                List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(schedulerJob.getEmailSubject());
+
+                // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION RUNS NOT IN PRODUCTION SERVER.
+                if (!hostName.equalsIgnoreCase("PRODUCTION")) {
+                    String emailSubjectPrefix = hostName + "-";
+                    if (!serverConfig.getServletContext().getContextPath().isEmpty())
+                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath() + ":";
+                    emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
+                } else {
+                    emailSubject = schedulerJob.getEmailSubject();
+                }
+            
+                LOG.info("{} with subject '{}' job started.", getClass().getSimpleName(), emailSubject);
+                List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(emailSubject);
                 LOG.debug("Total no of mails are {}.", listOfmails.size());
                 
                 for (Message message : listOfmails) {
@@ -97,19 +110,19 @@ public abstract class EmailSchedulerJob implements Scheduler{
                                 for (InputStream attachemt : attachmentStreams) {
                                     xlsDataMap = xlsFileParser.readExcelFile(attachemt);
                                     Map<Integer, List<String>> resultMap = doJob(xlsDataMap, sender);
-                                    String emailMessage = buildMessage(sender, schedulerJob.getEmailSubject(), resultMap);
+                                    String emailMessage = buildMessage(sender, emailSubject, resultMap);
                                     LOG.debug("Bcc receiver size is {}", Arrays.asList(schedulerJob.getBccReceivers().split(",")).size());
-                                    sendMail(sender, schedulerJob.getBccReceivers(), "RE: " + schedulerJob.getEmailSubject(), emailMessage);
+                                    sendMail(sender, schedulerJob.getBccReceivers(), "RE: " + emailSubject, emailMessage);
                                 }
                             } else {
-                                String emailMessage = buildMessage(sender, schedulerJob.getEmailSubject(), null);
-                                LOG.info("Mail ({}) with sender ({}) has no attachments", schedulerJob.getEmailSubject(), sender);
-                                sendMail(sender, schedulerJob.getBccReceivers(), "RE: " + schedulerJob.getEmailSubject(), emailMessage);
+                                String emailMessage = buildMessage(sender, emailSubject, null);
+                                LOG.info("Mail ({}) with sender ({}) has no attachments", emailSubject, sender);
+                                sendMail(sender, schedulerJob.getBccReceivers(), "RE: " + emailSubject, emailMessage);
                             }
                         } catch (Exception ex) {
                             LOG.error("Exception thrown while processing {} from sender {} with subject '{}'\n",
-                                    new Object[]{getClass().getSimpleName(), sender, schedulerJob.getEmailSubject(), ex});
-                            sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + schedulerJob.getEmailSubject() + "'", ex.getMessage());
+                                    new Object[]{getClass().getSimpleName(), sender, emailSubject, ex});
+                            sendMail(schedulerJob.getErrorMessageReceivers(), null, "Error parsing email '" + emailSubject + "'", ex.getMessage());
                         }
                     } else {
                         LOG.info("{} request received from unauthorised user {}.", getClass().getSimpleName(), sender);
@@ -118,7 +131,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
                                 getClass().getSimpleName() + " request received from unauthorised user '" + sender + "'. Allowed users are " + schedulerJob.getPrivilegedUsers());
                     }
                 }
-                LOG.info("{} with subject {} process finished.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
+                LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
             }
 
         } catch (UnsupportedEncodingException e) {
@@ -247,5 +260,13 @@ public abstract class EmailSchedulerJob implements Scheduler{
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public void setServerConfig(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
     }
 }

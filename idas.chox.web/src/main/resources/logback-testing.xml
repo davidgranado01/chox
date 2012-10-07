@@ -20,7 +20,7 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error (Testing)</Subject>
+        <Subject>CHOX Application Error (Test)</Subject>
         <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk,Patrik.Bego@sherwoodcompliance.co.uk</To>
         <From>chox@chox-uk01.idasnetwork.com</From>

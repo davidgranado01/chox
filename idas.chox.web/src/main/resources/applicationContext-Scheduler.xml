@@ -11,6 +11,8 @@
         <property name="mailPort" value="${mailPort}"/>
         <property name="mailFolder" value="${mailFolder}"/>
     </bean>
+    
+    <bean id ="serverConfig" class="idas.chox.web.scheduler.ServerConfig" scope="singleton"/>
 	
     <bean id="mailSecurityAthenticator" class="idas.chox.web.scheduler.MailSecurityAthenticator">
         <property name="authenticationManager" ref="authenticationManager" />
@@ -31,6 +33,8 @@
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
         <property name="schedulerJobService" ref="schedulerJobService" />
+        <property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
     </bean>
 	
 
@@ -50,6 +54,8 @@
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
+        <property name="hostName" value="${HOSTNAME}"/>
+        <property name="serverConfig" ref="serverConfig"/>
     </bean>
         
 
@@ -69,7 +75,8 @@
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
-		
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
     </bean>
     
     <bean id="ecdUpdateEmailJob" class="idas.chox.web.scheduler.ECDUpdateSchedulerJob">
@@ -88,7 +95,8 @@
         <property name="smtpPort" value="${smtpPort}"/>
         <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
-		
+	<property name="hostName" value="${HOSTNAME}"/>	
+        <property name="serverConfig" ref="serverConfig"/>
     </bean>
     
     <!--  Stored Procedure call: addMissingEcdTask -->

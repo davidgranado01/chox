@@ -34,6 +34,8 @@ public abstract class DbSchedulerJob implements Scheduler {
     private SecurityInfoProvider securityInfoProvider;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private SchedulerJobService schedulerJobService;
+    private String hostName;
+    private ServerConfig serverConfig;
     
 
     public abstract Map<Integer, List<String>> doJob();
@@ -47,6 +49,7 @@ public abstract class DbSchedulerJob implements Scheduler {
         
         String loginUsername = null;
         String loginPassword = null;
+        String emailSubject;
         
         LOG.info("Calling DB Scheduler Job : '{}'.", getClass().getSimpleName());
 // TODO: investigate why we cannot access properties directly - if we do this we get null values
@@ -55,18 +58,27 @@ public abstract class DbSchedulerJob implements Scheduler {
         LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}",
                 new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword()});
         try {
-            LOG.info("Total no of {} with different subjects are {}.", getClass().getSimpleName(), getDBSchedulerJobs().size());
+            LOG.info("{} has '{}' subjects.", getClass().getSimpleName(), getDBSchedulerJobs().size());
             for (SchedulerJob schedulerJob : getDBSchedulerJobs()) {
                 
-                LOG.info("{} with subject {} process started.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
+                if (!hostName.equalsIgnoreCase("PRODUCTION")) {
+                    String emailSubjectPrefix = hostName + "-";
+                    if (!serverConfig.getServletContext().getContextPath().isEmpty())
+                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath() + ":";
+                    emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
+                } else {
+                    emailSubject = schedulerJob.getEmailSubject();
+                }
+                
+                LOG.info("{} with subject '{}' job started.", getClass().getSimpleName(), emailSubject);
                 LOG.debug("login user name is : {} for {} job.", schedulerJob.getLoginUserName(), getClass().getSimpleName());
                 loginUsername = schedulerJob.getLoginUserName();
                 loginPassword = schedulerJob.getLoginPassword();
                 getMailSecurityAthenticator().authenticateSender(loginUsername, loginPassword);
                 Map<Integer, List<String>> resultMap = doJob();
-                String emailMessage = buildMessage(schedulerJob.getEmailSubject(), resultMap);
-                sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), schedulerJob.getEmailSubject(), emailMessage.toString());
-                LOG.info("{} with subject {} process finished.", getClass().getSimpleName(), schedulerJob.getEmailSubject());
+                String emailMessage = buildMessage(emailSubject, resultMap);
+                sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), emailSubject, emailMessage.toString());
+                LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
                 
             }
         } catch (AccessDeniedException e) {
@@ -169,5 +181,12 @@ public abstract class DbSchedulerJob implements Scheduler {
     public void setSchedulerJobService(SchedulerJobService schedulerJobService) {
         this.schedulerJobService = schedulerJobService;
     }
-    
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public void setServerConfig(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
+    }
 }

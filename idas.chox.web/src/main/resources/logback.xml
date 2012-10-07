@@ -17,7 +17,7 @@
             <include resource="logback-local.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("TESTING")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("TEST")'>
         <then>
             <include resource="logback-testing.xml"/>
         </then>  
