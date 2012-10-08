@@ -2,22 +2,23 @@
 -- 6.16.2 - Ability to update ECDs through Excel
 --------------------------------------------------------------------------------
 
-CREATE TABLE schedulerjob
+CREATE TABLE scheduler_job
 (
 id serial NOT NULL,
 login_username character varying(256) NOT NULL,
 login_password character varying(256) NOT NULL,
-jobname character varying(256) NOT NULL,
-emailsubject character varying(256) NOT NULL,
-autheriseduser character varying NOT NULL,
+job_name character varying(256) NOT NULL,
+email_subject character varying(256) NOT NULL,
+autherised_user character varying NOT NULL,
 bcc_receiver character varying NOT NULL,
-errormessage_receiver character varying NOT NULL,
+error_message_receiver character varying NOT NULL,
 active boolean DEFAULT true,
 version integer,
 created_by integer NOT NULL,
 created_date timestamp without time zone NOT NULL DEFAULT now(),
 last_modified_by integer NOT NULL,
 last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+UNIQUE(email_subject),
 CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
       REFERENCES web_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -25,29 +26,29 @@ CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
       REFERENCES web_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-GRANT SELECT ON TABLE schedulerjob TO chox_user;
+GRANT SELECT ON TABLE scheduler_job TO chox_user;
 
 
-insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver, error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
        select 'admin@erac.com', 'Ch0xAdm1n', 'REFERENCE_UPDATE', 'ENTERPRISE-CHOX Reservation Ticket Conversion',
        'subscribers@erac.com,elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
        'Christopher.J.Smith@ehi.com,elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 
        'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver, error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
        select 'admin@chox.com', 'Ch0xAdm1n', 'PENALTY_UPDATE', 'Update Penalty Charge Start Date Request',
        'elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
        'john.dowson@sherwoodcompliance.co.uk', 
        'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
-insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver, error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
        select 'admin@erac.com', 'Ch0xAdm1n', 'DB_REFERENCE_UPDATE', 'ENTERPRISE-Queued Tokens Update Results',
        'elliot.roberts@sherwoodcompliance.co.uk', 
        'ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
        'seeni.shanmugam@sherwoodcompliance.co.uk,patrik.bego@sherwoodcompliance.co.uk,john.dowson@sherwoodcompliance.co.uk', 999, now(), 999, now(), 0;
 
 
-insert into schedulerjob (login_username, login_password, jobname, emailsubject, autheriseduser, bcc_receiver, errormessage_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
+insert into scheduler_job (login_username, login_password, job_name, email_subject, autherised_user, bcc_receiver, error_message_receiver, created_by, created_date, last_modified_by, last_modified_date, version) 
        select 'admin@chox.com', 'Ch0xAdm1n', 'ECD_UPDATE', 'CHOX Support Email: ECD Update Request',
        'elliot.roberts@sherwoodcompliance.co.uk,ben.richmond@sherwoodcompliance.co.uk,Deborah.Pascaru@sherwoodcompliance.co.uk', 
        'john.dowson@sherwoodcompliance.co.uk', 

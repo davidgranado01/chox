@@ -11,7 +11,7 @@
         <property name="mailPort" value="${mailPort}"/>
         <property name="mailFolder" value="${mailFolder}"/>
     </bean>
-    
+	
     <bean id ="serverConfig" class="idas.chox.web.scheduler.ServerConfig" scope="singleton"/>
 	
     <bean id="mailSecurityAthenticator" class="idas.chox.web.scheduler.MailSecurityAthenticator">
@@ -234,7 +234,7 @@
                 <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
                 <prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
                 <prop key="org.quartz.threadPool.threadCount">5</prop>
-                <prop key="waitForJobsToCompleteOnShutdown">true</prop>
+                <prop key="waitForJobsToCompleteOnShutdown">false</prop>
             </props>
         </property>
         <property name="jobDetails">

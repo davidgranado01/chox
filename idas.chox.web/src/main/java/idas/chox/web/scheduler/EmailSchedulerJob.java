@@ -127,8 +127,8 @@ public abstract class EmailSchedulerJob implements Scheduler{
                     } else {
                         LOG.info("{} request received from unauthorised user {}.", getClass().getSimpleName(), sender);
                         sendMail(schedulerJob.getErrorMessageReceivers(), schedulerJob.getBccReceivers(),
-                                getClass().getSimpleName() + " request received from unauthorised user",
-                                getClass().getSimpleName() + " request received from unauthorised user '" + sender + "'. Allowed users are " + schedulerJob.getPrivilegedUsers());
+                                hostName + '-' + getClass().getSimpleName() + " request received from unauthorised user",
+                                emailSubject + " request received from unauthorised user '" + sender + "'. Allowed users are " + schedulerJob.getPrivilegedUsers());
                     }
                 }
                 LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="idas.chox.core.model.SchedulerJob" table="schedulerjob">
+    <class name="idas.chox.core.model.SchedulerJob" table="scheduler_job">
         <cache usage="nonstrict-read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">schedulerjob_id_seq</param>
+                <param name="sequence">scheduler_job_id_seq</param>
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
         <property column="login_username" name="loginUserName" not-null="true"/>
         <property column="login_password" name="loginPassword" not-null="true"/>
-        <property column="jobname" name="jobName" not-null="true"/>
-        <property column="emailsubject" name="emailSubject" not-null="true"/>
+        <property column="job_name" name="jobName" not-null="true"/>
+        <property column="email_subject" name="emailSubject" not-null="true"/>
         <property column="bcc_receiver" name="bccReceivers" not-null="true"/>
-        <property column="autheriseduser" name="privilegedUsers" not-null="true"/>
-        <property column="errormessage_receiver" name="errorMessageReceivers" not-null="true"/>
+        <property column="autherised_user" name="privilegedUsers" not-null="true"/>
+        <property column="error_message_receiver" name="errorMessageReceivers" not-null="true"/>
         <property column="active" name="active" />
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <property column="created_date" name="createdDate"/>
