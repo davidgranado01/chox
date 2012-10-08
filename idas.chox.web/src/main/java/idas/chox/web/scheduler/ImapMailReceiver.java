@@ -88,9 +88,9 @@ public class ImapMailReceiver {
                                 return true;
                             }
                         } catch (MessagingException ex) {
-                            LOG.error("Cannot retrieve mails with given search term.", ex);
+                            LOG.error("Cannot match mails with given search term.", ex);
                         } catch (Exception ex) {
-                            LOG.error("Exception thrown retrieving email by subject '{}': ", emailSubject, ex);
+                            LOG.error("Exception thrown matching email by subject '{}': ", emailSubject, ex);
                         }
                     }
                     return false;
