@@ -80,11 +80,11 @@ public abstract class EmailSchedulerJob implements Scheduler{
             LOG.info("{} has {} subjects.", getClass().getSimpleName(), getEmailSchedulerJobs().size());
             for (SchedulerJob schedulerJob : getEmailSchedulerJobs()) {
 
-                // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION RUNS NOT IN PRODUCTION SERVER.
+                // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION DO NOT RUN ON PRODUCTION SERVER.
                 if (!hostName.equalsIgnoreCase("PRODUCTION")) {
                     String emailSubjectPrefix = hostName + "-";
                     if (!serverConfig.getServletContext().getContextPath().isEmpty())
-                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath() + ":";
+                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";
                     emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
                 } else {
                     emailSubject = schedulerJob.getEmailSubject();

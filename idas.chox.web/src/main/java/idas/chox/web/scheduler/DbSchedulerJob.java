@@ -64,7 +64,7 @@ public abstract class DbSchedulerJob implements Scheduler {
                 if (!hostName.equalsIgnoreCase("PRODUCTION")) {
                     String emailSubjectPrefix = hostName + "-";
                     if (!serverConfig.getServletContext().getContextPath().isEmpty())
-                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath() + ":";
+                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";
                     emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
                 } else {
                     emailSubject = schedulerJob.getEmailSubject();
