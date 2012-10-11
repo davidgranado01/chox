@@ -25,7 +25,7 @@
                     finalReviewReason:{required:true}
                 },
                 messages: {
-                    finalReviewRequired: {required:"You must select 'Final Review Required?'"},
+                    finalReviewRequired: {required:"You must select 'Is this the final time you will review the claim?'"},
                     finalReviewReason: {required:"You must select a 'Final Review Reason'"}
                 }
             });
