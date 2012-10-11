@@ -15,8 +15,8 @@ import idas.chox.service.monitors.ClaimViewingMonitor;
 import idas.chox.web.viewdata.ViewingStatus;
 
 public class ActivityMonitoringAction extends BaseAction {
-    private static final Logger LOG = LoggerFactory.getLogger(ActivityMonitoringAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ActivityMonitoringAction.class);
     private Integer claimId;
     private List<String> usersViewingThisClaim;
     private UserService userService;
@@ -29,31 +29,35 @@ public class ActivityMonitoringAction extends BaseAction {
     @Override
     public String execute() {
 
-//        System.out.println(">>>>>>> START ActivityMonitoringAction MONITOR");
-        int currentUserID = getUserId();
-        LOG.debug("START Monitoring: claimId={}, userId={}", getClaimId(), currentUserID);
-        LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
-        ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
-        List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
-        LOG.debug("monitor.ping returned {} userIds.", userIds.size());
         usersViewingThisClaim = new ArrayList<String>();
-        for (Integer id : userIds) {
-            if (id != currentUserID) {
-                WebUser user = userService.getWebUser(id);
-                LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
-                if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
-                        && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
-                   || (getAuthenticatedUser().isCHO() && user.isCHO()
-                        && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
-                    LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim {}",
-                            new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
-                } else {
+        int currentUserID = getUserId();
+        if (getClaimId() != null) {
+            LOG.debug("START Monitoring: claimId={}, userId={}", getClaimId(), currentUserID);
+            LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
+            ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
+            List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
+            LOG.debug("monitor.ping returned {} userIds.", userIds.size());
+            for (Integer id : userIds) {
+                if (id != currentUserID) {
+                    WebUser user = userService.getWebUser(id);
                     LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
-                    usersViewingThisClaim.add(user.toString());
+                    if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
+                            && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
+                            || (getAuthenticatedUser().isCHO() && user.isCHO()
+                            && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
+                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim {}",
+                                new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
+                    } else {
+                        LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
+                        usersViewingThisClaim.add(user.toString());
+                    }
                 }
             }
+        } else {
+            LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a null claim ({},{}).",
+                    new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), getClaimId(), claimId});
         }
-        
+
         method = "execute";
         return SUCCESS;
     }
@@ -135,7 +139,7 @@ public class ActivityMonitoringAction extends BaseAction {
             return 999;
         }
 
-        
+
     }
 
     public String getClaimIds() {
