@@ -1590,7 +1590,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<LookupItem> reasons = new ArrayList<LookupItem>(4);
 
         reasons.add(new LookupItem("Final Liability Stance", "Final Liability Stance"));
-        reasons.add(new LookupItem("Final Quantum Offer", "Final Quantum Offer"));
         reasons.add(new LookupItem("Indemnity Issues", "Indemnity Issues"));
         reasons.add(new LookupItem("Other", "Other"));
         return reasons;
