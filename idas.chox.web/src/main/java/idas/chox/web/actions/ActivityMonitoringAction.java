@@ -54,7 +54,7 @@ public class ActivityMonitoringAction extends BaseAction {
                 }
             }
         } else {
-            LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a null claim ({},{}).",
+            LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a null claim ({},{}).",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), getClaimId(), claimId});
         }
 
