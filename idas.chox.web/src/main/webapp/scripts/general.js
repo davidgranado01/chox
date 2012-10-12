@@ -2,37 +2,6 @@
 var newwindow;
 var strDateFormat = 'd/m/Y';
 
-$.blockUI.defaults = {
-    message:  '<h1 class="block">Please wait...</h1>',
-
-    css: {
-        padding:        '10px',
-        margin:         0,
-        width:          '30%',
-        top:            '10%',
-        left:           '35%',
-        textAlign:      'center',
-        color:          '#000',
-        border:         '3px solid #aaa',
-        backgroundColor:'#fff',
-        cursor:         'wait' ,
-        height: 'auto'
-    },
-
-    overlayCSS:  {
-        backgroundColor:'#6c8cbe',
-        opacity:        '0.5'
-    },
-
-    baseZ: 1000,
-    centerX: true,
-    centerY: true,
-    allowBodyStretch: true,
-    constrainTabKey: true,
-    fadeOut:  0,
-    applyPlatformOpacityRules: true
-};
-
 var timeout	= 500;
 var closetimer	= 0;
 var ddmenuitem	= 0;
