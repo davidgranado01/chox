@@ -38,24 +38,25 @@ var closetimer	= 0;
 var ddmenuitem	= 0;
 
 function openHelpFile(url, helpFileRoleType, bespoke){
-
     var folderPath = url;
     var fileName = "";
 
-
-
     switch(helpFileRoleType) {
         case 1: // NORMAL INSURER ROLE
-            if (bespoke)
+            if (bespoke) {
                 fileName = '/download/CHOX_IUG_S_3.5.pdf';
-            else
+            }
+            else {
                 fileName = '/download/CHOX_IUG_3.5.pdf';
+            }
             break;
         case 2: // INSURER MANAGER ROLE
-            if (bespoke)
+            if (bespoke) {
                 fileName = '/download/CHOX_IUG_S_ADM_3.5.pdf';
-            else
+            }
+            else{
                 fileName = '/download/CHOX_IUG_ADM_3.5.pdf';
+            }
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
             fileName = '/download/CHOX_CHO_UG_3.6.pdf';
@@ -147,7 +148,7 @@ function onShowBrowserWarning(){
 function mopen(id)
 {
     mcancelclosetime();
-    if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+    if(ddmenuitem) {ddmenuitem.style.visibility = 'hidden';}
     ddmenuitem = document.getElementById(id);
     ddmenuitem.style.display = 'block';
     ddmenuitem.style.visibility = 'visible';
@@ -327,6 +328,7 @@ function extractNumber(obj, decimalPlaces, allowNegative)
     }
 
     obj.value = temp;
+    return true;
 }
     
 
