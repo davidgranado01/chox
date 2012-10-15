@@ -9,9 +9,8 @@ import java.util.Calendar;
 
 public class RepairBookInDateisSaturdayCheck implements IntelligentNote {
 
+    @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
-
-        Boolean showing = false;
 
         Boolean isStatus = false;
         if (c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_CONTESTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UPDATE_BY_ENG) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REF_TO_ENG)) {
@@ -25,12 +24,12 @@ public class RepairBookInDateisSaturdayCheck implements IntelligentNote {
             }
         }
 
-        showing = isStatus;
-        showing &= isSaturday;
+        Boolean showing = isStatus & isSaturday & c.getCustomer().getIsUsable();
         return showing;
     }
 
+    @Override
     public String getNote() {
-        return "The repair book in date is on a Saturday";
+        return "The repair book in date is on a Saturday and the CHO's Customer's vehicle was driveable.";
     }
 }

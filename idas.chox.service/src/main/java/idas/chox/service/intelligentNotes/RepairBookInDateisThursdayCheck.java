@@ -7,7 +7,7 @@ import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.util.DateHelper;
 import java.util.Calendar;
 
-public class RepairBookInDateisFridayCheck implements IntelligentNote {
+public class RepairBookInDateisThursdayCheck implements IntelligentNote {
 
     @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
@@ -17,19 +17,19 @@ public class RepairBookInDateisFridayCheck implements IntelligentNote {
             isStatus = true;
         }
 
-        Boolean isFriday = false;
+        Boolean isThursday = false;
         if (c.getHireMonitoringDetail() != null) {
             if (c.getHireMonitoringDetail().getOriginalRepairBookInDate() != null) {
-                isFriday = DateHelper.getDay(c.getHireMonitoringDetail().getOriginalRepairBookInDate()) == Calendar.FRIDAY;
+                isThursday = DateHelper.getDay(c.getHireMonitoringDetail().getOriginalRepairBookInDate()) == Calendar.THURSDAY;
             }
         }
 
-        Boolean showing = isStatus & isFriday & c.getCustomer().getIsUsable();
+        Boolean showing = isStatus & isThursday & c.getCustomer().getIsUsable();
         return showing;
     }
 
     @Override
     public String getNote() {
-        return "The repair book in date is on a Friday and the CHO's Customer's vehicle was driveable.";
+        return "The repair book in date is on a Thursday and the CHO's Customer's vehicle was driveable.";
     }
 }

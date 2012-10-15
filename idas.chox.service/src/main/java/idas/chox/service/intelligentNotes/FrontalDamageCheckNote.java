@@ -8,8 +8,6 @@ public class FrontalDamageCheckNote implements IntelligentNote {
 
     @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
-        Boolean showing = false;
-
         /*
         Claim Rule: If the ‘Vehicle Damage' field has the text string 'front'
         (ensure the search is not case sensitive and also include if front is joined to another word e.g. frontal)
@@ -18,7 +16,7 @@ public class FrontalDamageCheckNote implements IntelligentNote {
          */
 
         //1. If the ‘Vehicle Damage' field has the text string 'front'
-        showing |= c.getCustomer().getDamage().toLowerCase().contains("front");
+        Boolean showing = c.getCustomer().getDamage().toLowerCase().contains("front");
 
         //2. if user is Insurer
         // showing &= securityInfoProvider.getIsINS();

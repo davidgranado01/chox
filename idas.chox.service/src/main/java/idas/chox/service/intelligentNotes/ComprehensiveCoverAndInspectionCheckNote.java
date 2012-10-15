@@ -11,8 +11,6 @@ import idas.chox.core.model.IntelligentNote;
 public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote {
     @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
-        Boolean showing = false;
-
         /*
         Claim Rule: If 'Comprehensive' field is N/No/False/F in the Customer Details section of CHOX on the Claim Details tab
         then display the note below on the action panel
@@ -20,7 +18,7 @@ public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote
          */
 
         //1. If ‘Comprehensive' field is N/No/False/F
-        showing = (!c.getCustomer().isComprehensive()) && !c.isManagingRepair();
+        Boolean showing = (!c.getCustomer().isComprehensive()) && !c.isManagingRepair();
 
         // AND
         // showing &= securityInfoProvider.getIsINS();

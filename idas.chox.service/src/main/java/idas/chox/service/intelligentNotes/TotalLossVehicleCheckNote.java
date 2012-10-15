@@ -13,7 +13,7 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
     @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
         Boolean showing = false;
-
+        
         /*
         Claim Rule: If the 'Total Loss' field has an Y/Yes then display note below
         on the action panel for a claim in status ClaimUnacknowledgedRouted, ClaimPending,
@@ -21,7 +21,11 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
          */
 
         //1. If the 'Total Loss' field has an Y/Yes
-        showing |= c.getCustomer().getIsTotalLoss();
+        //2. If Managing Repair?' field is 'N' (No) [todo item 6.17.1]
+        //3. If 'Non-Fault Insurer Managing Repair?' field is 'N' (No)  [todo item 6.17.1]
+        if (c.getHireMonitoringDetail() != null)
+            showing = c.getCustomer().getIsTotalLoss() & !c.isManagingRepair()
+                        & !c.getHireMonitoringDetail().isIsNFInsurerManagingRepair();
 
         //2.  Insurer roles only
         // showing &= securityInfoProvider.getIsINS();
@@ -31,6 +35,6 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
 
     @Override
     public String getNote() {
-        return "The CHO's client's vehicle is deemed a total loss.";
+        return "The CHO's client's vehicle is deemed a total loss and is not being managed by the CHO or the TPI. Please arrange inspection.";
     }
 }

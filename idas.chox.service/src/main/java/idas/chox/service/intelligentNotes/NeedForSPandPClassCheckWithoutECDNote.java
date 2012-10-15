@@ -38,8 +38,14 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
         //3. the ‘Is Usable' field is ‘Y/Yes/T/True'
         showing &= c.getCustomer().getIsUsable();
 
-        //4. if user is Insurer
-        // showing &= securityInfoProvider.getIsINS();
+        //4. If Managing Repair?' field is 'N' (No) [todo item 6.17.1]
+        showing &= !c.isManagingRepair();
+                
+        //5. If 'Non-Fault Insurer Managing Repair?' field is 'N' (No)  [todo item 6.17.1]
+        if (c.getHireMonitoringDetail() != null)
+            showing &= !c.getHireMonitoringDetail().isIsNFInsurerManagingRepair();
+        else
+            showing = false;
 
         return showing;
     }
@@ -57,6 +63,6 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
 
     @Override
     public String getNote() {
-        return "The CHO's client's vehicle is of a Prestige/Sports Performance nature, no ECD has been provided and the vehicle is roadworthy/usable. Manage repair book in date.";
+        return "The CHO's client's vehicle is of a Prestige/Sports Performance nature, no ECD has been provided and the vehicle is roadworthy/usable and is not managed by the CHO or TPI. Manage repair book in date.";
     }
 }
