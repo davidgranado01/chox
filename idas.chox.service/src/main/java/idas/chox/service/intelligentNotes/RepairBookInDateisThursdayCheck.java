@@ -1,6 +1,5 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IntelligentNote;
@@ -10,7 +9,7 @@ import java.util.Calendar;
 public class RepairBookInDateisThursdayCheck implements IntelligentNote {
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
 
         Boolean isStatus = false;
         if (c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_CONTESTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UPDATE_BY_ENG) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REF_TO_ENG)) {

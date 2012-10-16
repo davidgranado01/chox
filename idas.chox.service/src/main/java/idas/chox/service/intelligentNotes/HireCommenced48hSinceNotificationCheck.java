@@ -1,17 +1,16 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 
 /**
  *
- * @author emmanuel
+ * @author John
  */
 public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
         /*
         Claim Rule:
                This rule is only valid/executed when there is a value in the 'Hire Start' field. 
@@ -22,7 +21,7 @@ public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
         Boolean showing = false;
 
         if (c.getVehicleHire() != null && c.getVehicleHire().getHireStart() != null) {
-            long diffInMillis = c.getVehicleHire().getHireStart().getTime() - c.getCreatedDate().getTime();
+            long diffInMillis = c.getCreatedDate().getTime() - c.getVehicleHire().getHireStart().getTime();
             if (diffInMillis / (1000*60*60.0) > 48.0)
                 showing = true;
         }

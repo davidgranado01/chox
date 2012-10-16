@@ -1,13 +1,12 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 
 public class FrontalDamageCheckNote implements IntelligentNote {
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
         /*
         Claim Rule: If the ‘Vehicle Damage' field has the text string 'front'
         (ensure the search is not case sensitive and also include if front is joined to another word e.g. frontal)

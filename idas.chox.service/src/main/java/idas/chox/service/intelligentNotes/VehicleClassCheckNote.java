@@ -1,6 +1,5 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.model.VehicleClass;
@@ -14,7 +13,7 @@ import java.util.Date;
 public class VehicleClassCheckNote implements IntelligentNote {
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
 
         Boolean showing = false;
 

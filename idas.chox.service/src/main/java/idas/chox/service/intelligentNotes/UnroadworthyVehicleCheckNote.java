@@ -1,6 +1,5 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 
@@ -11,7 +10,7 @@ import idas.chox.core.model.IntelligentNote;
 public class UnroadworthyVehicleCheckNote implements IntelligentNote {
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
         Boolean showing = false;
 
         //Claim Rule: If the ‘Is Usable' field has an N/No then display note below on the action panel for a

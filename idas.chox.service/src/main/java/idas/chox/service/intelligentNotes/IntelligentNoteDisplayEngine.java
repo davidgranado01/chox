@@ -1,19 +1,17 @@
 package idas.chox.service.intelligentNotes;
 
-import idas.chox.core.security.SecurityInfoProvider;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IntelligentNote;
-import java.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class IntelligentNoteDisplayEngine {
     private static final Logger LOG = LoggerFactory.getLogger(IntelligentNoteDisplayEngine.class);
 
-    @Autowired
-    private SecurityInfoProvider securityInfoProvider;
     private List<IntelligentNote> availableIntelligentNotes;
 
     public List<String> getIntelligentNotes(Claim c) {
@@ -24,7 +22,7 @@ public class IntelligentNoteDisplayEngine {
             LOG.debug("Checking notes.");
             for (IntelligentNote intelligentNote : availableIntelligentNotes) {
                 LOG.debug("Checking note: '{}'", intelligentNote.getNote());
-                if (intelligentNote.isShowingFor(c, getSecurityInfoProvider())) {
+                if (intelligentNote.isShowingFor(c)) {
                     LOG.debug("Note added: ", intelligentNote.getNote());
                     intelligentNotes.add(intelligentNote.getNote());
                 }
@@ -45,7 +43,7 @@ public class IntelligentNoteDisplayEngine {
         LOG.debug("Checking notes.");
         for (IntelligentNote intelligentNote : availableIntelligentNotes) {
             LOG.debug("Checking note: '{}'", intelligentNote.getNote());
-            if (intelligentNote.isShowingFor(c, getSecurityInfoProvider())) {
+            if (intelligentNote.isShowingFor(c)) {
                 LOG.debug("Note added: ", intelligentNote.getNote());
                 intelligentNotes.add(intelligentNote.getNote());
             }
@@ -81,17 +79,4 @@ public class IntelligentNoteDisplayEngine {
         this.availableIntelligentNotes = availableIntelligentNotes;
     }
 
-    /**
-     * @return the securityInfoProvider
-     */
-    public SecurityInfoProvider getSecurityInfoProvider() {
-        return securityInfoProvider;
-    }
-
-    /**
-     * @param securityInfoProvider the securityInfoProvider to set
-     */
-    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
-        this.securityInfoProvider = securityInfoProvider;
-    }
 }

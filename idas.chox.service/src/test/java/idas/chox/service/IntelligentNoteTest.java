@@ -1,416 +1,326 @@
 package idas.chox.service;
 
-import idas.chox.test.BaseTest;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.IntelligentNote;
-import idas.chox.core.services.UploadClaimXMLService;
-import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.DocumentHelper;
-import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.intelligentNotes.CHOManagingRepairCheckNote;
-import idas.chox.service.intelligentNotes.FrontalDamageCheckNote;
-import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
-import idas.chox.service.intelligentNotes.NeedForSPandPClassCheckWithoutECDNote;
-import idas.chox.service.intelligentNotes.TotalLossVehicleCheckNote;
-import idas.chox.service.intelligentNotes.UnroadworthyVehicleCheckNote;
-import idas.chox.service.intelligentNotes.VehicleClassAboveSCheckNote;
-import idas.chox.service.intelligentNotes.VehicleClassCheckNote;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
+
+import idas.chox.core.model.*;
+import idas.chox.test.BaseTest;
+import idas.chox.core.util.DateHelper;
+import idas.chox.service.intelligentNotes.*;
 
 public class IntelligentNoteTest extends BaseTest {
 
     @Autowired
     IntelligentNoteDisplayEngine displayEngine;
-    @Autowired
-    UploadClaimXMLService service;
 
+    
     /**
      * Test of getUserFromCache method, of class UserCacheManager.
      */
     @Test
     public void testClassInjection() {
 
-        Assert.assertNotNull(displayEngine);
-        Assert.assertNotNull(bordereauReader);
-        //make sure the security info provider get injected from spring
-        Assert.assertNotNull(displayEngine.getSecurityInfoProvider());
         //make sure the intelligentNotes get injected from spring
         List<IntelligentNote> intelligentNotes = displayEngine.getAvailableIntelligentNotes();
         Assert.assertNotNull(intelligentNotes);
         Assert.assertFalse(intelligentNotes.isEmpty());
-        Assert.assertEquals(13, intelligentNotes.size());
+        Assert.assertEquals(15, intelligentNotes.size());
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowVehicleClassCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine vehicleClassCheckNoteOnlyDisplayEngine = new IntelligentNoteDisplayEngine();
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new VehicleClassCheckNote());
-        vehicleClassCheckNoteOnlyDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "VehicleClassCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        claim.setPolicyHolderContactDate(DateHelper.getCurrentDate());
+        Customer cust = new Customer();
+        VehicleClass vc = new VehicleClass();
+        vc.setName("P1");
+        cust.setVehicleClass(vc);
+        cust.setInitialECD(DateHelper.addDay(DateHelper.getCurrentDate(), 4));
+        claim.setCustomer(cust);
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
 
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
+        //test note  showing 
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
 
-            //test if initial ecd > 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
-            claim.setPolicyHolderContactDate(DateHelper.getCurrentDate());
-            claim.getCustomer().setInitialECD(DateHelper.addDay(DateHelper.getCurrentDate(), 6));
+        //test if initial ecd > 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
+        claim.getCustomer().setInitialECD(DateHelper.addDay(DateHelper.getCurrentDate(), 6));
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
 
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
+        //test if new ecd added and the latest ecd date < 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
+        HireMonitoringEcd ecd = new HireMonitoringEcd();
+        ecd.setEcdDate(DateHelper.addDay(DateHelper.getCurrentDate(), 1));
 
-            //test if new ecd added and the latest ecd date < 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
-            HireMonitoringEcd ecd = new HireMonitoringEcd();
-            ecd.setEcdDate(DateHelper.addDay(DateHelper.getCurrentDate(), 1));
+        claim.addHireMonitoringEcd(ecd);
 
-            claim.addHireMonitoringEcd(ecd);
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
 
-            Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
-        }
+        // Test if vehicle class is PV then note not displayed
+        vc.setName("PV1");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        // Test if vehicle class is a sports vehicle then note is displayed
+        vc.setName("SP1");
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowUnroadworthyVehicleCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new UnroadworthyVehicleCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "UnroadworthyVehicleCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        Customer cust = new Customer();
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
+        //test note showing if customers car is not usable
+        cust.setIsUsable(false);
+        claim.setCustomer(cust);
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
 
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-
-            //test note are not showing if is usable is true
-            claim.getCustomer().setIsUsable(true);
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-
-            //test note not showing if user is not insurer
-            securityInfoProvider.setIsINS(false);
-            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-        }
+        //test note are not showing customers car is usable
+        claim.getCustomer().setIsUsable(true);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowTotalLossVehicleCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new TotalLossVehicleCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "TotalLossVehicleCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-//            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note are not showing if is total loss false
-//            claim.getCustomer().setIsTotalLoss(false);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note not showing if user is not insurer
-//            securityInfoProvider.setIsINS(false);
-//            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-        }
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        Customer cust = new Customer();
+        HireMonitoringDetail hmd = new HireMonitoringDetail();
+        claim.setCustomer(cust);
+        claim.setHireMonitoringDetail(hmd);
+
+        claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
+        claim.setManagingRepair(false);
+        claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
+        //test note is showing
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        // Test Note not showing when not total loss
+        claim.getCustomer().setIsTotalLoss(Boolean.FALSE);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
+
+        // Test Note not showing when managing repair
+        claim.setManagingRepair(true);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.setManagingRepair(false);
+
+        // Test Note not showing when 'Non-Fault Insurer Managing Repair?' field is true
+        claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(true);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
+
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowCHOManagingRepairCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new CHOManagingRepairCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "CHOManagingRepairCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        //test note not showing if CHO not managing repair
+        claim.setManagingRepair(false);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        //test note  showing managing repair
+        claim.setManagingRepair(true);
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
 
-            //test note are not showing if is managing repair false
-            claim.setManagingRepair(false);
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-
-            //test note not showing if user is not insurer
-            securityInfoProvider.setIsINS(false);
-            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-        }
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowVehicleClassAboveSCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new VehicleClassAboveSCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "VehicleClassAboveSCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        Customer cust = new Customer();
+        VehicleClass vc = new VehicleClass();
+        cust.setVehicleClass(vc);
+        claim.setCustomer(cust);
+        //test note not showing if vehicle class is S
+        vc.setName("S1");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        vc.setName("S2");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        vc.setName("S3");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        vc.setName("S4");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        vc.setName("S5");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-//            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note only showing if VehicleClass ablove S
-//            VehicleClass vClass = new VehicleClass();
-//            vClass.setName("S1");
-//            claim.getCustomer().setVehicleClass(vClass);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note not showing if user is not insurer
-//            securityInfoProvider.setIsINS(false);
-//            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-        }
+        //test note only showing if VehicleClass above S
+        vc.setName("SP1");
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
+        vc.setName("P1");
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowFrontalDamageCheckNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new FrontalDamageCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "CHOManagingRepairCheckNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-//            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note are showing only If the ‘Vehicle Damage’ field has the text string ‘front’
-//            claim.getCustomer().setDamage("ABCDEFG");
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note not showing if user is not insurer
-//            securityInfoProvider.setIsINS(false);
-//            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-        }
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        Customer cust = new Customer();
+        cust.setDamage("frontal damage");
+        claim.setCustomer(cust);
+        //test note not showing if customers car damage contains the string 'front'
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        cust.setDamage("rear damage");
+        claim.setCustomer(cust);
+        //test note not showing if customers car damage contains the string 'front'
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+
     }
 
+    
     @Test
-    @Transactional
     public void testCanShowNeedForSPandPClassCheckWithoutECDNote() throws Exception {
         //prepere the IntelligentNoteDisplayEngine
-        IntelligentNoteDisplayEngine displayEngine = new IntelligentNoteDisplayEngine();
-
-        FakeSecurityInfoProvider securityInfoProvider = new FakeSecurityInfoProvider();
-        securityInfoProvider.setIsINS(true);
-        displayEngine.setSecurityInfoProvider(securityInfoProvider);
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
 
         List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
         intelligentNotes.add(new NeedForSPandPClassCheckWithoutECDNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
-        String path = "NeedForSPandPClassCheckWithoutECDNote_test.xml";
-        List<ClaimResult> claimResults = loadClaimResults(path);
 
-        for (ClaimResult cr : claimResults) {
-            Assert.assertNotNull(cr);
-            Claim claim = cr.getClaim();
-            Assert.assertNotNull(claim);
-            //test note not showing if claim status not in status
-            //ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer
-            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-            //test note not showing if claim status in correct status
-//            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_PENDING);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//            claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-//
-//            //test note is showing only If the ‘Is Usable’ field is true
-//            claim.getCustomer().setIsUsable(false);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-//
-//            claim.getCustomer().setIsUsable(true);//restore ‘Is Usable’ field
-//            //test note is showing only If no ECD has been provided
-//            List<HireMonitoringEcd> hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
-//            hireMonitoringEcds.add(new HireMonitoringEcd());
-//            claim.setHireMonitoringEcds(hireMonitoringEcds);
-//            Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
-//            claim.getHireMonitoringEcds().clear();//restore ‘HireMonitoringEcds’ field
-//
-//            //test note is showing to use in any roles
-//            securityInfoProvider.setIsINS(false);
-//            displayEngine.setSecurityInfoProvider(securityInfoProvider);
-//            Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
-        }
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+
+        /*
+         * test note is showing only if
+         *      - the ‘Is Usable’ field is true
+         *      - vehicle class is a P or SP
+         *      - Managing Repair?' field is 'N' (No)
+         *      -'Non-Fault Insurer Managing Repair?' field is 'N' (No)
+         *      - no ECD has been provided
+         */
+
+        Customer cust = new Customer();
+        cust.setIsUsable(true);
+        claim.setCustomer(cust);
+        VehicleClass vc = new VehicleClass();
+        vc.setName("P1");
+        cust.setVehicleClass(vc);
+        claim.setManagingRepair(false);
+        HireMonitoringDetail hmd = new HireMonitoringDetail();
+        hmd.setIsNFInsurerManagingRepair(false);
+        claim.setHireMonitoringDetail(hmd);
+        claim.getCustomer().setInitialECD(null);
+        claim.setHireMonitoringEcds(null);
+
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        vc.setName("SP1");
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        vc.setName("PV1");
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+
+        vc.setName("SP1");
+        claim.getCustomer().setIsUsable(false);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.getCustomer().setIsUsable(true);
+
+        claim.setManagingRepair(true);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.setManagingRepair(false);
+
+        claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(true);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
+
+        claim.getCustomer().setInitialECD(new Date());
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.getCustomer().setInitialECD(null);
+
+        ArrayList<HireMonitoringEcd> hm = new ArrayList<HireMonitoringEcd>();
+        HireMonitoringEcd hmEcd = new HireMonitoringEcd();
+        hmEcd.setClaim(claim);
+        hmEcd.setEcdDate(new Date());
+        hm.add(hmEcd);
+        claim.setHireMonitoringEcds(hm);
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
+        claim.setHireMonitoringEcds(new ArrayList<HireMonitoringEcd>());
     }
 
-    private List<ClaimResult> loadClaimResults(String path) throws Exception {
+    
+    @Test
+    public void testCanShowHireCommenced48hSinceNotificationCheckNote() throws Exception {
+        //prepere the IntelligentNoteDisplayEngine
+        IntelligentNoteDisplayEngine testDisplayEngine = new IntelligentNoteDisplayEngine();
+
+        List<IntelligentNote> intelligentNotes = new ArrayList<IntelligentNote>();
+        intelligentNotes.add(new HireCommenced48hSinceNotificationCheck());
+        testDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
-        File file = new ClassPathResource(path).getFile();
-        int totalProcessed = 0;
-        List<ClaimResult> claimResults = null;
-        List<String> choReferences = new ArrayList<String>();
-        Document document = DocumentHelper.getDocumentFromFile(file);
-        claimResults = this.service.formClaimResults(document);
-        for (ClaimResult claimResult : claimResults) {
-            if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        VehicleHire vh = new VehicleHire();
+        vh.setHireStart(new Date());
+        claim.setVehicleHire(vh);
+        claim.setCreatedDate(DateHelper.addDay(DateHelper.getCurrentDate(), 3));
+        //test note  showing if claim created date is more than 48h after hire start
+        Assert.assertEquals(1, testDisplayEngine.getIntelligentNotes(claim).size());
 
-                totalProcessed++;
-
-            }
-        }
-        return claimResults;
+        //test note not showing if claim created date is more than 48h after hire start
+        claim.setCreatedDate(DateHelper.addDay(DateHelper.getCurrentDate(), 1));
+        Assert.assertEquals(0, testDisplayEngine.getIntelligentNotes(claim).size());
 
     }
+
 
 }
