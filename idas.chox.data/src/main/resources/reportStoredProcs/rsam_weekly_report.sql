@@ -23,69 +23,66 @@ BEGIN
 	dat1 = startDate::Date;
 RETURN QUERY
 
+Column 1: Grouping
 SELECT 'Total figures across the Insurer' as Grouping,
---COLUMN2
-
-
+ 
+--Column 2: New Cases - Claims uploaded in the past week.
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND c.created_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND c.insurer_id = params.insurerId) AS "New Cases",
- --COLUMN3
 
-
+--Column 3: Open Claims Period Start - all claims in an open status at the end of the previous week (2359 Sunday minus 1 week).     
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND NOT EXISTS
        (SELECT *
         FROM audit_trail a
-        WHERE a.update_date BETWEEN (params.startDate - interval '2 week')::date AND (params.startDate - interval '1 week')::date
+        WHERE a.update_date < (params.startDate - interval '2 week')::date 
           AND a.claim_id = c.id
           AND a.reverted = FALSE
           AND a.new_status IN ('PaymentReceived',
                                'ClaimClosed',
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted'))) AS "Open Claims Period Start",
- --COLUMN4
 
-
+--Column 4: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND NOT EXISTS
        (SELECT *
         FROM audit_trail a
-        WHERE a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
+        WHERE a.update_date < (params.startDate - interval '1 week')::date
           AND a.claim_id = c.id
           AND a.reverted = FALSE
           AND a.new_status IN ('PaymentReceived',
                                'ClaimClosed',
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted'))) AS "Open Claims Period End",
- --COLUMN5
 
-
+--Column 5: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
      AND a.new_status IN ('PaymentReceived',
@@ -94,16 +91,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
                           'InvoiceRejectionAccepted')
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND reverted=FALSE) AS "Settled/Closed Cases",
- --COLUMN6
-
-
+ 
+--Column 6: Volume Approved By BRE and Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Approved By BRE but NOT been in status Contested Invoice Referred To CHO previously.
   (SELECT count(c.id)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
      AND a.new_status = 'PaymentReceived'
@@ -120,9 +116,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'ContestedInvoiceReferredToCHO'
           AND a1.reverted = FALSE )) AS "Volume Approved By BRE and Paid",
- --COLUMN7
 
-
+--Column 7: Value of Approved By BRE and Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
    FROM audit_trail a,
                     claim c
@@ -130,7 +125,7 @@ SELECT 'Total figures across the Insurer' as Grouping,
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
      AND a.new_status = 'PaymentReceived'
@@ -147,16 +142,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'ContestedInvoiceReferredToCHO'
           AND a1.reverted = FALSE ))AS "Value Approved By BRE and Paid",
- --COLUMN8
 
-
+--Column 8: Volume Approved By BRE, Contested and Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Approved By BRE AND status Contested Invoice Referred To CHO previously.
   (SELECT count(c.id)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND insurer_id = params.insurerId
      AND a.claim_id = c.id
@@ -174,9 +168,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'InvoiceApprovedByBRE'
           AND a1.reverted = FALSE) ) AS "Volume Approved By BRE, Contested and Paid",
- --COLUMN9
 
-
+--Column 9: Value of Approved By BRE, Contested and Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
    FROM audit_trail a,
                     claim c
@@ -184,7 +177,7 @@ SELECT 'Total figures across the Insurer' as Grouping,
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND insurer_id = params.insurerId
      AND a.claim_id = c.id
@@ -202,16 +195,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'InvoiceApprovedByBRE'
           AND a1.reverted = FALSE ) ) AS "Value Approved By BRE, Contested and Paid",
- --COLUMN10
 
-
+--Column 10: Volume Escalated then Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Escalated To Handler previously.
   (SELECT count(c.id)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND insurer_id = params.insurerId
      AND a.claim_id = c.id
@@ -223,9 +215,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'InvoiceEscalatedToHandler'
           AND a1.reverted = FALSE )) AS "Volume Escalated then Paid",
- --COLUMN11
 
-
+--Column 11: Value of Escalated then Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
    FROM audit_trail a,
                     claim c
@@ -233,7 +224,7 @@ SELECT 'Total figures across the Insurer' as Grouping,
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND insurer_id = params.insurerId
      AND a.claim_id = c.id
@@ -245,16 +236,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'InvoiceEscalatedToHandler'
           AND a1.reverted = FALSE )) AS "Value Escalated then Paid",
- --COLUMN12
 
-
+--Column 12: Volume Escalated then Closed - all claims that moved into status Invoice Rejection Accepted or Claim Closed in the past week and have been at status Invoice Escalated To Handler previously.
   (SELECT count(c.id)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND insurer_id = params.insurerId
      AND a.claim_id = c.id
@@ -267,15 +257,14 @@ SELECT 'Total figures across the Insurer' as Grouping,
         WHERE a1.claim_id=c.id
           AND a1.original_status = 'InvoiceEscalatedToHandler'
           AND a1.reverted = FALSE )) AS "Volume Escalated then Closed",
- --COLUMN13
 
-
+--Column 13: Value of Escalated then Closed - as aboe but to report on Original Full Total Requested (SUM)
   (SELECT sum(i.total_to_pay)
    FROM audit_trail a,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE (cho.id = params.choId
+   WHERE (cho.claim_owner_id = params.choId
           OR params.choId = -1)
      AND (c.id = params.ownerId
           OR params.ownerId = -1)
@@ -306,7 +295,7 @@ from chorganisation cho, claim cl (SELECT dat1 AS startDate,
           -1 AS ownerId,
           insurerId AS insurerId) params 
 where cl.isnurer_id = insurerId
-and c.chorganisation_id = cho.id
+and cl.chorganisation_id = cho.id
 
 UNION
 
