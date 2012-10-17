@@ -45,17 +45,14 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
+     AND c.insurer_id = params.insurerId
      AND NOT EXISTS
-       (SELECT *
-        FROM audit_trail a
-        WHERE a.update_date < (params.startDate - interval '2 week')::date 
-          AND a.claim_id = c.id
-          AND a.reverted = FALSE
-          AND a.new_status IN ('PaymentReceived',
-                               'ClaimClosed',
-                               'ClaimRejectionAccepted',
-                               'InvoiceRejectionAccepted'))) AS "Open Claims Period Start",
-
+      (SELECT *
+       FROM audit_trail a
+       WHERE a.claim_id = c.id
+         AND a.reverted = FALSE
+         AND a.update_date < (params.startDate - interval '2 week')::date LIMIT 1) ) AS "Open Claims Period Start",
+     
 --Column 4: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
    FROM claim c
@@ -64,17 +61,14 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
+     AND c.insurer_id = params.insurerId
      AND NOT EXISTS
-       (SELECT *
-        FROM audit_trail a
-        WHERE a.update_date < (params.startDate - interval '1 week')::date
-          AND a.claim_id = c.id
-          AND a.reverted = FALSE
-          AND a.new_status IN ('PaymentReceived',
-                               'ClaimClosed',
-                               'ClaimRejectionAccepted',
-                               'InvoiceRejectionAccepted'))) AS "Open Claims Period End",
-
+      (SELECT *
+       FROM audit_trail a
+       WHERE a.claim_id = c.id
+         AND a.reverted = FALSE
+         AND a.update_date < (params.startDate - interval '1 week')::date LIMIT 1) ) AS "Open Claims Period Start",
+                               
 --Column 5: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
    FROM audit_trail a,
@@ -85,6 +79,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
+     AND c.insurer_id = params.insurerId
+     AND a.reverted = FALSE
      AND a.new_status IN ('PaymentReceived',
                           'ClaimClosed',
                           'ClaimRejectionAccepted',
@@ -102,6 +98,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
+     AND c.insurer_id = params.insurerId
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -128,6 +126,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
      AND a.claim_id = c.id
+     AND c.insurer_id = params.insurerId
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -152,8 +152,9 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -179,8 +180,9 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -205,8 +207,9 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -226,8 +229,9 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
      AND EXISTS
@@ -246,8 +250,9 @@ SELECT 'Total figures across the Insurer' as Grouping,
           OR params.choId = -1)
      AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
@@ -264,12 +269,13 @@ SELECT 'Total figures across the Insurer' as Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE (cho.claim_owner_id = params.choId
+   WHERE (cho.id = params.choId
           OR params.choId = -1)
-     AND (c.id = params.ownerId
+     AND (c.claim_owner_id = params.ownerId
           OR params.ownerId = -1)
-     AND insurer_id = params.insurerId
+     AND c.insurer_id = params.insurerId
      AND a.claim_id = c.id
+     AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
      AND a.update_date BETWEEN (params.startDate - interval '1 week')::date AND params.startDate
