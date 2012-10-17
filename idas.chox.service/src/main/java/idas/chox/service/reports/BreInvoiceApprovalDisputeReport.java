@@ -66,10 +66,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
-
+        } catch (Exception e) {
             LOG.error("Error generating getChorganisation: {}", e.getMessage());
-
         }
 
         return chorg;
@@ -85,7 +83,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error generating getInsurer: {}", e.getMessage());
 
         }
@@ -104,23 +102,23 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         Date dataStart = null;
 
-        String supplierId = "";
-        String insrId = "";
+        String supplierId;
+        String insrId;
 
         Integer choId = -1;
         Integer insurerId = -1;
         Integer userOrgId = -1;
         String insurerName = "";
         String choOrgName = "";
-        String selectedOrgLabel = "";
-        String reportColumnHeader = "";
-        String userOrgLabel = "";
+        String selectedOrgLabel;
+        String reportColumnHeader;
+        String userOrgLabel;
         String selectedOrgName = "All";
-        String userOrgName = "";
+        String userOrgName;
         Date createDate = new Date();
 
         WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
-        Chorganisation chorg = new Chorganisation();
+        Chorganisation chorg ;
 
         userOrgName = currentUser.getOrganisationName();
         if (((String[]) externalParameter.get("DateStart")) != null) {

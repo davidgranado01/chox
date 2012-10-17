@@ -60,7 +60,7 @@ public class InsurerPaymentReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting CH Organisation: {}", e.getMessage());
         }
 
@@ -113,7 +113,7 @@ public class InsurerPaymentReport implements Report {
                 }
             }
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
@@ -122,17 +122,17 @@ public class InsurerPaymentReport implements Report {
             if (RoleHelper.isCheckSelectedRoleExist(currentUser.getRoles(), WebUserRole.ROLE_CH)) {
 
                 if (RoleHelper.isWorkgroupValidationEnabledUser(currentUser)) {
-                    sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=" + currentUser.getId() + ") ");
+                    sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=").append(currentUser.getId()).append(") ");
                 }
 
                 if (RoleHelper.isOwnershipValidationEnabledUser(currentUser)) {
-                    sb.append("and invoice.owner = " + currentUser.getId() + " ");
+                    sb.append("and invoice.owner = ").append(currentUser.getId()).append(" ");
                 }
 
             }
 
             if (iWorkgroupId > 0) {
-                sb.append("and invoice.workgroup_id = " + iWorkgroupId + " ");
+                sb.append("and invoice.workgroup_id = ").append(iWorkgroupId).append(" ");
             }
 
             sb.append("order by cho_reference asc");

@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class WebBordereau extends Entity implements Serializable {
 
@@ -32,10 +33,18 @@ public class WebBordereau extends Entity implements Serializable {
     }
 
     public byte[] getFileBuffer() {
-        return fileBuffer;
+        if (fileBuffer == null)
+            return null;
+        
+        return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }
 
     public void setFileBuffer(byte[] fileBuffer) {
+        if (fileBuffer == null) {
+            this.fileBuffer = new byte[0];
+        } else {
+            this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
+        }
         this.fileBuffer = fileBuffer;
     }
 

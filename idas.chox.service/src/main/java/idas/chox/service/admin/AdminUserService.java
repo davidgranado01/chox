@@ -441,11 +441,18 @@ public class AdminUserService extends SecureDataService {
                 userRoles += s + ", ";
             }
 
-            if (userRoles.length() >= 2) {
-                userRoles.substring(0, (userRoles.length() - 1));
-            }
+            if (!userRoles.isEmpty()) {
+                this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User '"
+                        + webUserWorkgroup.getUser().getDisplayName() + "' is the last user that has "
+                        + userRoles + "and is assigned to Workgroup '" + webUserWorkgroup.getWorkgroup().getName()
+                        + "'. Are you sure you want to remove this Workgroup?");
+            } else {
 
-            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User '" + webUserWorkgroup.getUser().getDisplayName() + "' is the last user that has " + userRoles + " and is assigned to Workgroup '" + webUserWorkgroup.getWorkgroup().getName() + "'. Are you sure you want to remove this Workgroup?");
+                this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User '"
+                        + webUserWorkgroup.getUser().getDisplayName()
+                        + "' is the last user that is assigned to Workgroup '" + webUserWorkgroup.getWorkgroup().getName()
+                        + "'. Are you sure you want to remove this Workgroup?");
+            }
         }
 
         return this.actionResponse;

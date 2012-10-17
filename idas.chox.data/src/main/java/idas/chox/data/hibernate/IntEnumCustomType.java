@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 
@@ -23,6 +24,11 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
      */
     protected IntEnumCustomType(Class<E> c, E[] e) {
         this.clazz = c;
+        if (e == null) {
+            this.theEnumValues = null;
+        } else {
+            this.theEnumValues = Arrays.copyOf(e, e.length); 
+        }
         this.theEnumValues = e;
     }
 

@@ -65,7 +65,7 @@ public class InvoiceSummaryReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Chorganisation for id={}: {}", orgId, e.getMessage());
         }
 
@@ -81,7 +81,7 @@ public class InvoiceSummaryReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Insurer for id={}: {}", orgId, e.getMessage());
         }
 
@@ -97,7 +97,7 @@ public class InvoiceSummaryReport implements Report {
             criteria.add(Restrictions.eq("id", workgroupId));
             wg = (Workgroup) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={}: {}", workgroupId, e.getMessage());
         }
 
@@ -110,7 +110,7 @@ public class InvoiceSummaryReport implements Report {
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
             criteria.add(Restrictions.eq("id", ownerId));
             wu = (WebUser) baseDataService.getByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={}: {}", ownerId, e.getMessage());
         }
         return wu;
@@ -142,23 +142,23 @@ public class InvoiceSummaryReport implements Report {
                 throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
             }
 
-            String supplierId = "";
-            String insurerId = "";
+            String supplierId;
+            String insurerId;
             Integer iSupplierId = -1;
             Integer iInsurerId = -1;
             Integer selectedWorkgroupId = -1;
             Integer selectedOwnerId = -1;
             boolean isWorkgroupEnabled = false;
 
-            Integer userOrgId = -1;
-            String userOrgLabel = "";
-            String userOrgName = "";
+            Integer userOrgId;
+            String userOrgLabel;
+            String userOrgName;
             Integer selectedOrgId = -1;
             String selectedOrgName = "All";
             String selectedWorkgroupName = null;
             String selectedClaimOwnerName = null;
-            String selectedOrgLabel = "";
-            String reportColumnHeader = "";
+            String selectedOrgLabel;
+            String reportColumnHeader;
 
             userOrgName = currentUser.getOrganisationName();
 
