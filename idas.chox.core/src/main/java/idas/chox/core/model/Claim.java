@@ -96,8 +96,8 @@ public class Claim extends Entity implements Serializable {
         return tpiClaimStatus;
     }
 
-    public void setTpiClaimStatus(String TpiClaimStatus) {
-        this.tpiClaimStatus = TpiClaimStatus;
+    public void setTpiClaimStatus(String tpiClaimStatus) {
+        this.tpiClaimStatus = tpiClaimStatus;
     }
 
     public boolean isManagingRepair() {
@@ -361,8 +361,7 @@ public class Claim extends Entity implements Serializable {
 
     public long getLiabilityAgreedDays() {
 
-        long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getLiabilityAgreedDate(), new Date()) + 1;
-        return dateDiff;
+        return DateHelper.getNumberOf24HourPeriodsBetween(getLiabilityAgreedDate(), new Date()) + 1;
     }
 
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
@@ -472,13 +471,13 @@ public class Claim extends Entity implements Serializable {
 
     public void addHistories(List<History> histories) {
 
-        if (histories == null) {
-            histories = new ArrayList<History>();
+        if (this.histories == null) {
+            this.histories = new ArrayList<History>();
         }
 
         for (History history : histories) {
             history.setClaim(this);
-            histories.add(history);
+            this.histories.add(history);
         }
     }
 
@@ -492,19 +491,19 @@ public class Claim extends Entity implements Serializable {
 
     //Add a list of  notification to claim
     //the isAnomalies will automatic mark as true
-    public void AddNotifications(List<AnomalousCheck> anomalousChecks, List<Notification> notifications) {
+    public void addNotifications(List<AnomalousCheck> anomalousChecks, List<Notification> notifications) {
 
-        RemoveNotification(anomalousChecks);
+        removeNotification(anomalousChecks);
 
         if (notifications != null) {
             for (Notification notification : notifications) {
-                AddNotification(notification);
+                addNotification(notification);
             }
         }
 
     }
 
-    private void RemoveNotification(List<AnomalousCheck> anomalousChecks) {
+    private void removeNotification(List<AnomalousCheck> anomalousChecks) {
 
         if (this.notifications.size() > 0) {
 
@@ -523,10 +522,10 @@ public class Claim extends Entity implements Serializable {
 
                     if (isDeletable) {
 
-                        Notification notificationToBeRemoved = GetNotificationByType(anc.BuildNotification().getType());
+                        Notification notificationToBeRemoved = getNotificationByType(anc.BuildNotification().getType());
 
                         if (notificationToBeRemoved != null) {
-                            RemoveNotifications(notificationToBeRemoved);
+                            removeNotifications(notificationToBeRemoved);
                         }
 
                     }
@@ -535,53 +534,32 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
-    public void AddNotification(Notification notification) {
-
+    public void addNotification(Notification notification) {
         if (notification != null) {
-
             if (this.notifications == null) {
                 this.notifications = new ArrayList<Notification>();
             }
-
             notification.setClaim(this);
             notifications.add(notification);
-
-
         }
     }
 
-    public void AcknowledgeNotifications(Notification notification) {
-
+    public void acknowledgeNotifications(Notification notification) {
 
         if (notification != null) {
-            //Notification n = getSameTypeOfNotificationExist(notification);
             notification.setIsacknowledged(true);
         }
-
-        //notifications.add(id, notification);
-        // notifications.remove(notification);
     }
 
-    public void AcknowledgeAllNotifications() {
-        List<Notification> toAcknowledgeList = new ArrayList<Notification>();
+    public void acknowledgeAllNotifications() {
         for (Notification notification : notifications) {
             if (notification.getNotificationType().isInsurerType()) {
-                toAcknowledgeList.add(notification);
-            }
-        }
-
-        for (Notification obj : toAcknowledgeList) {
-            //notifications.remove(obj);
-
-            if (obj != null) {
-                //Notification n = getSameTypeOfNotificationExist(obj);
-                obj.setIsacknowledged(true);
+                notification.setIsacknowledged(true);
             }
         }
     }
 
     private Notification getSameTypeOfNotificationExist(Notification notification) {
-
         if (this.notifications != null) {
             for (Notification n : notifications) {
                 if (n.getType().equals(notification.getType())) {
@@ -589,21 +567,7 @@ public class Claim extends Entity implements Serializable {
                 }
             }
         }
-
         return null;
-    }
-
-    private boolean isSameTypeOfNotificationExist(Notification notification) {
-
-        if (this.notifications != null) {
-            for (Notification n : notifications) {
-                if (n.getType().equals(notification.getType())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public void removeAllInsurerNotifications() {
@@ -632,11 +596,11 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
-    public void RemoveNotifications(Notification notification) {
+    public void removeNotifications(Notification notification) {
         notifications.remove(notification);
     }
 
-    private Notification GetNotificationByType(String type) {
+    private Notification getNotificationByType(String type) {
 
         for (Notification notification : notifications) {
 
@@ -649,7 +613,7 @@ public class Claim extends Entity implements Serializable {
         return null;
     }
 
-    public Notification GetNotificationById(int id) {
+    public Notification getNotificationById(int id) {
         for (Notification notification : notifications) {
             if (notification.getId().intValue() == id) {
                 return notification;
@@ -725,8 +689,9 @@ public class Claim extends Entity implements Serializable {
 
     public void setClaimType(ClaimType claimType) {
         this.claimType = claimType;
-        if (!ClaimType.isGTA(claimType))
+        if (!ClaimType.isGTA(claimType)) {
             autoPenaltyChargeEnabled = false;
+        }
     }
 
     public boolean isManualInvoiceApproved() {
@@ -784,5 +749,4 @@ public class Claim extends Entity implements Serializable {
     public void setFinalReviewDateIns(Date finalReviewDateIns) {
         this.finalReviewDateIns = finalReviewDateIns;
     }
-
 }

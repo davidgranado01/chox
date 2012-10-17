@@ -61,7 +61,7 @@ public class NotificationTest extends BaseTest {
         Claim c = claimResults.get(0).getClaim();
         Assert.assertNotNull(claimResults);
         Assert.assertTrue(claimResults.size() > 0);
-        c.AddNotification(new HireUpdatedNotification());
+        c.addNotification(new HireUpdatedNotification());
         Assert.assertTrue(c.getIsIsAnomalies());
     }
 
@@ -77,7 +77,7 @@ public class NotificationTest extends BaseTest {
         Assert.assertTrue(claimResults.size() > 0);
 
         Claim c = claimResults.get(0).getClaim();
-        c.AddNotification(new EcdUpdatedNotification());
+        c.addNotification(new EcdUpdatedNotification());
         Assert.assertTrue(c.getIsIsAnomalies());
 
     }
@@ -113,7 +113,7 @@ public class NotificationTest extends BaseTest {
         c.addHireMonitoringEcd(newEcd);
         // TODO: CHECK REQUIRED
         for (Notification notification : newECDAddedChecker.getAnomalousNotifications(c)) {
-            c.AddNotification(notification);
+            c.addNotification(notification);
         }
         Assert.assertFalse(c.getIsIsAnomalies());
 //        Assert.assertEquals(1, c.getNotifications().size());
@@ -126,7 +126,7 @@ public class NotificationTest extends BaseTest {
 //        newEcd2.setEcdDate(DateHelper.Parse("12/10/2009"));
 //        c.addHireMonitoringEcd(newEcd2);
 //        // TODO: CHECK REQUIRED
-//        // c.AddNotifications(newECDAddedChecker.getAnomalousNotifications(c));
+//        // c.addNotifications(newECDAddedChecker.getAnomalousNotifications(c));
 //        Assert.assertTrue(c.getIsIsAnomalies());
 //        Assert.assertEquals(1, c.getNotifications().size());
 //
@@ -134,9 +134,9 @@ public class NotificationTest extends BaseTest {
 //        Date friday = DateHelper.Parse("18/09/2009");
 //        c.getHireMonitoringDetail().setRepairBookInDate(friday);
 //        // TODO: CHECK REQUIRED
-//        // c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
+//        // c.addNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
 //        for (Notification notification : hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c)) {
-//            c.AddNotification(notification);
+//            c.addNotification(notification);
 //        }
 //        Assert.assertTrue(c.getIsIsAnomalies());
 //        Assert.assertEquals(2, c.getNotifications().size());

@@ -1065,9 +1065,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
 
-            Notification notification = claim.GetNotificationById(notificationId);
+            Notification notification = claim.getNotificationById(notificationId);
             if (notification != null) {
-                claim.RemoveNotifications(notification);
+                claim.removeNotifications(notification);
                 service.updateClaim(claim);
             }
 
@@ -1088,9 +1088,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (notificationId > 0) {
 
-            Notification notification = claim.GetNotificationById(notificationId);
+            Notification notification = claim.getNotificationById(notificationId);
             if (notification != null) {
-                claim.AcknowledgeNotifications(notification);
+                claim.acknowledgeNotifications(notification);
                 service.updateClaim(claim);
             }
 
@@ -1098,7 +1098,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
-                claim.AcknowledgeAllNotifications();
+                claim.acknowledgeAllNotifications();
             }
 
             service.updateClaim(claim);

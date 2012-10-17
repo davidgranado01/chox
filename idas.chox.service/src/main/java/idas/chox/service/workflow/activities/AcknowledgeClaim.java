@@ -108,7 +108,7 @@ public class AcknowledgeClaim extends BaseActivity {
             Comment comment = Comment.New(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
-            claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+            claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
