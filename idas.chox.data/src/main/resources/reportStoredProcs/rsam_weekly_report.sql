@@ -51,7 +51,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
        FROM audit_trail a
        WHERE a.claim_id = c.id
          AND a.reverted = FALSE
-         AND a.update_date < (params.startDate - interval '2 week')::date LIMIT 1) ) AS "Open Claims Period Start",
+         AND a.update_date < (params.startDate - interval '2 week')::date 
+         ORDER BY a.update_date LIMIT 1) ) AS "Open Claims Period Start",
      
 --Column 4: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
@@ -67,7 +68,8 @@ SELECT 'Total figures across the Insurer' as Grouping,
        FROM audit_trail a
        WHERE a.claim_id = c.id
          AND a.reverted = FALSE
-         AND a.update_date < (params.startDate - interval '1 week')::date LIMIT 1) ) AS "Open Claims Period Start",
+         AND a.update_date < (params.startDate - interval '1 week')::date 
+         ORDER BY a.update_date LIMIT 1) ) AS "Open Claims Period Start",
                                
 --Column 5: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
