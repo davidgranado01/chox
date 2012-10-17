@@ -1400,7 +1400,7 @@ public class OverviewSummaryReport implements Report {
             criteria.add(Restrictions.eq("id", workgroupId));
             wg = (Workgroup) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={} ", workgroupId, e);
         }
 
@@ -1413,7 +1413,7 @@ public class OverviewSummaryReport implements Report {
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
             criteria.add(Restrictions.eq("id", ownerId));
             wu = (WebUser) baseDataService.getByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={} ", ownerId, e);
         }
         return wu;

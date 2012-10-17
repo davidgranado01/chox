@@ -93,7 +93,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 //            criteria.addOrder(Order.asc("min_value"));
 
             billingChoRate = findByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Exception thrown: {}", e.getMessage());
         }
 
@@ -111,7 +111,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
 
             billingChoRate = findByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Exception thrown: {}", e.getMessage());
         }
 

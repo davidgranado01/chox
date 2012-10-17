@@ -30,7 +30,7 @@ public class WebUserService implements UserDetailsService {
 
         WebUser u = null;
 
-        if (userName != null || !userName.isEmpty()) {
+        if (userName != null && !userName.isEmpty()) {
             u = findByUserName(userName);
         }
 

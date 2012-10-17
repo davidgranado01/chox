@@ -1,9 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.InsurerDiscount;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.InsurerService;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -20,6 +17,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.InsurerDiscount;
+import idas.chox.core.services.ChorganisationService;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.InsurerService;
 
 /**
  *
@@ -90,9 +92,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             criteria.add(Restrictions.eq("insurer.id", InsId));
             criteria.addOrder(Order.desc("dateFrom"));
             list = findByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Insurer Discount: {}", e.getMessage());
-//            e.printStackTrace();
         }
         LOG.debug("total record in insurer Discount for insurer: {}, {} ", list.size());
         return list;
@@ -190,7 +191,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         String query = sb.toString();
         LOG.debug("getting discount percentage query is: {}", query);
-        List valList = null;
+        List valList;
         /*
          *  The below Try catch method implemented because the abouve query is throwing sql syntax error in H2 database and making unit test failure.
          *  so for unit test it will always return zero from the catch block. 
@@ -199,7 +200,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
          */
         try {
             valList = getCurrentSession().createSQLQuery(query).list();
-        } catch (Throwable th) {
+        } catch (Exception th) {
             LOG.error("Error running sql to get Insurer Discount percentage, returning 0 as insurer discount percentage: ", th);
             LOG.error("ins id {}, cho id {}", insId, choId);
             LOG.error("invoice Created date {}", invoiceCreatedDate);

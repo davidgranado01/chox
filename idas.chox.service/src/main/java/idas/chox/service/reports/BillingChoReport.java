@@ -35,6 +35,7 @@ public class BillingChoReport implements Report {
     private BaseDataService baseDataService;
     private ReportDataService reportDataService;
 
+    @Override
     public void setBaseDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
@@ -53,13 +54,6 @@ public class BillingChoReport implements Report {
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
         try {
-            //WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
-            //PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            //user = currentUser.getUser();
-
-            //final Date dateStart = DateHelper.sdf.parse(((String[]) externalParameter.get("dateFrom"))[0]);
-            //final Date dateEnd = DateHelper.sdf.parse(((String[]) externalParameter.get("dateTo"))[0]);
-            //final String choId = ((String[]) externalParameter.get("column2"))[0];
             final String billingId = ((String[]) externalParameter.get("billingId"))[0];
 
             BillingCho bc = getBillingCho(Integer.parseInt(billingId));
@@ -71,7 +65,7 @@ public class BillingChoReport implements Report {
                 throw new Exception("End date (" + bc.getDateTo().toString() + ") is before start date (" + bc.getDateFrom().toString() +  ") ");
             }
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select ");
                 sb.append("cm.cho_reference, ");
                 sb.append("cm.claim_number, ");
@@ -115,7 +109,6 @@ public class BillingChoReport implements Report {
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("");
-//            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
             reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
             reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
             reportObject.setIsFixedTransactionalFee(bc.isFixedTransaction());
@@ -132,11 +125,8 @@ public class BillingChoReport implements Report {
             reportParameters.put("reportRows", reportRows);
         
         } catch (Exception ex) {
-            LOG.error("Exception thrown getting report parameters: {}", ex.getMessage());
-//            throw new RuntimeException(ex);
-        } finally {
-           
-        }
+            LOG.error("Exception thrown getting report parameters: {}", ex.getMessage(), ex);
+        } 
         
         return reportParameters;
     }

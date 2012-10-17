@@ -52,7 +52,7 @@ public class InvoiceStatusReport implements Report {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error thrown getting Chorganisation from id={}: {}", orgId, e.getMessage());
         }
 
@@ -80,8 +80,8 @@ public class InvoiceStatusReport implements Report {
     public HashMap getReportParameters() {
         HashMap map = new HashMap();
         Date dataStart = null;
-        String supplierId = "";
-        String insrId = "";
+        String supplierId;
+        String insrId;
         Integer choId = -1;
         Integer insurerId = -1;
         Integer userOrgId = -1;

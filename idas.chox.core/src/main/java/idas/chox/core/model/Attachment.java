@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -15,10 +16,18 @@ public class Attachment extends Entity implements Serializable {
     private boolean deleted;
 
     public byte[] getFileBuffer() {
-        return fileBuffer;
+        if (fileBuffer == null)
+            return null;
+        
+        return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }
 
     public void setFileBuffer(byte[] fileBuffer) {
+        if (fileBuffer == null) {
+            this.fileBuffer = new byte[0];
+        } else {
+            this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
+        }
         this.fileBuffer = fileBuffer;
     }
 

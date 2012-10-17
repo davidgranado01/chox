@@ -289,9 +289,8 @@ public class AdminWeeklyOverviewReport implements Report {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Exception thrown getting Chorganisation from id={}: {}", orgId, e.getMessage());
-//            e.printStackTrace();
         }
 
         return chorg;
@@ -306,9 +305,8 @@ public class AdminWeeklyOverviewReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Exception thrown getting Insurer from id={}: {}", orgId, e.getMessage());
-//            e.printStackTrace();
         }
 
         return ins;

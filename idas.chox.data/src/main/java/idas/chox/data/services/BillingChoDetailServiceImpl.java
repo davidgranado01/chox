@@ -69,8 +69,8 @@ public class BillingChoDetailServiceImpl extends SecureDataService implements Bi
             criteria.createCriteria("billing").add(Restrictions.eq("id", id));
             criteria.addOrder(Order.desc("id"));
             list = findByCriteria(criteria);
-        } catch (Throwable e) {
-            LOG.error("Exception thrown: {}", e.getMessage());
+        } catch (Exception e) {
+            LOG.error("Exception thrown: {}\n", e.getMessage(), e);
         }
         return list;
     }

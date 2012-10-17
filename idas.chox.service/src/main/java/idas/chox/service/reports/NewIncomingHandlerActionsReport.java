@@ -438,7 +438,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Chorganisation for id={}: {}", orgId,
                     e.getMessage());
         }
@@ -456,7 +456,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Insurer for id={}: {}", orgId,
                     e.getMessage());
         }
@@ -474,7 +474,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             criteria.add(Restrictions.eq("id", workgroupId));
             wg = (Workgroup) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={}: {}", workgroupId,
                     e.getMessage());
         }
@@ -489,7 +489,7 @@ public class NewIncomingHandlerActionsReport implements Report {
                     .forClass(WebUser.class);
             criteria.add(Restrictions.eq("id", ownerId));
             wu = (WebUser) baseDataService.getByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting workgroup for id={}: {}", ownerId,
                     e.getMessage());
         }
