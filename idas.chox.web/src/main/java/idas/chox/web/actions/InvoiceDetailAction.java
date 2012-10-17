@@ -2392,7 +2392,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
             addModelToSession(Arrays.asList(claim, engineerReport, vehicleHire, invoice));
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Exception in preparing for InvoiceDetailAction : ", ex);
         }
     }

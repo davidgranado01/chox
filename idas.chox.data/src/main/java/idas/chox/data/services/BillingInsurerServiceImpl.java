@@ -136,9 +136,8 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingInsurer.class);
             criteria.addOrder(Order.desc("dateTo"));
             list = findByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting Bolling Insurers: {}", e.getMessage());
-//            e.printStackTrace();
         }
         LOG.debug("getBillingInsurers: {} ", list.size());
         return list;

@@ -69,7 +69,7 @@ public class BillingInsurerDetailServiceImpl extends SecureDataService implement
             criteria.createCriteria("billing").add(Restrictions.eq("id", id));
             criteria.addOrder(Order.desc("id"));
             list = findByCriteria(criteria);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Exception generating Invoice Summary Report: {}", ex.getMessage());
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());

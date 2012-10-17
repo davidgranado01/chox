@@ -59,7 +59,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
         try {
-            String supplierId = "";
+            String supplierId;
             Integer selectedCHOId = -1;
             String selectedCHOName = "All";
             boolean isWorkgroupEnabled = true;
@@ -89,7 +89,6 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 if (!supplierId.equalsIgnoreCase("-1") && !supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                     selectedCHOId = TextHelper.getId(supplierId);
                     LOG.debug("selectedChoId ={}", selectedCHOId);
-//                    selectedOrgId = iSupplierId;
                     selectedCHOName = getChorganisation(selectedCHOId).getName();
                 }
             }
@@ -127,10 +126,6 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             if(endDate != null && startDate != null && endDate.before(startDate)){
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
-
-            // First, update user service stats for Insurer
-//            baseDataService.query("select update_user_service(" + insurerId + ")");
-            // baseDataService.callUpdateUserService(insurerId);
 
             List<WorkgroupOwnerBreReportObject> workflowReportObjects = new ArrayList<WorkgroupOwnerBreReportObject>();
             if (isWorkgroupEnabled) {
@@ -409,9 +404,8 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            LOG.error("Error getting Chorganisation for id={}: {}", orgId, e.getMessage());
-//            e.printStackTrace();
+        } catch (Exception ex) {
+            LOG.error("Error getting Chorganisation for id={}:\n", orgId, ex);
         }
 
         return chorg;
@@ -429,7 +423,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayForHeader) {
         List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
-        List result = null;
+        List result;
         if(currentUser.getInsurer() != null){
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +

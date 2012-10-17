@@ -39,7 +39,7 @@ public class ReportHelper {
             criteria.add(Restrictions.eq("id", sObjectId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Error getting Insurer for Report: {}", ex.getMessage());
             if (ex.getCause() != null) {
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
@@ -59,7 +59,7 @@ public class ReportHelper {
             criteria.add(Restrictions.eq("id", sObjectId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Error getting Chorganisation for Report: {}", ex.getMessage());
             if (ex.getCause() != null) {
                 LOG.error("Caused by: {}", ex.getCause().getMessage());

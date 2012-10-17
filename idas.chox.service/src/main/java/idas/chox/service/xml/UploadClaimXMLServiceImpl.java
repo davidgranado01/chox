@@ -382,7 +382,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 LOG.debug("claimDetails added to session - total size of claimDetails is: {}", claimsDetails.size());
                 LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage(), ex);
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
@@ -678,7 +678,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.debug("webService claim has been processed successfully.");
             return xmlClaimsDetail;
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Unexpected error thrown while processing Webservice claim : {}", ex.getMessage());
             xmlClaimsDetail.setMessage("An unexpected error has occured - please report to CHOX support.");
             return xmlClaimsDetail;

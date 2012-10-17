@@ -129,9 +129,8 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingCho.class);
             criteria.addOrder(Order.desc("dateTo"));
             list = findByCriteria(criteria);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error getting billing CHOs: {}", e.getMessage());
-//            e.printStackTrace();
         }
         return list;
     }

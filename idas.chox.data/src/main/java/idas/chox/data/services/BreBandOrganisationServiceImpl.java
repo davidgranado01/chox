@@ -1,15 +1,16 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.BreBandOrganisation;
-import idas.chox.core.services.BreBandOrganisationService;
-import org.hibernate.criterion.Restrictions;
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.BreBandOrganisation;
+import idas.chox.core.services.BreBandOrganisationService;
 
 public class BreBandOrganisationServiceImpl extends SecureDataService implements BreBandOrganisationService {
     private static final Logger LOG = LoggerFactory.getLogger(BreBandOrganisationServiceImpl.class);
@@ -19,7 +20,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
 
         boolean isExist = false;
 
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
+        List<BreBandOrganisation> objects;
         objects = getBreBandChorganisationsByBreBandId(breBandId);
 
         if (objects.size() > 0) {
@@ -47,7 +48,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     @Override
     public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
 
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
+        List<BreBandOrganisation> objects;
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         objects = findByCriteria(criteria);
@@ -68,7 +69,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
 
         try {
 
-            List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
+            List<BreBandOrganisation> objects;
             DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
             criteria.add(Restrictions.eq("breBand.id", bandId));
             objects = findByCriteria(criteria);
@@ -79,7 +80,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
 
             bFlag = true;
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.error("Error Deleting BRE Band Orb by band id={}: {}", bandId, ex.getMessage());
         }
 
