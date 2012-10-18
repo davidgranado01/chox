@@ -21,10 +21,12 @@ returns table
    "Value Escalated then Closed" numeric(10,2)
 )
 as $$ DECLARE 
-dat1 date;
+datEnd date;
+datStart date;
 insId int;
 BEGIN 
-	dat1 = startDate::Date;
+	datEnd = startDate::Date;
+	datStart = datStart;
 	insId = insurerId;
 RETURN QUERY
 
@@ -38,15 +40,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
-     AND c.created_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+   WHERE cho.insurer_upload_only = FALSE
+     AND c.created_date BETWEEN datStart AND datEnd
      AND c.insurer_id = insId) AS "New Cases",
 
 --Column 4: Open Claims Period Start - all claims in an open status at the end of the previous week (2359 Sunday minus 1 week).     
   (SELECT count(*)
 	FROM audit_trail a, claim c
 	JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = true
+    WHERE cho.insurer_upload_only = FALSE
 	AND c.id = a.claim_id
 	  AND a.new_status NOT IN ('PaymentReceived',
 	                           'ClaimClosed',
@@ -60,15 +62,15 @@ SELECT 'Total figures across the Insurer' as Grouping,
 	         (SELECT max(update_date)
 	          FROM audit_trail a3
 	          WHERE a3.claim_id=c.id
-	            AND a3. update_date < (dat1 - interval '2 week')::date
+	            AND a3. update_date < datStart
 	            AND (a3.reverted=FALSE
-	                 OR a3.last_modified_date > (dat1 - interval '2 week')::date)))) as "Open Claims Period Start ",
+	                 OR a3.last_modified_date > datStart)))) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
     FROM audit_trail a, claim c
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = true
+    WHERE cho.insurer_upload_only = FALSE
     AND c.id = a.claim_id
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
@@ -82,16 +84,16 @@ SELECT 'Total figures across the Insurer' as Grouping,
              (SELECT max(update_date)
               FROM audit_trail a3
               WHERE a3.claim_id=c.id
-                AND a3. update_date < (dat1 - interval '1 week')::date
+                AND a3. update_date < datEnd
                 AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > (dat1 - interval '1 week')::date)))) as "Open Claims Period End ",
+                     OR a3.last_modified_date > datEnd)))) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
      AND a.reverted = FALSE
@@ -99,7 +101,7 @@ SELECT 'Total figures across the Insurer' as Grouping,
                           'ClaimClosed',
                           'ClaimRejectionAccepted',
                           'InvoiceRejectionAccepted')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND reverted=FALSE) AS "Settled/Closed Cases",
  
 --Column 7: Volume Approved By BRE and Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Approved By BRE but NOT been in status Contested Invoice Referred To CHO previously.
@@ -107,12 +109,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -132,12 +134,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -156,12 +158,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -181,12 +183,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -205,12 +207,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -224,12 +226,12 @@ SELECT 'Total figures across the Insurer' as Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -242,13 +244,13 @@ SELECT 'Total figures across the Insurer' as Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -262,13 +264,13 @@ SELECT 'Total figures across the Insurer' as Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = true
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -288,16 +290,16 @@ SELECT cho1.name AS Grouping,
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false 
+   WHERE cho.insurer_upload_only = FALSE 
      AND cho.id = cho1.id
-     AND c.created_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND c.created_date BETWEEN datStart AND datEnd
      AND c.insurer_id = insId) AS "New Cases",
 
 --Column 4: Open Claims Period Start - all claims in an open status at the end of the previous week (2359 Sunday minus 1 week).     
   (SELECT count(*)
     FROM audit_trail a, claim c
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = false
+    WHERE cho.insurer_upload_only = FALSE
     AND c.id = a.claim_id
     AND cho.id = cho1.id
       AND a.new_status NOT IN ('PaymentReceived',
@@ -312,15 +314,15 @@ SELECT cho1.name AS Grouping,
              (SELECT max(update_date)
               FROM audit_trail a3
               WHERE a3.claim_id=c.id
-                AND a3. update_date < (dat1 - interval '2 week')::date
+                AND a3. update_date < (datEnd - interval '2 week')::date
                 AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > (dat1 - interval '2 week')::date)))) as "Open Claims Period Start ",
+                     OR a3.last_modified_date > (datEnd - interval '2 week')::date)))) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
     FROM audit_trail a, claim c
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = false
+    WHERE cho.insurer_upload_only = FALSE
     AND c.id = a.claim_id
     AND cho.id = cho1.id
       AND a.new_status NOT IN ('PaymentReceived',
@@ -335,16 +337,16 @@ SELECT cho1.name AS Grouping,
              (SELECT max(update_date)
               FROM audit_trail a3
               WHERE a3.claim_id=c.id
-                AND a3. update_date < (dat1 - interval '1 week')::date
+                AND a3. update_date < datStart
                 AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > (dat1 - interval '1 week')::date)))) as "Open Claims Period End ",
+                     OR a3.last_modified_date > datStart)))) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND c.insurer_id = insId
@@ -353,7 +355,7 @@ SELECT cho1.name AS Grouping,
                           'ClaimClosed',
                           'ClaimRejectionAccepted',
                           'InvoiceRejectionAccepted')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND reverted=FALSE) AS "Settled/Closed Cases",
  
 --Column 7: Volume Approved By BRE and Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Approved By BRE but NOT been in status Contested Invoice Referred To CHO previously.
@@ -361,13 +363,13 @@ SELECT cho1.name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -387,13 +389,13 @@ SELECT cho1.name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND c.insurer_id = insId
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -412,13 +414,13 @@ SELECT cho1.name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -438,13 +440,13 @@ SELECT cho1.name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -463,13 +465,13 @@ SELECT cho1.name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -483,13 +485,13 @@ SELECT cho1.name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -502,14 +504,14 @@ SELECT cho1.name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -523,14 +525,14 @@ SELECT cho1.name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND cho.id = cho1.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -556,16 +558,16 @@ SELECT wu.first_name || wu.last_name AS Grouping,
   (SELECT count(*)
    FROM claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false 
+   WHERE cho.insurer_upload_only = FALSE 
      AND c.claim_owner_id = wu.id
-     AND c.created_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND c.created_date BETWEEN datStart AND datEnd
      AND c.insurer_id = insId) AS "New Cases",
 
 --Column 4: Open Claims Period Start - all claims in an open status at the end of the previous week (2359 Sunday minus 1 week).     
   (SELECT count(*)
     FROM audit_trail a, claim c
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = false
+    WHERE cho.insurer_upload_only = FALSE
     AND c.id = a.claim_id
     AND c.claim_owner_id = wu.id
       AND a.new_status NOT IN ('PaymentReceived',
@@ -580,15 +582,15 @@ SELECT wu.first_name || wu.last_name AS Grouping,
              (SELECT max(update_date)
               FROM audit_trail a3
               WHERE a3.claim_id=c.id
-                AND a3. update_date < (dat1 - interval '2 week')::date
+                AND a3. update_date < (datEnd - interval '2 week')::date
                 AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > (dat1 - interval '2 week')::date)))) as "Open Claims Period Start ",
+                     OR a3.last_modified_date > (datEnd - interval '2 week')::date)))) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
     FROM audit_trail a, claim c
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
-    WHERE cho.insurer_upload_only = false
+    WHERE cho.insurer_upload_only = FALSE
     AND c.id = a.claim_id
     AND c.claim_owner_id = wu.id
       AND a.new_status NOT IN ('PaymentReceived',
@@ -603,16 +605,16 @@ SELECT wu.first_name || wu.last_name AS Grouping,
              (SELECT max(update_date)
               FROM audit_trail a3
               WHERE a3.claim_id=c.id
-                AND a3. update_date < (dat1 - interval '1 week')::date
+                AND a3. update_date < datStart
                 AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > (dat1 - interval '1 week')::date)))) as "Open Claims Period End ",
+                     OR a3.last_modified_date > datStart)))) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND c.insurer_id = insId
@@ -621,7 +623,7 @@ SELECT wu.first_name || wu.last_name AS Grouping,
                           'ClaimClosed',
                           'ClaimRejectionAccepted',
                           'InvoiceRejectionAccepted')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND reverted=FALSE) AS "Settled/Closed Cases",
  
 --Column 7: Volume Approved By BRE and Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Approved By BRE but NOT been in status Contested Invoice Referred To CHO previously.
@@ -629,13 +631,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -655,13 +657,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND c.insurer_id = insId
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -680,13 +682,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -706,13 +708,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -731,13 +733,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -751,13 +753,13 @@ SELECT wu.first_name || wu.last_name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status = 'PaymentReceived'
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -770,14 +772,14 @@ SELECT wu.first_name || wu.last_name AS Grouping,
    FROM audit_trail a,
                     claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
@@ -791,14 +793,14 @@ SELECT wu.first_name || wu.last_name AS Grouping,
                     claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
-   WHERE cho.insurer_upload_only = false
+   WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
      AND a.reverted = FALSE
      AND a.new_status IN ('InvoiceRejectionAccepted',
                           'ClaimClosed')
-     AND a.update_date BETWEEN (dat1 - interval '1 week')::date AND dat1
+     AND a.update_date BETWEEN datStart AND datEnd
      AND EXISTS
        (SELECT *
         FROM audit_trail a1
