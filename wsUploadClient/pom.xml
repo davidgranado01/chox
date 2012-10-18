@@ -51,7 +51,7 @@
                             <wsdlFiles>
                                 <wsdlFile>test.idaschox.com_8443/services/UploadService.wsdl</wsdlFile>
                             </wsdlFiles>
-                           <wsdlLocation>https://test.idaschox.com:8443/chox_p6s12/services/UploadService?wsdl</wsdlLocation>
+                           <wsdlLocation>https://test.idaschox.com:8443/services/UploadService?wsdl</wsdlLocation>
 <!--                             <wsdlLocation>https://www.idaschox.com:8443/services/UploadService?wsdl</wsdlLocation> -->
                             <staleFile>${project.build.directory}/jaxws/stale/UploadService.stale</staleFile>
                         </configuration>
