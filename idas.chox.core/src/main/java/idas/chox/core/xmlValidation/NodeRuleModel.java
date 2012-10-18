@@ -29,7 +29,7 @@ public class NodeRuleModel {
 
     public void setOffHiredDataMandatory(String offHiredDataMandatory) {
         this.offHiredDataMandatory = false;
-        if (offHiredDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (offHiredDataMandatory.trim().equalsIgnoreCase("t")) {
             this.offHiredDataMandatory = true;
         }
     }
@@ -40,7 +40,7 @@ public class NodeRuleModel {
 
     public void setNewSupplementaryInvoiceMandatory(String newSupplementaryInvoiceMandatory) {
         this.newSupplementaryInvoiceMandatory = false;
-        if (newSupplementaryInvoiceMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (newSupplementaryInvoiceMandatory.trim().equalsIgnoreCase("t")) {
             this.newSupplementaryInvoiceMandatory = true;
         }
     }
@@ -51,7 +51,7 @@ public class NodeRuleModel {
 
     public void setHireMonitoringDataMandatory(String hireMoniteringDataMandatory) {
         this.hireMonitoringDataMandatory = false;
-        if (hireMoniteringDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (hireMoniteringDataMandatory.trim().equalsIgnoreCase("t")) {
             this.hireMonitoringDataMandatory = true;
         }
     }
@@ -62,7 +62,7 @@ public class NodeRuleModel {
 
     public void setExistingClaimDataMandatory(String existingClaimDataMandatory) {
         this.existingClaimDataMandatory = false;
-        if (existingClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (existingClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.existingClaimDataMandatory = true;
         }
     }
@@ -73,7 +73,7 @@ public class NodeRuleModel {
 
     public void setExistingSubscriberClaimDataMandatory(String existingSubscriberClaimDataMandatory) {
         this.existingSubscriberClaimDataMandatory = false;
-        if (existingSubscriberClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (existingSubscriberClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.existingSubscriberClaimDataMandatory = true;
         }
     }
@@ -84,7 +84,7 @@ public class NodeRuleModel {
 
     public void setExistingInvoiceDataMandatory(String existingInvoiceDataMandatory) {
         this.existingInvoiceDataMandatory = false;
-        if (existingInvoiceDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (existingInvoiceDataMandatory.trim().equalsIgnoreCase("t")) {
             this.existingInvoiceDataMandatory = true;
         }
     }
@@ -105,7 +105,7 @@ public class NodeRuleModel {
 
     public void setNewClaimDataMandatory(String newClaimDataMandatory) {
         this.newClaimDataMandatory = false;
-        if (newClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (newClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.newClaimDataMandatory = true;
         }
     }
@@ -116,7 +116,7 @@ public class NodeRuleModel {
 
     public void setNewSubscriberClaimDataMandatory(String newSubscriberClaimDataMandatory) {
         this.newSubscriberClaimDataMandatory = false;
-        if (newSubscriberClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (newSubscriberClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.newSubscriberClaimDataMandatory = true;
         }
     }
@@ -127,7 +127,7 @@ public class NodeRuleModel {
 
     public void setInsurerUploadDataMandatory(String insurerUploadDataMandatory) {
         this.insurerUploadDataMandatory = false;
-        if (insurerUploadDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (insurerUploadDataMandatory.trim().equalsIgnoreCase("t")) {
             this.insurerUploadDataMandatory = true;
         }
     }
@@ -138,7 +138,7 @@ public class NodeRuleModel {
 
     public void setNewInvoiceDataMandatory(String newInvoiceDataMandatory) {
         this.newInvoiceDataMandatory = false;
-        if (newInvoiceDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (newInvoiceDataMandatory.trim().equalsIgnoreCase("t")) {
             this.newInvoiceDataMandatory = true;
         }
     }
@@ -149,7 +149,7 @@ public class NodeRuleModel {
 
     public void setTpiInterventionDataMandatory(String tpiInterventionDataMandatory) {
         this.tpiInterventionDataMandatory = false;
-        if (tpiInterventionDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+        if (tpiInterventionDataMandatory.trim().equalsIgnoreCase("t")) {
             this.tpiInterventionDataMandatory = true;
         }
     }
