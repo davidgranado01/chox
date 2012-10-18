@@ -10,6 +10,7 @@ import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.*;
 
 public class InjurySolicitorReader {
@@ -39,7 +40,6 @@ public class InjurySolicitorReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             claimResult = NodeHelper.nodeValidate(sectionName, "name", element, claimResult, dataValidationParameter);
@@ -64,9 +64,9 @@ public class InjurySolicitorReader {
         Element element = XMLUtils.getElement(parentElement, "solicitor");
         LOG.debug("Processing solicitor element.");
         
-        ArrayList<Solicitor> solicitors = claimResult.getSolicitors();
+        List<Solicitor> solicitors = claimResult.getSolicitors();
         if (solicitors == null) {
-            solicitors = new ArrayList<Solicitor>();
+            solicitors = new ArrayList<Solicitor>(0);
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "telephone")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "email"))) {
