@@ -34,7 +34,7 @@ RETURN QUERY
 SELECT 'ALL' as Grouping,
 
 --Column 2: Type
-  'TOTAL' as Type,
+  'ALL' as Type,
   
 --Column 3: New Cases - Claims uploaded in the past week.
   (SELECT count(*)
@@ -51,6 +51,7 @@ SELECT 'ALL' as Grouping,
     WHERE cho.insurer_upload_only = FALSE
 	  AND c.id = a.claim_id
       AND c.insurer_id = insId
+      AND c.created_date < datEnd
 	  AND a.new_status NOT IN ('PaymentReceived',
 	                           'ClaimClosed',
 	                           'ClaimRejectionAccepted',
@@ -73,6 +74,7 @@ SELECT 'ALL' as Grouping,
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
     WHERE cho.insurer_upload_only = FALSE
       AND c.id = a.claim_id
+      AND c.created_date < datStart
       AND c.insurer_id = insId
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
@@ -92,12 +94,12 @@ SELECT 'ALL' as Grouping,
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.insurer_id = insId
+     AND c.created_date < datStart
      AND a.new_status IN ('PaymentReceived',
                           'ClaimClosed',
                           'ClaimRejectionAccepted',
@@ -110,8 +112,7 @@ SELECT 'ALL' as Grouping,
 --          in the past week and have been at status Invoice Approved By BRE but NOT been in status
 --          Contested Invoice Referred To CHO previously.
   (SELECT count(c.id)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
@@ -137,8 +138,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 8: Value of Approved By BRE and Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
@@ -167,8 +167,7 @@ SELECT 'ALL' as Grouping,
 --          in the past week and have been at status Invoice Approved By BRE AND status Contested Invoice
 --          Referred To CHO previously.
   (SELECT count(c.id)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
@@ -194,8 +193,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 10: Value of Approved By BRE, Contested and Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
@@ -222,8 +220,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 11: Volume Escalated then Paid - all claims that moved into status Payment Received in the past week and have been at status Invoice Escalated To Handler previously.
   (SELECT count(c.id)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
@@ -242,8 +239,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 12: Value of Escalated then Paid - as above but to report on Total To Pay figure (SUM)
   (SELECT sum(i.total_to_pay)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
@@ -263,8 +259,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 13: Volume Escalated then Closed - all claims that moved into status Invoice Rejection Accepted or Claim Closed in the past week and have been at status Invoice Escalated To Handler previously.
   (SELECT count(c.id)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
      AND c.insurer_id = insId
@@ -284,8 +279,7 @@ SELECT 'ALL' as Grouping,
 
 --Column 14: Value of Escalated then Closed - as above but to report on Original Full Total Requested (SUM)
   (SELECT sum(i.total_to_pay)
-   FROM audit_trail a,
-                    claim c
+   FROM audit_trail a, claim c
    JOIN invoice i ON c.invoice_id = i.id
    JOIN chorganisation cho ON c.chorganisation_id = cho.id
    WHERE cho.insurer_upload_only = FALSE
@@ -324,6 +318,7 @@ SELECT cho1.name AS Grouping,
     FROM audit_trail a, claim c
     WHERE c.chorganisation_id = cho1.id AND c.insurer_id = insId
       AND a.claim_id = c.id
+      AND c.created_date < datEnd
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
                                'ClaimRejectionAccepted',
@@ -345,6 +340,7 @@ SELECT cho1.name AS Grouping,
     FROM audit_trail a, claim c
     WHERE c.chorganisation_id = cho1.id AND c.insurer_id = insId
       AND a.claim_id = c.id
+      AND c.created_date < datStart
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
                                'ClaimRejectionAccepted',
@@ -366,6 +362,7 @@ SELECT cho1.name AS Grouping,
    FROM audit_trail a, claim c
    WHERE c.chorganisation_id = cho1.id AND c.insurer_id = insId
      AND a.claim_id = c.id
+     AND c.created_date < datStart
      AND (a.reverted=FALSE OR a.last_modified_date > datStart)
      AND a.new_status IN ('PaymentReceived',
                           'ClaimClosed',
@@ -563,6 +560,7 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
     WHERE cho.insurer_upload_only = FALSE
       AND c.id = a.claim_id
+      AND c.created_date < datEnd
       AND c.claim_owner_id = wu.id
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
@@ -586,6 +584,7 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
     JOIN chorganisation cho ON c.chorganisation_id = cho.id
     WHERE cho.insurer_upload_only = FALSE
       AND c.id = a.claim_id
+      AND c.created_date < datStart
       AND c.claim_owner_id = wu.id
       AND a.new_status NOT IN ('PaymentReceived',
                                'ClaimClosed',
@@ -610,6 +609,7 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
    WHERE cho.insurer_upload_only = FALSE
      AND a.claim_id = c.id
      AND c.claim_owner_id = wu.id
+     AND c.created_date < datStart
      AND (a.reverted=FALSE OR a.last_modified_date > datStart)
      AND a.new_status IN ('PaymentReceived',
                           'ClaimClosed',
