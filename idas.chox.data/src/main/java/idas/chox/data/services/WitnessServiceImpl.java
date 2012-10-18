@@ -4,7 +4,7 @@ import idas.chox.core.model.Incident;
 import idas.chox.core.model.Witness;
 import idas.chox.core.services.WitnessService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,31 +12,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class WitnessServiceImpl extends SecureDataService implements WitnessService {
 
+    @Override
     public Witness getWitnessByIncident(Incident incident) {
 
-        Witness witness = null;
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Witness.class).add(Restrictions.eq("incident", incident));
-        witness = (Witness) getByCriteria(criteria);
-
-
-        return witness;
+        return (Witness) getByCriteria(criteria);
     }
 
+    @Override
     public Witness getWitness(int id) {
         return (Witness) get(Witness.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveWitness(Witness witness) {
         save(witness);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveWitnessForXMLUploader(final ClaimResult claimResult) {
 
-        ArrayList<Witness> witnesses = claimResult.getWitnesses();
+        List<Witness> witnesses = claimResult.getWitnesses();
 
         if (witnesses != null) {
 

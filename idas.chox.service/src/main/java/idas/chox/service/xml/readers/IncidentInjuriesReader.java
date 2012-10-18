@@ -9,6 +9,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.*;
 
 public class IncidentInjuriesReader extends BaseEntityReader {
@@ -72,7 +73,6 @@ public class IncidentInjuriesReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             for (Element e : injuryElements) {
@@ -111,7 +111,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
             LOG.debug("No injury elements returned from document.");
         }
 
-        ArrayList<Injury> injuries = claimResult.getInjuries();
+        List<Injury> injuries = claimResult.getInjuries();
         if (injuries == null) {
             injuries = new ArrayList<Injury>();
         }

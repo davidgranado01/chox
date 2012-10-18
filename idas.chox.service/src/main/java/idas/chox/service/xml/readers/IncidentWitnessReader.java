@@ -34,7 +34,6 @@ public class IncidentWitnessReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
             for (Element e : witnessElements) {
                 LOG.debug("Validating witness name");
@@ -64,9 +63,11 @@ public class IncidentWitnessReader extends BaseEntityReader {
         Element incidentElement = XMLUtils.getElement(claimElement, "incident");
         List<Element> witnessElements = XMLUtils.getElements(incidentElement.getOwnerDocument(), incidentElement, "witness");
 
-        ArrayList<Witness> witnesses = new ArrayList<Witness>();
+        List<Witness> witnesses;
         if (claimResult.getWitnesses() != null) {
             witnesses = claimResult.getWitnesses();
+        } else {
+            witnesses = new ArrayList<Witness>(0);
         }
 
         for (Element e : witnessElements) {
