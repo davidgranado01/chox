@@ -22,9 +22,9 @@ public class ClaimResult {
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
     private boolean duplicateClaimInSameXmlFile;
-    private ArrayList<Witness> witnesses;
-    private ArrayList<Injury> injuries;
-    private ArrayList<Solicitor> solicitors;
+    private List<Witness> witnesses;
+    private List<Injury> injuries;
+    private List<Solicitor> solicitors;
 
     public boolean isDuplicateClaimInSameXmlFile() {
         return duplicateClaimInSameXmlFile;
@@ -42,27 +42,27 @@ public class ClaimResult {
         this.invoice = invoice;
     }
 
-    public ArrayList<Injury> getInjuries() {
+    public List<Injury> getInjuries() {
         return injuries;
     }
 
-    public void setInjuries(ArrayList<Injury> injuries) {
+    public void setInjuries(List<Injury> injuries) {
         this.injuries = injuries;
     }
 
-    public ArrayList<Solicitor> getSolicitors() {
+    public List<Solicitor> getSolicitors() {
         return solicitors;
     }
 
-    public void setSolicitors(ArrayList<Solicitor> solicitors) {
+    public void setSolicitors(List<Solicitor> solicitors) {
         this.solicitors = solicitors;
     }
 
-    public ArrayList<Witness> getWitnesses() {
+    public List<Witness> getWitnesses() {
         return witnesses;
     }
 
-    public void setWitnesses(ArrayList<Witness> witnesses) {
+    public void setWitnesses(List<Witness> witnesses) {
         this.witnesses = witnesses;
     }
 

@@ -283,17 +283,20 @@ public class ClaimFileReportData {
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
-        if (claim.getChorganisation() != null)
+        if (claim.getChorganisation() != null) {
             choName = claim.getChorganisation().getName();
+        }
         createdBy = claim.getCreatedBy().getFullName();
         createdOn = DateHelper.getLocalDateTimeFormat().format(claim.getCreatedDate());
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
-        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL)
+        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
             liabilityStatus = "";
-        else
+        }
+        else {
             liabilityStatus = claim.getLiabilityStatus().toString();
+        }
         if (currentUser.isAnInsurer()) {
             finalReview = claim.isFinalReviewIns() ? "Yes" : "No";
         } else if (currentUser.isCHO()) {
@@ -302,21 +305,28 @@ public class ClaimFileReportData {
             finalReview = (claim.isFinalReviewCho() ? "Yes (CHO), " : "No (CHO), ") 
                     + (claim.isFinalReviewIns() ? "Yes (Ins)" : "No (Ins)");
         }
-        if (claim.getPolicyHolderContactDate() != null)
+        if (claim.getPolicyHolderContactDate() != null) {
             contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
-        if (claim.getClaimOwner() != null)
+        }
+        if (claim.getClaimOwner() != null) {
             claimOwner = claim.getClaimOwner().getFullName();
-        if (claim.getSupplierClaimOwner() != null)
+        }
+        if (claim.getSupplierClaimOwner() != null) {
             supplierClaimOwner = claim.getSupplierClaimOwner().getFullName();
-        if (claim.getWorkgroup() != null)
+        }
+        if (claim.getWorkgroup() != null) {
             workgroup = claim.getWorkgroup().getName();
+        }
         indemnityValue = claim.getIndemnityAmount();
-        if (claim.getPercentageLiabilityAccepted() != null)
-            insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal(100.0));
-        if (claim.getPercentageLiabilityCho() != null)
-            choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
-        if (claim.getLiabilityAgreedDate() != null)
+        if (claim.getPercentageLiabilityAccepted() != null) {
+            insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal("100.00"));
+        }
+        if (claim.getPercentageLiabilityCho() != null) {
+            choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal("100.00"));
+        }
+        if (claim.getLiabilityAgreedDate() != null) {
             dateLiabilityAgreed  = DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate());
+        }
         Customer cust = claim.getCustomer();
         if (cust != null) {
             LOG.debug("Adding customer info.");
@@ -342,15 +352,17 @@ public class ClaimFileReportData {
             customerComprehensive = cust.getIsComprehensiveDesc();
             customerVehicleManufacturer = cust.getVehicleManufacturer();
             customerVehicleModel = cust.getVehicleModel();
-            if (cust.getVehicleClass() != null)
+            if (cust.getVehicleClass() != null) {
                 customerVehicleClass = cust.getVehicleClass().getName();
+            }
             customerVRN = cust.getVehicleRegistration();
             customerVehicleLocation = cust.getLocation();
             customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
             customerHpiVehicleModel = cust.getHpiVehicleModel();
             customerHpiVehicleYear = cust.getHpiVehicleYear();
-            if (cust.getHpiFirstRegistration() != null)
+            if (cust.getHpiFirstRegistration() != null) {
                 customerHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(cust.getHpiFirstRegistration());
+            }
             customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
             customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
             customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
@@ -367,20 +379,25 @@ public class ClaimFileReportData {
             specificVehicleReason = cust.getSpecificVehicleReason();
             vehicleTypeRequired = cust.getTypeVehicleRequired();
             specialRequirements = cust.getSpecialRequirements();
-            if (cust.getAverageDailyMileage() != null)
+            if (cust.getAverageDailyMileage() != null) {
                 averageDailyMileage = cust.getAverageDailyMileage().toString();
-            else
+            }
+            else {
                 averageDailyMileage = "";
-            if (cust.getVehicleYear() != null)
+            }
+            if (cust.getVehicleYear() != null) {
                 customerVehicleYear = cust.getVehicleYear().toString();
-            else
+            }
+            else {
                 customerVehicleYear = "";
+            }
         }
         ThirdParty thirdParty = claim.getThirdParty();
         if (thirdParty != null) {
             LOG.debug("Adding thirdparty info.");
-            if (thirdParty.getInsurer() != null)
+            if (thirdParty.getInsurer() != null) {
                 thirdPartyInsurer = thirdParty.getInsurer().getName();
+            }
             thirdPartyTitle = thirdParty.getTitle();
             thirdPartyFirstName = thirdParty.getFirstName();
             thirdPartySurname = thirdParty.getLastName();
@@ -399,20 +416,24 @@ public class ClaimFileReportData {
             thirdPartyVehicleManufacturer = thirdParty.getVehicleManufacturer();
             thirdPartyVehicleModel = thirdParty.getVehicleModel();
             thirdPartyVRN = thirdParty.getVehicleRegistration();
-            if (thirdParty.getVehicleClass() != null)
+            if (thirdParty.getVehicleClass() != null) {
                 thirdPartyVehicleClass = thirdParty.getVehicleClass().getName();
+            }
         }
         managingRepair = claim.getIsManagingRepairDesc();
-        if (claim.getGtaNoticeDate() != null)
+        if (claim.getGtaNoticeDate() != null) {
             noticeDate = DateHelper.getLocalDateTimeFormat().format(claim.getGtaNoticeDate());
-        if (claim.getCreditAgreementDate() != null)
+        }
+        if (claim.getCreditAgreementDate() != null) {
             creditAgreementSignedDate = DateHelper.getLocalDateTimeFormat().format(claim.getCreditAgreementDate());
+        }
         invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
         Incident incident = claim.getIncident();
         if (incident != null) {
             LOG.debug("Adding incident info.");
-            if (incident.getDate() != null)
+            if (incident.getDate() != null) {
                 incidentDate = DateHelper.getLocalDateTimeFormat().format(incident.getDate());
+            }
             incidentLocation = incident.getLocation();
             incidentPoliceInvolved = incident.getIsPoliceInvolvedDesc();
             incidentDescription = incident.getIncidentDescription();
@@ -462,18 +483,23 @@ public class ClaimFileReportData {
         HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
         if (hireMonitoringDetail != null) {
             LOG.debug("Adding HireMonitoringDetail info.");
-            if (hireMonitoringDetail.getNextReviewDate() != null)
+            if (hireMonitoringDetail.getNextReviewDate() != null) {
                 hireMonNextReviewDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getNextReviewDate());
+            }
             hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
-            if (hireMonitoringDetail.getRepairBookInDate() != null)
+            if (hireMonitoringDetail.getRepairBookInDate() != null) {
                 hireMonBookedInDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairBookInDate());
-            if (hireMonitoringDetail.getInspectionBookedDate() != null)
+            }
+            if (hireMonitoringDetail.getInspectionBookedDate() != null) {
                 hireMonInspectionBookedDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionBookedDate());
-            if (hireMonitoringDetail.getInspectionDate() != null)
+            }
+            if (hireMonitoringDetail.getInspectionDate() != null) {
                 hireMonInspectionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionDate());
+            }
             hireMonTotalLoss = hireMonitoringDetail.getIsTotalLossDesc();
-            if (hireMonitoringDetail.getRepairCompletionDate() != null)
+            if (hireMonitoringDetail.getRepairCompletionDate() != null) {
                 hireMonRepairCompletionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairCompletionDate());
+            }
             hireMonIME = hireMonitoringDetail.getNameOfIme();
             hireMonLabourRate = hireMonitoringDetail.getLabourRate();
             hireMonLabourHours = hireMonitoringDetail.getLabourHour();
@@ -482,30 +508,36 @@ public class ClaimFileReportData {
             isRepairOnlyCheck = hireMonitoringDetail.isIsRepairOnlyCheck() ? "Yes" : "No";
             isNFInsurerManagingRepair = hireMonitoringDetail.isIsNFInsurerManagingRepair() ? "Yes" : "No";
             clientVatRegistered = hireMonitoringDetail.getClientVatRegisteredDesc();
-            if (hireMonitoringDetail.getRepairAuthorisedDate() == null)
+            if (hireMonitoringDetail.getRepairAuthorisedDate() == null) {
                 hireMonAuthorisedDate = "";
-            else
+            } else {
                 hireMonAuthorisedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairAuthorisedDate());
-            if (hireMonitoringDetail.getRepairCommencedDate() == null)
+            }
+            if (hireMonitoringDetail.getRepairCommencedDate() == null) {
                 hireMonCommencedDate = "";
-            else
+            } else {
                 hireMonCommencedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCommencedDate());
-            if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null)
+            }
+            if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null) {
                 hireMonTotalLossOfferMadeDate = "";
-            else
+            } else {
                 hireMonTotalLossOfferMadeDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferMadeDate());
-            if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null)
+            }
+            if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null) {
                 hireMonTotalLossAcceptedDate = "";
-            else
+            } else {
                 hireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
-            if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null)
+            }
+            if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null) {
                 hireMonTotalLossChequeIssuedDate = "";
-            else
+            } else {
                 hireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
-            if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null)
+            }
+            if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null) {
                 hireMonTotalLossChequeReceivedDate = "";
-            else
+            } else {
                 hireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
+            }
         }
 
         VehicleHire vehicleHire = claim.getVehicleHire();
@@ -514,19 +546,23 @@ public class ClaimFileReportData {
             hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
             hireVehicleModel = vehicleHire.getVehicleModel();
             hireVehicleRegistration = vehicleHire.getVehicleRegistration();
-            if (vehicleHire.getVehicleClass() != null)
+            if (vehicleHire.getVehicleClass() != null) {
                 hireVehicleClass = vehicleHire.getVehicleClass().getName();
-            if (vehicleHire.getHireStart() != null)
+            }
+            if (vehicleHire.getHireStart() != null) {
                 hireVehicleHireStart = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireStart());
-            if (vehicleHire.getHireEnd() != null)
+            }
+            if (vehicleHire.getHireEnd() != null) {
                 hireVehicleHireEnd = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireEnd());
+            }
             hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
             hireVehicleNoHireDays = vehicleHire.getDays();
             hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
             hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
             hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
-            if (vehicleHire.getHpiFirstRegistration() != null)
+            if (vehicleHire.getHpiFirstRegistration() != null) {
                 hireVehicleHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(vehicleHire.getHpiFirstRegistration());
+            }
             hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
             hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
             hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
@@ -571,12 +607,14 @@ public class ClaimFileReportData {
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-            if (invoice.isAppliedHirePenaltyPercentageDifferent(hireStart) && !currentUser.isCHO()) 
+            if (invoice.isAppliedHirePenaltyPercentageDifferent(hireStart) && !currentUser.isCHO()) {
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
+            }
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
-            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO())
+            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO()) {
                 invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
+            }
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
             invoiceFullTotalToPay = invoice.getFullTotalToPay();
             invoiceTotalToPay = invoice.getTotalToPay();
@@ -593,8 +631,9 @@ public class ClaimFileReportData {
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
             invoiceInterimPaymentAmount = invoice.getInterimPaymentMade();
-            if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0)
+            if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0) {
                 invoiceInterimPayment = "";
+            }
             else if (invoice.getInterimPaymentReceived() !=null && invoice.getInterimPaymentReceived().compareTo(invoiceInterimPaymentAmount) >= 0) {
                 invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Received)";
             }
@@ -604,12 +643,15 @@ public class ClaimFileReportData {
             else {
                 invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Not Yet Received)";
             }
-            if (invoice.getDateInvoiced() != null)
+            if (invoice.getDateInvoiced() != null) {
                 invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
-            if (invoice.getCreatedDate() != null)
+            }
+            if (invoice.getCreatedDate() != null) {
                 invoiceUploadedDate = DateHelper.getLocalDateTimeFormat().format(invoice.getCreatedDate());
-            if (invoice.getAutoPenaltyStart() != null)
+            }
+            if (invoice.getAutoPenaltyStart() != null) {
                 penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
+            }
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
@@ -636,7 +678,6 @@ public class ClaimFileReportData {
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
             extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
-//            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
             paymentDetailsHirePaid = invoice.getHireGrossPaid();
             paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
             paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
@@ -648,7 +689,6 @@ public class ClaimFileReportData {
             paymentDetailsDeductionClaimHandlerFeePaid = invoice.getDeductionClaimHandlerFeePaid();
             paymentDetailsChoDiscountFeePaid = invoice.getChoDiscountFeePaid();
             paymentDetailsInsurerDiscountFeePaid = invoice.getInsurerDiscountFeePaid();
-
             paymentDetailsFinalPayment = invoice.getFinalPayment();
         }
 
