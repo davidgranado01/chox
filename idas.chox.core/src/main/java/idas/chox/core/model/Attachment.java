@@ -28,7 +28,6 @@ public class Attachment extends Entity implements Serializable {
         } else {
             this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
         }
-        this.fileBuffer = fileBuffer;
     }
 
     public String getCategory() {

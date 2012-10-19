@@ -85,7 +85,6 @@ public class Bordereau extends Entity implements Serializable {
         } else {
             this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
         }
-        this.fileBuffer = fileBuffer;
     }
 
     public String getStatus() {
