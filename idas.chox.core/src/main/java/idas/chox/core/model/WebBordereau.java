@@ -33,8 +33,9 @@ public class WebBordereau extends Entity implements Serializable {
     }
 
     public byte[] getFileBuffer() {
-        if (fileBuffer == null)
+        if (fileBuffer == null) {
             return null;
+        }
         
         return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }

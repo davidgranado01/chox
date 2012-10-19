@@ -16,8 +16,9 @@ public class Attachment extends Entity implements Serializable {
     private boolean deleted;
 
     public byte[] getFileBuffer() {
-        if (fileBuffer == null)
+        if (fileBuffer == null) {
             return null;
+        }
         
         return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }
