@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.Map;
 
 
+/**
+ *
+ * @author John
+ */
 public class ExcelClaim {
     private String claimStatus;
     private String claimType;
