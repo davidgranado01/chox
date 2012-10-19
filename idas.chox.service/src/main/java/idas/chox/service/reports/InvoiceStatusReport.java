@@ -68,7 +68,7 @@ public class InvoiceStatusReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOG.error("Error thrown getting Insurer from id={}: {}", orgId, e.getMessage());
         }
 
