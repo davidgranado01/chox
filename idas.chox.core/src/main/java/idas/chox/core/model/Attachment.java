@@ -22,13 +22,12 @@ public class Attachment extends Entity implements Serializable {
         return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }
 
-    public void setFileBuffer(byte[] fileBuffer) {
-        if (fileBuffer == null) {
-            this.fileBuffer = new byte[0];
+    public void setFileBuffer(byte[] fb) {
+        if (fb == null) {
+            fileBuffer = null;
         } else {
-            this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
+            fileBuffer = Arrays.copyOf(fb, fb.length); 
         }
-        this.fileBuffer = fileBuffer;
     }
 
     public String getCategory() {
