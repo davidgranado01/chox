@@ -107,10 +107,10 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 //        }
 
             claim.setHireMonitoringDetail(model);
-            claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
+            claim.addNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
 
             if (isUpdateInsurer) {
-                claim.AddNotification(new HireUpdatedNotification());
+                claim.addNotification(new HireUpdatedNotification());
             }
             isTotalLossOriginal = model.isIsTotalLostCheck();
             // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.

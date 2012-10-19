@@ -102,7 +102,7 @@ public class ClaimPending extends BaseActivity {
             comment.setClaim(claim);
             claim.addComment(comment);
            
-            claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+            claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);

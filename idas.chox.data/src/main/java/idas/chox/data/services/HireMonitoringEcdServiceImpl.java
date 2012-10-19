@@ -87,10 +87,10 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         
         claim.addHireMonitoringEcd(ecd);
         List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
-        claim.AddNotifications(newECDAddedChecker.getAnomalousChecks(), notifications);
+        claim.addNotifications(newECDAddedChecker.getAnomalousChecks(), notifications);
 
         if (isUpdateInsurer) {
-            claim.AddNotification(new EcdUpdatedNotification());
+            claim.addNotification(new EcdUpdatedNotification());
         }
         
         claimService.save(claim);

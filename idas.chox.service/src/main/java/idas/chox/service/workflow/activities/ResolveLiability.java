@@ -73,7 +73,7 @@ public class ResolveLiability extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+                claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);

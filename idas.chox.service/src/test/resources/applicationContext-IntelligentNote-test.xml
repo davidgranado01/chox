@@ -16,10 +16,12 @@
                 <bean class="idas.chox.service.intelligentNotes.TotalLossVehicleCheckNote"></bean>
                 <bean class="idas.chox.service.intelligentNotes.UnroadworthyVehicleCheckNote"></bean>
                 <bean class="idas.chox.service.intelligentNotes.VehicleClassAboveSCheckNote"></bean>
+                <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisThursdayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisFridayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisSaturdayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisSundayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.ClaimUploadDateExceeds48FromContact"></bean>
+                <bean class="idas.chox.service.intelligentNotes.HireCommenced48hSinceNotificationCheck"></bean>
             </list>
         </property>
     </bean>

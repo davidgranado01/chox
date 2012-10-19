@@ -69,7 +69,7 @@ public class UpdateLiability extends BaseActivity {
                 comment.setClaim(claim);
                 claim.addComment(comment);
                 claim.setLiabilityStatus(liabilityStatus);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+                claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + claimReviewNotes));

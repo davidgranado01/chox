@@ -1,12 +1,11 @@
 package idas.chox.service.intelligentNotes;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.IntelligentNote;
 import java.util.Calendar;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.IntelligentNote;
 
 /**
  *
@@ -16,7 +15,7 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimUploadDateExceeds48FromContact.class);
 
     @Override
-    public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+    public Boolean isShowingFor(Claim c) {
         Boolean showing = false;
 
         /* Claim Rule:
