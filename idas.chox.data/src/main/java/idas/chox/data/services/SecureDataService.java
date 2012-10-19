@@ -120,9 +120,6 @@ public class SecureDataService extends BaseDataService {
             sb.append("select a.id as id, a.name as name from chorganisation ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
             sb.append("where a.status=true and b.insurer_id=:pInsurerId ");
-            if (false) { // use to exclude manual CHOs
-                sb.append("and a.insurer_upload_only=false ");
-            }
             sb.append("order by a.name");
 
             Map extParameters = new HashMap();
