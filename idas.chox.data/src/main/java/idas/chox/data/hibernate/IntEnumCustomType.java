@@ -29,7 +29,6 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
         } else {
             this.theEnumValues = Arrays.copyOf(e, e.length); 
         }
-        this.theEnumValues = e;
     }
 
     private static final int[] SQL_TYPES = {Types.SMALLINT};

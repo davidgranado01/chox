@@ -80,11 +80,11 @@ public class Bordereau extends Entity implements Serializable {
         return Arrays.copyOf(fileBuffer, fileBuffer.length);
     }
 
-    public void setFileBuffer(byte[] fileBuffer) {
-        if (fileBuffer == null) {
-            this.fileBuffer = null;
+    public void setFileBuffer(byte[] fb) {
+        if (fb == null) {
+            fileBuffer = null;
         } else {
-            this.fileBuffer = Arrays.copyOf(fileBuffer, fileBuffer.length); 
+            fileBuffer = Arrays.copyOf(fb, fb.length); 
         }
     }
 
