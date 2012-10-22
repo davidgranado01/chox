@@ -36,7 +36,8 @@
                 averageLabourRateStandard:{required:true, number:true, min:0},
                 averageLabourRatePrestige:{required:true, number:true, min:0},
                 averageLabourHoursPerHireDay:{required:true, number:true, min:0},
-                takeVehicleOutDays:{required:true, number:true, min:0}
+                takeVehicleOutDays:{required:true, number:true, min:0},
+                maxAllowedLabourRate:{required:true, number:true, min:0}
             },
             messages: {
                 name: {required:"You must supply a value for 'Name'" },
@@ -56,7 +57,8 @@
                 averageLabourRateStandard: {required:"You must supply a value for 'Average Labour Rate For Standard Vehicles & Vans'", number:"'Average Labour Rate For Standard Vehicles & Vans' must be numeric", min:"'Average Labour Rate For Standard Vehicles & Vans' cannot be less than zero"},
                 averageLabourRatePrestige: {required:"You must supply a value for 'Average Labour Rate For Prestige & Special Vehicles'", number:"'Average Labour Rate For Prestige & Special Vehicles' must be numeric", min:"'Average Labour Rate For Prestige & Special Vehicles' cannot be less than zero"},
                 averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
-                takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"}
+                takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"},
+                maxAllowedLabourRate: {required:"You must supply a value for 'Maximum Labour Rate'", number:"'Maximum Labour Rate' must be numeric", min:"'Maximum Labour Rate' cannot be less than zero"}
             }
         });
 
@@ -659,6 +661,10 @@
                             <label class="chox-form-std-label-longer">Maximum Repair Net Ceiling (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDMaxLabourRate" name="maxAllowedLabourRate" value="<s:property value="maxAllowedLabourRate" />"/>
+                        </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Supplier Admin Fee Tolerances</div>
@@ -1153,6 +1159,13 @@
                             <label class="chox-form-check-label">Overlapping Hire Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the replacement hire vehicle was not on hire simultaneously across multiple claims.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRateCheck" value="maximumLabourRateCheck" /></div>
+                            <label class="chox-form-check-label">Maximum Labour Rate</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO is not billing more than the Maximum Labour Rate Per Hour.
                             </div>
                         </div>
                     </div>
