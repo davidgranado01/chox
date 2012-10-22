@@ -128,6 +128,8 @@
         <property column="allow_manag_repair_auto_tasks" name="allowManagingRepairAutomatedTasks" not-null="true"/>
         <property column="allow_notmanag_repair_auto_tasks" name="allowNotManagingRepairAutomatedTasks" not-null="true"/>
         <property column="allow_missing_ecd_auto_tasks" name="allowMissingECDAutomatedTasks" not-null="true"/>
+        <property column="maximum_labour_rate_check" name="maximumLabourRateCheck" not-null="true"/>
+        <property column="max_allowed_labour_rate" name="maxAllowedLabourRate" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
