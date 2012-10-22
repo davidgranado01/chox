@@ -99,7 +99,7 @@ public class AuditEntry implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || !(o instanceof Entity)) {
+        if (!(o instanceof Entity)) {
             return false;
         }
 

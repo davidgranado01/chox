@@ -173,7 +173,7 @@ public class XmlUploadAction extends BaseAction {
     }
 
     private static String getExtension(String fileName) {
-        int pos = fileName.lastIndexOf(".");
+        int pos = fileName.lastIndexOf('.');
         return fileName.substring(pos);
     }
 

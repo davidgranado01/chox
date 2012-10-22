@@ -82,9 +82,7 @@ public class Entity implements Auditable, Versioned {
         if (this == o) {
             return true;
         }
-        if (o == null ||
-                !(o instanceof Entity)) {
-
+        if (!(o instanceof Entity)) {
             return false;
         }
 

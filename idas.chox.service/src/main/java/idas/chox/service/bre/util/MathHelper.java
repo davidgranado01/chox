@@ -4,18 +4,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 
-public class mathHelper {
+public class MathHelper {
 
     public static int getIntegerFromDecimalRound(BigDecimal bValue){
-        int oValue = 0;
-        oValue = bValue.setScale(0, RoundingMode.HALF_UP).intValue();
-        return oValue;
+        return bValue.setScale(0, RoundingMode.HALF_UP).intValue();
     }
     
     public static int getIntegerFromDecimalRoundUp(BigDecimal bValue){
-        int oValue = 0;
-        oValue = bValue.setScale(0, RoundingMode.UP).intValue();
-        return oValue;
+        return bValue.setScale(0, RoundingMode.UP).intValue();
     }
     
     public static BigDecimal getNotNullDecimalValue(BigDecimal bValue){

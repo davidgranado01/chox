@@ -14,7 +14,7 @@ public class BigDecimalConverter extends StrutsTypeConverter {
 
 			if (values[0] == null)
 				result = BigDecimal.valueOf(0L);
-			else if (values[0] == "")
+			else if (values[0].isEmpty())
 				result = BigDecimal.valueOf(0L);
 			else if (toClass == BigDecimal.class)
 				result = new BigDecimal(values[0]);

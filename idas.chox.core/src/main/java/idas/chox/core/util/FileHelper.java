@@ -41,7 +41,7 @@ public class FileHelper {
     }
 
     public static String getNewFileName(String oldFileName, boolean isRandom){
-        String result = "";
+        String result;
 
         if(isRandom){
             result = TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName).toLowerCase();
@@ -53,7 +53,7 @@ public class FileHelper {
     }
 
     public static String getFileExtension(String filename){
-        int pos = filename.lastIndexOf(".");
+        int pos = filename.lastIndexOf('.');
         return filename.substring(pos+1).toLowerCase();
     }
 

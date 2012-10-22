@@ -13,7 +13,7 @@ public class FullAuditServiceImpl extends SecureDataService implements FullAudit
 
     @Override
     public void logAuditEntry(String table, Serializable serializableId, String parameter, String oldValue, String newValue, WebUser user) {
-        int id = new Integer(serializableId.toString());
+        int id = Integer.valueOf(serializableId.toString());
         AuditEntry auditEntry = new AuditEntry(table, id, parameter, oldValue, newValue, user);
         save(auditEntry);
     }

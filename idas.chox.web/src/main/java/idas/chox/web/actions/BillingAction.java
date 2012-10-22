@@ -50,8 +50,8 @@ public class BillingAction extends BaseAction {
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingGridData() {
         List<BillingViewData> viewList = new ArrayList<BillingViewData>();
-        List billingList = new ArrayList();
-        if (  billSearch ==true){
+        List billingList;
+        if ( billSearch){
             billingList = billingService.searchBills(getBillingType(), choReference, claimNumber);
         }else{
             billingList = billingService.getBillingList(getBillingType());

@@ -220,12 +220,7 @@ public class Hpi {
 
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
         httpClient.getConnectionManager().shutdown();
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException("Clone is not allowed.");
+        super.finalize();
     }
 }

@@ -231,7 +231,7 @@ public class ClaimCalcHelper {
             LOG.error("HireMonitoringDetail is null for claim '{}'. Returning LabourCostAverageRateDay=0", claim.getChoReference());
             bLabourCost = BigDecimal.ZERO;
         } else {
-            bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            bLabourCost = MathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
         }
 
         if (bLabourCost.compareTo(BigDecimal.ZERO) < 1) {
@@ -258,7 +258,7 @@ public class ClaimCalcHelper {
         } else {
             LOG.debug("LabourCostAverageRateDay not calculated (={})", bLabourCostAverageRateDay);
         }
-        return mathHelper.getIntegerFromDecimalRoundUp(bLabourCostAverageRateDay);
+        return MathHelper.getIntegerFromDecimalRoundUp(bLabourCostAverageRateDay);
 
     }
 
@@ -270,9 +270,9 @@ public class ClaimCalcHelper {
 
         if (claim.getHireMonitoringDetail() != null) {
 
-            bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
-            bLabourRate = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourRate());
-            iLabourHour = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourHour());
+            bLabourCost = MathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            bLabourRate = MathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourRate());
+            iLabourHour = MathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourHour());
 
         }
 

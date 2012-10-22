@@ -77,7 +77,7 @@ public abstract class DbSchedulerJob implements Scheduler {
                 getMailSecurityAthenticator().authenticateSender(loginUsername, loginPassword);
                 Map<Integer, List<String>> resultMap = doJob();
                 String emailMessage = buildMessage(emailSubject, resultMap);
-                sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), emailSubject, emailMessage.toString());
+                sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), emailSubject, emailMessage);
                 LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
                 
             }
