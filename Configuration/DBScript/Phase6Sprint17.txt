@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------------
+-- 6.17.3 - New Business Rule: Maximum Labour Rate
+--------------------------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN maximum_labour_rate_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN max_allowed_labour_rate numeric(6,2) not null default 0.00;
+
+----------------------
+--- End of 6.17.3 --
+----------------------

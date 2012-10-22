@@ -123,6 +123,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean allowNotManagingRepairAutomatedTasks;
     private boolean allowMissingECDAutomatedTasks;
     private boolean overlappingHireCheck;
+    private boolean maximumLabourRateCheck;
+    private BigDecimal maxAllowedLabourRate;;
 
     public BreBand() {
     }
@@ -1209,5 +1211,21 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setAllowMissingECDAutomatedTasks(boolean allowMissingECDAutomatedTasks) {
         this.allowMissingECDAutomatedTasks = allowMissingECDAutomatedTasks;
+    }
+
+    public BigDecimal getMaxAllowedLabourRate() {
+        return maxAllowedLabourRate;
+    }
+
+    public void setMaxAllowedLabourRate(BigDecimal maxAllowedLabourRate) {
+        this.maxAllowedLabourRate = maxAllowedLabourRate;
+    }
+
+    public boolean isMaximumLabourRateCheck() {
+        return maximumLabourRateCheck;
+    }
+
+    public void setMaximumLabourRateCheck(boolean maximumLabourRateCheck) {
+        this.maximumLabourRateCheck = maximumLabourRateCheck;
     }
 }
