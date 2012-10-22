@@ -6,16 +6,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { 
-	    "/applicationContext-Notification.xml", 
-	    "/applicationContext-IntelligentNote.xml",
-	    "/applicationContext-Filters.xml",
-	    "/applicationContext-workflow.xml",
-	    "/applicationContext.xml",
-	    "/applicationContext-services.xml",
-	    "/applicationContext-security.xml",
-	    "/applicationContext-BRE.xml", 
-	    "/applicationContext-Scheduler.xml", 
-	    "/applicationContext-XMLReader.xml"})
+	    "classpath:applicationContext-Notification.xml", 
+	    "classpath:applicationContext-IntelligentNote.xml",
+	    "classpath:applicationContext-Filters.xml",
+	    "classpath:applicationContext-Workflow.xml",
+	    "classpath:applicationContext.xml",
+	    "classpath:applicationContext-services.xml",
+	    "classpath:applicationContext-security.xml",
+	    "classpath:applicationContext-BRE.xml", 
+	    "classpath:applicationContext-Scheduler.xml", 
+	    "classpath:applicationContext-XMLReader.xml"})
 public abstract class BaseWebTest {
 
 }

@@ -354,7 +354,7 @@ public class AdminUserServiceTest extends BaseTest {
 
         ActionResponse response2 = adminUserService.checkUserWorkgroupAllowToDelete(webUserWorkgroup.getId());
         Assert.assertTrue(response2.getIsValid());
-        Assert.assertEquals(response2.getResult(), "User '" + webUserWorkgroup.getUser().getDisplayName() + "' is the last user that has Insurer Claim Handler Role,  and is assigned to Workgroup '" + webUserWorkgroup.getWorkgroup().getName() + "'. Are you sure you want to remove this Workgroup?");
+        Assert.assertEquals(response2.getResult(), "User '" + webUserWorkgroup.getUser().getDisplayName() + "' is the last user that has Insurer Claim Handler Role, and is assigned to Workgroup '" + webUserWorkgroup.getWorkgroup().getName() + "'. Are you sure you want to remove this Workgroup?");
 
     }
     // </editor-fold>
