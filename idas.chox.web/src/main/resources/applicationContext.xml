@@ -86,18 +86,20 @@
         <property name="partitionCount" value="${db.partitionCount}"/>
         <property name="minConnectionsPerPartition" value="${db.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${db.maxConnectionsPerPartition}"/>
-        <property name="idleMaxAgeInMinutes" value="${db.idleMaxAgeInMinutes}"/>
-        <property name="acquireIncrement" value="5"/>
+        <property name="idleMaxAgeInMinutes" value="2"/>
+        <property name="acquireIncrement" value="1"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
-        <property name="releaseHelperThreads" value="3"/>
+        <property name="releaseHelperThreads" value="1"/>
         <property name="closeConnectionWatch" value="false"/>
-        <property name="logStatementsEnabled" value="false"/>
+        <property name="logStatementsEnabled" value="${db.logStatements}"/>
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
-        <property name="poolAvailabilityThreshold" value="10"/>
+        <property name="poolAvailabilityThreshold" value="0"/>
         <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
+        <property name="lazyInit" value="false"/>
+        <property name="poolName" value="ApplicationDataSource"/>
     </bean>
     
     <bean id="reportsDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
@@ -108,18 +110,20 @@
         <property name="partitionCount" value="${db.reportPartitionCount}"/>
         <property name="minConnectionsPerPartition" value="${db.reportMinConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${db.reportMaxConnectionsPerPartition}"/>
-        <property name="idleMaxAgeInMinutes" value="${db.reportIdleMaxAgeInMinutes}"/>
-        <property name="acquireIncrement" value="5"/>
+        <property name="idleMaxAgeInMinutes" value="2"/>
+        <property name="acquireIncrement" value="1"/>
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
-        <property name="releaseHelperThreads" value="3"/>
+        <property name="releaseHelperThreads" value="1"/>
         <property name="closeConnectionWatch" value="false"/>
-        <property name="logStatementsEnabled" value="false"/>
+        <property name="logStatementsEnabled" value="${db.logStatements}"/>
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
-        <property name="poolAvailabilityThreshold" value="10"/>
+        <property name="poolAvailabilityThreshold" value="0"/>
         <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
+        <property name="lazyInit" value="false"/>
+        <property name="poolName" value="ReportDataSource"/>
     </bean>
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
