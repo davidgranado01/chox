@@ -1,13 +1,15 @@
 package idas.chox.service.bre.util;
 
-import idas.chox.core.util.CalcHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.model.Claim;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ClaimCalcHelper {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.util.CalcHelper;
+
+public final class ClaimCalcHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimCalcHelper.class);
     private Claim claim;
@@ -28,24 +30,6 @@ public class ClaimCalcHelper {
     }
 
     /*
-     * public static void main(String[] args) {
-     *
-     * DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
-     *
-     * try { Date hireStart = dfm.parse("2008-07-18 00:00:00"); Date initialEcd
-     * = dfm.parse("2008-08-03 00:00:00");
-     *
-     * System.out.println(">>>>>>>"+ hireStart); System.out.println(">>>>>>>"+
-     * initialEcd); System.out.println(">>>>>>>"+
-     * CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
-     *
-     * } catch (ParseException ex) {
-     * Logger.getLogger(ClaimCalcHelper.class.getName()).log(Level.SEVERE, null,
-     * ex); }
-     *
-     * }
-     */
-    /*
      * ------------- helper calc methods ---------------------------
      */
     public int getHireDuration() {
@@ -60,6 +44,7 @@ public class ClaimCalcHelper {
         return hireDuration;
     }
 
+    
     public BigDecimal getDailyHireRateCharged() {
         BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
         BigDecimal dailyHireRatecharged;
@@ -72,12 +57,7 @@ public class ClaimCalcHelper {
         return dailyHireRatecharged;
     }
 
-    /*
-     * public BigDecimal getDailyHireRateChargedWithToleranceDeduction() {
-     * BigDecimal tolerance =
-     * getDailyHireRateCharged().multiply(claim.getBreBand().getHireRateChargeTolerance());
-     * return getDailyHireRateCharged().subtract(tolerance); }
-     */
+
     public int getAllowedDays() {
         int allowedDays = 0;
 
@@ -150,12 +130,6 @@ public class ClaimCalcHelper {
 
         int iWeekendBufferDay = 0;
 
-//            int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
-//            int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
-
-//            int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
-
-//            LOG.debug("LabourCostAverageRateDay={}, DayBufferForEngineeringProcess={}", iLabourCostAverageRateDay, iDayBufferForEngineeringProcess);
         if (days < 5) {
             iWeekendBufferDay = 0;
         } else if (days >= 5 && days < 12) {

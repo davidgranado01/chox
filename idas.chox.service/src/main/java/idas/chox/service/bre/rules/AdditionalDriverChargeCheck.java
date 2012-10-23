@@ -27,7 +27,7 @@ public class AdditionalDriverChargeCheck implements IBusinessRule {
 
         if (claim.getBreBand().isAdditionalDriverChargeCheck()) {
 
-            if (claim.getInvoice().getAdditionalDriverFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getAdditionalDriverFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging an additional driver fee for the hire, please review need.";
             }

@@ -1,9 +1,9 @@
 package idas.chox.service.bre.util;
 
-import idas.chox.core.model.Invoice;
 import java.math.BigDecimal;
+import idas.chox.core.model.Invoice;
 
-public class ExtrasCalcHelper {
+public final class ExtrasCalcHelper {
     
     private Invoice invoice;
     

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-public class InvoiceCalcHelper {
+public final class InvoiceCalcHelper {
 
     private Invoice invoice;
     private BigDecimal vatRate;

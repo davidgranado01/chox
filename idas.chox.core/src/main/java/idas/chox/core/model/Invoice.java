@@ -1540,9 +1540,9 @@ public class Invoice extends Entity implements Serializable {
 
         BigDecimal appliedHirePenaltyPercentageValue = getHirePenaltyPercentageAppliedValue();
         if (appliedHirePenaltyPercentageValue != null) {
-            for (PenaltyPercentage hirePenaltyPercentage : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
-                if (hirePenaltyPercentage.getPercentage().equals(getHirePenaltyPercentage())) {
-                    if (hirePenaltyPercentage.getPercentageValue().compareTo(appliedHirePenaltyPercentageValue) != 0) {
+            for (PenaltyPercentage hirePenaltyPerc : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
+                if (hirePenaltyPerc.getPercentage().equals(getHirePenaltyPercentage())) {
+                    if (hirePenaltyPerc.getPercentageValue().compareTo(appliedHirePenaltyPercentageValue) != 0) {
                         return true;
                     }
                 }
@@ -1555,9 +1555,9 @@ public class Invoice extends Entity implements Serializable {
 
         BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
         if (appliedRepairPenaltyPercentageValue != null) {
-            for (PenaltyPercentage repairPenaltyPercentage : PenaltyPercentage.getRepairPenaltyPercentages()) {
-                if (repairPenaltyPercentage.getPercentage().equals(getRepairPenaltyPercentage())) {
-                    if (repairPenaltyPercentage.getPercentageValue().compareTo(appliedRepairPenaltyPercentageValue) != 0) {
+            for (PenaltyPercentage repairPenaltyPerc : PenaltyPercentage.getRepairPenaltyPercentages()) {
+                if (repairPenaltyPerc.getPercentage().equals(getRepairPenaltyPercentage())) {
+                    if (repairPenaltyPerc.getPercentageValue().compareTo(appliedRepairPenaltyPercentageValue) != 0) {
                         return true;
                     }
                 }

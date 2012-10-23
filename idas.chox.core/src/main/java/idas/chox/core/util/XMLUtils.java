@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 /**
  * Misc XML utilities
  */
-public class XMLUtils {
+public final class XMLUtils {
 
     private XMLUtils() {
     }

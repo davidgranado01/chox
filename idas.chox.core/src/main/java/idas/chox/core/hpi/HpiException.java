@@ -8,4 +8,7 @@ public class HpiException extends Exception {
     HpiException(String reason) {
         super(reason);
     }
+    HpiException(String reason, Throwable throwable) {
+        super(reason, throwable);
+    }
 }

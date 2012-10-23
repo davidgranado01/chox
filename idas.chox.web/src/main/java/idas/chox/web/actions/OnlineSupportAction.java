@@ -99,20 +99,20 @@ public class OnlineSupportAction extends BaseAction {
 
     private String doConstructEmailMessage(String sSubject, String sSupplierReference, String sMessage, String sEmail, String sPhone) {
 
-        StringBuffer emailMsg = new StringBuffer();
+        StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
-        emailMsg.append("Submitted By: " + getAuthenticatedUser().getDisplayName());
+        emailMsg.append("Submitted By: ").append(getAuthenticatedUser().getDisplayName());
         emailMsg.append("\n");
-        emailMsg.append("Email: " + sEmail);
+        emailMsg.append("Email: ").append(sEmail);
         emailMsg.append("\n");
-        emailMsg.append("Phone Number: " + sPhone);
+        emailMsg.append("Phone Number: ").append(sPhone);
         emailMsg.append("\n");
-        emailMsg.append("Date: " + DateHelper.getCurrentDateWithFormat(email_date_format));
+        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format));
         emailMsg.append("\n");
         emailMsg.append("======================================================================\n");
-        emailMsg.append("Supplier Reference Number: " + sSupplierReference);
+        emailMsg.append("Supplier Reference Number: ").append(sSupplierReference);
         emailMsg.append("\n");
-        emailMsg.append("Subject: " + sSubject);
+        emailMsg.append("Subject: ").append(sSubject);
         emailMsg.append("\n");
         emailMsg.append("======================================================================\n");
         emailMsg.append(sMessage);

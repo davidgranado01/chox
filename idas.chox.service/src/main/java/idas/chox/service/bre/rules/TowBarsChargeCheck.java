@@ -24,7 +24,7 @@ public class TowBarsChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getTowBarsFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getTowBarsFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a tow bar fee for the hire, please review need.";
             }

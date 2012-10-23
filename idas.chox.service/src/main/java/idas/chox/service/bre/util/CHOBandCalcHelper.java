@@ -3,7 +3,7 @@ package idas.chox.service.bre.util;
 import idas.chox.core.model.BreBand;
 
 
-public class CHOBandCalcHelper {
+public final class CHOBandCalcHelper {
 
     private BreBand band;
 

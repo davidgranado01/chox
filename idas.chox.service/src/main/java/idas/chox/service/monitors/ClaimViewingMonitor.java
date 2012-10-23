@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Emmanuel
  */
-public class ClaimViewingMonitor {
+public final class ClaimViewingMonitor {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimViewingMonitor.class);
 
     private static ClaimViewingMonitor instance = new ClaimViewingMonitor();

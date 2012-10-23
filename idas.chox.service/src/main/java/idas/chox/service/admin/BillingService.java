@@ -9,10 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.BillingDetail;
@@ -30,7 +32,6 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.CalcHelper;
-import java.math.BigInteger;
 
 public class BillingService {
 
@@ -204,7 +205,7 @@ public class BillingService {
             return hm;
         }
         BillingInsurer bi = new BillingInsurer();
-        BigDecimal billAmountNet = null;
+        BigDecimal billAmountNet;
         if (insurer.isFixedTransactionalFee()) {
             bi.setFixedTransaction(true);
             bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
@@ -496,7 +497,7 @@ public class BillingService {
         try {
             Date dt = Calendar.getInstance().getTime();
             BillingCho schedule = billingChoService.getObject(billingId);
-            BigDecimal rcv = new BigDecimal(0);
+            BigDecimal rcv = BigDecimal.ZERO;
             Set<BillingDetail> dtls = schedule.getBillingDetails();
             for (Iterator iterator = dtls.iterator(); iterator.hasNext();) {
                 BillingDetail billingDetail = (BillingDetail) iterator.next();
