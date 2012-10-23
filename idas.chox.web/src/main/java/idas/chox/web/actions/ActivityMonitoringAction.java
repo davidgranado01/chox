@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONArray;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
@@ -17,7 +18,6 @@ import idas.chox.web.viewdata.ViewingStatus;
 public class ActivityMonitoringAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityMonitoringAction.class);
-    private Integer claimId;
     private List<String> usersViewingThisClaim;
     private UserService userService;
     private String actionResult;
@@ -31,11 +31,12 @@ public class ActivityMonitoringAction extends BaseAction {
 
         usersViewingThisClaim = new ArrayList<String>();
         int currentUserID = getUserId();
-        if (getClaimId() != null) {
-            LOG.debug("START Monitoring: claimId={}, userId={}", getClaimId(), currentUserID);
+        Integer claimId = getModelIdFromSession(Claim.class);
+        if (claimId != null) {
+            LOG.debug("START Monitoring: claimId={}, userId={}", claimId, currentUserID);
             LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
             ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
-            List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
+            List<Integer> userIds = monitor.ping(claimId, getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
             LOG.debug("monitor.ping returned {} userIds.", userIds.size());
             for (Integer id : userIds) {
                 if (id != currentUserID) {
@@ -54,8 +55,8 @@ public class ActivityMonitoringAction extends BaseAction {
                 }
             }
         } else {
-            LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a null claim ({},{}).",
-                    new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), getClaimId(), claimId});
+            LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId in session {}.",
+                    new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
         }
 
         method = "execute";
@@ -83,14 +84,6 @@ public class ActivityMonitoringAction extends BaseAction {
 
         method = "checkViewingStatus";
         return SUCCESS;
-    }
-
-    public Integer getClaimId() {
-        return claimId;
-    }
-
-    public void setClaimId(Integer claimId) {
-        this.claimId = claimId;
     }
 
     public String getJsonData() {
