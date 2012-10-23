@@ -52,6 +52,17 @@ public class IntelligentNoteDisplayEngine {
         LOG.debug("Returning {} notes", intelligentNotes.size());
         return intelligentNotes;
     }
+    
+    public List<String> getAllIntelligentNotes() {
+        LOG.debug("Getting all intelligent notes. ");
+        List<String> intelligentNotes = new ArrayList<String>();
+        for (IntelligentNote intelligentNote : availableIntelligentNotes) {
+            LOG.debug("Note added: ", intelligentNote.getNote());
+            intelligentNotes.add(intelligentNote.getNote());
+        }
+        LOG.debug("Returning {} intelligent notes.", intelligentNotes.size());
+        return intelligentNotes;
+    }
 
     //moved the claim status check from individual intelligent note object to display engine
     //due to all of the intelligent notes

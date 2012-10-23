@@ -1422,5 +1422,13 @@
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
 
+        <action name="getInteligentNotesPage" class="idas.chox.web.actions.IntelligentNotesAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_inteligent_notes.jsp</result>
+        </action>
+        
+        <action name="getInteligentNotes" class="idas.chox.web.actions.IntelligentNotesAction" method="getInteligentNotes">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
     </package>
 </struts>

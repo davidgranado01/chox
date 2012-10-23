@@ -33,4 +33,9 @@ public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
     public String getNote() {
         return "The notification of this claim is over 48 hours from the date the hire commenced.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 14;
+    }
 }

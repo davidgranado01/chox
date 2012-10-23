@@ -9,6 +9,7 @@ import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.model.InsurerIntelligentNote;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.WebUser;
@@ -20,6 +21,7 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.InsurerIntelligentNoteService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.ReasonOfRejectionService;
@@ -55,6 +57,7 @@ public class AdminInsurerService extends SecureDataService {
     private ClaimService claimService;
     private InvoiceService invoiceService;
     private ReasonOfRejectionService reasonOfRejectionService;
+    private InsurerIntelligentNoteService insurerIntelligentNoteService;
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -64,7 +67,6 @@ public class AdminInsurerService extends SecureDataService {
         this.actionResponse = actionResponse;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="INSURER">
     public void triggerInsurerStatus(int insurerId) {
 
         Insurer insurer = this.insurerService.getInsurer(insurerId);
@@ -122,9 +124,7 @@ public class AdminInsurerService extends SecureDataService {
     public Insurer getInsurer(int insurerId) {
         return insurerService.getInsurer(insurerId);
     }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="INSURER ALIAS">
+    
     public List<InsurerAlias> getInsurerAliases(int insurerId) {
         return insurerAliasService.getInsurerAliasesByInsurer(insurerId);
     }
@@ -158,9 +158,7 @@ public class AdminInsurerService extends SecureDataService {
         getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + insurerAlias.getAliasName() + "' has been removed");
         return this.actionResponse;
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="INSURER AUTOMATIC ROUTING">
     public AutomaticRouting getInsurerAutomaticRouting(int automaticRoutingId) {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
     }
@@ -498,9 +496,14 @@ public class AdminInsurerService extends SecureDataService {
 
         return this.actionResponse;
     }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+    
+    public ActionResponse updateInsurerIntelligentNote(InsurerIntelligentNote iin) {
+        this.actionResponse = new ActionResponse();
+        insurerIntelligentNoteService.saveInsurerIntelligentNote(iin);
+        this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Intelligent Note has been updated");
+        return this.actionResponse;
+    }
+    
     public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
         this.automaticRoutingService = automaticRoutingService;
     }
@@ -544,7 +547,6 @@ public class AdminInsurerService extends SecureDataService {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    // </editor-fold>
 
     public void setReasonOfRejectionService(
             ReasonOfRejectionService reasonOfRejectionService) {
@@ -557,5 +559,10 @@ public class AdminInsurerService extends SecureDataService {
 
     public void setInvoiceService(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
+    }
+
+    public void setInsurerIntelligentNoteService(
+            InsurerIntelligentNoteService insurerIntelligentNoteService) {
+        this.insurerIntelligentNoteService = insurerIntelligentNoteService;
     }
 }
