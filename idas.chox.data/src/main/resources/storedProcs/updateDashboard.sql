@@ -1331,7 +1331,7 @@ where t1.insurer_id = dashboard.insurer_id
 update dashboard
    set val_penalty_charges_paid_c = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid + i.hire_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
 where c.invoice_id = i.id and c.id = a.claim_id
 and a.new_status = 'InvoicePaymentLogged' and a.reverted=false
