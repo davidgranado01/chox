@@ -190,6 +190,7 @@ public class ClaimStatus {
             results.add(ClaimStatus.INVOICE_REF_TO_CH);
             results.add(ClaimStatus.INVOICE_ESCALATED);
             results.add(ClaimStatus.CLAIM_REF_TO_ENG);
+            results.add(ClaimStatus.INVOICE_REF_TO_ENG);
         }
         
         if (usesInsurerUpload) {
