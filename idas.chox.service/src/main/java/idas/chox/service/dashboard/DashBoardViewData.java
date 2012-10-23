@@ -35,6 +35,7 @@ public class DashBoardViewData {
     private Integer noOfInvoicesPaymentReceived;
     private BigDecimal valueOfInvoicesPaymentReceived;
     private BigDecimal totalValueOfPenaltyChargesApplied;
+    private BigDecimal totalValueOfPenaltyChargesPaid;
     private BigDecimal avgInvoicePaymentTime;
     private Integer noOfManualInvoicesSubmitted;
     private BigDecimal valueOfManualInvoicesSubmitted;
@@ -80,6 +81,7 @@ public class DashBoardViewData {
         viewData.setNoOfInvoicesPaymentReceived(getIntegerValue(data.get("n_InvoicesPaymentReceived".toLowerCase())));
         viewData.setValueOfInvoicesPaymentReceived(getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase())));
         viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
+        viewData.setTotalValueOfPenaltyChargesPaid(getDecimalValue(data.get("v_PenaltyChargesPaid".toLowerCase())));
         viewData.setAvgInvoicePaymentTime(getDecimalValue(data.get("Avg_InvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
         viewData.setNoOfManualInvoicesSubmitted(getIntegerValue(data.get("n_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
@@ -420,6 +422,21 @@ public class DashBoardViewData {
     public void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
         this.totalValueOfPenaltyChargesApplied = totalValueOfPenaltyChargesApplied;
     }
+
+    /**
+     * @return the totalValueOfPenaltyChargesPaid
+     */
+    public BigDecimal getTotalValueOfPenaltyChargesPaid() {
+        return totalValueOfPenaltyChargesPaid;
+    }
+
+    /**
+     * @param totalValueOfPenaltyChargesPaid the totalValueOfPenaltyChargesPaid to set
+     */
+    public void setTotalValueOfPenaltyChargesPaid(BigDecimal totalValueOfPenaltyChargesPaid) {
+        this.totalValueOfPenaltyChargesPaid = totalValueOfPenaltyChargesPaid;
+    }
+
 
     /**
      * @return the valueOfInvoicesSubmitted
