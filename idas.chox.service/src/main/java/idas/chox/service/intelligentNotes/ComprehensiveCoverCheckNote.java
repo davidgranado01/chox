@@ -33,4 +33,9 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
     public String getNote() {
         return "The CHO's client does not have comprehensive insurance cover for their vehicle.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 4;
+    }
 }

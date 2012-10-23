@@ -9,4 +9,5 @@ import idas.chox.core.security.SecurityInfoProvider;
 public interface IntelligentNote {
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider);
     public String getNote();
+    public int getIntelligentNoteId();
 }

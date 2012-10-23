@@ -30,4 +30,9 @@ public class FrontalDamageCheckNote implements IntelligentNote {
     public String getNote() {
         return "The damage to the CHO's client's vehicle has been identified as possible frontal damage.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 5;
+    }
 }

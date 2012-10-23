@@ -33,4 +33,10 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
     public String getNote() {
         return "The CHO's client's vehicle is deemed a total loss.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        // TODO Auto-generated method stub
+        return 10;
+    }
 }

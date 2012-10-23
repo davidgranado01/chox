@@ -59,4 +59,9 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
     public String getNote() {
         return "The CHO's client's vehicle is of a Prestige/Sports Performance nature, no ECD has been provided and the vehicle is roadworthy/usable. Manage repair book in date.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 6;
+    }
 }

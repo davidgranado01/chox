@@ -26,4 +26,9 @@ public class CHOManagingRepairCheckNote implements IntelligentNote {
     public String getNote() {
         return "The CHO is managing the repair.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 1;
+    }
 }
