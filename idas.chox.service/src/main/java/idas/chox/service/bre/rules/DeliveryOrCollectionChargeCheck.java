@@ -24,7 +24,7 @@ public class DeliveryOrCollectionChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getDeliveryCollectionFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getDeliveryCollectionFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a delivery/collection fee for the hire, please review need.";
             }

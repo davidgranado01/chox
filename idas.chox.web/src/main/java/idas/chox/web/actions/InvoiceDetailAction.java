@@ -1732,12 +1732,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
         String d1 = DateHelper.getLocalDateFormat().format(getRentalStart());
         String d2 = DateHelper.getLocalDateFormat().format(getRentalStartOriginal());
-
-        if (d1.equals(d2)) {
-            return false;
-        } else {
-            return true;
-        }
+        
+        return !d1.equals(d2);
     }
 
     public boolean getCanShowOriginalEndDate() {
@@ -1745,11 +1741,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         String d1 = DateHelper.getLocalDateFormat().format(getRentalEnd());
         String d2 = DateHelper.getLocalDateFormat().format(getRentalEndOriginal());
 
-        if (d1.equals(d2)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !d1.equals(d2);
     }
 
     public boolean getCanShowOriginalInvoicedDate() {
@@ -1757,11 +1749,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         String d1 = DateHelper.getLocalDateFormat().format(getDateInvoiced());
         String d2 = DateHelper.getLocalDateFormat().format(getDateInvoicedOriginal());
 
-        if (d1.equals(d2)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !d1.equals(d2);
     }
 
     // </editor-fold>

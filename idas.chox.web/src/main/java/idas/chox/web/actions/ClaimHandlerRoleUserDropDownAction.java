@@ -90,8 +90,8 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
                 Insurer insurer = insurerService.getInsurer(insId);
                 if (insurer != null) {
                     if (workgroupId != null) {
-                        for (Integer workgroupId : this.workgroupId) {
-                            users.addAll(userService.getClaimHanldersByInsurerWorkgroup(insId, workgroupId, insurer.isWorkgroupEnable()));
+                        for (Integer id : this.workgroupId) {
+                            users.addAll(userService.getClaimHanldersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
                         }
                     }
                 }

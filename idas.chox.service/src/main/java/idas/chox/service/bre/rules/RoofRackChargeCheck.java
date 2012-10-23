@@ -24,7 +24,7 @@ public class RoofRackChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getRoofRackFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getRoofRackFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a roof rack fee for the hire, please review need.";
             }

@@ -24,7 +24,7 @@ public class DualControlChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getDualControlFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getDualControlFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a dual control fee for the hire, please review need.";
             }

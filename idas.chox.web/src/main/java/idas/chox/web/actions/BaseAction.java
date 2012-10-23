@@ -49,11 +49,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public boolean isSearchHistory() {
-        if (session.containsKey("searchHistory")) {
-            return true;
-        } else {
-            return false;
-        }
+        return session.containsKey("searchHistory");
     }
 
     public void setSearchHistory(boolean searchHistory) {

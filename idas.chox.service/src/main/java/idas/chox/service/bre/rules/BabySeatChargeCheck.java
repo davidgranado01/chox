@@ -24,7 +24,7 @@ public class BabySeatChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getBabySeatFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getBabySeatFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a baby seat fee for the hire, please review need.";
             }

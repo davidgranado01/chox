@@ -24,7 +24,7 @@ public class MiscellaneousChargeCheck implements IBusinessRule {
 
             boolean success = true;
             
-            if(claim.getInvoice().getMiscellaneousFee().compareTo(new BigDecimal(0)) > 0){
+            if(claim.getInvoice().getMiscellaneousFee().compareTo(BigDecimal.ZERO) > 0){
                 success = false;
                 narrative = "The CHO is charging miscellaneous costs for this claim, please review.";
             }

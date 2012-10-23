@@ -77,7 +77,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public void callApplyAutoPenaltyCharge(int userId, int claimId) throws SQLException {
         LOG.debug("Calling stored procedure applyAutoPenaltyCharge({}, {})....", userId, claimId);
-        this.getCurrentSession().flush();
+        getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
             s.execute("select applyAutoPenaltyCharge(" + userId + ", " + claimId + ")");
@@ -87,13 +87,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
                 throw ex;
         }
-        this.getCurrentSession().flush();
-        s.close();
+        finally {
+            getCurrentSession().flush();
+            s.close();
+        }
     }
 
     public void callUpdateDashboard(int userId) throws SQLException {
         LOG.debug("Calling stored procedure updatedashboard({})....", userId);
-        this.getCurrentSession().flush();
+        getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
             s.execute("select updateDashboard(" + userId + ")");
@@ -103,13 +105,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
                 throw ex;
         }
-        this.getCurrentSession().flush();
-        s.close();
+        finally {
+            getCurrentSession().flush();
+            s.close();
+        }
     }
 
     public void callAddMissingEcdTask(int userId) throws SQLException {
         LOG.debug("Calling stored procedure addMissingEcdTask({})....", userId);
-        this.getCurrentSession().flush();
+        getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
             s.execute("select addMissingEcdTask(" + userId + ")");
@@ -119,13 +123,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
                 throw ex;
         }
-        this.getCurrentSession().flush();
-        s.close();
+        finally {
+            getCurrentSession().flush();
+            s.close();
+        }
     }
 
     public void callAddInvoicePenaltyTask(int userId) throws SQLException {
         LOG.debug("Calling stored procedure addInvoicePenaltyTask({})....", userId);
-        this.getCurrentSession().flush();
+        getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
             s.execute("select addInvoicePenaltyTask(" + userId + ")");
@@ -135,13 +141,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
                 throw ex;
         }
-        this.getCurrentSession().flush();
-        s.close();
+        finally {
+            getCurrentSession().flush();
+            s.close();
+        }
     }
 
     public void callUpdateWorkflowTables(int userId) throws SQLException {
         LOG.debug("Calling stored procedure update_user_service({})....", userId);
-        this.getCurrentSession().flush();
+        getCurrentSession().flush();
         Statement s = this.getCurrentSession().connection().createStatement();
         try {
             s.execute("select update_user_service(id) from insurer where status=true");
@@ -151,16 +159,22 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             if (!ex.getMessage().startsWith("A result was returned when none was expected."))
                 throw ex;
         }
-        this.getCurrentSession().flush();
-        s.close();
+        finally {
+            getCurrentSession().flush();
+            s.close();
+        }
   }
     
     public void callUpdateUserService(int insurerId) throws SQLException {
+        // Currently does nothing as user service tables now updated on a nightly basis
+        // via callUpdateWorkflowTables called from Quartz scheduler
 //        Statement s = this.getCurrentSession().connection().createStatement();
 //        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
     }
 
     public void callUpdateWorkgroupService(int insurerId) throws SQLException {
+        // Currently does nothing as workgroup service tables now updated on a nightly basis
+        // via callUpdateWorkflowTables called from Quartz scheduler
 //        Statement s = this.getCurrentSession().connection().createStatement();
 //        ResultSet rs = s.executeQuery("select update_workgroup_service(" + insurerId + ")");
     }
