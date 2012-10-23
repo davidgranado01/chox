@@ -82,6 +82,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
-       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+       <input type="hidden" id="updateClaimNumberFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>
