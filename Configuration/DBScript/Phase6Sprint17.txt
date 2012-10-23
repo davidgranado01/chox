@@ -1,0 +1,10 @@
+--------------------------------------------------------------------------------
+-- 6.17.4 -  New Dashboard Line For Insurers - Value of Penalty Charges Paid
+--------------------------------------------------------------------------------
+ALTER TABLE dashboard ADD COLUMN val_penalty_charges_paid_w numeric(10,2) not null default 0.00;
+ALTER TABLE dashboard ADD COLUMN val_penalty_charges_paid_m numeric(10,2) not null default 0.00;
+ALTER TABLE dashboard ADD COLUMN val_penalty_charges_paid_c numeric(10,2) not null default 0.00;
+
+----------------------
+--- End of 6.17.4 --
+----------------------
