@@ -124,7 +124,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean allowMissingECDAutomatedTasks;
     private boolean overlappingHireCheck;
     private boolean maximumLabourRateCheck;
-    private BigDecimal maxAllowedLabourRate;;
+    private BigDecimal maxAllowedLabourRate = BigDecimal.ZERO;
 
     public BreBand() {
     }
