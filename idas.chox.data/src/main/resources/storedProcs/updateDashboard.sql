@@ -1257,7 +1257,7 @@ where t1.insurer_id = dashboard.insurer_id
 -- RAISE NOTICE 'Weekly Start';
 
 update dashboard
-   set val_penalty_charges_paid_w = t1.val
+   set val_penalty_charges_paid_w = coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
@@ -1273,7 +1273,7 @@ where t1.insurer_id = dashboard.insurer_id
 
 
 update dashboard
-   set val_penalty_charges_paid_w = val_penalty_charges_w  + t1.val
+   set val_penalty_charges_paid_w = val_penalty_charges_paid_w  + coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
@@ -1292,7 +1292,7 @@ where t1.insurer_id = dashboard.insurer_id
 -- RAISE NOTICE 'Monthly Start';
 
 update dashboard
-   set val_penalty_charges_paid_m = t1.val
+   set val_penalty_charges_paid_m = coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
@@ -1308,7 +1308,7 @@ where t1.insurer_id = dashboard.insurer_id
 
 
 update dashboard
-   set val_penalty_charges_paid_m = val_penalty_charges_m  + t1.val
+   set val_penalty_charges_paid_m = val_penalty_charges_paid_m  + coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
@@ -1329,7 +1329,7 @@ where t1.insurer_id = dashboard.insurer_id
 -- RAISE NOTICE 'Cumulative Start';
 
 update dashboard
-   set val_penalty_charges_paid_c = t1.val
+   set val_penalty_charges_paid_c = coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid + i.hire_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
