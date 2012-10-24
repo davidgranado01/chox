@@ -230,7 +230,7 @@
                     checkNotZero:"Sum of percentage liability split must not be zero",
                     checkInsurerNotZero:"A Value In The 'Liability Percentage Agreed(Insurer)' Field Is Required In Order To proceed On A Split Liability Basis",
                     checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated",
-                    checkNegativeValue:"Negative values are not allowed in 'Liability Percentage Agreed' input field"
+                    checkNegativeValue:"Negative values are not allowed in the 'Liability Percentage Agreed' fields"
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
