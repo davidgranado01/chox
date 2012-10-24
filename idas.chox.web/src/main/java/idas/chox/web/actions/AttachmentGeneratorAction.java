@@ -68,15 +68,15 @@ public class AttachmentGeneratorAction extends BaseAction {
     @Override
     public String execute() throws Exception {
         
-        int fileId = 0;
+        int selectedFileId;
         
-        if(!this.fileId.equalsIgnoreCase("") && this.fileId!=null){
-            fileId = Integer.parseInt(this.fileId);
+        if(!fileId.equalsIgnoreCase("") && fileId!=null){
+            selectedFileId = Integer.parseInt(this.fileId);
         }else{
             return "error";
         }
         
-        Attachment att = getAttachmentFileName(fileId);
+        Attachment att = getAttachmentFileName(selectedFileId);
         
         if(att==null){
             return "error";

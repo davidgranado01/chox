@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author John
  */
-public class Hpi {
+public final class Hpi {
 
     private static final Logger LOG = LoggerFactory.getLogger(Hpi.class);
     private static String today;
@@ -174,11 +174,11 @@ public class Hpi {
         } catch (IOException ex) {
             LOG.warn("IOException thrown during HPI call: {}", ex.getMessage(), ex);
             httpget.abort();
-            throw new HpiException("Error calling HPI: " + ex.getMessage());
+            throw new HpiException("Error calling HPI: " + ex.getMessage(), ex);
         } catch (Exception ex) {
             LOG.warn("Exception thrown during HPI call: {}", ex.getMessage(), ex);
             httpget.abort();
-            throw new HpiException("Error calling HPI: " + ex.getMessage());
+            throw new HpiException("Error calling HPI: " + ex.getMessage(), ex);
         } finally {
             LOG.info("HPI request completed");
             httpget.releaseConnection();

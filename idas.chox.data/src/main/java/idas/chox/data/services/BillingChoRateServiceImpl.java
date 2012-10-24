@@ -67,7 +67,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
             List  list =  findByCriteria(criteria);
             LOG.debug("List "+ list.size());
             if(list.isEmpty()){
-                return new BigDecimal(0);
+                return BigDecimal.ZERO;
             }
             billingChoRate = (BillingChoRate)list.get(0);
             LOG.debug("Rate for {} id {}",billingChoRate.getId(), billingChoRate.getFee());

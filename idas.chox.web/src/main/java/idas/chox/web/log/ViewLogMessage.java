@@ -37,6 +37,7 @@ public class ViewLogMessage extends HttpServlet {
     private static String PATTERN = "%d%thread%level%logger{25}%mdc{"
             + USERID_MDC_KEY + "}%msg";
 
+    
     @Override
     public void init() throws ServletException {
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -44,12 +45,14 @@ public class ViewLogMessage extends HttpServlet {
         super.init();
     }
 
+    
     void reacquireCBA() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         cyclicBufferAppender = (CyclicBufferAppender<ILoggingEvent>) context.getLogger(
                 Logger.ROOT_LOGGER_NAME).getAppender(CYCLIC_BUFFER_APPENDER_NAME);
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -69,7 +72,6 @@ public class ViewLogMessage extends HttpServlet {
                 reacquireCBA();
 
                 out.append(layout.getFileHeader());
-//            String localRef = req.getContextPath();
                 out.append("<h2>CHOX Last log entries</h2>");
                 out.append("<table class=\"nav\">");
 
@@ -120,6 +122,7 @@ public class ViewLogMessage extends HttpServlet {
         }
     }
 
+    
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             java.io.IOException {
@@ -138,6 +141,7 @@ public class ViewLogMessage extends HttpServlet {
         doPost(req, resp);
     }
 
+    
     private void printLogs(PrintWriter output) {
         int count = -1;
         if (cyclicBufferAppender != null) {
@@ -157,6 +161,7 @@ public class ViewLogMessage extends HttpServlet {
         }
     }
 
+    
     private void initialize(LoggerContext context) {
         logger.debug("Initializing ViewLastLog Servlet");
         cyclicBufferAppender = (CyclicBufferAppender<ILoggingEvent>) context.getLogger(
@@ -171,6 +176,7 @@ public class ViewLogMessage extends HttpServlet {
         layout.setTitle("Last Logging Events");
         layout.start();
     }
+
 
     protected void login(java.io.PrintWriter out, String uri) throws java.io.IOException {
         out.println("<html>");
@@ -188,22 +194,21 @@ public class ViewLogMessage extends HttpServlet {
         out.println("</form></center></body></html>");
     }
 
+
     protected boolean validUser(String username, String password) {
 
         if ((username != null) && (username.length() > 0) && (password != null) && (password.length() > 0)) {
-            if (username.equals(this.userName) && password.equals(this.password)) {
-                return true;
-            } else {
-                return false;
-            }
+            return username.equals(this.userName) && password.equals(this.password);
         }
 
         return false;
     }
 
+
     public boolean isResetResistant() {
         return false;
     }
+
 
     public void onStop(LoggerContext arg0) {
     }

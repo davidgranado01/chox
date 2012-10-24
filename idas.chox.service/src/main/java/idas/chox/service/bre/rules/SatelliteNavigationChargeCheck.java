@@ -24,7 +24,7 @@ public class SatelliteNavigationChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getSatNavFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getSatNavFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging a satellite navigation fee for the hire, please review need.";
             }

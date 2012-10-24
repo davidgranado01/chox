@@ -148,7 +148,7 @@ public class HpiResponse {
             throw ex;
         } catch (Exception ex) {
             LOG.error("Error parsing response: {}", ex.getMessage());
-            throw new HpiException(ex.getMessage());
+            throw new HpiException(ex.getMessage(), ex);
         }
 
         return response;
