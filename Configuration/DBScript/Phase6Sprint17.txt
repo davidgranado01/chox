@@ -1,0 +1,24 @@
+--------------------------------------------------------------------------------
+-- 6.17.2 - Make Additional Notes On/Off Flag At Insurer Level
+--------------------------------------------------------------------------------
+
+CREATE SEQUENCE insurer_intelligent_note_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 99999999999999 START 1 CACHE 1;
+
+CREATE TABLE insurer_intelligent_note ( 
+    id serial NOT NULL, CONSTRAINT intelligent_note_pkey PRIMARY KEY (id),
+    insurer_id integer NOT NULL, 
+    intelligent_note_id character varying(250) NOT NULL, 
+    status boolean NOT NULL DEFAULT TRUE 
+) WITH (OIDS=FALSE);
+
+CREATE INDEX fki_intelligent_note_fkey ON insurer_intelligent_note USING btree (insurer_id);
+
+ALTER TABLE insurer_intelligent_note OWNER TO chox_user;
+
+GRANT ALL ON TABLE insurer_intelligent_note TO chox_user;
+
+GRANT ALL ON sequence insurer_intelligent_note_id_seq TO chox_user;
+
+----------------------
+--- End of 6.17.2 --
+----------------------

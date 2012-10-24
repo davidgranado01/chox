@@ -69,4 +69,9 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 6;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Prestige No ECD Mobile Vehicle";
+    }
 }

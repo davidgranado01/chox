@@ -38,4 +38,9 @@ public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 14;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Hire Started Before Notification";
+    }
 }

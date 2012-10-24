@@ -35,4 +35,9 @@ public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote
         return 3;
     }
 
+    @Override
+    public String getIntelligentNoteName() {
+        return "Comp Cover CHO Not Managing Repair";
+    }
+
 }

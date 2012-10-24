@@ -499,7 +499,7 @@ public class AdminInsurerService extends SecureDataService {
     
     public ActionResponse updateInsurerIntelligentNote(InsurerIntelligentNote iin) {
         this.actionResponse = new ActionResponse();
-        insurerIntelligentNoteService.saveInsurerIntelligentNote(iin);
+        insurerIntelligentNoteService.updateInsurerIntelligentNote(iin);
         this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Intelligent Note has been updated");
         return this.actionResponse;
     }

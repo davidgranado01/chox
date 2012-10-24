@@ -36,4 +36,9 @@ public class RepairBookInDateisSundayCheck implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 9;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Sunday Book in";
+    }
 }

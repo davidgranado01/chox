@@ -39,7 +39,11 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
 
     @Override
     public int getIntelligentNoteId() {
-        // TODO Auto-generated method stub
         return 10;
+    }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Total Loss Not Managing Repair";
     }
 }

@@ -35,4 +35,9 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 4;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "No Comp Cover";
+    }
 }

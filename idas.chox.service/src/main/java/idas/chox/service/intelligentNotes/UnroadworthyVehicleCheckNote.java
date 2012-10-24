@@ -34,4 +34,9 @@ public class UnroadworthyVehicleCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 11;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Unroadworthy";
+    }
 }

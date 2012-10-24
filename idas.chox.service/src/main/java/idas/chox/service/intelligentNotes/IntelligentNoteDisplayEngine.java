@@ -1,28 +1,35 @@
 package idas.chox.service.intelligentNotes;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.InsurerIntelligentNote;
 import idas.chox.core.model.IntelligentNote;
+import idas.chox.core.services.InsurerIntelligentNoteService;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IntelligentNoteDisplayEngine {
     private static final Logger LOG = LoggerFactory.getLogger(IntelligentNoteDisplayEngine.class);
+    
+    private InsurerIntelligentNoteService insurerIntelligentNoteService;
 
     private List<IntelligentNote> availableIntelligentNotes;
 
     public List<String> getIntelligentNotes(Claim c) {
         LOG.debug("Getting intelligent notes for claim {} with status {}", c.getChoReference(), c.getStatus());
         List<String> intelligentNotes = new ArrayList<String>();
-
+        Map<Integer, InsurerIntelligentNote> iinMap = insurerIntelligentNoteService.getInsurerIntelligentNotesMap(c.getInsurer().getId(), false);
         if (checkClaimStatus(c)) {
             LOG.debug("Checking notes.");
             for (IntelligentNote intelligentNote : availableIntelligentNotes) {
                 LOG.debug("Checking note: '{}'", intelligentNote.getNote());
-                if (intelligentNote.isShowingFor(c)) {
+                if (!iinMap.containsKey(intelligentNote.getIntelligentNoteId()) && intelligentNote.isShowingFor(c)) {
                     LOG.debug("Note added: ", intelligentNote.getNote());
                     intelligentNotes.add(intelligentNote.getNote());
                 }
@@ -39,11 +46,11 @@ public class IntelligentNoteDisplayEngine {
     public List<String> getAllIntelligentNotes(Claim c) {
         LOG.debug("Getting all intelligent notes for claim {} with status {}", c.getChoReference(), c.getStatus());
         List<String> intelligentNotes = new ArrayList<String>();
-
+        Map<Integer, InsurerIntelligentNote> iinMap = insurerIntelligentNoteService.getInsurerIntelligentNotesMap(c.getInsurer().getId(), false);
         LOG.debug("Checking notes.");
         for (IntelligentNote intelligentNote : availableIntelligentNotes) {
             LOG.debug("Checking note: '{}'", intelligentNote.getNote());
-            if (intelligentNote.isShowingFor(c)) {
+            if (!iinMap.containsKey(intelligentNote.getIntelligentNoteId()) && intelligentNote.isShowingFor(c)) {
                 LOG.debug("Note added: ", intelligentNote.getNote());
                 intelligentNotes.add(intelligentNote.getNote());
             }
@@ -88,6 +95,11 @@ public class IntelligentNoteDisplayEngine {
      */
     public void setAvailableIntelligentNotes(List<IntelligentNote> availableIntelligentNotes) {
         this.availableIntelligentNotes = availableIntelligentNotes;
+    }
+
+    public void setInsurerIntelligentNoteService(
+            InsurerIntelligentNoteService insurerIntelligentNoteService) {
+        this.insurerIntelligentNoteService = insurerIntelligentNoteService;
     }
 
 }

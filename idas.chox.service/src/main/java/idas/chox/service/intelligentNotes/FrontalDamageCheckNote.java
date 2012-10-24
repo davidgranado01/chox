@@ -32,4 +32,9 @@ public class FrontalDamageCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 5;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Frontal Damage";
+    }
 }

@@ -1422,12 +1422,17 @@
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
 
-        <action name="getInteligentNotesPage" class="idas.chox.web.actions.IntelligentNotesAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_inteligent_notes.jsp</result>
+        <action name="getInteligentNotesPage" class="idas.chox.web.actions.InsurerIntelligentNotesAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_intelligent_notes.jsp</result>
         </action>
         
-        <action name="getInteligentNotes" class="idas.chox.web.actions.IntelligentNotesAction" method="getInteligentNotes">
+        <action name="getInteligentNotes" class="idas.chox.web.actions.InsurerIntelligentNotesAction" method="getInteligentNotes">
             <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="updateInsurerInteligentNoteStatus" class="idas.chox.web.actions.InsurerIntelligentNotesAction" method="updateInsurerInteligentNoteStatus">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
     </package>

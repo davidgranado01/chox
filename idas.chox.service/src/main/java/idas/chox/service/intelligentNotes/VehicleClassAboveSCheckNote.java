@@ -27,4 +27,9 @@ public class VehicleClassAboveSCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 12;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "S Class";
+    }
 }

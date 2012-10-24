@@ -72,4 +72,9 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 2;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Notification Delay";
+    }
 }

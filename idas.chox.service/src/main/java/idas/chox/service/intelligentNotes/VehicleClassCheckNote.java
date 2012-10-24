@@ -57,4 +57,9 @@ public class VehicleClassCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 13;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Prestige Short Repair";
+    }
 }

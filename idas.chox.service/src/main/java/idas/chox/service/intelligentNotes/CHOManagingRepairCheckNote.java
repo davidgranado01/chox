@@ -30,4 +30,9 @@ public class CHOManagingRepairCheckNote implements IntelligentNote {
     public int getIntelligentNoteId() {
         return 1;
     }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "CHO Managing Repair";
+    }
 }

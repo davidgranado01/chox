@@ -74,6 +74,7 @@
                 <value>hbm/AuditEntry.hbm.xml</value>
                 <value>hbm/AdminFee.hbm.xml</value>
                 <value>hbm/SchedulerJob.hbm.xml</value>
+                <value>hbm/InsurerIntelligentNote.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>
