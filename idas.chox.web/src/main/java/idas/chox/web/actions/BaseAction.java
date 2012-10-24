@@ -81,7 +81,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public boolean getIsAdmin() {
         return securityInfoProvider.getIsCHOXAdmin()
-                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_ADMIN)
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG);
     }
 
