@@ -348,7 +348,7 @@
                     <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                         <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
-                       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                       <input type="hidden" id="updatePasswordFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                         <div class="form-container">
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label" style="width: 260px;">Password<span class="mandatory">*</span></label>

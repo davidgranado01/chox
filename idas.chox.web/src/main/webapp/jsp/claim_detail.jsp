@@ -42,7 +42,7 @@
         <s:if test="isChoxAdmin!=true && enableActivityMonitor">
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId, <s:property value="activityMonitorRequestInterval"/>);
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl, <s:property value="activityMonitorRequestInterval"/>);
             activityMonitor.pingServer();
         </s:if>
         

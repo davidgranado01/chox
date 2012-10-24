@@ -28,7 +28,6 @@ var ajax = function() {
     }
     function checkResponse(textStatus)
     {
-        //        console.log("In checkResponse: " + textStatus);
         if(textStatus == 'success') {
             return true;
         }
@@ -44,26 +43,22 @@ var ajax = function() {
         else if (textStatus == 'Exception') {
             return false;
         }
-        //        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
         return false;
     }
     
     function checkJSONResponse(response)
     {
-        //        console.log("In checkJSONResponse: " + response);
         if(response.isValid) {
             
             return true;
         }
-        //        console.log("response not valid encountered in checkJSONResponse: " + response);
         handleGeneralErrors(response.Errors);
         return false;
     }
 
     function handleGeneralErrors(errors)
     {
-        //        console.log("In handleGeneralErrors: " + errors);
         if(SHOW_ERROR_MSG)
         {
             if(errors){
@@ -71,7 +66,6 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-                //        console.log("In handleGeneralErrors with no errors");
                 if (SHOW_AJAX_GENERAL_ERROR_MSG) {
                     Ext.MessageBox.show({
                         title: 'Error',
@@ -142,21 +136,15 @@ var ajax = function() {
 
     function loadHtml(url,param,success,error) {
         // Add nonce value
-        //        console.log('loadHtml: NonceId value is: ' + $('#nonceId').val());
-        //        console.log('loadHtml: param is: ' + param);
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-            //            console.log('Adding nonce to existing param string');
-            param += 'nonce='+$('#nonceId').val();
+            param += 'nonce='+$('#uniqueNonceId').val();
         } else {
-            //            console.log('Adding nonce to existing params.');
-            param['nonce'] = $('#nonceId').val();
+            param['nonce'] = $('#uniqueNonceId').val();
         }
-        //        console.log('loadHtml: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                //                console.log("Access Denied detected");
                 Ext.MessageBox.show({
                     title: 'Error',
                     msg: AJAX_DENIED_ACCESS_ERROR_MSG,
@@ -186,14 +174,11 @@ var ajax = function() {
 
     function loadJson(url,param,success,error){
         // Add nonce value
-        //        console.log('loadJson: NonceId value is: ' + $('#nonceId').val());
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-            //            console.log('Adding nonce to existing param string');
-            param += 'nonce='+$('#nonceId').val();
+            param += 'nonce='+$('#uniqueNonceId').val();
         } else {
-            //            console.log('Adding nonce to existing params.');
-            param['nonce'] = $('#nonceId').val();
+            param['nonce'] = $('#uniqueNonceId').val();
         }
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
@@ -223,37 +208,6 @@ var ajax = function() {
     }
 
     function handleAjaxError(conn, response, options, thrownError){
-//console.log("*******handleAjaxError: conn is:" + conn);
-//var output = '';
-//for (property in conn) {
-//  output += property + ': ' + conn[property]+'; ';
-//}
-//console.log("handleAjaxError: conn properties are - " + output);
-
-//console.log("*******handleAjaxError: response is:" + response);
-//console.log("*******handleAjaxError: response.status is:" + response.status);
-//console.log("*******handleAjaxError: response.statusText is:" + response.statusText);
-//output = '';
-//for (property in response) {
-//  output += property + ': ' + response[property]+'; ';
-//}
-//console.log("handleAjaxError: response properties are - " + output);
-
-//console.log("*******handleAjaxError: options are:" + options);
-//output = '';
-//for (property in options) {
-//  output += property + ': ' + options[property]+'; ';
-//}
-//console.log("handleAjaxError: options properties are - " + output);
-
-//console.log("*******handleAjaxError: thrownError is:" + thrownError);
-//output = '';
-//for (property in thrownError) {
-//  output += property + ': ' + thrownError[property]+'; ';
-//}
-//console.log("handleAjaxError: thrownError properties are - " + output);
-
-
 
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
@@ -280,7 +234,6 @@ var ajax = function() {
         }
         else{
             lastResponse = response.status;
-            //          console.log("handleAjaxError called with response status: " + response.status);
             handleGeneralError();
         }
 

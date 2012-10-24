@@ -3,13 +3,11 @@ var activityMonitor = function(){
     var enable = true;
     var pingServiceUrl;
     var checkStatusUrl;
-    var claimId;
     var t;
     return {
-        setup : function(pingServiceUrl,checkStatusUrl,claimId, intervalTime) {
+        setup : function(pingServiceUrl, checkStatusUrl, intervalTime) {
             this.pingServiceUrl = pingServiceUrl;
             this.checkStatusUrl = checkStatusUrl;
-            this.claimId = claimId;
             this.interval = intervalTime;
         },
         refreshViewingStatus : function() {
@@ -72,11 +70,8 @@ var activityMonitor = function(){
                                 } 
                             }
                         }
-                    },
-                    params: {
-                        claimId :this.claimId
                     }
-                });
+                    });
                 t=setTimeout(function() { activityMonitor.pingServer(); }, this.interval); 
             }
         }
