@@ -1170,25 +1170,10 @@ where t1.insurer_id = dashboard.insurer_id
 update dashboard
    set val_penalty_charges_w = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge + i.repair_penalty_charge) as val
 from claim c, invoice i
 where c.invoice_id = i.id
 and date(hire_penalty_charge_applied_date) >= SqlGetDayOfWeek()
-group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
-where t1.insurer_id = dashboard.insurer_id
-  and t1.chorganisation_id = dashboard.chorganisation_id
-  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
-  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
-  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
-update dashboard
-   set val_penalty_charges_w = val_penalty_charges_w  + t1.val
-from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge) as val
-from claim c, invoice i
-where c.invoice_id = i.id
-and date(repair_penalty_charge_applied_date) >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1203,7 +1188,7 @@ where t1.insurer_id = dashboard.insurer_id
 update dashboard
    set val_penalty_charges_m = t1.val
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge + i.repair_penalty_charge) as val
 from claim c, invoice i
 where c.invoice_id = i.id
 and date(hire_penalty_charge_applied_date) >= SqlGetDayOfMonth()
@@ -1213,23 +1198,6 @@ where t1.insurer_id = dashboard.insurer_id
   and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
   and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
   and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
-update dashboard
-   set val_penalty_charges_m = val_penalty_charges_m  + t1.val
-from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge) as val
-from claim c, invoice i
-where c.invoice_id = i.id
-and date(repair_penalty_charge_applied_date) >= SqlGetDayOfMonth()
-group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
-where t1.insurer_id = dashboard.insurer_id
-  and t1.chorganisation_id = dashboard.chorganisation_id
-  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
-  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
-  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
 
 
 --   Cumulative
@@ -1257,25 +1225,9 @@ where t1.insurer_id = dashboard.insurer_id
 -- RAISE NOTICE 'Weekly Start';
 
 update dashboard
-   set val_penalty_charges_paid_w = t1.val
+   set val_penalty_charges_paid_w = coalesce(t1.val, 0.00)
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid) as val
-from claim c, invoice i, audit_trail a
-where c.invoice_id = i.id and c.id = a.claim_id
-and a.new_status = 'InvoicePaymentLogged' and a.reverted=false
-and date(a.created_date) >= SqlGetDayOfWeek()
-group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
-where t1.insurer_id = dashboard.insurer_id
-  and t1.chorganisation_id = dashboard.chorganisation_id
-  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
-  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
-  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
-update dashboard
-   set val_penalty_charges_paid_w = val_penalty_charges_w  + t1.val
-from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
 where c.invoice_id = i.id and c.id = a.claim_id
 and a.new_status = 'InvoicePaymentLogged' and a.reverted=false
@@ -1292,9 +1244,9 @@ where t1.insurer_id = dashboard.insurer_id
 -- RAISE NOTICE 'Monthly Start';
 
 update dashboard
-   set val_penalty_charges_paid_m = t1.val
+   set val_penalty_charges_paid_m = coalesce(t1.val, 0.00)
 from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid) as val
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
 where c.invoice_id = i.id and c.id = a.claim_id
 and a.new_status = 'InvoicePaymentLogged' and a.reverted=false
@@ -1305,31 +1257,13 @@ where t1.insurer_id = dashboard.insurer_id
   and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
   and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
   and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
-update dashboard
-   set val_penalty_charges_paid_m = val_penalty_charges_m  + t1.val
-from (
-select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid) as val
-from claim c, invoice i, audit_trail a
-where c.invoice_id = i.id and c.id = a.claim_id
-and a.new_status = 'InvoicePaymentLogged' and a.reverted=false
-and date(a.created_date) >= SqlGetDayOfMonth()
-group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
-where t1.insurer_id = dashboard.insurer_id
-  and t1.chorganisation_id = dashboard.chorganisation_id
-  and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
-  and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
-  and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-
 
 
 --   Cumulative
 -- RAISE NOTICE 'Cumulative Start';
 
 update dashboard
-   set val_penalty_charges_paid_c = t1.val
+   set val_penalty_charges_paid_c = coalesce(t1.val, 0.00)
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.repair_penalty_charge_paid + i.hire_penalty_charge_paid) as val
 from claim c, invoice i, audit_trail a
