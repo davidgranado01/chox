@@ -96,6 +96,21 @@
             return true;
         }
     );
+        
+        $.validator.addMethod(
+        "checkNegativeValue",
+        function(value, element) {
+            if (  isLiabilitySplit()){
+                var liabilityIns = parseFloat($("#percentageLiabilityAccepted").val());
+                var liabilityCho = parseFloat($("#percentageLiabilityCho").val());
+                if (isNaN(liabilityIns) || isNaN(liabilityCho) || liabilityIns < 0 || liabilityCho < 0  ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    );
+        
 
         $.validator.addMethod(
         "checkInsurerNotZero",
@@ -193,11 +208,12 @@
                     checkFullAccepted:true,
                     checkTotal:true,
                     checkNotZero:true,
-                    checkZero:true
+                    checkZero:true,
+                    checkNegativeValue:true
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:true,
-                	checkDateFormat: true,
+                    checkDateFormat: true,
                     checkDateBlank:true
                 }
             },
@@ -213,11 +229,12 @@
                     checkTotal:"Sum of percentage liability split must be greater than 0 and not exceed 100",
                     checkNotZero:"Sum of percentage liability split must not be zero",
                     checkInsurerNotZero:"A Value In The 'Liability Percentage Agreed(Insurer)' Field Is Required In Order To proceed On A Split Liability Basis",
-                    checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
+                    checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated",
+                    checkNegativeValue:"Negative values are not allowed in 'Liability Percentage Agreed' input field"
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
-                	checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
+                    checkDateFormat:"Not a valid Liability agreed date - must be in the format DD/MM/YYYY ",
                     checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'"
                 }
             }
