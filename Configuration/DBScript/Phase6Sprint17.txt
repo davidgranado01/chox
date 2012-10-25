@@ -12,7 +12,7 @@ CREATE INDEX fki_intelligent_note_fkey ON insurer_intelligent_note USING btree (
 
 GRANT ALL ON TABLE insurer_intelligent_note TO chox_user;
 
-GRANT ALL ON TABLE insurer_intelligent_note TO chox_mi;
+GRANT READ ON TABLE insurer_intelligent_note TO chox_mi;
 
 GRANT ALL ON sequence insurer_intelligent_note_id_seq TO chox_user;
 
