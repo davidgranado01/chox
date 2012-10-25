@@ -36,4 +36,14 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
     public String getNote() {
         return "The CHO's client's vehicle is deemed a total loss and is not being managed by the CHO or the TPI. Please arrange inspection.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 10;
+    }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Total Loss Not Managing Repair";
+    }
 }

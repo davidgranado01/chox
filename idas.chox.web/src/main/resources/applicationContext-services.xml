@@ -195,6 +195,7 @@
         <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
         <property name="claimService" ref="claimService" />
         <property name="invoiceService" ref="invoiceService" />
+        <property name="insurerIntelligentNoteService" ref="insurerIntelligentNoteService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
@@ -286,6 +287,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="newECDAddedChecker" ref="newECDAddedChecker"/>
         <property name="claimService" ref="claimService"/>
+    </bean>
+    
+    <bean id="insurerIntelligentNoteService" class="idas.chox.data.services.InsurerIntelligentNoteServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="insurerService" ref="insurerService"/>
     </bean>
     
 </beans>

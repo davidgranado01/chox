@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.InsurerIntelligentNote" table="insurer_intelligent_note">
+        <cache usage="read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">insurer_intelligent_note_id_seq</param>
+            </generator>
+        </id>
+        <property column="intelligent_note_id" name="intelligentNoteId" not-null="true"/>
+        <property column="status" name="status" not-null="true"/>
+        <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer" not-null="true"/>
+    </class>
+</hibernate-mapping>

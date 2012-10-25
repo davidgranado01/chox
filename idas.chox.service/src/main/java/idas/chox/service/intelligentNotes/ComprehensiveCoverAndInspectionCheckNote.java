@@ -30,4 +30,14 @@ public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote
         return "The CHO's client does not have comprehensive insurance cover for their vehicle and the CHO is not managing the repair. Please arrange the vehicle inspection.";
     }
 
+    @Override
+    public int getIntelligentNoteId() {
+        return 3;
+    }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Comp Cover CHO Not Managing Repair";
+    }
+
 }

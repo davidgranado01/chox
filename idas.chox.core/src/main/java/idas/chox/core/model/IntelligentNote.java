@@ -7,4 +7,6 @@ package idas.chox.core.model;
 public interface IntelligentNote {
     public Boolean isShowingFor(Claim c);
     public String getNote();
+    public int getIntelligentNoteId();
+    public String getIntelligentNoteName();
 }

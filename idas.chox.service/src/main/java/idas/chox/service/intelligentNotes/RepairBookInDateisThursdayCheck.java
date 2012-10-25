@@ -31,4 +31,14 @@ public class RepairBookInDateisThursdayCheck implements IntelligentNote {
     public String getNote() {
         return "The repair book in date is on a Thursday and the CHO's Customer's vehicle was driveable.";
     }
+
+    @Override
+    public int getIntelligentNoteId() {
+        return 15;
+    }
+
+    @Override
+    public String getIntelligentNoteName() {
+        return "Thursday Book In";
+    }
 }
