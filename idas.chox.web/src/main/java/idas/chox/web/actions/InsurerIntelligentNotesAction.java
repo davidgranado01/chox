@@ -33,10 +33,8 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private InsurerIntelligentNoteService insurerIntelligentNoteService;
     private AdminInsurerService adminInsurerService;
-    private int intelligentNoteId = -1;
     private int insurerId = -1;
     private int insurerInteligentNoteId = -1;
-    private boolean status = true;
     private List<InsurerIntelligentNoteViewData> insurerIntelligentNoteViewData = new ArrayList<InsurerIntelligentNoteViewData>();
     
     @Secured({"ROLE_CHOX_ADMIN"})
@@ -85,8 +83,8 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
                 response = adminInsurerService.updateInsurerIntelligentNote(iiNote);
                 setActionResponse(response);
             } else {
-                LOG.debug("Inserting insurer inteligent note ({}) with temporary display id: {}", intelligentNoteId ,insurerInteligentNoteId);
-                insurerIntelligentNoteService.createInsurerIntelligentNote(intelligentNoteId, insurerId, status);
+                LOG.debug("Inserting insurer inteligent note ({}) with temporary display id: {}", model.getIntelligentNoteId() ,insurerInteligentNoteId);
+                insurerIntelligentNoteService.createInsurerIntelligentNote(model.getIntelligentNoteId(), insurerId, model.isStatus());
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -140,13 +138,6 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
         this.adminInsurerService = adminInsurerService;
     }
 
-    public int getIntelligentNoteId() {
-        return intelligentNoteId;
-    }
-
-    public void setIntelligentNoteId(int intelligentNoteId) {
-        this.intelligentNoteId = intelligentNoteId;
-    }
 
     public List<InsurerIntelligentNoteViewData> getInsurerIntelligentNoteViewData() {
         return insurerIntelligentNoteViewData;
@@ -163,14 +154,6 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
 
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public int getInsurerInteligentNoteId() {
