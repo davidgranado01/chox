@@ -24,5 +24,6 @@
                 <bean class="idas.chox.service.intelligentNotes.HireCommenced48hSinceNotificationCheck"></bean>
             </list>
         </property>
+        <property name="insurerIntelligentNoteService" ref="insurerIntelligentNoteService"></property>
     </bean>
 </beans>

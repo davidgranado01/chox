@@ -5,6 +5,7 @@ import idas.chox.core.services.*;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.service.admin.AdminUserService;
+import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.xml.readers.BordereauReader;
 import org.junit.runner.RunWith;
@@ -20,12 +21,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
     "classpath:applicationContext-Notification-test.xml", 
-    "classpath:applicationContext-IntelligentNote-test.xml",
     "classpath:applicationContext-Filters-test.xml",
     "classpath:applicationContext-Workflow-test.xml",
     "classpath:applicationContext-test.xml",
     "classpath:applicationContext-services-test.xml",
     "classpath:applicationContext-BRE-test.xml", 
+    "classpath:applicationContext-IntelligentNote-test.xml",
     "classpath:applicationContext-XMLReader-test.xml"})
 public abstract class BaseTest {
 
@@ -85,4 +86,8 @@ public abstract class BaseTest {
     protected InvoiceService invoiceService;
     @Autowired
     protected AdminFeeService adminFeeService;
+    @Autowired
+    protected InsurerIntelligentNoteService insurerIntelligentNoteService;
+    @Autowired
+    protected IntelligentNoteDisplayEngine displayEngine;
 }

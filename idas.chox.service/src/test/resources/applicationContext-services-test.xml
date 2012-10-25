@@ -174,6 +174,7 @@
         <property name="insurerChorganisationService" ref="insurerChorganisationService" />
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService"/>
         <property name="insurerAliasService" ref="insurerAliasService" />
+        <property name="insurerIntelligentNoteService" ref="insurerIntelligentNoteService" />
         <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -248,4 +249,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    
+    <bean id="insurerIntelligentNoteService" class="idas.chox.data.services.InsurerIntelligentNoteServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="insurerService" ref="insurerService"/>
+    </bean>
+    
 </beans>
