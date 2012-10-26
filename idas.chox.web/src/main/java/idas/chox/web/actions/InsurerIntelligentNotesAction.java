@@ -1,5 +1,18 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
+import net.sf.json.JSONArray;
+
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+
 import idas.chox.core.model.InsurerIntelligentNote;
 import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.services.InsurerIntelligentNoteService;
@@ -8,26 +21,10 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.web.viewdata.InsurerIntelligentNoteViewData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import net.sf.json.JSONArray;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
-
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-
-
 public class InsurerIntelligentNotesAction extends BaseAction implements ModelDriven<InsurerIntelligentNote> , Preparable {
     
     private static final Logger LOG = LoggerFactory.getLogger(InsurerIntelligentNotesAction.class);
 
-    private List<IntelligentNote> availableIntelligentNotes;
     private List<InsurerIntelligentNote> insurerIntelligentNotes;
     private InsurerIntelligentNote model;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
@@ -70,10 +67,6 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateInsurerInteligentNoteStatus() throws Exception {
         try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to update a Inteligent Note status for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to update a Inteligent Note status for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
             //insurer intelligent notes are inserted into DB when it is first updated (in case we display new insurer intelligent note it has negative id)
             if (this.insurerInteligentNoteId > 0) {
                 InsurerIntelligentNote iiNote = insurerIntelligentNoteService.getInsurerIntelligentNote(insurerInteligentNoteId);
@@ -101,15 +94,6 @@ public class InsurerIntelligentNotesAction extends BaseAction implements ModelDr
     @Override
     public void prepare() throws Exception {
         model = new InsurerIntelligentNote();
-    }
-
-    public List<IntelligentNote> getAvailableIntelligentNotes() {
-        return availableIntelligentNotes;
-    }
-
-    public void setAvailableIntelligentNotes(
-            List<IntelligentNote> availableIntelligentNotes) {
-        this.availableIntelligentNotes = availableIntelligentNotes;
     }
 
     public List<InsurerIntelligentNote> getInsurerIntelligentNotes() {
