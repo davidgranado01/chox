@@ -1,15 +1,17 @@
 package idas.chox.web.security;
 
 import java.io.Serializable;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import idas.chox.core.model.WebUser;
-import idas.chox.service.security.PermissionedUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.service.security.PermissionedUser;
 
 /**
  *
@@ -28,8 +30,6 @@ public class RSAContactDetailsInterceptor extends AbstractInterceptor implements
                 LOG.debug("User is authenticated");
                 PermissionedUser permissionedUser = (PermissionedUser) currentUser.getPrincipal();
                 WebUser user = permissionedUser.getUser();
-                MDC.put("userid", user.getDisplayName()+" "+user.getId());
-
                 if (user.isAnInsurer() && user.getInsurer().getName().equals("RSA") && user.isClaimHandler()) {
                     LOG.debug("User is an RSA user");
                     if (user.getTelephone() == null || user.getTelephone().length() ==0) {
@@ -39,8 +39,6 @@ public class RSAContactDetailsInterceptor extends AbstractInterceptor implements
                 }
             }
         }
-        String result = invocation.invoke();
-        MDC.clear();
-        return result;
+        return invocation.invoke();
     }
 }
