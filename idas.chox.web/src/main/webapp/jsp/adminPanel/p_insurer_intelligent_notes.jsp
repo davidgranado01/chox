@@ -5,6 +5,7 @@
 
 var iinGridViewDataStore;
 var iinGridView;
+var intelligentNotePopUp;
 
 $(function(){
 	
@@ -42,12 +43,36 @@ $(function(){
 	    viewConfig:{forceFit:true},
 	    columns: [
             {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: true, resizable: true},
-	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: true, resizable: true},
+	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: true, resizable: true, renderer:function(value,p,r){
+                return "<a href='#' class='high-light-item'>" + value + "</a>" }},
 	        {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, renderer: booleanLink}
 	    ],
 	    height:510,
 	    width: 760
 	});
+	
+	if(!intelligentNotePopUp || intelligentNotePopUp==null)
+    {
+		intelligentNotePopUp =  new Ext.Window({
+            applyTo:'iinEditWindow',
+            width:600,
+            height:215,
+            layout:'fit',
+            modal:true,
+            closeAction:'hide',
+            plain: false,
+            title: 'Insurer Intelligent Note',
+            resizable : false,
+            items: new Ext.Panel({
+                applyTo: 'iinEditPanel'
+            }),
+            buttons: [{
+                    text: 'Close', handler: function(){
+                    	intelligentNotePopUp.hide();
+                    }
+                }]
+        });
+    }
 	
 });
 
@@ -66,7 +91,9 @@ function loadGridViewList(){
 
 function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
     var gridView = iinGridView.getStore().getAt(rowIndex);
-    if(columnIndex==2){
+    if(columnIndex==1){
+    	showIntelligentNotePopUp(gridView);
+    } else if(columnIndex==2){
     	 var iinId = gridView.get("id");
     	 var inId = gridView.get("intelligentNoteId");
     	 var status = gridView.get("status") == "Yes" ? true : false;
@@ -74,6 +101,14 @@ function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
          var param = {"intelligentNoteId":inId, "status":status, "insurerInteligentNoteId": iinId, "insurerId":<s:property value="insurerId" />};
          ajax.loadHtml2(url, param, onSubmitHandler);
     }
+}
+    
+function showIntelligentNotePopUp(gridView){
+	intelligentNotePopUp.show();
+	
+	$("form#iinEditForm label#iinName").html(gridView.get("intelligentNoteName"));
+	$("form#iinEditForm label#iinNote").html(gridView.get("intelligentNote"));
+	$("form#iinEditForm label#iinActive").html(gridView.get("status") == true ? "Yes" : "No");
 }
 
 function onSubmitHandler(responseText, statusText){
@@ -114,6 +149,35 @@ function onSubmitHandler(responseText, statusText){
     <div id="inteligentNotesPageId">
        <div id="inteligentNotesPanel"></div>
        <div id="iNoteErrorMessageBox" class="action-error-msg"></div>
+    </div>
+
+	<div id="iinEditWindow" class="x-hidden">
+        <div id="iinEditPanel">
+             <div class="form-container" style="height:275px; padding-bottom:30px; padding-top:30px">
+                <form id="iinEditForm" name="rorEditForm" class="XXentity-form" method="post">
+
+					<div class="chox-form-item">
+						<table style="font-size:12px">
+						   <tr>
+                                <td><label class="chox-form-std-label">Intelligent Claim Note Name : </label></td>
+                                <td><label id="iinName"></label></td>
+                            </tr>
+						    <tr><td colspan="2"></br></td></tr>
+							<tr>
+								<td><label class="chox-form-std-label">Intelligent Claim Note : </label></td>
+								<td><label id="iinNote"></label></br></td>
+							</tr>
+							<tr><td colspan="2"></br></td></tr>
+                            <tr>
+                                <td><label class="chox-form-std-label">Intelligent Claim Active : </label></td>
+                                <td><label id="iinActive"></label></br></td>
+                            </tr>
+						</table>
+					</div>
+
+				</form>
+            </div> 
+        </div>
     </div>
 
 </div>
