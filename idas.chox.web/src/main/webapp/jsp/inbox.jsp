@@ -1557,8 +1557,6 @@
 
         <s:if test="menuAccessibility.isInboxMenuAccessibility!=true">
                 tabs.remove('inboxPanelTabId', true);
-                // Set height as this is usually controlled by the inbox/filter panel
-                document.getElementById('adminPanelTab').style.height = 391;
         </s:if>
 
         <s:if test="menuAccessibility.isReportMenuAccessibility!=true">
