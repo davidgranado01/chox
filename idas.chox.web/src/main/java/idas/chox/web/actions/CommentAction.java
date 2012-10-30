@@ -34,8 +34,12 @@ public class CommentAction extends ClaimModelAction<Comment> {
     }
 
     public String createNewComment() {
-        boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer() ? getAuthenticatedUser().getInsurer().isDisablePrivateNotes() :
-            getAuthenticatedUser().getChorganisation().isDisablePrivateNotes();
+        boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer() ? 
+                        getAuthenticatedUser().getInsurer().isDisablePrivateNotes() : 
+                            getAuthenticatedUser().isCHO() ?
+                        getAuthenticatedUser().getChorganisation().isDisablePrivateNotes() :
+                            claim.getInsurer().isDisablePrivateNotes();
+
         if(disablePrivateNotes && model.getVisibilityType() != 0){
             LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
             this.getActionResponse().AssignMessageResult("Note can't be added. Insufficient priviliges!");

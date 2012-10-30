@@ -151,7 +151,7 @@
                             </tr>
                             <tr valign="top">
                                 <td>
-                                    <s:if test="isDisablePrivateNotes">
+                                    <s:if test="insurerIsDisablePrivateNotes">
                                         <label>Claim Review Notes (public)</label>
                                     </s:if>
                                     <s:else>
@@ -161,7 +161,7 @@
                                 <td colspan="3">
                                     <textarea class="chox-canote" id="RBELengineerClaimReviewNotesId" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                     <label class="std-label-ro-small" style="padding-top: 0px; vertical-align: top; height:30px">
-                                    <s:if test="!isDisablePrivateNotes">
+                                    <s:if test="!insurerIsDisablePrivateNotes">
                                         N.B. The above note will be ’Public’ if you are acknowledging the claim and ‘Private’ if you are updating the Claims Handler.
                                     </s:if>
                                     </label>

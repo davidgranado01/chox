@@ -1,15 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.util.StringHelper;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.hibernate.util.StringHelper;
-import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimReviewByEng extends BaseActivity {
 
@@ -41,25 +43,6 @@ public class ClaimReviewByEng extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        /*
-        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
-
-                String note;
-                if ( claim.getLiabilityStatus()==null ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                Comment comment = Comment.New(0, note);
-                comment.setClaim(claim);
-                claim.getComments().add(comment);
-        }
-         
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
-        claim.setLiabilityStatus(liabilityStatus);
-         */
         claim.setIndemnityAmount(getIndemnityAmount());
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setIsQuantumDispute(isIsQuantumDispute());
@@ -71,7 +54,11 @@ public class ClaimReviewByEng extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         boolean disablePrivateNotes = getCurrentUser().getInsurer() != null ? 
-                getCurrentUser().getInsurer().isDisablePrivateNotes() : getCurrentUser().getChorganisation().isDisablePrivateNotes();
+                        getCurrentUser().getInsurer().isDisablePrivateNotes() : 
+                            getCurrentUser().getChorganisation() != null ?
+                        getCurrentUser().getChorganisation().isDisablePrivateNotes() :
+                            claim.getInsurer().isDisablePrivateNotes();
+
         if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
             if(!disablePrivateNotes){
                 claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
