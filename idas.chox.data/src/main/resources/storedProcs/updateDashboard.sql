@@ -92,7 +92,6 @@ from claim c, audit_trail a
 where a.update_date >= SqlGetDayOfWeek()
 and c.id = a.claim_id and a.reverted = false
 and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
-  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
 and a.new_status='AwaitingCarHireInfo'
 group by  c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
   where t1.insurer_id = dashboard.insurer_id
@@ -111,7 +110,6 @@ from claim c, audit_trail a
 where a.update_date >= SqlGetDayOfMonth()
 and c.id = a.claim_id and a.reverted = false
 and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
-  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
 and a.new_status='AwaitingCarHireInfo'
   group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -130,7 +128,6 @@ select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.ch
 from claim c, audit_trail a
 where c.id = a.claim_id and a.reverted = false
 and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.new_status='AwaitingCarHireInfo' and a2.update_date > a.update_date)
-  and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status='AwaitingCarHireInfo' and a2.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted') and a2.update_date > a.update_date)
   and a.new_status = 'AwaitingCarHireInfo'
   group by c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
