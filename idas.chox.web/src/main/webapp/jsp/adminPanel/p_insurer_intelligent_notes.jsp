@@ -63,7 +63,7 @@ $(function(){
             closeAction:'hide',
             plain: false,
             title: 'Insurer Intelligent Note',
-            resizable : false,
+            resizable : true,
             items: new Ext.Panel({
                 applyTo: 'iinEditPanel'
             }),
@@ -92,7 +92,7 @@ function loadGridViewList(){
 
 function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
     var gridView = iinGridView.getStore().getAt(rowIndex);
-    if(columnIndex==0 || columnIndex==0){
+    if(columnIndex==0 || columnIndex==1){
     	showIntelligentNotePopUp(gridView);
     } else if(columnIndex==2){
     	 var iinId = gridView.get("id");
@@ -154,7 +154,7 @@ function onSubmitHandler(responseText, statusText){
 
 	<div id="iinEditWindow" class="x-hidden">
         <div id="iinEditPanel">
-             <div class="form-container" style="height:275px; padding-bottom:30px; padding-top:30px">
+             <div class="form-container" style="min-height:275px; padding-bottom:30px; padding-top:15px">
                 <form id="iinEditForm" name="rorEditForm" class="XXentity-form" method="post">
 
 					<div class="chox-form-item">
