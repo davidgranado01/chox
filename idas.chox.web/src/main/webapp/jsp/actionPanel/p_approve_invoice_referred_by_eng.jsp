@@ -95,7 +95,7 @@
     <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action"
           method="post" id="invoiceReferredToClaimsHandler" name="invoiceReferredToClaimsHandler">
         <fieldset class="x-fieldset">
-            <legend>Invoices Referred By Engineer - Action Required</legend>
+            <legend>Invoice Referred By Engineer - Action Required</legend>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="invoiceReferredToClaimsHandlerName" name="name"/>
             <div>

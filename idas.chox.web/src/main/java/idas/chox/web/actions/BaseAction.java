@@ -38,8 +38,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private BaseDataService baseDataService;
 
     public Map<String,Object> getSession() {
-    	if(session == null)
+    	if(session == null) {
     		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
+        }
         return session;
     }
 
@@ -149,17 +150,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
         else if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isAllowSubscriberClaims();
-        }
-        
-        return true;
-    }
-    
-    public boolean getIsDisablePrivateNotes() {
-        if (getIsCHO()) {
-            return getAuthenticatedUser().getChorganisation().isDisablePrivateNotes();
-        }
-        else if (getIsInsurer()) {
-            return getAuthenticatedUser().getInsurer().isDisablePrivateNotes();
         }
         
         return true;
