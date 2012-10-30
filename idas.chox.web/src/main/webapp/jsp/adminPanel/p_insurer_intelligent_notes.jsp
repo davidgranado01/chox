@@ -42,10 +42,11 @@ $(function(){
 	    layout:'fit',
 	    viewConfig:{forceFit:true},
 	    columns: [
-            {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: true, resizable: true},
-	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: true, resizable: true, renderer:function(value,p,r){
-                return "<a href='#' class='high-light-item'>" + value + "</a>" }},
-	        {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, renderer: booleanLink}
+            {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: false, resizable: true, renderer:function(value,p,r){
+                return  value }},
+	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: false, resizable: true, renderer:function(value,p,r){
+                return  value }},
+	        {header: "Active", width: 80, dataIndex: 'status', sortable: false, resizable: true, renderer: booleanLink}
 	    ],
 	    height:510,
 	    width: 760
@@ -91,7 +92,7 @@ function loadGridViewList(){
 
 function updateIntelligentNoteStatus(grid, rowIndex, columnIndex, e){
     var gridView = iinGridView.getStore().getAt(rowIndex);
-    if(columnIndex==1){
+    if(columnIndex==0 || columnIndex==0){
     	showIntelligentNotePopUp(gridView);
     } else if(columnIndex==2){
     	 var iinId = gridView.get("id");
