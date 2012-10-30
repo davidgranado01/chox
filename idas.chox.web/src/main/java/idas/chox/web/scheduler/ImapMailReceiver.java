@@ -153,10 +153,10 @@ public class ImapMailReceiver {
 
     public void clean() {
         try {
-            if (folder.isOpen()) {
+            if (folder != null && folder.isOpen()) {
                 folder.close(true);
             }
-            if (store.isConnected()) {
+            if (store != null && store.isConnected()) {
                 store.close();
             }
         } catch (MessagingException e) {
