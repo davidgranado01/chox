@@ -25,15 +25,6 @@
 
     function doClaimReviewByEngFormSubmit(action){
         actionPanel.registerAction(action);
-        if (action=='acknowledgeClaim') {
-            $("form#formClaimReviewByEngAction #claimNumber").rules("add", {
-                required: true,
-                messages: {required: "You Must Supply A Valid Claim Number"}
-            });
-
-        } else {
-            $("form#formClaimReviewByEngAction #claimNumber").rules("remove");
-        }
 
         if($("#formClaimReviewByEngAction").valid()){
             $("form#formClaimReviewByEngAction").submit();
@@ -66,10 +57,10 @@
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsDisablePrivateNotes">
-                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. Any notes entered into the ‘Claim Review Notes (Public)’ section will be public and visible to the CHO.
+                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. Any notes entered into the ‘Claim Review Notes’ section will be public and visible to the CHO.
                         </s:if>
                         <s:else>
-                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be private and not visible to the CHO. Alternatively, click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be public and visible to the CHO.
+                            Click on the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made. On clicking this button any notes entered into the ‘Claim Review Notes’ section will be private and not visible to the CHO.
                         </s:else>
                     </div>
                     <div class="status-control-set">
@@ -79,7 +70,7 @@
                                     <label>Claim Number</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly  id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
                                 </td>
                                 <td colspan="2">
                                     <label></label>
@@ -92,11 +83,8 @@
                                     <label>Liability Status</label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
-                                <!--
-                                <td><div id="liabilityStatusDropDownDiv" ></div></td>
-                                -->
                                 <td>
-                                    <input type="text" class="chox-ttxt-readonly" readonly="true"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
                                     <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.getLiablityValue()" />"/>
 
                                 </td>
@@ -110,21 +98,21 @@
 
                                 </td>
                                 <td>
-                                    <input type="text"  class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text"  class="chox-ttxt-readonly" readonly name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="20%">
                                     <label>Date Liability Agreed</label>
                                 </td>
-                                <td><input type="text" class="chox-ttxt-readonly" readonly="true" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
+                                <td><input type="text" class="chox-ttxt-readonly" readonly name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
                                 <td colspan="2">
                                     <label></label>
                                 </td>
@@ -155,16 +143,11 @@
                                         <label>Claim Review Notes (Public)</label>
                                     </s:if>
                                     <s:else>
-                                        <label>Claim Review Notes</label>
+                                        <label>Claim Review Notes (Private)</label>
                                     </s:else>
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" id="RBELengineerClaimReviewNotesId" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
-                                    <label class="std-label-ro-small" style="padding-top: 0px; vertical-align: top; height:30px">
-                                    <s:if test="!insurerIsDisablePrivateNotes">
-                                        N.B. The above note will be ’Public’ if you are acknowledging the claim and ‘Private’ if you are updating the Claims Handler.
-                                    </s:if>
-                                    </label>
                                 </td>
                             </tr>
  
@@ -178,7 +161,6 @@
 
                             <tr>
                                 <td colspan="2" class="choice">
-                                    <input type="button" id="RBELAcknowledgeButtonId" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
                                     <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
                                 </td>
                             </tr>
