@@ -201,7 +201,7 @@ function refreshDesc(id){
                             <s:if test="rejectButtonEnabled">
                             <tr>
 	                        	<td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-		                        <td>
+		                        <td colspan="3">
 		                            <div id="rejectionDescJspfId"/>
 		                        </td>
 							</tr>
