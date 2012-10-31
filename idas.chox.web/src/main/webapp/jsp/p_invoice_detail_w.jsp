@@ -2027,13 +2027,13 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="button" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm()"/>&nbsp&nbsp
+                        <input type="button" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm()"/>
                     </td>
                     <td>
-                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>&nbsp&nbsp
+                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>
                     </td>
                     <td>
-                        <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm()"/>
+                        <input type="submit" style="width: 88px; margin-left:30px" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm()"/>
                     </td>
 
                 </tr>
