@@ -40,13 +40,14 @@ $(function(){
 	    renderTo:'inteligentNotesPanel',
 	    enableHdMenu:false,
 	    layout:'fit',
+	    enableColumnMove:false,
 	    viewConfig:{forceFit:true},
 	    columns: [
-            {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "Intelligent Claim Note Name", width: 180, dataIndex: 'intelligentNoteName', sortable: true, resizable: true, renderer:function(value,p,r){
                 return  value }},
-	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: false, resizable: true, renderer:function(value,p,r){
+	        {header: "Intelligent Claim Note", width: 400, dataIndex: 'intelligentNote', sortable: true, resizable: true, renderer:function(value,p,r){
                 return  value }},
-	        {header: "Active", width: 80, dataIndex: 'status', sortable: false, resizable: true, renderer: booleanLink}
+	        {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, renderer: booleanLink}
 	    ],
 	    height:510,
 	    width: 760
