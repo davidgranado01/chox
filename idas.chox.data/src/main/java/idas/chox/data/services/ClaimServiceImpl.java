@@ -1094,7 +1094,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claimAge;
     }
 
-  
+    
+    @Override
+    public int getSubscriberClaimRejects(int claimId) {
+        
+        LOG.debug("Getting number of times subscriber claim (with id={}) rejected", claimId);
+        int subscriberClaimRejects = auditTrailService.getSubscriberClaimRejectedTimes(claimId);
+        LOG.debug("Number of times subscriber claim ({}) rejected: {}", claimId, subscriberClaimRejects);
+
+        return subscriberClaimRejects;
+    }
+
+    
     private int updateChoReferenceNumber(String oldReference, String newReference, Integer choId) {
         Claim claim = getClaimByChoIdAndCHOReferenceNumber(choId, oldReference);
         if (claim != null) {
@@ -1195,20 +1206,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public void updateLiabilityPayment(Claim claim) {
 
-        LiabilityStatus l = claim.getLiabilityStatus();
+        LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
         Invoice invoice = claim.getInvoice();
         ClaimType claimType = claim.getClaimType();
         if (invoice != null) {
-            if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
+                    && liabilityStatus != null
+                    && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+                            || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-//                BigDecimal ofttp = invoice.getOriginalFullTotalToPay();
-//                invoice.setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + invoice.getTotalToPay());
-            } else if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
+            } else if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
+                    && liabilityStatus != null
+                    && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);
-//                invoice.setOriginalTotalToPay(BigDecimal.ZERO);
             } else {
                 invoice.setTotalToPay(invoice.getFullTotalToPay());
                 LOG.debug("liablity not updated");

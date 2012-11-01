@@ -1,12 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.ReasonOfRejectionTemplate;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.ReasonOfRejectionTemplateService;
-import idas.chox.core.util.DateHelper;
-
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -14,6 +7,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.core.model.ReasonOfRejectionTemplate;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.ReasonOfRejectionTemplateService;
+import idas.chox.core.util.DateHelper;
+
 
 public class ReasonOfRejectionServiceImpl  extends SecureDataService implements ReasonOfRejectionService {
 
@@ -83,6 +84,16 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     public void setReasonOfRejectionTemplateService(
             ReasonOfRejectionTemplateService reasonOfRejectionTemplateService) {
         this.reasonOfRejectionTemplateService = reasonOfRejectionTemplateService;
+    }
+
+
+    @Override
+    public boolean isSubscriberClaimRejected(ReasonOfRejection reasonOfRejection) {
+        if (reasonOfRejection.getName().equals("Subscriber - Indemnity Issues")
+                || reasonOfRejection.getName().equals("Subscriber - Fraud Issues"))
+            return true;
+        
+        return false;
     }
 
 }

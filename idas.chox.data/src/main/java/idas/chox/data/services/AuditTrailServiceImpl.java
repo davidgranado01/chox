@@ -431,6 +431,19 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return days;
     }
 
+    @Override
+    public int getSubscriberClaimRejectedTimes(int claimId) {
+        int noTimesRejected = 0;
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+        for (AuditTrail trail : auditTrail) {
+            if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getNewStatus())) {
+                noTimesRejected++;
+            }
+        }
+        
+        return noTimesRejected;
+    }
+
     private boolean isSubscriberClaimRejectedAfter3pm(int claimId) {
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
         Calendar cal = Calendar.getInstance();

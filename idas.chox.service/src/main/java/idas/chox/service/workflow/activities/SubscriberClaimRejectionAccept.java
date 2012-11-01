@@ -1,16 +1,20 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ReasonOfRejectionService;
+
 public class SubscriberClaimRejectionAccept extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriberClaimRejectionAccept.class);
+    private ReasonOfRejectionService reasonOfRejectionService;
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -28,11 +32,20 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        // Subscriber claims move straight to AwaitingInvoiceData
-        setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+        /* Subscriber claims move straight to 'AwaitingInvoiceData',
+         * except for claims rejected with reason 'Subscriber - Indemnity Issues'
+         * or 'Subscriber - Fraud Issues' in which case the claim shall move to
+         * the status 'ClaimRejectionAccepted'
+         */
+        if (reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection())) {
+             claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+       } else {
+            setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+            
+        }
     }
 
 
@@ -40,4 +53,10 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
     }
+    
+
+    public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
+        this.reasonOfRejectionService = reasonOfRejectionService;
+    }
+    
 }

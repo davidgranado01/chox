@@ -27,14 +27,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import idas.chox.core.model.*;
-import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InsurerDiscountService;
-import idas.chox.core.services.InvoiceService;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.WorkgroupService;
+import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
@@ -124,6 +117,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String jsonData;
     private List<Insurer> mappedInsurers;
     private AuditTrailService auditTrailService;
+    private ReasonOfRejectionService reasonOfRejectionService;
     private Date autoPenaltyStart;
     private Integer subscriberClaimDays;
     private String statusMsg = null;
@@ -185,6 +179,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
+    }
+
+    public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
+        this.reasonOfRejectionService = reasonOfRejectionService;
     }
 
     public int getLiabilityStatusValue() {
@@ -336,6 +334,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public boolean getInsurerIsEngineersEnabled() {
         return claim.getInsurer().isEngineersEnable();
+    }
+
+    public boolean isUpdatedByEng() {
+        return ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus());
+    }
+
+    /*
+     * New functionality for Phase 7 Sprint 1:
+     *   7.1.4 Updates to Subscriber Process Model
+     * Check for the following condition being satisfied:
+     *      1.  When a Subscriber claim is in the status 'ClaimUnacknowledgedRouted' or 'ClaimUpdatedByEngineer'
+     *          and the 'Acknowledge' button is being clicked, then the only valid selection in the
+     *          'Liability Status' drop down menu  is 'Full Liability Accepted'.
+     */
+    public boolean isSubscriberFullLiability() {
+        boolean result = false;
+        if (ClaimType.isSubscriber(claim.getClaimType()) &&
+                  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
+                || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())))) {
+                result = true;
+        }
+   
+        LOG.info("isSubscriberFullLiability={}", result);
+        return result;
     }
 
     public boolean getInsurerIsDisablePrivateNotes() {
@@ -1299,6 +1321,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
+    public boolean isSubscriberClaimRejectedMoreThanOnce() {
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
+            return false;
+        }
+        
+        int noTimesRejected = service.getSubscriberClaimRejects(claim.getId());
+        
+        return noTimesRejected > 1;
+    }
+ 
+    /*
+     * Returns true if subscriber claim rejected reason is one of
+     *     'Subscriber - Indemnity Issues' or 'Subscriber - Fraud Issues' 
+     */
+    public boolean isSubscriberClaimRejected() {
+
+        if (ClaimType.isSubscriber(claim.getClaimType()) && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(claim.getStatus())
+                && reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection())) {
+            return true;
+        }
+        
+        return false;
+    }
+ 
     public boolean isSubscriberClaimUnder5Days() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
@@ -1783,7 +1829,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getEngineerFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getEngineerFeeGross();
             } else {
                 return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1795,7 +1841,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getHireGross();
             } else {
                 return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1807,7 +1853,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHirePenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getHirePenaltyCharge();
             } else {
                 return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1819,7 +1865,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getRepairGross();
             } else {
                 return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1831,7 +1877,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairPenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getRepairPenaltyCharge();
             } else {
                 return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1843,7 +1889,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getStorageRecoveryGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getStorageRecoveryGross();
             } else {
                 return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1855,7 +1901,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getTotalLossFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
                 return claim.getInvoice().getTotalLossFeeGross();
             } else {
                 return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);

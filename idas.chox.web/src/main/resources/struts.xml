@@ -449,7 +449,7 @@
             <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
             <result name="assignInvoiceOwnership">/jsp/actionPanel/p_assign_invoice_ownership.jsp</result>
-            <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng_liability.jsp</result>
+            <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="updateLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="updateManualInvoiceWorkgroupAndOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
             <result name="updateManualInvoice">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>

@@ -133,10 +133,10 @@
                 var composedDate = new Date();
                 var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(accdate);
                 if(matches != null){
-	                var d = matches[1];
-	                var m = matches[2] - 1;
-	                var y = matches[3];
-	                composedDate = new Date(y, m, d);
+                    var d = matches[1];
+                    var m = matches[2] - 1;
+                    var y = matches[3];
+                    composedDate = new Date(y, m, d);
                 }
                 if ( accdate == "" ){
                     return false;
@@ -164,17 +164,17 @@
     );
         
         $.validator.addMethod(
-        	    "checkDateFormat",
-        	    function(value, element) {
-        	    	if(isLiabilityAccepted()){
-                        var accdate = $("form#formAcknowledgeAction #liabilityAgreedDate").val();
-                        if ( !isValidDate(accdate) ){
-                            return false;
-                        }
-        	    	}
-                    return true;
+        "checkDateFormat",
+        function(value, element) {
+            if(isLiabilityAccepted()){
+                var accdate = $("form#formAcknowledgeAction #liabilityAgreedDate").val();
+                if ( !isValidDate(accdate) ){
+                    return false;
                 }
-        );
+            }
+            return true;
+        }
+    );
 
         $.validator.addMethod(
         "checkFullAccepted",
@@ -192,7 +192,14 @@
             return true;
         }
     );
-            
+
+        $.validator.addMethod(
+        "mustBeFullLiabilityAcepted",
+        function(value, element) {
+            return (value == 1);
+        }           
+    );
+
         $("form#formAcknowledgeAction").validate(
         {
 
@@ -259,22 +266,22 @@
             $('#ACKmessageBox').text("");
             var reasonOfRejectionDropDown = $("form#formAcknowledgeAction #reasonOfRejectionId");
             //TODO: this is a quick solution for reason of rejeciton validation (in case we press "refer to fnol" and then reject)
-             if(action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
-            		 && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
-                 $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
-             }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
-                 var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
-                 var claimId = $("form#formAcknowledgeAction #claimId").val();
-                 var form = $("form#formAcknowledgeAction");
+            if(action=='rejectClaim' && (reasonOfRejectionDropDown.val() == "" || reasonOfRejectionDropDown.val() == -1) 
+                && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
+                $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
+            }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
+                    var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+                    var claimId = $("form#formAcknowledgeAction #claimId").val();
+                    var form = $("form#formAcknowledgeAction");
 
-                 if(claimNumber && claimNumber.length > 0){
-                     checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-                 }else{
-                     form.submit();
-                 }
-             }else{return false;}})){
-                   return;
-             }
+                    if(claimNumber && claimNumber.length > 0){
+                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                    }else{
+                        form.submit();
+                    }
+                }else{return false;}})){
+                return;
+            }
             else{
                
                 var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
@@ -297,9 +304,10 @@
             dateValue.val($.trim(dateValue.val()));
     	
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
+        $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
-        	$("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        	$("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
+            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+            $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
         }
         var liabilityStatus = $("#liabilityStatus").val();
         var validationCheck=false;
@@ -310,7 +318,9 @@
         }else{
             validationCheck=true;
         }
-         
+        
+        var subscriberFullLiability = <s:property value="subscriberFullLiability"/>;
+
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
@@ -318,16 +328,21 @@
             });
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
                 required: true,
-                messages: {required: "You must enter  'Supporting Rejection Notes'"}
+                messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
             
             if(validationCheck){
                 supportingLiabilityCheck(liabilityStatus);
             }
-        }else if(action=='acknowledgeClaim' && validationCheck){
+        }else if(action=='acknowledgeClaim' && subscriberFullLiability){
 
-            supportingLiabilityCheck(liabilityStatus);
-        
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                mustBeFullLiabilityAcepted: true,
+                messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
+            });                
+            
+        }else if(action=='acknowledgeClaim' && validationCheck){
+            supportingLiabilityCheck(liabilityStatus);            
         }else if(action=='referEng' && validationCheck){
 
             supportingLiabilityCheck(liabilityStatus);
@@ -356,7 +371,7 @@
         }
         
         if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == '')
-          	$("#reasonOfRejectionId option[value='']").val(-1)
+            $("#reasonOfRejectionId option[value='']").val(-1)
     } 
 
     function supportingLiabilityCheck(liabilityStatus){
@@ -375,13 +390,13 @@
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
             });
         }
-        if (  liabilityStatus ==4  ){
+        if (  liabilityStatus == 4  ){
             $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Repudiated'"}
             });
         }
-        if ( liabilityStatus==5 ){
+        if ( liabilityStatus == 5 ){
             $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Split'"}
@@ -392,7 +407,7 @@
 
     function isLiabilityDisputed(){
         var liabilityStatus = $("#liabilityStatus").val();
-        if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 ){
+        if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus == 4 ){
             return true;
         }
         return false;
@@ -480,8 +495,8 @@
         var y = matches[3];
         var composedDate = new Date(y, m, d);
         return composedDate.getDate() == d &&
-                composedDate.getMonth() == m &&
-                composedDate.getFullYear() == y;
+            composedDate.getMonth() == m &&
+            composedDate.getFullYear() == y;
     }
     
 </script>

@@ -61,6 +61,8 @@ public interface ClaimService extends DataService {
     public String getDaysWithInsurerForReview(int id);
 
     public int getSubscriberClaimDays(int id);
+
+    public int getSubscriberClaimRejects(int id);
     
     public String getDaysAwaitingLiabilityResolution(int id);
 

@@ -84,11 +84,13 @@ public class UpdateLiability extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("claim status " + claim.getLiabilityStatus());
-        if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && !ClaimType.isInsurerVsInsurer(claim.getClaimType()) &&
-            ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
-             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
-             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))
-             && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+        if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL
+                && !ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                && !ClaimType.isSubscriber(claim.getClaimType())
+                && ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
+                        || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
+                        || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))
+                && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         }
     }

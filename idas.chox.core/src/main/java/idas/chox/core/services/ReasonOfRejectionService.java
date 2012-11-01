@@ -17,5 +17,7 @@ public interface ReasonOfRejectionService {
     public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection);
     
     public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection);
+    
+    public boolean isSubscriberClaimRejected (ReasonOfRejection reasonOfRejection);
 
 }

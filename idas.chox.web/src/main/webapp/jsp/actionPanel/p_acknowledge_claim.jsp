@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ include file="s_liability_validation.jspf" %>
+
 <script type="text/javascript">
 $(function(){
 
@@ -43,14 +44,15 @@ function refreshDesc(id){
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
-               
-               <%--  <input name="currentVersion" type="hidden" value="<s:property value="version" />" /> --%>
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
                     <div class="status-info">
-                        <s:if test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                        <s:if test="updatedByEng">
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
+                        <s:elseif test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                        </s:elseif>
                         <s:elseif test="!insurerIsEngineersEnabled && !insurerIsFnolEnabled">
                             Please enter details of the claim and decide whether to acknowledge the claim or set the claim to pending. You can enter public notes in the ‘Claim Review Notes’ box in order to communicate detailed comments you may have for the CHO.
                         </s:elseif>
@@ -77,9 +79,7 @@ function refreshDesc(id){
                                 <td>
                                     <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
                                 </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
+                                <td colspan="2"></td>
 
                             </tr>
 
@@ -90,36 +90,25 @@ function refreshDesc(id){
                                     </label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
-                                <!--
-                                <td><div id="liabilityStatusDropDownDiv" ></div></td>
-                                -->
                                 <td>
                                     <s:select
                                         id="liabilityStatus"
                                         name="liabilityStatus"
                                         list="liabilityStatusDropDownMap"
                                         emptyOption="false"
-                                        value="liabilityStatus.getLiablityValue()"
-
-                                        >
-                                    </s:select>
+                                        value="liabilityStatus.getLiablityValue()"/>
                                 </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Liability Percentage Agreed (<b>Insurer</b>)</label>
-
+                                    <label>Liability Percentage Agreed (<b>Insurer</b>)</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
-                                    <label>
-                                        Liability Percentage Agreed (<b>CHO</b>)</label>
+                                    <label>Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
@@ -130,9 +119,7 @@ function refreshDesc(id){
                                     <label>Date Liability Agreed</label>
                                 </td>
                                 <td><div id="liabilityAgreedDateDiv"></div></td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr valign="top">
                                 <td>
@@ -144,20 +131,16 @@ function refreshDesc(id){
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Indemnity Value</label>
+                                    <label>Indemnity Value</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId"value="<s:property value="indemnityAmount" />"/>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
                                 </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>
-                                        Invoice Review Required?</label>
+                                    <label>Invoice Review Required?</label>
                                 </td>
                                 <td>
                                     <s:checkbox id="ACisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
@@ -204,19 +187,23 @@ function refreshDesc(id){
                                                 disabled="true"
                                                 emptyOption="false">
                                             </s:select>
-
                                         </s:else>
                                     </div>
                                 </td>
                             </tr>
-                            <s:if test="rejectButtonEnabled">
                             <tr>
-                            <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+                                 <s:if test="rejectButtonEnabled">
+                                    <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
 			                        <td colspan="3">
 			                            <div id="rejectionDescJspfId"/>
 			                        </td>
+                                </s:if>
+                                <s:else>
+			                        <td colspan="4">
+			                            <div id="rejectionDescJspfId" style="visibility:hidden"/>
+			                        </td>
+                                </s:else>
                             </tr>
-                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -227,19 +214,19 @@ function refreshDesc(id){
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
                                     <s:if test="rejectButtonEnabled">
-                                        <input type="button" id="ACRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                        <input type="button" id="ACRejectButtonId" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
                                     </s:if>
                                     <s:else>
-                                        <input type="button" id="ACRejectButtonId"value="Reject" disabled="disabled" />
+                                        <input type="button" id="ACRejectButtonId" value="Reject" disabled="disabled" />
                                     </s:else>
                                     <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>
-                                    <s:if test="insurerIsFnolEnabled">
+                                    <s:if test="insurerIsFnolEnabled && !updatedByEng">
                                         <input type="button" id="ACReferToFnolButtonId" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
                                     </s:if>
-                                    <input type="button" id="ACClaimPendingButtonId"value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                    <input type="button" id="ACClaimPendingButtonId" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>
@@ -253,4 +240,3 @@ function refreshDesc(id){
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>
-
