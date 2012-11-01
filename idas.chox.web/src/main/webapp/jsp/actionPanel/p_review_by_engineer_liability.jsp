@@ -152,7 +152,7 @@
                             <tr valign="top">
                                 <td>
                                     <s:if test="insurerIsDisablePrivateNotes">
-                                        <label>Claim Review Notes (public)</label>
+                                        <label>Claim Review Notes (Public)</label>
                                     </s:if>
                                     <s:else>
                                         <label>Claim Review Notes</label>
