@@ -114,7 +114,7 @@ public class LookupItemTest {
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(reasonOfRejectionService);
 
-        List reasonOfRejections = reasonOfRejectionService.getInsurerReasonsOfRejection(3, null, null, null);
+        List reasonOfRejections = reasonOfRejectionService.getInsurerReasonsOfRejection(3, null, null, null, null);
         System.out.println(reasonOfRejections.size());
         Assert.assertTrue(reasonOfRejections.size() > 0);
     }

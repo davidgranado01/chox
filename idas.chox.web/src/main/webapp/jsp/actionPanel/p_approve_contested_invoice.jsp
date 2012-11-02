@@ -16,7 +16,7 @@
             },
             messages: {
                 appContInvReasonOfRejectionId:{
-                    required:"You must select reason of rejection"
+                    required:"You must select 'Reason Of Rejection'"
                 }
             }
         });
@@ -87,13 +87,13 @@
     });
     
     function refreshDesc(id){
-    	reasonOfRejectionDescStore.each(function(rec) {
-    		if(id == rec.json.text){
-    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    		}
-    	});
-    	if(id == -1 || id == '')
-    		Ext.getCmp('rejecDescId').setValue("");
+        reasonOfRejectionDescStore.each(function(rec) {
+            if(id == rec.json.text){
+                Ext.getCmp('rejecDescId').setValue(rec.json.value);
+            }
+        });
+        if(id == -1 || id == '')
+            Ext.getCmp('rejecDescId').setValue("");
     }
     
 </script>
@@ -118,13 +118,13 @@
                     <table>
                         <tr>
                             <td width="30%" nowrap>
-                                <label>Reason for Rejection</label>
+                                <label>Reason For Rejection</label>
                             </td>
                             <td>
                                 <s:select name="reasonOfRejectionId" id="appContInvReasonOfRejectionId"
                                           list="reasonOfInvoiceRejections"
                                           listKey="id"
-                                          listValue="name"
+                                          listValue="rorName"
                                           onchange="refreshDesc(this.value)"
                                           headerKey=""
                                           headerValue="N/A"
@@ -134,9 +134,9 @@
                         </tr>
                         <tr>
                         <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-	                        <td>
-	                            <div id="rejectionDescId"/>
-	                        </td>
+                            <td>
+                                <div id="rejectionDescId"/>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">

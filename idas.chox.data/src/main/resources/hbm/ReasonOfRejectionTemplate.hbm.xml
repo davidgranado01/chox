@@ -9,7 +9,6 @@
 		</generator>
 	</id>
     <property column="name" name="name"/>
-    <property column="status" name="status"/>
     <property column="restricted" name="restricted"/>
     <property column="type" name="type"/>
     <property column="description" name="description"/>

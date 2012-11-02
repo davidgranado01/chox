@@ -32,7 +32,7 @@ public class InvoiceRejection extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (getReasonOfRejection() != null) {
-            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
             if(rejectionDescription != null && !rejectionDescription.equals(""))
             	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
         }

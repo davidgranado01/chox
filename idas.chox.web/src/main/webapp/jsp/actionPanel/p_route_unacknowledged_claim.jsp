@@ -63,29 +63,29 @@
     });
 
     function validateRejectionComboBox(){
-    	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
-    	msgBox.text("");
-    	if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
-    		if($("#reasonOfRejectionId").val() == "-1")
-    			msgBox.text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+        var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
+        msgBox.text("");
+        if ($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+            if($("#reasonOfRejectionId").val() == "-1")
+                msgBox.text("You must choose a 'Reason For Rejection'").append('<br/>').show();
             if($("#rejecDescId").val() == "" && msgBox.text().indexOf("Supporting Rejection Notes") == -1 )
-            	msgBox.append("You must enter 'Supporting Rejection Notes'").show();     
-    		return false;
-    	} else {
-    		msgBox.text("").show();
-    		return true;
-    	}
+                msgBox.append("You must enter 'Supporting Rejection Notes'").show();     
+            return false;
+        } else {
+            msgBox.text("").show();
+            return true;
+        }
     }
     
     function validateWorkgroupComboBox(){
-    	var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
-    	if ($("#workgroupComboId").val() == "--- Please Select ---") {
-    		msgBox.text("You must select a 'Workgroup'").show();
-    		return false;
-    	} else {
-    		msgBox.text("").show();
-    		return true;
-    	}
+        var msgBox = $("#RouteUnacknowledgedUnroutedClaimMessageBox");
+        if ($("#workgroupComboId").val() == "--- Please Select ---") {
+            msgBox.text("You must select a 'Workgroup'").show();
+            return false;
+        } else {
+            msgBox.text("").show();
+            return true;
+        }
     }
     
     function doClaimUnacknowledgedFormSubmit(action){
@@ -116,13 +116,13 @@
     });
     
     function refreshDesc(id){
-    	reasonOfRejectionDescStore.each(function(rec) {
-    		if(id == rec.json.text){
-    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    		}
-    	});
-    	if(id == -1 || id == '')
-    		Ext.getCmp('rejecDescId').setValue("");
+        reasonOfRejectionDescStore.each(function(rec) {
+            if(id == rec.json.text){
+                Ext.getCmp('rejecDescId').setValue(rec.json.value);
+            }
+        });
+        if(id == -1 || id == '')
+            Ext.getCmp('rejecDescId').setValue("");
     }
 
 </script>
@@ -135,7 +135,7 @@
                 <div class="status-info">
                     Please select the 'Workgroup' in order to route the claim to the relevant handling team.<br>
                     <s:if test="rejectButtonEnabled">
-                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                     </s:if>
                     <s:else>
                         This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
@@ -157,7 +157,7 @@
                         </tr>
                         <tr>
                             <td width="10%" align="right">
-                                <label >Reason for Rejection</label>
+                                <label >Reason For Rejection</label>
                             </td>
                             <td width="20%" align="left">
                                 <div id="ReasonOfRejectionDiv">
@@ -167,7 +167,7 @@
                                             id="reasonOfRejectionId"
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
-                                            listValue="name"
+                                            listValue="rorName"
                                             onchange="refreshDesc(this.value)"
                                             headerKey="-1"
                                             headerValue="N/A"
@@ -180,7 +180,7 @@
                                             id="reasonOfRejectionId"
                                             list="reasonOfClaimRejectionsRestricted"
                                             listKey="id"
-                                            listValue="name"
+                                            listValue="rorName"
                                             onchange="refreshDesc(this.value)"
                                             headerKey="-1"
                                             disabled="true"
@@ -196,12 +196,12 @@
                         <s:if test="rejectButtonEnabled">
                         <tr>
                         <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-	                        <td>
-	                            <div id="rejectionDescId"/>
-	                        </td>
-						</tr>
-						</s:if>
-						<tr>
+                            <td>
+                                <div id="rejectionDescId"/>
+                            </td>
+                        </tr>
+                        </s:if>
+                        <tr>
                             <td colspan="3">
                                 <div class="no-format">
                                     <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>

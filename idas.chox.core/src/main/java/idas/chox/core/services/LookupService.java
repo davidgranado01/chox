@@ -20,11 +20,11 @@ public interface LookupService {
 
     public String getVehicleClassName(int id);
     
-    public List getClaimRejectionReason(int insurerId);
+    public List getClaimRejectionReason(int insurerId, String claimType);
 
-    public List getClaimRejectionRestrictedReason(int insurerId);
+    public List getClaimRejectionRestrictedReason(int insurerId, String claimType);
     
-    public List getInvoiceRejectionReason(int insurerId);
+    public List getInvoiceRejectionReason(int insurerId, String claimType);
 
     public List getNonProvisionReason();
 

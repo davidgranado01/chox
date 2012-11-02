@@ -6,21 +6,29 @@ import idas.chox.core.util.DateHelper;
 public class ReasonOfRejectionViewData {
     
     private int id;
-    private String name;
+    private String rorName;
     private String createdDate;
     private String description;
     private String type;
-    private boolean status;
+    private boolean gtaActive;
+    private boolean insurerVsInsurerActive;
+    private boolean subscriberActive;
+    private boolean insurerUploadActive;
+    private boolean tpiActive;
     private boolean restricted;
     
     public ReasonOfRejectionViewData(ReasonOfRejection object) {
         this.id = object.getId();
-        this.name = object.getName();
+        this.rorName = object.getRorName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.description = object.getDescription();
         this.type = object.getType();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
-        this.status = object.isStatus();
+        this.gtaActive = object.isGtaActive();
+        this.insurerVsInsurerActive = object.isInsurerVsInsurerActive();
+        this.subscriberActive = object.isSubscriberActive();
+        this.insurerUploadActive = object.isInsurerUploadActive();
+        this.tpiActive = object.isTpiActive();
         this.restricted = object.isRestricted();
     }
     public int getId() {
@@ -29,11 +37,11 @@ public class ReasonOfRejectionViewData {
     public void setId(int id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public String getRorName() {
+        return rorName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setRorName(String name) {
+        this.rorName = name;
     }
     public String getCreatedDate() {
         return createdDate;
@@ -53,17 +61,41 @@ public class ReasonOfRejectionViewData {
     public void setType(String type) {
         this.type = type;
     }
-    public boolean isStatus() {
-        return status;
-    }
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
     public boolean isRestricted() {
         return restricted;
     }
     public void setRestricted(boolean restricted) {
         this.restricted = restricted;
+    }
+    public boolean isGtaActive() {
+        return gtaActive;
+    }
+    public void setGtaActive(boolean gtaActive) {
+        this.gtaActive = gtaActive;
+    }
+    public boolean isInsurerVsInsurerActive() {
+        return insurerVsInsurerActive;
+    }
+    public void setInsurerVsInsurerActive(boolean insurerVsInsurerActive) {
+        this.insurerVsInsurerActive = insurerVsInsurerActive;
+    }
+    public boolean isSubscriberActive() {
+        return subscriberActive;
+    }
+    public void setSubscriberActive(boolean subscriberActive) {
+        this.subscriberActive = subscriberActive;
+    }
+    public boolean isInsurerUploadActive() {
+        return insurerUploadActive;
+    }
+    public void setInsurerUploadActive(boolean insurerUploadActive) {
+        this.insurerUploadActive = insurerUploadActive;
+    }
+    public boolean isTpiActive() {
+        return tpiActive;
+    }
+    public void setTpiActive(boolean tpiActive) {
+        this.tpiActive = tpiActive;
     }
 
 }

@@ -8,7 +8,7 @@ public interface ReasonOfRejectionService {
 
     public ReasonOfRejection getReasonOfRejection(int reasonOfRejectionId);
 
-    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, Boolean status, Boolean restricted);
+    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, String activeType ,  Boolean status, Boolean restricted);
 
     public int getInvoiceLiabilityDisputeReasonId(int insurerId);
 

@@ -55,7 +55,7 @@ function refreshDesc(id){
                             Please enter details of the claim and decide whether to acknowledge the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:else>
                         <s:if test="rejectButtonEnabled">
-                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                         </s:if>
                         <s:else>
                             This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
@@ -166,7 +166,7 @@ function refreshDesc(id){
                             </tr>
                             <tr valign="top">
                                 <td>
-                                    <label>Reason for Rejection</label>
+                                    <label>Reason For Rejection</label>
                                 </td>
                                 <td colspan="3">
                                     <div id="ReasonOfRejectionDiv">
@@ -176,7 +176,7 @@ function refreshDesc(id){
                                                 id="reasonOfRejectionId"
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
-                                                listValue="name"
+                                                listValue="rorName"
                                                 onchange="refreshDesc(this.value)"
                                                 headerKey=""
                                                 headerValue="N/A"
@@ -188,7 +188,7 @@ function refreshDesc(id){
                                                 id="reasonOfRejectionId"
                                                 list="reasonOfClaimRejections"
                                                 listKey="id"
-                                                listValue="name"
+                                                listValue="rorName"
                                                 onchange="refreshDesc(this.value)"
                                                 headerKey=""
                                                 disabled="true"
@@ -200,12 +200,12 @@ function refreshDesc(id){
                             </tr>
                             <s:if test="rejectButtonEnabled">
                             <tr>
-	                        	<td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-		                        <td colspan="3">
-		                            <div id="rejectionDescJspfId"/>
-		                        </td>
-							</tr>
-							</s:if>
+                                <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+                                <td colspan="3">
+                                    <div id="rejectionDescJspfId"/>
+                                </td>
+                            </tr>
+                            </s:if>
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">

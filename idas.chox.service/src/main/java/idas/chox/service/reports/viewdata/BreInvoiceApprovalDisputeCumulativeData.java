@@ -57,7 +57,7 @@ public class BreInvoiceApprovalDisputeCumulativeData {
         if (result.getNoInvoicesApprovedByBusinessRulesDisputedCumm().intValue() != 0) {
             Map<Integer, BigDecimal> drorMap = new HashMap<Integer, BigDecimal>();
             for (ReasonOfRejection ror : reasonsOfRejection) {
-                drorMap.put(ror.getId(), new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_" + ror.getName().toLowerCase())) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
+                drorMap.put(ror.getId(), new BigDecimal(getIntegerValue(data.get("invoice_disputed_due_to_" + ror.getRorName().toLowerCase())) * 1.0 / result.getNoInvoicesApprovedByBusinessRulesDisputedCumm()).setScale(2, RoundingMode.HALF_UP));
             }
             result.setDisputedApprovalReasonsMap(drorMap);
         }

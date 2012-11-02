@@ -4,12 +4,16 @@ import java.io.Serializable;
 
 public class ReasonOfRejection extends Entity implements Serializable {
 
-    private String name;
+    private String rorName;
     private String type;
     private String description;
     private Insurer insurer;
-    private boolean status;
     private boolean restricted;
+    private boolean gtaActive;
+    private boolean insurerVsInsurerActive;
+    private boolean subscriberActive;
+    private boolean insurerUploadActive;
+    private boolean tpiActive;
     
     public static final String TYPE_CLAIM = "Claim";
     public static final String TYPE_INVOICE = "Invoice";
@@ -17,20 +21,12 @@ public class ReasonOfRejection extends Entity implements Serializable {
     public ReasonOfRejection() {
     }
 
-    public String getName() {
-        return name;
+    public String getRorName() {
+        return rorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setRorName(String name) {
+        this.rorName = name;
     }
 
     public String getType() {
@@ -64,4 +60,44 @@ public class ReasonOfRejection extends Entity implements Serializable {
 	public void setInsurer(Insurer insurer) {
 		this.insurer = insurer;
 	}
+
+    public boolean isGtaActive() {
+        return gtaActive;
+    }
+
+    public void setGtaActive(boolean gtaActive) {
+        this.gtaActive = gtaActive;
+    }
+
+    public boolean isInsurerVsInsurerActive() {
+        return insurerVsInsurerActive;
+    }
+
+    public void setInsurerVsInsurerActive(boolean insurerVsInsurerActive) {
+        this.insurerVsInsurerActive = insurerVsInsurerActive;
+    }
+
+    public boolean isSubscriberActive() {
+        return subscriberActive;
+    }
+
+    public void setSubscriberActive(boolean subscriberActive) {
+        this.subscriberActive = subscriberActive;
+    }
+
+    public boolean isInsurerUploadActive() {
+        return insurerUploadActive;
+    }
+
+    public void setInsurerUploadActive(boolean insurerUploadActive) {
+        this.insurerUploadActive = insurerUploadActive;
+    }
+
+    public boolean isTpiActive() {
+        return tpiActive;
+    }
+
+    public void setTpiActive(boolean tpiActive) {
+        this.tpiActive = tpiActive;
+    }
 }

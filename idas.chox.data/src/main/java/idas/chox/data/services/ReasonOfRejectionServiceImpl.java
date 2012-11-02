@@ -25,16 +25,16 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     }
 
     @Override
-    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, Boolean status, Boolean restricted) {
+    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, String activeType, Boolean status,  Boolean restricted) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class);
         if(type != null)
         	criteria.add(Restrictions.eq("type", type));
-        if(status != null)
-        	criteria.add(Restrictions.eq("status", status));
+        if(status != null && activeType != null)
+        	criteria.add(Restrictions.eq(activeType, status));
         if(restricted != null)
         	criteria.add(Restrictions.eq("restricted", restricted));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.addOrder(Order.asc("name"));
+        criteria.addOrder(Order.asc("rorName"));
         return findByCriteria(criteria);
     }
 
@@ -42,7 +42,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     public int getInvoiceLiabilityDisputeReasonId(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.add(Restrictions.eq("name", "Liability Dispute")).add(Restrictions.eq("type", "Invoice"));
+        criteria.add(Restrictions.eq("rorName", "Liability Dispute")).add(Restrictions.eq("type", "Invoice"));
         ReasonOfRejection reason = (ReasonOfRejection)getByCriteria(criteria);
         return reason.getId();
     }
@@ -59,9 +59,8 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
             reasonOfRejection.setInsurer(insurer);
             reasonOfRejection.setLastModifiedBy(ror.getLastModifiedBy());
             reasonOfRejection.setLastModifiedDate(DateHelper.getCurrentDate());
-            reasonOfRejection.setName(ror.getName());
+            reasonOfRejection.setRorName(ror.getName());
             reasonOfRejection.setRestricted(ror.isRestricted());
-            reasonOfRejection.setStatus(ror.isStatus());
             reasonOfRejection.setType(ror.getType());
             reasonOfRejection.setVersion(0);
             saveReasonOfRejection(reasonOfRejection);

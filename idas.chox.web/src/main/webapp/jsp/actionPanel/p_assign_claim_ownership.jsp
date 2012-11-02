@@ -147,7 +147,7 @@
             workgroupStore.load({ params : {"orgId":insurerId}});
             workgroupCombo.setValue(selectedWorkgroupId);
         }
- 	
+     
         // PREPARE RECORDS
         if ($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
             claimOwnerId = $("#claimClaimOwnerId").val();
@@ -191,49 +191,49 @@
     }
     
     function validateComboBox(){
-    	var mesBox = $("#OwnershippAssignmentMessageBox");
-    	mesBox.empty();
-    	if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
-    		mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
-    		return false;
-    	} else if ($("#workgroupComboId").val() == "--- Please Select ---") {
-    		mesBox.append("You must supply a value for 'Work Group'\n<br/>").show();
-    		return false;
-    	} else {
-    		mesBox.text("").show();
-    		return true;
-    	}
-    		
+        var mesBox = $("#OwnershippAssignmentMessageBox");
+        mesBox.empty();
+        if ($("#claimOwnerComboId").val() == "--- Please Select ---") {
+            mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
+            return false;
+        } else if ($("#workgroupComboId").val() == "--- Please Select ---") {
+            mesBox.append("You must supply a value for 'Work Group'\n<br/>").show();
+            return false;
+        } else {
+            mesBox.text("").show();
+            return true;
+        }
+            
     }
     
     function doAssignOwnershipToFnolSubmit(){
-    	var coh = $("[name='claimOwnerId']");
-    	var mesBox = $("#OwnershippAssignmentMessageBox");
-    	if (coh.val() == "")
-    		coh.val(-1);
-    	actionPanel.registerAction("referFNOL");
-    	 if ($("#workgroupComboId").val() != "--- Please Select ---") {
-    		 mesBox.text("").show();
-         	Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-         	$("#formOwnershipAssignmentAction").submit();
+        var coh = $("[name='claimOwnerId']");
+        var mesBox = $("#OwnershippAssignmentMessageBox");
+        if (coh.val() == "")
+            coh.val(-1);
+        actionPanel.registerAction("referFNOL");
+         if ($("#workgroupComboId").val() != "--- Please Select ---") {
+             mesBox.text("").show();
+             Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+             $("#formOwnershipAssignmentAction").submit();
          } else {
-        	 mesBox.text("You must supply a value for 'Work Group'").show();
+             mesBox.text("You must supply a value for 'Work Group'").show();
          }
-    	
+        
     }
     
     function doAssignOwnershipRejectSubmit(){
-    	actionPanel.registerAction("rejectClaim");
-    	$("#OwnershippAssignmentMessageBox").text("");
-	    	if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
-	    		 if($("#reasonOfRejectionId").val() == "-1")
-	    		    $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
+        actionPanel.registerAction("rejectClaim");
+        $("#OwnershippAssignmentMessageBox").text("");
+            if($("#reasonOfRejectionId").val() == "-1" || $("#rejecDescId").val() == "" ) {
+                 if($("#reasonOfRejectionId").val() == "-1")
+                    $("#OwnershippAssignmentMessageBox").text("You must choose a 'Reason For Rejection'").append('<br/>').show();
                  if($("#rejecDescId").val() == "" && $("#OwnershippAssignmentMessageBox").text().indexOf("Supporting Rejection Notes") == -1 )
-                	    $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
+                        $("#OwnershippAssignmentMessageBox").append("You must enter 'Supporting Rejection Notes'").show();             
             } else {
-	    		$("#OwnershippAssignmentMessageBox").text("").show();
-	    		Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
-	    	}
+                $("#OwnershippAssignmentMessageBox").text("").show();
+                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+            }
     }
     
     function rejectClaim(btn) {
@@ -244,12 +244,12 @@
     }
 
     function doAssignOwnershipSubmit(){
-    	actionPanel.registerAction("assignOwner");
-    	if (validateComboBox()) {
-			Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
-			$("#formOwnershipAssignmentAction").submit();
-    	}
-	}
+        actionPanel.registerAction("assignOwner");
+        if (validateComboBox()) {
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+            $("#formOwnershipAssignmentAction").submit();
+        }
+    }
     
     var reasonOfRejectionDescReader = new Ext.data.JsonReader({
         fields:[{name:'id'},{name:'description'}]
@@ -261,13 +261,13 @@
     });
     
     function refreshDesc(id){
-    	reasonOfRejectionDescStore.each(function(rec) {
-    		if(id == rec.json.text){
-    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    		}
-    	});
-    	if(id == -1 || id == '')
-    		Ext.getCmp('rejecDescId').setValue("");
+        reasonOfRejectionDescStore.each(function(rec) {
+            if(id == rec.json.text){
+                Ext.getCmp('rejecDescId').setValue(rec.json.value);
+            }
+        });
+        if(id == -1 || id == '')
+            Ext.getCmp('rejecDescId').setValue("");
     }
 
 </script>
@@ -305,7 +305,7 @@
                                 Please assign the claim owner for this claim and click on the 'Assign Owner' button.<br>
                             </s:else>
                             <s:if test="rejectButtonEnabled">
-                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                             </s:if>
                             <s:else>
                                 This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
@@ -327,7 +327,7 @@
                                 </tr>
                                 <tr>
                                     <td align="right" width="10%">
-                                        <label >Reason for Rejection</label>
+                                        <label >Reason For Rejection</label>
                                     </td>
                                     <td align="left" width="20%">
                                         <div id="ReasonOfRejectionDiv">
@@ -337,7 +337,7 @@
                                                     id="reasonOfRejectionId"
                                                     list="reasonOfClaimRejectionsRestricted"
                                                     listKey="id"
-                                                    listValue="name"
+                                                    listValue="rorName"
                                                     headerKey="-1"
                                                     onchange="refreshDesc(this.value)"
                                                     headerValue="N/A"
@@ -350,7 +350,7 @@
                                                     id="reasonOfRejectionId"
                                                     list="reasonOfClaimRejectionsRestricted"
                                                     listKey="id"
-                                                    listValue="name"
+                                                    listValue="rorName"
                                                     headerKey="-1"
                                                     headerValue="N/A"
                                                     onchange="refreshDesc(this.value)"
@@ -365,9 +365,9 @@
                                 <s:if test="rejectButtonEnabled">
                                 <tr>
                                 <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-			                        <td>
-			                            <div id="rejectionDescId"/>
-			                        </td>
+                                    <td>
+                                        <div id="rejectionDescId"/>
+                                    </td>
                                 </tr>
                                 </s:if>
                                 <tr>
