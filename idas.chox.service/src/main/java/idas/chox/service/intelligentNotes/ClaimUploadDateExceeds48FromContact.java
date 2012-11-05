@@ -2,8 +2,10 @@ package idas.chox.service.intelligentNotes;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 
@@ -19,11 +21,10 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
         Boolean showing = false;
 
         /* Claim Rule:
-               if the claim upload date is greater than 48 hours after the
-               policy holder contact date then display the message (Saturdays
-               and Sundays excluded)
+         *      if the claim upload date is greater than 48 hours after the
+         *      policy holder contact date then display the message (Saturdays
+         *      and Sundays excluded)
          */
-//        int diffInDays = (int) ((c.getCreatedDate().getTime() - c.getPolicyHolderContactDate().getTime())/(1000*60*60*24));
         long diffInDays = daysBetween(c.getPolicyHolderContactDate(), c.getCreatedDate());
         if (diffInDays >= 2) {
             LOG.debug("Adding ClaimUploadDateExceeds48FromContact intelligent note (difference is {} days.", diffInDays);
@@ -33,11 +34,13 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
         return showing;
     }
 
+    
     @Override
     public String getNote() {
         return "The notification of this claim is over 48 hours from the date the non-fault party was contacted.";
     }
 
+    
     private static long daysBetween(Date startDate, Date endDate) {
         LOG.debug("Calculating daysBetween '{}' and '{}'", startDate, endDate);
         Calendar start = Calendar.getInstance(); start.setTime(startDate);

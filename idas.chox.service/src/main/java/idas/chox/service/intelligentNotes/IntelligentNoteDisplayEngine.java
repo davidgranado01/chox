@@ -28,8 +28,9 @@ public class IntelligentNoteDisplayEngine {
                 }
             }
         }
-        else
+        else {
             LOG.debug("No initelligent notes for claim due to status.");
+        }
 
         LOG.debug("Returning {} notes", intelligentNotes.size());
 
