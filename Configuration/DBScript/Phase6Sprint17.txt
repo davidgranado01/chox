@@ -1,4 +1,34 @@
 --------------------------------------------------------------------------------
+-- 6.17.1 - New Additional Notes & Minor Modifications                 --
+--------------------------------------------------------------------------------
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'notification.IntelligentNotesNotification.SubscriberClaimRejected', false, false;
+
+insert into accessibility_item(accessibility_id, role, access_right)
+select id, 'ALL', 0
+from accessibility where name='notification.IntelligentNotesNotification.SubscriberClaimRejected';
+
+insert into accessibility_item(accessibility_id, role, access_right)
+select id, 'ROLE_INS_CH', 1
+from accessibility where name='notification.IntelligentNotesNotification.SubscriberClaimRejected';
+
+insert into accessibility_item(accessibility_id, role, access_right)
+select id, 'ROLE_INS_SCR', 1
+from accessibility where name='notification.IntelligentNotesNotification.SubscriberClaimRejected';
+
+insert into accessibility_item(accessibility_id, role, access_right)
+select id, 'ROLE_INS_MNG', 1
+from accessibility where name='notification.IntelligentNotesNotification.SubscriberClaimRejected';
+
+
+
+----------------------
+--  End of 6.17.1   --
+----------------------
+
+
+
+--------------------------------------------------------------------------------
 -- 6.17.3 - New Business Rule: Maximum Labour Rate                            --
 --------------------------------------------------------------------------------
 ALTER TABLE bre_band ADD COLUMN maximum_labour_rate_check boolean not null default false;
