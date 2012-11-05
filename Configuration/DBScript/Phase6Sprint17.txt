@@ -1847,8 +1847,59 @@ GRANT ALL ON sequence insurer_intelligent_note_id_seq TO chox_user;
 -- bug#2176 - Production - More than 2 decimal places are allowed on cost     --
 --            fields when uploading invoice                                   --
 --------------------------------------------------------------------------------
+
+DROP VIEW rpt_claim_invoice;
+DROP VIEW rpt_all_claim_with_invoice;
+
 ALTER TABLE invoice ALTER COLUMN hire_rate_charged_per_day TYPE numeric(10,2);
 ALTER TABLE invoice_original ALTER COLUMN hire_rate_charged_per_day TYPE numeric(10,2);
+
+----------------------
+--  End of bug#2176 --
+----------------------
+
+
+--------------------------------------------------------------------------------
+-- bug#2206 - Production : claim_status column in the      --
+--            web_bordereau table needs bigger size        --
+--------------------------------------------------------------------------------
+
+DROP VIEW vw_claim_weekly_summary;
+DROP VIEW vw_claim_monthly_summary;
+DROP VIEW rpt_claim_audit_trail;
+
+ALTER TABLE audit_trail ALTER COLUMN original_status TYPE character varying(40); 
+ALTER TABLE audit_trail ALTER COLUMN new_status TYPE character varying(40);
+ALTER TABLE bordereau ALTER COLUMN status TYPE character varying(40);
+ALTER TABLE claim ALTER COLUMN status TYPE character varying(40); 
+ALTER TABLE claim ALTER COLUMN previous_status TYPE character varying(40);
+ALTER TABLE web_bordereau ALTER COLUMN claim_status TYPE character varying(40); 
+
+
+CREATE OR REPLACE VIEW vw_claim_weekly_summary AS 
+ SELECT sqlgetdayofweek() AS start_date, date(now()) AS end_date, claim.insurer_id, claim.chorganisation_id, audit.new_status AS status, count(*) AS w_count, 0 AS m_count, 0 AS a_count, count(invoice.id) AS w_inv_count, 0 AS m_inv_count, 0 AS a_inv_count, 
+        CASE
+            WHEN sum(invoice.total_to_pay) IS NULL THEN 0::numeric
+            ELSE sum(invoice.total_to_pay)
+        END AS w_total_to_pay, 0 AS m_total_to_pay, 0 AS a_total_to_pay, 
+        CASE
+            WHEN sum(invoice.total_penalty_charge) IS NULL THEN 0::numeric
+            ELSE sum(invoice.total_penalty_charge)
+        END AS w_penalty_charge, 0 AS m_penalty_charge, 0 AS a_penalty_charge
+   FROM audit_trail audit
+   JOIN ( SELECT a.claim_id, max(a.update_date) AS max_update_date
+           FROM audit_trail a
+          WHERE date(a.update_date) >= sqlgetdayofweek() AND date(a.update_date) <= date(now()) AND a.reverted = false
+          GROUP BY a.claim_id) max_audit ON audit.claim_id = max_audit.claim_id AND audit.update_date = max_audit.max_update_date
+   JOIN claim claim ON audit.claim_id = claim.id AND audit.reverted = false
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id
+  WHERE NOT (EXISTS ( SELECT a.id, a.update_date, a.user_id, a.claim_id, a.original_status, a.new_status, a.created_by, a.created_date, a.last_modified_by, a.last_modified_date, a.claim_reason_of_rejection, a.invoice_reason_of_rejection, a.version
+   FROM audit_trail a
+  WHERE a.reverted = false AND a.claim_id = audit.claim_id AND a.update_date = max_audit.max_update_date AND a.id > audit.id))
+  GROUP BY claim.insurer_id, claim.chorganisation_id, audit.new_status;
+
+GRANT SELECT ON TABLE vw_claim_weekly_summary TO chox_user;
+GRANT SELECT ON TABLE vw_claim_weekly_summary TO chox_mi;
 
 CREATE OR REPLACE VIEW rpt_claim_invoice AS 
  SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no,
@@ -1888,7 +1939,48 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
 GRANT SELECT ON TABLE rpt_claim_invoice TO chox_user;
 GRANT SELECT ON TABLE rpt_claim_invoice TO chox_mi;
 
+CREATE OR REPLACE VIEW vw_claim_monthly_summary AS 
+ SELECT sqlgetdayofmonth() AS start_date, date(now()) AS end_date, claim.insurer_id, claim.chorganisation_id, audit.new_status AS status, 0 AS w_count, count(*) AS m_count, 0 AS a_count, 0 AS w_inv_count, count(invoice.id) AS m_inv_count, 0 AS a_inv_count, 0 AS w_total_to_pay, 
+        CASE
+            WHEN sum(invoice.total_to_pay) IS NULL THEN 0::numeric
+            ELSE sum(invoice.total_to_pay)
+        END AS m_total_to_pay, 0 AS a_total_to_pay, 0 AS w_penalty_charge, 
+        CASE
+            WHEN sum(invoice.total_penalty_charge) IS NULL THEN 0::numeric
+            ELSE sum(invoice.total_penalty_charge)
+        END AS m_penalty_charge, 0 AS a_penalty_charge
+   FROM audit_trail audit
+   JOIN ( SELECT a.claim_id, max(a.update_date) AS max_update_date
+           FROM audit_trail a
+          WHERE date(a.update_date) >= sqlgetdayofmonth() AND date(a.update_date) <= date(now()) AND a.reverted = false
+          GROUP BY a.claim_id) max_audit ON audit.claim_id = max_audit.claim_id AND audit.update_date = max_audit.max_update_date
+   JOIN claim claim ON audit.claim_id = claim.id AND audit.reverted = false
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id
+  WHERE NOT (EXISTS ( SELECT a.id, a.update_date, a.user_id, a.claim_id, a.original_status, a.new_status, a.created_by, a.created_date, a.last_modified_by, a.last_modified_date, a.claim_reason_of_rejection, a.invoice_reason_of_rejection, a.version
+   FROM audit_trail a
+  WHERE a.claim_id = audit.claim_id AND a.reverted = false AND a.update_date = max_audit.max_update_date AND a.id > audit.id))
+  GROUP BY claim.insurer_id, claim.chorganisation_id, audit.new_status;
 
+GRANT SELECT ON TABLE vw_claim_monthly_summary TO chox_user;
+GRANT SELECT ON TABLE vw_claim_monthly_summary TO chox_mi;
+
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+ SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.reverted, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, claim.claim_type, invoice.full_total_to_pay AS total_to_pay, invoice.hire_penalty_charge AS penalty_charge, invoice.id AS invoice_id, 
+        CASE
+            WHEN audit_trail.claim_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.claim_reason_of_rejection
+        END AS claim_reason_of_rejection, 
+        CASE
+            WHEN audit_trail.invoice_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.invoice_reason_of_rejection
+        END AS invoice_reason_of_rejection
+   FROM audit_trail audit_trail
+   JOIN claim claim ON claim.id = audit_trail.claim_id
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+GRANT SELECT, UPDATE, INSERT ON TABLE rpt_claim_audit_trail TO chox_user;
+GRANT SELECT ON TABLE rpt_claim_audit_trail TO chox_mi;
 
 CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
  SELECT claim.id AS claim_id, claim.workgroup_id, claim.claim_owner_id as owner,
@@ -1928,7 +2020,7 @@ CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS
 GRANT SELECT ON rpt_all_claim_with_invoice TO chox_user;
 GRANT SELECT ON rpt_all_claim_with_invoice TO chox_mi;
 
-----------------------
---  End of bug#2176 --
-----------------------
 
+----------------------
+--  End of bug#2206 --
+----------------------
