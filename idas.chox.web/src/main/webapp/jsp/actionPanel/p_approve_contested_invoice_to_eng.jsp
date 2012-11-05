@@ -15,7 +15,7 @@
             },
             messages: {
                 appContInvEngReasonOfRejectionId:{
-                    required:"You must select 'Reason Of Rejection'"
+                    required:"You must select 'Reason For Rejection'"
                 }
             }
         });

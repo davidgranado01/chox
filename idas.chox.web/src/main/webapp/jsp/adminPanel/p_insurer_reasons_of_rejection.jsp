@@ -85,7 +85,7 @@ $(function(){
             {header: "", width: 40, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>Remove</a>"}}
         ],
-        height:220,
+        height:195,
         width: 760
     });
     
@@ -288,7 +288,7 @@ function showEditReasonOfRejection(gridView){
 
     <div id="rorGridId">
         <div class="grid-view-header">
-            <table width="100%">
+            <table style="width: 100%">
                 <tr>
                     <td>
                         <div class="admin-bre-band-detail-section">
@@ -313,7 +313,7 @@ function showEditReasonOfRejection(gridView){
                                         <div id="rorDescId" style="padding-left: 12px"/>
                                     </div>
                                     <br/>
-                                    <table width="100%">
+                                    <table style="width: 100%">
                                         <tr>
                                             <td style="width: 50%">
                                                 <div style="margin-left: 165px">
@@ -375,7 +375,7 @@ function showEditReasonOfRejection(gridView){
                 </tr>
             </table>
         </div>
-        <div id="rorGridViewPanel"/>
+        <div id="rorGridViewPanel"></div>
     </div>
     
     <div id="rorEditWindow" class="x-hidden">
