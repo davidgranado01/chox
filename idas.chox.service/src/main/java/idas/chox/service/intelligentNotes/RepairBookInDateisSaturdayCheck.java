@@ -1,20 +1,15 @@
 package idas.chox.service.intelligentNotes;
 
+import java.util.Calendar;
+
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.util.DateHelper;
-import java.util.Calendar;
 
 public class RepairBookInDateisSaturdayCheck implements IntelligentNote {
 
     @Override
     public Boolean isShowingFor(Claim c) {
-
-        Boolean isStatus = false;
-        if (c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_CONTESTED) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UPDATE_BY_ENG) || c.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REF_TO_ENG)) {
-            isStatus = true;
-        }
 
         Boolean isSaturday = false;
         if (c.getHireMonitoringDetail() != null) {
@@ -23,7 +18,7 @@ public class RepairBookInDateisSaturdayCheck implements IntelligentNote {
             }
         }
 
-        Boolean showing = isStatus & isSaturday & c.getCustomer().getIsUsable();
+        Boolean showing = isSaturday & c.getCustomer().getIsUsable();
         return showing;
     }
 

@@ -11,21 +11,19 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
 
     @Override
     public Boolean isShowingFor(Claim c) {
-        /*
-        Claim Rule: If 'Comprehensive' field is N/No/False/F in the Customer Details section of CHOX on the Claim Details tab
-        then display the note below on the action panel
-        for a claim in status ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer.
+        /* Claim Rule:
+         *          If 'Comprehensive' field is N/No/False/F in the Customer
+         *          Details section of CHOX on the Claim Details tab then display
+         *          the note below on the action panel
          */
 
         //1. If ‘Comprehensive' field is N/No/False/F
         Boolean showing = (!c.getCustomer().isComprehensive()) && c.isManagingRepair();
 
-        // AND
-        // showing &= securityInfoProvider.getIsINS();
-
         return showing;
     }
 
+    
     @Override
     public String getNote() {
         return "The CHO's client does not have comprehensive insurance cover for their vehicle.";
