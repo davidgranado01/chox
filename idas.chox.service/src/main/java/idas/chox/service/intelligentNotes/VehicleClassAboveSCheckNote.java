@@ -11,9 +11,9 @@ public class VehicleClassAboveSCheckNote implements IntelligentNote {
 
         Boolean showing = false;
         VehicleClass vclass = c.getCustomer().getVehicleClass();
-        if (vclass != null)
+        if (vclass != null) {
             showing |= !(vclass.getName().toLowerCase().startsWith("s") && !vclass.getName().toLowerCase().startsWith("sp"));
-        // showing &= securityInfoProvider.getIsINS();
+        }
 
         return showing;
     }

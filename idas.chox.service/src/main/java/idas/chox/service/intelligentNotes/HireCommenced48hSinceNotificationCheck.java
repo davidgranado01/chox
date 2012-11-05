@@ -11,12 +11,12 @@ public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
 
     @Override
     public Boolean isShowingFor(Claim c) {
-        /*
-        Claim Rule:
-               This rule is only valid/executed when there is a value in the 'Hire Start' field. 
-               If there is a value then compare the Claim Upload Date with the 'Hire Start' date,
-               if the difference is more than 48 hours i.e. the hire started more than 48 hours ago
-               from the claim upload then this note should be displayed
+        /* Claim Rule:
+         *      This rule is only valid/executed when there is a value in the
+         *      'Hire Start' field. If there is a value then compare the Claim
+         *      Upload Date with the 'Hire Start' date, if the difference is more
+         *      than 48 hours i.e. the hire started more than 48 hours ago
+         *      from the claim upload then this note should be displayed
          */
         Boolean showing = false;
 
