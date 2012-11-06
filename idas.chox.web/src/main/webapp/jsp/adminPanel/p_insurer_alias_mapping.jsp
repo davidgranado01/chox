@@ -178,19 +178,17 @@
 
     <div class="grid-view-header">
         <table width="100%">
-            
             <tr>
-                 
-                <td style="width: 60%">
-                    <p class="std-label" style="margin-left: 200px">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text"/>
-                </td ><td style="width: 40%">
-                    
-                    <input style="float: left" type="button" onclick="alias_triggerStatusAddRecord();" value="Add"/>
-                    
+                <td style="width: 38%">
+                    <p class="std-label" style="float: right" >Insurer Alias: </p> 
                 </td>
-                
+                <td style="width: 24%">
+                    <input name="insurerAliasName" id="insurerAliasName" type="text"/>
+                </td>
+                <td style="width: 38%">
+                    <input style="float:left" type="button" onclick="alias_triggerStatusAddRecord();" value="Add"/>
+                </td>
             </tr>
-            
         </table>
     </div>
     <div id="CDInsurerAliasMessageBox" class="chox-form-submit-result"></div>
