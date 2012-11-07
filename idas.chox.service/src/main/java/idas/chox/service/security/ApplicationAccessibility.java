@@ -259,13 +259,20 @@ public class ApplicationAccessibility {
                     Invoice invoice = claim.getInvoice();
                     if (invoice != null) {
                         long days = invoice.getInvoicedDays();
-
-                        if (days < 31) {
+                        /*
+                         * For manual invoices always show 'Adjust Penalty
+                         * Charges' more action. 
+                         *  "7.1.2 Insurer Manual Invoice Process Updates" says - 
+                         * the age of the invoice does
+                         * not have to be over say 30 days in order to be able
+                         * to apply the penalty charges
+                         */
+                        if (days < 31 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) {
                             LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }
-                        // Check the 'Adjust Penalty Charges' Panel is not already displayed
-                        else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
+                        // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
+                        else if (invoice.getPenaltyAlertQty() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty(invoice) >= 3))) 

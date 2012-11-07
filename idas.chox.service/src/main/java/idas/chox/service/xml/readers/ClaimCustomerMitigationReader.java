@@ -1,13 +1,15 @@
 package idas.chox.service.xml.readers;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+
 import idas.chox.core.util.XMLUtils;
+import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
-import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimCustomerMitigationReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimCustomerMitigationReader.class);
@@ -69,7 +71,16 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
         LOG.debug("Processing claim customer mitigation element...");
         if (claimResult.getClaim().getCustomer() != null) {
             LOG.debug("Setting CanAccessOtherVehicle...");
-            claimResult.getClaim().getCustomer().setCanAccessOtherVehicle(XmlHelper.getBooleanFromNode(element, "access-another-vehicle"));
+            /*  
+             * For manual invoices canAccessOtherVehicle field value will be
+             * mapped to isInvoiceReviewRequired and canAccessOtherVehicle field
+             * should be left blank. (TO-DO-ITEM 7.1.2)
+             */
+            Boolean canAccessOtherVehicle = XmlHelper.getBooleanFromNode(element, "access-another-vehicle");
+            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD))
+                claimResult.getClaim().setIsInvoiceReviewRequired((canAccessOtherVehicle != null && canAccessOtherVehicle == true) ? true : false);
+            else
+                claimResult.getClaim().getCustomer().setCanAccessOtherVehicle(canAccessOtherVehicle);
             LOG.debug("Setting OtherVehicle...");
             claimResult.getClaim().getCustomer().setOtherVehicle(XmlHelper.getNodeValue(element, "other-vehicle"));
             LOG.debug("Setting OtherVehicleUsed...");

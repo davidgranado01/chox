@@ -1307,6 +1307,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsInsurerVsInsurerClaim() {
         return ClaimType.isInsurerVsInsurer(claim.getClaimType());
     }
+    
+    public boolean getIsInsurerUploadClaim() {
+        return ClaimType.isInsurerUpload(claim.getClaimType());
+    }
 
     public boolean isRejectButtonEnabled() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
