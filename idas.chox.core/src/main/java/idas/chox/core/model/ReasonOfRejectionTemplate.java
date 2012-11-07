@@ -8,7 +8,6 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
     private String type;
     private String description;
     private boolean restricted;
-    private boolean status;
 
     public ReasonOfRejectionTemplate() {
     }
@@ -19,14 +18,6 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public String getType() {

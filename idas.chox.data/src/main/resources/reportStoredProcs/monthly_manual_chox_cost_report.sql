@@ -1208,7 +1208,7 @@ SELECT 'no_claims_penalty_payments_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate - interval '10 months' , 'MM') || '-01-' || to_char(params.startDate - interval '10 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_11_month
 FROM
   (SELECT dat1 AS startDate,
-          chorganid AS chorgId,
+          choid AS chorgId,
           insid AS insurerId) params
 UNION
 SELECT 'avg_penalty_paid' AS title ,
@@ -1422,7 +1422,7 @@ SELECT 'avg_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate - interval '10 months' , 'MM') || '-01-' || to_char(params.startDate - interval '10 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_11_month
 FROM
   (SELECT dat1 AS startDate,
-          chorganid AS chorgId,
+          choid AS chorgId,
           insid AS insurerId) params
 UNION
           

@@ -25,11 +25,9 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     private static final Logger LOG = LoggerFactory.getLogger(ReasonsOfRejectionAction.class);
 
     private int insurerId = -1;
-    private String reasonOfRejectionName;
-    private String reasonOfRejectionDesc;
+    private String activeType;
     private boolean restricted;
     private String type;
-    private boolean status;
     private int reasonOfRejectionId = -1;
     private ReasonOfRejection model;
     private List<ReasonOfRejectionViewData> reasonOfRejectionViewData = new ArrayList<ReasonOfRejectionViewData>();
@@ -53,7 +51,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     
     public String getInsurersReasonsOfRejection() {
         try {
-            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasonsOfRejection(this.insurerId, null, null, null);
+            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasonsOfRejection(this.insurerId, null, null, null, null);
             for (ReasonOfRejection ror : reasonsOfRejection) {
                 reasonOfRejectionViewData.add(new ReasonOfRejectionViewData(ror));
             }
@@ -74,7 +72,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
             ror.setLastModifiedBy(getAuthenticatedUser());
-            ror.setDescription(reasonOfRejectionDesc);
+            ror.setDescription(model.getDescription());
             
             ActionResponse response;
             response = adminInsurerService.addOrUpdateReasonOfRejection(ror);
@@ -97,11 +95,15 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             ror.setInsurer(adminInsurerService.getInsurer(insurerId));
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
             ror.setLastModifiedBy(getAuthenticatedUser());
-            ror.setName(reasonOfRejectionName);
-            ror.setDescription(reasonOfRejectionDesc);
+            ror.setRorName(model.getRorName());
+            ror.setDescription(model.getDescription());
             ror.setRestricted(restricted);
             ror.setType(type);
-            ror.setStatus(status);
+            ror.setGtaActive(model.isGtaActive());
+            ror.setSubscriberActive(model.isSubscriberActive());
+            ror.setInsurerUploadActive(model.isInsurerUploadActive());
+            ror.setInsurerVsInsurerActive(model.isInsurerVsInsurerActive());
+            ror.setTpiActive(model.isTpiActive());
             
             ActionResponse response;
             response = adminInsurerService.addOrUpdateReasonOfRejection(ror);
@@ -142,9 +144,18 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
                 throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             
-            if (this.reasonOfRejectionId > 0) {
+            if (this.reasonOfRejectionId > 0 && activeType != null) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
-                ror.setStatus(!ror.isStatus());
+                if(activeType.equals("gtaActive"))
+                    ror.setGtaActive(!ror.isGtaActive());
+                else if(activeType.equals("insurerVsInsurerActive"))
+                    ror.setInsurerVsInsurerActive(!ror.isInsurerVsInsurerActive());
+                else if(activeType.equals("subscriberActive"))
+                    ror.setSubscriberActive(!ror.isSubscriberActive());
+                else if(activeType.equals("tpiActive"))
+                    ror.setTpiActive(!ror.isTpiActive());
+                else if(activeType.equals("insurerUploadActive"))
+                    ror.setInsurerUploadActive(!ror.isInsurerUploadActive());
                 ActionResponse response;
                 response = adminInsurerService.updateReasonOfRejectionActive(ror);
                 setActionResponse(response);
@@ -191,21 +202,21 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
         this.insurerId = insurerId;
     }
 
-    public String getReasonOfRejectionName() {
-        return reasonOfRejectionName;
-    }
-
-    public void setReasonOfRejectionName(String reasonOfRejectionName) {
-        this.reasonOfRejectionName = reasonOfRejectionName;
-    }
-
-    public String getReasonOfRejectionDesc() {
-        return reasonOfRejectionDesc;
-    }
-
-    public void setReasonOfRejectionDesc(String reasonOfRejectionDesc) {
-        this.reasonOfRejectionDesc = reasonOfRejectionDesc;
-    }
+//    public String getReasonOfRejectionName() {
+//        return reasonOfRejectionName;
+//    }
+//
+//    public void setReasonOfRejectionName(String reasonOfRejectionName) {
+//        this.reasonOfRejectionName = reasonOfRejectionName;
+//    }
+//
+//    public String getReasonOfRejectionDesc() {
+//        return reasonOfRejectionDesc;
+//    }
+//
+//    public void setReasonOfRejectionDesc(String reasonOfRejectionDesc) {
+//        this.reasonOfRejectionDesc = reasonOfRejectionDesc;
+//    }
 
     public List<ReasonOfRejectionViewData> getReasonOfRejectionViewData() {
         return reasonOfRejectionViewData;
@@ -253,14 +264,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
         this.type = type;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public AdminInsurerService getAdminInsurerService() {
         return adminInsurerService;
     }
@@ -268,5 +271,13 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
-    
+
+    public String getActiveType() {
+        return activeType;
+    }
+
+    public void setActiveType(String activeType) {
+        this.activeType = activeType;
+    }
+
 }

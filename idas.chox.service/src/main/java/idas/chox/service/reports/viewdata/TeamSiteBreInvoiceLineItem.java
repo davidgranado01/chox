@@ -60,7 +60,7 @@ public class TeamSiteBreInvoiceLineItem {
             if(noInvoicesApprovedBreDisputed.intValue() != 0){
                 for (ReasonOfRejection ror : reasonsOfRejection) {
                     rorLineItems.add(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_" 
-                            + ror.getName().toLowerCase()))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                            + ror.getRorName().toLowerCase()))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
                 }
             } else {
                 for (ReasonOfRejection ror : reasonsOfRejection) {

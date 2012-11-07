@@ -89,20 +89,20 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     @Override
-    public List<ReasonOfRejection> getClaimRejectionReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM, true, null);
+    public List<ReasonOfRejection> getClaimRejectionReason(int insurerId, ClaimType claimType) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM , claimType, true, null);
         return rejectionReasons;
     }
     
     @Override
-    public List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM, true, true);
+    public List<ReasonOfRejection> getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_CLAIM, claimType, true, true);
         return rejectionReasons;
     }
 
     @Override
-    public List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId) {
-    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_INVOICE, true, null);
+    public List<ReasonOfRejection> getInvoiceRejectionReason(int insurerId, ClaimType claimType) {
+    	List<ReasonOfRejection> rejectionReasons =  reasonOfRejectionService.getInsurerReasonsOfRejection(insurerId, ReasonOfRejection.TYPE_INVOICE, claimType, true, null);
         return rejectionReasons;
     }
     

@@ -330,7 +330,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                             .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = ")
                             .append(ror.getId())
                             .append(" and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.reverted=false and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_")
-                            .append(ror.getName());
+                            .append(ror.getRorName());
                             if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() -1)
                                 sb.append(", ");
                     }
@@ -449,9 +449,9 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             ReasonOfRejection reportRow = new ReasonOfRejection();
             reportRow.setId(MathHelper.getIntegerValue(data.get("id".toLowerCase())));
             if(!displayForHeader){
-                reportRow.setName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
+                reportRow.setRorName(data.get("name").toString().replaceAll("\\s+", "_").replaceAll("[^A-Za-z0-9_]", ""));
             } else {
-                reportRow.setName(data.get("name").toString());
+                reportRow.setRorName(data.get("name").toString());
             }
             reportRows.add(reportRow);
         }

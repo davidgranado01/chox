@@ -10,7 +10,7 @@ var rorGridView;
 $(function(){
 
     var rejectionDescField = new Ext.form.TextArea({
-        name             : 'reasonOfRejectionDesc',
+        name             : 'description',
         id               : 'rorDescTextId',
         width            :  350,
         height           :  80,
@@ -19,7 +19,7 @@ $(function(){
     });
     
     var rejectionEditDescField = new Ext.form.TextArea({
-        name             : 'reasonOfRejectionDesc',
+        name             : 'description',
         id               : 'rorDescEditTextId',
         width            :  350,
         height           :  80,
@@ -33,10 +33,14 @@ $(function(){
         fields:
             [
              {name:'id'},
-             {name:'name'},
+             {name:'rorName'},
              {name:'description'},
              {name:'type'},
-             {name:'status'},
+             {name:'gtaActive'},
+             {name:'insurerVsInsurerActive'},
+             {name:'subscriberActive'},
+             {name:'insurerUploadActive'},
+             {name:'tpiActive'},
              {name:'restricted'},
              {name:'createdBy'},
              {name:'createdDate'}
@@ -44,8 +48,8 @@ $(function(){
     });
     
     var rorProxy = new Ext.data.HttpProxy({
-    	url: '<%= request.getContextPath()%>/prv/p/getInsurersReasonsOfRejection.action',
-    	method: 'post'
+        url: '<%= request.getContextPath()%>/prv/p/getInsurersReasonsOfRejection.action',
+        method: 'post'
     });
     
     rorGridViewDataStore = new Ext.data.Store({
@@ -58,36 +62,45 @@ $(function(){
         store: rorGridViewDataStore,
         renderTo:'rorGridViewPanel',
         enableHdMenu:false,
+        enableColumnMove:false,
         layout:'fit',
         viewConfig:{forceFit:true},
         columns: [
-            {header: "Name", width: 160, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
+            {header: "Rejection Reason", width: 110, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>"+value+"</a>" }},
-            {header: "Description", width: 260, dataIndex: 'description', sortable: true, resizable: true},
-            {header: "Type", width: 80, dataIndex: 'type', sortable: true, resizable: true},
-            {header: "Active", width: 80, dataIndex: 'status', sortable: true, resizable: true, 
-                renderer: booleanLink},            	
-            {header: "Visible Before Assigned", width: 80, dataIndex: 'restricted', sortable: true, resizable: true,
-                renderer:booleanLink},            		
-            {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "Supporting Rejection Note", width: 110, dataIndex: 'description', sortable: true, resizable: true},
+            {header: "Type", width: 40, dataIndex: 'type', sortable: true, resizable: true},
+            {header: "GTA Active", width: 40, dataIndex: 'gtaActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "Insurer Vs Insurer Active", width: 40, dataIndex: 'insurerVsInsurerActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "Subscriber Active", width: 40, dataIndex: 'subscriberActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "Insurer Upload Active", width: 40, dataIndex: 'insurerUploadActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "TPI Active", width: 40, dataIndex: 'tpiActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "Visible Before Assigned", width: 40, dataIndex: 'restricted', sortable: true, resizable: true,
+                renderer:booleanLink},                    
+            {header: "", width: 40, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>Remove</a>"}}
         ],
-        height:243,
+        height:195,
         width: 760
     });
     
     function booleanLink(value,p,r){
-    	if(value){
-    		value = "Yes";
-    	}else{
-    		value = "No";
-    	}
-    	return "<a href='#' class='high-light-item'>" + value + "</a>"
+        if(value){
+            value = "Yes";
+        }else{
+            value = "No";
+        }
+        return "<a href='#' class='high-light-item'>" + value + "</a>"
     }
     
     if(!rorEditPopWindow || rorEditPopWindow==null)
     {
-    	rorEditPopWindow =  new Ext.Window({
+        rorEditPopWindow =  new Ext.Window({
             applyTo:'rorEditWindow',
             width:600,
             height:215,
@@ -102,19 +115,19 @@ $(function(){
             }),
             buttons: [{
                     text:'Ok', handler: function(){
-                    	if($("form#rorEditForm").valid()){
-	                        var op = {
-	                            success: closeWindowAndRefresh,
-	                            timeout: 3000,
-	                            error: ui.onSubmitError
-	                        };
-	
-	                        $("form#rorEditForm").ajaxSubmit(op);
-                    	}
+                        if($("form#rorEditForm").valid()){
+                            var op = {
+                                success: closeWindowAndRefresh,
+                                timeout: 3000,
+                                error: ui.onSubmitError
+                            };
+    
+                            $("form#rorEditForm").ajaxSubmit(op);
+                        }
                     }
                 },{
                     text: 'Close', handler: function(){
-                    	rorEditPopWindow.hide();
+                        rorEditPopWindow.hide();
                     }
                 }]
         });
@@ -126,10 +139,10 @@ $(function(){
     {
         errorLabelContainer: "#rorErrorMessageBox",
         rules: {
-        	reasonOfRejectionName:{ required:true, minlength:5 , maxlength:32}
+            rorName:{ required:true, minlength:5 , maxlength:32}
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
+            rorName: { required:"You must supply a 'Rejection Reason'", 
                 minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
                 maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
         }
@@ -142,12 +155,12 @@ $(function(){
     {
         errorLabelContainer: "#rorEditErrorMessageBox",
         rules: {
-        	reasonOfRejectionName:{ required:true, minlength:5 , maxlength:32 }
+            rorName:{ required:true, minlength:5 , maxlength:32 }
         },
         messages: {
-        	reasonOfRejectionName: { required:"You must supply a 'Rejection Reason'", 
-        		minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
-        		maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
+            rorName: { required:"You must supply a 'Rejection Reason'", 
+                minlength:"'Rejection Reason Name' must be at least 5 characters long." , 
+                maxlength:"'Rejection Reason Name' can have maximum 32 characters."}
         }
     });
     
@@ -171,13 +184,13 @@ $(function(){
         ,allowBlank: false
         ,forceSelection: true
         ,listeners: {
-        	select: function() {
-       		    if(this.getValue() == 'Claim'){
-       		        $("#restrictedDivId").slideDown();
-       		        $("form#rorForm input#restricted").attr('checked',false);
-       		    } else {
-       		        $("#restrictedDivId").slideUp();
-       		    }
+            select: function() {
+                   if(this.getValue() == 'Claim'){
+                       $("#restrictedDivId").slideDown();
+                       $("form#rorForm input#restricted").attr('checked',false);
+                   } else {
+                       $("#restrictedDivId").slideUp();
+                   }
             }
         }
     });
@@ -186,34 +199,36 @@ $(function(){
 });
 
 function closeWindowAndRefresh(){
-	rorEditPopWindow.hide();
-	onPageRefresh();
+    rorEditPopWindow.hide();
+    onPageRefresh();
 }
 
 function editReasonOfRejection(grid, rowIndex, columnIndex, e){
     var gridView = rorGridView.getStore().getAt(rowIndex);
-    if(columnIndex==5){
+    
+    if(columnIndex==0){
+        showEditReasonOfRejection(gridView);
+    }else if(columnIndex >= 3 && columnIndex <= 7){
+        var rorId = gridView.get("id");
+        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
+        var selectedColumn = rorGridView.getColumnModel().getColumnAt(columnIndex).dataIndex;
+        var param = {"reasonOfRejectionId":rorId, "activeType": selectedColumn};
+        ajax.loadHtml2(url, param, onSubmitHandler);
+    }else if(columnIndex==8){
+        var rorId = gridView.get("id");
+        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
+        var param = {"reasonOfRejectionId":rorId};
+        ajax.loadHtml2(url, param, onSubmitHandler);
+    } else if(columnIndex==9){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/deleteReasonOfRejection.action";
-        var param = {"reasonOfRejectionId":rorId};
-        ajax.loadHtml2(url, param, onSubmitHandler);
-    }else if(columnIndex==0){
-    	showEditReasonOfRejection(gridView);
-    }else if(columnIndex==3){
-    	var rorId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
-        var param = {"reasonOfRejectionId":rorId};
-        ajax.loadHtml2(url, param, onSubmitHandler);
-    }else if(columnIndex==4){
-    	var rorId = gridView.get("id");
-        var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
         var param = {"reasonOfRejectionId":rorId};
         ajax.loadHtml2(url, param, onSubmitHandler);
     }
 }
 
 function onSubmitHandler(responseText, statusText){
-	var response = eval('(' + responseText.trim() + ')');
+    var response = eval('(' + responseText.trim() + ')');
     var outputDiv = $('div#rorEditErrorMessageBox');
     triggerCss("div#rorEditErrorMessageBox", true);
    
@@ -242,7 +257,11 @@ function refreshForm(){
     $("#rorId").val("");
     $("#rorDescTextId").val("");
     $("form#rorForm input#restricted").attr('checked',false);
-    $("form#rorForm input#statusId").attr('checked',false);
+    $("form#rorForm input#gtaActiveId").attr('checked',false);
+    $("form#rorForm input#subscriberActiveId").attr('checked',false);
+    $("form#rorForm input#tpiActiveId").attr('checked',false);
+    $("form#rorForm input#insurerVsInsurerActiveId").attr('checked',false);
+    $("form#rorForm input#insurerUploadActiveId").attr('checked',false);
     Ext.getCmp('rorTypeId').setValue('Claim');
     $("#restrictedDivId").slideDown();
     $("form#rorForm input#restricted").attr('checked',false);
@@ -254,10 +273,10 @@ function loadGridViewList(){
 }
 
 function showEditReasonOfRejection(gridView){
-	rorEditPopWindow.show();
-	
+    rorEditPopWindow.show();
+    
     $("form#rorEditForm input[name$='reasonOfRejectionId']").val(gridView.get("id"));
-    $("form#rorEditForm input[name$='reasonOfRejectionName']").val(gridView.get("name"));
+    $("form#rorEditForm input[name$='rorName']").val(gridView.get("rorName"));
     $("form#rorEditForm #rorDescEditTextId").val(gridView.get("description"));
 }
 
@@ -269,7 +288,7 @@ function showEditReasonOfRejection(gridView){
 
     <div id="rorGridId">
         <div class="grid-view-header">
-            <table width="100%">
+            <table style="width: 100%">
                 <tr>
                     <td>
                         <div class="admin-bre-band-detail-section">
@@ -286,7 +305,7 @@ function showEditReasonOfRejection(gridView){
                                     
                                     <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                                        <input type="text" id="rorId" name="reasonOfRejectionName" style="width: 175px" minlength="5" />
+                                        <input type="text" id="rorId" name="rorName" style="width: 175px" minlength="5" />
                                     </div>
                                     
                                     <div class="chox-form-item">
@@ -294,22 +313,52 @@ function showEditReasonOfRejection(gridView){
                                         <div id="rorDescId" style="padding-left: 12px"/>
                                     </div>
                                     <br/>
-                                    <table width="100%">
-	                                    <tr>
-		                                    <td width="20%">
-			                                    <div style="margin-left: 191px">
-                                                    <label>Active</label>
-                                                    <s:checkbox id="statusId" name="status"/>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 50%">
+                                                <div style="margin-left: 165px">
+                                                    <label >GTA Active</label>
+                                                    <s:checkbox id="gtaActiveId" name="gtaActive"/>
                                                 </div>
-		                                    </td>
-			                                <td width="15%" >
-			                                   
-                                                <div id="restrictedDivId" style="margin-right: 110px">
-                                                    <label>Visible Before Assigned</label>
+                                            </td>
+                                            <td style="width: 50%">
+                                               
+                                                <div style="margin-left: 0px">
+                                                    <label >Insurer Vs Insurer Active</label>
+                                                    <s:checkbox id="insurerVsInsurerActiveId" name="insurerVsInsurerActive" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50%">
+                                                <div style="margin-left: 131px">
+                                                    <label >Subscriber Active</label>
+                                                    <s:checkbox id="subscriberActiveId" name="subscriberActive"/>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%">
+                                               
+                                                <div style="margin-left: 17px">
+                                                    <label >Insurer Upload Active</label>
+                                                    <s:checkbox id="insurerUploadActiveId" name="insurerUploadActive" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50%">
+                                                <div style="margin-left: 168px">
+                                                    <label >TPI Active</label>
+                                                    <s:checkbox id="tpiActiveId" name="tpiActive"/>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%">
+                                               
+                                                <div id="restrictedDivId" style="margin-left: 9px;">
+                                                    <label >Visible Before Assigned</label>
                                                     <s:checkbox id="restricted" name="restricted" />
                                                 </div>
                                             </td>
-			                            </tr>
+                                        </tr>
                                     </table>
                                     
                                      <div class="chox-form-button">
@@ -326,7 +375,7 @@ function showEditReasonOfRejection(gridView){
                 </tr>
             </table>
         </div>
-        <div id="rorGridViewPanel"/>
+        <div id="rorGridViewPanel"></div>
     </div>
     
     <div id="rorEditWindow" class="x-hidden">
@@ -337,7 +386,7 @@ function showEditReasonOfRejection(gridView){
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Rejection Reason<span class="mandatory">*</span></label>
-                        <input id="rorEditId" name="reasonOfRejectionName" style="width: 175px" disabled="disabled"/>
+                        <input id="rorEditId" name="rorName" style="width: 175px" disabled="disabled"/>
                     </div>
                     
                     <div class="chox-form-item">

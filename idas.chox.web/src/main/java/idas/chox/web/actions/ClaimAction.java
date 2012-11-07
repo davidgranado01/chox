@@ -1620,14 +1620,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List<ReasonOfRejection> getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         return reasonOfClaimRejections;
     }
 
     public List<ReasonOfRejection> getReasonOfClaimRejectionsRestricted() {
         if (reasonOfClaimRejectionsRestricted == null) {
-            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getInsurerIdForReasonOfRejection());
+            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         return reasonOfClaimRejectionsRestricted;
     }
@@ -1647,7 +1647,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public JSONArray getJsonReasonOfClaimRejectionDesc() {
         if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection());
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         List<LookupItem> rorItems = new ArrayList<LookupItem>();
         for (ReasonOfRejection ror : reasonOfClaimRejections) {
@@ -1658,14 +1658,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List<ReasonOfRejection> getReasonOfInvoiceRejections() {
         if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection());
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         return reasonOfInvoiceRejections;
     }
 
     public JSONArray getJsonReasonOfInvoiceRejectionDesc() {
         if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection());
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
         }
         List<LookupItem> rorItems = new ArrayList<LookupItem>();
         for (ReasonOfRejection ror : reasonOfInvoiceRejections) {
@@ -2344,4 +2344,5 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return false;
     }
+    
 }

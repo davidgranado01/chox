@@ -172,13 +172,13 @@
     });
     
     function refreshDesc(id){
-    	reasonOfRejectionDescStore.each(function(rec) {
-    		if(id == rec.json.text){
-    			Ext.getCmp('rejecDescId').setValue(rec.json.value);
-    		}
-    	});
-    	if(id == -1 || id == '')
-    		Ext.getCmp('rejecDescId').setValue("");
+        reasonOfRejectionDescStore.each(function(rec) {
+            if(id == rec.json.text){
+                Ext.getCmp('rejecDescId').setValue(rec.json.value);
+            }
+        });
+        if(id == -1 || id == '')
+            Ext.getCmp('rejecDescId').setValue("");
     }
 
 </script>
@@ -205,7 +205,7 @@
                         Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                     </s:elseif>
                     <s:if test="rejectButtonEnabled">
-                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                        Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                     </s:if>
                     <s:else>
                         This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
@@ -255,7 +255,7 @@
                             </tr>
                             <tr valign="top">
                                 <td>
-                                    <label>Reason for Rejection</label>
+                                    <label>Reason For Rejection</label>
                                 </td>
                                 <td colspan="3">
                                     <div id="ReasonOfRejectionDiv">
@@ -263,7 +263,7 @@
                                             <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
                                                       list="reasonOfClaimRejections"
                                                       listKey="id"
-                                                      listValue="name"
+                                                      listValue="rorName"
                                                       onchange="refreshDesc(this.value)"
                                                       headerKey=""
                                                       headerValue="N/A"
@@ -273,7 +273,7 @@
                                             <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
                                                       list="reasonOfClaimRejections"
                                                       listKey="id"
-                                                      listValue="name"
+                                                      listValue="rorName"
                                                       onchange="refreshDesc(this.value)"
                                                       headerKey=""
                                                       disabled="true"
@@ -287,9 +287,9 @@
                             <s:if test="rejectButtonEnabled">
                             <tr>
                             <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-		                        <td>
-		                            <div id="rejectionDescId"/>
-		                        </td>
+                                <td>
+                                    <div id="rejectionDescId"/>
+                                </td>
                            </tr>
                            </s:if>
                            <tr>
