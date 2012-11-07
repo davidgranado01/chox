@@ -1,9 +1,11 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUser;
-import java.util.List;
 
 public interface LookupService {
 
@@ -20,11 +22,11 @@ public interface LookupService {
 
     public String getVehicleClassName(int id);
     
-    public List getClaimRejectionReason(int insurerId, String claimType);
+    public List getClaimRejectionReason(int insurerId, ClaimType claimType);
 
-    public List getClaimRejectionRestrictedReason(int insurerId, String claimType);
+    public List getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
     
-    public List getInvoiceRejectionReason(int insurerId, String claimType);
+    public List getInvoiceRejectionReason(int insurerId, ClaimType claimType);
 
     public List getNonProvisionReason();
 

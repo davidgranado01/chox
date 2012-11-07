@@ -1,12 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.ReasonOfRejectionTemplate;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.ReasonOfRejectionTemplateService;
-import idas.chox.core.util.DateHelper;
-
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -14,6 +7,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.core.model.ReasonOfRejectionTemplate;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.services.ReasonOfRejectionTemplateService;
+import idas.chox.core.util.DateHelper;
 
 public class ReasonOfRejectionServiceImpl  extends SecureDataService implements ReasonOfRejectionService {
 
@@ -25,12 +26,12 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     }
 
     @Override
-    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, String activeType, Boolean status,  Boolean restricted) {
+    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, ClaimType activeType, Boolean status,  Boolean restricted) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class);
         if(type != null)
         	criteria.add(Restrictions.eq("type", type));
         if(status != null && activeType != null)
-        	criteria.add(Restrictions.eq(activeType, status));
+        	criteria.add(Restrictions.eq(activeReasonOfRejectionClaimType(activeType), status));
         if(restricted != null)
         	criteria.add(Restrictions.eq("restricted", restricted));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
@@ -84,4 +85,18 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
         this.reasonOfRejectionTemplateService = reasonOfRejectionTemplateService;
     }
 
+    private String activeReasonOfRejectionClaimType(ClaimType ct){
+        if(ClaimType.isGTA(ct))
+            return "gtaActive";
+        else if(ClaimType.isInsurerUpload(ct))
+            return "insurerUploadActive";
+        else if(ClaimType.isInsurerVsInsurer(ct))
+            return "insurerVsInsurerActive";
+        else if(ClaimType.isTPI(ct))
+            return "tpiActive";
+        else if(ClaimType.isSubscriber(ct))
+            return "subscriberActive";
+        return null;
+    }
+    
 }

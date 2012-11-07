@@ -15,7 +15,7 @@
             },
             messages: {
                 invEscReasonOfRejectionId:{
-                    required:"You must select 'Reason For Rejection'"
+                    required:"You must select a 'Reason For Rejection'"
                 }
             }
         });
