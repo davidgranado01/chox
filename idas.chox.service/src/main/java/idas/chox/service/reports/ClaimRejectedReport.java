@@ -310,9 +310,9 @@ public class ClaimRejectedReport implements Report {
             String query = "select ror.id, ror.name from reason_of_rejection ror " +
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
                     "where ror.type='Claim' and ror.insurer_id = :insurerId  " +
-                    "or (ror.status = true and ror.type='Claim' and ror.insurer_id = :insurerId) " +
+                    "or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim' and ror.insurer_id = :insurerId) " +
                     "group by ror.id " +
-                    "union select id, name from reason_of_rejection where status = true and type='Claim' and insurer_id = :insurerId order by name asc ";
+                    "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim' and insurer_id = :insurerId order by name asc ";
             
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
@@ -322,10 +322,10 @@ public class ClaimRejectedReport implements Report {
                     "join claim cl on ror.id = cl.reason_of_rejection_id " +
                     "where ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) " +
-                    "or (ror.status = true and ror.type='Claim' and ror.insurer_id in " +
+                    "or ((ror.gta_active = true or ror.insurer_vs_insurer_active=true or ror.subscriber_active=true or ror.insurer_upload_active = true or ror.tpi_active= true) and ror.type='Claim' and ror.insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId)) " +
                     "group by ror.id " +
-                    "union select name from reason_of_rejection where status = true and type='Claim' and insurer_id in " +
+                    "union select name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or insurer_upload_active = true or tpi_active= true) and type='Claim' and insurer_id in " +
                     "(select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             
             Map paramMap = new HashMap();
