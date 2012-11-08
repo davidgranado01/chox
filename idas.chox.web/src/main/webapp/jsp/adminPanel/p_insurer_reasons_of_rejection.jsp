@@ -315,52 +315,70 @@ function showEditReasonOfRejection(gridView){
                                     <br/>
                                     <table style="width: 100%">
                                         <tr>
-                                            <td style="width: 50%">
-                                                <div style="margin-left: 165px">
+                                            <td style="width: 50%; height: 15px">
+                                                <div style="position:relative;width:239px;">
+                                                    <div style="position:absolute;right:0;">
                                                     <label >GTA Active</label>
                                                     <s:checkbox id="gtaActiveId" name="gtaActive"/>
+                                                    </div>
                                                 </div>
                                             </td>
-                                            <td style="width: 50%">
-                                               
-                                                <div style="margin-left: 0px">
+                                            <td style="width: 50%; height: 15px">
+                                                <div style="position:relative;width:220px;">
+                                                    <div style="position:absolute;right:0;">
                                                     <label >Insurer Vs Insurer Active</label>
                                                     <s:checkbox id="insurerVsInsurerActiveId" name="insurerVsInsurerActive" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50%; height: 15px">
+                                                <div style="position:relative;width:239px;">
+                                                    <div style="position:absolute;right:0;">
+                                                        <label >Subscriber Active</label>
+                                                        <s:checkbox id="subscriberActiveId" name="subscriberActive"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%; height: 15px">
+                                               
+                                                <div style="position:relative;width:220px;">
+                                                    <div style="position:absolute;right:0;">
+                                                        <label >Insurer Upload Active</label>
+                                                        <s:checkbox id="insurerUploadActiveId" name="insurerUploadActive" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50%; height: 15px;">
+                                                <div style="position:relative;width:239px;">
+                                                    <div style="position:absolute;right:0;">
+                                                        <label >TPI Active</label>
+                                                        <s:checkbox id="tpiActiveId" name="tpiActive" style="position: relative; right:0px"/>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="width: 50%">
-                                                <div style="margin-left: 131px">
-                                                    <label >Subscriber Active</label>
-                                                    <s:checkbox id="subscriberActiveId" name="subscriberActive"/>
-                                                </div>
-                                            </td>
-                                            <td style="width: 50%">
-                                               
-                                                <div style="margin-left: 17px">
-                                                    <label >Insurer Upload Active</label>
-                                                    <s:checkbox id="insurerUploadActiveId" name="insurerUploadActive" />
-                                                </div>
+                                                <br/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 50%">
-                                                <div style="margin-left: 168px">
-                                                    <label >TPI Active</label>
-                                                    <s:checkbox id="tpiActiveId" name="tpiActive"/>
-                                                </div>
-                                            </td>
-                                            <td style="width: 50%">
-                                               
-                                                <div id="restrictedDivId" style="margin-left: 9px;">
-                                                    <label >Visible Before Assigned</label>
-                                                    <s:checkbox id="restricted" name="restricted" />
+                                            <td colspan="2">
+                                               <div style="position:relative;width:239px;">
+                                                    <div id="restrictedDivId" style="position:absolute;right:0;">
+                                                        <label >Visible Before Assigned</label>
+                                                        <s:checkbox id="restricted" name="restricted" />
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
                                     </table>
-                                    
+                                    <br/>
+                                    <br/>
                                      <div class="chox-form-button">
                                         <input type="submit" value="Add New Rejection Reason"/>
                                     </div>
@@ -374,6 +392,7 @@ function showEditReasonOfRejection(gridView){
                     </td>
                 </tr>
             </table>
+            
         </div>
         <div id="rorGridViewPanel"></div>
     </div>
