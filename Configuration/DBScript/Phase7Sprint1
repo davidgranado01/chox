@@ -13,8 +13,21 @@ SET gta_active = status,
     subscriber_active = status,
     insurer_upload_active = status,
     tpi_active = status;
-
+    
 ALTER TABLE reason_of_rejection DROP COLUMN status;
+
+ALTER TABLE reason_of_rejection_template ADD gta_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD insurer_vs_insurer_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD subscriber_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD insurer_upload_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD tpi_active boolean DEFAULT TRUE;
+
+UPDATE reason_of_rejection_template ror
+SET gta_active = status,
+    insurer_vs_insurer_active = status,
+    subscriber_active = status,
+    insurer_upload_active = status,
+    tpi_active = status;
 
 ALTER TABLE reason_of_rejection_template DROP COLUMN status;
 

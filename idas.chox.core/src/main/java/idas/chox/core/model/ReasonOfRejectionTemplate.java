@@ -8,6 +8,11 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
     private String type;
     private String description;
     private boolean restricted;
+    private boolean gtaActive;
+    private boolean insurerVsInsurerActive;
+    private boolean subscriberActive;
+    private boolean insurerUploadActive;
+    private boolean tpiActive;
 
     public ReasonOfRejectionTemplate() {
     }
@@ -28,19 +33,59 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
         this.type = type;
     }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public boolean isRestricted() {
-		return restricted;
-	}
+    public boolean isRestricted() {
+        return restricted;
+    }
 
-	public void setRestricted(boolean restricted) {
-		this.restricted = restricted;
-	}
+    public void setRestricted(boolean restricted) {
+        this.restricted = restricted;
+    }
+    
+    public boolean isGtaActive() {
+        return gtaActive;
+    }
+
+    public void setGtaActive(boolean gtaActive) {
+        this.gtaActive = gtaActive;
+    }
+
+    public boolean isInsurerVsInsurerActive() {
+        return insurerVsInsurerActive;
+    }
+
+    public void setInsurerVsInsurerActive(boolean insurerVsInsurerActive) {
+        this.insurerVsInsurerActive = insurerVsInsurerActive;
+    }
+
+    public boolean isSubscriberActive() {
+        return subscriberActive;
+    }
+
+    public void setSubscriberActive(boolean subscriberActive) {
+        this.subscriberActive = subscriberActive;
+    }
+
+    public boolean isInsurerUploadActive() {
+        return insurerUploadActive;
+    }
+
+    public void setInsurerUploadActive(boolean insurerUploadActive) {
+        this.insurerUploadActive = insurerUploadActive;
+    }
+
+    public boolean isTpiActive() {
+        return tpiActive;
+    }
+
+    public void setTpiActive(boolean tpiActive) {
+        this.tpiActive = tpiActive;
+    }
 }

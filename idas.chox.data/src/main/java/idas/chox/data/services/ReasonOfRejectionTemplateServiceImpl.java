@@ -1,15 +1,14 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.ReasonOfRejectionTemplate;
-import idas.chox.core.services.ReasonOfRejectionTemplateService;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import idas.chox.core.model.ReasonOfRejectionTemplate;
+import idas.chox.core.services.ReasonOfRejectionTemplateService;
 
 public class ReasonOfRejectionTemplateServiceImpl extends SecureDataService implements ReasonOfRejectionTemplateService {
 

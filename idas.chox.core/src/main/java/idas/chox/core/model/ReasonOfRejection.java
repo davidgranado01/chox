@@ -45,21 +45,21 @@ public class ReasonOfRejection extends Entity implements Serializable {
         this.restricted = restricted;
     }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Insurer getInsurer() {
-		return insurer;
-	}
+    public Insurer getInsurer() {
+        return insurer;
+    }
 
-	public void setInsurer(Insurer insurer) {
-		this.insurer = insurer;
-	}
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
 
     public boolean isGtaActive() {
         return gtaActive;

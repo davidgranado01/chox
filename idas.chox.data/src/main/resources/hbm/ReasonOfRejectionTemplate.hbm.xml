@@ -12,5 +12,10 @@
     <property column="restricted" name="restricted"/>
     <property column="type" name="type"/>
     <property column="description" name="description"/>
+    <property column="gta_active" name="gtaActive"/>
+    <property column="insurer_vs_insurer_active" name="insurerVsInsurerActive"/>
+    <property column="subscriber_active" name="subscriberActive"/>
+    <property column="insurer_upload_active" name="insurerUploadActive"/>
+    <property column="tpi_active" name="tpiActive"/>
   </class>
 </hibernate-mapping>
