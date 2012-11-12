@@ -85,7 +85,7 @@ $(function(){
             {header: "", width: 40, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='high-light-item'>Remove</a>"}}
         ],
-        height:195,
+        height:155,
         width: 760
     });
     
