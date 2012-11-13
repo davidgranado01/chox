@@ -1,5 +1,15 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -10,15 +20,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 public class AcknowledgeClaim extends BaseActivity {
 
@@ -132,11 +133,10 @@ public class AcknowledgeClaim extends BaseActivity {
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.New(0, supportingLiabilityNotes));
         }
+ 
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+ 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
-            // Subscriber claims move straight to AwaitingInvoiceData
-            logTransaction(claim, claim.getStatus(), ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, 0);
-            setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
 
             int days = claimService.getSubscriberClaimDays(claim.getId());
 
@@ -155,8 +155,6 @@ public class AcknowledgeClaim extends BaseActivity {
                 // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
                 claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
             }
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         }
     }
 
