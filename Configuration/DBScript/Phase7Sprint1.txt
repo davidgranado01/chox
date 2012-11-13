@@ -94,6 +94,9 @@ insert into accessibility(name,is_workgroup_check,is_ownership_check)values('ext
 
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ALL', 0, id FROM accessibility WHERE name like 'extraAction.updateLiability.ManualInvoice%';
+
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBRERejected';
