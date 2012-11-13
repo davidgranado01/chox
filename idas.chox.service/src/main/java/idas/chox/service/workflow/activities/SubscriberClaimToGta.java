@@ -1,15 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AuditTrailService;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 public class SubscriberClaimToGta extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriberClaimRejectionContest.class);
@@ -31,13 +33,13 @@ public class SubscriberClaimToGta extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         claim.setStatus(auditTrailService.getSubscriberStateBeforeRejection(claim.getId()));
-        if (claim.getClaimType() == ClaimType.SUBSCRIBER)
+        if (claim.getClaimType() == ClaimType.SUBSCRIBER) {
             claim.setClaimType(ClaimType.GTA);
-        else if (claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE)
+        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
             claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
-        else if (claim.getClaimType() == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE)
+        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE) {
             claim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
-        else { // not possible
+        } else { // not possible
             LOG.error("Attempt to switch a non-subcriber claim to GTA: {}", claim.getChoReference());
             throw new IllegalStateException("Claim not a subscriber claim.");
         }
