@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.PenaltyCharge" table="penalty_charge">
+        <cache usage="nonstrict-read-write"/>
+        <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">penalty_charge_id_seq</param>
+            </generator>
+        </id>
+        <property column="penalty_type" name="penaltyType" type="idas.chox.data.hibernate.PenaltyTypeMapping"/>
+        <property column="penalty_Name" name="penaltyName" type="idas.chox.data.hibernate.PenaltyNameMapping"/>
+        <property column="penalty_start_age_from" name="penaltyStartAgeFrom" not-null="true"/>
+        <property column="penalty_start_age_to" name="penaltyStartAgeTo" not-null="true"/>
+        <property column="penalty_percentage" name="penaltyPercentage" not-null="true"/>
+        <property column="penalty_percentage_dsc" name="penaltyPercentageDsc" not-null="true"/>
+        <property column="penalty_start_date" name="penaltyStartDate" not-null="true"/>
+    </class>
+</hibernate-mapping>
