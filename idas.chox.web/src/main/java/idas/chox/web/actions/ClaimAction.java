@@ -2079,10 +2079,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCalculatedHirePenaltyPercentage() {
+        if (getIsInsurerUploadClaim()) {
+            String percentage = claim.getInvoice().getHirePenaltyPercentage();
+            return (percentage != null && !percentage.isEmpty()) ? percentage : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
+        }
         return invoiceService.calculatedHirePenaltyPercentage(claim.getInvoice(), claim.getVehicleHire().getHireStart());
     }
 
     public String getCalculatedRepairPenaltyPercentage() {
+        if (getIsInsurerUploadClaim()) {
+            String percentage = claim.getInvoice().getRepairPenaltyPercentage();
+            return (percentage != null && !percentage.isEmpty()) ? percentage : PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
+        }
         return invoiceService.calculatedRepairPenaltyPercentage(claim.getInvoice());
     }
 
