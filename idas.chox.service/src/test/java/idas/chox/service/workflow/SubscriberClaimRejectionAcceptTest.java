@@ -43,7 +43,7 @@ public class SubscriberClaimRejectionAcceptTest extends BaseTest {
 
 
         activity.process(claim);
-        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, claim.getStatus());
+        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
     }
 
 }
