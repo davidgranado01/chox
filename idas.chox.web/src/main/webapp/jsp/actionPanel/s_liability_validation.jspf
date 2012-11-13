@@ -304,7 +304,7 @@
             dateValue.val($.trim(dateValue.val()));
     	
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-        $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
+//        $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
