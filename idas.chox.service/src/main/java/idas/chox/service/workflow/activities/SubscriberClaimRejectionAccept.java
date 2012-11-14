@@ -40,9 +40,10 @@ public class SubscriberClaimRejectionAccept extends BaseActivity {
         if (reasonOfRejectionService.isSubscriberClaimRejected(claim.getReasonOfRejection())) {
              claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
        } else {
-//            setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-//            logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);            
+            logTransaction(claim, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim.getReasonOfRejection(), null);
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
         }
     }
 
