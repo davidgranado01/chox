@@ -33,6 +33,7 @@ public class ActivityMonitoringAction extends BaseAction {
         int currentUserID = getUserId();
         Integer claimId = getModelIdFromSession(Claim.class);
         if (claimId != null) {
+            Claim claim = claimService.getClaim(claimId);
             LOG.debug("START Monitoring: claimId={}, userId={}", claimId, currentUserID);
             LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
             ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
@@ -46,8 +47,14 @@ public class ActivityMonitoringAction extends BaseAction {
                             && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
                             || (getAuthenticatedUser().isCHO() && user.isCHO()
                             && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
-                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim {}",
+                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim with id={}",
                                 new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
+                    } else if (user.isAnInsurer() && user.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                        LOG.error("Insurer User {} ('{}') from org '{}' viewing claim with id={} from different org '{}'",
+                                new Object[]{user.getId(), user.toString(), user.getInsurer().getName(), claimId, claim.getInsurer().getName()});
+                    } else if (user.isCHO() && user.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                        LOG.error("CHO User {} ('{}') from org '{}' viewing claim with id={} from different org '{}'",
+                                new Object[]{user.getId(), user.toString(), user.getChorganisation().getName(), claimId, claim.getChorganisation().getName()});
                     } else {
                         LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
                         usersViewingThisClaim.add(user.toString());
