@@ -1,32 +1,36 @@
 package idas.chox.web.actions;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.struts2.interceptor.ParameterAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.model.LookupItem;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.Report;
-import idas.chox.service.reports.ReportFactory;
-import idas.chox.service.security.ReportAccessibility;
-import idas.chox.service.security.ApplicationAccessibility;
-import java.util.ArrayList;
 import org.springframework.security.access.AccessDeniedException;
-import idas.chox.core.model.Chorganisation;
+
 import net.sf.json.JSONArray;
+
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.core.util.TextHelper;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.Calendar;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.Report;
+import idas.chox.service.reports.ReportFactory;
+import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.ReportAccessibility;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -46,7 +50,12 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private boolean exportCanceled;
     private boolean exceptionThrown;
     private boolean directDownload;
+    private PenaltyChargeService penaltyChargeService;
 
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
+    
     public boolean isDirectDownload() {
         return directDownload;
     }
@@ -127,6 +136,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         report.setExternalParameter(parametersMap);
         report.setBaseDataService(baseDataService);
         report.setReportDataService(reportDataService);
+        report.setPenaltyChargeService(penaltyChargeService);
 
         Calendar cal = Calendar.getInstance();
 

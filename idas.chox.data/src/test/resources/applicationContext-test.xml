@@ -87,6 +87,7 @@
                 <value>hbm/AuditEntry.hbm.xml</value>
                 <value>hbm/AdminFee.hbm.xml</value>
                 <value>hbm/SchedulerJob.hbm.xml</value>
+                <value>hbm/PenaltyCharge.hbm.xml</value>
             </list>
         </property>
     </bean>

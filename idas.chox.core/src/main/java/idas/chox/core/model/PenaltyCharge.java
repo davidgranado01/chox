@@ -91,4 +91,14 @@ public class PenaltyCharge {
             return percentageDsc;
         }
     }
+    
+    public enum PenaltyName {
+        HIRE,
+        REPAIR;
+    }
+
+    public enum PenaltyType {
+        DEFAULT,
+        SUBSCRIBER;
+    }
 }

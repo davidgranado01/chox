@@ -7,28 +7,29 @@ import java.util.List;
 
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.PenaltyCharge;
+import idas.chox.core.model.PenaltyCharge.PenaltyType;
 import java.math.BigDecimal;
 
 
 public interface PenaltyChargeService {
    
-    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, int penaltyType);
+    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, PenaltyType penaltyType);
     
-    public List<PenaltyCharge> getRepairPenaltyPercentages(int penaltyType);
+    public List<PenaltyCharge> getRepairPenaltyPercentages(PenaltyType penaltyType);
     
-    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, int penaltyType);
+    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, PenaltyType penaltyType);
     
-    public String getRepairPenaltyPercentage(Invoice inv, int penaltyType);
+    public String getRepairPenaltyPercentage(Invoice inv, PenaltyType penaltyType);
     
-    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart, Invoice inv, int penaltyType);
+    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart, Invoice inv, PenaltyType penaltyType);
     
-    public boolean isAppliedRepairPenaltyPercentageDifferent(Invoice inv, int penaltyType);
+    public boolean isAppliedRepairPenaltyPercentageDifferent(Invoice inv, PenaltyType penaltyType);
     
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, int penaltyType);
+    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, PenaltyType penaltyType);
     
     public BigDecimal calculateHirePenaltyCharge(Claim claim);
     
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, int penaltyType);
+    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, PenaltyType penaltyType);
     
     public BigDecimal calculateRepairPenaltyCharge(Claim claim);
     

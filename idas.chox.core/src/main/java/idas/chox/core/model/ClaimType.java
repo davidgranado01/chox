@@ -1,10 +1,16 @@
 package idas.chox.core.model;
 
+import static idas.chox.core.model.PenaltyCharge.PenaltyType;
+
 /**
  *
  * @author John
  */
 public enum ClaimType {
+    /*
+     * When the new claim type is added please make sure the correct 'Penalty Type' is defined
+     * in the getPenaltyType(ClaimType claimType) method defined below.
+     */
     GTA                                         (0, "GTA"),
     GTA_ORIGINAL_INVOICE                        (1, "GTA (Orig. Invoice)"),
     GTA_SUPPLEMENTARY_INVOICE                   (2, "GTA (Supp. Invoice)"),
@@ -121,6 +127,10 @@ public enum ClaimType {
             return true;
         
         return false;
+    }
+    
+    public static PenaltyType getPenaltyType(ClaimType claimType) {
+        return isSubscriber(claimType) ? PenaltyType.SUBSCRIBER : PenaltyType.DEFAULT;
     }
 
 }

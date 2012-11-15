@@ -75,6 +75,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysWithCHOForReview;
     private String daysWithInsurerForReview;
     private String daysAwaitingLiabilityResolution;
+    private PenaltyChargeService penaltyChargeService;
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -1400,11 +1405,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public boolean isAppliedHirePenaltyPercentageDifferent() {
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-        return invoice.isAppliedHirePenaltyPercentageDifferent(hireStart);
+        return penaltyChargeService.isAppliedHirePenaltyPercentageDifferent(hireStart, claim.getInvoice(), ClaimType.getPenaltyType(claim.getClaimType()));
     }
 
     public boolean isAppliedRepairPenaltyPercentageDifferent() {
-        return invoice.isAppliedRepairPenaltyPercentageDifferent();
+        return penaltyChargeService.isAppliedRepairPenaltyPercentageDifferent(claim.getInvoice(), ClaimType.getPenaltyType(claim.getClaimType()));
     }
     
     public String getRepairPenaltyPercentageApplied() {

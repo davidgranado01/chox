@@ -8,8 +8,18 @@
                 <param name="sequence">penalty_charge_id_seq</param>
             </generator>
         </id>
-        <property column="penalty_type" name="penaltyType" type="idas.chox.data.hibernate.PenaltyTypeMapping"/>
-        <property column="penalty_Name" name="penaltyName" type="idas.chox.data.hibernate.PenaltyNameMapping"/>
+        <property column="penalty_type" name="penaltyType" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">idas.chox.core.model.PenaltyCharge$PenaltyType</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <property column="penalty_Name" name="penaltyName" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">idas.chox.core.model.PenaltyCharge$PenaltyName</param>
+                <param name="type">12</param>
+            </type>
+        </property> 
         <property column="penalty_start_age_from" name="penaltyStartAgeFrom" not-null="true"/>
         <property column="penalty_start_age_to" name="penaltyStartAgeTo" not-null="true"/>
         <property column="penalty_percentage" name="penaltyPercentage" not-null="true"/>

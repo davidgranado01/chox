@@ -14,9 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.PenaltyCharge;
-import idas.chox.core.model.PenaltyName;
+import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.services.PenaltyChargeService;
 
 
@@ -25,31 +26,36 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceServiceImpl.class);
     
     @Override
-    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, int penaltyType) {
+    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, PenaltyType penaltyType) {
 
         
         List<PenaltyCharge> hirePenalties = new ArrayList<PenaltyCharge>();
+
+        // Get all hire penalty charges where penaltyStartDate <= hireStart
+        DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class);
+        criteria.add(Restrictions.eq("penaltyType", penaltyType));
+        criteria.add(Restrictions.le("penaltyStartDate", hireStart));
+        criteria.add(Restrictions.eq("penaltyName", PenaltyName.HIRE));
+        criteria.addOrder(Order.asc("penaltyStartAgeFrom"));
+        
         try {
-            // Get all hire penalty charges where penaltyStartDate < hireStart
-            DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class);
-            criteria.add(Restrictions.eq("penaltyType", penaltyType));
-            criteria.add(Restrictions.le("penaltyStartDate", hireStart));
-//            criteria.add(Restrictions.eq("penaltyName", PenaltyName.HIRE.getPenaltyNameType()));
-            criteria.addOrder(Order.asc("penaltyStartAgeFrom"));
-
-
             List<PenaltyCharge> hirePenaltyCharges = findByCriteria(criteria);
-
             /*
-             * copy results into another list which will be returned to the
-             * caller after removing old entries.
+             * Copy results into another list. This list is used to 
+             * get latest 'Penalty Start Date' record 
+             * if duplicate(same 'Penalty Start Age') record presents in the query result. 
+             * 
+             * e.g If two entries present from the query reuslt then 
+             * one entry should be removed by looking at 'Penalty Start' date.
+             * 
+             *   HIRE DEFAULT 30 60  7.5  7.5% 1/1/2010  -- THIS DUPLICATE OLD ENTRY SHOULD BE REMOVED.
+             *   HIRE DEFAULT 30 60 12.5 12.5% 1/1/2011
              */
             for (PenaltyCharge charge : hirePenaltyCharges) {
                 hirePenalties.add(charge);
             }
-
             /*
-             * remove old entries from the list.
+             * Remove the duplicate old entries from the list.
              */
             for (PenaltyCharge p1 : hirePenaltyCharges) {
                 for (PenaltyCharge p2 : hirePenaltyCharges) {
@@ -62,31 +68,55 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         } catch (Exception ex) {
             LOG.error("Exception thrown in penalty charge :",ex);
         }
-
-
         return hirePenalties;
     }
 
     @Override
-    public List<PenaltyCharge> getRepairPenaltyPercentages(int penaltyType) {
+    public List<PenaltyCharge> getRepairPenaltyPercentages(PenaltyType penaltyType) {
         
-        List<PenaltyCharge> repairPenaltyCharges = null;
+        List<PenaltyCharge> repairPenalties = new ArrayList<PenaltyCharge>();
+
         DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class);
         criteria.add(Restrictions.eq("penaltyType", penaltyType));
-//        criteria.add(Restrictions.eq("penaltyName", PenaltyName.REPAIR.getPenaltyNameType()));
+        criteria.add(Restrictions.eq("penaltyName", PenaltyName.REPAIR));
         criteria.addOrder(Order.asc("penaltyStartAgeFrom"));
-        
+      
         try {
-             repairPenaltyCharges = findByCriteria(criteria);
+            List<PenaltyCharge> repairPenaltyCharges = findByCriteria(criteria);
+
+            /*
+             * Copy results into another list. This list is used to 
+             * get latest 'Penalty Start Date' record 
+             * if duplicate(same 'Penalty Start Age') record presents in the query result.
+             * 
+             * e.g If two entries present from the query reuslt then 
+             * one entry should be removed by looking at 'Penalty Start' date.
+             * 
+             *   REPAIR DEFAULT 30 60  2.5 2.5% 1/1/2010  -- THIS DUPLICATE OLD ENTRY SHOULD BE REMOVED.
+             *   REPAIR DEFAULT 30 60  3.5 3.5% 1/1/2011
+             */
+            for (PenaltyCharge charge : repairPenaltyCharges) {
+                repairPenalties.add(charge);
+            }
+            /*
+             * Remove the duplicate old entries from the list.
+             */
+            for (PenaltyCharge p1 : repairPenaltyCharges) {
+                for (PenaltyCharge p2 : repairPenaltyCharges) {
+                    if ((p1.getPenaltyStartAgeFrom() == p2.getPenaltyStartAgeFrom())
+                            && (p1.getPenaltyStartDate().compareTo(p2.getPenaltyStartDate()) > 0)) {
+                        repairPenalties.remove(p2);
+                    }
+                }
+            }
         } catch (Exception ex) {
             LOG.error("Exception thrown in penalty charge :", ex);
         }
-
-        return repairPenaltyCharges;
+        return repairPenalties;
     }
 
     @Override
-    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, int penaltyType) {
+    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, PenaltyType penaltyType) {
 
         if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
 
@@ -102,11 +132,11 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             }
 
         }
-        return PenaltyCharge.ZeroPenaltyPercentage.ZERO_PERCENTAGE.getPercentageDsc();
+        return ZeroPenaltyPercentage.ZERO_PERCENTAGE.getPercentageDsc();
     }
 
     @Override
-    public String getRepairPenaltyPercentage(Invoice inv, int penaltyType) {
+    public String getRepairPenaltyPercentage(Invoice inv, PenaltyType penaltyType) {
 
         if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
 
@@ -121,11 +151,11 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
                 }
             }
         }
-        return PenaltyCharge.ZeroPenaltyPercentage.ZERO_PERCENTAGE.getPercentageDsc();
+        return ZeroPenaltyPercentage.ZERO_PERCENTAGE.getPercentageDsc();
     }
     
     @Override
-    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart, Invoice inv, int penaltyType) {
+    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart, Invoice inv, PenaltyType penaltyType) {
 
         BigDecimal appliedHirePenaltyPercentageValue = inv.getHirePenaltyPercentageAppliedValue();
         if (appliedHirePenaltyPercentageValue != null) {
@@ -141,7 +171,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     }
 
     @Override
-    public boolean isAppliedRepairPenaltyPercentageDifferent(Invoice inv, int penaltyType) {
+    public boolean isAppliedRepairPenaltyPercentageDifferent(Invoice inv, PenaltyType penaltyType) {
 
         BigDecimal appliedRepairPenaltyPercentageValue = inv.getRepairPenaltyPercentageAppliedValue();
         if (appliedRepairPenaltyPercentageValue != null) {
@@ -157,7 +187,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     }
     
     @Override
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, int penaltyType) {
+    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, PenaltyType penaltyType) {
 
         BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
 //        BigDecimal hireNet = claim.getInvoice().getHireNet();
@@ -182,8 +212,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
         BigDecimal hireGross = inv.getHireGross();
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-        String calculatedHirePenaltyPercentage = getHirePenaltyPercentage(hireStart, inv, claim.getClaimType().getPenaltyType());
-        for (PenaltyCharge hirePenaltyPercentageValue : getHirePenaltyPercentages(hireStart, claim.getClaimType().getPenaltyType())) {
+        String calculatedHirePenaltyPercentage = getHirePenaltyPercentage(hireStart, inv, ClaimType.getPenaltyType(claim.getClaimType()));
+        for (PenaltyCharge hirePenaltyPercentageValue : getHirePenaltyPercentages(hireStart, ClaimType.getPenaltyType(claim.getClaimType()))) {
             if (hirePenaltyPercentageValue.getPenaltyPercentageDsc().equals(calculatedHirePenaltyPercentage)) {
                 hirePenaltyAmout = (hirePenaltyPercentageValue.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
             }
@@ -194,7 +224,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     
     
     @Override
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, int penaltyType) {
+    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, PenaltyType penaltyType) {
 
         BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
 //        BigDecimal repairNet = claim.getInvoice().getRepairNet();
@@ -217,8 +247,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         Invoice inv = claim.getInvoice();
         BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
         BigDecimal repairGross = inv.getRepairGross();
-        String calculatedRepairPenaltyPercentage = getRepairPenaltyPercentage(inv, claim.getClaimType().getPenaltyType());
-        for (PenaltyCharge repairPenaltyPercentage : getRepairPenaltyPercentages(claim.getClaimType().getPenaltyType())) {
+        String calculatedRepairPenaltyPercentage = getRepairPenaltyPercentage(inv, ClaimType.getPenaltyType(claim.getClaimType()));
+        for (PenaltyCharge repairPenaltyPercentage : getRepairPenaltyPercentages(ClaimType.getPenaltyType(claim.getClaimType()))) {
             if (repairPenaltyPercentage.getPenaltyPercentageDsc().equals(calculatedRepairPenaltyPercentage)) {
                 repairPenaltyAmout = (repairPenaltyPercentage.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
             }

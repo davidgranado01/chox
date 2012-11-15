@@ -16,6 +16,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
@@ -30,6 +31,12 @@ public class InsurerPaymentReport implements Report {
     private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private ReportDataService reportDataService;
+    private PenaltyChargeService penaltyChargeService;
+
+    @Override
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {

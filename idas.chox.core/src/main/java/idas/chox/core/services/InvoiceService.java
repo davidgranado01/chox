@@ -30,18 +30,6 @@ public interface InvoiceService {
     public boolean setPenaltyStartToDateInvoiced(String choReference);
     
     public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart);
-    
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart);
-    
-    public BigDecimal calculateHirePenaltyCharge(Claim claim);
-    
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage);
-    
-    public BigDecimal calculateRepairPenaltyCharge(Claim claim);
-    
-    public String calculatedRepairPenaltyPercentage(Invoice inv);
-    
-    public String calculatedHirePenaltyPercentage(Invoice inv, Date hireStart);
         
     public void applyInsurerDiscounts(Claim claim, WebUser user, boolean canAddComment);
     

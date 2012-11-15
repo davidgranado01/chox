@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
@@ -36,6 +37,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
+    private PenaltyChargeService penaltyChargeService;
+
+    @Override
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {

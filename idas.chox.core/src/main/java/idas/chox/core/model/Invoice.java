@@ -1535,35 +1535,4 @@ public class Invoice extends Entity implements Serializable {
         }
         return null;
     }
-    
-    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart) {
-
-        BigDecimal appliedHirePenaltyPercentageValue = getHirePenaltyPercentageAppliedValue();
-        if (appliedHirePenaltyPercentageValue != null) {
-            for (PenaltyPercentage hirePenaltyPerc : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
-                if (hirePenaltyPerc.getPercentage().equals(getHirePenaltyPercentage())) {
-                    if (hirePenaltyPerc.getPercentageValue().compareTo(appliedHirePenaltyPercentageValue) != 0) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isAppliedRepairPenaltyPercentageDifferent() {
-
-        BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
-        if (appliedRepairPenaltyPercentageValue != null) {
-            for (PenaltyPercentage repairPenaltyPerc : PenaltyPercentage.getRepairPenaltyPercentages()) {
-                if (repairPenaltyPerc.getPercentage().equals(getRepairPenaltyPercentage())) {
-                    if (repairPenaltyPerc.getPercentageValue().compareTo(appliedRepairPenaltyPercentageValue) != 0) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
 }

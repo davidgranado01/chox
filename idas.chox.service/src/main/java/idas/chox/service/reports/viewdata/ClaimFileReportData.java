@@ -20,6 +20,7 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 
 
@@ -280,7 +281,7 @@ public class ClaimFileReportData {
     private String claimType;
     private String finalReview;
 
-    public ClaimFileReportData(Claim claim, WebUser currentUser) {
+    public ClaimFileReportData(Claim claim, WebUser currentUser, PenaltyChargeService penaltyChargeService) {
       try {
         claimType = claim.getClaimType().toString();
         if (claim.getChorganisation() != null) {
@@ -607,12 +608,12 @@ public class ClaimFileReportData {
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-            if (invoice.isAppliedHirePenaltyPercentageDifferent(hireStart) && !currentUser.isCHO()) {
+            if (penaltyChargeService.isAppliedHirePenaltyPercentageDifferent(hireStart, invoice, ClaimType.getPenaltyType(claim.getClaimType())) && !currentUser.isCHO()) {
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             }
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
-            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO()) {
+            if (penaltyChargeService.isAppliedRepairPenaltyPercentageDifferent(invoice, ClaimType.getPenaltyType(claim.getClaimType())) && !currentUser.isCHO()) {
                 invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
             }
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
