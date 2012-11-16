@@ -21,10 +21,6 @@ public interface PenaltyChargeService {
     
     public String getRepairPenaltyPercentage(Invoice inv, PenaltyType penaltyType);
     
-    public boolean isAppliedHirePenaltyPercentageDifferent(Date hireStart, Invoice inv, PenaltyType penaltyType);
-    
-    public boolean isAppliedRepairPenaltyPercentageDifferent(Invoice inv, PenaltyType penaltyType);
-    
     public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, PenaltyType penaltyType);
     
     public BigDecimal calculateHirePenaltyCharge(Claim claim);

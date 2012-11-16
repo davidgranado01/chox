@@ -16,8 +16,6 @@ public interface Report {
     
     void setBaseDataService(BaseDataService baseDataService);
     
-    void setPenaltyChargeService(PenaltyChargeService penaltyChargeService);
-
     HashMap getReportParameters();
 
     String getReportTemplateFileName();

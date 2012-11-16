@@ -281,7 +281,7 @@ public class ClaimFileReportData {
     private String claimType;
     private String finalReview;
 
-    public ClaimFileReportData(Claim claim, WebUser currentUser, PenaltyChargeService penaltyChargeService) {
+    public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
         if (claim.getChorganisation() != null) {
@@ -608,12 +608,12 @@ public class ClaimFileReportData {
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-            if (penaltyChargeService.isAppliedHirePenaltyPercentageDifferent(hireStart, invoice, ClaimType.getPenaltyType(claim.getClaimType())) && !currentUser.isCHO()) {
+            if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             }
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
             invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
-            if (penaltyChargeService.isAppliedRepairPenaltyPercentageDifferent(invoice, ClaimType.getPenaltyType(claim.getClaimType())) && !currentUser.isCHO()) {
+            if (invoice.isAppliedRepairPenaltyPercentageDifferent() && !currentUser.isCHO()) {
                 invoiceRepairPenaltyChargePercentageApplied = invoice.getRepairPenaltyPercentageApplied();
             }
             invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();

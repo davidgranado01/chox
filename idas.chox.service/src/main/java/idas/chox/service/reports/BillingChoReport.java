@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoRate;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingChoReportObject;
@@ -35,12 +34,6 @@ public class BillingChoReport implements Report {
     private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private ReportDataService reportDataService;
-    private PenaltyChargeService penaltyChargeService;
-
-    @Override
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {

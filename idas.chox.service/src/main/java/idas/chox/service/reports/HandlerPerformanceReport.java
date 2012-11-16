@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
@@ -28,12 +27,6 @@ public class HandlerPerformanceReport implements Report {
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
-    private PenaltyChargeService penaltyChargeService;
-
-    @Override
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {

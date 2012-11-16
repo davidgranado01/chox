@@ -21,7 +21,6 @@
             </type>
         </property> 
         <property column="penalty_start_age_from" name="penaltyStartAgeFrom" not-null="true"/>
-        <property column="penalty_start_age_to" name="penaltyStartAgeTo" not-null="true"/>
         <property column="penalty_percentage" name="penaltyPercentage" not-null="true"/>
         <property column="penalty_percentage_dsc" name="penaltyPercentageDsc" not-null="true"/>
         <property column="penalty_start_date" name="penaltyStartDate" not-null="true"/>

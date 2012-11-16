@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.ClaimFileBreData;
@@ -29,12 +28,6 @@ public class ClaimFileReport implements Report {
     Map externalParameter;
     private BaseDataService baseDataService;
     private ReportDataService reportDataService;
-    private PenaltyChargeService penaltyChargeService;
-
-    @Override
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {
@@ -64,7 +57,7 @@ public class ClaimFileReport implements Report {
 
         WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
         
-        ClaimFileReportData claimReport = new ClaimFileReportData(claim, currentUser, penaltyChargeService);
+        ClaimFileReportData claimReport = new ClaimFileReportData(claim, currentUser);
 
         List<ClaimFileEcdData> claimEcds = ClaimFileEcdData.getClaimFileEcdData(claim);
         

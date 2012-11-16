@@ -9,7 +9,6 @@ public class PenaltyCharge {
     private PenaltyType penaltyType;
     private PenaltyName penaltyName;
     private int penaltyStartAgeFrom;
-    private int penaltyStartAgeTo;
     private BigDecimal penaltyPercentage;
     private String penaltyPercentageDsc;
     private Date penaltyStartDate;
@@ -46,14 +45,6 @@ public class PenaltyCharge {
         this.penaltyStartAgeFrom = penaltyStartAgeFrom;
     }
 
-    public int getPenaltyStartAgeTo() {
-        return penaltyStartAgeTo;
-    }
-
-    public void setPenaltyStartAgeTo(int penaltyStartAgeTo) {
-        this.penaltyStartAgeTo = penaltyStartAgeTo;
-    }
-
     public BigDecimal getPenaltyPercentage() {
         return penaltyPercentage;
     }
@@ -76,20 +67,6 @@ public class PenaltyCharge {
 
     public void setPenaltyStartDate(Date penaltyStartDate) {
         this.penaltyStartDate = penaltyStartDate;
-    }
-
-    public enum ZeroPenaltyPercentage {
-
-        ZERO_PERCENTAGE("0%");
-        public String percentageDsc;
-
-        ZeroPenaltyPercentage(String percentage) {
-            this.percentageDsc = percentage;
-        }
-
-        public String getPercentageDsc() {
-            return percentageDsc;
-        }
     }
     
     public enum PenaltyName {

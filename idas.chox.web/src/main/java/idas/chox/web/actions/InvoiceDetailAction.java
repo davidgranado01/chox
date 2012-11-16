@@ -1404,12 +1404,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     }
 
     public boolean isAppliedHirePenaltyPercentageDifferent() {
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-        return penaltyChargeService.isAppliedHirePenaltyPercentageDifferent(hireStart, claim.getInvoice(), ClaimType.getPenaltyType(claim.getClaimType()));
+        return invoice.isAppliedHirePenaltyPercentageDifferent();
     }
 
     public boolean isAppliedRepairPenaltyPercentageDifferent() {
-        return penaltyChargeService.isAppliedRepairPenaltyPercentageDifferent(claim.getInvoice(), ClaimType.getPenaltyType(claim.getClaimType()));
+        return invoice.isAppliedRepairPenaltyPercentageDifferent();
     }
     
     public String getRepairPenaltyPercentageApplied() {

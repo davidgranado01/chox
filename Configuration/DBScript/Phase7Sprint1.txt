@@ -5,13 +5,12 @@
 CREATE TABLE penalty_charge
 (
   id serial NOT NULL,
-  penalty_Name varchar(16),
-  penalty_type varchar(16),
-  penalty_start_age_from integer DEFAULT 0,
-  penalty_start_age_to integer DEFAULT 0,
+  penalty_Name varchar(16) NOT NULL,
+  penalty_type varchar(16) NOT NULL,
+  penalty_start_age_from integer NOT NULL DEFAULT 0,
   penalty_percentage numeric(10,2) NOT NULL DEFAULT 0.00,
-  penalty_percentage_dsc character varying(32),
-  penalty_start_date timestamp without time zone DEFAULT now()
+  penalty_percentage_dsc varchar(32) NOT NULL,
+  penalty_start_date timestamp without time zone NOT NULL DEFAULT now()
 )
 WITH (
   OIDS=FALSE
@@ -19,26 +18,28 @@ WITH (
 GRANT SELECT ON TABLE penalty_charge TO chox_user;
 GRANT SELECT ON TABLE penalty_charge TO chox_mi;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',30,60,12.5,'12.5%','2012-06-15'; 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',60,90,20,'20%','2012-06-15';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',90,0,0,'commercial','2012-06-15';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 30, 12.5, '12.5%', '2012-06-15'; 
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 60, 20, '20%', '2012-06-15';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '2012-06-15';
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',30,60,7.5,'7.5%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',60,90,15.00,'15%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','DEFAULT',90,0,0,'commercial','1950-01-01';
-
-
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','SUBSCRIBER',30,60,4,'4%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','SUBSCRIBER',60,90,8,'8%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE','SUBSCRIBER',90,0,12,'12%','1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 30, 7.5, '7.5%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 60, 15.00, '15%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '1950-01-01';
 
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR','DEFAULT',30,60,2.5,'2.5%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR','DEFAULT',60,0,5,'5%','1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 30, 4, '4%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 60, 8, '8%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 90, 12, '12%', '1950-01-01';
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR','SUBSCRIBER',30,60,0,'0%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR','SUBSCRIBER',60,90,0,'0%','1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_start_age_to, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR','SUBSCRIBER',90,0,0,'0%','1950-01-01';
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'DEFAULT', 30, 2.5, '2.5%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'DEFAULT', 60, 5, '5%', '1950-01-01';
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 30, 0, '0%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 60, 0, '0%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 90, 0, '0%', '1950-01-01';
+
+
 
 ----------------------
 --  End of 7.1.5   --

@@ -22,7 +22,6 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.core.util.TextHelper;
@@ -50,11 +49,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private boolean exportCanceled;
     private boolean exceptionThrown;
     private boolean directDownload;
-    private PenaltyChargeService penaltyChargeService;
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
     
     public boolean isDirectDownload() {
         return directDownload;
@@ -136,7 +130,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
         report.setExternalParameter(parametersMap);
         report.setBaseDataService(baseDataService);
         report.setReportDataService(reportDataService);
-        report.setPenaltyChargeService(penaltyChargeService);
 
         Calendar cal = Calendar.getInstance();
 

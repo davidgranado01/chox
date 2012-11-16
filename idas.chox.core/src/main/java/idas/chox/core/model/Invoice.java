@@ -230,7 +230,6 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal finalPayment;
     private boolean penaltyChargesPaid;
     private Date autoPenaltyStart;
-    private Integer autoPenaltyAlertQty;
     private InvoiceOriginal invoiceOriginal;
     private BigDecimal hireInsurerDiscountCalculated = BigDecimal.ZERO;
     private BigDecimal repairInsurerDiscountCalculated = BigDecimal.ZERO;
@@ -274,14 +273,6 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInvoiceOriginal(InvoiceOriginal invoiceOriginal) {
         this.invoiceOriginal = invoiceOriginal;
-    }
-    
-    public Integer getAutoPenaltyAlertQty() {
-        return autoPenaltyAlertQty;
-    }
-
-    public void setAutoPenaltyAlertQty(Integer autoPenaltyAlertQty) {
-        this.autoPenaltyAlertQty = autoPenaltyAlertQty;
     }
 
     public Date getAutoPenaltyStart() {
@@ -1534,5 +1525,32 @@ public class Invoice extends Entity implements Serializable {
             return appliedRepairPenaltyPercentageValue;
         }
         return null;
+    }
+
+    public boolean isAppliedHirePenaltyPercentageDifferent() {
+        try {
+            if (getHirePenaltyPercentageAppliedValue() != null && getHirePenaltyPercentage() != null && getHirePenaltyPercentage().endsWith("%")) {
+                BigDecimal selectedHirePenaltyPercentageValue = new BigDecimal(getHirePenaltyPercentage().trim().replace("%", ""));
+                return getHirePenaltyPercentageAppliedValue().compareTo(selectedHirePenaltyPercentageValue) != 0 ? true : false;
+            } else if (getHirePenaltyPercentage().equalsIgnoreCase("commercial")) {
+                return true;
+            }
+        } catch (NumberFormatException nfx) {
+            LOG.error("Exception while converting HirePenaltyPercentage string '{}' to BigDecimal", getHirePenaltyPercentage(), nfx);
+        }
+        return false;
+    }
+
+    public boolean isAppliedRepairPenaltyPercentageDifferent() {
+
+        try {
+            if (getRepairPenaltyPercentageAppliedValue() != null && getRepairPenaltyPercentage() != null && getRepairPenaltyPercentage().endsWith("%")) {
+                BigDecimal selectedRepairPenaltyPercentageValue = new BigDecimal(getRepairPenaltyPercentage().trim().replace("%", ""));
+                return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0 ? true : false;
+            }
+        } catch (NumberFormatException nfx) {
+            LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), nfx);
+        }
+        return false;
     }
 }

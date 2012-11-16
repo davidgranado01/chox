@@ -14,8 +14,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.*;
-import idas.chox.core.services.*;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.InsurerDiscount;
+import idas.chox.core.model.InsurerDiscountType;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.InvoiceOriginal;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.InvoiceService;
+import idas.chox.core.services.UserService;
 import idas.chox.core.xmlValidation.ClaimResult;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
@@ -220,7 +230,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         inv.setHirePenaltyCharge(BigDecimal.ZERO);
         inv.setRepairPenaltyCharge(BigDecimal.ZERO);
         inv.setPenaltyAlertQty(0);
-        inv.setAutoPenaltyAlertQty(0);
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
         if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
