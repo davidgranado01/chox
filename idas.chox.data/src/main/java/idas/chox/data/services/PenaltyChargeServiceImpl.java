@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,43 +32,35 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
 
         
         List<PenaltyCharge> hirePenalties = new ArrayList<PenaltyCharge>();
-
+       
         // Get all hire penalty charges where penaltyStartDate <= hireStart
-        DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class);
-        criteria.add(Restrictions.eq("penaltyType", penaltyType));
-        criteria.add(Restrictions.le("penaltyStartDate", hireStart));
-        criteria.add(Restrictions.eq("penaltyName", PenaltyName.HIRE));
-        criteria.addOrder(Order.asc("penaltyStartAgeFrom"));
+        DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class, "pc");
+        criteria.add(Restrictions.eq("pc.penaltyType", penaltyType));
+        criteria.add(Restrictions.eq("pc.penaltyName", PenaltyName.HIRE));
+        criteria.add(Restrictions.le("pc.penaltyStartDate", hireStart));
+        criteria.addOrder(Order.asc("pc.penaltyStartAgeFrom"));
+        
+        /* Subquery to exclude the old entries 
+         *  e.g If two entries present from the query reuslt then 
+         *  one entry should be excluded by looking at 'Penalty Start' date.
+         * 
+         *   HIRE DEFAULT 30 60  7.5  7.5% 1/1/2010  -- THIS OLD ENTRY SHOULD BE excluded.
+         *   HIRE DEFAULT 30 60 12.5 12.5% 1/1/2011
+         */
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc1");
+        subQuery.add(Restrictions.eq("pc1.penaltyType", penaltyType));
+        subQuery.add(Restrictions.eq("pc1.penaltyName", PenaltyName.HIRE));
+        subQuery.add(Restrictions.le("pc1.penaltyStartDate", hireStart));
+        subQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
+        subQuery.add(Restrictions.eqProperty("pc1.penaltyStartAgeFrom", "pc.penaltyStartAgeFrom"));
+        subQuery.setProjection(Projections.id());
+        
+        criteria.add(Subqueries.notExists(subQuery));
         
         try {
-            List<PenaltyCharge> hirePenaltyCharges = findByCriteria(criteria);
-            /*
-             * Copy results into another list. This list is used to 
-             * get latest 'Penalty Start Date' record 
-             * if duplicate(same 'Penalty Start Age') record presents in the query result. 
-             * 
-             * e.g If two entries present from the query reuslt then 
-             * one entry should be removed by looking at 'Penalty Start' date.
-             * 
-             *   HIRE DEFAULT 30 60  7.5  7.5% 1/1/2010  -- THIS DUPLICATE OLD ENTRY SHOULD BE REMOVED.
-             *   HIRE DEFAULT 30 60 12.5 12.5% 1/1/2011
-             */
-            for (PenaltyCharge charge : hirePenaltyCharges) {
-                hirePenalties.add(charge);
-            }
-            /*
-             * Remove the duplicate old entries from the list.
-             */
-            for (PenaltyCharge p1 : hirePenaltyCharges) {
-                for (PenaltyCharge p2 : hirePenaltyCharges) {
-                    if ((p1.getPenaltyStartAgeFrom() == p2.getPenaltyStartAgeFrom())
-                            && (p1.getPenaltyStartDate().compareTo(p2.getPenaltyStartDate()) > 0)) {
-                        hirePenalties.remove(p2);
-                    }
-                }
-            }
+            hirePenalties = findByCriteria(criteria);
         } catch (Exception ex) {
-            LOG.error("Exception thrown in penalty charge :",ex);
+            LOG.error("Exception in executing HIRE penalty percentage query: ",ex);
         }
         return hirePenalties;
     }
@@ -75,42 +69,32 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     public List<PenaltyCharge> getRepairPenaltyPercentages(PenaltyType penaltyType) {
         
         List<PenaltyCharge> repairPenalties = new ArrayList<PenaltyCharge>();
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class);
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class, "pc");
         criteria.add(Restrictions.eq("penaltyType", penaltyType));
         criteria.add(Restrictions.eq("penaltyName", PenaltyName.REPAIR));
         criteria.addOrder(Order.asc("penaltyStartAgeFrom"));
       
+        /* Subquery to exclude the old entries 
+         *  e.g If two entries present from the query reuslt then 
+         *  one entry should be excluded by looking at 'Penalty Start' date.
+         * 
+         *   REPAIR DEFAULT 30 60  7.5  7.5% 1/1/2010  -- THIS OLD ENTRY SHOULD BE excluded.
+         *   REPAIR DEFAULT 30 60 12.5 12.5% 1/1/2011
+         */
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc1");
+        subQuery.add(Restrictions.eq("pc1.penaltyType", penaltyType));
+        subQuery.add(Restrictions.eq("pc1.penaltyName", PenaltyName.REPAIR));
+        subQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
+        subQuery.add(Restrictions.eqProperty("pc1.penaltyStartAgeFrom", "pc.penaltyStartAgeFrom"));
+        subQuery.setProjection(Projections.id());
+        
+        criteria.add(Subqueries.notExists(subQuery));
+        
         try {
-            List<PenaltyCharge> repairPenaltyCharges = findByCriteria(criteria);
-
-            /*
-             * Copy results into another list. This list is used to 
-             * get latest 'Penalty Start Date' record 
-             * if duplicate(same 'Penalty Start Age') record presents in the query result.
-             * 
-             * e.g If two entries present from the query reuslt then 
-             * one entry should be removed by looking at 'Penalty Start' date.
-             * 
-             *   REPAIR DEFAULT 30 60  2.5 2.5% 1/1/2010  -- THIS DUPLICATE OLD ENTRY SHOULD BE REMOVED.
-             *   REPAIR DEFAULT 30 60  3.5 3.5% 1/1/2011
-             */
-            for (PenaltyCharge charge : repairPenaltyCharges) {
-                repairPenalties.add(charge);
-            }
-            /*
-             * Remove the duplicate old entries from the list.
-             */
-            for (PenaltyCharge p1 : repairPenaltyCharges) {
-                for (PenaltyCharge p2 : repairPenaltyCharges) {
-                    if ((p1.getPenaltyStartAgeFrom() == p2.getPenaltyStartAgeFrom())
-                            && (p1.getPenaltyStartDate().compareTo(p2.getPenaltyStartDate()) > 0)) {
-                        repairPenalties.remove(p2);
-                    }
-                }
-            }
+            repairPenalties = findByCriteria(criteria);
         } catch (Exception ex) {
-            LOG.error("Exception thrown in penalty charge :", ex);
+            LOG.error("Exception in executing REPAIR penalty percentage query: ", ex);
         }
         return repairPenalties;
     }
