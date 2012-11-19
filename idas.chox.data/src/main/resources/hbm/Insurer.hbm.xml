@@ -40,7 +40,16 @@
     <property column="is_task_management_enable" name="taskManagementEnable"/>
     <property column="is_third_pary_intervention_activated" name="thirdPartyInterventionActivated"/>
     <property column="tpi_identifier" name="tpiIdentificationString"/>
+    <property column="gta_regex_expression" name="gtaRegexExpression"/>
     <property column="tpi_regex_expression" name="tpiRegexExpression"/>
+    <property column="subscriber_regex_expression" name="subscriberRegexExpression"/>
+    <property column="insurer_vs_insurer_regex_expression" name="insurerVsInsurerRegexExpression"/>
+    <property column="insurer_manual_regex_expression" name="insurerManualRegexExpression"/>
+    <property column="is_tpi_auto_routing_enable" name="tpiAutoRoutingEnable"/>
+    <property column="is_gta_auto_routing_enable" name="gtaAutoRoutingEnable"/>
+    <property column="is_subscriber_auto_routing_enable" name="subscriberAutoRoutingEnable"/>
+    <property column="is_insurer_vs_isnurer_auto_routing_enable" name="insurerVsInsurerAutoRoutingEnable"/>
+    <property column="is_insurer_manual_auto_routing_enable" name="insurerManualAutoRoutingEnable"/>
     <property column="force_password_change" name="forcePasswordChange" not-null="true"/>
     <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
     <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
@@ -58,8 +67,8 @@
     <property column="enable_manual_invoice_ownership" name="enableManualInvoiceOwnership" not-null="true"/>
     <property column="ecd_increase_trigger" name="ecdIncreaseTriggerPercentage" not-null="true"/>
     <property column="restrict_export" name="restrictExport" not-null="true"/>
-    <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
-    <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
+    <many-to-one class="idas.chox.core.model.Workgroup" column="invoice_workgroup" name="invoiceWorkgroup"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="invoice_owner" name="invoiceOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="related_insurer" name="relatedInsurer"/>

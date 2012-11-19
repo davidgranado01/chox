@@ -140,3 +140,28 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 --  End of 7.1.2   --
 ----------------------
 
+--------------------------------------------------------------------------------
+-- 7.1.6 - Make 'Rejection Reason' dependent on claim type                    --
+--------------------------------------------------------------------------------
+
+ALTER TABLE insurer ADD COLUMN gta_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN subscriber_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
+
+ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean DEFAULT TRUE;
+
+ALTER TABLE claim RENAME COLUMN is_tpi_claim_special_routed TO is_claim_auto_routed;
+
+ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
+
+ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
+
+----------------------
+--  End of 7.1.1   --
+----------------------
+
