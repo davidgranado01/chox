@@ -49,7 +49,6 @@ public class ChoAliasAction extends BaseAction implements ModelDriven<Chorganisa
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getChoAliasId() {
         return choAliasId;
     }
@@ -81,8 +80,6 @@ public class ChoAliasAction extends BaseAction implements ModelDriven<Chorganisa
     public void setChoId(int choId) {
         this.choId = choId;
     }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
     public String getChoAlias() {
 
@@ -136,11 +133,8 @@ public class ChoAliasAction extends BaseAction implements ModelDriven<Chorganisa
 
         return SUCCESS;
     }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
     }
-    // </editor-fold>
 }
