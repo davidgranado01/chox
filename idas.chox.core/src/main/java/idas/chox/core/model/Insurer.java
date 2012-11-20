@@ -43,9 +43,18 @@ public class Insurer extends Entity implements Serializable {
     private String autoRoutingEnableId;
     private boolean thirdPartyInterventionActivated;
     private String tpiIdentificationString;
-    private Workgroup tpiWorkgroup;
-    private WebUser tpiClaimOwner;
+    private Workgroup invoiceWorkgroup;
+    private WebUser invoiceOwner;
     private String tpiRegexExpression;
+    private String gtaRegexExpression;
+    private String subscriberRegexExpression;
+    private String insurerVsInsurerRegexExpression;
+    private String insurerManualRegexExpression;
+    private boolean tpiAutoRoutingEnable;
+    private boolean gtaAutoRoutingEnable;
+    private boolean subscriberAutoRoutingEnable;
+    private boolean insurerVsInsurerAutoRoutingEnable;
+    private boolean insurerManualAutoRoutingEnable;
     private int forcePasswordChange;
     private int uniquePasswordHistory;
     private boolean insurerDiscountEnable;
@@ -112,20 +121,20 @@ public class Insurer extends Entity implements Serializable {
         this.uniquePasswordHistory = uniquePasswordHistory;
     }
 
-    public Workgroup getTpiWorkgroup() {
-        return tpiWorkgroup;
+    public Workgroup getInvoiceWorkgroup() {
+        return invoiceWorkgroup;
     }
 
-    public WebUser getTpiClaimOwner() {
-        return tpiClaimOwner;
+    public WebUser getInvoiceOwner() {
+        return invoiceOwner;
     }
 
-    public void setTpiWorkgroup(Workgroup workgroup) {
-        this.tpiWorkgroup = workgroup;
+    public void setInvoiceWorkgroup(Workgroup workgroup) {
+        this.invoiceWorkgroup = workgroup;
     }
 
-    public void setTpiClaimOwner(WebUser webUser) {
-        this.tpiClaimOwner = webUser;
+    public void setInvoiceOwner(WebUser webUser) {
+        this.invoiceOwner = webUser;
     }
 
     public String getTpiIdentificationString() {
@@ -572,6 +581,81 @@ public class Insurer extends Entity implements Serializable {
 
     public void setRestrictExport(boolean restrictExport) {
         this.restrictExport = restrictExport;
+    }
+
+    public String getGtaRegexExpression() {
+        return gtaRegexExpression;
+    }
+
+    public void setGtaRegexExpression(String gtaRegexExpression) {
+        this.gtaRegexExpression = gtaRegexExpression;
+    }
+
+    public String getSubscriberRegexExpression() {
+        return subscriberRegexExpression;
+    }
+
+    public void setSubscriberRegexExpression(String subscriberRegexExpression) {
+        this.subscriberRegexExpression = subscriberRegexExpression;
+    }
+
+    public String getInsurerVsInsurerRegexExpression() {
+        return insurerVsInsurerRegexExpression;
+    }
+
+    public void setInsurerVsInsurerRegexExpression(
+            String insurerVsInsurerRegexExpression) {
+        this.insurerVsInsurerRegexExpression = insurerVsInsurerRegexExpression;
+    }
+
+    public String getInsurerManualRegexExpression() {
+        return insurerManualRegexExpression;
+    }
+
+    public void setInsurerManualRegexExpression(String insurerManualRegexExpression) {
+        this.insurerManualRegexExpression = insurerManualRegexExpression;
+    }
+
+    public boolean isTpiAutoRoutingEnable() {
+        return tpiAutoRoutingEnable;
+    }
+
+    public void setTpiAutoRoutingEnable(boolean tpiAutoRoutingEnable) {
+        this.tpiAutoRoutingEnable = tpiAutoRoutingEnable;
+    }
+
+    public boolean isGtaAutoRoutingEnable() {
+        return gtaAutoRoutingEnable;
+    }
+
+    public void setGtaAutoRoutingEnable(boolean gtaAutoRoutingEnable) {
+        this.gtaAutoRoutingEnable = gtaAutoRoutingEnable;
+    }
+
+    public boolean isSubscriberAutoRoutingEnable() {
+        return subscriberAutoRoutingEnable;
+    }
+
+    public void setSubscriberAutoRoutingEnable(boolean subscriberAutoRoutingEnable) {
+        this.subscriberAutoRoutingEnable = subscriberAutoRoutingEnable;
+    }
+
+    public boolean isInsurerVsInsurerAutoRoutingEnable() {
+        return insurerVsInsurerAutoRoutingEnable;
+    }
+
+    public void setInsurerVsInsurerAutoRoutingEnable(
+            boolean insurerVsInsurerAutoRoutingEnable) {
+        this.insurerVsInsurerAutoRoutingEnable = insurerVsInsurerAutoRoutingEnable;
+    }
+
+    public boolean isInsurerManualAutoRoutingEnable() {
+        return insurerManualAutoRoutingEnable;
+    }
+
+    public void setInsurerManualAutoRoutingEnable(
+            boolean insurerManualAutoRoutingEnable) {
+        this.insurerManualAutoRoutingEnable = insurerManualAutoRoutingEnable;
     }
 
 }

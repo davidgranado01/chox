@@ -31,11 +31,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private int workgroupIdField;
 
     public int getClaimOwnerIdField() {
-        return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getId() : 0;
+        return this.model.getInvoiceOwner() != null ? this.model.getInvoiceOwner().getId() : 0;
     }
 
     public String getClaimOwnerIdFieldName() {
-        return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getDisplayName() : "--- Please Select ---";
+        return this.model.getInvoiceOwner() != null ? this.model.getInvoiceOwner().getDisplayName() : "--- Please Select ---";
     }
 
     public void setClaimOwnerIdField(int claimOwnerIdField) {
@@ -43,11 +43,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     public int getWorkgroupIdField() {
-        return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getId() : 0;
+        return this.model.getInvoiceWorkgroup() != null ? this.model.getInvoiceWorkgroup().getId() : 0;
     }
 
     public String getWorkgroupIdFieldName() {
-        return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getName() : "--- Please Select ---";
+        return this.model.getInvoiceWorkgroup() != null ? this.model.getInvoiceWorkgroup().getName() : "--- Please Select ---";
     }
 
     public void setWorkgroupIdField(int workgroupIdField) {
@@ -158,10 +158,10 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             checkVersion(Arrays.asList(model));
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
             if (this.adminInsurerService.getWebuserById(claimOwnerIdField) != null) {
-                model.setTpiClaimOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
+                model.setInvoiceOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
             }
             if (this.adminInsurerService.getWorkgroup(workgroupIdField) != null) {
-                model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
+                model.setInvoiceWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
             }
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             updateModelInSession(Arrays.asList(model));

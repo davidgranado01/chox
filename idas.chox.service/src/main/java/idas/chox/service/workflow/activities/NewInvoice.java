@@ -72,16 +72,31 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         
+        claim.setAutoRoutedClaim(true);
         String claimNumber = claim.getThirdParty().getClaimReference();
-        if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
+        if (claimNumber != null && !claimNumber.equalsIgnoreCase("")) {
             NodeHelper nodeHelper = new NodeHelper();
-            if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setSpecialRoutedTpiClaim(false);
-            } else {
-                claim.setSpecialRoutedTpiClaim(true);
-            }
-        } else {
-            claim.setSpecialRoutedTpiClaim(true);
+            //TPI claim type is handled in NewTpiClaim activity
+            //Insurer Upload claim type is handled in InsurerUpload activity
+            if (ClaimType.isGTA(claim.getClaimType()) 
+                    && claim.getInsurer().getGtaRegexExpression() != null
+                    && !claim.getInsurer().getGtaRegexExpression().equals("") 
+                    && !claim.getInsurer().isGtaAutoRoutingEnable()
+                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setAutoRoutedClaim(false);
+            } else if (ClaimType.isSubscriber(claim.getClaimType()) 
+                    && claim.getInsurer().getSubscriberRegexExpression() != null 
+                    && !claim.getInsurer().getSubscriberRegexExpression().equals("") 
+                    && !claim.getInsurer().isSubscriberAutoRoutingEnable()
+                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setAutoRoutedClaim(false);
+            } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
+                    &&claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
+                    && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
+                    && !claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
+                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setAutoRoutedClaim(false);
+            } 
         }
     }
 
@@ -122,7 +137,6 @@ public class NewInvoice extends BaseActivity {
             claim.addHistory(history);
         }
 
-
         /*
          * New task creation for new invoice if repair gross is not 0.00 
          * and automated repair tasks (for managing/not managing repaur) is
@@ -142,32 +156,38 @@ public class NewInvoice extends BaseActivity {
             }
         }
 
-        
-        // Check to see if we have an Insurer vs Insurer claim (that doesn't match the regex)
-        if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
-            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isSpecialRoutedTpiClaim()) {
-                // re-route claim
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
-                    claim.setWorkgroupOriginal(claim.getWorkgroup());
-                    claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
-                }
-
-                //re-assign claim
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
-                    claim.setClaimOwnerOriginal(claim.getClaimOwner());
-                    claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
-                }
-                getDataService().save(claim);
-                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-                // move claim to next status
-                setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(getCurrentStatus());
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            }
-
+        if (ClaimType.isGTA(claim.getClaimType())) {
+            claim = routeToAwaitingInvoicePayment(claim);
+        } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+            claim = routeToAwaitingInvoicePayment(claim);
+        } else if (ClaimType.isSubscriber(claim.getClaimType())){
+            claim = routeToAwaitingInvoicePayment(claim);
         }
     }
+    
+    private Claim routeToAwaitingInvoicePayment(Claim claim) {
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
+            // re-route claim
+            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                claim.setWorkgroupOriginal(claim.getWorkgroup());
+                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+            }
 
+            //re-assign claim
+            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+            }
+            getDataService().save(claim);
+            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            // move claim to next status
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        }
+        return claim;
+    }
+    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' ", claim.getChoReference());
@@ -274,4 +294,5 @@ public class NewInvoice extends BaseActivity {
             }
         }
     }
+    
 }
