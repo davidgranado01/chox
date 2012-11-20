@@ -143,3 +143,31 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 --  End of 7.1.2   --
 ----------------------
 
+
+--------------------------------------------------------------------------------
+-- 7.1.4 - Fixed Fee (Rate Per Day) Claims                                    --
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN allow_fixedfee_claims boolean not null default false;
+ALTER TABLE chorganisation ADD COLUMN enable_fixedfee_claims boolean not null default false;
+
+--
+-- Add accessibility for new queue for CHO and CHOX Admin roles
+--
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+	SELECT 'filter.RejectedFixedFeeClaims', false, false, false, false, false, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ALL', 0, id FROM accessibility where WHERE ='filter.RejectedFixedFeeClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ROLE_CHO', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ROLE_CHOX_ADMIN', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+	SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedFixedFeeClaims';
+
+----------------------
+--  End of 7.1.4   --
+----------------------

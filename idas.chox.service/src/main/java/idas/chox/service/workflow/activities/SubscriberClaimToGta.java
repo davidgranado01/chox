@@ -32,7 +32,7 @@ public class SubscriberClaimToGta extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        claim.setStatus(auditTrailService.getSubscriberStateBeforeRejection(claim.getId()));
+        claim.setStatus(auditTrailService.getStateBeforeRejection(claim.getId()));
         if (claim.getClaimType() == ClaimType.SUBSCRIBER) {
             claim.setClaimType(ClaimType.GTA);
         } else if (claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {

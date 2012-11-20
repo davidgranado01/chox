@@ -87,6 +87,7 @@ public class UpdateLiability extends BaseActivity {
         if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL
                 && !ClaimType.isInsurerVsInsurer(claim.getClaimType())
                 && !ClaimType.isSubscriber(claim.getClaimType())
+                && !ClaimType.isFixedFee(claim.getClaimType())
                 && ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
                         || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
                         || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))

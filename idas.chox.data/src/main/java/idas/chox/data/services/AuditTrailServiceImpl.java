@@ -260,6 +260,12 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                                            ClaimStatus.CLAIM_REJECTION_CONTESTED}));
     }
 
+    @Override
+    public int getFixedFeeClaimDays(int claimId) {
+        
+        return getSubscriberClaimDays(claimId);
+    }
+
     private int daysInStatuses(int claimId, Collection<String> statuses) {
         LOG.debug("Calculating days claim {} in statuses '{}'", claimId, statuses);
         int days = 0;
@@ -386,7 +392,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Override
-    public String getSubscriberStateBeforeRejection(int claimId) {
+    public String getStateBeforeRejection(int claimId) {
         
         
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
@@ -408,7 +414,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -432,11 +438,43 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Override
+    public int getFixedFeeClaimRejectedDays(int claimId) {
+        int days = daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
+                                           ClaimStatus.CLAIM_PENDING,
+                                           ClaimStatus.CLAIM_REFERRED_TO_FNOL,
+                                           ClaimStatus.CLAIM_REF_TO_ENG,
+                                           ClaimStatus.CLAIM_UPDATE_BY_ENG,
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+        
+        // Now if the claim was rejected AFTER 3pm and it
+        // was uploaded on a different day then we need to add another day
+        if (isFixedFeeClaimRejectedAfter3pm(claimId)) {
+            days += 1;
+        }
+        return days;
+    }
+
+    @Override
     public int getSubscriberClaimRejectedTimes(int claimId) {
         int noTimesRejected = 0;
         List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
         for (AuditTrail trail : auditTrail) {
             if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getNewStatus())) {
+                noTimesRejected++;
+            }
+        }
+        
+        return noTimesRejected;
+    }
+
+    @Override
+    public int getClaimRejectedTimes(int claimId) {
+        int noTimesRejected = 0;
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+        for (AuditTrail trail : auditTrail) {
+            if (!trail.getReverted() && ClaimStatus.CLAIM_REJECTED.equals(trail.getNewStatus())) {
                 noTimesRejected++;
             }
         }
@@ -468,5 +506,29 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return false;
     }
 
+        
+    private boolean isFixedFeeClaimRejectedAfter3pm(int claimId) {
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+        Calendar cal = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        Date uploadDate = null;
+        for (AuditTrail trail : auditTrail) {
+            cal.setTime(trail.getUpdateDate());
+            if (trail.getOriginalStatus().isEmpty()) {
+                uploadDate = trail.getUpdateDate();
+                cal2.setTime(trail.getUpdateDate());
+            }
+            if (!trail.getReverted() && ClaimStatus.CLAIM_REJECTED.equals(trail.getNewStatus())
+                && cal.get(Calendar.HOUR_OF_DAY) >= 15) {
+                if (DateHelper.setStartOfDay(uploadDate).equals(DateHelper.setStartOfDay(trail.getUpdateDate()))
+                        && cal2.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
 }

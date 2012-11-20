@@ -682,6 +682,12 @@
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
                                     </div>
                                 </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Fixed Fee Claims</label>
+                                        <s:checkbox name="allowFixedFeeClaims" value="allowFixedFeeClaims"/>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
 	                         <div class="chox-form-item" id="tpiIdentifierId">

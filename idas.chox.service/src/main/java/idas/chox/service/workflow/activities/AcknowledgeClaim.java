@@ -125,7 +125,6 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        boolean subscriberFailedToRespond = false;
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
@@ -137,23 +136,45 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
  
         if (ClaimType.isSubscriber(claim.getClaimType())) {
+            boolean failedToRespond = false;
 
             int days = claimService.getSubscriberClaimDays(claim.getId());
 
             if (days > 5) {
-                subscriberFailedToRespond = true;
+                failedToRespond = true;
             }
             else if (days == 5) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(new Date());
                 if (cal.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    subscriberFailedToRespond = true;
+                    failedToRespond = true;
                 }
             }
 
-            if (subscriberFailedToRespond) {
+            if (failedToRespond) {
                 // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
                 claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
+            }
+        }
+        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            boolean failedToRespond = false;
+
+            int days = claimService.getFixedFeeClaimDays(claim.getId());
+
+            if (days > 10) {
+                failedToRespond = true;
+            }
+            else if (days == 10) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                if (cal.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    failedToRespond = true;
+                }
+            }
+
+            if (failedToRespond) {
+                // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
+                claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 10 day SLA, claim taken down Fixed Fee route."));
             }
         }
     }

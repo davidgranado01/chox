@@ -52,6 +52,7 @@ public class Insurer extends Entity implements Serializable {
     private int minimumPasswordLength;
     private boolean uploadEnabled;
     private boolean allowSubscriberClaims;
+    private boolean allowFixedFeeClaims;
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
@@ -483,6 +484,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setAllowSubscriberClaims(boolean allowSubscriberClaims) {
         this.allowSubscriberClaims = allowSubscriberClaims;
+    }
+
+    public boolean isAllowFixedFeeClaims() {
+        return allowFixedFeeClaims;
+    }
+
+    public void setAllowFixedFeeClaims(boolean allowFixedFeeClaims) {
+        this.allowFixedFeeClaims = allowFixedFeeClaims;
     }
 
 	public Integer getTimesInStatusContested() {

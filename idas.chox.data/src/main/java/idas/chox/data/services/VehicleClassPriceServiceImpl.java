@@ -3,11 +3,13 @@ package idas.chox.data.services;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPrice;
 import idas.chox.core.services.VehicleClassPriceService;
@@ -36,7 +38,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(ClaimType claimType, VehicleClass vehicleClass, Date startDate, int insId, int choId) throws Exception {
 
-        if (ClaimType.isSubscriber(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, insId, choId);
         } else {
             DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPrice.class);
@@ -66,7 +68,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(ClaimType claimType, VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) throws Exception {
 
-        if (ClaimType.isSubscriber(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, age, insId, choId);
         } else {
 

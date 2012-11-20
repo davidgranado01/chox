@@ -1,8 +1,13 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.BreBand;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -18,10 +23,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.TaskService;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
+import idas.chox.core.model.BreBand;
 
 public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
@@ -39,38 +41,47 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         return policyNumber;
     }
 
+    
     public void setPolicyNumber(String policyNumber) {
         this.policyNumber = policyNumber;
     }
 
+    
     public int getInsId() {
         return insId;
     }
 
+    
     public void setInsId(int insId) {
         this.insId = insId;
     }
 
+    
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
     }
 
+    
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }
 
+    
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
 
+    
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
 
+    
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
 
+    
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -94,8 +105,16 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
         }
+        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            // Make sure the new Insurer accepts fixed fee claims
+            if (!newInsurer.isAllowFixedFeeClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
+            }
+        }
     }
 
+    
     @Override
     protected void doProcess(Claim claim) {
 
@@ -109,8 +128,9 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
-        if(claim.getNotifications()!=null)
+        if(claim.getNotifications()!=null) {
             claim.getNotifications().removeAll(claim.getNotifications());
+        }
         claim.setLiabilityAgreedDate(null);
         claim.setCreatedDate(new Date());
 
@@ -167,11 +187,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
             getDataService().delete(oldInvoice);
             LOG.warn("claim invoice deleted");
         }
-//        getDataService().save(claim);
-//        getDataService().flush();
         LOG.debug("Switching Claim: claim details has been updated");
     }
 
+    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Switching claim AFTER PROCESS method called");
@@ -179,6 +198,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
     }
 
+    
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -196,4 +216,5 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
+    
 }

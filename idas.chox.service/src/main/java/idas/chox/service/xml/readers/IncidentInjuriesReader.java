@@ -70,6 +70,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
 

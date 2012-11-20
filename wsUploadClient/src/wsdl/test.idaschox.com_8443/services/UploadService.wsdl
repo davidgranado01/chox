@@ -660,6 +660,9 @@
                     <xsd:enumeration value="invalidClaimStatus"/>
                     <xsd:enumeration value="insurerVsInsurerInvoice"/>
                     <xsd:enumeration value="insurerUpload"/>
+                    <xsd:enumeration value="newFixedFeeClaim"/>
+                    <xsd:enumeration value="fixedFeeNotAcceptedByInsurer"/>
+                    <xsd:enumeration value="existFixedFeeClaim"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -670,14 +673,20 @@
                     <xsd:enumeration value="Hire Monitoring"/>
                     <xsd:enumeration value="New Claim"/>
                     <xsd:enumeration value="New Subscriber Claim"/>
+                    <xsd:enumeration value="New Fixed Fee Claim"/>
                     <xsd:enumeration value="Claim Closed or Pending"/>
                     <xsd:enumeration value="Claim Already Exists"/>
+                    <xsd:enumeration value="Claim Already Exists (Subscriber)"/>
+                    <xsd:enumeration value="Claim Already Exists (Fixed Fee)"/>
                     <xsd:enumeration value="Invoice Already Exists"/>
                     <xsd:enumeration value="Incorrect Hire State"/>
                     <xsd:enumeration value="Incorrect XML Structure"/>
                     <xsd:enumeration value="Incorrect Value Provided for Hire State"/>
-                    <xsd:enumeration value="Insurer is not accepting TPI invoice"/>
+                    <xsd:enumeration value="Insurer is not accepting TPI invoices"/>
+                    <xsd:enumeration value="Insurer is not accepting Subscriber Claims"/>
+                    <xsd:enumeration value="Insurer is not accepting Fixed Fee Claims"/>
                     <xsd:enumeration value="New TPI Claim"/>
+                    <xsd:enumeration value="New Invoice (Insurer vs Insurer)"/>
                     <xsd:enumeration value="Supplementary Invoice Already Exists"/>
                     <xsd:enumeration value="New Supplementary Invoice"/>
                     <xsd:enumeration value="Invalid Claim Status"/>

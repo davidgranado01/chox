@@ -119,7 +119,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AuditTrailService auditTrailService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private Date autoPenaltyStart;
-    private Integer subscriberClaimDays;
+    private Integer claimDays;
     private String statusMsg = null;
     private boolean showMessage = false;
     private boolean showErrorMessage = false;
@@ -348,11 +348,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
      *          and the 'Acknowledge' button is being clicked, then the only valid selection in the
      *          'Liability Status' drop down menu  is 'Full Liability Accepted'.
      */
-    public boolean isSubscriberFullLiability() {
+    public boolean isFullLiability() {
         boolean result = false;
-        if (ClaimType.isSubscriber(claim.getClaimType()) &&
-                  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
-                || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())))) {
+        if ((ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType()))
+                &&  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
+                        || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())))) {
                 result = true;
         }
    
@@ -985,13 +985,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
                     } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
+                    } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
                     } else {
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
                     }
 
-
-                    //                  claim.setSupplementaryInvoicedClaim(true);
-                    //                  claim.setOriginalSupplementaryInvoicedClaim(true);
                     this.service.updateClaim(claim);
                 }
             } else {
@@ -1308,29 +1307,44 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return ClaimType.isInsurerVsInsurer(claim.getClaimType());
     }
     
+    public boolean getIsSubscriberClaim() {
+        return ClaimType.isSubscriber(claim.getClaimType());
+    }
+    
+    public boolean getIsFixedFeeClaim() {
+        return ClaimType.isFixedFee(claim.getClaimType());
+    }
+    
     public boolean getIsInsurerUploadClaim() {
         return ClaimType.isInsurerUpload(claim.getClaimType());
     }
 
     public boolean isRejectButtonEnabled() {
-        if (!ClaimType.isSubscriber(claim.getClaimType())) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())) {
             return true;
         }
+        int maxDays = 0;
 
-        if (subscriberClaimDays == null) {
-            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
+        if (claimDays == null && ClaimType.isSubscriber(claim.getClaimType())) {
+            claimDays = service.getSubscriberClaimDays(claim.getId());
+            maxDays = 5;
+        }
+        else if (claimDays == null && ClaimType.isFixedFee(claim.getClaimType())) {
+            claimDays = service.getFixedFeeClaimDays(claim.getId());
+            maxDays = 10;
         }
 
-        return (subscriberClaimDays < 5 || (subscriberClaimDays == 5 && DateHelper.isBefore3pm())) ? true : false;
+        return (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
 
     }
 
     public boolean isSubscriberClaimRejectedMoreThanOnce() {
-        if (!ClaimType.isSubscriber(claim.getClaimType())) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())) {
             return false;
         }
         
-        int noTimesRejected = service.getSubscriberClaimRejects(claim.getId());
+        int noTimesRejected = ClaimType.isSubscriber(claim.getClaimType()) ? service.getSubscriberClaimRejects(claim.getId())
+                : service.getClaimRejects(claim.getId());
         
         return noTimesRejected > 1;
     }
@@ -1365,11 +1379,38 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        if (subscriberClaimDays == null) {
-            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
+        if (claimDays == null) {
+            claimDays = service.getSubscriberClaimDays(claim.getId());
         }
 
-        if (subscriberClaimDays < 5) {
+        if (claimDays < 5) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isFixedFeeClaimUnder10Days() {
+        if (!ClaimType.isFixedFee(claim.getClaimType())) {
+            return false;
+        }
+
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
+            return false;
+        }
+
+        if (claimDays == null) {
+            claimDays = service.getFixedFeeClaimDays(claim.getId());
+        }
+
+        if (claimDays < 10) {
             return true;
         }
 
@@ -1392,11 +1433,42 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return false;
         }
 
-        if (subscriberClaimDays == null) {
-            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
+        if (claimDays == null) {
+            claimDays = service.getSubscriberClaimDays(claim.getId());
         }
 
-        if (subscriberClaimDays == 5) {
+        if (claimDays == 5) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isFixedFeeClaimAt10Days() {
+        if (!ClaimType.isFixedFee(claim.getClaimType())) {
+            return false;
+        }
+
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
+            return false;
+        }
+
+        if (claimDays == null) {
+            claimDays = service.getFixedFeeClaimDays(claim.getId());
+        }
+
+        if (claimDays == 10) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1412,14 +1484,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return null;
         }
 
-        if (subscriberClaimDays == null) {
-            subscriberClaimDays = service.getSubscriberClaimDays(claim.getId());
+        if (claimDays == null) {
+            claimDays = service.getSubscriberClaimDays(claim.getId());
         }
 
-        if (subscriberClaimDays == 4) {
+        if (claimDays == 4) {
             return "1 day remains";
         }
-        return "" + (5 - subscriberClaimDays) + " days remain";
+        return "" + (5 - claimDays) + " days remain";
+    }
+
+    public String getFixedFeeTimeLeft() {
+        if (!ClaimType.isFixedFee(claim.getClaimType())) {
+            return null;
+        }
+
+        if (claimDays == null) {
+            claimDays = service.getFixedFeeClaimDays(claim.getId());
+        }
+
+        if (claimDays == 9) {
+            return "1 day remains";
+        }
+        return "" + (10 - claimDays) + " days remain";
     }
 
     public BigDecimal getFormattedInsLiab() {
@@ -1833,7 +1920,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getEngineerFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getEngineerFeeGross();
             } else {
                 return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1845,7 +1933,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHireGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getHireGross();
             } else {
                 return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1857,7 +1946,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getHirePenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getHirePenaltyCharge();
             } else {
                 return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1869,7 +1959,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getRepairGross();
             } else {
                 return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1881,7 +1972,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getRepairPenaltyChargePaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getRepairPenaltyCharge();
             } else {
                 return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1893,7 +1985,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getStorageRecoveryGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getStorageRecoveryGross();
             } else {
                 return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
@@ -1905,7 +1998,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public BigDecimal getTotalLossFeeGrossPaid() {
         if (claim.getInvoice() != null) {
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType())) {
                 return claim.getInvoice().getTotalLossFeeGross();
             } else {
                 return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);

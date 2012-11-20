@@ -1,11 +1,13 @@
 package idas.chox.service.xml.util;
 
-import idas.chox.core.model.ChorganisationAlias;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import org.w3c.dom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.model.VehicleClass;
@@ -16,9 +18,9 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.TextHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
-import org.w3c.dom.Element;
+import idas.chox.core.model.ChorganisationAlias;
+import idas.chox.service.xml.validations.DataValidationParameter;
 
 public class NodeHelper {
 
@@ -30,7 +32,6 @@ public class NodeHelper {
     private static String IncorrectInsurerAlias = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
     private static String IncorrectChorganisationAlias = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
-//    public static final String REG_DATETIME = "^([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*$";
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
     public static final String REG_BOOLEAN = "^[ynYN]";
     public static final String REG_INTEGER = "^[0-9]+$";
@@ -54,7 +55,7 @@ public class NodeHelper {
             ChorganisationAliasService chorganisationAliasService,
             InsurerChorganisationService insurerChorganisationService,
             Integer insurerId) {
-        
+
         boolean isValid = true;
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
@@ -91,7 +92,7 @@ public class NodeHelper {
         setStatus(claimResult, isValid);
 
         return claimResult;
-   }
+    }
 
     public static ClaimResult nodeInsurerAliasValidate(
             String sectionName,
@@ -150,12 +151,16 @@ public class NodeHelper {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM) && value.isNewSubscriberClaimDataMandatory()) {
                 return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM) && value.isNewFixedFeeClaimDataMandatory()) {
+                return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM) && value.isExistingClaimDataMandatory()) {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM) && value.isExistingSubscriberClaimDataMandatory()) {
                 return true;
-            }else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
-                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE))&& value.isNewInvoiceDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM) && value.isExistingFixedFeeClaimDataMandatory()) {
+                return true;
+            } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)) && value.isNewInvoiceDataMandatory()) {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_INVOICE) && value.isExistingInvoiceDataMandatory()) {
                 return true;
@@ -165,11 +170,11 @@ public class NodeHelper {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE) && value.isOffHiredDataMandatory()) {
                 return true;
-            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING) && value.isHireMonitoringDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING) && value.isHireMonitoringDataMandatory()) {
                 return true;
-            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) && value.isNewSupplementaryInvoiceMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) && value.isNewSupplementaryInvoiceMandatory()) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
         } else {
@@ -188,14 +193,12 @@ public class NodeHelper {
 
     public static boolean isDataLengthCorrect(String dataValue, NodeRuleModel nodeRuleModel) {
         boolean returnValue = true;
-//        if ((nodeRuleModel.getDataType() != null) || !nodeRuleModel.getDataType().isEmpty()) {
-            LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
-            if (nodeRuleModel.getLength() > 0) {
-                if (dataValue.trim().length() > nodeRuleModel.getLength()) {
-                    returnValue = false;
-                }
+        LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
+        if (nodeRuleModel.getLength() > 0) {
+            if (dataValue.trim().length() > nodeRuleModel.getLength()) {
+                returnValue = false;
             }
-//        }
+        }
         return returnValue;
     }
 
@@ -212,7 +215,6 @@ public class NodeHelper {
         String value = XMLUtils.getElementValue(element, nodeName);
 
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
-
         if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
@@ -237,49 +239,6 @@ public class NodeHelper {
 
     }
 
-//    public static ClaimResult nodeVehicleClassValidateDefaultMandatoryValue(
-//            String sectionName,
-//            String nodeName,
-//            Element element,
-//            ClaimResult claimResult,
-//            DataValidationParameter dataValidationParameter,
-//            VehicleClassService vehicleClassService,
-//            boolean newMandatory) {
-//
-//        boolean isValid = true;
-//        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
-//        String value = XMLUtils.getElementValue(element, nodeName);
-//
-//        if (newMandatory) {
-//            val.setDataMandatory("t");
-//        } else {
-//            val.setDataMandatory("f");
-//        }
-//
-//        // CHECK MANDATORY - VALUE IN XML IS EMPTY
-//        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
-//            isValid = false;
-//            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-//            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-//        }
-//
-//        // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
-//        // CHECK THE VEHICLE CLASS FOR THE VALUE IS EXIST OR NOT
-//        if (!value.trim().equalsIgnoreCase("")) {
-//
-//            VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, nodeName);
-//
-//            if (vehicleClass == null && val.isDataMandatory()) {
-//                isValid = false;
-//                claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
-//            }
-//        }
-//
-//        setStatus(claimResult, isValid);
-//
-//        return claimResult;
-//
-//    }
     public static ClaimResult nodeValidate(
             String sectionName,
             String nodeName,
@@ -291,7 +250,7 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
         LOG.debug("NoduRuleModel value: {}", val.toString());
-        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
+        return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
 
     public static boolean nodeValidateBoolean(
@@ -328,29 +287,9 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = element.getTextContent();
         LOG.debug("Validating content for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
+        return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
 
-//    public static ClaimResult nodeValidateDefaultMandatoryValue(
-//            String sectionName,
-//            String nodeName,
-//            Element element,
-//            ClaimResult claimResult,
-//            DataValidationParameter dataValidationParameter,
-//            boolean newMandatory) throws Exception {
-//
-//        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
-//        if (newMandatory) {
-//            val.setDataMandatory("t");
-//        } else {
-//            val.setDataMandatory("f");
-//        }
-//
-//        String value = XMLUtils.getElementValue(element, nodeName);
-//        LOG.debug("Validating default/mandatory value for nodeName '{}': {}", nodeName, value);
-//        return coreNodevalidation(val, claimResult, value, sectionName);
-//
-//    }
     public static ClaimResult nodeValidateDefaultDescription(
             String sectionName,
             String nodeName,

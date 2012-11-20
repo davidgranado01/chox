@@ -3,8 +3,10 @@ package idas.chox.service.bre.rules;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -110,19 +112,23 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         narrative = "BRE Rule Failed : The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
                             }
                     else if (isTclass) {
-                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
-                            if (age == null)
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+                            if (age == null) {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + "." ;
-                            else
+                            }
+                            else {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
+                            }
                         } else {
-                            if (age == null)
+                            if (age == null) {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + " (note that the age of the vehicle could not be determined and so the lower rate for the vehicle class was used)." ;
-                            else
+                            }
+                            else {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
+                            }
                         }
                     } else {
-                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType())) {
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + ".";
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + ".";

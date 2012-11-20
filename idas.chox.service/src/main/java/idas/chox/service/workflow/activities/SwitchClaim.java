@@ -1,7 +1,13 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -11,15 +17,11 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class SwitchClaim extends BaseActivity {
-
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaim.class);
 
+    
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -46,8 +48,17 @@ public class SwitchClaim extends BaseActivity {
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
         }
+        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            // Make sure the new Insurer accepts fixed fee claims
+            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
+            if (!newInsurer.isAllowFixedFeeClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
+            }
+        }
     }
 
+    
     @Override
     protected void doProcess(Claim claim) {
         LOG.debug("Switching claim status for claim: {} (id={})", claim.getChoReference(), claim.getId());
@@ -62,8 +73,9 @@ public class SwitchClaim extends BaseActivity {
         claim.setPreviousStatus(claim.getStatus());
         claim.setStatusModifiedDate(new Date());
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
-        if(claim.getNotifications()!=null)
+        if(claim.getNotifications()!=null) {
             claim.getNotifications().removeAll(claim.getNotifications());
+        }
         claim.setLiabilityAgreedDate(null);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
@@ -90,12 +102,14 @@ public class SwitchClaim extends BaseActivity {
         LOG.debug("Switching Claim: Comment has been updated");
     }
 
+    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Switching claim AFTER PROCESS method called");
         super.afterProcess(claim);
         LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
     }
+    
     
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
@@ -111,7 +125,7 @@ public class SwitchClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
-
-
     }
+    
+    
 }
