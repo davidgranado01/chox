@@ -2054,3 +2054,16 @@ GRANT SELECT ON rpt_all_claim_with_invoice TO chox_mi;
 ----------------------
 --  End of bug#2206 --
 ----------------------
+
+--------------------------------------------------------------------------------
+-- bug#2176 - Production - More than 2 decimal places are allowed on cost     --
+--            fields when uploading invoice                                   --
+--------------------------------------------------------------------------------
+
+ALTER TABLE insurer_alias ADD CONSTRAINT insurer_alias_name UNIQUE (alias_name);
+
+ALTER TABLE chorganisation_alias ADD CONSTRAINT insurer_alias_name UNIQUE (alias_name);
+
+----------------------
+--  End of bug#2176 --
+----------------------

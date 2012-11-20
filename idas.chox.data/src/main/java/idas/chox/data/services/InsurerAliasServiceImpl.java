@@ -66,7 +66,6 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         boolean bFlag = true;
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
         criteria.add(Restrictions.eq("aliasName", AliasName.trim()));
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
         if (getByCriteria(criteria) == null) {
             bFlag = false;
         }
