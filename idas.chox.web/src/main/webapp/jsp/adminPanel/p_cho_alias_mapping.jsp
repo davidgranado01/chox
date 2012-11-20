@@ -98,17 +98,10 @@
 
                 if(response.resultType && response.resultType == 'Message')
                 {
-//                    Ext.MessageBox.show({
-//                            title: '',
-//                            msg: response.result,
-//                            width:300,
-//                            buttons: Ext.MessageBox.OK
-//                        });
                     choAlias_doRefreshPage();
                 }
                 else
                 {
-                    //                    alert("Your Changes Have Been Saved");
                     choAlias_doRefreshPage();
                 }
 
@@ -117,14 +110,7 @@
             {
                 triggerCss("div#CDChoAliasMessageBox", true);
                 $.each(response.errors, function() {
-//                     outputDiv.append(this.toString());
-                    Ext.MessageBox.show({
-                        title: '',
-                        msg: this.toString(),
-                        width:300,
-                        buttons: Ext.MessageBox.OK,
-                        icon : Ext.MessageBox.ERROR
-                    });
+                    outputDiv.append(this.toString());
                 });
             }
         }
