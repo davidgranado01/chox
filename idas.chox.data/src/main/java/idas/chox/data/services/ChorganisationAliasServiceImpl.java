@@ -71,7 +71,6 @@ public class ChorganisationAliasServiceImpl extends SecureDataService implements
         boolean bFlag = true;
         DetachedCriteria criteria = DetachedCriteria.forClass(ChorganisationAlias.class);
         criteria.add(Restrictions.eq("aliasName", AliasName.trim()));
-        criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         if (getByCriteria(criteria) == null) {
             bFlag = false;
         }

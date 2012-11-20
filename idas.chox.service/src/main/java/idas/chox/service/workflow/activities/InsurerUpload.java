@@ -5,12 +5,15 @@ import idas.chox.core.hpi.*;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.service.xml.util.NodeHelper;
+
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
@@ -43,6 +46,20 @@ public class InsurerUpload extends BaseActivity {
             claim.setClaimNumber(claimNumber.trim());
         }
         LOG.debug("Insurer Upload activity: finished beforeProcess");
+        
+        claim.setAutoRoutedClaim(true);
+        
+        NodeHelper nodeHelper = new NodeHelper();
+        if (ClaimType.isInsurerUpload(claim.getClaimType())
+                && claim.getInsurer().getInsurerManualRegexExpression() != null 
+                && !claim.getInsurer().getInsurerManualRegexExpression().equals("")
+                && claimNumber != null 
+                && !claimNumber.equals("")
+                && !claim.getInsurer().isInsurerManualAutoRoutingEnable()
+                && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
+            claim.setAutoRoutedClaim(false); 
+        }
+        
     }
 
     @Override
@@ -123,17 +140,45 @@ public class InsurerUpload extends BaseActivity {
             claim.addHistory(history);
         }
 
+        claim.setStatusModifiedDate(new Date());
+        
+        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+            claim = routeInsurerUploadToAwaitingInvoicePayment(claim);
+        }
+        
+    }
+
+    private Claim routeInsurerUploadToAwaitingInvoicePayment(Claim claim) {
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
-            if(isEnableManualInvoiceWorkgroupOwnership){
-                claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-                claim.setManualInvoiceApproved(true);
-            } else {
-                claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+            
+            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                claim.setWorkgroupOriginal(claim.getWorkgroup());
+                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
             }
+
+            //re-assign claim
+            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+            }
+            
+            super.setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(super.getCurrentStatus());
+            claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+            getDataService().save(claim);
+            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+            // move claim to next status
+            super.setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(super.getCurrentStatus());
+            claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+            
+            if(isEnableManualInvoiceWorkgroupOwnership)
+                claim.setManualInvoiceApproved(true);
+            
         } else {
             if(isEnableManualInvoiceWorkgroupOwnership){
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
@@ -142,10 +187,9 @@ public class InsurerUpload extends BaseActivity {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
             }
         }
-        
-        claim.setStatusModifiedDate(new Date());
+        return claim;
     }
-
+    
     @Override
     protected String getCurrentStatus() {
         return "";

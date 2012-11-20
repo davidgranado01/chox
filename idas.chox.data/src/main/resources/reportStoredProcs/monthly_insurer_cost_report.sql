@@ -1319,6 +1319,7 @@ select 'avg_hire_days_paid' as title ,
 
 (select avg(vh.days)::numeric(8,2) from claim c, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
+       and c.status = 'PaymentReceived'
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and i.created_date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')

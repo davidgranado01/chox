@@ -143,7 +143,6 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 --  End of 7.1.2   --
 ----------------------
 
-
 --------------------------------------------------------------------------------
 -- 7.1.4 - Fixed Fee (Rate Per Day) Claims                                    --
 --------------------------------------------------------------------------------
@@ -153,7 +152,9 @@ ALTER TABLE chorganisation ADD COLUMN enable_fixedfee_claims boolean not null de
 --
 -- Add accessibility for new queue for CHO and CHOX Admin roles
 --
-insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled,
+                          check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled,
+                          check_supplier_ownership)
 	SELECT 'filter.RejectedFixedFeeClaims', false, false, false, false, false, false, false;
 
 insert into accessibility_item(role, access_right, accessibility_id)
@@ -170,4 +171,30 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
 
 ----------------------
 --  End of 7.1.4   --
+----------------------
+
+
+--------------------------------------------------------------------------------
+-- 7.1.6 - Make 'Rejection Reason' dependent on claim type                    --
+--------------------------------------------------------------------------------
+
+ALTER TABLE insurer ADD COLUMN gta_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN subscriber_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
+
+ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean DEFAULT TRUE;
+
+ALTER TABLE claim RENAME COLUMN is_tpi_claim_special_routed TO is_claim_auto_routed;
+
+ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
+
+ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
+
+----------------------
+--  End of 7.1.6    --
 ----------------------

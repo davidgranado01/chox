@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.security.SecurityInfoProvider;
@@ -25,19 +26,19 @@ public class NewTpiClaim extends BaseActivity {
 
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
-            //String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
-
+            
             String claimNumber = claim.getThirdParty().getClaimReference();
 
-            if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
-                NodeHelper nodeHelper = new NodeHelper();
-                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                    claim.setSpecialRoutedTpiClaim(false);
-                } else {
-                    claim.setSpecialRoutedTpiClaim(true);
-                }
-            } else {
-                claim.setSpecialRoutedTpiClaim(true);
+            claim.setAutoRoutedClaim(true);
+            NodeHelper nodeHelper = new NodeHelper();
+            if (ClaimType.isTPI(claim.getClaimType())
+                    && claimNumber != null 
+                    && !claimNumber.equalsIgnoreCase("") 
+                    && claim.getInsurer().getTpiRegexExpression() != null
+                    && !claim.getInsurer().getTpiRegexExpression().equals("")
+                    && !claim.getInsurer().isTpiAutoRoutingEnable() 
+                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setAutoRoutedClaim(false);
             }
         }
 
@@ -94,7 +95,8 @@ public class NewTpiClaim extends BaseActivity {
             claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
-            if (!claim.isSpecialRoutedTpiClaim()) {
+            
+            if (!claim.isAutoRoutedClaim()) {
 
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
@@ -104,13 +106,13 @@ public class NewTpiClaim extends BaseActivity {
             } else {
 
                 // move claim to next status
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
-                        claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                        claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 }
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
-                    claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
-                    if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
-                        Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                    if (claim.getInsurer().getInvoiceOwner().getTelephone() != null && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
+                        Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: " + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
                         claim.addComment(comment);
                     }
                 }
@@ -122,7 +124,9 @@ public class NewTpiClaim extends BaseActivity {
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
+                //if BRE approves the invoice and TPI is selected it will go into following status
                 claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)) {
 

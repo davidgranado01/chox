@@ -101,10 +101,10 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setFixedTransactionalFeeValue(BigDecimal.ZERO);
         insurer.setFnolEnable(false);
         insurer.setVehicleClassCeilings(null);
-        insurer.setTpiWorkgroup(null);
+        insurer.setInvoiceWorkgroup(null);
         insurer.setTpiRegexExpression(null);
         insurer.setTpiIdentificationString(null);
-        insurer.setTpiClaimOwner(null);
+        insurer.setInvoiceOwner(null);
         insurer.setThirdPartyInterventionActivated(false);
         insurer.setTaskManagementEnable(false);
         insurer.setRelatedInsurer(null);
