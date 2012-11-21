@@ -69,6 +69,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
             reasonOfRejection.setGtaActive(ror.isGtaActive());
             reasonOfRejection.setTpiActive(ror.isTpiActive());
             reasonOfRejection.setSubscriberActive(ror.isSubscriberActive());
+            reasonOfRejection.setFixedFeeActive(ror.isFixedFeeActive());
             reasonOfRejection.setInsurerUploadActive(ror.isInsurerUploadActive());
             reasonOfRejection.setInsurerVsInsurerActive(ror.isInsurerVsInsurerActive());
             reasonOfRejection.setVersion(0);

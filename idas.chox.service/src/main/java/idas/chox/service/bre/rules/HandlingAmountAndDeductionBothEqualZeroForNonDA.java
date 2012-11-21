@@ -1,5 +1,7 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -8,7 +10,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
-import java.math.BigDecimal;
 
 public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusinessRule {
 
@@ -24,7 +25,8 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
         if (claim.getBreBand().isHandlingAmountAndDeductionBothEqualZeroForNonDA()) {
 
-            if (!ClaimType.isSubscriber(claim.getClaimType()) && !claim.getChorganisation().isDelegatedAuthority()) {
+            if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && !claim.getChorganisation().isDelegatedAuthority()) {
 
                 Invoice invoice = claim.getInvoice();
                 boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);

@@ -360,11 +360,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-    public boolean getInsurerIsDisablePrivateNotes() {
+    public boolean isInsurerIsDisablePrivateNotes() {
         return claim.getInsurer().isDisablePrivateNotes();
     }
 
-    public boolean getChoIsDisablePrivateNotes() {
+    public boolean isChoIsDisablePrivateNotes() {
         return claim.getChorganisation().isDisablePrivateNotes();
     }
 
@@ -1325,12 +1325,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         int maxDays = 0;
 
-        if (claimDays == null && ClaimType.isSubscriber(claim.getClaimType())) {
-            claimDays = service.getSubscriberClaimDays(claim.getId());
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
             maxDays = 5;
+            if (claimDays == null) {
+                claimDays = service.getSubscriberClaimDays(claim.getId());
+            }
         }
-        else if (claimDays == null && ClaimType.isFixedFee(claim.getClaimType())) {
-            claimDays = service.getFixedFeeClaimDays(claim.getId());
+        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            if (claimDays == null) {
+                claimDays = service.getFixedFeeClaimDays(claim.getId());
+            }
             maxDays = 10;
         }
 
@@ -2382,11 +2386,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else if (getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isSupervisorEnable()
                 && isInsurerAllowedForSupervisorQueue()
                 && isEscalatedToSupervisor(getAuthenticatedUser().getInsurer().getDaysBeforeEscalated(), getAuthenticatedUser().getInsurer().getTimesInStatusContested())) {
-            return true;
+         LOG.info("Claim escalated to supervisor and visible to insurer.");
+           return true;
         } else if (getAuthenticatedUser().isCHOXAdmin() && claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable()
                 && isEscalatedToSupervisor(claim.getInsurer().getDaysBeforeEscalated(), claim.getInsurer().getTimesInStatusContested())) {
+         LOG.info("Claim escalated to supervisor and visible to CHOX Admin.");
             return true;
         }
+        LOG.info("Claim not escalated to supervisor.");
         return false;
     }
 
@@ -2437,17 +2444,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (role.getName().contains(WebUserRole.ROLE_INS_MNG)
                     || role.getName().contains(WebUserRole.ROLE_INS_SUP)
                     || role.getName().contains(WebUserRole.ROLE_INS_MI)) {
+                LOG.info("User role allows for supervisor");
                 return true;
             }
         }
+        LOG.info("User role does not allow for supervisor");
         return false;
     }
 
     private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction) {
         if (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
                 || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction) {
+            LOG.info("Claim is escalated to supervisor");
             return true;
         }
+        LOG.info("Claim has not been escalated to supervisor");
         return false;
     }
     

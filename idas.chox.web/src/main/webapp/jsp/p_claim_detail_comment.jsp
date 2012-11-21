@@ -75,6 +75,7 @@
         
     });
     
+    
     function commentOnClick(grid, rowIndex, columnIndex, e){
         var comment = commentsGrid.getStore().getAt(rowIndex);
         var fileId = comment.get("id");
@@ -152,16 +153,16 @@
 
                 <div class="chox-form-item">
                         <s:if test="isInsurer">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="insurerIsDisablePrivateNotes">disabled</s:if>/> Public Note (Visible By CHO)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" <s:if test="insurerIsDisablePrivateNotes">disabled</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By CHO)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" <s:if test="insurerIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:if>
                         <s:elseif test="isCHO">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="choIsDisablePrivateNotes">disabled</s:if>/> Public Note (Visible By Insurer)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" <s:if test="choIsDisablePrivateNotes">disabled</s:if>/> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Public Note (Visible By Insurer)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" <s:if test="choIsDisablePrivateNotes">disabled="disabled"</s:if>/> Private Note (Only Visible Internally)</span>
                         </s:elseif>
                         <s:elseif test="isChoxAdmin">
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" disabled /> Public Note (Visible By Insurer)</span>
-                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" disabled /> Private Note (Only Visible Internally)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" disabled="disabled" /> Public Note (Visible By Insurer)</span>
+                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" disabled="disabled" /> Private Note (Only Visible Internally)</span>
                         </s:elseif>
                 </div>
                     <s:submit type="submit" id="claimDetailsCommentId" disabled="isChoxAdmin" value="Add Note"/>

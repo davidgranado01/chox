@@ -952,12 +952,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          */
         // First, check if both flags are non-null (NB. must be CHOX Admin and both flags must be equal!
         if (searchCriteria.isFinalReviewCho() != null && searchCriteria.isFinalReviewIns() != null) {
-            if (searchCriteria.isFinalReviewIns()) // Or them
+            if (searchCriteria.isFinalReviewIns()) {
                 criteria.add(Restrictions.disjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
                     .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
-            else // And them
+            }
+            else {
                 criteria.add(Restrictions.conjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
                     .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
+            }
         } else if (searchCriteria.isFinalReviewCho() != null) {
             criteria.add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho().booleanValue()));
         } else if (searchCriteria.isFinalReviewIns() != null) {

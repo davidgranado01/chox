@@ -6,6 +6,28 @@
    Ext.onReady(function(){
         openTab(6);
         });
+        
+    function doFormSubmit(action){
+        var message = 'Are you sure about this?';
+        if (action == 'contestRejectedClaim') {
+            message = "Are you sure you want to 'Send Claim Back To Insurer'?";
+        } else if (action == 'sendClaimGTA') {
+            message = "Are you sure you want to 'Send Claim Down GTA Route'?";
+        }
+        Ext.MessageBox.confirm('Confirm', message,
+                        function(btn) {
+                            if (btn=='yes') {
+                                actionPanel.registerAction(action);
+                                $("form#contestOrAcceptRejectedClaim").submit();
+                            } else {
+                                return false;
+                            }
+                        }
+        );
+                        
+        return false;
+    }
+
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -55,9 +77,9 @@
                             <td>
                                 <s:if test="isFixedFeeClaim">
                                     <s:if test="!subscriberClaimRejectedMoreThanOnce">
-                                        <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedSubscriberClaim');" />
+                                        <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim');" />
                                     </s:if>
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')"  />
+                                    <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA');" />
                                 </s:if>
                                 <s:else>    
                                     <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="actionPanel.registerAction('contestRejectedClaim');" />

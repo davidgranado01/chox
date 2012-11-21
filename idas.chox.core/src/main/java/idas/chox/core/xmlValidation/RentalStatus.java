@@ -13,7 +13,7 @@ public enum RentalStatus {
     INSURERVSINSURER("insurervsinsurer"),
     INSURERUPLOAD("insurerupload"),
     SUBSCRIBER("subscriber"),
-    FIXEDFEE("fixed fee");
+    FIXEDFEE("fixedfee");
 
     private String description;
     

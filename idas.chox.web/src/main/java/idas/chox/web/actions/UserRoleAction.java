@@ -1,5 +1,18 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
@@ -10,16 +23,6 @@ import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserroleViewData;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import net.sf.json.JSONArray;
-import org.hibernate.StaleObjectStateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 
 public class UserRoleAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(UserRoleAction.class);
@@ -105,6 +108,7 @@ public class UserRoleAction extends BaseAction {
     
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
+    @Override
     public String execute() {
         return SUCCESS;
     }
@@ -135,10 +139,11 @@ public class UserRoleAction extends BaseAction {
       LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
       LOG.debug("ObjectId = {}", objectId);
       Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-      if (insurer != null)
-          return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
-              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+      if (insurer != null) {
+            return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
+                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+        }
 
       return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
@@ -152,19 +157,22 @@ public class UserRoleAction extends BaseAction {
       LOG.debug("ObjectId = {}", objectId);
       try {
         Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-        if (insurer != null)
-            webUserRoles = adminUserService.getAllAvailableUserRoles(2,
-              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
-        else
-            webUserRoles = adminUserService.getAllAvailableUserRoles(3,
-              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
+        if (insurer != null) {
+              webUserRoles = adminUserService.getAllAvailableUserRoles(2,
+                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+          }
+        else {
+              webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+                getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
+          }
 
         userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
 
-        for (WebUserRole webUserRole : webUserRoles)
-                    userroles.add(new UserroleViewData(webUserRole));
+        for (WebUserRole webUserRole : webUserRoles) {
+              userroles.add(new UserroleViewData(webUserRole));
+          }
       } catch (Exception ex) {
             handleException(ex);
             LOG.debug("Error getting all available user roles: {}", ex.getMessage());
@@ -183,19 +191,22 @@ public class UserRoleAction extends BaseAction {
       LOG.debug("ObjectId = {}", objectId);
       try {
         Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
-        if (insurer != null)
-            webUserRoles = adminUserService.getAllAvailableUserRoles(2,
-              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-              insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
-        else
-            webUserRoles = adminUserService.getAllAvailableUserRoles(3,
-              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin(), true);
+        if (insurer != null) {
+              webUserRoles = adminUserService.getAllAvailableUserRoles(2,
+                insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
+          }
+        else {
+              webUserRoles = adminUserService.getAllAvailableUserRoles(3,
+                getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin(), true);
+          }
 
         userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
 
-        for (WebUserRole webUserRole : webUserRoles)
-                    userroles.add(new UserroleViewData(webUserRole));
+        for (WebUserRole webUserRole : webUserRoles) {
+              userroles.add(new UserroleViewData(webUserRole));
+          }
       } catch (Exception ex) {
             handleException(ex);
             LOG.debug("Error getting all available user roles: {}", ex.getMessage());
@@ -254,8 +265,9 @@ public class UserRoleAction extends BaseAction {
         for (Iterator<IdLookupItem> i = availableRoles.iterator(); i.hasNext( ); ) {
             IdLookupItem lu = i.next();
             LOG.debug("Role available: {} - '{}'", lu.getId(), lu.getName());
-            if (lu.getId() == webUserRoleId)
+            if (lu.getId() == webUserRoleId) {
                 return true;
+            }
         }
         return false;
     }
@@ -283,11 +295,13 @@ public class UserRoleAction extends BaseAction {
                      throw new AccessDeniedException("Trying to remove a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                  }
                  WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
-                 if (webUserUserRole != null)
+                 if (webUserUserRole != null) {
                     webUserUserRoleService.deleteWebUserUserRole(webUserUserRole);
-                 else
+                }
+                 else {
                     throw new Exception("Record was updated by another transaction/user, please try again.",
-                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0)); 
+                                new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
+                } 
             } catch (Exception ex) {
                 LOG.debug("Handling exception: '{}'", ex.getMessage());
                 handleException(ex);

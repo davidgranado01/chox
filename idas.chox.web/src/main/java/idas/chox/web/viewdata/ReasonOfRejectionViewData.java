@@ -13,6 +13,7 @@ public class ReasonOfRejectionViewData {
     private boolean gtaActive;
     private boolean insurerVsInsurerActive;
     private boolean subscriberActive;
+    private boolean fixedFeeActive;
     private boolean insurerUploadActive;
     private boolean tpiActive;
     private boolean restricted;
@@ -27,6 +28,7 @@ public class ReasonOfRejectionViewData {
         this.gtaActive = object.isGtaActive();
         this.insurerVsInsurerActive = object.isInsurerVsInsurerActive();
         this.subscriberActive = object.isSubscriberActive();
+        this.fixedFeeActive = object.isFixedFeeActive();
         this.insurerUploadActive = object.isInsurerUploadActive();
         this.tpiActive = object.isTpiActive();
         this.restricted = object.isRestricted();
@@ -85,6 +87,13 @@ public class ReasonOfRejectionViewData {
     public void setSubscriberActive(boolean subscriberActive) {
         this.subscriberActive = subscriberActive;
     }
+    public boolean isFixedFeeActive() {
+        return fixedFeeActive;
+    }
+    public void setFixedFeeActive(boolean fixedFeeActive) {
+        this.fixedFeeActive = fixedFeeActive;
+    }
+
     public boolean isInsurerUploadActive() {
         return insurerUploadActive;
     }

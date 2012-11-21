@@ -1,8 +1,11 @@
 package idas.chox.service.bre.rules;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -10,7 +13,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.CalcHelper;
-import java.util.Date;
 
 public class TotalLabourCostBusinessRule implements IBusinessRule {
 
@@ -26,7 +28,8 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
 
 
             LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());

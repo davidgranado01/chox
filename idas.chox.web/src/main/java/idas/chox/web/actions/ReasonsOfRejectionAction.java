@@ -101,6 +101,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             ror.setType(type);
             ror.setGtaActive(model.isGtaActive());
             ror.setSubscriberActive(model.isSubscriberActive());
+            ror.setFixedFeeActive(model.isFixedFeeActive());
             ror.setInsurerUploadActive(model.isInsurerUploadActive());
             ror.setInsurerVsInsurerActive(model.isInsurerVsInsurerActive());
             ror.setTpiActive(model.isTpiActive());
@@ -146,16 +147,24 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             
             if (this.reasonOfRejectionId > 0 && activeType != null) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
-                if(activeType.equals("gtaActive"))
+                if(activeType.equals("gtaActive")) {
                     ror.setGtaActive(!ror.isGtaActive());
-                else if(activeType.equals("insurerVsInsurerActive"))
+                }
+                else if(activeType.equals("insurerVsInsurerActive")) {
                     ror.setInsurerVsInsurerActive(!ror.isInsurerVsInsurerActive());
-                else if(activeType.equals("subscriberActive"))
+                }
+                else if(activeType.equals("subscriberActive")) {
                     ror.setSubscriberActive(!ror.isSubscriberActive());
-                else if(activeType.equals("tpiActive"))
+                }
+                else if(activeType.equals("fixedFeeActive")) {
+                    ror.setFixedFeeActive(!ror.isFixedFeeActive());
+                }
+                else if(activeType.equals("tpiActive")) {
                     ror.setTpiActive(!ror.isTpiActive());
-                else if(activeType.equals("insurerUploadActive"))
+                }
+                else if(activeType.equals("insurerUploadActive")) {
                     ror.setInsurerUploadActive(!ror.isInsurerUploadActive());
+                }
                 ActionResponse response;
                 response = adminInsurerService.updateReasonOfRejectionActive(ror);
                 setActionResponse(response);
@@ -202,21 +211,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
         this.insurerId = insurerId;
     }
 
-//    public String getReasonOfRejectionName() {
-//        return reasonOfRejectionName;
-//    }
-//
-//    public void setReasonOfRejectionName(String reasonOfRejectionName) {
-//        this.reasonOfRejectionName = reasonOfRejectionName;
-//    }
-//
-//    public String getReasonOfRejectionDesc() {
-//        return reasonOfRejectionDesc;
-//    }
-//
-//    public void setReasonOfRejectionDesc(String reasonOfRejectionDesc) {
-//        this.reasonOfRejectionDesc = reasonOfRejectionDesc;
-//    }
 
     public List<ReasonOfRejectionViewData> getReasonOfRejectionViewData() {
         return reasonOfRejectionViewData;

@@ -643,7 +643,7 @@
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newSFixedFeeClaim>
+        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>

@@ -1,12 +1,13 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
 
 public class TowBarsChargeCheck implements IBusinessRule {
 
@@ -20,7 +21,8 @@ public class TowBarsChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (claim.getBreBand().isTowBarsChargeCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isTowBarsChargeCheck()) {
 
             boolean success = true;
 

@@ -1,14 +1,16 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AutomaticChargeCheck implements IBusinessRule {
 
@@ -26,7 +28,8 @@ public class AutomaticChargeCheck implements IBusinessRule {
 
         boolean success = true;
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isAutomaticChargeCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isAutomaticChargeCheck()) {
 
             LOG.debug("AutomaticChargeCheck is activated");
 

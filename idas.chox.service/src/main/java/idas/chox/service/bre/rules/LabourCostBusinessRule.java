@@ -1,8 +1,10 @@
 package idas.chox.service.bre.rules;
 
 import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -25,7 +27,8 @@ public class LabourCostBusinessRule implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
 
             boolean success = true;
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -41,8 +44,9 @@ public class LabourCostBusinessRule implements IBusinessRule {
                     narrative = "The number of hire days billed by the CHO (" + iNumberOfHireDay + " days) is not relative to the number of expected hire days (" + iNumberDayOfLabourCostWorthy + " days) based on the labour information provided.";
                     LOG.debug("LabourCostBusinessRule failed: Number of hire days {} > Number of Labour cost worthy {}", iNumberOfHireDay, iNumberDayOfLabourCostWorthy);
                 }
-                else
+                else {
                     LOG.debug("LabourCostBusinessRule passed.");
+                }
 
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
@@ -111,8 +115,9 @@ public class LabourCostBusinessRule implements IBusinessRule {
         // return ClaimStatus.INVOICE_ESCALATED_TO_CH; 
 
         // CARLSON @ 20091028
-        if (isTpiClaim)
+        if (isTpiClaim) {
             return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        }
 
         return ClaimStatus.INVOICE_ESCALATED;
     }

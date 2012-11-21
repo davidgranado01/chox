@@ -169,23 +169,31 @@ insert into accessibility_item(role, access_right, accessibility_id)
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
 	SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedFixedFeeClaims';
 
+ALTER TABLE reason_of_rejection ADD fixed_fee_active boolean DEFAULT TRUE;
+UPDATE reason_of_rejection ror
+	SET fixed_fee_active = subscriber_active;
+
+ALTER TABLE reason_of_rejection_template ADD fixed_fee_active boolean DEFAULT TRUE;
+
 ----------------------
 --  End of 7.1.4   --
 ----------------------
 
 
 --------------------------------------------------------------------------------
--- 7.1.6 - Make 'Rejection Reason' dependent on claim type                    --
+-- 7.1.6 - Auto routing for passed BRE invoices (All Claim Types)             --
 --------------------------------------------------------------------------------
 
 ALTER TABLE insurer ADD COLUMN gta_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN subscriber_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN fixed_fee_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
 
 ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean DEFAULT TRUE;
 
@@ -194,6 +202,7 @@ ALTER TABLE claim RENAME COLUMN is_tpi_claim_special_routed TO is_claim_auto_rou
 ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
 
 ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
+
 
 ----------------------
 --  End of 7.1.6    --
