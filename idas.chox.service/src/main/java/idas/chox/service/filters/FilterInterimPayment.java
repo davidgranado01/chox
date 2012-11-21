@@ -1,8 +1,10 @@
 package idas.chox.service.filters;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.search.ClaimSearchCriteria;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -13,7 +15,7 @@ public class FilterInterimPayment extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
+    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId, int claimTypeId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(true);
         claimSearchCriteria.setIsManual(getIsManualFilter());
@@ -25,6 +27,11 @@ public class FilterInterimPayment extends BaseFilter {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
         if (choId > -1)
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        if (claimTypeId > -1) {
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.values()[claimTypeId]);
+            claimSearchCriteria.setClaimTypes(claimTypes);
+        }
 
         return claimSearchCriteria;
     }

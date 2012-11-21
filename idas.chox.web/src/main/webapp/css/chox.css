@@ -38,6 +38,12 @@ html>body #chox-admin-right-col
     margin-top: 4px
 }
 
+#queueClaimTypeFilter {
+    color: #15428B;
+    font: 12px tahoma,arial,verdana,sans-serif;
+    margin-top: 4px
+}
+
 .gray-row .x-grid3-cell-inner
 {
     color: gray;

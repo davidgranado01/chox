@@ -15,6 +15,7 @@
         var isInboxShowHistory;
         var isSearchShowHistory;
         var currentOrg;
+        var currentClaimType;
         var grid;
         var ds;
         var exportIntervelId;
@@ -131,14 +132,14 @@
                             }
                         }
                     },
-                	load:function(){
-                		//we check if  grid title is already set in that case we dont need to set it again
-                		//- this check only kicks in user preses on inbox list.
-              			if(ds !== undefined 
-              					&& grid.title != undefined && grid.title != "" 
-              					&& grid.title.indexOf(ds.getTotalCount()) == -1)
-              			 	grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
-              		}
+                    load:function(){
+                        //we check if  grid title is already set in that case we dont need to set it again
+                        //- this check only kicks in user preses on inbox list.
+                          if(ds !== undefined 
+                                  && grid.title != undefined && grid.title != "" 
+                                  && grid.title.indexOf(ds.getTotalCount()) == -1)
+                               grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
+                      }
                 }
             });
 
@@ -147,17 +148,6 @@
 
             Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-            function executeFilterByOrg(filterName,gridTitle, orgId) {
-                
-                updateManualInvoiceBatchUpdate(filterName);
-                Ext.state.Manager.set("grid_isInboxShowHistory",true);
-                isInboxShowHistory = true;
-                Ext.state.Manager.set("grid_filterName",filterName);
-                Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
-                ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, searchHistory : true};
-                doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
-
-            }
             
             function updateManualInvoiceBatchUpdate(filterName) {
             
@@ -215,23 +205,12 @@
             
             function refreshFilterPanel() {
                 var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-                var param = {"filterOrgId":currentOrg};
+                var param = {"filterOrgId":currentOrg, "filterClaimTypeId":currentClaimType};
                 ajax.loadHtml2(url, param, function(data){
                     $("div#filterPanel2").html(data);
                 });
             }
-
-            function refreshFilterPanelByOrg(filterName, title, orgId) {
-                var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-                var param = {"filterOrgId":orgId};
-                ajax.loadHtml2(url, param, function(data){
-                    $("div#filterPanel2").html(data);
-                });
-                if (filterName)
-                    executeFilterByOrg(filterName, title, orgId);
-                currentOrg = orgId;
-            }
-
+            
             function searchClaim(canSearchForData){
 
                 var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
@@ -330,7 +309,7 @@
                 {
                     params:{start:start, limit:recordPerPage},
                     callback:function(){
-                    	Ext.state.Manager.set("grid_main_title", titleMessage);
+                        Ext.state.Manager.set("grid_main_title", titleMessage);
                         grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
                     }
                 });

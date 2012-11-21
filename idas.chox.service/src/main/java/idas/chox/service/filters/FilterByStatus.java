@@ -1,10 +1,12 @@
 package idas.chox.service.filters;
 
-import idas.chox.core.model.ClaimStatus;
 import java.util.Arrays;
-
-import idas.chox.core.search.ClaimSearchCriteria;
 import java.util.HashSet;
+import java.util.Set;
+
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.search.ClaimSearchCriteria;
 
 public class FilterByStatus extends BaseFilter {
 
@@ -13,7 +15,7 @@ public class FilterByStatus extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId, int claimTypeId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
@@ -26,6 +28,14 @@ public class FilterByStatus extends BaseFilter {
         }
         if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
+        if (choId > -1) {
+            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
+        if (claimTypeId > -1) {
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.values()[claimTypeId]);
+            claimSearchCriteria.setClaimTypes(claimTypes);
         }
 
         if (ClaimStatus.AWAITING_LIABILITY_RESOLUTION.equals(getStatus())) {
@@ -40,7 +50,7 @@ public class FilterByStatus extends BaseFilter {
         }
         return claimSearchCriteria;
     }
-
+    
     public String getStatus() {
         return status;
     }
@@ -66,5 +76,5 @@ public class FilterByStatus extends BaseFilter {
     public void setKey(String key) {
         this.key = key;
     }
-
+   
 }

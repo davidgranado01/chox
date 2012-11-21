@@ -13,8 +13,8 @@ public class FilterRecordCounterAction extends BaseAction {
     private List<Filter> filters;
     private ClaimService claimService;
     private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
-    private int filterOrgId;
-
+    private int filterOrgId = -1;
+    private int filterClaimTypeId = -1;
 
     @Override
     public String execute() throws Exception {
@@ -27,11 +27,11 @@ public class FilterRecordCounterAction extends BaseAction {
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
             if (getIsCHO())
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId)).intValue()));
             else if (getIsInsurer())
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId)).intValue()));
             else
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1)).intValue()));
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId)).intValue()));
             filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }
@@ -62,5 +62,12 @@ public class FilterRecordCounterAction extends BaseAction {
         this.filterOrgId = filterOrgId;
     }
 
+    public int getFilterClaimTypeId() {
+        return filterClaimTypeId;
+    }
+
+    public void setFilterClaimTypeId(int filterClaimTypeId) {
+        this.filterClaimTypeId = filterClaimTypeId;
+    }
 
 }

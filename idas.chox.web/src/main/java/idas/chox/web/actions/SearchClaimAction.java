@@ -37,6 +37,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private String actionResult;
     private String filterName;
     private int filterOrgId;
+    private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
     private boolean canLoadData = true;
 
@@ -320,12 +321,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 ClaimSearchCriteria filterCriteria;
                 if (this.getIsCHO()) {
                     LOG.debug("Filtering on insurerId={}", filterOrgId);
-                    filterCriteria = filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1);
+                    filterCriteria = filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId);
                 } else if (this.getIsInsurer()) {
                     LOG.debug("Filtering on choId={}", filterOrgId);
-                    filterCriteria = filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId);
+                    filterCriteria = filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId);
                 } else {
-                    filterCriteria = filter.getClaimSearchCriteria(null, -1, -1);
+                    filterCriteria = filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId);
                     LOG.debug("No search filter on organisation");
                 }
 
@@ -409,5 +410,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
+    }
+
+    public int getFilterClaimTypeId() {
+        return filterClaimTypeId;
+    }
+
+    public void setFilterClaimTypeId(int filterClaimTypeId) {
+        this.filterClaimTypeId = filterClaimTypeId;
     }
 }
