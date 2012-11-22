@@ -1,10 +1,12 @@
 package idas.chox.service.xml.validations;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.xmlValidation.ClaimResult;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.xmlValidation.ClaimResult;
 
 /**
  *
@@ -21,24 +23,17 @@ public class CHOReferenceValidation {
 
     public void validate(ClaimResult claimResult) {
         LOG.debug("Validating CHO references are unique");
-//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-
             if (claimResult.getClaim() != null) {
-
                 // CHECK DUPLICATE
                 if (claimResult.getClaim().getChoReference() != null && !claimResult.getClaim().getChoReference().equalsIgnoreCase("") ) {
-
                     if (choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())) {
-                        LOG.info("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
+                        LOG.debug("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
                         claimResult.setValid(false);
                         claimResult.getMessage().add("Duplicate Supplier Reference -  Supplier Reference already exists in bordereau");
                     } else {
                         choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
                     }
                 }
-
-
             }
-//        }
     }
 }

@@ -207,9 +207,7 @@ public class Invoice extends Entity implements Serializable {
     private Integer penaltyAlertQty;
     private BigDecimal totalPenaltyCharge;
     private ReasonOfRejection reasonOfRejection;
-//    private BigDecimal originalFullTotalToPay;
     private BigDecimal totalToPay;
-//    private BigDecimal originalTotalToPay;
     private BigDecimal totalLossFeeNet;
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;

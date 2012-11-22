@@ -180,13 +180,11 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     public boolean updateAutomaticPenaltyCharge(Claim claim) {
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
                 + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}, "
-                + "calculatePenaltyAlertQty(claim.getInvoice())={}, claim.getInvoice().getPenaltyAlertQty()={}, "
-                + "calculatePenaltyAlertQty(claim.getInvoice())={}",
+                + "calculatePenaltyAlertQty(claim.getInvoice())={}, claim.getInvoice().getPenaltyAlertQty()={}, ",
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
                     !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
                     claim.getInvoice(), calculatePenaltyAlertQty(claim.getInvoice()),
-                    claim.getInvoice().getPenaltyAlertQty(),
-                    calculatePenaltyAlertQty(claim.getInvoice())});
+                    claim.getInvoice().getPenaltyAlertQty()});
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()

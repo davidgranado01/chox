@@ -43,7 +43,7 @@ public class RepairsBookInDateFollowingHireStartCheckForNonMobileVehicles implem
                 noOfDays = (int) ((repairBookInDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
             }
             else {
-                LOG.info("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairBookInDate, hireStartDate);
+                LOG.debug("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairBookInDate, hireStartDate);
             }
 
             LOG.debug("'HireDaysPriorToDateRepairBookInDateMobileVehicles'  {}. ", maxDays);
