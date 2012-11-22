@@ -4,24 +4,24 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import idas.chox.core.search.ClaimSearchCriteria;
+import idas.chox.core.model.ClaimType;
 
-/**
- *
- * @author John
- */
-public class FilterInterimPayment extends BaseFilter {
+public class FilterFixedFeeRejected extends BaseFilter {
+
+    private String status;
     private String name;
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
-        claimSearchCriteria.setShowOpenClaimsOnly(true);
+        claimSearchCriteria.setShowOpenClaimsOnly(false);
+        claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
         claimSearchCriteria.setIsManual(getIsManualFilter());
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        claimSearchCriteria.setIsInterimPaymentMade(true);
+        claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.FIXED_FEE)));
         if (insurerId > -1) {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
         }
@@ -30,6 +30,14 @@ public class FilterInterimPayment extends BaseFilter {
         }
 
         return claimSearchCriteria;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

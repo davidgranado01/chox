@@ -1,10 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRejectionContest extends BaseActivity {
 
@@ -25,8 +27,9 @@ public class ClaimRejectionContest extends BaseActivity {
         else if (claim.getPreviousStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }
-        else
+        else {
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        }
     }
 
     @Override
@@ -45,5 +48,6 @@ public class ClaimRejectionContest extends BaseActivity {
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
     }
 }

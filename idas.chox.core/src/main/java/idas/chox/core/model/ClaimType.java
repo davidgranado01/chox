@@ -21,7 +21,10 @@ public enum ClaimType {
     SUBSCRIBER                                  (7, "Subscriber"),
     SUBSCRIBER_ORIGINAL_INVOICE                 (8, "Subscriber (Orig. Invoice)"),
     SUBSCRIBER_SUPPLEMENTARY_INVOICE            (9, "Subscriber (Supp. Invoice)"),
-    INSURER_UPLOAD                              (10, "Insurer Manual Invoice");
+    INSURER_UPLOAD                              (10, "Insurer Manual Invoice"),
+    FIXED_FEE                                   (11, "Fixed Fee"),
+    FIXED_FEE_ORIGINAL_INVOICE                  (12, "Fixed Fee (Orig. Invoice)"),
+    FIXED_FEE_SUPPLEMENTARY_INVOICE             (13, "Fixed Fee (Supp. Invoice)");
 
     private final String description;
     private final int claimTypeValue;
@@ -41,54 +44,72 @@ public enum ClaimType {
     }
 
     public static boolean isGTA(ClaimType claimType) {
-        if (        claimType == ClaimType.GTA
+        if (claimType == ClaimType.GTA
                 ||  claimType == ClaimType.GTA_ORIGINAL_INVOICE
-                ||  claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE)
+                ||  claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE) {
             return true;
+        }
         
         return false;
     }
 
     public static boolean isTPI(ClaimType claimType) {
-        if (        claimType == ClaimType.TPI)
+        if (        claimType == ClaimType.TPI) {
             return true;
+        }
         
         return false;
     }
 
     public static boolean isInsurerVsInsurer(ClaimType claimType) {
-        if (        claimType == ClaimType.INSURER_VS_INSURER
+        if (claimType == ClaimType.INSURER_VS_INSURER
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE
-                ||  claimType == ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE)
+                ||  claimType == ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE) {
             return true;
+        }
         
         return false;
     }
 
     public static boolean isInsurerUpload(ClaimType claimType) {
-        if (        claimType == ClaimType.INSURER_UPLOAD)
+        if (claimType == ClaimType.INSURER_UPLOAD) {
             return true;
+        }
         
         return false;
     }
 
     public static boolean isSubscriber(ClaimType claimType) {
-        if (        claimType == ClaimType.SUBSCRIBER
+        if (claimType == ClaimType.SUBSCRIBER
                 ||  claimType == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
-                ||  claimType == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE)
+                ||  claimType == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE) {
             return true;
+        }
+        
+        return false;
+    }
+
+    public static boolean isFixedFee(ClaimType claimType) {
+        if (claimType == ClaimType.FIXED_FEE
+                ||  claimType == ClaimType.FIXED_FEE_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE) {
+            return true;
+        }
         
         return false;
     }
 
     public static boolean isSupplementaryInvoice(ClaimType claimType) {
-        if (        claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE
+        if (claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE
+                ||  claimType == ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE
                 ||  claimType == ClaimType.GTA_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.FIXED_FEE_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE
-                ||  claimType == ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE)
+                ||  claimType == ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE) {
             return true;
+        }
         
         return false;
     }
@@ -96,35 +117,42 @@ public enum ClaimType {
     public static ClaimType[] getSupplementaryInvoiceTypes() {
         return new ClaimType[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
-                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE};
+                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE};
     }
     
     public static String getSupplementaryInvoiceTypeOrdinals() {
         return "(" + ClaimType.GTA_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
-                   + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
+                   + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
     }
     
     public static ClaimType[] getOriginalSupplementaryInvoiceTypes() {
         return new ClaimType[] {ClaimType.GTA_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE};
+                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                ClaimType.FIXED_FEE_ORIGINAL_INVOICE};
     }
     
     public static ClaimType[] getAllSupplementaryInvoiceTypes() {
         return new ClaimType[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE,
                                 ClaimType.GTA_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE};
+                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                ClaimType.FIXED_FEE_ORIGINAL_INVOICE};
     }
     
     public static boolean isOriginalSupplementaryInvoice(ClaimType claimType) {
-        if (        claimType == ClaimType.GTA_ORIGINAL_INVOICE
+        if (claimType == ClaimType.GTA_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
-                ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE)
+                ||  claimType == ClaimType.FIXED_FEE_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
             return true;
+        }
         
         return false;
     }

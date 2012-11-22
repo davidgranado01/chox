@@ -26,7 +26,8 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
         /*
          * Phase 6 Sprint 9 todo item 6.9.6 excludes commercial, private hire and taxi vehicles
          */
-        if (claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null) {
+        if (!ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getCustomer() != null && claim.getCustomer().getVehicleClass() != null) {
             isExcluded = VehicleClass.isCommercialPrivateOrTaxi(claim.getCustomer().getVehicleClass().getName());
         }
 

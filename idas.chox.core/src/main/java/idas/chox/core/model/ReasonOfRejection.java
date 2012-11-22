@@ -12,6 +12,7 @@ public class ReasonOfRejection extends Entity implements Serializable {
     private boolean gtaActive;
     private boolean insurerVsInsurerActive;
     private boolean subscriberActive;
+    private boolean fixedFeeActive;
     private boolean insurerUploadActive;
     private boolean tpiActive;
     
@@ -83,6 +84,14 @@ public class ReasonOfRejection extends Entity implements Serializable {
 
     public void setSubscriberActive(boolean subscriberActive) {
         this.subscriberActive = subscriberActive;
+    }
+
+    public boolean isFixedFeeActive() {
+        return fixedFeeActive;
+    }
+
+    public void setFixedFeeActive(boolean fixedFeeActive) {
+        this.fixedFeeActive = fixedFeeActive;
     }
 
     public boolean isInsurerUploadActive() {

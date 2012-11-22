@@ -1,12 +1,13 @@
 package idas.chox.service.bre.rules;
 
+import java.text.DecimalFormat;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.text.DecimalFormat;
 
 public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
 
@@ -22,7 +23,8 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()) {
 
             boolean success = claim.getInvoice().getHireNet().compareTo(claim.getBreBand().getHireNetCeiling()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);

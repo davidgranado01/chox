@@ -1,5 +1,7 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -7,7 +9,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.CalcHelper;
-import java.math.BigDecimal;
 
 /**
  *
@@ -27,7 +28,8 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
         if (claim.getBreBand().isClaimHasZeroDiscountForDA()) {
 
-            if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getChorganisation().isDelegatedAuthority()) {
+            if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getChorganisation().isDelegatedAuthority()) {
 
                 boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);

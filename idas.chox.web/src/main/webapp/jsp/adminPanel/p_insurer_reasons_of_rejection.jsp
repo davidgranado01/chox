@@ -39,6 +39,7 @@ $(function(){
              {name:'gtaActive'},
              {name:'insurerVsInsurerActive'},
              {name:'subscriberActive'},
+             {name:'fixedFeeActive'},
              {name:'insurerUploadActive'},
              {name:'tpiActive'},
              {name:'restricted'},
@@ -75,6 +76,8 @@ $(function(){
             {header: "Insurer Vs Insurer Active", width: 40, dataIndex: 'insurerVsInsurerActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
             {header: "Subscriber Active", width: 40, dataIndex: 'subscriberActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
+            {header: "Fixed Fee Active", width: 40, dataIndex: 'fixedFeeActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
             {header: "Insurer Upload Active", width: 40, dataIndex: 'insurerUploadActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
@@ -167,23 +170,23 @@ $(function(){
     var types = ['Claim','Invoice'];
     
     var typeCombo = new Ext.form.ComboBox({
-        store: types
-        ,valueField:'type'
-        ,displayField:'Type'
-        ,fieldLabel: 'Type'
-        ,mode:'local'
-        ,renderTo: 'typeDivId'
-        ,name: 'rorTypeName'
-        ,id: 'rorTypeId'
-        ,triggerAction: 'all'
-        ,hiddenName: 'type'
-        ,width: 150
-        ,selectOnFocus: true
-        ,mode: 'local'
-        ,editable: false
-        ,allowBlank: false
-        ,forceSelection: true
-        ,listeners: {
+        store: types,
+        valueField:'type',
+        displayField:'Type',
+        fieldLabel: 'Type',
+        mode:'local',
+        renderTo: 'typeDivId',
+        name: 'rorTypeName',
+        id: 'rorTypeId',
+        triggerAction: 'all',
+        hiddenName: 'type',
+        width: 150,
+        selectOnFocus: true,
+        mode: 'local',
+        editable: false,
+        allowBlank: false,
+        forceSelection: true,
+        listeners: {
             select: function() {
                    if(this.getValue() == 'Claim'){
                        $("#restrictedDivId").slideDown();
@@ -208,18 +211,18 @@ function editReasonOfRejection(grid, rowIndex, columnIndex, e){
     
     if(columnIndex==0){
         showEditReasonOfRejection(gridView);
-    }else if(columnIndex >= 3 && columnIndex <= 7){
+    }else if(columnIndex >= 3 && columnIndex <= 8){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
         var selectedColumn = rorGridView.getColumnModel().getColumnAt(columnIndex).dataIndex;
         var param = {"reasonOfRejectionId":rorId, "activeType": selectedColumn};
         ajax.loadHtml2(url, param, onSubmitHandler);
-    }else if(columnIndex==8){
+    }else if(columnIndex==9){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
         var param = {"reasonOfRejectionId":rorId};
         ajax.loadHtml2(url, param, onSubmitHandler);
-    } else if(columnIndex==9){
+    } else if(columnIndex==10){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/deleteReasonOfRejection.action";
         var param = {"reasonOfRejectionId":rorId};
@@ -259,6 +262,7 @@ function refreshForm(){
     $("form#rorForm input#restricted").attr('checked',false);
     $("form#rorForm input#gtaActiveId").attr('checked',false);
     $("form#rorForm input#subscriberActiveId").attr('checked',false);
+    $("form#rorForm input#fixedFeeActiveId").attr('checked',false);
     $("form#rorForm input#tpiActiveId").attr('checked',false);
     $("form#rorForm input#insurerVsInsurerActiveId").attr('checked',false);
     $("form#rorForm input#insurerUploadActiveId").attr('checked',false);
@@ -356,7 +360,15 @@ function showEditReasonOfRejection(gridView){
                                                 <div style="position:relative;width:239px;">
                                                     <div style="position:absolute;right:0;">
                                                         <label >TPI Active</label>
-                                                        <s:checkbox id="tpiActiveId" name="tpiActive" style="position: relative; right:0px"/>
+                                                        <s:checkbox id="tpiActiveId" name="tpiActive"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%; height: 15px;">
+                                                <div style="position:relative;width:220px;">
+                                                    <div style="position:absolute;right:0;">
+                                                        <label >Fixed Fee Active</label>
+                                                        <s:checkbox id="fixedFeeActiveId" name="fixedFeeActive" />
                                                     </div>
                                                 </div>
                                             </td>

@@ -24,7 +24,8 @@ public class MaximumLabourRate implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isMaximumLabourRateCheck()
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isMaximumLabourRateCheck()
                 && claim.getHireMonitoringDetail() != null
                 && claim.getHireMonitoringDetail().getLabourRate() != null) {
 

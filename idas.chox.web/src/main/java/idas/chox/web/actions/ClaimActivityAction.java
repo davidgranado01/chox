@@ -3,8 +3,11 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import net.sf.json.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.BreBand;
@@ -13,9 +16,6 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
-import java.util.Arrays;
-import org.springframework.security.access.AccessDeniedException;
-import net.sf.json.JSONObject;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -201,8 +201,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     // </editor-fold>
 
     public Integer getId() {
-        if (claim != null)
+        if (claim != null) {
             return claim.getId();
+        }
         
         return null;
     }

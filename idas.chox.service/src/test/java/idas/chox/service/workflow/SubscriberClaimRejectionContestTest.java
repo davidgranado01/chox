@@ -25,7 +25,7 @@ public class SubscriberClaimRejectionContestTest extends BaseTest {
         claim.setClaimType(ClaimType.SUBSCRIBER);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
-        Activity activity = activityFactory.getActivity("contestRejectedSubscriberClaim");
+        Activity activity = activityFactory.getActivity("contestRejectedClaim");
         activity.process(claim);
     }
 
@@ -39,7 +39,7 @@ public class SubscriberClaimRejectionContestTest extends BaseTest {
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
-        Activity activity = activityFactory.getActivity("contestRejectedSubscriberClaim");
+        Activity activity = activityFactory.getActivity("contestRejectedClaim");
 
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_REJECTION_CONTESTED, claim.getStatus());

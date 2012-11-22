@@ -494,8 +494,8 @@
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable IP Whitelist</label>
-                                        <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
+                                        <label class="chox-form-std-label">Enable Fixed Fee Claims</label>
+                                        <s:checkbox name="enableFixedFeeClaims" value="enableFixedFeeClaims" />
                                     </div>
                                 </td>
                             </tr>
@@ -512,6 +512,15 @@
                                         <s:checkbox name="restrictExport" value="restrictExport" />
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable IP Whitelist</label>
+                                        <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
+                                    </div>
+                                </td>
+                                <td></td>
                             </tr>
                         </table>
                         <div class="chox-form-button">

@@ -12,7 +12,8 @@ public enum RentalStatus {
     SUPPLEMENTARYINVOICE("supplementaryinvoice"),
     INSURERVSINSURER("insurervsinsurer"),
     INSURERUPLOAD("insurerupload"),
-    SUBSCRIBER("subscriber");
+    SUBSCRIBER("subscriber"),
+    FIXEDFEE("fixedfee");
 
     private String description;
     
@@ -73,6 +74,14 @@ public enum RentalStatus {
 
     public static boolean isSubscriberRentalStatus(String rentalStatus) {
         if (RentalStatus.SUBSCRIBER.getDescription().equals(rentalStatus)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isFixedFeeRentalStatus(String rentalStatus) {
+        if (RentalStatus.FIXEDFEE.getDescription().equals(rentalStatus)) {
             return true;
         }
 

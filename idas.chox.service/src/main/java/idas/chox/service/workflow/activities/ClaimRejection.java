@@ -3,10 +3,12 @@ package idas.chox.service.workflow.activities;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.util.StringHelper;
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -126,8 +128,16 @@ public class ClaimRejection extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Verify Rejected with the 5 day SLA with 5 minute leeway
             int subscriberClaimDays = claimService.getSubscriberClaimDays(claim.getId());
-            if (subscriberClaimDays > 5 || (subscriberClaimDays == 5 && !DateHelper.isBefore3pm(5)))
+            if (subscriberClaimDays > 5 || (subscriberClaimDays == 5 && !DateHelper.isBefore3pm(5))) {
                 throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
+            }
+        }
+        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            // Verify Rejected with the 10 day SLA with 5 minute leeway
+            int fixedFeeClaimDays = claimService.getFixedFeeClaimDays(claim.getId());
+            if (fixedFeeClaimDays > 10 || (fixedFeeClaimDays == 10 && !DateHelper.isBefore3pm(5))) {
+                throw new Exception("Cannot reject fixed fee claim as the 10 day SLA limit has now been reached.");
+            }
         }
 
     }
@@ -150,21 +160,26 @@ public class ClaimRejection extends BaseActivity {
                 claim.addComment(comment);                
                 claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
-        if (indemnityAmount != null)
+        if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
-        if (percentageLiabilityAccepted != null)
+        }
+        if (percentageLiabilityAccepted != null) {
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
-        if (percentageLiabilityCho != null)
+        if (percentageLiabilityCho != null) {
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
-        if (liabilityAgreedDate != null)
+        }
+        if (liabilityAgreedDate != null) {
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        }
 
-        if (claimNumber != null)
+        if (claimNumber != null) {
             claim.setClaimNumber(claimNumber);
+        }
         LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
 
     }
@@ -182,8 +197,9 @@ public class ClaimRejection extends BaseActivity {
         
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
-            if(rejectionDescription != null && !rejectionDescription.equals(""))
-            	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
+            if(rejectionDescription != null && !rejectionDescription.equals("")) {
+                claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
+            }
         }
         else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
@@ -192,8 +208,9 @@ public class ClaimRejection extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         }
-        else
+        else {
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        }
     }
 
     protected ReasonOfRejection getReasonOfRejection() {

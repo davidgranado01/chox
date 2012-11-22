@@ -1,7 +1,5 @@
 package idas.chox.service.xml.validations;
 
-import idas.chox.core.util.DocumentHelper;
-import idas.chox.core.xmlValidation.NodeRuleModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,6 +9,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.util.DocumentHelper;
+import idas.chox.core.xmlValidation.NodeRuleModel;
 
 public class DataValidationParameter {
 
@@ -67,11 +68,16 @@ public class DataValidationParameter {
             ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(21).getTextContent());
             
             ruleModel.setNewSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(23).getTextContent());
+
             ruleModel.setExistingSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(25).getTextContent());
 
-            ruleModel.setLength(fieldNode.getChildNodes().item(27).getTextContent());
+            ruleModel.setNewFixedFeeClaimDataMandatory(fieldNode.getChildNodes().item(27).getTextContent());
+
+            ruleModel.setExistingFixedFeeClaimDataMandatory(fieldNode.getChildNodes().item(29).getTextContent());
+
+            ruleModel.setLength(fieldNode.getChildNodes().item(31).getTextContent());
             
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(29).getTextContent());
+            ruleModel.setRegExp(fieldNode.getChildNodes().item(33).getTextContent());
             
 
         } catch (Exception ex) {

@@ -39,10 +39,14 @@ ALTER TABLE reason_of_rejection_template DROP COLUMN status;
 -- 7.1.2 - Insurer Manual Invoice Process Updates                             --
 --------------------------------------------------------------------------------
 
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.ManualInvoiceBREApproved',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.ManualInvoiceBRERejected',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.ManualInvoiceContested',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updatePenaltyCharges.ManualInvoiceBREApproved',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updatePenaltyCharges.ManualInvoiceBRERejected',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updatePenaltyCharges.ManualInvoiceContested',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updatePenaltyCharges.ManualInvoiceUnassigned',false,false);
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ALL', 0, id FROM accessibility WHERE name like 'extraAction.updatePenaltyCharges.ManualInvoice%';
@@ -87,10 +91,14 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceUnassigned';
 
 
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updateLiability.ManualInvoiceBREApproved',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updateLiability.ManualInvoiceBRERejected',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updateLiability.ManualInvoiceContested',false,false);
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updateLiability.ManualInvoiceUnassigned',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updateLiability.ManualInvoiceBREApproved',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updateLiability.ManualInvoiceBRERejected',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updateLiability.ManualInvoiceContested',false,false);
+INSERT INTO accessibility(name,is_workgroup_check,is_ownership_check)
+	VALUES('extraAction.updateLiability.ManualInvoiceUnassigned',false,false);
 
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
@@ -164,26 +172,40 @@ WITH (
 GRANT SELECT ON TABLE penalty_charge TO chox_user;
 GRANT SELECT ON TABLE penalty_charge TO chox_mi;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 30, 12.5, '12.5%', '2012-06-15', 1; 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 60, 20, '20%', '2012-06-15', 2;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '2012-06-15', 3;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 30, 12.5, '12.5%', '2012-06-15', 1; 
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 60, 20, '20%', '2012-06-15', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '2012-06-15', 3;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 30, 7.5, '7.5%', '1950-01-01', 1;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 60, 15.00, '15%', '1950-01-01', 2;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '1950-01-01', 3;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 30, 7.5, '7.5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 60, 15.00, '15%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '1950-01-01', 3;
 
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 30, 4, '4%', '1950-01-01', 1;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 60, 8, '8%', '1950-01-01', 2;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 90, 12, '12%', '1950-01-01', 3;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'SUBSCRIBER', 30, 4, '4%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'SUBSCRIBER', 60, 8, '8%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'SUBSCRIBER', 90, 12, '12%', '1950-01-01', 3;
 
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'DEFAULT', 30, 2.5, '2.5%', '1950-01-01', 1;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'DEFAULT', 60, 5, '5%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'DEFAULT', 30, 2.5, '2.5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'DEFAULT', 60, 5, '5%', '1950-01-01', 2;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 30, 0, '0%', '1950-01-01', 1;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 60, 0, '0%', '1950-01-01', 2;
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 90, 0, '0%', '1950-01-01', 3;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'SUBSCRIBER', 30, 0, '0%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'SUBSCRIBER', 60, 0, '0%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'SUBSCRIBER', 90, 0, '0%', '1950-01-01', 3;
 
 
 CREATE TABLE claim_type
@@ -214,7 +236,6 @@ INSERT INTO claim_type VALUES (10, 'Insurer Manual Invoice', 'DEFAULT');
 
 -- Store Procedure to return Unique Array ---
 
-
 create function uniq(anyarray)
 returns anyarray as $$
      select array(select distinct $1[i] from
@@ -223,10 +244,10 @@ $$ language sql strict immutable;
 
 
 
--- Apply Penalty Charge Strore Procedure ---
+-- Apply Penalty Charge Stored Procedure ---
 
 
-CREATE OR REPLACE FUNCTION applyautopenaltycharge(useridnumber integer, claimid integer)
+CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
 $BODY$
 
@@ -616,7 +637,7 @@ RETURN TRUE;
 END;
 $BODY$
   LANGUAGE plpgsql;
-  GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox_user;
+  GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
 
 
 
@@ -626,17 +647,56 @@ $BODY$
 
 
 --------------------------------------------------------------------------------
--- 7.1.6 - Make 'Rejection Reason' dependent on claim type                    --
+-- 7.1.4 - Fixed Fee (Rate Per Day) Claims                                    --
+--------------------------------------------------------------------------------
+ALTER TABLE insurer ADD COLUMN allow_fixedfee_claims boolean not null default false;
+ALTER TABLE chorganisation ADD COLUMN enable_fixedfee_claims boolean not null default false;
+
+--
+-- Add accessibility for new queue for CHO and CHOX Admin roles
+--
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled,
+                          check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled,
+                          check_supplier_ownership)
+	SELECT 'filter.RejectedFixedFeeClaims', false, false, false, false, false, false, false;
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ALL', 0, id FROM accessibility where WHERE ='filter.RejectedFixedFeeClaims';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ROLE_CHO', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+	SELECT 'ROLE_CHOX_ADMIN', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+	SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedFixedFeeClaims';
+
+ALTER TABLE reason_of_rejection ADD fixed_fee_active boolean DEFAULT TRUE;
+UPDATE reason_of_rejection ror
+	SET fixed_fee_active = subscriber_active;
+
+ALTER TABLE reason_of_rejection_template ADD fixed_fee_active boolean DEFAULT TRUE;
+
+----------------------
+--  End of 7.1.4   --
+----------------------
+
+
+--------------------------------------------------------------------------------
+-- 7.1.6 - Auto routing for passed BRE invoices (All Claim Types)             --
 --------------------------------------------------------------------------------
 
 ALTER TABLE insurer ADD COLUMN gta_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN subscriber_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN fixed_fee_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
 
 ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean DEFAULT TRUE;
 ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean DEFAULT TRUE;
 
@@ -646,9 +706,7 @@ ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
 
 ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
 
+
 ----------------------
---  End of 7.1.6   --
+--  End of 7.1.6    --
 ----------------------
-
-
-

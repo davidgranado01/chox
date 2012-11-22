@@ -32,8 +32,13 @@ public interface AuditTrailService {
     public int getSubscriberClaimRejectedDays(int claimId);
 
     public int getSubscriberClaimRejectedTimes(int claimId);
+    public int getClaimRejectedTimes(int claimId);
 
-    public String getSubscriberStateBeforeRejection(int claimId);
+    public String getStateBeforeRejection(int claimId);
+
+    public int getFixedFeeClaimDays(int claimId);
+
+    public int getFixedFeeClaimRejectedDays(int claimId);
 
     public double getTimeInvoiceWithInsurer(int claimId);
 
@@ -44,7 +49,7 @@ public interface AuditTrailService {
     public Boolean hasRevertedEntries(int claimId);
     
     public boolean isSubscriberClaimRejectedAndAgreed(int claimId);
-    
+        
     public void deleteAllAuditEntriesByClaimId(int claimId);
 
 }

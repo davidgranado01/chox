@@ -1,5 +1,8 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -7,8 +10,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.util.VehicleClassHelper;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusinessRule {
 
@@ -24,7 +25,8 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()) {
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
 

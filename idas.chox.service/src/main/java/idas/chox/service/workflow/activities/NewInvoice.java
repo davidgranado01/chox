@@ -91,12 +91,18 @@ public class NewInvoice extends BaseActivity {
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
                 claim.setAutoRoutedClaim(false);
             } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
-                    &&claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
+                    && claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
                     && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
                     && !claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
                 claim.setAutoRoutedClaim(false);
-            } 
+            } else if (ClaimType.isFixedFee(claim.getClaimType()) 
+                    && claim.getInsurer().getFixedFeeRegexExpression() != null 
+                    && !claim.getInsurer().getFixedFeeRegexExpression().equals("") 
+                    && !claim.getInsurer().isFixedFeeAutoRoutingEnable()
+                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase())) {
+                claim.setAutoRoutedClaim(false);
+            }
         }
     }
 
@@ -157,15 +163,17 @@ public class NewInvoice extends BaseActivity {
         }
 
         if (ClaimType.isGTA(claim.getClaimType())) {
-            claim = routeToAwaitingInvoicePayment(claim);
+            routeToAwaitingInvoicePayment(claim);
         } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
-            claim = routeToAwaitingInvoicePayment(claim);
+            routeToAwaitingInvoicePayment(claim);
         } else if (ClaimType.isSubscriber(claim.getClaimType())){
-            claim = routeToAwaitingInvoicePayment(claim);
+            routeToAwaitingInvoicePayment(claim);
+        } else if (ClaimType.isFixedFee(claim.getClaimType())){
+            routeToAwaitingInvoicePayment(claim);
         }
     }
     
-    private Claim routeToAwaitingInvoicePayment(Claim claim) {
+    private void routeToAwaitingInvoicePayment(Claim claim) {
         if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
             // re-route claim
             if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
@@ -185,7 +193,6 @@ public class NewInvoice extends BaseActivity {
             claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
-        return claim;
     }
     
     @Override
@@ -212,7 +219,6 @@ public class NewInvoice extends BaseActivity {
             task.setDueDate(DateHelper.getCurrentDateTime());
             task.setType("Repair Documentation");
             task.setVisibility(2);
-//          task.setVisibilityRole(visibilityRole);
             task.setInsurer(Boolean.FALSE);
             task.setRaisedBy(userService.findByUserName("system"));
             task.setClaim(claim);
@@ -238,8 +244,8 @@ public class NewInvoice extends BaseActivity {
         if (claim.getVehicleHire() != null && VehicleClassHelper.isVehicleClassValid(claim.getVehicleHire().getVehicleClass())) {
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-            BigDecimal allowedDailyRate = new BigDecimal(0.00);
-            BigDecimal vehicleClassPrice = new BigDecimal(0.00);
+            BigDecimal allowedDailyRate;
+            BigDecimal vehicleClassPrice = BigDecimal.ZERO;
             try {
                 vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception ex) {

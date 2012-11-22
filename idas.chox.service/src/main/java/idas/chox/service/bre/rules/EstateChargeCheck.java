@@ -1,12 +1,13 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
 
 public class EstateChargeCheck implements IBusinessRule {
 
@@ -20,7 +21,8 @@ public class EstateChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isEstateChargeCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isEstateChargeCheck()) {
 
             boolean success = true;
 

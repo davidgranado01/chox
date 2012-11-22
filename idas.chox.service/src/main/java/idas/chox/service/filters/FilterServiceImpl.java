@@ -55,7 +55,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                             continue;
                         } else if (filter.getKey().equals(Filter.FILTER_ESCALATED_INVOICES_TO_SUPERVISOR) && webUser.isAnInsurer() && !webUser.getInsurer().isSupervisorEnable()) {
-                                LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
+                                LOG.debug("Not adding queue '{}' as Supervisor is not enabled.", filter.getName());
                                 continue;
                         } 
                         

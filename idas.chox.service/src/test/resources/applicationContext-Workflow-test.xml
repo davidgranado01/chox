@@ -33,7 +33,6 @@
            <property name="claimService" ref="claimService" />
     </bean>     
     <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionContest" scope="prototype"/>
-    <bean id="contestRejectedSubscriberClaim" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionContest" scope="prototype"/>
     <bean id="acceptSubscriberChallenge" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionAccept" scope="prototype">
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService" />
     </bean>

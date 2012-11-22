@@ -53,7 +53,7 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean showOpenClaimsOnly = true;
     private boolean isSupplementaryInvoiceOnly;
     private boolean penaltyChargesAppliedOnly;
-    private Set<Integer> claimOwnerIds;;
+    private Set<Integer> claimOwnerIds;
     private Set<Integer> supplierClaimOwnerIds;
     private boolean isManual;
     private boolean isWorkgroupCheck;
@@ -70,14 +70,17 @@ public class ClaimSearchCriteria implements Serializable {
         StringBuilder sb = new StringBuilder();
 
         sb.append("supplierReference=").append(supplierReference).append("\n");
-        if (supplierIds != null)
-                sb.append("supplierIds=").append(Arrays.toString(supplierIds.toArray())).append("\n");
-                sb.append("claimNumber=").append(claimNumber).append("\n");
-        if (statuses != null)
-                sb.append("statuses=").append(Arrays.toString(statuses.toArray())).append("\n");
-        if (insurerIds != null)
-                sb.append("insurerIds=").append(Arrays.toString(insurerIds.toArray())).append("\n");
-                sb.append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
+        if (supplierIds != null) {
+            sb.append("supplierIds=").append(Arrays.toString(supplierIds.toArray())).append("\n");
+        }
+        sb.append("claimNumber=").append(claimNumber).append("\n");
+        if (statuses != null) {
+            sb.append("statuses=").append(Arrays.toString(statuses.toArray())).append("\n");
+        }
+        if (insurerIds != null) {
+            sb.append("insurerIds=").append(Arrays.toString(insurerIds.toArray())).append("\n");
+        }
+        sb.append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
                 .append("customerVrn=").append(customerVrn).append("\n")
                 .append("invoiceNumber=").append(invoiceNumber).append("\n")
                 .append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n")
@@ -90,9 +93,10 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("hireDateTo=").append(rentalEndDate).append("\n")
                 .append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n")
                 .append("lastModifiedDateTo=").append(lastModifiedDateTo).append("\n");
-        if (workgroupIds != null)
-                sb.append("workgroupIds=").append(Arrays.toString(workgroupIds.toArray())).append("\n");
-                sb.append("isAnomalies=").append(isAnomalies).append("\n")
+        if (workgroupIds != null) {
+            sb.append("workgroupIds=").append(Arrays.toString(workgroupIds.toArray())).append("\n");
+        }
+        sb.append("isAnomalies=").append(isAnomalies).append("\n")
                 .append("ispenaltyChargeApplied=").append(isPenaltyChargeApplied).append("\n")
                 .append("isInterimPaymentMade=").append(isInterimPaymentMade).append("\n")
                 .append("start=").append(start).append("\n")
@@ -102,21 +106,25 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom).append("\n")
                 .append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n")
                 .append("isOpenClaim=").append(showOpenClaimsOnly).append("\n");
-       if (claimOwnerIds != null)
-                sb.append("claimOwnerIds=").append(Arrays.toString(claimOwnerIds.toArray())).append("\n");
-       if (supplierClaimOwnerIds != null)                 
-                sb.append("supplierClaimOwnerIds=").append(Arrays.toString(supplierClaimOwnerIds.toArray())).append("\n");
-                sb.append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
+        if (claimOwnerIds != null) {
+            sb.append("claimOwnerIds=").append(Arrays.toString(claimOwnerIds.toArray())).append("\n");
+        }
+        if (supplierClaimOwnerIds != null) {
+            sb.append("supplierClaimOwnerIds=").append(Arrays.toString(supplierClaimOwnerIds.toArray())).append("\n");
+        }
+        sb.append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
                 .append("isOwnerShipCheck=").append(isOwnerShipCheck).append("\n")
                 .append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n");
-       if (liabilityStatuses != null)
-                sb.append("liabilityStatuses =").append(Arrays.toString(liabilityStatuses.toArray())).append("\n");
-                sb.append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n")
+        if (liabilityStatuses != null) {
+            sb.append("liabilityStatuses =").append(Arrays.toString(liabilityStatuses.toArray())).append("\n");
+        }
+        sb.append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n")
                 .append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n")
                 .append("penaltyChargesAppliedOnly=").append(penaltyChargesAppliedOnly).append("\n");
-       if (claimTypes != null)
-                sb.append("claimTypes=").append(Arrays.toString(claimTypes.toArray())).append("\n");
-       return sb.toString();
+        if (claimTypes != null) {
+            sb.append("claimTypes=").append(Arrays.toString(claimTypes.toArray())).append("\n");
+        }
+        return sb.toString();
     }
 
     public boolean validate() {
@@ -150,10 +158,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setClaimTypes(Set<ClaimType> claimTypes) {
-        if (claimTypes.contains(null))
+        if (claimTypes.contains(null)) {
             this.claimTypes = null;
-        else
+        } else {
             this.claimTypes = claimTypes;
+        }
     }
 
     public boolean isIsSupplementaryInvoiceOnly() {
@@ -185,12 +194,13 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setLiabilityStatuses(Set<LiabilityStatus> liabilityStatuses) {
-        if (liabilityStatuses.contains(null)) 
+        if (liabilityStatuses.contains(null)) {
             this.liabilityStatuses = null;
-        else
+        } else {
             this.liabilityStatuses = liabilityStatuses;
+        }
     }
-    
+
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;
     }
@@ -212,12 +222,13 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setWorkgroupIds(Set<Integer> workgroupIds) {
-        if (workgroupIds.contains(null))
+        if (workgroupIds.contains(null)) {
             this.workgroupIds = null;
-        else
+        } else {
             this.workgroupIds = workgroupIds;
+        }
     }
-    
+
     public String getSupplierReference() {
         return supplierReference;
     }
@@ -231,12 +242,13 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setSupplierIds(Set<Integer> supplierIds) {
-        if (supplierIds.contains(null) || supplierIds.contains(0))
+        if (supplierIds.contains(null) || supplierIds.contains(0)) {
             this.supplierIds = null;
-        else
+        } else {
             this.supplierIds = supplierIds;
+        }
     }
-    
+
     public String getClaimNumber() {
         return claimNumber;
     }
@@ -250,10 +262,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setStatuses(Set<String> statuses) {
-        if (statuses.contains(null) || statuses.contains("")) 
+        if (statuses.contains(null) || statuses.contains("")) {
             this.statuses = null;
-        else
+        } else {
             this.statuses = statuses;
+        }
     }
 
     public Set<Integer> getInsurerIds() {
@@ -261,10 +274,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setInsurerIds(Set<Integer> insurerIds) {
-        if (insurerIds.contains(null) || insurerIds.contains(0))
+        if (insurerIds.contains(null) || insurerIds.contains(0)) {
             this.insurerIds = null;
-        else
+        } else {
             this.insurerIds = insurerIds;
+        }
     }
 
     public String getCustomerVrn() {
@@ -440,10 +454,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setClaimOwnerIds(Set<Integer> claimOwnerIds) {
-        if (claimOwnerIds.contains(null))
+        if (claimOwnerIds.contains(null)) {
             this.claimOwnerIds = null;
-        else
+        } else {
             this.claimOwnerIds = claimOwnerIds;
+        }
     }
 
     public Set<Integer> getSupplierClaimOwnerIds() {
@@ -451,10 +466,11 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     public void setSupplierClaimOwnerIds(Set<Integer> supplierClaimOwnerIds) {
-        if (supplierClaimOwnerIds.contains(null))
+        if (supplierClaimOwnerIds.contains(null)) {
             this.supplierClaimOwnerIds = null;
-        else
+        } else {
             this.supplierClaimOwnerIds = supplierClaimOwnerIds;
+        }
     }
 
     public boolean isShowOpenClaimsOnly() {
@@ -464,7 +480,7 @@ public class ClaimSearchCriteria implements Serializable {
     public void setShowOpenClaimsOnly(boolean showOpenClaimsOnly) {
         this.showOpenClaimsOnly = showOpenClaimsOnly;
     }
-    
+
     /**
      * @return the statusModifiedDateFrom
      */
@@ -501,13 +517,13 @@ public class ClaimSearchCriteria implements Serializable {
         this.statusExcludeList = statusExcludeList;
     }
 
-	public boolean isEscalatedToSupervisor() {
-		return isEscalatedToSupervisor;
-	}
+    public boolean isEscalatedToSupervisor() {
+        return isEscalatedToSupervisor;
+    }
 
-	public void setEscalatedToSupervisor(boolean isEscalatedToSupervisor) {
-		this.isEscalatedToSupervisor = isEscalatedToSupervisor;
-	}
+    public void setEscalatedToSupervisor(boolean isEscalatedToSupervisor) {
+        this.isEscalatedToSupervisor = isEscalatedToSupervisor;
+    }
 
     public boolean isIsManual() {
         return isManual;

@@ -1,6 +1,8 @@
 
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -10,7 +12,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
-import java.math.BigDecimal;
 
 public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
@@ -24,7 +25,8 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if(!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHasCorrectDiscountForNonDA()){
+        if(!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isHasCorrectDiscountForNonDA()){
 
             if(!claim.getChorganisation().isDelegatedAuthority()){
 

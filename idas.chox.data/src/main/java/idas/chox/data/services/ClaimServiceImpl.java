@@ -19,7 +19,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.*;
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.Notification;
+import idas.chox.core.model.NotificationType;
+import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BreBandOrganisation;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -27,7 +38,6 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
-import idas.chox.data.*;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -135,8 +145,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
                     claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
                     
-                    if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal())
+                    if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal()) {
                         claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
+                    }
                 }
                 if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                     claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
@@ -163,7 +174,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     LOG.debug("Claim status modified date saved.");
                 }
                 result = true;
-                if (ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                if (ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)
+                        && claim.getPreviousStatus().equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
                     result = revertClaim(id);
                 }
             }
@@ -785,35 +797,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             ArrayList<ClaimType> ClaimTypes = new ArrayList<ClaimType>();
             if (searchCriteria.getClaimTypes().contains(ClaimType.GTA)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,ClaimType.GTA_SUPPLEMENTARY_INVOICE));
-//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,
-//                            ClaimType.GTA_SUPPLEMENTARY_INVOICE}));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_UPLOAD)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_UPLOAD));
-//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_UPLOAD}));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_VS_INSURER)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_VS_INSURER,ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE));
-//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.INSURER_VS_INSURER,
-//                            ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-//                            ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE}));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.SUBSCRIBER)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.SUBSCRIBER,ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE));
-//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.SUBSCRIBER,
-//                            ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-//                            ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE}));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.FIXED_FEE)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.FIXED_FEE,ClaimType.FIXED_FEE_ORIGINAL_INVOICE,ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.TPI)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.TPI));
-//                criteria.add(Restrictions.in("claimType", new ClaimType[]{ClaimType.TPI}));
             }
             criteria.add(Restrictions.in("claimType", ClaimTypes.toArray()));
         }
 
         if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
             criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
-//            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         }
 
         if (searchCriteria.getClaimUploadDateFrom() != null) {
@@ -948,12 +952,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
          */
         // First, check if both flags are non-null (NB. must be CHOX Admin and both flags must be equal!
         if (searchCriteria.isFinalReviewCho() != null && searchCriteria.isFinalReviewIns() != null) {
-            if (searchCriteria.isFinalReviewIns()) // Or them
+            if (searchCriteria.isFinalReviewIns()) {
                 criteria.add(Restrictions.disjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
                     .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
-            else // And them
+            }
+            else {
                 criteria.add(Restrictions.conjunction().add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho()))
                     .add(Restrictions.eq("finalReviewIns", searchCriteria.isFinalReviewIns())));
+            }
         } else if (searchCriteria.isFinalReviewCho() != null) {
             criteria.add(Restrictions.eq("finalReviewCho", searchCriteria.isFinalReviewCho().booleanValue()));
         } else if (searchCriteria.isFinalReviewIns() != null) {
@@ -1069,6 +1075,39 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public int getFixedFeeClaimDays(int id) {
+        int claimAge = -1;
+        LOG.debug("Getting days of fixed-fee claim with id={}", id);
+        Claim claim = (Claim) get(Claim.class, id);
+
+        if (claim != null && ClaimType.isFixedFee(claim.getClaimType())) {
+            claimAge = auditTrailService.getFixedFeeClaimDays(id);
+        }
+
+        if (claimAge > 10 || (claimAge == 10 && !DateHelper.isBefore3pm())) {
+            boolean addComment = true;
+            List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
+            for (Comment comment : comments) {
+                if (comment.getComment().endsWith("claim taken down Fixed Fee route.")) {
+                    addComment = false;
+                    LOG.debug("Comment already added - skipping");
+                    break;
+                }
+            }
+            if (addComment) {
+                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 10 day SLA, claim taken down Fixed Fee route.");
+                claim.addComment(comment);
+                save(claim);
+                LOG.debug("Comment added and claim saved.");
+            }
+        }
+
+        LOG.debug("Returning claim age of {}", claimAge);
+        return claimAge;
+    }
+
+    @Override
     public boolean isSubscriberClaimRejectedAndAgreed(int claimId) {
         Claim claim = getClaim(claimId);
 
@@ -1094,6 +1133,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claimAge;
     }
 
+    @Override
+    public int getFixedFeeClaimRejectedDays(int claimId) {
+        int claimAge = -1;
+        LOG.debug("Getting days until fixed fee claim rejected with id={}", claimId);
+        Claim claim = (Claim) get(Claim.class, claimId);
+
+        if (claim != null && ClaimType.isFixedFee(claim.getClaimType())) {
+            claimAge = auditTrailService.getFixedFeeClaimRejectedDays(claimId);
+        }
+
+        LOG.debug("Days until fixed fee claim ({}) rejected: {}", claimId, claimAge);
+
+        return claimAge;
+    }
+
     
     @Override
     public int getSubscriberClaimRejects(int claimId) {
@@ -1103,6 +1157,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Number of times subscriber claim ({}) rejected: {}", claimId, subscriberClaimRejects);
 
         return subscriberClaimRejects;
+    }
+
+    @Override
+    public int getClaimRejects(int claimId) {
+        
+        LOG.debug("Getting number of times claim (with id={}) rejected", claimId);
+        int claimRejects = auditTrailService.getClaimRejectedTimes(claimId);
+        LOG.debug("Number of times claim ({}) rejected: {}", claimId, claimRejects);
+
+        return claimRejects;
     }
 
     
@@ -1211,7 +1275,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         ClaimType claimType = claim.getClaimType();
         if (invoice != null) {
             if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
-                    && liabilityStatus != null
+                    && !ClaimType.isFixedFee(claimType) && liabilityStatus != null
                     && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                             || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
@@ -1219,7 +1283,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + invoice.getTotalToPay());
             } else if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
-                    && liabilityStatus != null
+                    && !ClaimType.isFixedFee(claimType) && liabilityStatus != null
                     && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);
             } else {
@@ -1259,8 +1323,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     
     private boolean isClaimInClosedStatus(Claim claim) {
         for (String status : ClaimStatus.getCompletedStatus(true)) {
-            if (claim.getStatus().equalsIgnoreCase(status))
+            if (claim.getStatus().equalsIgnoreCase(status)) {
                 return true;
+            }
         }
         DetachedCriteria auditTrail = DetachedCriteria.forClass(AuditTrail.class, "aut");
         auditTrail.add(Restrictions.eq("aut.newStatus",ClaimStatus.INVOICE_PAYMENT_LOGGED));
@@ -1269,8 +1334,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         List result = getHibernateTemplate().findByCriteria(auditTrail);
         // in case the claim was in status 'invoice payment logged' we return 0
         // and don't display it in information panel
-        if (result.size() > 0)
+        if (result.size() > 0) {
             return true;
+        }
         return false;
     }
     
@@ -1297,8 +1363,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             criteria.add(Restrictions.ne("choReference", claim.getChoReference()));
             // Ignore blank customer claim numbers (i.e. they should not prevent an overlap match) - bug#1887
-            if (claim.getCustomer().getClaimReference() != null && claim.getCustomer().getClaimReference().length() > 0)
-                criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
+            if (claim.getCustomer().getClaimReference() != null && claim.getCustomer().getClaimReference().length() > 0) {
+                        criteria.add(Restrictions.ne("cust.claimReference", claim.getCustomer().getClaimReference()));
+            }
             criteria.add(Restrictions.eq("insurer.id", claim.getInsurer().getId()));
             criteria.add(Restrictions.eq("vh.vehicleRegistration", claim.getVehicleHire().getVehicleRegistration()));
             criteria.add(Restrictions.disjunction().add(Restrictions.between("vh.rentalStart", claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd()))

@@ -1,6 +1,7 @@
 package idas.chox.service.bre.rules;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.AdminFeeService;
-import java.util.Date;
 
 public class HasCorrectAdminFee implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(HasCorrectAdminFee.class);
@@ -32,7 +32,8 @@ public class HasCorrectAdminFee implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isCorrentAdminFee()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isCorrentAdminFee()) {
           try {
             boolean success = true;
             Date hireStart;
@@ -41,8 +42,9 @@ public class HasCorrectAdminFee implements IBusinessRule {
                 LOG.debug("No hire start available - useing date invoiced.");
                 hireStart = claim.getInvoice().getDateInvoiced();
             }
-            else
-                hireStart = claim.getVehicleHire().getHireStart();
+            else {
+                  hireStart = claim.getVehicleHire().getHireStart();
+              }
             boolean coverNoteRequired = (claim.getInvoice().getCoverNoteRequired() == null ? false : claim.getInvoice().getCoverNoteRequired());
             BigDecimal adminFee = adminFeeService.getAdminFee(hireStart, coverNoteRequired, claim.getManagingRepair());
             

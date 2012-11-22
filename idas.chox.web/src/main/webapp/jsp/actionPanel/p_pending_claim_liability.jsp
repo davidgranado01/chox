@@ -55,9 +55,12 @@ function refreshDesc(id){
                         <s:if test="rejectButtonEnabled">
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                         </s:if>
-                        <s:else>
+                        <s:elseif test="isSubscriberClaim">
                             This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
-                        </s:else>
+                        </s:elseif>
+                        <s:elseif test="isFixedFeeClaim">
+                            This claim cannot be rejected as the Fixed Fee notification 10 day SLA has passed.
+                        </s:elseif>
                     </div>
                     <div class="status-info">
                         This claim has been pending for <s:property value="daysInStatus" /> day(s).

@@ -160,7 +160,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', 'Subscriber' or 'Insurer vs Insurer'.");
+                claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', 'Subscriber', 'Fixed Fee' or 'Insurer vs Insurer'.");
                 claim.setChoReference(choReferenceNumber);
                 claimResult.setClaim(claim);
             } else if (RentalStatus.isOffHiredRentalStatus(rentalStatus)) {
@@ -205,6 +205,20 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                     claimResult.setValid(false);
                     claimResult.getMessage().add("Subscriber claims have not been activated. Please contact CHOX support if you wish to upload subscriber claims.");
+                    claim.setChoReference(choReferenceNumber);
+                    claimResult.setClaim(claim); 
+                }
+            } else if (RentalStatus.isFixedFeeRentalStatus(rentalStatus)) {
+                if (securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
+                    /*
+                     *   Process Subscriber claim
+                     */
+                    LOG.debug("PROCESSING Fixed Fee Claim");
+                    processFixedFeeClaim(claimResult, claim);
+                } else {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
+                    claimResult.setValid(false);
+                    claimResult.getMessage().add("Fixed Fee claims have not been activated. Please contact CHOX support if you wish to upload fixed fee claims.");
                     claim.setChoReference(choReferenceNumber);
                     claimResult.setClaim(claim); 
                 }
@@ -424,7 +438,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         String insurerName = XmlHelper.getNodeValue(elements, "name");
 
         if (!checkSubscriberActivatedForInsurer(insurerName)) {
-            LOG.debug("CHO is attempting to upload a Subscriber claim to an  Insurer");
+            LOG.debug("CHO is attempting to upload a Subscriber claim to an Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.SUBSCRIBER_NOT_ACCEPTED_BY_INSURER);
             claimResult.setValid(false);
             claimResult.getMessage().add("The Insurer '" + insurerName + "' does not accept Subscriber claims. Please contact CHOX support.");
@@ -473,7 +487,70 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    
+
+    private void processFixedFeeClaim(ClaimResult claimResult, Claim claim) {
+        SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauReaderContext().getClaimService();
+        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
+
+        /*
+         * getting Insurer from xml and check Subscriber is Activated
+         */
+        Element rootElements = claimResult.getElement();
+        Element claimElements = XMLUtils.getElement(rootElements, "claim");
+        Element elements = XMLUtils.getElement(claimElements, "third-party");
+        String insurerName = XmlHelper.getNodeValue(elements, "name");
+
+        if (!checkFixedFeeActivatedForInsurer(insurerName)) {
+            LOG.debug("CHO is attempting to upload a Fixed Fee claim to an Insurer");
+            claimResult.setClaimParseStatus(ClaimParseStatus.FIXEDFEE_NOT_ACCEPTED_BY_INSURER);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("The Insurer '" + insurerName + "' does not accept Fixed Fee claims. Please contact CHOX support.");
+            claim.setChoReference(choReferenceNumber);
+        } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            if (claim.getInvoice() != null) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
+                claimResult.setValid(false);
+            } else {
+                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.NEW_INVOICE);
+                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setBreBand(choBand);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
+                } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
+                    // NOT EDITABNLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.CLAIM_NOT_EDITABLE);
+                    claimResult.setValid(false);
+                } else {
+                    // EDITABLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM);
+                }
+            }
+        } else {
+            claimResult.setClaimParseStatus(ClaimParseStatus.NEW_FIXEDFEE_CLAIM);
+            if (managingRepair != null) {
+                claim.setManagingRepair(managingRepair);
+            }
+            claim.setClaimType(ClaimType.FIXED_FEE);
+            claim.setPolicyHolderContactDate(firstContactDate);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claim.setChoReference(choReferenceNumber);
+            claim.setCreditAgreementDate(creditAgreementDate);
+            claim.setGtaNoticeDate(gtaNoticeDate);
+            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+        }
+
+        claimResult.setClaim(claim);
+    }
+
     private void processInsurerChoxClaim(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
@@ -609,6 +686,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             }
                             else if (oldClaim.getClaimType() == ClaimType.SUBSCRIBER) {
                                 oldClaim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
+                            } else if (oldClaim.getClaimType() == ClaimType.FIXED_FEE) {
+                                oldClaim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
                             } else if (!ClaimType.isOriginalSupplementaryInvoice(oldClaim.getClaimType())) { // Not already marked as a supplimentary invoice
                                 LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber): {}", claim.getChoReference(), claim.getClaimType());
                                 claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
@@ -776,5 +855,27 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         return insurer.isAllowSubscriberClaims();
+    }
+
+
+    private boolean checkFixedFeeActivatedForInsurer(String insurerAliasName) {
+        Insurer insurer;
+
+        if (insurerAliasName != null && insurerAliasName.length() > 0) {
+            InsurerAlias alias = getBordereauReaderContext().getInsurerAliasService().getInsurerByAliasName(insurerAliasName);
+            if (alias == null) {
+                LOG.error("No insurer found with alias name '{}'", insurerAliasName);
+                return false;
+            }
+            insurer = alias.getInsurer();
+            if (insurer == null) {
+                return false;
+            }
+        } else {
+            LOG.error("No insurer name provided.");
+            return false;
+        }
+
+        return insurer.isAllowFixedFeeClaims();
     }
 }

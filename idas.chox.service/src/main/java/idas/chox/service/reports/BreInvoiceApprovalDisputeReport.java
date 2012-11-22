@@ -737,8 +737,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             }
             List<BigDecimal> lineData = new ArrayList<BigDecimal>();
             for(BreInvoiceApprovalDisputedData disData : breInvoiceApproval){
-                if(disData.getDisputedApprovalReasonsMap() != null)
+                if(disData.getDisputedApprovalReasonsMap() != null) {
                     lineData.add(disData.getDisputedApprovalReasonsMap().get(ror.getId()));
+                }
             }
             rorData.setLineData(lineData);
             rorData.setName(ror.getRorName());
@@ -766,12 +767,12 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     
     private List<ReasonOfRejection> getReasonsOfRejection(WebUser currentUser, boolean displayInHeader) {
         List<ReasonOfRejection> reportRows = new ArrayList<ReasonOfRejection>();
-        List result = null;
+        List result;
         if(currentUser.getInsurer() != null){
             String query = "select ror.id, ror.name from reason_of_rejection ror join invoice iv on ror.id = iv.reason_of_rejection_id " +
                     "where ror.type='Invoice' " +
                     "and ror.insurer_id = :insurerId group by ror.id " +
-                    "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id = :insurerId order by name asc ";
+                    "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id = :insurerId order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("insurerId", currentUser.getInsurer().getId());
             result = reportDataService.getReportData(query, paramMap);
@@ -780,7 +781,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     "where ror.type='Invoice' " +
                     "and ror.insurer_id in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId)" +
                     " group by ror.id  " +
-                    "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id " +
+                    "union select id, name from reason_of_rejection where (gta_active = true or insurer_vs_insurer_active=true or subscriber_active=true or fixed_fee_active=true or insurer_upload_active = true or tpi_active= true) and type='Invoice' and insurer_id " +
                     "in (select insurer_id from insurer_chorganisation where chorganisation_id = :choId) order by name asc ";
             Map paramMap = new HashMap();
             paramMap.put("choId", currentUser.getChorganisation().getId());

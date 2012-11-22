@@ -60,6 +60,7 @@ public class Chorganisation extends Entity implements Serializable {
     private int minimumPasswordLength;
     private boolean insurerUploadOnly;
     private boolean enableSubscriberClaims;
+    private boolean enableFixedFeeClaims;
     private boolean autoPenaltyChargeEnabled;
     private boolean enableIPWhitelist;
     private int maxLoginAttempts;
@@ -426,6 +427,14 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setEnableSubscriberClaims(boolean enableSubscriberClaims) {
         this.enableSubscriberClaims = enableSubscriberClaims;
+    }
+
+    public boolean isEnableFixedFeeClaims() {
+        return enableFixedFeeClaims;
+    }
+
+    public void setEnableFixedFeeClaims(boolean enableFixedFeeClaims) {
+        this.enableFixedFeeClaims = enableFixedFeeClaims;
     }
 
     public boolean isEnableIPWhitelist() {

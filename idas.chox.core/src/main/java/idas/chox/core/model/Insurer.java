@@ -48,11 +48,13 @@ public class Insurer extends Entity implements Serializable {
     private String tpiRegexExpression;
     private String gtaRegexExpression;
     private String subscriberRegexExpression;
+    private String fixedFeeRegexExpression;
     private String insurerVsInsurerRegexExpression;
     private String insurerManualRegexExpression;
     private boolean tpiAutoRoutingEnable;
     private boolean gtaAutoRoutingEnable;
     private boolean subscriberAutoRoutingEnable;
+    private boolean fixedFeeAutoRoutingEnable;
     private boolean insurerVsInsurerAutoRoutingEnable;
     private boolean insurerManualAutoRoutingEnable;
     private int forcePasswordChange;
@@ -61,6 +63,7 @@ public class Insurer extends Entity implements Serializable {
     private int minimumPasswordLength;
     private boolean uploadEnabled;
     private boolean allowSubscriberClaims;
+    private boolean allowFixedFeeClaims;
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
@@ -494,6 +497,14 @@ public class Insurer extends Entity implements Serializable {
         this.allowSubscriberClaims = allowSubscriberClaims;
     }
 
+    public boolean isAllowFixedFeeClaims() {
+        return allowFixedFeeClaims;
+    }
+
+    public void setAllowFixedFeeClaims(boolean allowFixedFeeClaims) {
+        this.allowFixedFeeClaims = allowFixedFeeClaims;
+    }
+
 	public Integer getTimesInStatusContested() {
 		return timesInStatusContested;
 	}
@@ -599,6 +610,14 @@ public class Insurer extends Entity implements Serializable {
         this.subscriberRegexExpression = subscriberRegexExpression;
     }
 
+    public String getFixedFeeRegexExpression() {
+        return fixedFeeRegexExpression;
+    }
+
+    public void setFixedFeeRegexExpression(String fixedFeeRegexExpression) {
+        this.fixedFeeRegexExpression = fixedFeeRegexExpression;
+    }
+
     public String getInsurerVsInsurerRegexExpression() {
         return insurerVsInsurerRegexExpression;
     }
@@ -638,6 +657,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setSubscriberAutoRoutingEnable(boolean subscriberAutoRoutingEnable) {
         this.subscriberAutoRoutingEnable = subscriberAutoRoutingEnable;
+    }
+
+    public boolean isFixedFeeAutoRoutingEnable() {
+        return fixedFeeAutoRoutingEnable;
+    }
+
+    public void setFixedFeeAutoRoutingEnable(boolean fixedFeeAutoRoutingEnable) {
+        this.fixedFeeAutoRoutingEnable = fixedFeeAutoRoutingEnable;
     }
 
     public boolean isInsurerVsInsurerAutoRoutingEnable() {

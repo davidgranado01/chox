@@ -682,6 +682,12 @@
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
                                     </div>
                                 </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Fixed Fee Claims</label>
+                                        <s:checkbox name="allowFixedFeeClaims" value="allowFixedFeeClaims"/>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                              <div class="chox-form-item" id="tpiIdentifierId">
@@ -746,7 +752,7 @@
                                </tr>
                                <tr>
                                     <td colspan=2>
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
@@ -762,13 +768,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item">
                                             <label class="chox-form-std-label">GTA</label>
                                             <s:checkbox name="gtaAutoRoutingEnable" id="gtaAutoRoutingEnable" value="gtaAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" id="gtaExclusionRegexId">
+                                        <div class="chox-form-item">
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (GTA)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="gtaExclusionId"  name="gtaRegexExpression" value="<s:property value="gtaRegexExpression" />"/>
                                         </div>
@@ -776,13 +782,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label">TPI</label>
                                             <s:checkbox name="tpiAutoRoutingEnable" id="tpiAutoRoutingEnable" value="tpiAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" id="tpiExclusionRegexId">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (TPI)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
                                         </div>
@@ -790,13 +796,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label">Subscriber</label>
                                             <s:checkbox name="subscriberAutoRoutingEnable" id="subscriberAutoRoutingEnable" value="subscriberAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" id="gtaExclusionRegexId">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Subscriber)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
                                         </div>
@@ -804,13 +810,27 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item" >
+                                            <label class="chox-form-std-label">Fixed Fee</label>
+                                            <s:checkbox name="fixedFeeAutoRoutingEnable" id="fixedFeeAutoRoutingEnable" value="fixedFeeAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" >
+                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Fixed Fee)</label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label">Insurer Vs Insurer</label>
                                             <s:checkbox name="insurerVsInsurerAutoRoutingEnable" id="insurerVsInsurerAutoRoutingEnable" value="insurerVsInsurerAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" id="gtaExclusionRegexId">
+                                        <div class="chox-form-item" >
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices <br/> (Ins Vs Ins)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
                                         </div>
@@ -818,7 +838,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
+                                        <div class="chox-form-item">
                                             <label class="chox-form-std-label">Insurer Manual</label>
                                             <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
                                         </div>

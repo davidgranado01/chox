@@ -1,18 +1,21 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.CommentService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
-import java.util.ArrayList;
 import idas.chox.core.util.DateHelper;
-import java.util.List;
-import net.sf.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
@@ -160,5 +163,14 @@ public class CommentAction extends ClaimModelAction<Comment> {
             LOG.debug(" CommentAction validation is not done as claim is null");
         }
     }
+
+    public boolean isInsurerIsDisablePrivateNotes() {
+        return claim.getInsurer().isDisablePrivateNotes();
+    }
+
+    public boolean isChoIsDisablePrivateNotes() {
+        return claim.getChorganisation().isDisablePrivateNotes();
+    }
+
 
 }

@@ -13,15 +13,18 @@ public enum ClaimParseStatus {
     INVALID_HIRE_STATE                          (8, "Incorrect Hire State"),
     TPI_NOT_RECOGNIZED                          (9, "Incorrect Value Provided for Hire State"),
     TPI_INTERVENTION                            (10, "New TPI Claim"),
-    TPI_NOT_ACCEPTED_BY_INSURER                 (11, "Insurer is not accepting TPI invoice"),
-    SUBSCRIBER_NOT_ACCEPTED_BY_INSURER          (12, "Insurer is not accepting Subscriber Claim"),
+    TPI_NOT_ACCEPTED_BY_INSURER                 (11, "Insurer is not accepting TPI invoices"),
+    SUBSCRIBER_NOT_ACCEPTED_BY_INSURER          (12, "Insurer is not accepting Subscriber Claims"),
     HIRE_MONITORING_AND_NEW_INVOICE             (13, "Hire Monitoring and New Invoice"),
     EXISTING_SUPPLEMENTARY_INVOICE              (14, "Supplementary Invoice Already Exists"),
     NEW_SUPPLEMENTARY_INVOICE                   (15, "New Supplementary Invoice"),
     HIRE_MONITORING                             (16, "Hire Monitoring"),
     INVALID_CLAIM_STATUS                        (17, "Invalid Claim Status"),
     INSURER_VS_INSURER_INVOICE                  (18, "New Invoice (Insurer vs Insurer)"),
-    INSURER_UPLOAD                              (19, "New Claim/Invoice (Insurer Upload)");
+    INSURER_UPLOAD                              (19, "New Claim/Invoice (Insurer Upload)"),
+    NEW_FIXEDFEE_CLAIM                          (20, "New Claim (Fixed Fee)"),
+    FIXEDFEE_NOT_ACCEPTED_BY_INSURER            (21, "Insurer is not accepting Fixed Fee Claims"),
+    EXIST_FIXEDFEE_CLAIM                        (22, "Claim Already Exists (Fixed Fee)");
     
     private final String description;
     private final int ClaimParseStatusValue;

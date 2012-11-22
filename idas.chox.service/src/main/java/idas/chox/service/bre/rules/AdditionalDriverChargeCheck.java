@@ -1,12 +1,13 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
 
 /**
  *
@@ -25,7 +26,8 @@ public class AdditionalDriverChargeCheck implements IBusinessRule {
 
         boolean success = true;
 
-        if (claim.getBreBand().isAdditionalDriverChargeCheck()) {
+        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isAdditionalDriverChargeCheck()) {
 
             if (claim.getInvoice().getAdditionalDriverFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;

@@ -1728,8 +1728,16 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+    public boolean getIsFixedFeeOrSubscriberClaim() {
+        return ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType());
+    }
+
     public boolean getIsSubscriberClaim() {
         return ClaimType.isSubscriber(claim.getClaimType());
+    }
+
+    public boolean getIsFixedFeeClaim() {
+        return ClaimType.isFixedFee(claim.getClaimType());
     }
 
     public boolean getCanShowOriginalStartDate() {

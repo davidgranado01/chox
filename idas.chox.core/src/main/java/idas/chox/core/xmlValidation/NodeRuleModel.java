@@ -12,9 +12,11 @@ public class NodeRuleModel {
     private int length;
     private boolean newClaimDataMandatory;
     private boolean newSubscriberClaimDataMandatory;
+    private boolean newFixedFeeClaimDataMandatory;
     private boolean insurerUploadDataMandatory;
     private boolean existingClaimDataMandatory;
     private boolean existingSubscriberClaimDataMandatory;
+    private boolean existingFixedFeeClaimDataMandatory;
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
     private boolean tpiInterventionDataMandatory;
@@ -78,6 +80,17 @@ public class NodeRuleModel {
         }
     }
 
+    public boolean isExistingFixedFeeClaimDataMandatory() {
+        return existingFixedFeeClaimDataMandatory;
+    }
+
+    public void setExistingFixedFeeClaimDataMandatory(String existingFixedFeeClaimDataMandatory) {
+        this.existingFixedFeeClaimDataMandatory = false;
+        if (existingFixedFeeClaimDataMandatory.trim().equalsIgnoreCase("t")) {
+            this.existingFixedFeeClaimDataMandatory = true;
+        }
+    }
+
     public boolean isExistingInvoiceDataMandatory() {
         return existingInvoiceDataMandatory;
     }
@@ -118,6 +131,17 @@ public class NodeRuleModel {
         this.newSubscriberClaimDataMandatory = false;
         if (newSubscriberClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.newSubscriberClaimDataMandatory = true;
+        }
+    }
+
+    public boolean isNewFixedFeeClaimDataMandatory() {
+        return newFixedFeeClaimDataMandatory;
+    }
+
+    public void setNewFixedFeeClaimDataMandatory(String newFixedFeeClaimDataMandatory) {
+        this.newFixedFeeClaimDataMandatory = false;
+        if (newFixedFeeClaimDataMandatory.trim().equalsIgnoreCase("t")) {
+            this.newFixedFeeClaimDataMandatory = true;
         }
     }
 
