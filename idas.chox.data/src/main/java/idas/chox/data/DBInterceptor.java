@@ -303,8 +303,9 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                     }
                 } else if ("clientVatRegistered".equals(propertyNames[i])) {
                     String status = null;
-                    if (state[i] != null)
+                    if (state[i] != null) {
                         status = state[i].toString();
+                    }
                     if (status != null && status.equals("true")) {
                         indexOfClientVatRegistered = i;
                         if (indexOfClientVatRegisteredLastModified != null) {
@@ -397,10 +398,12 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         || (state1[i] == null && state2[i] != null)) {
                         String oldValue = null;
                         String newValue = null;
-                        if (state2[i] != null)
-                            oldValue = state2[i].toString();
-                        if (state1[i] != null)
-                            newValue = state1[i].toString();
+                        if (state2[i] != null) {
+                                oldValue = state2[i].toString();
+                        }
+                        if (state1[i] != null) {
+                                newValue = state1[i].toString();
+                        }
                         fullAuditService.logAuditEntry(entity.getClass().toString(), id,
                                             propertyNames[i], oldValue, newValue,
                                             getSecurityInfoProvider().getCurrentUser());

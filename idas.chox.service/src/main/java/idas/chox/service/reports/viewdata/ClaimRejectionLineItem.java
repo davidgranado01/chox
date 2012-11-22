@@ -1,9 +1,10 @@
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.core.util.MathHelper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import idas.chox.core.util.MathHelper;
 
 public class ClaimRejectionLineItem {
 
