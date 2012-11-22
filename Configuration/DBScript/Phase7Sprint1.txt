@@ -245,7 +245,7 @@ $$ language sql strict immutable;
 
 
 -- Apply Penalty Charge Stored Procedure ---
-
+DROP FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer);
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
@@ -677,6 +677,24 @@ UPDATE reason_of_rejection ror
 	SET fixed_fee_active = subscriber_active;
 
 ALTER TABLE reason_of_rejection_template ADD fixed_fee_active boolean DEFAULT TRUE;
+
+INSERT INTO claim_type VALUES (11, 'Fixed Fee', 'FIXEDFEE');
+INSERT INTO claim_type VALUES (12, 'Fixed Fee (Orig. Invoice)', 'FIXEDFEE');
+INSERT INTO claim_type VALUES (13, 'Fixed Fee (Supp. Invoice)', 'FIXEDFEE');
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'FIXEDFEE', 30, 5, '5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'FIXEDFEE', 60, 10, '10%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'HIRE', 'FIXEDFEE', 90, 15, '15%', '1950-01-01', 3;
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'FIXEDFEE', 30, 5, '5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'FIXEDFEE', 60, 10, '10%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty)
+	SELECT 'REPAIR', 'FIXEDFEE', 90, 15, '15%', '1950-01-01', 3;
 
 ----------------------
 --  End of 7.1.4   --
