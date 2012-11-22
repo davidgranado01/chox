@@ -152,13 +152,13 @@ public class NewInvoice extends BaseActivity {
         if (claim.isManagingRepair() && claim.getBreBand().isAllowManagingRepairAutomatedTasks()
                 && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
-                LOG.info("new task creation failed.");
+                LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");
             }
         }
         else if (!claim.isManagingRepair() && claim.getBreBand().isAllowNotManagingRepairAutomatedTasks()
                 && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
-                LOG.info("new task creation failed.");
+                LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");
             }
         }
 
@@ -249,13 +249,13 @@ public class NewInvoice extends BaseActivity {
             try {
                 vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception ex) {
-                LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                LOG.debug("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
             }
             allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
             BigDecimal dailyHireRateCharged = cCalc.getDailyHireRateCharged();
             LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={} for claim " + claim.getChoReference(), dailyHireRateCharged, allowedDailyRate);
             if (dailyHireRateCharged.compareTo(allowedDailyRate) > 0) {
-                LOG.info("Allowed Daily Rate rule would fail for claim '{}'", claim.getChoReference());
+                LOG.debug("Allowed Daily Rate rule would fail for claim '{}'", claim.getChoReference());
                 LOG.debug("Comparing daily hire rate difference of {} to daily rate charge limit of {}", dailyHireRateCharged.subtract(allowedDailyRate), new BigDecimal(claim.getChorganisation().getDailyRateChargeLimit()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 if (dailyHireRateCharged.subtract(allowedDailyRate).compareTo(new BigDecimal(claim.getChorganisation().getDailyRateChargeLimit()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP)) <= 0) {
                     Invoice invoice = claim.getInvoice();

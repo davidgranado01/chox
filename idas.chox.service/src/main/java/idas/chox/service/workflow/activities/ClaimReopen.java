@@ -1,15 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimReopen extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReopen.class);
@@ -42,8 +44,9 @@ public class ClaimReopen extends BaseActivity {
             // Re-open automatically closed tasks on a re-opened claim
             if (!ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                     && ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
-                    && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus()))
+                    && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
+            }
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
                             claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
@@ -55,11 +58,13 @@ public class ClaimReopen extends BaseActivity {
                 setMessage("Claim has been re-opened and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
                         + " days ago, please confirm the correct penalty charges have been applied to the invoice.");
             }
-            else
+            else {
                 setMessage("Claim successfully re-opened.");
+            }
         }
-        else
+        else {
             LOG.warn("Failed to re-open claim for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+        }
     }
 
     /*

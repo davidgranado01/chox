@@ -43,7 +43,7 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
                 noOfDays = (int) ((repairCommDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
             }
             else {
-                LOG.info("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairCommDate, hireStartDate);
+                LOG.debug("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairCommDate, hireStartDate);
             }
 
             LOG.debug("'HireDaysPriorToDateRepairCommenced'  {}. ", maxDays);

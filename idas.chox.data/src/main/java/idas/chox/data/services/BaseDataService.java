@@ -84,8 +84,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                 throw ex;
+            }
         }
         finally {
             getCurrentSession().flush();
@@ -102,8 +103,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                 throw ex;
+            }
         }
         finally {
             getCurrentSession().flush();
@@ -120,8 +122,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                 throw ex;
+            }
         }
         finally {
             getCurrentSession().flush();
@@ -138,8 +141,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         }
         // The stored procedure produces output that will generate an exception - we'll ignore this, but re-throw any others
         catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                 throw ex;
+            }
         }
         finally {
             getCurrentSession().flush();
@@ -156,8 +160,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
             s.execute("select update_workgroup_service(id) from insurer where status=true");
         }
         catch (SQLException ex) {
-            if (!ex.getMessage().startsWith("A result was returned when none was expected."))
+            if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                 throw ex;
+            }
         }
         finally {
             getCurrentSession().flush();
