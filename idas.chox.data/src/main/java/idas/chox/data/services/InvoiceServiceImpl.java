@@ -14,7 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.core.model.*;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.InsurerDiscount;
+import idas.chox.core.model.InsurerDiscountType;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.InvoiceOriginal;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InvoiceService;
@@ -223,7 +230,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         inv.setHirePenaltyCharge(BigDecimal.ZERO);
         inv.setRepairPenaltyCharge(BigDecimal.ZERO);
         inv.setPenaltyAlertQty(0);
-        inv.setAutoPenaltyAlertQty(0);
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
         if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
@@ -247,100 +253,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         }
 
         return false;
-    }
-    
-    @Override
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart) {
-
-        BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
-//        BigDecimal hireNet = claim.getInvoice().getHireNet();
-        BigDecimal hireGross = inv.getHireGross();
-//        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-
-        for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
-            if (hirePenaltyPercentageValue.getPercentage().equals(hirePercentage)) {
-//                BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
-//                hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
-                hirePenaltyAmout = (hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        LOG.debug("calculated HirePenalty Charge = {}", hirePenaltyAmout);
-        return hirePenaltyAmout;
-    }
-
-    @Override
-    public BigDecimal calculateHirePenaltyCharge(Claim claim) {
-
-        Invoice inv = claim.getInvoice();
-        BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal hireGross = inv.getHireGross();
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-        String calculatedHirePenaltyPercentage = calculatedHirePenaltyPercentage(inv, hireStart);
-        for (PenaltyPercentage hirePenaltyPercentageValue : PenaltyPercentage.getHirePenaltyPercentages(hireStart)) {
-            if (hirePenaltyPercentageValue.getPercentage().equals(calculatedHirePenaltyPercentage)) {
-                hirePenaltyAmout = (hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        return hirePenaltyAmout;
-    }
-
-    
-    
-    @Override
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage) {
-
-        BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
-//        BigDecimal repairNet = claim.getInvoice().getRepairNet();
-        BigDecimal repairGross = inv.getRepairGross();
-
-        for (PenaltyPercentage repairPenaltyPercentage : PenaltyPercentage.getRepairPenaltyPercentages()) {
-            if (repairPenaltyPercentage.getPercentage().equals(repairPercentage)) {
-//                BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentage.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
-//                repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
-                repairPenaltyAmout = (repairPenaltyPercentage.getPercentageValue().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        LOG.debug("calculated RepairPenalty Charge = {}", repairPenaltyAmout);
-        return repairPenaltyAmout;
-    }
-      
-    @Override
-    public BigDecimal calculateRepairPenaltyCharge(Claim claim) {
-
-        Invoice inv = claim.getInvoice();
-        BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal repairGross = inv.getRepairGross();
-        String calculatedRepairPenaltyPercentage = calculatedRepairPenaltyPercentage(inv);
-        for (PenaltyPercentage repairPenaltyPercentage : PenaltyPercentage.getRepairPenaltyPercentages()) {
-            if (repairPenaltyPercentage.getPercentage().equals(calculatedRepairPenaltyPercentage)) {
-                repairPenaltyAmout = (repairPenaltyPercentage.getPercentageValue().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        return repairPenaltyAmout;
-    }
-    
-    @Override
-    public String calculatedHirePenaltyPercentage(Invoice inv, Date hireStart) {
-
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
-            int penaltyAlertQty = calculatePenaltyAlertQty(inv);
-            return PenaltyPercentage.getHirePenaltyPercentage(hireStart, penaltyAlertQty);
-        } else {
-            return PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
-        }
-
-    }
-
-    @Override
-    public String calculatedRepairPenaltyPercentage(Invoice inv) {
-
-        if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
-            int penaltyAlertQty = calculatePenaltyAlertQty(inv);
-            return PenaltyPercentage.getRepairPenaltyPercentage(penaltyAlertQty);
-        } else {
-            return PenaltyPercentage.ZERO_PERCENTAGE.getPercentage();
-        }
-
     }
     
     @Override

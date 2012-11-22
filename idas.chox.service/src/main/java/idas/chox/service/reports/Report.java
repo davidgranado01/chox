@@ -1,10 +1,11 @@
 package idas.chox.service.reports;
 
-import idas.chox.core.services.ReportDataService;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import idas.chox.core.services.PenaltyChargeService;
+import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 
 public interface Report {
@@ -14,7 +15,7 @@ public interface Report {
     void setReportDataService(ReportDataService reportDataService);
     
     void setBaseDataService(BaseDataService baseDataService);
-
+    
     HashMap getReportParameters();
 
     String getReportTemplateFileName();

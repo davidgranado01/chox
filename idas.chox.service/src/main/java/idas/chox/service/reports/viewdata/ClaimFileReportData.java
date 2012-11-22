@@ -20,6 +20,7 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 
 
@@ -607,7 +608,7 @@ public class ClaimFileReportData {
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
-            if (invoice.isAppliedHirePenaltyPercentageDifferent(hireStart) && !currentUser.isCHO()) {
+            if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             }
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
