@@ -28,7 +28,6 @@
                 listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
             });
 
-
             var insurerFilterCombo = new Ext.form.ComboBox({
                 store : insurersStore,
                 //                    renderTo: 'orgFilterDiv',
@@ -106,8 +105,57 @@
                 supplierFilterCombo.render('orgFilterDiv');
                 supplierFilterCombo.setValue(-1);
             }
+            
     </s:elseif>
 
+    if (document.getElementById('queueClaimTypeFilter')) {
+        document.getElementById('queueClaimTypeFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Claim Type Filter : &nbsp;&nbsp;';
+    
+        var claimTypeJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
+        });
+
+        var claimTypes = Ext.util.JSON.decode('<s:property value="claimTypesJsonString" escape="false"/>');
+        var claimTypesStore = new Ext.data.Store({
+            data : claimTypes,
+            reader : claimTypeJsonReader,
+            listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+        });
+
+        var claimTypeFilterCombo = new Ext.form.ComboBox({
+            store : claimTypesStore,
+            id:'filterClaimTypeId',
+            width: 180,
+            listWidth: 180,
+            valueField : 'value',
+            displayField :'text',
+            typeAhead : true,
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            valueNotFoundText : '--- ALL ---',
+            value : -1,
+            selectOnFocus : true,
+            listeners: {
+                select: reloadQueues,
+                blur: function () {
+                    if(this.getRawValue() == "" ) {
+                        this.clearValue();
+                        reloadQueues();
+                    }
+                }
+            }
+        });
+        claimTypeFilterCombo.setValue(-1);
+        claimTypeFilterCombo.render('claimTypeFilterDiv');
+    }
+    
     });
 
     function reloadQueues() {
@@ -119,7 +167,17 @@
 
         if (!selectedOrg)
             selectedOrg = -1;
-        refreshFilterPanelByOrg(filterName, title, selectedOrg);
+        
+        var ctCombo = Ext.ComponentMgr.get('filterClaimTypeId');
+        var selectedClaimType = -1;
+        if (ctCombo) {
+            selectedClaimType = ctCombo.getValue();
+        }
+        
+        if (!selectedClaimType)
+            selectedClaimType = -1;
+        
+        refreshFilterPanelByOrgOrClaimType(filterName, title, selectedOrg, selectedClaimType);
     }
     
     function updateFilter(key, gridTitle) {
@@ -128,20 +186,49 @@
         if (orgCombo) {
             selectedOrg = orgCombo.getValue();
         }
-
-        if (!selectedOrg)
-            selectedOrg = -1;
+        
+        var ctCombo = Ext.ComponentMgr.get('filterClaimTypeId');
+        var selectedClaimType = -1;
+        if (ctCombo) {
+            selectedClaimType = ctCombo.getValue();
+        }
+        
+        if (!selectedClaimType)
+            selectedClaimType = -1;
+        
         filterName = key;
         title = gridTitle;
-        return executeFilterByOrg(key, gridTitle, selectedOrg);
+        return refreshFilterPanelByOrgOrClaimType(key, gridTitle, selectedOrg, selectedClaimType);
     }
     
+    function refreshFilterPanelByOrgOrClaimType(filterName, title, orgId, claimTypeId) {
+        var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
+        var param = {"filterOrgId":orgId, "filterClaimTypeId":claimTypeId};
+        ajax.loadHtml2(url, param, function(data){
+            $("div#filterPanel2").html(data);
+        });
+        if (filterName)
+            executeFilterByOrgAndClaimType(filterName, title, orgId, claimTypeId);
+        currentOrg = orgId;
+        currentClaimType = selectedClaimType;
+    }
     
+    function executeFilterByOrgAndClaimType(filterName,gridTitle, orgId, claimTypeId) {
+        updateManualInvoiceBatchUpdate(filterName);
+        Ext.state.Manager.set("grid_isInboxShowHistory",true);
+        isInboxShowHistory = true;
+        Ext.state.Manager.set("grid_filterName",filterName);
+        Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
+        ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, "filterClaimTypeId":claimTypeId, searchHistory : true};
+        doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
+    }
 
 </script>
 <div id="filterPanel" style="float: left;">
     <label id="queueOrgFilter" style="float: left;"></label>
     <div id="orgFilterDiv"></div>
+    <label id="queueClaimTypeFilter" style="float: left; margin-top:7px;"></label>
+    <div id="claimTypeFilterDiv" style="margin-top:4px;"></div>
     <div id="filterPanel2">
         <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
     </div>

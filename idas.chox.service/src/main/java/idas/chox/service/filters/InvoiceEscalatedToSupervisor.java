@@ -1,51 +1,55 @@
 package idas.chox.service.filters;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.search.ClaimSearchCriteria;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 public class InvoiceEscalatedToSupervisor extends BaseFilter {
 
-	private String name;
-	private String key;
+    private String name;
+    private String key;
 
-	@Override
-	public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
-	    
-		ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
+    @Override
+    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId, int claimTypeId) {
+        ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(true);
-		claimSearchCriteria.setEscalatedToSupervisor(true);
+        claimSearchCriteria.setEscalatedToSupervisor(true);
         claimSearchCriteria.setIsManual(getIsManualFilter());
-		claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
-		claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
-		claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-		if (insurerId > -1) {
+        claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
+        claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        if (insurerId > -1)
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-        }
-		if (choId > -1) {
+        if (choId > -1)
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        if (claimTypeId > -1) {
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.values()[claimTypeId]);
+            claimSearchCriteria.setClaimTypes(claimTypes);
         }
 
-		return claimSearchCriteria;
-	}
+        return claimSearchCriteria;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public String getKey() {
+        return key;
+    }
 
-	@Override
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
 }

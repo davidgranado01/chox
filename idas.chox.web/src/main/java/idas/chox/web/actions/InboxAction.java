@@ -283,6 +283,12 @@ public class InboxAction extends BaseAction {
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
     
+    public String getClaimTypesJsonString() {
+        List<LookupItem> claimTypesList = lookupService.getClaimTypes();
+        String claimTypesJson = JSONArray.fromObject(claimTypesList).toString();
+        return "{totalCount:" + claimTypesList.size() + ", results:" + claimTypesJson + "}";
+    }
+    
     public boolean getEnableManualInvoiceWorkgroups() {
         if(getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().isCHO()){
            return false;
