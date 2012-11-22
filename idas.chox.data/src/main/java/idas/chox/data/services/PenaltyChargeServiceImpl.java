@@ -74,7 +74,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         criteria.add(Restrictions.eq("pc.penaltyType", penaltyType));
         criteria.add(Restrictions.eq("pc.penaltyName", PenaltyName.REPAIR));
         criteria.addOrder(Order.asc("pc.penaltyStartAgeFrom"));
-      
+
         /* Subquery to exclude the old entries 
          *  e.g If two entries present from the query reuslt then 
          *  one entry should be excluded by looking at 'Penalty Start' date.
