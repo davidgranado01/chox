@@ -72,7 +72,7 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         
-        claim.setAutoRoutedClaim(true);
+        claim.setAutoRoutedInvoice(true);
         String claimNumber = claim.getThirdParty().getClaimReference();
         if (claimNumber != null && !claimNumber.equalsIgnoreCase("")) {
             NodeHelper nodeHelper = new NodeHelper();
@@ -83,19 +83,19 @@ public class NewInvoice extends BaseActivity {
                     && !claim.getInsurer().getGtaRegexExpression().equals("") 
                     && !claim.getInsurer().isGtaAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                claim.setAutoRoutedInvoice(false);
             } else if (ClaimType.isSubscriber(claim.getClaimType()) 
                     && claim.getInsurer().getSubscriberRegexExpression() != null 
                     && !claim.getInsurer().getSubscriberRegexExpression().equals("") 
                     && !claim.getInsurer().isSubscriberAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                claim.setAutoRoutedInvoice(false);
             } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
                     &&claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
                     && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
                     && !claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                claim.setAutoRoutedInvoice(false);
             } 
         }
     }
@@ -166,7 +166,7 @@ public class NewInvoice extends BaseActivity {
     }
     
     private Claim routeToAwaitingInvoicePayment(Claim claim) {
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedInvoice()) {
             // re-route claim
             if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                 claim.setWorkgroupOriginal(claim.getWorkgroup());

@@ -29,7 +29,7 @@ public class NewTpiClaim extends BaseActivity {
             
             String claimNumber = claim.getThirdParty().getClaimReference();
 
-            claim.setAutoRoutedClaim(true);
+            claim.setAutoRoutedInvoice(true);
             NodeHelper nodeHelper = new NodeHelper();
             if (ClaimType.isTPI(claim.getClaimType())
                     && claimNumber != null 
@@ -38,7 +38,7 @@ public class NewTpiClaim extends BaseActivity {
                     && !claim.getInsurer().getTpiRegexExpression().equals("")
                     && !claim.getInsurer().isTpiAutoRoutingEnable() 
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                claim.setAutoRoutedInvoice(false);
             }
         }
 
@@ -96,7 +96,7 @@ public class NewTpiClaim extends BaseActivity {
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
             
-            if (!claim.isAutoRoutedClaim()) {
+            if (!claim.isAutoRoutedInvoice()) {
 
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());

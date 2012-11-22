@@ -47,7 +47,7 @@ public class InsurerUpload extends BaseActivity {
         }
         LOG.debug("Insurer Upload activity: finished beforeProcess");
         
-        claim.setAutoRoutedClaim(true);
+        claim.setAutoRoutedInvoice(true);
         
         NodeHelper nodeHelper = new NodeHelper();
         if (ClaimType.isInsurerUpload(claim.getClaimType())
@@ -57,7 +57,7 @@ public class InsurerUpload extends BaseActivity {
                 && !claimNumber.equals("")
                 && !claim.getInsurer().isInsurerManualAutoRoutingEnable()
                 && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
-            claim.setAutoRoutedClaim(false); 
+            claim.setAutoRoutedInvoice(false); 
         }
         
     }
@@ -151,7 +151,7 @@ public class InsurerUpload extends BaseActivity {
     private Claim routeInsurerUploadToAwaitingInvoicePayment(Claim claim) {
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
+        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedInvoice()) {
             //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
             //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
             
