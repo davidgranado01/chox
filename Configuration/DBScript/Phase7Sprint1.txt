@@ -10,7 +10,8 @@ CREATE TABLE penalty_charge
   penalty_start_age_from integer NOT NULL DEFAULT 0,
   penalty_percentage numeric(10,2) NOT NULL DEFAULT 0.00,
   penalty_percentage_dsc varchar(32) NOT NULL,
-  penalty_start_date timestamp without time zone NOT NULL DEFAULT now()
+  penalty_start_date timestamp without time zone NOT NULL DEFAULT now(),
+  penalty_alert_qty integer NOT NULL DEFAULT 0
 )
 WITH (
   OIDS=FALSE
@@ -18,26 +19,463 @@ WITH (
 GRANT SELECT ON TABLE penalty_charge TO chox_user;
 GRANT SELECT ON TABLE penalty_charge TO chox_mi;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 30, 12.5, '12.5%', '2012-06-15'; 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 60, 20, '20%', '2012-06-15';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '2012-06-15';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 30, 12.5, '12.5%', '2012-06-15', 1; 
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 60, 20, '20%', '2012-06-15', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '2012-06-15', 3;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 30, 7.5, '7.5%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 60, 15.00, '15%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '1950-01-01';
-
-
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 30, 4, '4%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 60, 8, '8%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'HIRE', 'SUBSCRIBER', 90, 12, '12%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 30, 7.5, '7.5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 60, 15.00, '15%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'DEFAULT', 90, 0, 'Commercial', '1950-01-01', 3;
 
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'DEFAULT', 30, 2.5, '2.5%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'DEFAULT', 60, 5, '5%', '1950-01-01';
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 30, 4, '4%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 60, 8, '8%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'HIRE', 'SUBSCRIBER', 90, 12, '12%', '1950-01-01', 3;
 
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 30, 0, '0%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 60, 0, '0%', '1950-01-01';
-INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date) SELECT 'REPAIR', 'SUBSCRIBER', 90, 0, '0%', '1950-01-01';
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'DEFAULT', 30, 2.5, '2.5%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'DEFAULT', 60, 5, '5%', '1950-01-01', 2;
+
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 30, 0, '0%', '1950-01-01', 1;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 60, 0, '0%', '1950-01-01', 2;
+INSERT INTO penalty_charge (penalty_name, penalty_type, penalty_start_age_from, penalty_percentage, penalty_percentage_dsc, penalty_start_date, penalty_alert_qty) SELECT 'REPAIR', 'SUBSCRIBER', 90, 0, '0%', '1950-01-01', 3;
+
+
+CREATE TABLE claim_type
+(
+  claim_type integer NOT NULL DEFAULT 0,
+  claim_type_string varchar(64) NOT NULL,
+  penalty_type varchar(16) NOT NULL DEFAULT 'DEFAULT'
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT ON TABLE claim_type TO chox_user;
+GRANT SELECT ON TABLE claim_type TO chox_mi;
+
+
+INSERT INTO claim_type VALUES (0, 'GTA', 'DEFAULT');
+INSERT INTO claim_type VALUES (1, 'GTA (Orig. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (2, 'GTA (Supp. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (3, 'Third Party Intervention (TPI)', 'DEFAULT');
+INSERT INTO claim_type VALUES (4, 'Insurer vs. Insurer', 'DEFAULT');
+INSERT INTO claim_type VALUES (5, 'Insurer vs. Insurer (Orig. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (6, 'Insurer vs. Insurer (Supp. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (7, 'Subscriber', 'SUBSCRIBER');
+INSERT INTO claim_type VALUES (8, 'Subscriber (Orig. Invoice)', 'SUBSCRIBER');
+INSERT INTO claim_type VALUES (9, 'Subscriber (Supp. Invoice)', 'SUBSCRIBER');
+INSERT INTO claim_type VALUES (10, 'Insurer Manual Invoice', 'DEFAULT');
+
+----------------------------------------------
+-- Store Procedure to return Unique Array ---
+----------------------------------------------
+
+create function uniq(anyarray)
+returns anyarray as $$
+     select array(select distinct $1[i] from
+     generate_series(array_lower($1,1), array_upper($1,1)) g(i));
+$$ language sql strict immutable;
+
+
+----------------------------------------------
+-- Apply Penalty Charge Strore Procedure ---
+----------------------------------------------
+
+CREATE OR REPLACE FUNCTION applyautopenaltycharge(useridnumber integer, claimid integer)
+  RETURNS BOOLEAN AS
+$BODY$
+
+DECLARE
+
+    claimRecord RECORD;
+    hireStartDate DATE;
+    hirepenalPer VARCHAR;
+    hirepenalPerVal NUMERIC(8,2);
+    repairStartDate DATE;
+    repairpenalPer VARCHAR;
+    repairpenalPerVal NUMERIC(8,2);
+    updatedClaims VARCHAR[];
+    totalUpdatedClaims INTEGER;
+
+BEGIN
+
+FOR claimRecord IN 
+
+SELECT 
+      * 
+FROM
+     claim c,
+     invoice i, 
+     bre_band bre, 
+     bre_band_organisation breorg, 
+     insurer ins, 
+     chorganisation cho,
+     penalty_charge pc,
+     claim_type ct,
+     vehicle_hire vc
+WHERE 
+     c.invoice_id = i.id 
+     AND (c.id = $2 OR $2 = -1)
+     AND c.claim_type NOT IN (3,4,5,6,10)
+     AND c.insurer_id = ins.id 
+     AND c.chorganisation_id = cho.id
+     AND bre.insurer_id = ins.id
+     AND breorg.chorganisation_id = cho.id
+     AND breorg.band_id = bre.id
+     AND ct.claim_type = c.claim_type
+     AND pc.penalty_type = ct.penalty_type
+     AND pc.penalty_name = 'HIRE'
+     AND vc.id = c.vehicle_hire_id
+     AND (((vc.rental_start IS NULL) AND (pc.penalty_start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (pc.penalty_start_date <= vc.rental_start)))
+     AND bre.allow_penalty_charges = TRUE
+     AND c.auto_penalty_charges = TRUE
+     AND cho.auto_penalty_charges = TRUE
+     AND i.penalty_alert_qty = (pc.penalty_alert_qty - 1)
+     AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
+     AND pc.penalty_start_age_from <= (current_date - i.auto_penalty_start::DATE)
+     AND NOT EXISTS (SELECT 
+                          pc1.id 
+                     FROM 
+                          penalty_charge pc1
+                     WHERE 
+                          pc1.penalty_start_age_from = pc.penalty_start_age_from 
+                          AND (((vc.rental_start IS NULL) AND (pc1.penalty_start_date <= i.date_invoiced)) OR ((vc.rental_start IS NOT NULL) AND (pc1.penalty_start_date <= vc.rental_start)))
+                          AND pc1.penalty_start_date > pc.penalty_start_date)
+     AND NOT EXISTS (SELECT 
+                          pc2.id 
+                     FROM 
+                          penalty_charge pc2 
+                     WHERE 
+                          pc2.penalty_start_age_from > pc.penalty_start_age_from 
+                          AND pc2.penalty_start_age_from <= (current_date - i.auto_penalty_start::DATE))
+     ORDER BY pc.penalty_start_age_from ASC
+
+LOOP
+
+hireStartDate = CASE WHEN claimRecord.rental_start is not null then claimRecord.rental_start else claimRecord.date_invoiced END;
+hirepenalPer = claimRecord.penalty_percentage_dsc;
+hirepenalPerVal = claimRecord.penalty_percentage/100;
+
+IF claimRecord.penalty_start_age_from < 90 THEN
+
+    RAISE NOTICE 'Cho Reference for invoice > % days : % hireStartDate=% hirepenalPer=% hirepenalPerVal=%',claimRecord.penalty_start_age_from, claimRecord.cho_reference, hireStartDate, hirepenalPer, hirepenalPerVal;
+    
+    updatedClaims = (SELECT array_append(updatedClaims, claimRecord.cho_reference));
+
+    UPDATE invoice  
+    SET 
+      hire_penalty_charge_applied_date = (CASE WHEN(hire_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge) + (hire_gross * hirepenalPerVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) 
+                           THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - (hire_penalty_charge) + (hire_gross * hirepenalPerVal)))::NUMERIC(8,2)
+                      WHEN (claimRecord.liability_status = 4) 
+                           THEN (0.00)
+                      ELSE (full_total_to_pay - (hire_penalty_charge) + (hire_gross * hirepenalPerVal))::NUMERIC(8,2) 
+                           END ),
+      hire_penalty_charge = (hire_gross * hirepenalPerVal)::NUMERIC(8,2),
+      hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN hirepenalPer ELSE null END),
+      total_penalty_charge =  ((hire_gross * hirepenalPerVal) + (repair_penalty_charge))::NUMERIC(8,2),
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = version + 1
+   WHERE
+      claimRecord.invoice_id = invoice.id;
+    
+    
+ELSE
+
+   RAISE NOTICE 'Cho Reference for invoice > % days : % hireStartDate=% hirepenalPer=% hirepenalPerVal=%',claimRecord.penalty_start_age_from, claimRecord.cho_reference, hireStartDate, hirepenalPer, hirepenalPerVal;
+   
+   UPDATE invoice  
+    SET 
+      penalty_alert_qty = claimRecord.penalty_alert_qty,
+      version = version + 1
+    WHERE
+      claimRecord.invoice_id = invoice.id;
+
+RAISE NOTICE 'Invoice > 90 days updated ';
+
+    UPDATE claim  
+    SET 
+      auto_penalty_charges = false,
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = version + 1
+    WHERE
+      claimRecord.id = claim.id; 
+
+RAISE NOTICE 'claim > 90 days updated ';
+
+END IF;
+
+END LOOP;
+
+FOR claimRecord IN 
+
+SELECT 
+      * 
+FROM
+     claim c,
+     invoice i, 
+     bre_band bre, 
+     bre_band_organisation breorg, 
+     insurer ins, 
+     chorganisation cho,
+     penalty_charge pc,
+     claim_type ct,
+     vehicle_hire vc
+WHERE 
+     c.invoice_id = i.id 
+     AND (c.id = $2 OR $2 = -1)
+     AND c.claim_type NOT IN (3,4,5,6,10)
+     AND c.insurer_id = ins.id 
+     AND c.chorganisation_id = cho.id
+     AND bre.insurer_id = ins.id
+     AND breorg.chorganisation_id = cho.id
+     AND breorg.band_id = bre.id
+     AND ct.claim_type = c.claim_type
+     AND pc.penalty_type = ct.penalty_type
+     AND pc.penalty_name = 'REPAIR'
+     AND vc.id = c.vehicle_hire_id
+     AND bre.allow_penalty_charges = TRUE
+     AND c.auto_penalty_charges = TRUE
+     AND cho.auto_penalty_charges = TRUE
+     AND i.penalty_alert_qty = (pc.penalty_alert_qty - 1)
+     AND c.status NOT IN ( 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
+     AND pc.penalty_start_age_from <= (current_date - i.auto_penalty_start::DATE)
+     AND NOT EXISTS (SELECT 
+                          pc2.id 
+                     FROM 
+                          penalty_charge pc2 
+                     WHERE 
+                          pc2.penalty_start_age_from > pc.penalty_start_age_from 
+                          AND pc2.penalty_start_age_from <= (current_date - i.auto_penalty_start::DATE))
+     ORDER BY pc.penalty_start_age_from ASC
+
+LOOP
+
+repairStartDate = CASE WHEN claimRecord.rental_start is not null then claimRecord.rental_start else claimRecord.date_invoiced END;
+repairpenalPer = claimRecord.penalty_percentage_dsc;
+repairpenalPerVal = claimRecord.penalty_percentage/100;
+
+IF ((claimRecord.penalty_start_age_from < 90) OR (claimRecord.penalty_type = 'SUBSCRIBER')) THEN
+
+    RAISE NOTICE 'Cho Reference for invoice > % days : % repairStartDate=% repairpenalPer=% repairpenalPerVal=%',claimRecord.penalty_start_age_from, claimRecord.cho_reference, repairStartDate, repairpenalPer, repairpenalPerVal;
+    
+    updatedClaims = (SELECT array_append(updatedClaims, claimRecord.cho_reference));
+
+    UPDATE 
+      invoice  
+    SET 
+      repair_penalty_charge_applied_date = (CASE WHEN(repair_net > 0) THEN now() ELSE null END),
+      full_total_to_pay = (full_total_to_pay - (repair_penalty_charge) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) 
+                           THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - (repair_penalty_charge) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
+                      WHEN (claimRecord.liability_status = 4) 
+                           THEN (0.00)
+                      ELSE (full_total_to_pay - (repair_penalty_charge) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2) 
+                           END ),
+      repair_penalty_charge = (repair_gross * repairpenalPerVal)::NUMERIC(8,2),
+      repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN repairpenalPer ELSE null END),
+      total_penalty_charge =  ((hire_penalty_charge) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = version + 1
+   WHERE
+      claimRecord.invoice_id = invoice.id;
+    
+--    totalUpdatedClaims = (SELECT array_length(updatedClaims, 1));
+--     updatedClaims = (select uniq(updatedClaims));
+--    RAISE NOTICE 'More than 90 days %', (select * from claim where cho_reference = ANY(updatedClaims));
+
+END IF;
+
+END LOOP;
+
+updatedClaims = (select uniq(updatedClaims));
+totalUpdatedClaims = (SELECT array_length(updatedClaims, 1));
+
+FOR claimRecord IN select * from claim where cho_reference = ANY(updatedClaims)
+
+LOOP
+
+--   UPDATE PENALTY ALERT QUANTIRY
+
+   UPDATE 
+      invoice
+   SET
+      penalty_alert_qty = penalty_alert_qty + 1,
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = version + 1
+   WHERE
+      claimRecord.invoice_id = invoice.id;
+
+-- Insurer Discount will be applied to the claim
+
+   UPDATE 
+      invoice  
+   SET 
+      hire_gross_insurer_discount = (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
+      repair_gross_insurer_discount = (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
+      total_gross_insurer_discount = (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ),
+      insurer_discount = ((CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                           (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) +
+                           (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )),
+      full_total_to_pay = ((invoice.full_total_to_pay - invoice.insurer_discount) + (
+                    (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                    (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                    (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
+                    ))::NUMERIC(8,2),
+      total_to_pay = (CASE WHEN (c.liability_status = 5 OR c.liability_status = 6) 
+                           THEN ((c.percentage_liability_accepted/100) * ((invoice.full_total_to_pay - invoice.insurer_discount + (
+                                (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                                (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                                (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
+                                 ))))::NUMERIC(8,2)
+                           WHEN (c.liability_status = 4) 
+                           THEN (0.00)
+                           ELSE (((invoice.full_total_to_pay - invoice.insurer_discount) + (
+                               (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                               (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
+                               (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
+                    )))::NUMERIC(8,2) 
+                    END ),
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = invoice.version + 1
+   FROM
+      claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
+         inner join chorganisation cho on cho.id = c.chorganisation_id
+         inner join invoice i on i.id = c.invoice_id
+         left outer join insurer_discount hireInsDis on (hireInsDis.insurer_id = ins.id AND hireInsDis.chorganisation_id = cho.id 
+              AND hireInsDis.discount_type = 0 AND hireInsDis.date_from <= i.created_date 
+              AND hireInsDis.date_to >= i.created_date)
+         left outer join insurer_discount repairInsDis on (repairInsDis.insurer_id = ins.id AND repairInsDis.chorganisation_id = cho.id 
+              AND repairInsDis.discount_type = 1 AND repairInsDis.date_from <= i.created_date 
+              AND repairInsDis.date_to >= i.created_date)
+         left outer join insurer_discount totalInsDis on (totalInsDis.insurer_id = ins.id AND totalInsDis.chorganisation_id = cho.id 
+              AND totalInsDis.discount_type = 2 AND totalInsDis.date_from <= i.created_date 
+              AND totalInsDis.date_to >= i.created_date)
+   WHERE
+      claimRecord.id = c.id
+      AND invoice.id = c.invoice_id
+      AND (hireInsDis IS NOT NULL OR repairInsDis IS NOT NULL OR totalInsDis IS NOT NULL);
+
+
+-- Apply Penalty Comment
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,comment,version)  
+   SELECT 
+      claimRecord.id,
+      $1,
+      now() + interval '0.1 sec',
+      $1,
+      now() + interval '0.1 sec',
+      0,
+      CASE WHEN i.penalty_alert_qty = 1 THEN 'Automatic penalty charges of £' ||  ((i.hire_penalty_charge) + (i.repair_penalty_charge))::NUMERIC(10,2) 
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 30 days.' ELSE
+                'Automatic penalty charges of £' ||  ((i.hire_penalty_charge) + (i.repair_penalty_charge))::NUMERIC(10,2) 
+                                      || ' have been applied to the invoice as the age of the invoice has exceeded 60 days.' END,
+     0
+   FROM 
+     invoice i
+   WHERE
+     i.id = claimRecord.invoice_id;
+
+-- Apply Hire Gross Insurer Discount Comment
+
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
+   SELECT 
+      c.id,
+      $1,
+      now() + interval '0.1 sec',
+      $1,
+      now() + interval '0.1 sec',
+      0,0,
+      'A discount of £' ||  (i.hire_gross_insurer_discount*-1)::NUMERIC(10,2) 
+                                      || ' (' 
+                                      || hireInsDis.discount_percentage
+                                      || '%) has been applied to the Hire on this invoice based on the discount contract in place.' 
+                                      
+   FROM 
+     claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
+             inner join chorganisation cho on cho.id = c.chorganisation_id
+             inner join invoice i on (i.id = c.invoice_id AND i.hire_gross > 0)
+             inner join insurer_discount hireInsDis on (hireInsDis.insurer_id = ins.id AND hireInsDis.chorganisation_id = cho.id 
+                            AND hireInsDis.discount_type = 0 AND hireInsDis.date_from <= i.created_date 
+                            AND hireInsDis.date_to >= i.created_date)
+   WHERE
+      claimRecord.id = c.id;
+      
+
+-- Apply Repair Gross Insurer Discount Comment
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
+   SELECT 
+      c.id,
+      $1,
+      now() + interval '0.1 sec',
+      $1,
+      now() + interval '0.1 sec',
+      0,0,
+      'A discount of £' ||  (i.repair_gross_insurer_discount*-1)::NUMERIC(10,2) 
+                                      || ' (' 
+                                      || repairInsDis.discount_percentage
+                                      || '%) has been applied to the Repair on this invoice based on the discount contract in place.' 
+                                      
+   FROM 
+     claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
+             inner join chorganisation cho on cho.id = c.chorganisation_id
+             inner join invoice i on (i.id = c.invoice_id AND i.repair_gross > 0)
+             inner join insurer_discount repairInsDis on (repairInsDis.insurer_id = ins.id AND repairInsDis.chorganisation_id = cho.id 
+                            AND repairInsDis.discount_type = 1 AND repairInsDis.date_from <= i.created_date 
+                            AND repairInsDis.date_to >= i.created_date)
+   WHERE
+      claimRecord.id = c.id;
+
+
+
+-- Apply Total Gross Insurer Discount Comment
+
+
+
+   INSERT INTO comment
+      (claim_id,created_by,created_date,last_modified_by,last_modified_date,visibility_type,version,comment)  
+   SELECT 
+      c.id,
+      $1,
+      now() + interval '0.1 sec',
+      $1,
+      now() + interval '0.1 sec',
+      0,0,
+      'A discount of £' ||  (i.total_gross_insurer_discount*-1)::NUMERIC(10,2) 
+                                      || ' (' 
+                                      || totalInsDis.discount_percentage
+                                      || '%) has been applied to the Total on this invoice based on the discount contract in place.' 
+                                      
+   FROM 
+     claim c inner join insurer ins on (ins.id = c.insurer_id AND ins.is_insurer_discount_enable = true) 
+             inner join chorganisation cho on cho.id = c.chorganisation_id
+             inner join invoice i on (i.id = c.invoice_id AND i.total_gross > 0)
+             inner join insurer_discount totalInsDis on (totalInsDis.insurer_id = ins.id AND totalInsDis.chorganisation_id = cho.id 
+                            AND totalInsDis.discount_type = 2 AND totalInsDis.date_from <= i.created_date 
+                            AND totalInsDis.date_to >= i.created_date)
+   WHERE
+      claimRecord.id = c.id;
+
+END LOOP;
+
+RETURN TRUE;
+
+END;
+$BODY$
+  LANGUAGE plpgsql;
+  GRANT EXECUTE ON FUNCTION applyautopenaltycharge(integer, integer) TO chox_user;
 
 
 
