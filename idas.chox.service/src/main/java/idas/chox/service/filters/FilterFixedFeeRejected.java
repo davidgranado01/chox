@@ -2,6 +2,7 @@ package idas.chox.service.filters;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.model.ClaimType;
@@ -13,7 +14,7 @@ public class FilterFixedFeeRejected extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId) {
+    public ClaimSearchCriteria getClaimSearchCriteria(Boolean isCHO, int insurerId, int choId, int claimTypeId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setShowOpenClaimsOnly(false);
         claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList(getStatus())));
@@ -27,6 +28,11 @@ public class FilterFixedFeeRejected extends BaseFilter {
         }
         if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
+        if (claimTypeId > -1) {
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.values()[claimTypeId]);
+            claimSearchCriteria.setClaimTypes(claimTypes);
         }
 
         return claimSearchCriteria;
