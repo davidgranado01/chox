@@ -46,12 +46,12 @@
     <property column="fixed_fee_regex_expression" name="fixedFeeRegexExpression"/>
     <property column="insurer_vs_insurer_regex_expression" name="insurerVsInsurerRegexExpression"/>
     <property column="insurer_manual_regex_expression" name="insurerManualRegexExpression"/>
-    <property column="is_tpi_auto_routing_enable" name="tpiAutoRoutingEnable"/>
-    <property column="is_gta_auto_routing_enable" name="gtaAutoRoutingEnable"/>
-    <property column="is_subscriber_auto_routing_enable" name="subscriberAutoRoutingEnable"/>
-    <property column="is_fixed_fee_auto_routing_enable" name="fixedFeeAutoRoutingEnable"/>
-    <property column="is_insurer_vs_isnurer_auto_routing_enable" name="insurerVsInsurerAutoRoutingEnable"/>
-    <property column="is_insurer_manual_auto_routing_enable" name="insurerManualAutoRoutingEnable"/>
+    <property column="is_tpi_auto_routing_enable" name="tpiAutoRoutingEnable" not-null="true"/>
+    <property column="is_gta_auto_routing_enable" name="gtaAutoRoutingEnable" not-null="true"/>
+    <property column="is_subscriber_auto_routing_enable" name="subscriberAutoRoutingEnable" not-null="true"/>
+    <property column="is_fixed_fee_auto_routing_enable" name="fixedFeeAutoRoutingEnable" not-null="true"/>
+    <property column="is_insurer_vs_isnurer_auto_routing_enable" name="insurerVsInsurerAutoRoutingEnable" not-null="true"/>
+    <property column="is_insurer_manual_auto_routing_enable" name="insurerManualAutoRoutingEnable" not-null="true"/>
     <property column="force_password_change" name="forcePasswordChange" not-null="true"/>
     <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
     <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
