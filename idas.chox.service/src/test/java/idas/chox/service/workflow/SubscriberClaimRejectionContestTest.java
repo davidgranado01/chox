@@ -38,6 +38,7 @@ public class SubscriberClaimRejectionContestTest extends BaseTest {
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        claim.setPreviousStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         Activity activity = activityFactory.getActivity("contestRejectedClaim");
 
