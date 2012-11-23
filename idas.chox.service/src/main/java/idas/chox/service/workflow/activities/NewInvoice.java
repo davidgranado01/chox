@@ -25,6 +25,7 @@ public class NewInvoice extends BaseActivity {
     private TaskService taskService;
     private UserService userService;
     private InvoiceService invoiceService;
+    private boolean autoRoutedInvoice = true;
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -72,7 +73,6 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         
-        claim.setAutoRoutedClaim(true);
         String claimNumber = claim.getThirdParty().getClaimReference();
         if (claimNumber != null && !claimNumber.equalsIgnoreCase("")) {
             NodeHelper nodeHelper = new NodeHelper();
@@ -81,27 +81,27 @@ public class NewInvoice extends BaseActivity {
             if (ClaimType.isGTA(claim.getClaimType()) 
                     && claim.getInsurer().getGtaRegexExpression() != null
                     && !claim.getInsurer().getGtaRegexExpression().equals("") 
-                    && !claim.getInsurer().isGtaAutoRoutingEnable()
+                    && claim.getInsurer().isGtaAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                autoRoutedInvoice = false;
             } else if (ClaimType.isSubscriber(claim.getClaimType()) 
                     && claim.getInsurer().getSubscriberRegexExpression() != null 
                     && !claim.getInsurer().getSubscriberRegexExpression().equals("") 
-                    && !claim.getInsurer().isSubscriberAutoRoutingEnable()
+                    && claim.getInsurer().isSubscriberAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                autoRoutedInvoice = false;
             } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
                     && claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
                     && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
-                    && !claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
+                    && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                autoRoutedInvoice = false;
             } else if (ClaimType.isFixedFee(claim.getClaimType()) 
                     && claim.getInsurer().getFixedFeeRegexExpression() != null 
                     && !claim.getInsurer().getFixedFeeRegexExpression().equals("") 
-                    && !claim.getInsurer().isFixedFeeAutoRoutingEnable()
+                    && claim.getInsurer().isFixedFeeAutoRoutingEnable()
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                autoRoutedInvoice = false;
             }
         }
     }
@@ -162,36 +162,31 @@ public class NewInvoice extends BaseActivity {
             }
         }
 
-        if (ClaimType.isGTA(claim.getClaimType())) {
-            routeToAwaitingInvoicePayment(claim);
-        } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
-            routeToAwaitingInvoicePayment(claim);
-        } else if (ClaimType.isSubscriber(claim.getClaimType())){
-            routeToAwaitingInvoicePayment(claim);
-        } else if (ClaimType.isFixedFee(claim.getClaimType())){
-            routeToAwaitingInvoicePayment(claim);
-        }
-    }
-    
-    private void routeToAwaitingInvoicePayment(Claim claim) {
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
-            // re-route claim
-            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
-                claim.setWorkgroupOriginal(claim.getWorkgroup());
-                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
-            }
+        if (ClaimType.isGTA(claim.getClaimType()) 
+                || ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                || ClaimType.isSubscriber(claim.getClaimType())
+                || ClaimType.isFixedFee(claim.getClaimType())) {
+            
+            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                // re-route claim
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null && autoRoutedInvoice) {
+                    claim.setWorkgroupOriginal(claim.getWorkgroup());
+                    claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                }
 
-            //re-assign claim
-            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
-                claim.setClaimOwnerOriginal(claim.getClaimOwner());
-                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                //re-assign claim
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null && autoRoutedInvoice) {
+                    claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                }
+                getDataService().save(claim);
+                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+                // move claim to next status
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
-            getDataService().save(claim);
-            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-            // move claim to next status
-            setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(getCurrentStatus());
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            
         }
     }
     

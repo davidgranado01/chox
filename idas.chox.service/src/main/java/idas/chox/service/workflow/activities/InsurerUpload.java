@@ -25,6 +25,7 @@ public class InsurerUpload extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerUpload.class);
     private BreBandService breBandService;
     private VehicleClassPriceService vehicleClassPriceService;
+    private boolean autoRoutedInvoice = true;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
@@ -40,14 +41,12 @@ public class InsurerUpload extends BaseActivity {
         if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
             claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
         }
-        //Normalize caim number
+        //Normalize claim number
         String claimNumber = claim.getClaimNumber();
         if (claimNumber != null && !claimNumber.isEmpty()) {
             claim.setClaimNumber(claimNumber.trim());
         }
         LOG.debug("Insurer Upload activity: finished beforeProcess");
-        
-        claim.setAutoRoutedClaim(true);
         
         NodeHelper nodeHelper = new NodeHelper();
         if (ClaimType.isInsurerUpload(claim.getClaimType())
@@ -55,9 +54,9 @@ public class InsurerUpload extends BaseActivity {
                 && !claim.getInsurer().getInsurerManualRegexExpression().equals("")
                 && claimNumber != null 
                 && !claimNumber.equals("")
-                && !claim.getInsurer().isInsurerManualAutoRoutingEnable()
+                && claim.getInsurer().isInsurerManualAutoRoutingEnable()
                 && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
-            claim.setAutoRoutedClaim(false); 
+            autoRoutedInvoice = false; 
         }
         
     }
@@ -142,52 +141,47 @@ public class InsurerUpload extends BaseActivity {
 
         claim.setStatusModifiedDate(new Date());
         
-        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
-            claim = routeInsurerUploadToAwaitingInvoicePayment(claim);
-        }
-        
-    }
-
-    private Claim routeInsurerUploadToAwaitingInvoicePayment(Claim claim) {
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isAutoRoutedClaim()) {
-            //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
-            //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
-            
-            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
-                claim.setWorkgroupOriginal(claim.getWorkgroup());
-                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
-            }
+        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
+                //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
+                
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null && autoRoutedInvoice) {
+                    claim.setWorkgroupOriginal(claim.getWorkgroup());
+                    claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+                }
 
-            //re-assign claim
-            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
-                claim.setClaimOwnerOriginal(claim.getClaimOwner());
-                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
-            }
-            
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
-            claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-            getDataService().save(claim);
-            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
-            // move claim to next status
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
-            claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-            
-            if(isEnableManualInvoiceWorkgroupOwnership)
-                claim.setManualInvoiceApproved(true);
-            
-        } else {
-            if(isEnableManualInvoiceWorkgroupOwnership){
+                //re-assign claim
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null && autoRoutedInvoice) {
+                    claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+                }
+                
+                super.setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-                claim.setManualInvoiceApproved(false);
+                getDataService().save(claim);
+                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+                // move claim to next status
+                super.setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(super.getCurrentStatus());
+                claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+                
+                if(isEnableManualInvoiceWorkgroupOwnership)
+                    claim.setManualInvoiceApproved(true);
+                
             } else {
-                claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+                if(isEnableManualInvoiceWorkgroupOwnership){
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+                    claim.setManualInvoiceApproved(false);
+                } else {
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+                }
             }
         }
-        return claim;
+        
     }
     
     @Override

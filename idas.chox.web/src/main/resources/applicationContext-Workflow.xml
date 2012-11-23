@@ -53,7 +53,7 @@
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
     <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit" scope="prototype">
-        <property name="chainActivity" ref="newTpiClaim" />
+        <property name="chainActivity" ref="newInvoice" />
     </bean>
     <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice" scope="prototype">
         <property name="chainActivity" ref="newTpiClaim" />

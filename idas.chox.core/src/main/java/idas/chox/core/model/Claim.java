@@ -38,7 +38,6 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ClaimType claimType;
-    private boolean autoRoutedClaim;
     private String tpiClaimStatus;
     private boolean autoPenaltyChargeEnabled;
     private Insurer insurer;
@@ -77,14 +76,6 @@ public class Claim extends Entity implements Serializable {
 
     public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
         this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
-    }
-
-    public boolean isAutoRoutedClaim() {
-        return autoRoutedClaim;
-    }
-
-    public void setAutoRoutedClaim(boolean autoRoutedClaim) {
-        this.autoRoutedClaim = autoRoutedClaim;
     }
 
     @Deprecated

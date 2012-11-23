@@ -206,7 +206,13 @@
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
                 maxLoginAttempts:{ required:true, number:true, min:0 },
                 blockTime:{ required:true, number:true, min:0 },
-                blockedMessage:{ required:true}
+                blockedMessage:{ required:true},
+                tpiRegexExpression: {checkTpiRegexField: true},
+                gtaRegexExpression: {checkGtaRegexField: true},
+                subscriberRegexExpression: {checkSubscriberRegexField: true},
+                insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: true},
+                insurerManualRegexExpression: {checkInsurerManualRegexField: true},
+                fixedFeeRegexExpression: {checkFixedFeeRegexField: true}
             },
             messages:
                 {
@@ -228,7 +234,13 @@
                 minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
                 maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
                 blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"},
-                blockedMessage:{ required: "You must supply an 'Account blocked message'"}
+                blockedMessage:{ required: "You must supply an 'Account blocked message'"},
+                tpiRegexExpression: {checkTpiRegexField: "You must supply a value for 'TPI Auto-routing Regex Expression'"},
+                gtaRegexExpression: {checkGtaRegexField: "You must supply a value for 'GTA Auto-routing Regex Expression'"},
+                subscriberRegexExpression: {checkSubscriberRegexField: "You must supply a value for 'Subscriber Auto-routing Regex Expression'"},
+                insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: "You must supply a value for 'Insurer Vs Insurer Auto-routing Regex Expression'"},
+                insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Manual Auto-routing Regex Expression'"},
+                fixedFeeRegexExpression: {checkFixedFeeRegexField: "You must supply a value for 'Fixed Fee Auto-routing Regex Expression'"}
             }
         });
         
@@ -324,9 +336,89 @@
         }else{
             $("select#autoRoutingEnableDropDownId").val("");
         }
-
+        
+        displayAutoRoutingTpiAndSusbscriberFields();
+        
+        $.validator.addMethod(
+            "checkGtaRegexField",
+            function(value, element) {
+                    if ($('form#formUpdateInsurerDetail input[id="gtaAutoRoutingEnable"]:checked').val()
+                            && $('#gtaExclusionId').val() == ""){
+                        return false;
+                    }
+                return true;
+            }
+        );
+        
+        $.validator.addMethod(
+                "checkTpiRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="tpiAutoRoutingEnable"]:checked').val()
+                                && $('#tpiExclusionId').val() == ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+        
+        $.validator.addMethod(
+                "checkInsurerManualRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="insurerManualAutoRoutingEnable"]:checked').val()
+                                && $('#insurerManualExclusionId').val() == ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+        
+        $.validator.addMethod(
+                "checkInsurerVsInsurerRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="insurerVsInsurerAutoRoutingEnable"]:checked').val()
+                                && $('#insurerVsInsurerExclusionId').val() == ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+        
+        $.validator.addMethod(
+                "checkSubscriberRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="subscriberAutoRoutingEnable"]:checked').val()
+                                && $('#subscriberExclusionId').val() == ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+        
+        $.validator.addMethod(
+                "checkFixedFeeRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="fixedFeeAutoRoutingEnable"]:checked').val()
+                                && $('#fixedFeeExclusionId').val() == ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+        
     });
-
+    
+    function displayAutoRoutingTpiAndSusbscriberFields() {
+        if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val())
+            $("#tpiTr").show();
+        else
+            $("#tpiTr").hide();
+        
+        if($('form#formUpdateInsurerDetail input[name="allowSubscriberClaims"]:checked').val())
+            $("#subscriberTr").show();
+        else
+            $("#subscriberTr").hide();
+    }
+    
     function getInsurerAdminTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
             insDetailAdminTabIndex = $("#tabIndex").val();
@@ -423,6 +515,7 @@
     }
     
     function doTpiEnableCheck(){
+        displayAutoRoutingTpiAndSusbscriberFields();
         var tpiEnableEnable = false;
         if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
             tpiEnableEnable = true;
@@ -656,7 +749,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Allow Subscriber Claims</label>
-                                        <s:checkbox name="allowSubscriberClaims" value="allowSubscriberClaims"/>
+                                        <s:checkbox name="allowSubscriberClaims" value="allowSubscriberClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
                                     </div>
                                 </td>
                             </tr>
@@ -780,7 +873,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="tpiTr">
                                     <td width="40%">
                                         <div class="chox-form-item" >
                                             <label class="chox-form-std-label">TPI</label>
@@ -794,15 +887,15 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="subscriberTr">
                                     <td width="40%">
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="tpiOwnershipHolder">
                                             <label class="chox-form-std-label">Subscriber</label>
                                             <s:checkbox name="subscriberAutoRoutingEnable" id="subscriberAutoRoutingEnable" value="subscriberAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="subscriberExclusionRegexId">
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Subscriber)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
                                         </div>
@@ -810,7 +903,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="fixedFeeHolder">
                                             <label class="chox-form-std-label">Fixed Fee</label>
                                             <s:checkbox name="fixedFeeAutoRoutingEnable" id="fixedFeeAutoRoutingEnable" value="fixedFeeAutoRoutingEnable" />
                                         </div>
@@ -824,13 +917,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="insurerVsInsurerHolder">
                                             <label class="chox-form-std-label">Insurer Vs Insurer</label>
                                             <s:checkbox name="insurerVsInsurerAutoRoutingEnable" id="insurerVsInsurerAutoRoutingEnable" value="insurerVsInsurerAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="insurerVsInsurerExclusionRegexId">
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices <br/> (Ins Vs Ins)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
                                         </div>
@@ -838,13 +931,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">
-                                        <div class="chox-form-item">
+                                        <div class="chox-form-item" id="insurerManualOwnershipHolder">
                                             <label class="chox-form-std-label">Insurer Manual</label>
                                             <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
                                         </div>
                                     </td>
                                     <td width="70%">
-                                        <div class="chox-form-item" id="gtaExclusionRegexId">
+                                        <div class="chox-form-item" id="insurerManualExclusionRegexId">
                                             <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Insurer Manual)</label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="insurerManualExclusionId"  name="insurerManualRegexExpression" value="<s:property value="insurerManualRegexExpression" />"/>
                                         </div>
@@ -855,7 +948,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="chox-form-item" id="invoiceWorkgroupId">
-                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices (TPI & Insurer vs. Insurer)</label>
+                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
                                             <div id="workgroupComboDiv1"></div>
                                         </div>
                                     </td>

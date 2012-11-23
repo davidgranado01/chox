@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public class NewTpiClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
+    private boolean autoRoutedInvoice = true;
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -29,20 +30,17 @@ public class NewTpiClaim extends BaseActivity {
             
             String claimNumber = claim.getThirdParty().getClaimReference();
 
-            claim.setAutoRoutedClaim(true);
             NodeHelper nodeHelper = new NodeHelper();
             if (ClaimType.isTPI(claim.getClaimType())
                     && claimNumber != null 
                     && !claimNumber.equalsIgnoreCase("") 
                     && claim.getInsurer().getTpiRegexExpression() != null
                     && !claim.getInsurer().getTpiRegexExpression().equals("")
-                    && !claim.getInsurer().isTpiAutoRoutingEnable() 
+                    && claim.getInsurer().isTpiAutoRoutingEnable() 
                     && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                claim.setAutoRoutedClaim(false);
+                autoRoutedInvoice = false;
             }
         }
-
-
     }
 
     @Override
@@ -96,7 +94,7 @@ public class NewTpiClaim extends BaseActivity {
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
             
-            if (!claim.isAutoRoutedClaim()) {
+            if (!autoRoutedInvoice) {
 
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());

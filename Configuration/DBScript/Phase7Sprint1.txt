@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
 -- 7.1.1 - Make 'Rejection Reason' dependent on claim type                    --
 --------------------------------------------------------------------------------
-ALTER TABLE reason_of_rejection ADD gta_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection ADD insurer_vs_insurer_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection ADD subscriber_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection ADD insurer_upload_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection ADD tpi_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD gta_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD insurer_vs_insurer_active NOT NULL boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD subscriber_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD insurer_upload_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD tpi_active boolean NOT NULL DEFAULT TRUE;
 
 UPDATE reason_of_rejection ror
 SET gta_active = status,
@@ -16,11 +16,11 @@ SET gta_active = status,
     
 ALTER TABLE reason_of_rejection DROP COLUMN status;
 
-ALTER TABLE reason_of_rejection_template ADD gta_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection_template ADD insurer_vs_insurer_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection_template ADD subscriber_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection_template ADD insurer_upload_active boolean DEFAULT TRUE;
-ALTER TABLE reason_of_rejection_template ADD tpi_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD gta_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD insurer_vs_insurer_active NOT NULL boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD subscriber_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD insurer_upload_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD tpi_active boolean NOT NULL DEFAULT TRUE;
 
 UPDATE reason_of_rejection_template ror
 SET gta_active = status,
@@ -672,11 +672,11 @@ INSERT INTO accessibility_item(role, access_right, accessibility_id)
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
 	SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedFixedFeeClaims';
 
-ALTER TABLE reason_of_rejection ADD fixed_fee_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD fixed_fee_active boolean NOT NULL DEFAULT TRUE;
 UPDATE reason_of_rejection ror
 	SET fixed_fee_active = subscriber_active;
 
-ALTER TABLE reason_of_rejection_template ADD fixed_fee_active boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD fixed_fee_active boolean NOT NULL DEFAULT TRUE;
 
 INSERT INTO claim_type VALUES (11, 'Fixed Fee', 'FIXEDFEE');
 INSERT INTO claim_type VALUES (12, 'Fixed Fee (Orig. Invoice)', 'FIXEDFEE');
@@ -711,20 +711,24 @@ ALTER TABLE insurer ADD COLUMN fixed_fee_regex_expression character varying(128)
 ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
 
-ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean DEFAULT TRUE;
+UPDATE insurer SET gta_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', subscriber_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', 
+    insurer_vs_insurer_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', insurer_manual_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$',
+    fixed_fee_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$'; 
 
-ALTER TABLE claim RENAME COLUMN is_tpi_claim_special_routed TO is_claim_auto_routed;
+ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+
+ALTER TABLE claim DROP COLUMN is_tpi_claim_special_routed;
+--ALTER TABLE claim DROP COLUMN is_invoice_auto_routed;
 
 ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
 
 ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
 
-
 ----------------------
---  End of 7.1.6    --
+--  End of 7.1.6   --
 ----------------------

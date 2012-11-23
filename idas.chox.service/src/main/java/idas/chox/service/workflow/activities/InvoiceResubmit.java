@@ -45,35 +45,6 @@ public class InvoiceResubmit extends BaseActivity {
             throw new Exception("ERROR : Invoice data calculation incorrect");
         }
         
-        //this is duplicated in new invoice
-        // Check to see if we have an Insurer vs Insurer claim
-        if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
-            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
-                // re-route claim
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
-                    if (claim.getWorkgroupOriginal() == null) {
-                        claim.setWorkgroupOriginal(claim.getWorkgroup());
-                    }
-                    claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
-                }
-                
-                //re-assign claim
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
-                    if (claim.getClaimOwnerOriginal() == null) {
-                        claim.setClaimOwnerOriginal(claim.getClaimOwner());
-                    }
-                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
-                }
-
-                getDataService().save(claim);
-                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-                // move claim to next status
-                setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(getCurrentStatus());
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            }
-        }
-
     }
 
     @Override
