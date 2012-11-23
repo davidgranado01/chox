@@ -25,7 +25,7 @@ public class NewInvoice extends BaseActivity {
     private TaskService taskService;
     private UserService userService;
     private InvoiceService invoiceService;
-    private boolean autoRoutedInvoice = true;
+    private boolean autoRoutedInvoice = false;
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -82,26 +82,26 @@ public class NewInvoice extends BaseActivity {
                     && claim.getInsurer().getGtaRegexExpression() != null
                     && !claim.getInsurer().getGtaRegexExpression().equals("") 
                     && claim.getInsurer().isGtaAutoRoutingEnable()
-                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = false;
+                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
+                autoRoutedInvoice = true;
             } else if (ClaimType.isSubscriber(claim.getClaimType()) 
                     && claim.getInsurer().getSubscriberRegexExpression() != null 
                     && !claim.getInsurer().getSubscriberRegexExpression().equals("") 
                     && claim.getInsurer().isSubscriberAutoRoutingEnable()
-                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = false;
+                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
+                autoRoutedInvoice = true;
             } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
                     && claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
                     && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
                     && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
-                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = false;
+                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
+                autoRoutedInvoice = true;
             } else if (ClaimType.isFixedFee(claim.getClaimType()) 
                     && claim.getInsurer().getFixedFeeRegexExpression() != null 
                     && !claim.getInsurer().getFixedFeeRegexExpression().equals("") 
                     && claim.getInsurer().isFixedFeeAutoRoutingEnable()
-                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = false;
+                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase())) {
+                autoRoutedInvoice = true;
             }
         }
     }

@@ -1653,3 +1653,16 @@ br.smallBr
     border-left: 1px solid #99BBE8;
     padding: 2px 8px 2px 5px;
 }
+
+#orgFilterDiv {
+    position: relative;
+    left: 36px;
+    margin-top: 4px;
+}
+
+#queueOrgFilter {
+    float: left;
+    left: 36px;
+    position: relative;
+    margin-top: 6px;
+}

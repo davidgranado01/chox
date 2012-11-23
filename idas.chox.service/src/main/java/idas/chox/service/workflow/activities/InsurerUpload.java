@@ -25,7 +25,7 @@ public class InsurerUpload extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerUpload.class);
     private BreBandService breBandService;
     private VehicleClassPriceService vehicleClassPriceService;
-    private boolean autoRoutedInvoice = true;
+    private boolean autoRoutedInvoice = false;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
@@ -55,8 +55,8 @@ public class InsurerUpload extends BaseActivity {
                 && claimNumber != null 
                 && !claimNumber.equals("")
                 && claim.getInsurer().isInsurerManualAutoRoutingEnable()
-                && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
-            autoRoutedInvoice = false; 
+                && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
+            autoRoutedInvoice = true; 
         }
         
     }

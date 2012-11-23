@@ -854,8 +854,8 @@
                                  <tr>
                                     <td colspan="2">
                                     <br/>
-                                        <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1">Passed BRE Auto-routing Claim Types:</label>
+                                        <div class="chox-form-item">
+                                            <label class="chox-form-std-label1" style="width:320px">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types:</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -868,8 +868,8 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (GTA)</label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="gtaExclusionId"  name="gtaRegexExpression" value="<s:property value="gtaRegexExpression" />"/>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="gtaExclusionId"  name="gtaRegexExpression" value="<s:property value="gtaRegexExpression" />"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -882,7 +882,7 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (TPI)</label>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
                                         </div>
                                     </td>
@@ -896,8 +896,8 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item" id="subscriberExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Subscriber)</label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="subscriberExclusionId"  name="subscriberRegexExpression" value="<s:property value="subscriberRegexExpression" />"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -910,8 +910,8 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item" >
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Fixed Fee)</label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -924,8 +924,8 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item" id="insurerVsInsurerExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices <br/> (Ins Vs Ins)</label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; " id="insurerVsInsurerExclusionId"  name="insurerVsInsurerRegexExpression" value="<s:property value="insurerVsInsurerRegexExpression" />"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -938,15 +938,15 @@
                                     </td>
                                     <td width="70%">
                                         <div class="chox-form-item" id="insurerManualExclusionRegexId">
-                                            <label class="chox-form-std-label1" >Auto-routing Exclusion Regular Expression for Approved Invoices (Insurer Manual)</label>
-                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px; margin-top:6px;" id="insurerManualExclusionId"  name="insurerManualRegexExpression" value="<s:property value="insurerManualRegexExpression" />"/>
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="insurerManualExclusionId"  name="insurerManualRegexExpression" value="<s:property value="insurerManualRegexExpression" />"/>
                                         </div>
-                                        <br/>
-                                        <br/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
+                                        <br/>
+                                        <br/>
                                         <div class="chox-form-item" id="invoiceWorkgroupId">
                                             <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
                                             <div id="workgroupComboDiv1"></div>

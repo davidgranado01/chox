@@ -225,7 +225,7 @@
 
 </script>
 <div id="filterPanel" style="float: left;">
-    <label id="queueOrgFilter" style="float: left;"></label>
+    <label id="queueOrgFilter"></label>
     <div id="orgFilterDiv"></div>
     <label id="queueClaimTypeFilter" style="float: left; margin-top:7px;"></label>
     <div id="claimTypeFilterDiv" style="margin-top:4px;"></div>

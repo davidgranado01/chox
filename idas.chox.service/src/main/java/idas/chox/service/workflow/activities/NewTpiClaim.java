@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class NewTpiClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
-    private boolean autoRoutedInvoice = true;
+    private boolean autoRoutedInvoice = false;
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -37,8 +37,8 @@ public class NewTpiClaim extends BaseActivity {
                     && claim.getInsurer().getTpiRegexExpression() != null
                     && !claim.getInsurer().getTpiRegexExpression().equals("")
                     && claim.getInsurer().isTpiAutoRoutingEnable() 
-                    && nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = false;
+                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
+                autoRoutedInvoice = true;
             }
         }
     }
