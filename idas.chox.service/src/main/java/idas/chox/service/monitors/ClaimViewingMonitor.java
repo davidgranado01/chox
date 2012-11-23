@@ -2,6 +2,7 @@ package idas.chox.service.monitors;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ public final class ClaimViewingMonitor {
             return cvs.getUserIds();
         } else {
             claims.remove(key);
-            LOG.debug("Claim expired and removed from viewing monitor: {}", key);
+            LOG.trace("Claim expired and removed from viewing monitor: {}", key);
             return null;
         }
 
@@ -80,7 +81,7 @@ public final class ClaimViewingMonitor {
             return true;
         } else {
             claims.remove(key);
-            LOG.debug("Claim expired and removed from viewing monitor: {}", key);
+            LOG.trace("Claim expired and removed from viewing monitor: {}", key);
             return false;
         }
     }
