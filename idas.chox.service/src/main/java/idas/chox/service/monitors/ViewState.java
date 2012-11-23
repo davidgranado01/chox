@@ -24,7 +24,6 @@ public class ViewState {
     public void refresh() {
        synchronized (lock) {
             birth = System.currentTimeMillis();
-            //System.out.println("Refreshed to " + birth.toString());
        }
     }
 }

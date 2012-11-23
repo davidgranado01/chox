@@ -29,25 +29,47 @@ public class ActivityMonitoringAction extends BaseAction {
     @Override
     public String execute() {
 
+        method = "execute";
         usersViewingThisClaim = new ArrayList<String>();
         int currentUserID = getUserId();
         Integer claimId = getModelIdFromSession(Claim.class);
+        Claim claim;
+        
         if (claimId != null) {
-            LOG.debug("START Monitoring: claimId={}, userId={}", claimId, currentUserID);
-            LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
+            try {
+                claim = claimService.getClaim(claimId);
+            } catch (Exception ex) {
+                LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
+                    new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
+                return SUCCESS;
+           }
+        } else {
+            LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId in session {}.",
+                    new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
+            return SUCCESS;
+        }
+
+        if (claim != null) {
+            LOG.debug("START Monitoring: claimId={}, userId={}, orgType={}, orgId={}",
+                    new Object[]{claimId, currentUserID, getOrganisationType(), getOrganisationId()});
             ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
             List<Integer> userIds = monitor.ping(claimId, getOrganisationType(), getOrganisationId(), currentUserID, claimService.getActivityMonitorRequestInterval());
-            LOG.debug("monitor.ping returned {} userIds.", userIds.size());
+            LOG.trace("monitor.ping returned {} userIds.", userIds.size());
             for (Integer id : userIds) {
                 if (id != currentUserID) {
                     WebUser user = userService.getWebUser(id);
-                    LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
                     if ((getAuthenticatedUser().isAnInsurer() && user.isAnInsurer()
                             && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
                             || (getAuthenticatedUser().isCHO() && user.isCHO()
                             && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
-                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim {}",
+                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim with id={}",
                                 new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
+                    } else if (user.isAnInsurer() && user.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                        LOG.error("Insurer User {} ('{}') from org '{}' viewing claim with id={} from different org '{}': please check claim has recently been switched",
+                                new Object[]{user.getId(), user.toString(), user.getInsurer().getName(), claimId, claim.getInsurer().getName()});
+                    } else if (user.isCHO() && user.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                        LOG.error("CHO User {} ('{}') from org '{}' viewing claim with id={} from different org '{}'",
+                                new Object[]{user.getId(), user.toString(), user.getChorganisation().getName(), claimId, claim.getChorganisation().getName()});
                     } else {
                         LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
                         usersViewingThisClaim.add(user.toString());
@@ -55,24 +77,24 @@ public class ActivityMonitoringAction extends BaseAction {
                 }
             }
         } else {
-            LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId in session {}.",
+                LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
-        }
+         }
 
-        method = "execute";
         return SUCCESS;
     }
 
+    
     public String checkViewingStatus() {
-        LOG.debug("Checking view status:");
+        LOG.trace("Checking view status:");
         statuses = new ArrayList<ViewingStatus>();
         if (claimIds != null) {
             String[] claimIdArray = claimIds.split(",");
-            LOG.debug("We have {} claimIds", claimIdArray.length);
+            LOG.trace("We have {} claimIds", claimIdArray.length);
             ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
 
             for (String s : claimIdArray) {
-                LOG.debug("Checking claim {}", s);
+                LOG.trace("Checking claim {}", s);
                 if (s != null && s.matches("^\\d+$")) {
                     Integer cId = Integer.parseInt(s);
                     Boolean status = monitor.isClaimViewingBySomeBody(cId, getOrganisationType(), getOrganisationId());
@@ -86,6 +108,7 @@ public class ActivityMonitoringAction extends BaseAction {
         return SUCCESS;
     }
 
+    
     public String getJsonData() {
         if (method.equalsIgnoreCase("checkViewingStatus")) {
             JSONArray jObject = JSONArray.fromObject(this.statuses);
@@ -96,19 +119,23 @@ public class ActivityMonitoringAction extends BaseAction {
         }
     }
 
+    
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    
     @Override
     public String getActionResult() {
         return actionResult;
     }
 
+    
     public int getUserId() {
         return this.getAuthenticatedUser().getId();
     }
 
+    
     public String getOrganisationType() {
         if (this.getIsCHO()) {
             return "C";
@@ -119,11 +146,8 @@ public class ActivityMonitoringAction extends BaseAction {
         }
     }
 
+    
     public int getOrganisationId() {
-
-//        System.out.println(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
-//        LOG.info(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
-
         if (this.getIsCHO()) {
             return this.getAuthenticatedUser().getChorganisation().getId();
         } else if (this.getIsInsurer()) {
@@ -131,14 +155,14 @@ public class ActivityMonitoringAction extends BaseAction {
         } else {
             return 999;
         }
-
-
     }
 
+    
     public String getClaimIds() {
         return claimIds;
     }
 
+    
     public void setClaimIds(String claimIds) {
         this.claimIds = claimIds;
     }
