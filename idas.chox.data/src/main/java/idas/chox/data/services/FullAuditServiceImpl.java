@@ -1,9 +1,10 @@
 package idas.chox.data.services;
 
+import java.io.Serializable;
+
 import idas.chox.core.model.AuditEntry;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.FullAuditService;
-import java.io.Serializable;
 
 /**
  *

@@ -82,7 +82,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                     }
                 } catch (Exception ex) {
                     vehicleClassPrice = BigDecimal.ZERO;
-                    LOG.info("Vehicle Class Price set to 0.0 as no price found for Supplier ref='{}')", claim.getChoReference());
+                    LOG.debug("Vehicle Class Price set to 0.0 as no price found for Supplier ref='{}')", claim.getChoReference());
                     
                 }
                 try {

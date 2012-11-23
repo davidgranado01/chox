@@ -79,13 +79,13 @@ public class ClaimRejectedReport implements Report {
 
             boolean isInsReport = (currentUser.getInsurer() != null);
 
-            String sOrganisationLabel = "";
-            String sOrganisationName = "";
+            String sOrganisationLabel;
+            String sOrganisationName;
 
             ClaimRejection claimRejection = new ClaimRejection();
             claimRejection.setClaimRejectionLineItem(reportRows);
 
-            Integer iOrgId = null;
+            Integer iOrgId;
 
             if (isInsReport) {
                 Insurer ins = currentUser.getInsurer();
@@ -164,7 +164,8 @@ public class ClaimRejectedReport implements Report {
         }
 
         String query = sb.toString();
-
+        LOG.debug("Report query for claim rejection line items is:\n {}", query);
+        
         Map paramMap = new HashMap();
         paramMap.put("pOrgId", iOrgId);
         paramMap.put("pCreatedDateFrom", dataStart);
@@ -252,11 +253,6 @@ public class ClaimRejectedReport implements Report {
 
         String query = sb.toString();
 
-        /* query = query.replaceAll(":pOrgId", iOrgId.toString());
-        query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-        query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");*/
-        //List result = baseDataService.externalQuery(query);
-
         //Emmanuel
         //27-07-2009
         //prevent SQL Injection
@@ -304,7 +300,7 @@ public class ClaimRejectedReport implements Report {
     private List<ClaimRejectionLineItem> getReasonOfRejection(WebUser currentUser) {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
-        List result = null;
+        List result;
         if(currentUser.getInsurer() != null){
             
             String query = "select ror.id, ror.name from reason_of_rejection ror " +

@@ -1,14 +1,16 @@
 package idas.chox.service.bre.rules;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Rajareddy Dodda
@@ -43,7 +45,7 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
                 noOfDays = (int) ((repairCommDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
             }
             else {
-                LOG.info("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairCommDate, hireStartDate);
+                LOG.debug("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairCommDate, hireStartDate);
             }
 
             LOG.debug("'HireDaysPriorToDateRepairCommenced'  {}. ", maxDays);
