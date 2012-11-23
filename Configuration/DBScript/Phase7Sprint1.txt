@@ -2,7 +2,7 @@
 -- 7.1.1 - Make 'Rejection Reason' dependent on claim type                    --
 --------------------------------------------------------------------------------
 ALTER TABLE reason_of_rejection ADD gta_active boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE reason_of_rejection ADD insurer_vs_insurer_active NOT NULL boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection ADD insurer_vs_insurer_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection ADD subscriber_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection ADD insurer_upload_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection ADD tpi_active boolean NOT NULL DEFAULT TRUE;
@@ -17,7 +17,7 @@ SET gta_active = status,
 ALTER TABLE reason_of_rejection DROP COLUMN status;
 
 ALTER TABLE reason_of_rejection_template ADD gta_active boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE reason_of_rejection_template ADD insurer_vs_insurer_active NOT NULL boolean DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD insurer_vs_insurer_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection_template ADD subscriber_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection_template ADD insurer_upload_active boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE reason_of_rejection_template ADD tpi_active boolean NOT NULL DEFAULT TRUE;
