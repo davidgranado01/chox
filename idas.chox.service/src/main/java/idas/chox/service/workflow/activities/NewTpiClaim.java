@@ -1,5 +1,13 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -8,12 +16,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.xml.util.NodeHelper;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NewTpiClaim extends BaseActivity {
 
@@ -24,7 +26,6 @@ public class NewTpiClaim extends BaseActivity {
     protected void beforeProcess(Claim claim) {
         if (claim.getStatus() == null) {
             if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
-
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
             
@@ -32,12 +33,10 @@ public class NewTpiClaim extends BaseActivity {
 
             NodeHelper nodeHelper = new NodeHelper();
             if (ClaimType.isTPI(claim.getClaimType())
-                    && claimNumber != null 
-                    && !claimNumber.equalsIgnoreCase("") 
-                    && claim.getInsurer().getTpiRegexExpression() != null
-                    && !claim.getInsurer().getTpiRegexExpression().equals("")
                     && claim.getInsurer().isTpiAutoRoutingEnable() 
-                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
+                    && (claimNumber == null || claim.getInsurer().getTpiRegexExpression() == null
+                        || claim.getInsurer().getTpiRegexExpression().isEmpty()
+                        || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase()))) {
                 autoRoutedInvoice = true;
             }
         }
@@ -95,44 +94,40 @@ public class NewTpiClaim extends BaseActivity {
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
             
             if (!autoRoutedInvoice) {
-
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
-
             } else {
-
-                // move claim to next status
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                         claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 }
                 if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
-                    if (claim.getInsurer().getInvoiceOwner().getTelephone() != null && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
-                        Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: " + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
+                    if (claim.getInsurer().getInvoiceOwner().getTelephone() != null
+                            && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
+                        Comment comment = Comment.New(0, "Insurer Claims Handler is '"
+                                            + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: "
+                                                        + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
                         claim.addComment(comment);
                     }
                 }
+                // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
                 getDataService().save(claim);
                 logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
-                //if BRE approves the invoice and TPI is selected it will go into following status
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-                
-            }
-        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)) {
 
-            // move claim to next status
-            super.setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(super.getCurrentStatus());
-            claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
-        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
+                //if BRE approves the invoice and TPI is selected it will go into following status
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);     
+            }
+        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)
+                    || claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
             // move claim to next status
             super.setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(super.getCurrentStatus());
@@ -142,14 +137,14 @@ public class NewTpiClaim extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-        getDataService().save(claim);
-        logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
-
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());
             getChainActivity().processInBatch(claim);
+        } else {
+            LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+            getDataService().save(claim);
+            logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);            
         }
     }
 

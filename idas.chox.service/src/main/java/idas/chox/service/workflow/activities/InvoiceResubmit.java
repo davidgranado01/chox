@@ -12,9 +12,11 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.service.xml.util.NodeHelper;
 
 public class InvoiceResubmit extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceResubmit.class);
+    private boolean autoRoutedInvoice = false;
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -23,6 +25,40 @@ public class InvoiceResubmit extends BaseActivity {
         if (!securityInfoProvider.isInRoleOf("ROLE_CHO")
                 && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to re-submit invoice.");
+        }
+    }
+
+    @Override
+    protected void beforeProcess(Claim claim) {
+
+        String claimNumber = claim.getThirdParty().getClaimReference();
+        NodeHelper nodeHelper = new NodeHelper();
+        //TPI claim type is handled in NewTpiClaim activity
+        //Insurer Upload claim type is handled in InsurerUpload activity
+        if (ClaimType.isGTA(claim.getClaimType())
+                && claim.getInsurer().isGtaAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getGtaRegexExpression() == null
+                    || claim.getInsurer().getGtaRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isSubscriber(claim.getClaimType())
+                && claim.getInsurer().isSubscriberAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getSubscriberRegexExpression() == null
+                    || claim.getInsurer().getSubscriberRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getInsurerVsInsurerRegexExpression() == null
+                    || claim.getInsurer().getInsurerVsInsurerRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getInsurer().isFixedFeeAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getFixedFeeRegexExpression() == null
+                    || claim.getInsurer().getFixedFeeRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
         }
     }
 
@@ -46,20 +82,40 @@ public class InvoiceResubmit extends BaseActivity {
             LOG.debug("Throwing Exception:  Invoice data calculation incorrect");
             throw new Exception("ERROR : Invoice data calculation incorrect");
         }
-        
+
+        if (autoRoutedInvoice && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            // re-route claim
+            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                claim.setWorkgroupOriginal(claim.getWorkgroup());
+                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
+            }
+
+            //re-assign claim
+            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+            }
+            getDataService().save(claim);
+            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            // move claim to next status
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+
+        }
+
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        if (!ClaimType.isTPI(claim.getClaimType())) {
+        if (getChainActivity() != null) {
+            LOG.debug("Processing next chain activity.");
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
+        } else {
+            LOG.debug("Saving Claim '{}' ", claim.getChoReference());
             getDataService().save(claim);
             logTransaction(claim);
-        } else {
-
-            if (getChainActivity() != null) {
-                getChainActivity().setWorkflowContext(getProcessContext());
-                getChainActivity().processInBatch(claim);
-            }
         }
     }
 

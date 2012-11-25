@@ -58,7 +58,7 @@ public class NewInvoice extends BaseActivity {
             }
             getExpectingStatuses().clear();
             getExpectingStatuses().add(null);
-            
+
         } else {
             LOG.debug("Non TPI claim");
         }
@@ -72,45 +72,43 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        
+
         String claimNumber = claim.getThirdParty().getClaimReference();
-        if (claimNumber != null && !claimNumber.equalsIgnoreCase("")) {
-            NodeHelper nodeHelper = new NodeHelper();
-            //TPI claim type is handled in NewTpiClaim activity
-            //Insurer Upload claim type is handled in InsurerUpload activity
-            if (ClaimType.isGTA(claim.getClaimType()) 
-                    && claim.getInsurer().getGtaRegexExpression() != null
-                    && !claim.getInsurer().getGtaRegexExpression().equals("") 
-                    && claim.getInsurer().isGtaAutoRoutingEnable()
-                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = true;
-            } else if (ClaimType.isSubscriber(claim.getClaimType()) 
-                    && claim.getInsurer().getSubscriberRegexExpression() != null 
-                    && !claim.getInsurer().getSubscriberRegexExpression().equals("") 
-                    && claim.getInsurer().isSubscriberAutoRoutingEnable()
-                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = true;
-            } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) 
-                    && claim.getInsurer().getInsurerVsInsurerRegexExpression() != null 
-                    && !claim.getInsurer().getInsurerVsInsurerRegexExpression().equals("") 
-                    && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
-                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = true;
-            } else if (ClaimType.isFixedFee(claim.getClaimType()) 
-                    && claim.getInsurer().getFixedFeeRegexExpression() != null 
-                    && !claim.getInsurer().getFixedFeeRegexExpression().equals("") 
-                    && claim.getInsurer().isFixedFeeAutoRoutingEnable()
-                    && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase())) {
-                autoRoutedInvoice = true;
-            }
+        NodeHelper nodeHelper = new NodeHelper();
+        //TPI claim type is handled in NewTpiClaim activity
+        //Insurer Upload claim type is handled in InsurerUpload activity
+        if (ClaimType.isGTA(claim.getClaimType())
+                && claim.getInsurer().isGtaAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getGtaRegexExpression() == null
+                    || claim.getInsurer().getGtaRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getGtaRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isSubscriber(claim.getClaimType())
+                && claim.getInsurer().isSubscriberAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getSubscriberRegexExpression() == null
+                    || claim.getInsurer().getSubscriberRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getSubscriberRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                && claim.getInsurer().isInsurerVsInsurerAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getInsurerVsInsurerRegexExpression() == null
+                    || claim.getInsurer().getInsurerVsInsurerRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerVsInsurerRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
+        } else if (ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getInsurer().isFixedFeeAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getFixedFeeRegexExpression() == null
+                    || claim.getInsurer().getFixedFeeRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
         }
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
-        invoiceService.applyInsurerDiscounts(claim,userService.findByUserName("system"),true);
-        
+        invoiceService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {
@@ -134,7 +132,7 @@ public class NewInvoice extends BaseActivity {
                 adjustDailyRateCharge(claim);
             }
         }
-        
+
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
@@ -149,62 +147,54 @@ public class NewInvoice extends BaseActivity {
          * activated in the BRE Band
          */
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
-        if (claim.isManagingRepair() && claim.getBreBand().isAllowManagingRepairAutomatedTasks()
-                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
-            if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
-                LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");
-            }
-        }
-        else if (!claim.isManagingRepair() && claim.getBreBand().isAllowNotManagingRepairAutomatedTasks()
+        if (claim.getBreBand().isAllowManagingRepairAutomatedTasks()
                 && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");
             }
         }
 
-        if (ClaimType.isGTA(claim.getClaimType()) 
-                || ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                || ClaimType.isSubscriber(claim.getClaimType())
-                || ClaimType.isFixedFee(claim.getClaimType())) {
-            
-            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
-                // re-route claim
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null && autoRoutedInvoice) {
-                    claim.setWorkgroupOriginal(claim.getWorkgroup());
-                    claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
-                }
-
-                //re-assign claim
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null && autoRoutedInvoice) {
-                    claim.setClaimOwnerOriginal(claim.getClaimOwner());
-                    claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
-                }
-                getDataService().save(claim);
-                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-                // move claim to next status
-                setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(getCurrentStatus());
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        if (autoRoutedInvoice && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            // re-route claim
+            if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                claim.setWorkgroupOriginal(claim.getWorkgroup());
+                claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
             }
-            
+
+            //re-assign claim
+            if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
+            }
+            getDataService().save(claim);
+            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            // move claim to next status
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+
         }
     }
-    
+
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Saving Claim '{}' ", claim.getChoReference());
-        if (!ClaimType.isTPI(claim.getClaimType())) {
+        if (getChainActivity() != null) {
+            LOG.debug("Processing next chain activity.");
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
+        } else {
+            LOG.debug("Saving Claim '{}' ", claim.getChoReference());
             getDataService().save(claim);
             logTransaction(claim);
-        } else {
-
-            if (getChainActivity() != null) {
-                LOG.debug("Processing next chain activity.");
-                getChainActivity().setWorkflowContext(getProcessContext());
-                getChainActivity().processInBatch(claim);
-            }
         }
     }
+
+
+    @Override
+    protected void setupExpectingStatuses(List<String> expectingStatuses) {
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+    }
+
 
     private boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
         if (claim.getChorganisation().isTaskManagementEnable()) {
@@ -228,11 +218,6 @@ public class NewInvoice extends BaseActivity {
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
 
     private void adjustDailyRateCharge(Claim claim) {
@@ -295,5 +280,4 @@ public class NewInvoice extends BaseActivity {
             }
         }
     }
-    
 }
