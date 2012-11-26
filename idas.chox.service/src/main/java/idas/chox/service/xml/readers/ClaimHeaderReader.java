@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
@@ -249,9 +251,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
             claim.setClaimType(ClaimType.INSURER_UPLOAD);
             ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
@@ -279,6 +281,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private void processTpiInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
+        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
         /*
          * getting insurer from xml to check TPI is Activated
          */
@@ -317,9 +320,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             claim.setClaimType(ClaimType.TPI);
         }
@@ -337,9 +340,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
                 claimResult.setValid(false);
-            } /*
-             *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
-             */ else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+            } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE);
                 BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                 claim.setBreBand(choBand);
@@ -364,6 +365,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
 
         } else {
+            /*
+             *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
+             */
             LOG.warn("Invalid new claim rental status: '{}' - For 'Off Hired' claims/invoices to be uploaded the claims must be in the 'AwaitingCarHireInfo' status.", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
             claimResult.setValid(false);
@@ -414,9 +418,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
@@ -478,9 +482,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
@@ -542,9 +546,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
@@ -592,9 +596,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             claim.setClaimType(ClaimType.INSURER_VS_INSURER);
         }
