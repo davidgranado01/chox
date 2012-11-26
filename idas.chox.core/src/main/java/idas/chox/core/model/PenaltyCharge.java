@@ -7,26 +7,30 @@ public class PenaltyCharge {
 
     private int id;
     private PenaltyType penaltyType;
-    private PenaltyName penaltyName;
-    private int penaltyStartAgeFrom;
-    private BigDecimal penaltyPercentage;
-    private String penaltyPercentageDsc;
+    private int penaltyStartAge;
     private Date penaltyStartDate;
+    private String hirePenaltyPercentageDsc;
+    private BigDecimal hirePenaltyPercentageVal;
+    private String repairPenaltyPercentageDsc;
+    private BigDecimal repairPenaltyPercentageVal;
+   
+    public enum PenaltyType {
+        
+        DEFAULT ,
+        SUBSCRIBER;
+    }
 
+    public enum PenaltyName {
+        HIRE,
+        REPAIR;
+    }
+    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public PenaltyName getPenaltyName() {
-        return penaltyName;
-    }
-
-    public void setPenaltyName(PenaltyName penaltyName) {
-        this.penaltyName = penaltyName;
     }
 
     public PenaltyType getPenaltyType() {
@@ -37,28 +41,12 @@ public class PenaltyCharge {
         this.penaltyType = penaltyType;
     }
 
-    public int getPenaltyStartAgeFrom() {
-        return penaltyStartAgeFrom;
+    public int getPenaltyStartAge() {
+        return penaltyStartAge;
     }
 
-    public void setPenaltyStartAgeFrom(int penaltyStartAgeFrom) {
-        this.penaltyStartAgeFrom = penaltyStartAgeFrom;
-    }
-
-    public BigDecimal getPenaltyPercentage() {
-        return penaltyPercentage;
-    }
-
-    public void setPenaltyPercentage(BigDecimal penaltyPercentage) {
-        this.penaltyPercentage = penaltyPercentage;
-    }
-
-    public String getPenaltyPercentageDsc() {
-        return penaltyPercentageDsc;
-    }
-
-    public void setPenaltyPercentageDsc(String penaltyPercentageDsc) {
-        this.penaltyPercentageDsc = penaltyPercentageDsc;
+    public void setPenaltyStartAge(int penaltyStartAge) {
+        this.penaltyStartAge = penaltyStartAge;
     }
 
     public Date getPenaltyStartDate() {
@@ -68,14 +56,36 @@ public class PenaltyCharge {
     public void setPenaltyStartDate(Date penaltyStartDate) {
         this.penaltyStartDate = penaltyStartDate;
     }
-    
-    public enum PenaltyName {
-        HIRE,
-        REPAIR;
+
+    public String getHirePenaltyPercentageDsc() {
+        return hirePenaltyPercentageDsc;
     }
 
-    public enum PenaltyType {
-        DEFAULT,
-        SUBSCRIBER;
+    public void setHirePenaltyPercentageDsc(String hirePenaltyPercentageDsc) {
+        this.hirePenaltyPercentageDsc = hirePenaltyPercentageDsc;
+    }
+
+    public BigDecimal getHirePenaltyPercentageVal() {
+        return hirePenaltyPercentageVal;
+    }
+
+    public void setHirePenaltyPercentageVal(BigDecimal hirePenaltyPercentageVal) {
+        this.hirePenaltyPercentageVal = hirePenaltyPercentageVal;
+    }
+
+    public String getRepairPenaltyPercentageDsc() {
+        return repairPenaltyPercentageDsc;
+    }
+
+    public void setRepairPenaltyPercentageDsc(String repairPenaltyPercentageDsc) {
+        this.repairPenaltyPercentageDsc = repairPenaltyPercentageDsc;
+    }
+
+    public BigDecimal getRepairPenaltyPercentageVal() {
+        return repairPenaltyPercentageVal;
+    }
+
+    public void setRepairPenaltyPercentageVal(BigDecimal repairPenaltyPercentageVal) {
+        this.repairPenaltyPercentageVal = repairPenaltyPercentageVal;
     }
 }

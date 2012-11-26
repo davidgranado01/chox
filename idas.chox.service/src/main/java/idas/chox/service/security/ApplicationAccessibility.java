@@ -14,6 +14,7 @@ import idas.chox.core.model.*;
 import idas.chox.core.services.AccessibilityService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.AccessibilityHelper;
 import idas.chox.core.util.DateHelper;
 
@@ -27,6 +28,7 @@ public class ApplicationAccessibility {
     private AccessibilityService accessibilityService;
     private ClaimService claimService;
     private BreBandService breBandService;
+    private PenaltyChargeService penaltyChargeService;
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // TAB
@@ -164,12 +166,6 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - EXTRA ACTION">
     
-        
-    private int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = DateHelper.getNumberOfDaysBetween(inv.getAutoPenaltyStart(), new Date());
-        return (int) (dateDiff / 30);
-    }
-    
     private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
         return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
     }
@@ -258,7 +254,7 @@ public class ApplicationAccessibility {
                     // Check invoice was uploaded at least 30 days ago
                     Invoice invoice = claim.getInvoice();
                     if (invoice != null) {
-                        long days = invoice.getInvoicedDays();
+                        int days = invoice.getInvoicedDays();
                         /*
                          * For manual invoices always show 'Adjust Penalty
                          * Charges' more action. 
@@ -275,8 +271,9 @@ public class ApplicationAccessibility {
                         else if (invoice.getPenaltyAlertQty() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
-                                        && (!claim.isAutoPenaltyChargeEnabled() || calculatePenaltyAlertQty(invoice) >= 3))) 
-                                    && days > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                        && (!claim.isAutoPenaltyChargeEnabled() 
+                                            || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim)))) 
+                                    && days > penaltyChargeService.getNextPenaltyBand(claim)) {
                                 LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
                                 accessRight = 0;
                             }
@@ -698,6 +695,10 @@ public class ApplicationAccessibility {
 
     public void setBreBandService(BreBandService BreBandService) {
         this.breBandService = BreBandService;
+    }
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
     }
 
     public AccessibilityService getAccessibilityService() {

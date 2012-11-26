@@ -25,6 +25,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.InvoiceService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.xmlValidation.ClaimResult;
 
@@ -33,8 +34,13 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     private ClaimService claimService;
     private InsurerDiscountService insurerDiscountService;
     private UserService userService;
+    private PenaltyChargeService penaltyChargeService;
     
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceServiceImpl.class);
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -170,27 +176,20 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     }
     
     @Override
-    public int calculatePenaltyAlertQty(Invoice inv) {
-        long dateDiff = inv.getInvoicedDays();
-        return (int) (dateDiff / 30);
-    }
-    
-    @Override
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean updateAutomaticPenaltyCharge(Claim claim) {
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
                 + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}, "
-                + "calculatePenaltyAlertQty(claim.getInvoice())={}, claim.getInvoice().getPenaltyAlertQty()={}, ",
+                + "claim.getInvoice().getPenaltyAlertQty()={}, ",
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
                     !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
-                    claim.getInvoice(), calculatePenaltyAlertQty(claim.getInvoice()),
-                    claim.getInvoice().getPenaltyAlertQty()});
+                    claim.getInvoice(), claim.getInvoice().getPenaltyAlertQty()});
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
                 && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
                 && claim.getInvoice() != null
-                && claim.getInvoice().getInvoicedDays() > 30) {
+                && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim)) {
 //                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
 
             try {

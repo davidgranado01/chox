@@ -11,12 +11,18 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 
 public class ClaimReopen extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReopen.class);
     private TaskService taskService;
     private ClaimService claimService;
+    private PenaltyChargeService penaltyChargeService;
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
 
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
@@ -47,7 +53,8 @@ public class ClaimReopen extends BaseActivity {
                     && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             }
-            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() 
+                    && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
                             claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
                             || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO) || claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS)

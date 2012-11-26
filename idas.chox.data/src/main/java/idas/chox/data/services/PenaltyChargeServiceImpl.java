@@ -1,4 +1,3 @@
-
 package idas.chox.data.services;
 
 import java.math.BigDecimal;
@@ -22,189 +21,274 @@ import idas.chox.core.model.PenaltyCharge;
 import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.services.PenaltyChargeService;
 
-
 public class PenaltyChargeServiceImpl extends SecureDataService implements PenaltyChargeService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeServiceImpl.class);
-    
-    @Override
-    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, PenaltyType penaltyType) {
 
-        
-        List<PenaltyCharge> hirePenalties = new ArrayList<PenaltyCharge>();
-       
+    @Override
+    public List<PenaltyCharge> getPenaltyCharges(Date hireStart, PenaltyType penaltyType, PenaltyName penaltyName) {
+
+        List<PenaltyCharge> penaltyCharges = new ArrayList<PenaltyCharge>();
+
         // Get all hire penalty charges where penaltyStartDate <= hireStart
         DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class, "pc");
         criteria.add(Restrictions.eq("pc.penaltyType", penaltyType));
-        criteria.add(Restrictions.eq("pc.penaltyName", PenaltyName.HIRE));
         criteria.add(Restrictions.le("pc.penaltyStartDate", hireStart));
-        criteria.addOrder(Order.asc("pc.penaltyStartAgeFrom"));
-        
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            criteria.add(Restrictions.isNotNull("pc.hirePenaltyPercentageDsc"));
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            criteria.add(Restrictions.isNotNull("pc.repairPenaltyPercentageDsc"));
+        }
+        criteria.addOrder(Order.asc("pc.penaltyStartAge"));
+
         /* Subquery to exclude the old entries 
          *  e.g If two entries present from the query reuslt then 
          *  one entry should be excluded by looking at 'Penalty Start' date.
          * 
-         *   HIRE DEFAULT 30  7.5  7.5% 1/1/2010  -- THIS OLD ENTRY SHOULD BE excluded.
-         *   HIRE DEFAULT 30 12.5 12.5% 1/1/2011
+         *   DEFAULT 30 01/01/1950       7.5%  7.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 30 15/06/2012      12.5% 12.5   2.5% 2.5 
+         *   DEFAULT 60 01/01/1950        15%   15     5%   5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 60 15/06/2012        20%   20     5%   5 
+         *   DEFAULT 90 01/01/1950 Commercial    0 <NULL>   0 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 90 15/06/2012 Commercial    0 <NULL>   0 
          */
         DetachedCriteria subQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc1");
         subQuery.add(Restrictions.eq("pc1.penaltyType", penaltyType));
-        subQuery.add(Restrictions.eq("pc1.penaltyName", PenaltyName.HIRE));
         subQuery.add(Restrictions.le("pc1.penaltyStartDate", hireStart));
-        subQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
-        subQuery.add(Restrictions.eqProperty("pc1.penaltyStartAgeFrom", "pc.penaltyStartAgeFrom"));
-        subQuery.setProjection(Projections.id());
-        
-        criteria.add(Subqueries.notExists(subQuery));
-        
-        try {
-            hirePenalties = findByCriteria(criteria);
-        } catch (Exception ex) {
-            LOG.error("Exception in executing HIRE penalty percentage query: ",ex);
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            subQuery.add(Restrictions.isNotNull("pc1.hirePenaltyPercentageDsc"));
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            subQuery.add(Restrictions.isNotNull("pc1.repairPenaltyPercentageDsc"));
         }
-        return hirePenalties;
+        subQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
+        subQuery.add(Restrictions.eqProperty("pc1.penaltyStartAge", "pc.penaltyStartAge"));
+        subQuery.setProjection(Projections.id());
+
+        criteria.add(Subqueries.notExists(subQuery));
+
+        try {
+            penaltyCharges = findByCriteria(criteria);
+        } catch (Exception ex) {
+            LOG.error("Exception in executing HIRE penalty percentage query: ", ex);
+        }
+        return penaltyCharges;
     }
 
     @Override
-    public List<PenaltyCharge> getRepairPenaltyPercentages(PenaltyType penaltyType) {
-        
-        List<PenaltyCharge> repairPenalties = new ArrayList<PenaltyCharge>();
-        
+    public PenaltyCharge getPenaltyCharge(Date hireStart, int penaltyAge, PenaltyType penaltyType, PenaltyName penaltyName) {
+
+        PenaltyCharge penaltyCharge = null;
+
+        // Get all hire penalty charges where penaltyStartDate <= hireStart
         DetachedCriteria criteria = DetachedCriteria.forClass(PenaltyCharge.class, "pc");
         criteria.add(Restrictions.eq("pc.penaltyType", penaltyType));
-        criteria.add(Restrictions.eq("pc.penaltyName", PenaltyName.REPAIR));
-        criteria.addOrder(Order.asc("pc.penaltyStartAgeFrom"));
+        criteria.add(Restrictions.le("pc.penaltyStartDate", hireStart));
+        criteria.add(Restrictions.lt("pc.penaltyStartAge", penaltyAge));
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            criteria.add(Restrictions.isNotNull("pc.hirePenaltyPercentageDsc"));
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            criteria.add(Restrictions.isNotNull("pc.repairPenaltyPercentageDsc"));
+        }
+        criteria.addOrder(Order.asc("pc.penaltyStartAge"));
 
-        /* Subquery to exclude the old entries 
+        /* Subquery-1 to exclude the old entries 
          *  e.g If two entries present from the query reuslt then 
          *  one entry should be excluded by looking at 'Penalty Start' date.
          * 
-         *   REPAIR DEFAULT 30  7.5  7.5% 1/1/2010  -- THIS OLD ENTRY SHOULD BE excluded.
-         *   REPAIR DEFAULT 30 12.5 12.5% 1/1/2011
+         *   DEFAULT 30 01/01/1950       7.5%  7.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 30 15/06/2012      12.5% 12.5   2.5% 2.5 
+         *   DEFAULT 60 01/01/1950        15%   15     5%   5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 60 15/06/2012        20%   20     5%   5 
+         *   DEFAULT 90 01/01/1950 Commercial    0 <NULL>   0 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
+         *   DEFAULT 90 15/06/2012 Commercial    0 <NULL>   0 
          */
-        DetachedCriteria subQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc1");
-        subQuery.add(Restrictions.eq("pc1.penaltyType", penaltyType));
-        subQuery.add(Restrictions.eq("pc1.penaltyName", PenaltyName.REPAIR));
-        subQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
-        subQuery.add(Restrictions.eqProperty("pc1.penaltyStartAgeFrom", "pc.penaltyStartAgeFrom"));
-        subQuery.setProjection(Projections.id());
-        
-        criteria.add(Subqueries.notExists(subQuery));
-        
+        DetachedCriteria penaltyStartDateRestrictionSubQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc1");
+        penaltyStartDateRestrictionSubQuery.add(Restrictions.eq("pc1.penaltyType", penaltyType));
+        penaltyStartDateRestrictionSubQuery.add(Restrictions.le("pc1.penaltyStartDate", hireStart));
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            penaltyStartDateRestrictionSubQuery.add(Restrictions.isNotNull("pc1.hirePenaltyPercentageDsc"));
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            penaltyStartDateRestrictionSubQuery.add(Restrictions.isNotNull("pc1.repairPenaltyPercentageDsc"));
+        }
+        penaltyStartDateRestrictionSubQuery.add(Restrictions.gtProperty("pc1.penaltyStartDate", "pc.penaltyStartDate"));
+        penaltyStartDateRestrictionSubQuery.add(Restrictions.eqProperty("pc1.penaltyStartAge", "pc.penaltyStartAge"));
+        penaltyStartDateRestrictionSubQuery.setProjection(Projections.id());
+
+        /* SUBQUERY-2 to get 'Penalty Charge' using 'Penalty Age'    
+         *  e.g If three entries are returned from the above query result then 
+         *  two entries should be removed by looking at the 'Penalty Age' of the Inoice.
+         * 
+         *   DEFAULT 30 15/06/2012      12.5% 12.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE INVOICE PENALTY AGE IS > 60 AND <= 90 DAYS.
+         *   DEFAULT 60 15/06/2012        20%   20     5%   5 
+         *   DEFAULT 90 15/06/2012 Commercial    0 <NULL>   0 -- THIS ENTRY SHOULD BE REMOVED IF THE INVOICE PENALTY AGE IS > 60 AND <= 90 DAYS.
+         */
+        DetachedCriteria penaltyAgeRestrictionSubQuery = DetachedCriteria.forClass(PenaltyCharge.class, "pc2");
+        penaltyAgeRestrictionSubQuery.add(Restrictions.eq("pc2.penaltyType", penaltyType));
+        penaltyAgeRestrictionSubQuery.add(Restrictions.lt("pc2.penaltyStartAge", penaltyAge));
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            penaltyAgeRestrictionSubQuery.add(Restrictions.isNotNull("pc2.hirePenaltyPercentageDsc"));
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            penaltyAgeRestrictionSubQuery.add(Restrictions.isNotNull("pc2.repairPenaltyPercentageDsc"));
+        }
+        penaltyAgeRestrictionSubQuery.add(Restrictions.gtProperty("pc2.penaltyStartAge", "pc.penaltyStartAge"));
+        penaltyAgeRestrictionSubQuery.setProjection(Projections.id());
+
+        criteria.add(Subqueries.notExists(penaltyStartDateRestrictionSubQuery));
+        criteria.add(Subqueries.notExists(penaltyAgeRestrictionSubQuery));
+
         try {
-            repairPenalties = findByCriteria(criteria);
+            List<PenaltyCharge> penaltyCharges = findByCriteria(criteria);
+            if (penaltyCharges.size() > 0) {
+                penaltyCharge = penaltyCharges.get(0);
+                if (penaltyCharges.size() > 1) {
+                    LOG.error("More than 1 'Penalty Charge' returned from the result. returned size is: {}", penaltyCharges.size());
+                }
+            }
         } catch (Exception ex) {
-            LOG.error("Exception in executing REPAIR penalty percentage query: ", ex);
+            LOG.error("Exception in executing HIRE penalty percentage query: ", ex);
         }
-        return repairPenalties;
+        return penaltyCharge;
     }
 
     @Override
-    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, PenaltyType penaltyType) {
-
-        String penaltyPercenDec = "0%";
-
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) {
-
-            long dateDiff = inv.getInvoicedDays();
-            List<PenaltyCharge> hirePenalties = getHirePenaltyPercentages(hireStart, penaltyType);
-            // the returned HirePenalties should be ordered ascendingly. 
-            for (PenaltyCharge penaltyCharge : hirePenalties) {
-                if (penaltyCharge.getPenaltyStartAgeFrom() <= dateDiff) {
-                    penaltyPercenDec = penaltyCharge.getPenaltyPercentageDsc();
-                }
-            }
-        }
-        return penaltyPercenDec;
-    }
-
-    @Override
-    public String getRepairPenaltyPercentage(Invoice inv, PenaltyType penaltyType) {
-
-        String penaltyPercenDec = "0%";
-
-        if (inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
-
-            long dateDiff = inv.getInvoicedDays();
-            List<PenaltyCharge> repairPenalties = getRepairPenaltyPercentages(penaltyType);
-            // the returned RepairPenalties should be ordered ascendingly. 
-            for (PenaltyCharge penaltyCharge : repairPenalties) {
-                if (penaltyCharge.getPenaltyStartAgeFrom() <= dateDiff) {
-                    penaltyPercenDec = penaltyCharge.getPenaltyPercentageDsc();
-                }
-            }
-        }
-        return penaltyPercenDec;
-    }
-    
-    @Override
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, PenaltyType penaltyType) {
-
-        BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
-//        BigDecimal hireNet = claim.getInvoice().getHireNet();
-        BigDecimal hireGross = inv.getHireGross();
-//        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-
-        for (PenaltyCharge hirePenaltyPercentageValue : getHirePenaltyPercentages(hireStart, penaltyType)) {
-            if (hirePenaltyPercentageValue.getPenaltyPercentageDsc().equals(hirePercentage)) {
-//                BigDecimal hirePenaltyWithoutVat = hirePenaltyPercentageValue.getPercentageValue().divide(new BigDecimal(100)).multiply(hireNet);
-//                hirePenaltyAmout = hirePenaltyWithoutVat.add(hirePenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
-                hirePenaltyAmout = (hirePenaltyPercentageValue.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        LOG.debug("calculated HirePenalty Charge = {}", hirePenaltyAmout);
-        return hirePenaltyAmout;
-    }
-
-    @Override
-    public BigDecimal calculateHirePenaltyCharge(Claim claim) {
+    public String getPenaltyPercentageDsc(Claim claim, PenaltyName penaltyName) {
 
         Invoice inv = claim.getInvoice();
-        BigDecimal hirePenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal hireGross = inv.getHireGross();
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
-        String calculatedHirePenaltyPercentage = getHirePenaltyPercentage(hireStart, inv, ClaimType.getPenaltyType(claim.getClaimType()));
-        for (PenaltyCharge hirePenaltyPercentageValue : getHirePenaltyPercentages(hireStart, ClaimType.getPenaltyType(claim.getClaimType()))) {
-            if (hirePenaltyPercentageValue.getPenaltyPercentageDsc().equals(calculatedHirePenaltyPercentage)) {
-                hirePenaltyAmout = (hirePenaltyPercentageValue.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(hireGross)).setScale(2, RoundingMode.HALF_UP);
+        PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+
+        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1 || inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+
+            int dateDiff = inv.getInvoicedDays();
+            PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, penaltyName);
+
+            if (penaltyCharge != null && penaltyName.equals(PenaltyName.HIRE)) {
+                return penaltyCharge.getHirePenaltyPercentageDsc();
+            } else if (penaltyCharge != null && penaltyName.equals(PenaltyName.REPAIR)) {
+                return penaltyCharge.getRepairPenaltyPercentageDsc();
             }
         }
-        return hirePenaltyAmout;
+        return "0%";
     }
 
-    
-    
     @Override
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, PenaltyType penaltyType) {
-
-        BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
-//        BigDecimal repairNet = claim.getInvoice().getRepairNet();
-        BigDecimal repairGross = inv.getRepairGross();
-
-        for (PenaltyCharge repairPenaltyPercentage : getRepairPenaltyPercentages(penaltyType)) {
-            if (repairPenaltyPercentage.getPenaltyPercentageDsc().equals(repairPercentage)) {
-//                BigDecimal repairPenaltyWithoutVat = repairPenaltyPercentage.getPercentageValue().divide(new BigDecimal(100)).multiply(repairNet);
-//                repairPenaltyAmout = repairPenaltyWithoutVat.add(repairPenaltyWithoutVat.multiply(CalcHelper.VAT_RATE)).setScale(2, RoundingMode.HALF_UP);
-                repairPenaltyAmout = (repairPenaltyPercentage.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
-            }
-        }
-        LOG.debug("calculated RepairPenalty Charge = {}", repairPenaltyAmout);
-        return repairPenaltyAmout;
-    }
-      
-    @Override
-    public BigDecimal calculateRepairPenaltyCharge(Claim claim) {
+    public BigDecimal getPenaltyPercentageVal(Claim claim, PenaltyName penaltyName) {
 
         Invoice inv = claim.getInvoice();
-        BigDecimal repairPenaltyAmout = BigDecimal.ZERO.setScale(2);
-        BigDecimal repairGross = inv.getRepairGross();
-        String calculatedRepairPenaltyPercentage = getRepairPenaltyPercentage(inv, ClaimType.getPenaltyType(claim.getClaimType()));
-        for (PenaltyCharge repairPenaltyPercentage : getRepairPenaltyPercentages(ClaimType.getPenaltyType(claim.getClaimType()))) {
-            if (repairPenaltyPercentage.getPenaltyPercentageDsc().equals(calculatedRepairPenaltyPercentage)) {
-                repairPenaltyAmout = (repairPenaltyPercentage.getPenaltyPercentage().divide(new BigDecimal(100)).multiply(repairGross)).setScale(2, RoundingMode.HALF_UP);
+        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+
+        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1 || inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+
+            int dateDiff = inv.getInvoicedDays();
+            PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, penaltyName);
+
+            if (penaltyCharge != null && penaltyName.equals(PenaltyName.HIRE)) {
+                return penaltyCharge.getHirePenaltyPercentageVal();
+            } else if (penaltyCharge != null && penaltyName.equals(PenaltyName.REPAIR)) {
+                return penaltyCharge.getRepairPenaltyPercentageVal();
             }
         }
-        return repairPenaltyAmout;
+        return BigDecimal.ZERO.setScale(2);
     }
-    
+
+    @Override
+    public BigDecimal calculatePenaltyChargeVal(Claim claim, PenaltyName penaltyName) {
+
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            return (getPenaltyPercentageVal(claim, penaltyName).divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            return (getPenaltyPercentageVal(claim, penaltyName).divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
+        return BigDecimal.ZERO.setScale(2);
+    }
+
+    @Override
+    public BigDecimal calculatePenaltyChargeVal(Claim claim, String Percentage, PenaltyName penaltyName) {
+
+        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+
+        if (penaltyName.equals(PenaltyName.HIRE)) {
+            for (PenaltyCharge hirePenaltyCharge : getPenaltyCharges(hireStart, penaltyType, penaltyName)) {
+                if (hirePenaltyCharge.getHirePenaltyPercentageDsc().equals(Percentage)) {
+                    return (hirePenaltyCharge.getHirePenaltyPercentageVal().divide(new BigDecimal(100)).multiply(claim.getInvoice().getHireGross()))
+                            .setScale(2, RoundingMode.HALF_UP);
+                }
+            }
+        } else if (penaltyName.equals(PenaltyName.REPAIR)) {
+            for (PenaltyCharge repairPenaltyCharge : getPenaltyCharges(hireStart, penaltyType, penaltyName)) {
+                if (repairPenaltyCharge.getRepairPenaltyPercentageDsc().equals(Percentage)) {
+                    return (repairPenaltyCharge.getRepairPenaltyPercentageVal().divide(new BigDecimal(100)).multiply(claim.getInvoice().getRepairGross()))
+                            .setScale(2, RoundingMode.HALF_UP);
+                }
+            }
+        }
+        return BigDecimal.ZERO.setScale(2);
+    }
+
+    @Override
+    public int calculateCurrentPenaltyBand(Claim claim) {
+        try {
+            Invoice inv = claim.getInvoice();
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+            PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+            int dateDiff = inv.getInvoicedDays();
+            PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, PenaltyName.HIRE);
+            if (penaltyCharge != null) {
+                return penaltyCharge.getPenaltyStartAge();
+            } else {
+                return 0;
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception in getting current penalty band: ", ex);
+            return 0;
+        }
+
+    }
+
+    @Override
+    public int getNextPenaltyBand(Claim claim) {
+        try {
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
+            PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+            List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
+            int penaltyAlrtQty = 0;
+            if (claim.getInvoice() != null) {
+                penaltyAlrtQty = claim.getInvoice().getPenaltyAlertQty() >= 0 ? claim.getInvoice().getPenaltyAlertQty() : penaltyCharges.size() - 1;
+            }
+            return penaltyCharges.get(penaltyAlrtQty).getPenaltyStartAge();
+        } catch (Exception ex) {
+            LOG.error("Exception in getting next penalty band: ", ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int getFirstPenaltyBand(Claim claim) {
+        try {
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
+            PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+            return getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE).get(0).getPenaltyStartAge();
+        } catch (Exception ex) {
+            LOG.error("Exception in getting first available penalty band: ", ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int getLastPenaltyBand(Claim claim) {
+        try {
+            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+            PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
+            List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
+            int size = penaltyCharges.size();
+            return penaltyCharges.get(size - 1).getPenaltyStartAge();
+        } catch (Exception ex) {
+            LOG.error("Exception in getting last available penalty band: ", ex);
+            return 0;
+        }
+    }
 }

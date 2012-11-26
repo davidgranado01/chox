@@ -1,32 +1,34 @@
 
 package idas.chox.core.services;
 
-import idas.chox.core.model.Claim;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import idas.chox.core.model.Invoice;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.PenaltyCharge;
-import idas.chox.core.model.PenaltyCharge.PenaltyType;
-import java.math.BigDecimal;
+import static idas.chox.core.model.PenaltyCharge.*;
 
 
 public interface PenaltyChargeService {
    
-    public List<PenaltyCharge> getHirePenaltyPercentages(Date hireStart, PenaltyType penaltyType);
+    public List<PenaltyCharge> getPenaltyCharges(Date hireStart, PenaltyType penaltyType, PenaltyName penaltyName);
     
-    public List<PenaltyCharge> getRepairPenaltyPercentages(PenaltyType penaltyType);
+    public PenaltyCharge getPenaltyCharge(Date hireStart, int penaltyAge, PenaltyType penaltyType, PenaltyName penaltyName);
+     
+    public String getPenaltyPercentageDsc(Claim claim, PenaltyName penaltyName);
     
-    public String getHirePenaltyPercentage(Date hireStart, Invoice inv, PenaltyType penaltyType);
+    public BigDecimal getPenaltyPercentageVal(Claim claim, PenaltyName penaltyName);
+             
+    public BigDecimal calculatePenaltyChargeVal(Claim claim, String Percentage, PenaltyName penaltyName);
     
-    public String getRepairPenaltyPercentage(Invoice inv, PenaltyType penaltyType);
+    public BigDecimal calculatePenaltyChargeVal(Claim claim, PenaltyName penaltyName);
     
-    public BigDecimal calculateHirePenaltyCharge(Invoice inv, String hirePercentage, Date hireStart, PenaltyType penaltyType);
+    public int getNextPenaltyBand(Claim claim);
     
-    public BigDecimal calculateHirePenaltyCharge(Claim claim);
+    public int getFirstPenaltyBand(Claim claim);
+            
+    public int getLastPenaltyBand(Claim claim);
     
-    public BigDecimal calculateRepairPenaltyCharge(Invoice inv, String repairPercentage, PenaltyType penaltyType);
-    
-    public BigDecimal calculateRepairPenaltyCharge(Claim claim);
-    
+    public int calculateCurrentPenaltyBand(Claim claim);
 }

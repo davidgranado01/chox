@@ -232,6 +232,15 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal hireInsurerDiscountCalculated = BigDecimal.ZERO;
     private BigDecimal repairInsurerDiscountCalculated = BigDecimal.ZERO;
     private BigDecimal totalInsurerDiscountCalculated = BigDecimal.ZERO;
+    private int penaltyBand;
+
+    public int getPenaltyBand() {
+        return penaltyBand;
+    }
+
+    public void setPenaltyBand(int penaltyBand) {
+        this.penaltyBand = penaltyBand;
+    }
 
     public BigDecimal getHireInsurerDiscountCalculated() {
         return hireInsurerDiscountCalculated;
@@ -1308,9 +1317,9 @@ public class Invoice extends Entity implements Serializable {
         this.penaltyAlertQty = penaltyAlertQty == null ? 0 : penaltyAlertQty;
     }
 
-    public long getInvoicedDays() {
+    public int getInvoicedDays() {
         // long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getDateInvoiced(), new Date()) + 1;
-        long dateDiff = DateHelper.getNumberOfDaysBetween(getAutoPenaltyStart(), new Date()) + 1;
+        int dateDiff = DateHelper.getNumberOfDaysBetween(getAutoPenaltyStart(), new Date()) + 1;
         return dateDiff;
     }
 

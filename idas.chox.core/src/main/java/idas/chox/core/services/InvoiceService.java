@@ -21,9 +21,7 @@ public interface InvoiceService {
     
     public void deleteOriginalInvoice(Invoice invoice);
 
-    int getNoOfRejectedInvoices(Integer reasonOfRejectionId);
-    
-    public int calculatePenaltyAlertQty(Invoice inv);
+    public int getNoOfRejectedInvoices(Integer reasonOfRejectionId);
     
     public boolean updateAutomaticPenaltyCharge(Claim claim);
     

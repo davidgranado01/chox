@@ -1262,7 +1262,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public long getInvoicedDays() {
+    public int getInvoicedDays() {
         // long dateDiff = DateHelper.getNumberOf24HourPeriodsBetween(getDateInvoiced(), new Date()) + 1;
         return invoice.getInvoicedDays();
 

@@ -1,20 +1,23 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.BreBand;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.util.DateHelper;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
@@ -22,6 +25,11 @@ public class ClaimRevert extends BaseActivity {
     private ClaimService claimService;
     private TaskService taskService;
     private BreBandService breBandService;
+    private PenaltyChargeService penaltyChargeService;
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
@@ -119,7 +127,7 @@ public class ClaimRevert extends BaseActivity {
             }
 
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges()
-                    && claim.getInvoice().getInvoicedDays() > 30 && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
+                    && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))
                     || (originalStatus.equals(ClaimStatus.CLAIM_CLOSED) && (

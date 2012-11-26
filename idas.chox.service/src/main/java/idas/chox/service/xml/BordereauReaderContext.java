@@ -8,6 +8,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.validations.DataValidationParameter;
@@ -26,7 +27,16 @@ public class BordereauReaderContext {
     private SecurityInfoProvider securityInfoProvider;
     private ClaimObjectService claimObjectService;
     private InsurerDiscountService insurerDiscountService;
+    private PenaltyChargeService penaltyChargeService;
 
+    public PenaltyChargeService getPenaltyChargeService() {
+        return penaltyChargeService;
+    }
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
+    
     public InsurerDiscountService getInsurerDiscountService() {
         return insurerDiscountService;
     }
