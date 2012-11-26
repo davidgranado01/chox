@@ -568,8 +568,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
                 int penaltyBand = penaltyChargeService.calculateCurrentPenaltyBand(claim);
                 int lastPenaltyBand = penaltyChargeService.getLastPenaltyBand(claim);
-                invoice.setPenaltyAlertQty(penaltyBand >= lastPenaltyBand ? -1 : invoice.getPenaltyAlertQty()+1);
-                invoice.setPenaltyBand(penaltyChargeService.getNextPenaltyBand(claim));
+                int nextPenaltyBand = penaltyChargeService.getNextPenaltyBand(claim);
+                invoice.setPenaltyBand(penaltyBand >= lastPenaltyBand ? -1 : nextPenaltyBand);
             }
             LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
             service.updateClaim(claim);
@@ -598,12 +598,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             if (allowPenaltyCharges && invoice != null
                     && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
-                    && invoice.getPenaltyAlertQty() > -1
+                    && invoice.getPenaltyBand() > -1
                     && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
                     && (!claim.isAutoPenaltyChargeEnabled()
                     || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim))))) {
-                result = invoice.getInvoicedDays() > penaltyChargeService.getNextPenaltyBand(claim);
+                result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
             }
         }
         return result;
@@ -2279,7 +2279,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getRepairPenaltyAmount() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", Boolean.TRUE);
-        jsonObject.put("repairPenaltyAmount", penaltyChargeService.calculatePenaltyChargeVal(claim, hirePenaltyPercentage, PenaltyName.REPAIR));
+        jsonObject.put("repairPenaltyAmount", penaltyChargeService.calculatePenaltyChargeVal(claim, repairPenaltyPercentage, PenaltyName.REPAIR));
         setJsonData(jsonObject.toString());
         return SUCCESS;
     }

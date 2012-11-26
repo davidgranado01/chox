@@ -150,6 +150,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return penaltyCharge;
     }
 
+    /*
+     *  Returns the String value of the penalty percentage. 
+     */
     @Override
     public String getPenaltyPercentageDsc(Claim claim, PenaltyName penaltyName) {
 
@@ -157,7 +160,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
 
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1 || inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+        if ((penaltyName.equals(PenaltyName.HIRE) && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) 
+                || (penaltyName.equals(PenaltyName.REPAIR) && inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1)) {
 
             int dateDiff = inv.getInvoicedDays();
             PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, penaltyName);
@@ -171,6 +175,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return "0%";
     }
 
+    /*
+     *  Returns the BigDecimal value for the mapped string type penalty percentage.
+     */
     @Override
     public BigDecimal getPenaltyPercentageVal(Claim claim, PenaltyName penaltyName) {
 
@@ -178,7 +185,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
 
-        if (inv.getHireNet().compareTo(BigDecimal.ZERO) == 1 || inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1) {
+        if ((penaltyName.equals(PenaltyName.HIRE) && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) 
+                || (penaltyName.equals(PenaltyName.REPAIR) && inv.getRepairNet().compareTo(BigDecimal.ZERO) == 1)) {
 
             int dateDiff = inv.getInvoicedDays();
             PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, penaltyName);
@@ -192,6 +200,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return BigDecimal.ZERO.setScale(2);
     }
 
+    /*
+     *  Calculate the penalty amount for the given claim.
+     */
     @Override
     public BigDecimal calculatePenaltyChargeVal(Claim claim, PenaltyName penaltyName) {
 
@@ -205,6 +216,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return BigDecimal.ZERO.setScale(2);
     }
 
+    /*
+     *  Calculate the penalty amount using the provided penalty percentage for the given claim.
+     */
     @Override
     public BigDecimal calculatePenaltyChargeVal(Claim claim, String Percentage, PenaltyName penaltyName) {
 
@@ -229,6 +243,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return BigDecimal.ZERO.setScale(2);
     }
 
+    /*
+     *  Calculate the current penalty band by looking at the age of the invoice.
+     */
     @Override
     public int calculateCurrentPenaltyBand(Claim claim) {
         try {
@@ -249,23 +266,39 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
 
     }
 
+    /*
+     *  Get the next penalty band. 
+     */
     @Override
     public int getNextPenaltyBand(Claim claim) {
         try {
             Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
-            int penaltyAlrtQty = 0;
-            if (claim.getInvoice() != null) {
-                penaltyAlrtQty = claim.getInvoice().getPenaltyAlertQty() >= 0 ? claim.getInvoice().getPenaltyAlertQty() : penaltyCharges.size() - 1;
+            Invoice inv = claim.getInvoice();
+            int dateDiff = 0;
+            if (inv != null) {
+                dateDiff = inv.getInvoicedDays();
             }
-            return penaltyCharges.get(penaltyAlrtQty).getPenaltyStartAge();
+            PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, PenaltyName.HIRE);
+            if (penaltyCharge != null) {
+                for (PenaltyCharge charge : penaltyCharges) {
+                    if (charge.getPenaltyStartAge() > penaltyCharge.getPenaltyStartAge()) {
+                        return charge.getPenaltyStartAge();
+                    }
+                }
+                return getLastPenaltyBand(claim);
+            }
+            return getFirstPenaltyBand(claim);
         } catch (Exception ex) {
             LOG.error("Exception in getting next penalty band: ", ex);
             return 0;
         }
     }
 
+    /*
+     *  Returns the first penalty band for the given claim.
+     */
     @Override
     public int getFirstPenaltyBand(Claim claim) {
         try {
@@ -278,6 +311,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         }
     }
 
+    /*
+     *  Returns the last penalty band for the given claim.
+     */
     @Override
     public int getLastPenaltyBand(Claim claim) {
         try {

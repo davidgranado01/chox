@@ -70,7 +70,7 @@
         <property column="repair_penalty_charge" name="repairPenaltyChargeOriginal"/>
         <property column="repair_penalty_percentage" name="repairPenaltyPercentageOriginal"/>
         <property column="total_penalty_charge" name="totalPenaltyChargeOriginal"/>
-        <property column="penalty_alert_qty" name="penaltyAlertQtyOriginal"/>
+        <property column="penalty_band" name="penaltyBandOriginal"/>
         
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         

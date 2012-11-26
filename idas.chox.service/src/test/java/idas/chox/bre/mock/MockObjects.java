@@ -256,7 +256,7 @@ public class MockObjects {
         invoice.setDiscount(new BigDecimal(0));
         invoice.setExcessAmountCollected(new BigDecimal(0));
 //        invoice.setOriginalFullTotalToPay(new BigDecimal(0));
-        invoice.setPenaltyAlertQty(0);
+//        invoice.setPenaltyAlertQty(0);
         invoice.setHirePenaltyCharge(new BigDecimal(0));
         invoice.setVatAmountCollected(new BigDecimal(0));
         

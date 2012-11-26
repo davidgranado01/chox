@@ -75,11 +75,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private String daysWithCHOForReview;
     private String daysWithInsurerForReview;
     private String daysAwaitingLiabilityResolution;
-    private PenaltyChargeService penaltyChargeService;
-
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -599,8 +594,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getRepairPenaltyChargeOriginal();
     }
 
-    public Integer getPenaltyAlertQtyOriginal() {
-        return invoiceOriginal.getPenaltyAlertQtyOriginal();
+    public Integer getPenaltyBandOriginal() {
+        return invoiceOriginal.getPenaltyBandOriginal();
     }
 
     public BigDecimal getTotalToPayOriginal() {
@@ -1252,13 +1247,13 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
-    public Integer getPenaltyAlertQty() {
-        return invoice.getPenaltyAlertQty();
+    public Integer getPenaltyBand() {
+        return invoice.getPenaltyBand();
     }
 
-    public void setPenaltyAlertQty(Integer penaltyAlertQty) {
+    public void setPenaltyBand(Integer penaltyBand) {
         if (actionSelected != reset && invoice != null) {
-            invoice.setPenaltyAlertQty(penaltyAlertQty);
+            invoice.setPenaltyBand(penaltyBand);
         }
     }
 

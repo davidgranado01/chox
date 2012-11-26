@@ -61,7 +61,7 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal repairPenaltyChargeOriginal;
     private String repairPenaltyPercentageOriginal;
     private Date repairPenaltyChargeAppliedDateOriginal;
-    private Integer penaltyAlertQtyOriginal;
+    private int penaltyBandOriginal;
     private BigDecimal totalPenaltyChargeOriginal;
 //    private BigDecimal originalFullTotalToPayOriginal;
     private BigDecimal totalToPayOriginal;
@@ -373,12 +373,12 @@ public class InvoiceOriginal extends Entity implements Serializable {
 //            this.originalTotalToPayOriginal = originalTotalToPayOriginal;
 //    }
 
-    public Integer getPenaltyAlertQtyOriginal() {
-        return penaltyAlertQtyOriginal;
+    public int getPenaltyBandOriginal() {
+        return penaltyBandOriginal;
     }
 
-    public void setPenaltyAlertQtyOriginal(Integer penaltyAlertQtyOriginal) {
-            this.penaltyAlertQtyOriginal = penaltyAlertQtyOriginal;
+    public void setPenaltyBandOriginal(int penaltyBandOriginal) {
+            this.penaltyBandOriginal = penaltyBandOriginal;
     }
 
     public BigDecimal getRepairGrossOriginal() {
