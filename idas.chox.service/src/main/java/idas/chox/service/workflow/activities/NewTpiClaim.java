@@ -46,8 +46,10 @@ public class NewTpiClaim extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")) {
-            throw new AccessDeniedException("Not in correct role to create a claim.");
+        // Note that although CHOX Admin cannot upload a TPI claim, they can re-submit a claim which activity
+        // is also chained to this one for TPI claim types
+        if (!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to create a TPI claim.");
         }
     }
 
