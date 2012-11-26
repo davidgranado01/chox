@@ -32,12 +32,6 @@ html>body #chox-admin-right-col
     float: left;
 }
 
-#queueOrgFilter {
-    color: #15428B;
-    font: 12px tahoma,arial,verdana,sans-serif;
-    margin-top: 4px
-}
-
 #queueClaimTypeFilter {
     color: #15428B;
     font: 12px tahoma,arial,verdana,sans-serif;
@@ -1661,6 +1655,8 @@ br.smallBr
 }
 
 #queueOrgFilter {
+    color: #15428B;
+    font: 12px tahoma,arial,verdana,sans-serif;
     float: left;
     left: 36px;
     position: relative;

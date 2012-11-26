@@ -9,7 +9,7 @@
     Ext.onReady(function(){
     
     <s:if test="isCHO" > 
-            document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Insurer Filter : &nbsp;&nbsp;';
+            document.getElementById('queueOrgFilter').innerHTML = 'Insurer Filter : &nbsp;&nbsp;';
 
             var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',

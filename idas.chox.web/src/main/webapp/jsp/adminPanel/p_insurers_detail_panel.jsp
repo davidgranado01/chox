@@ -417,6 +417,16 @@
             $("#subscriberTr").show();
         else
             $("#subscriberTr").hide();
+        
+        if($('form#formUpdateInsurerDetail input[name="allowFixedFeeClaims"]:checked').val())
+            $("#fixedFeeTr").show();
+        else
+            $("#fixedFeeTr").hide();
+        
+        if($('form#formUpdateInsurerDetail input[name="uploadEnabled"]:checked').val())
+            $("#insurerManualTr").show();
+        else
+            $("#insurerManualTr").hide();
     }
     
     function getInsurerAdminTabIndex(){
@@ -461,6 +471,7 @@
         var claimOwnershipEnable = doOwnershipCheck();
         var supervisorEscalation = doSupervisorEscalationCheck();
         doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable);
+        displayAutoRoutingTpiAndSusbscriberFields();
 
         if(!claimWorkgroupEnable && !claimOwnershipEnable){
             $("#ClaimLockedHolder").hide();
@@ -778,7 +789,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Allow Fixed Fee Claims</label>
-                                        <s:checkbox name="allowFixedFeeClaims" value="allowFixedFeeClaims"/>
+                                        <s:checkbox name="allowFixedFeeClaims" value="allowFixedFeeClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
                                     </div>
                                 </td>
                             </tr>
@@ -845,7 +856,7 @@
                                </tr>
                                <tr>
                                     <td colspan=2>
-                                        <div class="chox-form-item" >
+                                        <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
                                             <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
@@ -855,7 +866,7 @@
                                     <td colspan="2">
                                     <br/>
                                         <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" style="width:320px">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types:</label>
+                                            <label class="chox-form-std-label1" style="width:320px">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types (note an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route the invoice):</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -901,7 +912,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="fixedFeeTr">
                                     <td width="40%">
                                         <div class="chox-form-item" id="fixedFeeHolder">
                                             <label class="chox-form-std-label">Fixed Fee</label>
@@ -929,7 +940,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="insurerManualTr">
                                     <td width="40%">
                                         <div class="chox-form-item" id="insurerManualOwnershipHolder">
                                             <label class="chox-form-std-label">Insurer Manual</label>
@@ -1011,7 +1022,7 @@
                                 </div>
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label">Enable IP Whitelist</label>
-                                    <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="doPageLoadCheck()" />
+                                    <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="()" />
                             </div>
                             
                             <div class="chox-form-item">

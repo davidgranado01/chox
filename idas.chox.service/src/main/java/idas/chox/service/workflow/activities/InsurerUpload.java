@@ -49,14 +49,14 @@ public class InsurerUpload extends BaseActivity {
         LOG.debug("Insurer Upload activity: finished beforeProcess");
         
         NodeHelper nodeHelper = new NodeHelper();
+        
         if (ClaimType.isInsurerUpload(claim.getClaimType())
-                && claim.getInsurer().getInsurerManualRegexExpression() != null 
-                && !claim.getInsurer().getInsurerManualRegexExpression().equals("")
-                && claimNumber != null 
-                && !claimNumber.equals("")
                 && claim.getInsurer().isInsurerManualAutoRoutingEnable()
-                && !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase())) {
-            autoRoutedInvoice = true; 
+                && (claimNumber == null 
+                    || claim.getInsurer().getInsurerManualRegexExpression() == null
+                    || claim.getInsurer().getInsurerManualRegexExpression().isEmpty()
+                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
         }
         
     }
@@ -143,18 +143,18 @@ public class InsurerUpload extends BaseActivity {
         
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+        if (autoRoutedInvoice && ClaimType.isInsurerUpload(claim.getClaimType())) {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                 //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
                 //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
                 
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null && autoRoutedInvoice) {
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                     claim.setWorkgroupOriginal(claim.getWorkgroup());
                     claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 }
 
                 //re-assign claim
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null && autoRoutedInvoice) {
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
                     claim.setClaimOwnerOriginal(claim.getClaimOwner());
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                 }
