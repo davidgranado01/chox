@@ -126,6 +126,11 @@ public class NewInvoice extends BaseActivity {
                 claim.getVehicleHire().setHpiError(ex.getMessage());
             }
 
+            if (claim.getBreBand() == null) {
+                BreBand choBand = getWorkflowContext().getBreBandService().getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
+
 
             // If CHO has automatic Daily Rate Charge Adjustment activated then check daily rate
             if (claim.getChorganisation().isAdjustDailyRateCharge() && claim.getBreBand().isHasCalculatedCorrectDailyRate()) {

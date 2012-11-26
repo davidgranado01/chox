@@ -2416,14 +2416,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else if (getAuthenticatedUser().isAnInsurer() && getAuthenticatedUser().getInsurer().isSupervisorEnable()
                 && isInsurerAllowedForSupervisorQueue()
                 && isEscalatedToSupervisor(getAuthenticatedUser().getInsurer().getDaysBeforeEscalated(), getAuthenticatedUser().getInsurer().getTimesInStatusContested())) {
-         LOG.info("Claim escalated to supervisor and visible to insurer.");
-           return true;
+            LOG.debug("Claim escalated to supervisor and visible to insurer.");
+            return true;
         } else if (getAuthenticatedUser().isCHOXAdmin() && claim.getInsurer() != null && claim.getInsurer().isSupervisorEnable()
                 && isEscalatedToSupervisor(claim.getInsurer().getDaysBeforeEscalated(), claim.getInsurer().getTimesInStatusContested())) {
-         LOG.info("Claim escalated to supervisor and visible to CHOX Admin.");
+            LOG.debug("Claim escalated to supervisor and visible to CHOX Admin.");
             return true;
         }
-        LOG.info("Claim not escalated to supervisor.");
+        LOG.debug("Claim not escalated to supervisor.");
         return false;
     }
 
