@@ -123,10 +123,10 @@ IF ((claimRecord.penalty_start_age < 90) OR (claimRecord.penalty_type = 'SUBSCRI
      AND ipc.penalty_start_date <= hireStartDate
      AND pcc.penalty_start_date <= hireStartDate
      AND (ipc.penalty_start_age > claimRecord.penalty_start_age OR ipc.id = pcc.id) 
-     AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = 'DEFAULT' AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = ipc.penalty_start_age AND pc1.penalty_start_date > ipc.penalty_start_date)
-     AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = 'DEFAULT' AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = pcc.penalty_start_age AND pc1.penalty_start_date > pcc.penalty_start_date)
-     AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = 'DEFAULT' AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND (pc2.penalty_start_age > claimRecord.penalty_start_age OR pc2.id = pcc.id) AND pc2.penalty_start_age < ipc.penalty_start_age)
-     AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = 'DEFAULT' AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND pc2.penalty_start_age > pcc.penalty_start_age)
+     AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = ict.penalty_type AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = ipc.penalty_start_age AND pc1.penalty_start_date > ipc.penalty_start_date)
+     AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = ict.penalty_type AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = pcc.penalty_start_age AND pc1.penalty_start_date > pcc.penalty_start_date)
+     AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = ict.penalty_type AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND (pc2.penalty_start_age > claimRecord.penalty_start_age OR pc2.id = pcc.id) AND pc2.penalty_start_age < ipc.penalty_start_age)
+     AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = ict.penalty_type AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND pc2.penalty_start_age > pcc.penalty_start_age)
      AND claimRecord.invoice_id = invoice.id;
 
  -- Insurer Discount will be applied to the claim
@@ -309,10 +309,10 @@ ELSE -- Invoice aged more than 90 days and not one of (SUBSCRIBER, FIXEDFEE) 'Pe
       AND ipc.penalty_start_date <= hireStartDate
       AND pcc.penalty_start_date <= hireStartDate
       AND (ipc.penalty_start_age > claimRecord.penalty_start_age OR ipc.id = pcc.id) 
-      AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = 'DEFAULT' AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = ipc.penalty_start_age AND pc1.penalty_start_date > ipc.penalty_start_date)
-      AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = 'DEFAULT' AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = pcc.penalty_start_age AND pc1.penalty_start_date > pcc.penalty_start_date)
-      AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = 'DEFAULT' AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND (pc2.penalty_start_age > claimRecord.penalty_start_age OR pc2.id = pcc.id) AND pc2.penalty_start_age < ipc.penalty_start_age)
-      AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = 'DEFAULT' AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND pc2.penalty_start_age > pcc.penalty_start_age)
+      AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = ict.penalty_type AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = ipc.penalty_start_age AND pc1.penalty_start_date > ipc.penalty_start_date)
+      AND NOT EXISTS (SELECT pc1.id FROM penalty_charge pc1 WHERE pc1.penalty_type = ict.penalty_type AND pc1.hire_penalty_percentage_dsc IS NOT NULL AND pc1.penalty_start_date <= hireStartDate AND pc1.penalty_start_age = pcc.penalty_start_age AND pc1.penalty_start_date > pcc.penalty_start_date)
+      AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = ict.penalty_type AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND (pc2.penalty_start_age > claimRecord.penalty_start_age OR pc2.id = pcc.id) AND pc2.penalty_start_age < ipc.penalty_start_age)
+      AND NOT EXISTS (SELECT pc2.id FROM penalty_charge pc2 WHERE pc2.penalty_type = ict.penalty_type AND pc2.hire_penalty_percentage_dsc IS NOT NULL AND pc2.penalty_start_age > pcc.penalty_start_age)
       AND claimRecord.invoice_id = invoice.id;
 
 
