@@ -97,8 +97,7 @@ public class InvoicePaymentLogged extends BaseActivity {
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                    || ClaimType.isFixedFee(claim.getClaimType()) ) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) ) {
                 invoice.setHireGrossPaid(invoice.getHireGross());
                 invoice.setRepairGrossPaid(invoice.getRepairGross());
                 invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());

@@ -200,6 +200,13 @@
         }           
     );
 
+        $.validator.addMethod(
+        "mustBeFullLiabilityOrSplit",
+        function(value, element) {
+            return (value == 1) || (value == 5);
+        }           
+    );
+
         $("form#formAcknowledgeAction").validate(
         {
 
@@ -304,7 +311,6 @@
             dateValue.val($.trim(dateValue.val()));
     	
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-//        $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
@@ -319,7 +325,8 @@
             validationCheck=true;
         }
         
-        var subscriberFullLiability = <s:property value="fullLiability"/>;
+        var subscriberLiability = <s:property value="fullLiability"/>;
+        var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
 
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
@@ -334,11 +341,18 @@
             if(validationCheck){
                 supportingLiabilityCheck(liabilityStatus);
             }
-        }else if(action=='acknowledgeClaim' && subscriberFullLiability){
+        }else if(action=='acknowledgeClaim' && subscriberLiability){
 
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 mustBeFullLiabilityAcepted: true,
-                messages: {mustBeFullLiabilityAcepted: "Subscriber & Fixed Fee claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
+                messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
+            });                
+            
+        }else if(action=='acknowledgeClaim' && fixedFeeLiability){
+
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                mustBeFullLiabilityOrSplit: true,
+                messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted or Liability Split."}
             });                
             
         }else if(action=='acknowledgeClaim' && validationCheck){
