@@ -77,10 +77,14 @@ public class InvoiceRejectionContest extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
-
+        LOG.debug("Claim saved and transaction logged.");
         if (getChainActivity() != null) {
+            LOG.debug("Processing chained activity...");
             getChainActivity().setWorkflowContext(getProcessContext());
             getChainActivity().processInBatch(claim);
+            LOG.debug("Finished Processing chained activity in InvoiceRejectionContest");
+        } else {
+            LOG.debug("Finished afterProcess.");
         }
     }
 

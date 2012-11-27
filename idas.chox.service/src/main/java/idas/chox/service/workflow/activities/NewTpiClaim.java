@@ -24,22 +24,21 @@ public class NewTpiClaim extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if (claim.getStatus() == null) {
-            if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
+        if (claim.getStatus() == null && claim.getHireMonitoringDetail() != null
+                    && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
-            }
-            
-            String claimNumber = claim.getThirdParty().getClaimReference();
+        }
 
-            NodeHelper nodeHelper = new NodeHelper();
-            if (ClaimType.isTPI(claim.getClaimType())
+        String claimNumber = claim.getThirdParty().getClaimReference();
+
+        NodeHelper nodeHelper = new NodeHelper();
+        if (ClaimType.isTPI(claim.getClaimType())
                     && claim.getInsurer().isTpiAutoRoutingEnable() 
                     && (claimNumber == null || claim.getInsurer().getTpiRegexExpression() == null
                         || claim.getInsurer().getTpiRegexExpression().isEmpty()
                         || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase()))) {
                 autoRoutedInvoice = true;
             }
-        }
     }
 
     @Override
@@ -62,7 +61,10 @@ public class NewTpiClaim extends BaseActivity {
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
 
+        LOG.debug("New TPI Claim activity with claim '{}': status='{}', TPI status='{}'",
+                new Object[] {claim.getChoReference(), claim.getStatus(), claim.getTpiClaimStatus()});
         if (claim.getStatus() == null) {
+            LOG.debug("No claim status for TPI claim - must be new TPI claim, so setting to 'AwaitingInvoiceData'");
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
             claim.setStatusModifiedDate(new Date());
             if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
@@ -87,20 +89,23 @@ public class NewTpiClaim extends BaseActivity {
         }
 
         if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-
+            LOG.debug("TPI Claim status is InvoiceDataCalculationsIncorrect.");
             // move claim to next status
             super.setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(super.getCurrentStatus());
             claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
+            LOG.debug("TPI Claim status is InvoiceApprovedByBRE.");
             
             if (!autoRoutedInvoice) {
+                LOG.debug("Invoice not auto-routed so moving to InvoiceUnassigned");
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
             } else {
+                LOG.debug("Auto-routing invoice and moving to AwaitingInvoiceData");
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                         claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 }
@@ -130,6 +135,7 @@ public class NewTpiClaim extends BaseActivity {
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)
                     || claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
+            LOG.debug("TPI Claim status is InvoiceEscalated or InvoiceEscalatedTolaimsHandler - moving to InvoiceUnassigned");
             // move claim to next status
             super.setCurrentStatus(claim.getStatus());
             claim.setPreviousStatus(super.getCurrentStatus());
