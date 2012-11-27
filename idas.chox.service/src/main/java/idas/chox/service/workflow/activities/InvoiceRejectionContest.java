@@ -1,16 +1,18 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.List;
+
 import org.springframework.security.access.AccessDeniedException;
+import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
-import org.hibernate.util.StringHelper;
 
 public class InvoiceRejectionContest extends BaseActivity {
 
@@ -77,10 +79,14 @@ public class InvoiceRejectionContest extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
-
+        LOG.debug("Claim saved and transaction logged.");
         if (getChainActivity() != null) {
+            LOG.debug("Processing chained activity...");
             getChainActivity().setWorkflowContext(getProcessContext());
             getChainActivity().processInBatch(claim);
+            LOG.debug("Finished Processing chained activity in InvoiceRejectionContest");
+        } else {
+            LOG.debug("Finished afterProcess.");
         }
     }
 

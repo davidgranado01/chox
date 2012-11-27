@@ -1,18 +1,21 @@
 package idas.chox.service.workflow;
 
+import java.io.File;
+import java.util.List;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Transactional;
+import org.junit.Test;
+import org.w3c.dom.Document;
+
+import junit.framework.Assert;
+
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.io.File;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.util.DocumentHelper;
-import java.util.List;
-import junit.framework.Assert;
-import org.junit.Test;
-import org.w3c.dom.Document;
 
 public class NewInvoiceTest extends BaseTest{
 
@@ -53,10 +56,9 @@ public class NewInvoiceTest extends BaseTest{
     }
 
     private List<ClaimResult> loadBordereauResult(String fileName) throws Exception {
-        List<ClaimResult> claimResults = null;
         File file = new ClassPathResource(fileName).getFile();
         Document document = DocumentHelper.getDocumentFromFile(file);
-        claimResults = this.uploadClaimXMLService.formClaimResults(document);
+        List<ClaimResult> claimResults = this.uploadClaimXMLService.formClaimResults(document);
         return claimResults;
     }
 }

@@ -1275,8 +1275,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         ClaimType claimType = claim.getClaimType();
         if (invoice != null) {
             if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType) && liabilityStatus != null
-                    && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+                    && liabilityStatus != null && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                             || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();

@@ -37,19 +37,13 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
                 }else{
                     narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee are not 0.";
                 }
-
             } else {
-
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
                 narrative = "Rule does not apply to CHOs in the DA scheme";
-
             }
-
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-
         }
 
         return res;
@@ -68,9 +62,6 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        // CARLSON @ 20091012
-        // HandlingAmountAndDeductionBothEqualZeroForNonDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
-        // return ClaimStatus.INVOICE_ESCALATED;
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

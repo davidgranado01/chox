@@ -1,5 +1,8 @@
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -7,8 +10,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.util.CHOBandCalcHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(ActualHireDaysDoesNotExceedTotalLossInspection.class);
@@ -34,7 +35,6 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 if (success) {
                     narrative = "";
                 }else{
-//                    narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
                     narrative = "The number of hire days billed by the CHO (" + claim.getVehicleHire().getDays() +" days) exceeds the allowable days threshold (" + bandCalc.getTotalLossInspectionDays() + " days) for total loss hires.";
                 }
 

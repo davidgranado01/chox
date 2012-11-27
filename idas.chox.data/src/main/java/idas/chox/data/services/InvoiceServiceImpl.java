@@ -256,9 +256,9 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
         if (claim.getInsurer().isInsurerDiscountEnable()) {
             Invoice inv = claim.getInvoice();
-            if (inv.getCreatedDate() == null)
+            if (inv.getCreatedDate() == null) {
                 inv.setCreatedDate(new Date());
-            BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
+            }
             BigDecimal totalGrossInsurerDiscountAmount = BigDecimal.ZERO;
             BigDecimal repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
             BigDecimal hireGrossInsurerDiscountAmount = BigDecimal.ZERO;
@@ -322,7 +322,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 }
             }
             if (hireGrossInsurerDiscountEnabled) {
-                hireGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isHireGrossDiscountAppliedToPenalties) {
                     hireGrossInsurerDiscountAmount = (inv.getHireGross().add(inv.getHirePenaltyCharge())).multiply(hireGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                     LOG.debug("Calculated hireGrossInsurerDiscountAmount ((hireGross+hirePenalty)*(hireGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getHireGross(),inv.getHirePenaltyCharge(),hireGrossInsurerDiscountPercentage,hireGrossInsurerDiscountAmount});
@@ -347,7 +346,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             }
 
             if (repairGrossInsurerDiscountEnabled) {
-                repairGrossInsurerDiscountAmount = BigDecimal.ZERO;
                 if (isRepairGrossDiscountAppliedToPenalties) {
                     repairGrossInsurerDiscountAmount = (inv.getRepairGross().add(inv.getRepairPenaltyCharge())).multiply(repairGrossInsurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                     LOG.debug("Calculated repairGrossInsurerDiscountAmount ((repairGross+repairPenalty)*(repairGrossInsurerDiscountPercentage/100)) (({}+{})*{}/100) = {}", new Object[]{inv.getRepairGross(),inv.getRepairPenaltyCharge(),repairGrossInsurerDiscountPercentage,repairGrossInsurerDiscountAmount});
@@ -374,7 +372,6 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             if (totalGrossInsurerDiscountEnabled) {
 
                 BigDecimal grossValueCombined = BigDecimal.ZERO;
-                BigDecimal totalGrossValue = BigDecimal.ZERO;
 
                 if (hireGrossInsurerDiscountEnabled) {
                     grossValueCombined = inv.getHireGross();
@@ -382,7 +379,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 if (repairGrossInsurerDiscountEnabled) {
                     grossValueCombined = grossValueCombined.add(inv.getRepairGross());
                 }
-                totalGrossValue = inv.getTotalGross().subtract(grossValueCombined);
+                BigDecimal totalGrossValue = inv.getTotalGross().subtract(grossValueCombined);
                 LOG.debug("totalGrossValue (totalGross - grossValueCombined) ({} - {} = {})", new Object[]{inv.getTotalGross(),grossValueCombined,totalGrossValue});
 
                 if (isTotalGrossDiscountAppliedToPenalties) {
@@ -410,7 +407,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
                 LOG.debug("totalGrossInsurerDiscountEnabled = {}", totalGrossInsurerDiscountEnabled);
             }
 
-            insurerDiscountAmount = totalGrossInsurerDiscountAmount.add(repairGrossInsurerDiscountAmount).add(hireGrossInsurerDiscountAmount);
+            BigDecimal insurerDiscountAmount = totalGrossInsurerDiscountAmount.add(repairGrossInsurerDiscountAmount).add(hireGrossInsurerDiscountAmount);
             
             LOG.debug("insurer discount calculated {}.", insurerDiscountAmount);
             LOG.debug("insurer discount original {}.", inv.getInsurerDiscount());

@@ -1,5 +1,16 @@
 package idas.chox.service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.w3c.dom.Document;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
@@ -7,15 +18,6 @@ import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import junit.framework.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
 
 public class ClaimTest extends BaseTest {
 
@@ -30,27 +32,21 @@ public class ClaimTest extends BaseTest {
         Assert.assertNotNull(file);
         
         int totalProcessed = 0;
-        List<ClaimResult> claimResults = null;
         List<String> choReferences = new ArrayList<String>();
         Document document = DocumentHelper.getDocumentFromFile(file);
-        claimResults = this.service.formClaimResults(document);
+        List<ClaimResult>  claimResults = this.service.formClaimResults(document);
         for (ClaimResult claimResult : claimResults) {
             if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
-
                 totalProcessed++;
-
             }
         }
 
         Assert.assertNotNull(claimResults);
-
         Assert.assertTrue(claimResults.size() > 0);
 
 
         Claim c = claimResults.get(0).getClaim();
-
         claimService.updateClaim(claimResults.get(0).getClaim());
-
         Claim savedClaim = claimService.getClaim(c.getId());
 
         Assert.assertNotNull(savedClaim);
@@ -58,12 +54,10 @@ public class ClaimTest extends BaseTest {
         HireMonitoringEcd ecd = new HireMonitoringEcd();
         ecd.setEcdDate(DateHelper.getCurrentDate());
         savedClaim.addHireMonitoringEcd(ecd);
-
         claimService.updateClaim(savedClaim);
-
         Claim savedClaim2 = claimService.getClaim(c.getId());
-        Assert.assertNotNull(savedClaim2);
 
+        Assert.assertNotNull(savedClaim2);
         Assert.assertEquals(1, savedClaim2.getHireMonitoringEcds().size());
         Assert.assertNotNull(savedClaim2.getLatestHireMonitoringEcd());
     }

@@ -3,8 +3,10 @@ package idas.chox.service.bre;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.bre.RulesEngine;

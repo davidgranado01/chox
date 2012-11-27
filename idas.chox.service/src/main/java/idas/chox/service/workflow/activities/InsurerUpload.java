@@ -1,5 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.BreBand;
@@ -13,12 +20,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.xml.util.NodeHelper;
-
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InsurerUpload extends BaseActivity {
 
@@ -103,10 +104,12 @@ public class InsurerUpload extends BaseActivity {
             LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
             claim.getCustomer().setHpiError(ex.getMessage());
         } catch (Exception ex) {
-            if (claim.getCustomer() == null) 
+            if (claim.getCustomer() == null) { 
                 LOG.warn("Error getting HPI info: no customer available.");
-            else
+            }
+            else {
                 LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+            }
             claim.getCustomer().setHpiError(ex.getMessage());
         }
         // Perform HPI check on hire vehicle
@@ -124,10 +127,12 @@ public class InsurerUpload extends BaseActivity {
             LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getVehicleHire().getVehicleRegistration(), ex.getMessage());
             claim.getVehicleHire().setHpiError(ex.getMessage());
         } catch (Exception ex) {
-            if (claim.getVehicleHire() == null) 
+            if (claim.getVehicleHire() == null) { 
                 LOG.warn("Error getting HPI info: no vehicle hire available.");
-            else
+            }
+            else {
                 LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getVehicleHire().getVehicleRegistration(), ex.getMessage());
+            }
             claim.getVehicleHire().setHpiError(ex.getMessage());
         }
 
@@ -169,8 +174,9 @@ public class InsurerUpload extends BaseActivity {
                 claim.setPreviousStatus(super.getCurrentStatus());
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
                 
-                if(isEnableManualInvoiceWorkgroupOwnership)
+                if(isEnableManualInvoiceWorkgroupOwnership) {
                     claim.setManualInvoiceApproved(true);
+                }
                 
             } else {
                 if(isEnableManualInvoiceWorkgroupOwnership){
