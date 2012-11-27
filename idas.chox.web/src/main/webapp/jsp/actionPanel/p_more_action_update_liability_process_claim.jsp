@@ -10,21 +10,12 @@
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
+                <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <input id="claimNumber" name="claimNumber" type="hidden"/>
                 <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden">
-                <%-- <input name="currentVersion" type="hidden" value="<s:property value="version" />" /> --%>
-                <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
-                    <!--
-                    <div class="status-info">
-                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
-                    </div>
-                    -->
                     <div class="status-control-set">
                         <table class="status-table">
-
-
-
                             <tr>
                                 <td width="20%">
                                     <label>Liability Status
@@ -32,9 +23,6 @@
                                     </label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
-                                <!--
-                                <td><div id="liabilityStatusDropDownDiv" ></div></td>
-                                -->
                                 <td>
                                     <s:select
                                         id="liabilityStatus"
@@ -51,16 +39,13 @@
                             </tr>
                             <tr>
                                 <td width="20%">
-                                    <label>
-                                        Liability Percentage Agreed (<b>Insurer</b>)</label>
-
+                                    <label>Liability Percentage Agreed (<b>Insurer</b>)</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
-                                    <label>
-                                        Liability Percentage Agreed (<b>CHO</b>)</label>
+                                    <label>Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
                                     <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
@@ -75,20 +60,14 @@
                                     <label></label>
                                 </td>
                             </tr>
-
                             <tr valign="top">
                                 <td>
-                                    <!--
-                                    <label>Claim Review Notes (Public)</label>
-                                    -->
                                     <label>Supporting Liability Notes (Public)</label>
-
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" cols="80" rows="3" name="claimReviewNotes" id="supportingLiabilityNotesId"><s:property value="claimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
