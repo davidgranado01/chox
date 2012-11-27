@@ -680,7 +680,7 @@ public class Claim extends Entity implements Serializable {
 
     public void setClaimType(ClaimType claimType) {
         this.claimType = claimType;
-        if (!ClaimType.isGTA(claimType)) {
+        if (!ClaimType.isGTA(claimType) && !ClaimType.isFixedFee(claimType) && !ClaimType.isSubscriber(claimType)) {
             autoPenaltyChargeEnabled = false;
         }
     }
