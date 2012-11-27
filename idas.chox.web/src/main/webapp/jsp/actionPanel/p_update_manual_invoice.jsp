@@ -234,7 +234,6 @@ function assignClaimSubmit(){
                                     </td>
                                 </tr>
                             </s:elseif>
-                                
                         </table>
                         <div class="chox-form-submit-result"></div>
                         <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
