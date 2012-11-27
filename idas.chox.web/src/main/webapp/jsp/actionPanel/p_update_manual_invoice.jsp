@@ -27,48 +27,48 @@ Ext.onReady(function(){
 
     // Add claim owner combo box
     if(isInvoiceOwnershipEnable) {
-	    var claimOwnerReader = new Ext.data.JsonReader({
-	        totalProperty: 'totalCount',
-	        root: 'results',
-	        fields:
-	            [
-	            {name:'id'},
-	            {name:'name'}
-	        ]
-	    });
-	
-	    claimOwnerStore = new Ext.data.Store({
-	        proxy : new Ext.data.HttpProxy
-	        ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
-	        reader : claimOwnerReader
-	    });
-	
-	    claimOwnerCombo = new Ext.form.ComboBox({
-	        store: claimOwnerStore,
-	        width: 200,
-	        renderTo: 'claimOwnerComboDiv',
-	        valueField: 'id',
-	        id: 'claimOwnerComboId',
-	        hiddenName: 'claimOwnerId',
-	        displayField:'name',
-	        typeAhead: true,
-	        mode: 'local',
-	        listWidth: 200,
-	        forceSelection: true,
-	        triggerAction: 'all',
-	        emptyText: '--- Please Select ---',
-	        forceSelection : true,
-	        listeners: {
-	            blur: function () {
-	                if(this.getRawValue() == "") {
-	                    this.clearValue(); this.reset();
-	                    claimOwnerId = -1;
-	                    validateComboBox()
-	                }
-	            }
-	        }
-	    });
-	    claimOwnerStore.load({ params : {"workgroupId":-1, "insurerId":insurerId}});
+        var claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'name'}
+            ]
+        });
+    
+        claimOwnerStore = new Ext.data.Store({
+            proxy : new Ext.data.HttpProxy
+            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+            reader : claimOwnerReader
+        });
+    
+        claimOwnerCombo = new Ext.form.ComboBox({
+            store: claimOwnerStore,
+            width: 200,
+            renderTo: 'claimOwnerComboDiv',
+            valueField: 'id',
+            id: 'claimOwnerComboId',
+            hiddenName: 'claimOwnerId',
+            displayField:'name',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 200,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            forceSelection : true,
+            listeners: {
+                blur: function () {
+                    if(this.getRawValue() == "") {
+                        this.clearValue(); this.reset();
+                        claimOwnerId = -1;
+                        validateComboBox()
+                    }
+                }
+            }
+        });
+        claimOwnerStore.load({ params : {"workgroupId":-1, "insurerId":insurerId}});
     }
 
     
@@ -108,7 +108,7 @@ Ext.onReady(function(){
             selectOnFocus: true,
             forceSelection : true,
             listeners: {select: function() {
-            	<s:if test="insurer.enableManualInvoiceOwnership">
+                <s:if test="insurer.enableManualInvoiceOwnership">
                     doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                 </s:if>
                 },
@@ -145,9 +145,9 @@ function validateComboBox(){
     var mesBox = $("#OwnershippAssignmentMessageBox");
     mesBox.empty();
     if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---" && 
-    		isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---"){
-    	mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
-    	mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
+            isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---"){
+        mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
+        mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
         return false;
     } else if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---") {
         mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
@@ -163,7 +163,7 @@ function validateComboBox(){
 }
 
 function assignClaimSubmit(){
-	actionPanel.registerAction("assignManualInvoiceOwner");
+    actionPanel.registerAction("assignManualInvoiceOwner");
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
         $("#updateManualInvoicePaymentForm").submit();
