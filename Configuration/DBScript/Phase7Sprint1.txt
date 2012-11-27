@@ -52,21 +52,13 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ALL', 0, id FROM accessibility WHERE name like 'extraAction.updatePenaltyCharges.ManualInvoice%';
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBREApproved';
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBRERejected';
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceContested';
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceContested';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceUnassigned';
-
-
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBREApproved';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceBRERejected';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceContested';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ManualInvoiceUnassigned';
 
@@ -105,26 +97,6 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ALL', 0, id FROM accessibility WHERE name like 'extraAction.updateLiability.ManualInvoice%';
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBRERejected';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceContested';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_CR', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceUnassigned';
-
-
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBRERejected';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceContested';
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
-	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceUnassigned';
-
-
-INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBRERejected';
@@ -133,6 +105,14 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceUnassigned';
 
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceContested';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_CH', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceUnassigned';
 
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updateLiability.ManualInvoiceBREApproved';
