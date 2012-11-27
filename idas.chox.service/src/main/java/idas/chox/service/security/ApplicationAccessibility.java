@@ -268,12 +268,12 @@ public class ApplicationAccessibility {
                             accessRight = 0;
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                        else if (invoice.getPenaltyAlertQty() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
+                        else if (invoice.getPenaltyBand() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() 
                                             || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim)))) 
-                                    && days > penaltyChargeService.getNextPenaltyBand(claim)) {
+                                    && days > invoice.getPenaltyBand()) {
                                 LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
                                 accessRight = 0;
                             }

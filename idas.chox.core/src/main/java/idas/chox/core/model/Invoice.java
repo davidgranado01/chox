@@ -204,7 +204,6 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal repairPenaltyCharge;
     private String repairPenaltyPercentage;
     private Date repairPenaltyChargeAppliedDate;
-    private Integer penaltyAlertQty;
     private BigDecimal totalPenaltyCharge;
     private ReasonOfRejection reasonOfRejection;
     private BigDecimal totalToPay;
@@ -1307,14 +1306,6 @@ public class Invoice extends Entity implements Serializable {
 
     public void setRepairPenaltyCharge(BigDecimal repairPenaltyCharge) {
         this.repairPenaltyCharge = repairPenaltyCharge == null ? BigDecimal.ZERO : repairPenaltyCharge;
-    }
-
-    public Integer getPenaltyAlertQty() {
-        return penaltyAlertQty == null ? 0 : penaltyAlertQty;
-    }
-
-    public void setPenaltyAlertQty(Integer penaltyAlertQty) {
-        this.penaltyAlertQty = penaltyAlertQty == null ? 0 : penaltyAlertQty;
     }
 
     public int getInvoicedDays() {

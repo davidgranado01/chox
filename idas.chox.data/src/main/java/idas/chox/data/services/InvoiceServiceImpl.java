@@ -179,11 +179,10 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean updateAutomaticPenaltyCharge(Claim claim) {
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
-                + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}, "
-                + "claim.getInvoice().getPenaltyAlertQty()={}, ",
+                + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}",
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
                     !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
-                    claim.getInvoice(), claim.getInvoice().getPenaltyAlertQty()});
+                    claim.getInvoice()});
 
         if (claim.isAutoPenaltyChargeEnabled()
                 && claim.getChorganisation().isAutoPenaltyChargeEnabled()
@@ -226,7 +225,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         inv.setRepairPenaltyPercentage(null);
         inv.setHirePenaltyCharge(BigDecimal.ZERO);
         inv.setRepairPenaltyCharge(BigDecimal.ZERO);
-        inv.setPenaltyAlertQty(0);
+        inv.setPenaltyBand(penaltyChargeService.getFirstPenaltyBand(claim));
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
         if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {

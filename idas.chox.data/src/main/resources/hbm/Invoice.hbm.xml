@@ -78,7 +78,6 @@
         <property column="repair_penalty_charge" name="repairPenaltyCharge"/>
         <property column="repair_penalty_percentage" name="repairPenaltyPercentage"/>
         <property column="total_penalty_charge" name="totalPenaltyCharge"/>
-        <property column="penalty_alert_qty" name="penaltyAlertQty"/>
         <property column="penalty_band" name="penaltyBand"/>
         <property column="hire_penalty_charge_applied_date" name="hirePenaltyChargeAppliedDate"/>
         <property column="repair_penalty_charge_applied_date" name="repairPenaltyChargeAppliedDate"/>
