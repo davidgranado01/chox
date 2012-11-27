@@ -1,16 +1,18 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.List;
+
 import org.springframework.security.access.AccessDeniedException;
+import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
-import org.hibernate.util.StringHelper;
 
 public class InvoiceRejectionContest extends BaseActivity {
 

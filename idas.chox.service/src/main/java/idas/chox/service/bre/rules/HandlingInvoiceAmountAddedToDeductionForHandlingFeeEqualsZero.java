@@ -66,9 +66,6 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        // HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
-        // CARLSON @ 20091012
-        // return ClaimStatus.INVOICE_ESCALATED;
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

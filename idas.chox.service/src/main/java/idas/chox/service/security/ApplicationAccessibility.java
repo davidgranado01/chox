@@ -2,7 +2,6 @@ package idas.chox.service.security;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +15,6 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.AccessibilityHelper;
-import idas.chox.core.util.DateHelper;
 
 public class ApplicationAccessibility {
 
@@ -29,7 +27,6 @@ public class ApplicationAccessibility {
     private ClaimService claimService;
     private BreBandService breBandService;
     private PenaltyChargeService penaltyChargeService;
-    // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // TAB
     // ***************************************
@@ -42,7 +39,6 @@ public class ApplicationAccessibility {
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
-    // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // Button
     // ***************************************
@@ -105,7 +101,6 @@ public class ApplicationAccessibility {
     // ***************************************
     // REPORT
     // ***************************************
-//    public static final String REPORT_WEEKLY_OVERVIEW = "WeeklyOverview";
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
     public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
@@ -239,8 +234,9 @@ public class ApplicationAccessibility {
                         // is already visible so do not display this more action
                         if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
                                 || claim.getInvoice().getInterimPaymentReceived() == null
-                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0)
+                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
                             b = false;
+                        }
 
                     } catch (Exception e) {
                         LOG.debug("thrown exception is {}", e.getMessage());
@@ -724,20 +720,17 @@ public class ApplicationAccessibility {
         Iterator itr = user.getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
-            //log.debug("#######   role "+r.getName());
             if (roleMap.containsKey(r.getName())) {
                 isRoleSpecified = true;
                 short curRight = (Short) roleMap.get(r.getName());
                 if (curRight > right) {
                     right = curRight;
                 }
-                //log.debug("#########  right " + curRight );
             }
         }
 
         //3. return accessibility for all role if specified
         if (!isRoleSpecified && roleMap.containsKey("ALL")) {
-            //return (Short) roleMap.get("ALL");
             right = (Short) roleMap.get("ALL");
         }
 

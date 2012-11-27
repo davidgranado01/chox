@@ -141,8 +141,7 @@ public class ClaimStatus {
     }
 
     public static List<String> getInsurerClosedStatus(boolean isManualInvoiceAllowed){
-        List<String> status = new ArrayList<String>();
-        status = getCompletedStatus(isManualInvoiceAllowed);
+        List<String> status = getCompletedStatus(isManualInvoiceAllowed);
         status.add(INVOICE_PAYMENT_LOGGED);
 
         return status;
@@ -163,16 +162,19 @@ public class ClaimStatus {
     public static List<String> getInsurerOutstandingStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI, boolean usesInsurerUpload) {
         List<String> results = new ArrayList<String>();
 
-        if (usesWorkgroups)
+        if (usesWorkgroups) {
             results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        }
 
-        if (usesClaimOwnership)
+        if (usesClaimOwnership) {
             results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        }
 
         results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
 
-        if (usesFnol)
+        if (usesFnol) {
             results.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+        }
 
         results.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         results.add(ClaimStatus.CLAIM_PENDING);

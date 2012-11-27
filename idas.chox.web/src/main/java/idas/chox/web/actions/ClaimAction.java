@@ -27,7 +27,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import idas.chox.core.model.*;
-import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.claim.ClaimObjectService;
@@ -41,6 +40,8 @@ import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+
+import static idas.chox.core.model.PenaltyCharge.*;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
