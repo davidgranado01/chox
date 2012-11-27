@@ -206,13 +206,13 @@
                 minimumPasswordLength:{ required:true, number:true, min:6, max:32 },
                 maxLoginAttempts:{ required:true, number:true, min:0 },
                 blockTime:{ required:true, number:true, min:0 },
-                blockedMessage:{ required:true},
-                tpiRegexExpression: {checkTpiRegexField: true},
-                gtaRegexExpression: {checkGtaRegexField: true},
-                subscriberRegexExpression: {checkSubscriberRegexField: true},
-                insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: true},
-                insurerManualRegexExpression: {checkInsurerManualRegexField: true},
-                fixedFeeRegexExpression: {checkFixedFeeRegexField: true}
+                blockedMessage:{ required:true}
+//                 tpiRegexExpression: {checkTpiRegexField: true},
+//                 gtaRegexExpression: {checkGtaRegexField: true},
+//                 subscriberRegexExpression: {checkSubscriberRegexField: true},
+//                 insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: true},
+//                 insurerManualRegexExpression: {checkInsurerManualRegexField: true},
+//                 fixedFeeRegexExpression: {checkFixedFeeRegexField: true}
             },
             messages:
                 {
@@ -234,13 +234,13 @@
                 minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" },
                 maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
                 blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"},
-                blockedMessage:{ required: "You must supply an 'Account blocked message'"},
-                tpiRegexExpression: {checkTpiRegexField: "You must supply a value for 'TPI Auto-routing Regex Expression'"},
-                gtaRegexExpression: {checkGtaRegexField: "You must supply a value for 'GTA Auto-routing Regex Expression'"},
-                subscriberRegexExpression: {checkSubscriberRegexField: "You must supply a value for 'Subscriber Auto-routing Regex Expression'"},
-                insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: "You must supply a value for 'Insurer Vs Insurer Auto-routing Regex Expression'"},
-                insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Manual Auto-routing Regex Expression'"},
-                fixedFeeRegexExpression: {checkFixedFeeRegexField: "You must supply a value for 'Fixed Fee Auto-routing Regex Expression'"}
+                blockedMessage:{ required: "You must supply an 'Account blocked message'"}
+//                 tpiRegexExpression: {checkTpiRegexField: "You must supply a value for 'TPI Auto-routing Regex Expression'"},
+//                 gtaRegexExpression: {checkGtaRegexField: "You must supply a value for 'GTA Auto-routing Regex Expression'"},
+//                 subscriberRegexExpression: {checkSubscriberRegexField: "You must supply a value for 'Subscriber Auto-routing Regex Expression'"},
+//                 insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: "You must supply a value for 'Insurer Vs Insurer Auto-routing Regex Expression'"},
+//                 insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Manual Auto-routing Regex Expression'"},
+//                 fixedFeeRegexExpression: {checkFixedFeeRegexField: "You must supply a value for 'Fixed Fee Auto-routing Regex Expression'"}
             }
         });
         
@@ -863,10 +863,10 @@
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td colspan="2">
+                                    <td colspan="3">
                                     <br/>
                                         <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" style="width:320px">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types (note an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route the invoice):</label>
+                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types (note an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route the invoice):</label>
                                         </div>
                                     </td>
                                 </tr>
