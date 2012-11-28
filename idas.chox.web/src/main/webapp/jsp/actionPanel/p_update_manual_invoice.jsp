@@ -162,7 +162,7 @@ function validateComboBox(){
         
 }
 
-function assignClaimSubmit(){
+function assignManualInvoiceSubmit(){
     actionPanel.registerAction("assignManualInvoiceOwner");
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
@@ -217,14 +217,14 @@ function assignClaimSubmit(){
                                   || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignClaimSubmit();"/>
+                                        <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignManualInvoiceSubmit();"/>
                                     </td>
                                 </tr>
                             </s:if>
                             <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership && insurer.workgroupEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignClaimSubmit();"/>
+                                        <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignManualInvoiceSubmit();"/>
                                     </td>
                                 </tr>
                             </s:elseif>
