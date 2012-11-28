@@ -1022,7 +1022,7 @@
                                 </div>
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label">Enable IP Whitelist</label>
-                                    <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="()" />
+                                    <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" onclick="doPageLoadCheck()" />
                             </div>
                             
                             <div class="chox-form-item">

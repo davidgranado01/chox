@@ -68,8 +68,8 @@ function validateComboBox(){
         
 }
 
-function assignClaimSubmit(){
-	actionPanel.registerAction("assignWorkgroup");
+function assignClaimOwnershipSubmit(){
+    actionPanel.registerAction("assignWorkgroup");
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
         $("#updateWorkgroupForm").submit();
@@ -95,7 +95,7 @@ function assignClaimSubmit(){
                         </tr>
                         <tr>
                             <td colspan="3" class="" nowrap >
-                                <input type="button" id="miAssignButton" value="Update Workgroup" onclick="return assignClaimSubmit();"/>
+                                <input type="button" id="miAssignButton" value="Update Workgroup" onclick="return assignClaimOwnershipSubmit();"/>
                             </td>
                         </tr>
                             
