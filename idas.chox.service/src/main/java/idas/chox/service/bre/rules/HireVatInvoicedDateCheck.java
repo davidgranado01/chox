@@ -46,7 +46,7 @@ public class HireVatInvoicedDateCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
-                narrative = "The Hire VAT charged by this CHO is dependent on the Invoiced Date, with this in consideration the CHO is charging more than the allowed VAT rate of " + CalcHelper.getVatRate(claim.getVehicleHire().getHireEnd()).multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% for the Hire.";
+                narrative = "The Hire VAT charged by this CHO is dependent on the Invoiced Date, with this in consideration the CHO is charging more than the allowed VAT rate of " + CalcHelper.getVatRate(invoice.getDateInvoiced()).multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% for the Hire.";
             }
 
         } else {
