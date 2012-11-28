@@ -158,7 +158,8 @@ public enum ClaimType {
     }
     
     public static PenaltyType getPenaltyType(ClaimType claimType) {
-        return isSubscriber(claimType) ? PenaltyType.SUBSCRIBER : PenaltyType.DEFAULT;
+        return isSubscriber(claimType) ? PenaltyType.SUBSCRIBER : 
+                isFixedFee(claimType) ? PenaltyType.FIXEDFEE : PenaltyType.DEFAULT;
     }
 
 }
