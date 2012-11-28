@@ -125,7 +125,10 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
-    SELECT 'ROLE_INS_PC',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+    SELECT 'ROLE_INS_PC', 1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_PC', 2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
 
 ----------------------
 --  End of 7.1.2   --

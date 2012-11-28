@@ -15,16 +15,11 @@ function doUpdateManualInvoice(action){
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
-        <s:if test="status.equalsIgnoreCase('ManualInvoiceUnassigned')">
-            <fieldset class="x-fieldset"><legend>Manual Invoice Ownership - Action Required</legend>
-        </s:if>
-        <s:else>
             <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
-        </s:else>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
                 <div class="status-control-set">
-                    <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested')">
+                    <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                         <div class="status-info">
                             If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system. 
                             Once the payment has been made please click on the 'Manual Invoice Paid' button.  
@@ -33,12 +28,12 @@ function doUpdateManualInvoice(action){
                     </s:if>
                     <s:else>
                         <div class="status-info">
-                            Please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Manual Invoice Paid' button.
+                            If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Manual Invoice Paid' button.
                         </div>
                     </s:else>
                     <div class="status-info-submit">
                         <table>
-                            <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested')">
+                            <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                                 <tr>
                                     <td colspan="2" class="choice" nowrap="true">
                                         <input type="button" id="UMIPFormId" value="Manual Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
