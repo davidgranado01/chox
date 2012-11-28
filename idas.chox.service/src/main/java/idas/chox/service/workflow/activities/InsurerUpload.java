@@ -148,18 +148,18 @@ public class InsurerUpload extends BaseActivity {
         
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (autoRoutedInvoice && ClaimType.isInsurerUpload(claim.getClaimType())) {
-            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+            if (autoRoutedInvoice &&  ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                 //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
                 //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
                 
-                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getInvoiceWorkgroup() != null) {
+                if (claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().getInvoiceWorkgroup() != null) {
                     claim.setWorkgroupOriginal(claim.getWorkgroup());
                     claim.setWorkgroup(claim.getInsurer().getInvoiceWorkgroup());
                 }
 
                 //re-assign claim
-                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getInvoiceOwner() != null) {
+                if (claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().getInvoiceOwner() != null) {
                     claim.setClaimOwnerOriginal(claim.getClaimOwner());
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                 }

@@ -943,7 +943,7 @@
                                 <tr id="insurerManualTr">
                                     <td width="40%">
                                         <div class="chox-form-item" id="insurerManualOwnershipHolder">
-                                            <label class="chox-form-std-label">Insurer Manual</label>
+                                            <label class="chox-form-std-label">Manual Invoices</label>
                                             <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
                                         </div>
                                     </td>

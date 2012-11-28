@@ -163,7 +163,7 @@ function validateComboBox(){
 }
 
 function assignManualInvoiceSubmit(){
-    actionPanel.registerAction("assignManualInvoiceOwner");
+    $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner")
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
         $("#updateManualInvoicePaymentForm").submit();
