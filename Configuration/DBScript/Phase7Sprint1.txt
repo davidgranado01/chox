@@ -575,13 +575,13 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_wo
 	SELECT 'filter.RejectedFixedFeeClaims', false, false, false, false, false, false, false;
 
 INSERT INTO accessibility_item(role, access_right, accessibility_id)
-	SELECT 'ALL', 0, id FROM accessibility where WHERE ='filter.RejectedFixedFeeClaims';
+	SELECT 'ALL', 0, id FROM accessibility WHERE name ='filter.RejectedFixedFeeClaims';
 
 INSERT INTO accessibility_item(role, access_right, accessibility_id)
-	SELECT 'ROLE_CHO', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+	SELECT 'ROLE_CHO', 1, id FROM accessibility WHERE name ='filter.RejectedFixedFeeClaims';
 
 INSERT INTO accessibility_item(role, access_right, accessibility_id)
-	SELECT 'ROLE_CHOX_ADMIN', 1, id FROM accessibility WHERE name='filter.RejectedFixedFeeClaims';
+	SELECT 'ROLE_CHOX_ADMIN', 1, id FROM accessibility WHERE name ='filter.RejectedFixedFeeClaims';
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id)
 	SELECT 'ROLE_CHO_MI',1, id FROM accessibility WHERE name = 'filter.RejectedFixedFeeClaims';
