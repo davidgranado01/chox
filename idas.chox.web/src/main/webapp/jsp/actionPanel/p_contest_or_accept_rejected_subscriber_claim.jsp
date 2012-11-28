@@ -7,7 +7,7 @@
         openTab(6);
         });
         
-    function doFormSubmit(action){
+    function doSubscriberFormSubmit(action){
         var message = 'Are you sure about this?';
         if (action == 'contestRejectedClaim') {
             message = "Are you sure you want to 'Send Claim Back To Insurer'?";
@@ -104,10 +104,10 @@
                         <tr>
                             <td>
                               <s:if test="!subscriberClaimRejectedMoreThanOnce">
-                                <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim');" />
+                                <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doSubscriberFormSubmit('contestRejectedClaim')" />
                               </s:if>
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doFormSubmit('acceptSubscriberChallenge')"  />
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')"  />
+                                <input type="submit" id="COARCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doSubscriberFormSubmit('acceptSubscriberChallenge')"  />
+                                <input type="submit" id="COARCSendToGTADecisionButtonId" value="Send Claim Down GTA Route" onclick="return doSubscriberFormSubmit('sendClaimGTA')"  />
                             </td>
                         </tr>
                     </table>

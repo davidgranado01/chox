@@ -17,7 +17,8 @@ public class PenaltyCharge {
     public enum PenaltyType {
         
         DEFAULT ,
-        SUBSCRIBER;
+        SUBSCRIBER,
+        FIXEDFEE;
     }
 
     public enum PenaltyName {

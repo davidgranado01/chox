@@ -259,7 +259,7 @@ public class ApplicationAccessibility {
                          * not have to be over say 30 days in order to be able
                          * to apply the penalty charges
                          */
-                        if (days < 31 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) {
+                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && claim.getClaimType() != ClaimType.INSURER_UPLOAD) {
                             LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }

@@ -10,9 +10,18 @@
     function doFormSubmit(action){
         var message = 'Are you sure about this?';
         if (action == 'contestRejectedClaim') {
+<s:if test="isFixedFeeClaim">
             message = "Are you sure you want to 'Send Claim Back To Insurer'?";
+</s:if>
+<s:else>
+            message = "Are you sure you want to 'Contest This Claim'?";
+</s:else>
         } else if (action == 'sendClaimGTA') {
             message = "Are you sure you want to 'Send Claim Down GTA Route'?";
+        } else if (action == 'acceptRejectedClaim') {
+            message = "Are you sure you want to 'Accept Rejection Decision'?";
+        } else {
+            message = "Are you sure?";
         }
         Ext.MessageBox.confirm('Confirm', message,
                         function(btn) {
@@ -77,14 +86,14 @@
                             <td>
                                 <s:if test="isFixedFeeClaim">
                                     <s:if test="!subscriberClaimRejectedMoreThanOnce">
-                                        <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim');" />
+                                        <input type="submit" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim')" />
                                     </s:if>
-                                    <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA');" />
+                                    <input type="submit" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
                                 </s:if>
                                 <s:else>    
-                                    <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="actionPanel.registerAction('contestRejectedClaim');" />
+                                    <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="return doFormSubmit('contestRejectedClaim')" />
                                 </s:else>    
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="actionPanel.registerAction('acceptRejectedClaim')"  />
+                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
                             </td>
                         </tr>
                     </table>
