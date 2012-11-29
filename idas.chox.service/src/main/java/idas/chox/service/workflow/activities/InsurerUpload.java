@@ -148,8 +148,7 @@ public class InsurerUpload extends BaseActivity {
         
         boolean isEnableManualInvoiceWorkgroupOwnership = claim.getInsurer().isEnableManualInvoiceOwnership() || claim.getInsurer().isEnableManualInvoiceWorkgroups();
         
-        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
-            if (autoRoutedInvoice &&  ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+        if (autoRoutedInvoice &&  ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                 //in case invoice ownership is enabled we set it to the MANUAL_INVOICE_UNASSIGNED status and 
                 //when assiggned to owner or workgroup we set it to the MANUAL_INVOICE_APPROVED/REJECTED
                 
@@ -164,11 +163,14 @@ public class InsurerUpload extends BaseActivity {
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                 }
                 
-                super.setCurrentStatus(claim.getStatus());
-                claim.setPreviousStatus(super.getCurrentStatus());
-                claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-                getDataService().save(claim);
-                logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+                if (isEnableManualInvoiceWorkgroupOwnership) {
+                    super.setCurrentStatus(claim.getStatus());
+                    claim.setPreviousStatus(super.getCurrentStatus());
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+                    getDataService().save(claim);
+                    logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);
+                }
+                
                 // move claim to next status
                 super.setCurrentStatus(claim.getStatus());
                 claim.setPreviousStatus(super.getCurrentStatus());
@@ -177,16 +179,18 @@ public class InsurerUpload extends BaseActivity {
                 if(isEnableManualInvoiceWorkgroupOwnership) {
                     claim.setManualInvoiceApproved(true);
                 }
-                
+
+            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                    claim.setManualInvoiceApproved(true);
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
             } else {
+                claim.setManualInvoiceApproved(false);
                 if(isEnableManualInvoiceWorkgroupOwnership){
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-                    claim.setManualInvoiceApproved(false);
                 } else {
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
                 }
             }
-        }
         
     }
     
