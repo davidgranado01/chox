@@ -180,7 +180,7 @@ public class InsurerUpload extends BaseActivity {
                     claim.setManualInvoiceApproved(true);
                 }
 
-            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && !isEnableManualInvoiceWorkgroupOwnership) {
                     claim.setManualInvoiceApproved(true);
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
             } else {
