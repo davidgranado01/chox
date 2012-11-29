@@ -2,36 +2,34 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
 
-   // $(document).ready(function() {
    Ext.onReady(function(){
+//    $(function(){
         openTab(6);
         });
         
     function doSubscriberFormSubmit(action){
-        var message = 'Are you sure about this?';
-        if (action == 'contestRejectedClaim') {
-            message = "Are you sure you want to 'Send Claim Back To Insurer'?";
-        } else if (action == 'acceptSubscriberChallenge') {
+        var message='Are you sure about this?';
+        if (action=='contestRejectedClaim'){
+            message="Are you sure you want to 'Send Claim Back To Insurer'?";
+        } else if (action=='acceptSubscriberChallenge'){
     <s:if test="subscriberClaimRejected">
-            message = "Are you sure you 'Agree With The Subscriber Challenge' and want to close the claim?";
+            message="Are you sure you 'Agree With The Subscriber Challenge' and want to close the claim?";
     </s:if>
     <s:else>
-            message = "Are you sure you 'Agree With The Subscriber Challenge' and want to move the claim to 'AwaitingInvoiceData' ready for invoicing?";
+            message="Are you sure you 'Agree With The Subscriber Challenge' and want to move the claim to 'AwaitingInvoiceData' ready for invoicing?";
     </s:else>
-        } else if (action == 'sendClaimGTA') {
-            message = "Are you sure you want to 'Send Claim Down GTA Route'?";
+        } else if (action=='sendClaimGTA'){
+            message="Are you sure you want to 'Send Claim Down GTA Route'?";
         }
+
         Ext.MessageBox.confirm('Confirm', message,
                         function(btn) {
                             if (btn=='yes') {
                                 actionPanel.registerAction(action);
                                 $("form#contestOrAcceptRejectedSubscriberClaim").submit();
-                            } else {
-                                return false;
                             }
                         }
         );
-                        
         return false;
     }
 
@@ -41,7 +39,6 @@
     <form action="<%=request.getContextPath()%>/prv/processClaim.action"
           method="post"
           id="contestOrAcceptRejectedSubscriberClaim" name="contestOrAcceptRejectedSubscriberClaim">
-        <s:hidden id="claimId" name="id" />
         <s:hidden id="name" name="name" />
         <fieldset class="x-fieldset">
             <legend>Rejected Subscriber Claim - Action Required</legend>
@@ -104,10 +101,10 @@
                         <tr>
                             <td>
                               <s:if test="!subscriberClaimRejectedMoreThanOnce">
-                                <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doSubscriberFormSubmit('contestRejectedClaim')" />
+                                <input type="button" id="COARSCContestThisClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doSubscriberFormSubmit('contestRejectedClaim')" />
                               </s:if>
-                                <input type="submit" id="COARCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doSubscriberFormSubmit('acceptSubscriberChallenge')"  />
-                                <input type="submit" id="COARCSendToGTADecisionButtonId" value="Send Claim Down GTA Route" onclick="return doSubscriberFormSubmit('sendClaimGTA')"  />
+                                <input type="button" id="COARSCAgreeDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doSubscriberFormSubmit('acceptSubscriberChallenge')"  />
+                                <input type="button" id="COARSCSendToGTADecisionButtonId" value="Send Claim Down GTA Route" onclick="return doSubscriberFormSubmit('sendClaimGTA')"  />
                             </td>
                         </tr>
                     </table>

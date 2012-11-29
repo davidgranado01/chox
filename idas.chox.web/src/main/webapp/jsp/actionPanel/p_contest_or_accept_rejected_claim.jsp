@@ -2,38 +2,34 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <script type="text/javascript">
 
-   // $(document).ready(function() {
+
    Ext.onReady(function(){
         openTab(6);
-        });
+    });
         
     function doFormSubmit(action){
         var message = 'Are you sure about this?';
-        if (action == 'contestRejectedClaim') {
+        if (action=='contestRejectedClaim'){
 <s:if test="isFixedFeeClaim">
-            message = "Are you sure you want to 'Send Claim Back To Insurer'?";
+            message="Are you sure you want to 'Send Claim Back To Insurer'?";
 </s:if>
 <s:else>
-            message = "Are you sure you want to 'Contest This Claim'?";
+            message="Are you sure you want to 'Contest This Claim'?";
 </s:else>
-        } else if (action == 'sendClaimGTA') {
-            message = "Are you sure you want to 'Send Claim Down GTA Route'?";
-        } else if (action == 'acceptRejectedClaim') {
-            message = "Are you sure you want to 'Accept Rejection Decision'?";
-        } else {
-            message = "Are you sure?";
+        } else if (action=='sendClaimGTA'){
+            message="Are you sure you want to 'Send Claim Down GTA Route'?";
+        } else if (action=='acceptRejectedClaim'){
+            message="Are you sure you want to 'Accept Rejection Decision'?";
         }
+
         Ext.MessageBox.confirm('Confirm', message,
                         function(btn) {
                             if (btn=='yes') {
                                 actionPanel.registerAction(action);
                                 $("form#contestOrAcceptRejectedClaim").submit();
-                            } else {
-                                return false;
                             }
                         }
         );
-                        
         return false;
     }
 
@@ -43,7 +39,6 @@
     <form action="<%=request.getContextPath()%>/prv/processClaim.action"
           method="post"
           id="contestOrAcceptRejectedClaim" name="contestOrAcceptRejectedClaim">
-        <s:hidden id="claimId" name="id" />
         <s:hidden id="name" name="name" />
         <fieldset class="x-fieldset">
             <legend>Rejected Claim - Action Required</legend>
@@ -86,14 +81,14 @@
                             <td>
                                 <s:if test="isFixedFeeClaim">
                                     <s:if test="!subscriberClaimRejectedMoreThanOnce">
-                                        <input type="submit" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim')" />
+                                        <input type="button" id="COARCContestFixedFeeClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedClaim')" />
                                     </s:if>
-                                    <input type="submit" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
+                                    <input type="button" id="COARCSendClaimToGTAButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')" />
                                 </s:if>
                                 <s:else>    
-                                    <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="return doFormSubmit('contestRejectedClaim')" />
+                                    <input type="button" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="return doFormSubmit('contestRejectedClaim')" />
                                 </s:else>    
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
+                                <input type="button" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="return doFormSubmit('acceptRejectedClaim')"  />
                             </td>
                         </tr>
                     </table>
@@ -104,3 +99,4 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     </form>
 </div>
+    
