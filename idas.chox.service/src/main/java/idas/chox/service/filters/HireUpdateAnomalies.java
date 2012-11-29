@@ -1,10 +1,11 @@
 package idas.chox.service.filters;
 
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.search.ClaimSearchCriteria;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.search.ClaimSearchCriteria;
 
 public class HireUpdateAnomalies extends BaseFilter {
 
@@ -20,10 +21,12 @@ public class HireUpdateAnomalies extends BaseFilter {
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        if (insurerId > -1)
+        if (insurerId > -1) {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-        if (choId > -1)
+        }
+        if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
         if (claimTypeId > -1) {
             Set<ClaimType> claimTypes = new HashSet<ClaimType>();
             claimTypes.add(ClaimType.values()[claimTypeId]);
