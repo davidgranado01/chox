@@ -1648,17 +1648,7 @@ br.smallBr
     padding: 2px 8px 2px 5px;
 }
 
-#orgFilterDiv {
-    position: relative;
-    left: 36px;
-    margin-top: 4px;
-}
-
 #queueOrgFilter {
     color: #15428B;
     font: 12px tahoma,arial,verdana,sans-serif;
-    float: left;
-    left: 36px;
-    position: relative;
-    margin-top: 6px;
 }

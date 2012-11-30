@@ -225,12 +225,20 @@
 
 </script>
 <div id="filterPanel" style="float: left;">
-    <label id="queueOrgFilter"></label>
-    <div id="orgFilterDiv"></div>
-    <label id="queueClaimTypeFilter" style="float: left; margin-top:7px;"></label>
-    <div id="claimTypeFilterDiv" style="margin-top:4px;"></div>
+
+    <table style="margin-top: 4px;" >
+        <tr>
+            <td><label id="queueOrgFilter" style="float: right;"></label></td>
+            <td><div id="orgFilterDiv"></div></td>
+        </tr>
+        <tr>
+            <td><label id="queueClaimTypeFilter" style="float: right;"></label></td>
+            <td><div id="claimTypeFilterDiv"></div></td>
+        </tr>
+    </table>
     <div id="filterPanel2">
-        <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
+        <s:action name="getFilterRecordCounters" namespace="/prv/p"
+            executeResult="true" />
     </div>
 </div>
 <s:if test="taskManagementEnabled">
