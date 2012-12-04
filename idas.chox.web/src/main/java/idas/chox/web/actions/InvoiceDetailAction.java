@@ -27,7 +27,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceDetailAction.class);
     private int claimId = 0;
     private ClaimService claimService;
-    private InvoiceService invoiceService;
     private LookupService lookupService;
     private InsurerDiscountService insurerDiscountService;
     private String actionResult;
@@ -88,10 +87,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public BigDecimal getTotalInsurerDiscountCalculated() {
         return invoice.getTotalInsurerDiscountCalculated();
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
     }
     
     public BigDecimal getPaymentDetailsCHODiscount() {
@@ -2314,15 +2309,15 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
                 for (InsurerDiscountType insurerDiscountType : InsurerDiscountType.values()) {
                     if (getCanAddTotalGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.TOTAL.getInsurerDiscountTypeValue()) {
                         BigDecimal totalGrossInsurerDiscountPercentage = getTotalGrossInsurerDiscountPercentage(claim);
-                        invoiceService.addInsurerDiscountComment(claim, getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), totalGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        insurerDiscountService.addInsurerDiscountComment(claim, getTotalGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), totalGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
                     }
                     if (getCanAddRepairGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.REPAIR.getInsurerDiscountTypeValue()) {
                         BigDecimal repairGrossInsurerDiscountPercentage = getRepairGrossInsurerDiscountPercentage(claim);
-                        invoiceService.addInsurerDiscountComment(claim, getRepairGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), repairGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        insurerDiscountService.addInsurerDiscountComment(claim, getRepairGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), repairGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
                     }
                     if (getCanAddHireGrossInsurerDiscountComment() && insurerDiscountType.getInsurerDiscountTypeValue() == InsurerDiscountType.HIRE.getInsurerDiscountTypeValue()) {
                         BigDecimal hireGrossInsurerDiscountPercentage = getHireGrossInsurerDiscountPercentage(claim);
-                        invoiceService.addInsurerDiscountComment(claim, getHireGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), hireGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
+                        insurerDiscountService.addInsurerDiscountComment(claim, getHireGrossInsurerDiscount().multiply(BigDecimal.valueOf(-1)), hireGrossInsurerDiscountPercentage, insurerDiscountType.toString(), userService.findByUserName("system"));
                     }
                 }
                 
@@ -2642,7 +2637,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
 
-        invoiceService.applyInsurerDiscounts(claim, null, false);
+        insurerDiscountService.applyInsurerDiscounts(claim, null, false);
         fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());

@@ -23,6 +23,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.EmailHelper;
@@ -51,6 +52,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
     private SessionFactory sessionFactory;
     private SchedulerJobService schedulerJobService;
     private InvoiceService invoiceService;
+    private PenaltyChargeService penaltyChargeService;
     private ClaimService claimService;
     private String hostName;
     private ServerConfig serverConfig;
@@ -225,6 +227,14 @@ public abstract class EmailSchedulerJob implements Scheduler{
 
     public void setInvoiceService(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
+    }
+
+    public PenaltyChargeService getPenaltyChargeService() {
+        return penaltyChargeService;
+    }
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
     }
 
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {

@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -13,18 +15,49 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.PenaltyCharge;
 import static idas.chox.core.model.PenaltyCharge.*;
+import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.PenaltyChargeService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 
 public class PenaltyChargeServiceImpl extends SecureDataService implements PenaltyChargeService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeServiceImpl.class);
+    
+    private ClaimService claimService;
+    private UserService userService;
+    private InsurerDiscountService insurerDiscountService;
+    private BreBandService breBandService;
 
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    
     @Override
     public List<PenaltyCharge> getPenaltyCharges(Date hireStart, PenaltyType penaltyType, PenaltyName penaltyName) {
 
@@ -326,5 +359,199 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             LOG.error("Exception in getting last available penalty band: ", ex);
             return 0;
         }
+    }
+    
+    @Override
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public boolean updateAutomaticPenaltyCharge(Claim claim) {
+        LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
+                + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}",
+                new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
+                    !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus()),
+                    claim.getInvoice()});
+
+        if (claim.isAutoPenaltyChargeEnabled()
+                && claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
+                && claim.getInvoice() != null
+                && claim.getInvoice().getInvoicedDays() > getFirstPenaltyBand(claim)) {
+//                && claim.getInvoice().getPenaltyAlertQty() < calculatePenaltyAlertQty(claim.getInvoice())) {
+
+            try {
+                LOG.debug("Calling stored procedure to update penalty charges...");
+                callApplyAutoPenaltyCharge(999, claim.getId());
+                // The Claim / Invoice may have been modified in the above call.
+                // We therefore need to clear these objects from the cache
+                // First clear the query/session cache
+                evict(claim.getInvoice());
+                evict(claim);
+                // Then the second-level cache (if activated)
+                getCurrentSession().getSessionFactory().evict(Claim.class, claim.getId());
+                getCurrentSession().getSessionFactory().evict(Invoice.class, claim.getInvoice().getId());
+                LOG.debug("Auto penalty charge applied to claim: {}", claim.getChoReference());
+//                applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+//                claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                return true;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown while updating auto penalty charge store procedure for claim '{}'", claim.getChoReference(), ex);
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
+
+        Invoice inv = claim.getInvoice();
+        inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
+        inv.setAutoPenaltyStart(autoPenaltyStart);
+        inv.setHirePenaltyPercentage(null);
+        inv.setRepairPenaltyPercentage(null);
+        inv.setHirePenaltyCharge(BigDecimal.ZERO);
+        inv.setRepairPenaltyCharge(BigDecimal.ZERO);
+        inv.setPenaltyBand(getFirstPenaltyBand(claim));
+        inv.setHirePenaltyChargeAppliedDate(null);
+        inv.setRepairPenaltyChargeAppliedDate(null);
+        if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+            Comment comment = Comment.New(0, "Penalty charges have been removed from the invoice as the date from which penalty charges are calculated has been manually updated.");
+            claim.addComment(comment);
+        }
+        inv.setTotalPenaltyCharge(BigDecimal.ZERO);
+        insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+        claimService.updateClaim(claim);
+    }
+        
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public boolean setPenaltyStartToDateInvoiced(String choReference) {
+        Claim claim = claimService.getClaimByCHOReferenceNumber(choReference);
+        if (claim != null && claim.getInvoice() != null) {
+            updatePenaltyStartDate(claim, claim.getInvoice().getDateInvoiced());
+            updateAutomaticPenaltyCharge(claim);
+            insurerDiscountService.applyInsurerDiscounts(claim, null, false);
+            return true;
+        }
+
+        return false;
+    }
+    
+    @Override
+    public Map applyPenaltyCharge(Claim claim, Boolean isPenaltyAlertNotUsed, BigDecimal hirePenaltyChargeAmount,
+            String hirePenaltyPercentage, BigDecimal repairPenaltyChargeAmount, String repairPenaltyPercentage) {
+        Map resultMap = new HashMap();
+        try {
+
+            Invoice invoice = claim.getInvoice();
+            BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge())
+                    .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount);
+            if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
+                resultMap.put("error", "You must supply a value for 'Hire Penalty Percentage'.");
+                return resultMap;
+            }
+            if (repairPenaltyChargeAmount.compareTo(BigDecimal.ZERO) > 0 && (repairPenaltyPercentage == null || repairPenaltyPercentage.length() == 0)) {
+                resultMap.put("error", "You must supply a value for 'Repair Penalty Percentage'.");
+                return resultMap;
+            }
+            if (hirePenaltyChargeAmount.compareTo(invoice.getHirePenaltyCharge()) != 0) {
+                invoice.setHirePenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
+            }
+            if (repairPenaltyChargeAmount.compareTo(invoice.getRepairPenaltyCharge()) != 0) {
+                invoice.setRepairPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
+            }
+            invoice.setFullTotalToPay(newTotalAmountToPay);
+            invoice.setHirePenaltyCharge(hirePenaltyChargeAmount);
+            invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+            invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
+            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+//            totalPenaltyChargeAmount = hirePenaltyChargeAmount.add(repairPenaltyChargeAmount);
+            invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
+
+            insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+
+            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
+                int penaltyBand = calculateCurrentPenaltyBand(claim);
+                int lastPenaltyBand = getLastPenaltyBand(claim);
+                int nextPenaltyBand = getNextPenaltyBand(claim);
+                invoice.setPenaltyBand(penaltyBand >= lastPenaltyBand ? -1 : nextPenaltyBand);
+            }
+            LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
+            claimService.updateClaim(claim);
+
+        } catch (Exception ex) {
+            LOG.error("Exception thrown applying penalty charges to claim '{}': ", claim.getChoReference(), ex);
+            resultMap.put("error", "An internal error occurred applying penalty charges to this claim. Please contact CHOX support.");
+        }
+
+        return resultMap;
+    }
+
+    @Override
+    public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
+        Map resultMap = new HashMap();
+        if (autoPenaltyStart != null) {
+
+            Date invoiceCreationDate = claim.getInvoice().getCreatedDate();
+            Date penaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
+            // Set both times to 00:00:00
+            if (invoiceCreationDate != null) {
+                invoiceCreationDate = DateHelper.setStartOfDay(invoiceCreationDate);
+            }
+            if (penaltyStartDate != null) {
+                penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
+            }
+            // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
+            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[]{autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
+            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
+                LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
+                resultMap.put("error", "The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
+//                this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
+//                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded. Your changes have not been saved.");
+                return resultMap;
+            }
+            claimService.updateClaim(claim);
+            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
+                // The date has been changed
+                updatePenaltyStartDate(claim, autoPenaltyStart);
+            }
+            if (updateAutomaticPenaltyCharge(claim)) {
+                LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+                // Invoice details may have changed  so we need to reload the claim
+                claim = claimService.getClaim(claim.getId());
+                resultMap.put("claim", claim);
+            } else {
+                LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
+            }
+        }
+
+        return resultMap;
+    }
+    
+    @Override
+    public boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO) {
+        boolean result = false;
+        boolean allowPenaltyCharges = true;
+        if (isCHO) {
+            Invoice invoice = claim.getInvoice();
+            // Set Claim BRE band
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+            if (claim.getBreBand() == null) {
+                LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
+            } else if (!claim.getBreBand().isAllowPenaltyCharges()) {
+                allowPenaltyCharges = false;
+            }
+            if (allowPenaltyCharges && invoice != null
+                    && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
+                    && invoice.getPenaltyBand() > -1
+                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
+                    && (!claim.isAutoPenaltyChargeEnabled()
+                    || calculateCurrentPenaltyBand(claim) >= getLastPenaltyBand(claim))))) {
+                result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
+            }
+        }
+        return result;
     }
 }

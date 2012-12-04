@@ -27,6 +27,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import idas.chox.core.model.*;
+import static idas.chox.core.model.PenaltyCharge.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.claim.ClaimObjectService;
@@ -40,8 +41,6 @@ import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-
-import static idas.chox.core.model.PenaltyCharge.*;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -547,79 +546,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String doApplyPenaltyCharge() {
-        String result = SUCCESS;
 
-        try {
+        Map resultMap = penaltyChargeService.applyPenaltyCharge(claim, isRemovePenaltyAlert, hirePenaltyChargeAmount,
+                hirePenaltyPercentage, repairPenaltyChargeAmount, repairPenaltyPercentage);
 
-            Invoice invoice = claim.getInvoice();
-            BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge()).subtract(invoice.getRepairPenaltyCharge()).add(getHirePenaltyChargeAmount()).add(getRepairPenaltyChargeAmount());
-            Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
-            if (getHirePenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
-                setActionResult("You must supply a value for 'Hire Penalty Percentage'");
-                return ERROR;
-            }
-            if (getRepairPenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (repairPenaltyPercentage == null || repairPenaltyPercentage.length() == 0)) {
-                setActionResult("You must supply a value for 'Repair Penalty Percentage'");
-                return ERROR;
-            }
-            if (getHirePenaltyChargeAmount().compareTo(invoice.getHirePenaltyCharge()) != 0) {
-                invoice.setHirePenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
-            }
-            if (getRepairPenaltyChargeAmount().compareTo(invoice.getRepairPenaltyCharge()) != 0) {
-                invoice.setRepairPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
-            }
-            invoice.setFullTotalToPay(newTotalAmountToPay);
-            invoice.setHirePenaltyCharge(getHirePenaltyChargeAmount());
-            invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
-            invoice.setRepairPenaltyCharge(getRepairPenaltyChargeAmount());
-            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
-            totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
-            invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
-
-            invoiceService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-
-            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
-                int penaltyBand = penaltyChargeService.calculateCurrentPenaltyBand(claim);
-                int lastPenaltyBand = penaltyChargeService.getLastPenaltyBand(claim);
-                int nextPenaltyBand = penaltyChargeService.getNextPenaltyBand(claim);
-                invoice.setPenaltyBand(penaltyBand >= lastPenaltyBand ? -1 : nextPenaltyBand);
-            }
-            LOG.debug("Hire penalty %: '{}', Repair penalty %: '{}'", hirePenaltyPercentage, repairPenaltyPercentage);
-            service.updateClaim(claim);
-
-        } catch (Exception ex) {
-            LOG.error("Exception thrown applying penalty charges to claim '{}': ", claim.getChoReference(), ex);
-            result = ERROR;
-            setActionError("An internal error occurred applying penalty charges to this claim. Please contact CHOX support.");
+        if (resultMap.containsKey("error")) {
+            setActionError((String) resultMap.get("error"));
+            return ERROR;
+        } else {
+            return SUCCESS;
         }
-
-        return result;
     }
 
     public boolean getIsShowPenaltyChargeAlert() {
-        boolean result = false;
-        boolean allowPenaltyCharges = true;
-        if (getIsCHO()) {
-            Invoice invoice = claim.getInvoice();
-            // Set Claim BRE band
-            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-            claim.setBreBand(choBand);
-            if (claim.getBreBand() == null) {
-                LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
-            } else if (!claim.getBreBand().isAllowPenaltyCharges()) {
-                allowPenaltyCharges = false;
-            }
-            if (allowPenaltyCharges && invoice != null
-                    && !ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())
-                    && invoice.getPenaltyBand() > -1
-                    && (!claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                    && (!claim.isAutoPenaltyChargeEnabled()
-                    || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim))))) {
-                result = invoice.getInvoicedDays() > invoice.getPenaltyBand();
-            }
-        }
-        return result;
+        return penaltyChargeService.canShowPenaltyChargeAlert(claim, getIsCHO());
     }
 
     public boolean getCanCloseClaim() {
@@ -2309,40 +2249,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
-        if (autoPenaltyStart != null) {
+        Map resultMap = penaltyChargeService.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
 
-            Date invoiceCreationDate = claim.getInvoice().getCreatedDate();
-            Date penaltyStartDate = claim.getInvoice().getAutoPenaltyStart();
-            // Set both times to 00:00:00
-            if (invoiceCreationDate != null) {
-                invoiceCreationDate = DateHelper.setStartOfDay(invoiceCreationDate);
-            }
-            if (penaltyStartDate != null) {
-                penaltyStartDate = DateHelper.setStartOfDay(penaltyStartDate);
-            }
-            // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
-            LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[]{autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
-            if (this.getIsCHO() && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
-                LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
-                this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
-//                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded. Your changes have not been saved.");
-                return ERROR;
-            }
-            service.updateClaim(claim);
-            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0) {
-                // The date has been changed
-                invoiceService.updatePenaltyStartDate(claim, autoPenaltyStart);
-            }
-            if (invoiceService.updateAutomaticPenaltyCharge(claim)) {
-                LOG.debug("Auto Penalty charges updated for claim '{}'", claim.getChoReference());
+        if (resultMap.containsKey("error")) {
+            this.setActionError((String) resultMap.get("error"));
+            return ERROR;
+        } else {
+            if (resultMap.containsKey("claim")) {
                 // Invoice details may have changed  so we need to reload the claim
-                claim = service.getClaim(claim.getId());
-            } else {
-                LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
+                claim = (Claim) resultMap.get("claim");
             }
+            return SUCCESS;
         }
-
-        return SUCCESS;
     }
 
     public Date getAutoPenaltyStartDate() {

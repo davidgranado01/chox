@@ -4,6 +4,7 @@ package idas.chox.core.services;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.PenaltyCharge;
@@ -31,4 +32,17 @@ public interface PenaltyChargeService {
     public int getLastPenaltyBand(Claim claim);
     
     public int calculateCurrentPenaltyBand(Claim claim);
+    
+    public boolean updateAutomaticPenaltyCharge(Claim claim);
+    
+    public boolean setPenaltyStartToDateInvoiced(String choReference);
+    
+    public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart);
+    
+    public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart);
+            
+    public Map applyPenaltyCharge(Claim claim, Boolean isPenaltyAlertNotUsed, BigDecimal hirePenaltyChargeAmount, 
+            String hirePenaltyPercentage, BigDecimal repairPenaltyChargeAmount, String repairPenaltyPercentage);
+    
+    public boolean canShowPenaltyChargeAlert(Claim claim, boolean isCHO);
 }

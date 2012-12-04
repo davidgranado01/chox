@@ -24,7 +24,6 @@ public class NewInvoice extends BaseActivity {
     private InsurerDiscountService insurerDiscountService;
     private TaskService taskService;
     private UserService userService;
-    private InvoiceService invoiceService;
     private boolean autoRoutedInvoice = false;
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
@@ -41,10 +40,6 @@ public class NewInvoice extends BaseActivity {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
     }
 
     @Override
@@ -107,7 +102,7 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
-        invoiceService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
+        insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
 
         // Perform HPI check
         if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
