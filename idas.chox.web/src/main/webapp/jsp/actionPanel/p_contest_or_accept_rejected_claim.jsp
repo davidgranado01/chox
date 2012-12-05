@@ -50,17 +50,18 @@
                             the claim has been rejected, as per the agreement this claim can no longer continue down the
                             Fixed Fee process route. If the rejection is valid and is agreed then click on the 'Accept
                             Rejection Decision' button, this will move the status of the claim to 'ClaimRejectionAccepted'
-                            and the claim will be closed. If the rejection is not valid, clicking on the 'Send Claim Down
-                            GTA Route' button should be clicked, this will submit the claim to the Insurer as a new GTA
-                            claim within CHOX.
+                            and the claim will be closed. If the rejection is not valid, the ‘Send Claim Down GTA Route’ 
+                            button should be clicked, this will submit the claim to the Insurer as a new GTA claim within CHOX
                         </s:if>
                         <s:else>
-                            Please review the Insurer's notes for the reason for the rejection. If more/clarity details are required then
-                            add the details to the claim and click on the 'Send Claim Back To Insurer' button. 
-                            If the rejection is valid and is agreed then click on the 'Accept Rejection Decision' button, this will move
-                            the status of the claim to 'ClaimRejectionAccepted' and the claim will be closed.
-                            If the rejection is not valid, clicking on the 'Send Claim Down GTA Route' button should be clicked,
-                            this will submit the claim to the Insurer as a new GTA claim within CHOX.
+                            Please review the Insurer’s notes for the reason for the rejection. 
+                            If more details are required then add the details to the claim and 
+                            click on the ‘Send Claim Back To Insurer’ button. If the rejection 
+                            is valid and is agreed then click on the ‘Accept Rejection Decision’ 
+                            button, this will move the status of the claim to ‘ClaimRejectionAccepted’ 
+                            and the claim will be closed. If the rejection is not valid, the 
+                            ‘Send Claim Down GTA Route’ button should be clicked, this will submit the 
+                            claim to the Insurer as a new GTA claim within CHOX.
                         </s:else>
                     </s:if>
                     <s:else>
