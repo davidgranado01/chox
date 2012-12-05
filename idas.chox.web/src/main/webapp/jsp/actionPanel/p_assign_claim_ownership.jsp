@@ -87,14 +87,15 @@
                 }
             }
         });
-
+        
         var rejectionDescField = new Ext.form.TextArea({
             name             : 'rejectionDescription',
             id               : 'rejecDescId',
             width            :  350,
             height           :  80,
             allowBlank       :  false,
-            renderTo         : 'rejectionDescId'
+            renderTo         : 'rejectionDescId',
+            disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
         });
         
         if(isWorkgroupEnable) {
@@ -365,14 +366,12 @@
                                     </td>
                                     <td width="70%"></td>
                                 <tr>
-                                <s:if test="rejectButtonEnabled">
                                 <tr>
                                 <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
                                     <td>
                                         <div id="rejectionDescId"/>
                                     </td>
                                 </tr>
-                                </s:if>
                                 <tr>
                                     <td colspan="3">
                                         <div class="no-format">
@@ -386,12 +385,7 @@
                                         <s:if test="insurerIsFnolEnabled">
                                             <input type="button" id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <s:if test="rejectButtonEnabled">
-                                            <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
-                                        </s:if>
-                                        <s:else>
-                                            <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" disabled="disabled" />
-                                        </s:else>
+                                        <input type="button" id="ACOARejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

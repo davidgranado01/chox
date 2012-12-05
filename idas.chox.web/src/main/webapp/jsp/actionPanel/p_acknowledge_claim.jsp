@@ -11,7 +11,8 @@ $(function(){
         width            :  350,
         height           :  80,
         allowBlank       :  false,
-        renderTo         : 'rejectionDescJspfId'
+        renderTo         : 'rejectionDescJspfId',
+        disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
     });
     
 });
@@ -195,17 +196,10 @@ function refreshDesc(id){
                                 </td>
                             </tr>
                             <tr>
-                                 <s:if test="rejectButtonEnabled">
-                                    <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
-			                        <td colspan="3">
-			                            <div id="rejectionDescJspfId"/>
-			                        </td>
-                                </s:if>
-                                <s:else>
-			                        <td colspan="4">
-			                            <div id="rejectionDescJspfId" style="visibility:hidden"/>
-			                        </td>
-                                </s:else>
+                                <td align="left" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
+                                <td colspan="3">
+                                    <div id="rejectionDescJspfId"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="4">
@@ -216,12 +210,7 @@ function refreshDesc(id){
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <s:if test="rejectButtonEnabled">
-                                        <input type="button" id="ACRejectButtonId" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    </s:if>
-                                    <s:else>
-                                        <input type="button" id="ACRejectButtonId" value="Reject" disabled="disabled" />
-                                    </s:else>
+                                    <input type="button" id="ACRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doAcknowledgeFormSubmit('rejectClaim');" />
                                     <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />

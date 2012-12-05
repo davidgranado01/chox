@@ -38,7 +38,8 @@
             width            :  350,
             height           :  80,
             allowBlank       :  false,
-            renderTo         : 'rejectionDescId'
+            renderTo         : 'rejectionDescId',
+            disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
         });
     });
 
@@ -287,14 +288,12 @@
                                     </div>
                                 </td>
                             </tr>
-                            <s:if test="rejectButtonEnabled">
                             <tr>
                             <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
                                 <td>
                                     <div id="rejectionDescId"/>
                                 </td>
                            </tr>
-                           </s:if>
                            <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -304,12 +303,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap="true">
-                                    <s:if test="rejectButtonEnabled">
-                                        <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
-                                    </s:if>
-                                    <s:else>
-                                        <input type="button" id="ACCRejectButtonId" value="Reject" disabled="disabled" />
-                                    </s:else>
+                                    <input type="button" id="ACCRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
                                     <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
