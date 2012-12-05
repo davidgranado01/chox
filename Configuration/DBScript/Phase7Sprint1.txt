@@ -639,3 +639,29 @@ ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
 ----------------------
 --  End of 7.1.6   --
 ----------------------
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2254 - Production - Re-assign Workgroup dropdown available when workgroups disabled             --
+------------------------------------------------------------------------------------------------------------------------
+
+
+UPDATE accessibility SET check_workgroup_enabled = TRUE WHERE id IN (SELECT id FROM accessibility WHERE name ILIKE 'extraAction.escalateUnassignedClaim.%');
+
+
+UPDATE accessibility SET check_workgroup_enabled = TRUE WHERE id IN (SELECT id FROM accessibility WHERE name ILIKE 'extraAction.updateClaimWorkgroupAndOwner.AwaitingLitigationOutcome');
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_claimownership_enabled)
+	VALUES('extraAction.updateInsurerClaimOwner.AwaitingLitigationOutcome',false,false, true);
+	
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ALL', 0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_COM', 2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLitigationOutcome';
+
+----------------------
+--  End of BUG#2254   --
+----------------------
