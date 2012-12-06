@@ -866,7 +866,11 @@
                                     <td colspan="3">
                                     <br/>
                                         <div class="chox-form-item">
-                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for the following claim types (note an exclusion regex can optionally be specified which, if matched on the claim number, will NOT move or re-route the invoice):</label>
+                                            <label class="chox-form-std-label1" style="width:620px; text-align: left;">
+                                            Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for 
+                                            the following claim types (note an exclusion regex can optionally be specified which, 
+                                            if matched on the claim number, will NOT move or re-route the invoice). 
+                                            Note that Manual Invoices will be routed to 'ManualInvoiceBREApproved: </label>
                                         </div>
                                     </td>
                                 </tr>
