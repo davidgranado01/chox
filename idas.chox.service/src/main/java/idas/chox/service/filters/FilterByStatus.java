@@ -23,6 +23,18 @@ public class FilterByStatus extends BaseFilter {
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        
+        //in case of "Rejected Claims" queue we don't want to display the fixed fee claim types
+        if(getStatus().equals(ClaimStatus.CLAIM_REJECTED) && claimTypeId == -1){
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.GTA);
+            claimTypes.add(ClaimType.SUBSCRIBER);
+            claimTypes.add(ClaimType.TPI);
+            claimTypes.add(ClaimType.INSURER_UPLOAD);
+            claimTypes.add(ClaimType.INSURER_VS_INSURER);
+            claimSearchCriteria.setClaimTypes(claimTypes);
+        }
+        
         if (insurerId > -1) {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
         }
@@ -33,9 +45,9 @@ public class FilterByStatus extends BaseFilter {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
         }
         if (claimTypeId > -1) {
-            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-            claimTypes.add(ClaimType.values()[claimTypeId]);
-            claimSearchCriteria.setClaimTypes(claimTypes);
+            claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.values()[claimTypeId])));
+            if(ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId]))
+                return null;
         }
 
         if (ClaimStatus.AWAITING_LIABILITY_RESOLUTION.equals(getStatus())) {
