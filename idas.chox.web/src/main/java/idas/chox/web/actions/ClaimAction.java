@@ -1290,12 +1290,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             maxDays = 5;
             if (claimDays == null) {
-                claimDays = service.getSubscriberClaimDays(claim.getId());
+                getSubscriberClaimDays();
             }
         }
         else if (ClaimType.isFixedFee(claim.getClaimType())) {
             if (claimDays == null) {
-                claimDays = service.getFixedFeeClaimDays(claim.getId());
+                getFixedFeeClaimDays();
             }
             maxDays = 10;
         }
@@ -1346,7 +1346,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getSubscriberClaimDays(claim.getId());
+            getSubscriberClaimDays();
         }
 
         if (claimDays < 5) {
@@ -1373,7 +1373,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getFixedFeeClaimDays(claim.getId());
+            getFixedFeeClaimDays();
         }
 
         if (claimDays < 10) {
@@ -1400,7 +1400,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getSubscriberClaimDays(claim.getId());
+            getSubscriberClaimDays();
         }
 
         if (claimDays == 5) {
@@ -1431,7 +1431,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getFixedFeeClaimDays(claim.getId());
+            getFixedFeeClaimDays();
         }
 
         if (claimDays == 10) {
@@ -1451,7 +1451,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getSubscriberClaimDays(claim.getId());
+            getSubscriberClaimDays();
         }
 
         if (claimDays == 4) {
@@ -1466,13 +1466,27 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = service.getFixedFeeClaimDays(claim.getId());
+            getFixedFeeClaimDays();
         }
 
         if (claimDays == 9) {
             return "1 day remains";
         }
         return "" + (10 - claimDays) + " days remain";
+    }
+    
+    /* This function not only gets SubscriberClaimDays but also sometimes add new notes
+     to the claim so need to update the claim version in the session.*/
+    private void getSubscriberClaimDays() {
+        claimDays = service.getSubscriberClaimDays(claim.getId());
+        updateModelInSession(Arrays.asList(claim));
+    }
+    
+    /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
+     to the claim so need to update the claim version in the session.*/
+    private void getFixedFeeClaimDays() {
+        claimDays = service.getFixedFeeClaimDays(claim.getId());
+        updateModelInSession(Arrays.asList(claim));
     }
 
     public BigDecimal getFormattedInsLiab() {
