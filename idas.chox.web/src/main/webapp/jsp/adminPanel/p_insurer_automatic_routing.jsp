@@ -319,7 +319,7 @@
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
         <s:if test="isChoxAdmin">
-            tabIndex = 7;
+            tabIndex = 8;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
