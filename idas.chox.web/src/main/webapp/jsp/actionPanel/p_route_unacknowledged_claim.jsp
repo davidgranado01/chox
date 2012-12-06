@@ -57,7 +57,8 @@
             width            :  350,
             height           :  80,
             allowBlank       :  false,
-            renderTo         : 'rejectionDescId'
+            renderTo         : 'rejectionDescId',
+            disabled         : '<s:property value="rejectButtonEnabled"/>' == 'false'
         });
 
     });
@@ -196,14 +197,12 @@
                             </td>
                             <td width="70%"></td>
                         </tr>
-                        <s:if test="rejectButtonEnabled">
                         <tr>
                         <td align="right" valign="top"><label class="std-label-ro">Supporting Rejection Note&nbsp;&nbsp;</label></td>
                             <td>
                                 <div id="rejectionDescId"/>
                             </td>
                         </tr>
-                        </s:if>
                         <tr>
                             <td colspan="3">
                                 <div class="no-format">
@@ -214,12 +213,7 @@
                         <tr>
                             <td colspan="3" class="choice" nowrap>
                                 <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                                <s:if test="rejectButtonEnabled">
-                                    <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
-                                </s:if>
-                                <s:else>
-                                    <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim"  disabled="disabled" />
-                                </s:else>
+                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                             </td>
                         </tr>
                     </table>

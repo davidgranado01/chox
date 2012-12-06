@@ -147,7 +147,7 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" id="ACIRejectInvoiceButtonId"value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
+                                <input type="button" id="ACIRejectInvoiceButtonId" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
                                 <input type="button" id="ACIClearForPaymentId" value="Agree Quantum" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
                                     <input type="button" id="ACIReferToEngineerButtonId" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
