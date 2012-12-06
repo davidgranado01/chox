@@ -29,10 +29,8 @@ public class FilterFixedFeeRejected extends BaseFilter {
         if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
         }
-        if (claimTypeId > -1) {
-            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-            claimTypes.add(ClaimType.values()[claimTypeId]);
-            claimSearchCriteria.setClaimTypes(claimTypes);
+        if (claimTypeId > -1 && !ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId])) {
+            return null;
         }
 
         return claimSearchCriteria;

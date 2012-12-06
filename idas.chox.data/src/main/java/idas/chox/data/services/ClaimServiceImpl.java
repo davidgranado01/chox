@@ -422,6 +422,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
+        if(searchCriteria == null){
+            return 0;
+        }
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
         return totalCount(criteria);
