@@ -339,6 +339,11 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             getSession().put("searchReportCriteria", claimSearchCriteria);
 
             LOG.debug("Calling search claim service");
+            if (claimSearchCriteria == null) {
+                LOG.debug("Claim search criteria is null.");
+                results = new ArrayList<Object>();
+                return SUCCESS;
+            }
             SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
             LOG.debug("Search claim service retrieved {} results", searchResult.getTotalCount());
 
@@ -354,15 +359,17 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     private void mergeClaimSearchCriteria(ClaimSearchCriteria c) {
 
-        Integer start = claimSearchCriteria.getStart();
-        Integer limit = claimSearchCriteria.getLimit();
-        String sort = claimSearchCriteria.getSort();
-        String dir = claimSearchCriteria.getDir();
-
-        c.setStart(start);
-        c.setLimit(limit);
-        c.setSort(sort);
-        c.setDir(dir);
+        if(c != null){
+            Integer start = claimSearchCriteria.getStart();
+            Integer limit = claimSearchCriteria.getLimit();
+            String sort = claimSearchCriteria.getSort();
+            String dir = claimSearchCriteria.getDir();
+    
+            c.setStart(start);
+            c.setLimit(limit);
+            c.setSort(sort);
+            c.setDir(dir);
+        }
     }
 
     @Override

@@ -46,7 +46,7 @@ public class FilterByStatus extends BaseFilter {
         }
         if (claimTypeId > -1) {
             claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.values()[claimTypeId])));
-            if(ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId]))
+            if(ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId]) && getStatus().equals(ClaimStatus.CLAIM_REJECTED))
                 return null;
         }
 
