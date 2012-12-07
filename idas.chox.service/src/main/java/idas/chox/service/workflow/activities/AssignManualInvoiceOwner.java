@@ -118,7 +118,7 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             String noteMsg = "Insurer Claims Handler changed from '" + oldClaimOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").";
             Comment comment = Comment.New(0, noteMsg);
             claim.addComment(comment);
-        } if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner)) {
+        } else if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner)) {
             LOG.debug("Adding Comment for the change of insurer Claim owner");
             String noteMsg = "Insurer Claims Handler changed from '" + oldClaimOwnerName + "' to '" + claimOwner.getFullName() + "'.";
             Comment comment = Comment.New(0, noteMsg);
