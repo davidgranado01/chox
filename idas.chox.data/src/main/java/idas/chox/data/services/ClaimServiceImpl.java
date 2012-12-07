@@ -1276,16 +1276,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
         Invoice invoice = claim.getInvoice();
         ClaimType claimType = claim.getClaimType();
-        if (invoice != null) {
-            if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
-                    && liabilityStatus != null && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        if (invoice != null) { 
+            // When excluding some 'Claim Type' Please exclude it from applyAutoPenaltyCharge Stored Procedure as well.
+            if (!ClaimType.isInsurerVsInsurer(claimType) 
+                    && !ClaimType.isSubscriber(claimType)
+                    && !ClaimType.isFixedFee(claimType) 
+                    && liabilityStatus != null 
+                    && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                             || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + invoice.getTotalToPay());
-            } else if (!ClaimType.isInsurerVsInsurer(claimType) && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType) && liabilityStatus != null
+            } else if (!ClaimType.isInsurerVsInsurer(claimType) 
+                    && !ClaimType.isSubscriber(claimType)
+                    && !ClaimType.isFixedFee(claimType) 
+                    && liabilityStatus != null
                     && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 invoice.setTotalToPay(BigDecimal.ZERO);
             } else {
