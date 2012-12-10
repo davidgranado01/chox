@@ -358,7 +358,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean result = false;
         if (ClaimType.isSubscriber(claim.getClaimType())
                 &&  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
-                        || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())))) {
+                        || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
+                        || (ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))))) {
                 result = true;
         }
    
@@ -370,7 +371,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean result = false;
         if (ClaimType.isFixedFee(claim.getClaimType())
                 &&  (ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED.equals(claim.getStatus())
-                        || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())))) {
+                        || (ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus())
+                        || (ClaimStatus.CLAIM_REJECTION_CONTESTED.equals(claim.getStatus()))))) {
                 result = true;
         }
    
