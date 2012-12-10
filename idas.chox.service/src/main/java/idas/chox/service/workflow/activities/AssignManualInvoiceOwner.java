@@ -112,13 +112,13 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             }
         }
         
-        
+
         if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner) && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
             LOG.debug("Adding Comment for the change of insurer Claim owner");
             String noteMsg = "Insurer Claims Handler changed from '" + oldClaimOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").";
             Comment comment = Comment.New(0, noteMsg);
             claim.addComment(comment);
-        } if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner)) {
+        } else if (ownershipEnabled && updateOnly && !claimOwner.equals(oldClaimOwner)) {
             LOG.debug("Adding Comment for the change of insurer Claim owner");
             String noteMsg = "Insurer Claims Handler changed from '" + oldClaimOwnerName + "' to '" + claimOwner.getFullName() + "'.";
             Comment comment = Comment.New(0, noteMsg);
@@ -126,6 +126,10 @@ public class AssignManualInvoiceOwner extends BaseActivity {
         } else if (!updateOnly && ownershipEnabled && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
             LOG.debug("Adding Comment for the new insurer Claim owner");
             Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
+            claim.addComment(comment);
+        } else {
+            LOG.debug("Adding Comment for the new insurer Claim owner");
+            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
             claim.addComment(comment);
         }
     }
