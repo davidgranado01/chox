@@ -344,24 +344,35 @@
                 messages: {range: "You must select a liability status"}
                 });
             
-        }else if(action=='acknowledgeClaim' && subscriberLiability){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
-                mustBeFullLiabilityAcepted: true,
-                messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
-            });                
-            supportingLiabilityCheck(liabilityStatus);
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
             
-        }else if(action=='acknowledgeClaim' && fixedFeeLiability){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
-                mustBeFullLiabilityOrSplit: true,
-                messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted or Liability Split."}
-            });                
-            supportingLiabilityCheck(liabilityStatus);
-
         }else if(action=='acknowledgeClaim' && validationCheck){
-            
-            supportingLiabilityCheck(liabilityStatus);         
-            
+            supportingLiabilityCheck(liabilityStatus);
+            if(subscriberLiability){
+                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                    mustBeFullLiabilityAcepted: true,
+                    messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
+                });         
+                
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
+                
+                if(liabilityStatus == 1){
+                    supportingLiabilityCheck(liabilityStatus);
+                }
+            } else if (fixedFeeLiability){
+                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                    mustBeFullLiabilityOrSplit: true,
+                    messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted or Liability Split."}
+                }); 
+                
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
+                
+                if(liabilityStatus == 5 || liabilityStatus == 1){
+                    supportingLiabilityCheck(liabilityStatus);
+                }
+            } 
         }else if(action=='referEng' && validationCheck){
 
             supportingLiabilityCheck(liabilityStatus);
