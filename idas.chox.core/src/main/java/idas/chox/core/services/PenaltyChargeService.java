@@ -33,11 +33,7 @@ public interface PenaltyChargeService {
     
     public int calculateCurrentPenaltyBand(Claim claim);
     
-    public boolean updateAutomaticPenaltyCharge(Claim claim);
-    
     public boolean setPenaltyStartToDateInvoiced(String choReference);
-    
-    public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart);
     
     public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart);
             

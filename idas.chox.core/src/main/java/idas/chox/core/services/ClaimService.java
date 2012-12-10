@@ -80,20 +80,12 @@ public interface ClaimService extends DataService {
     
     public int getFixedFeeClaimRejectedDays(int claimId);
     
-//    public boolean updateAutomaticPenaltyCharge(Claim claim);
-    
-//    public int calculatePenaltyAlertQty(Invoice inv);
-    
-//    public void updatePenaltyStartDate(Claim claim , Date autoPenaltyStart);
-    
     public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender);
     
     public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId);
     
     public List<QueuedTicket> getQueuedTicket();
  
-//    public boolean setPenaltyStartToDateInvoiced(String choReference);
-
     public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
     
     public Claim updateClaimWithInvalidSessionVersion(Claim claim);

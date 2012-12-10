@@ -361,9 +361,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         }
     }
     
-    @Override
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public boolean updateAutomaticPenaltyCharge(Claim claim) {
+    private boolean updateAutomaticPenaltyCharge(Claim claim) {
         LOG.debug("Updating penalty charges: claim.isAutoPenaltyChargeEnabled()={}, claim.getChorganisation().isAutoPenaltyChargeEnabled()={}, "
                 + "!ClaimStatus.isInPenaltyChargeExclusionStatus(claim.getStatus())={}, claim.getInvoice()={}",
                 new Object[]{claim.isAutoPenaltyChargeEnabled(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
@@ -400,9 +399,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         return false;
     }
     
-    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
+    private void updatePenaltyStartDate(Claim claim, Date autoPenaltyStart) {
 
         Invoice inv = claim.getInvoice();
         inv.setFullTotalToPay(inv.getFullTotalToPay().subtract(inv.getHirePenaltyCharge()).subtract(inv.getRepairPenaltyCharge()));
