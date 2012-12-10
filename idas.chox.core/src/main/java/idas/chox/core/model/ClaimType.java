@@ -61,6 +61,14 @@ public enum ClaimType {
         return false;
     }
 
+    public static boolean allowPenaltyCharges(ClaimType claimType) {
+        if (claimType == ClaimType.GTA || claimType == ClaimType.SUBSCRIBER || claimType == ClaimType.FIXED_FEE) {
+            return true;
+        }
+        
+        return false;
+    }
+
     public static boolean isInsurerVsInsurer(ClaimType claimType) {
         if (claimType == ClaimType.INSURER_VS_INSURER
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE
