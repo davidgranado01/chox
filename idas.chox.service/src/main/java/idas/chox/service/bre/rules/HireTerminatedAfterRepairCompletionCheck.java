@@ -29,7 +29,8 @@ public class HireTerminatedAfterRepairCompletionCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isHireTerminatedAfterRepairCompletionCheck()
+        if (!ClaimType.isSubscriber(claim.getClaimType())  && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isHireTerminatedAfterRepairCompletionCheck()
                 && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getRepairCompletionDate() != null
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireEnd() != null) {
 
