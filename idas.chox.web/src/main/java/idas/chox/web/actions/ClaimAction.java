@@ -1295,7 +1295,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         else if (ClaimType.isFixedFee(claim.getClaimType())) {
             if (claimDays == null) {
-                getFixedFeeClaimDays();
+                claimDays = getFixedFeeClaimDays();
             }
             maxDays = 10;
         }
@@ -1373,7 +1373,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
         }
 
         if (claimDays < 10) {
@@ -1431,7 +1431,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
         }
 
         if (claimDays == 10) {
@@ -1466,7 +1466,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            getFixedFeeClaimDays();
+            claimDays = getFixedFeeClaimDays();
         }
 
         if (claimDays == 9) {
@@ -1484,9 +1484,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
-    private void getFixedFeeClaimDays() {
-        claimDays = service.getFixedFeeClaimDays(claim.getId());
+    private Integer getFixedFeeClaimDays() {
+        Integer days = service.getFixedFeeClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
+        return days;
     }
 
     public BigDecimal getFormattedInsLiab() {
