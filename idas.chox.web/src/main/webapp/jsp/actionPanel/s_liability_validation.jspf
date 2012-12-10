@@ -309,7 +309,7 @@
         var dateValue = $("form#formAcknowledgeAction #liabilityAgreedDate");
         if(dateValue.val().indexOf(' ') >= 0)
             dateValue.val($.trim(dateValue.val()));
-    	
+        
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
@@ -317,18 +317,20 @@
         }
         var liabilityStatus = $("#liabilityStatus").val();
         var validationCheck=false;
-        if(<s:property value="liabilityStatusValue"/>>=0){
-            if(liabilityStatus!=<s:property value="liabilityStatusValue"/>){
+        var liabilityStatusValue= <s:property value="liabilityStatusValue"/>;
+        if(liabilityStatusValue >= 0){
+            if(liabilityStatus != liabilityStatusValue){
                 validationCheck=true;
             }
         }else{
             validationCheck=true;
         }
-        
         var subscriberLiability = <s:property value="fullLiability"/>;
         var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
 
         if(action=='rejectClaim'){
+            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
+            $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
@@ -337,26 +339,29 @@
                 required: true,
                 messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                range:[1,6],
+                messages: {range: "You must select a liability status"}
+                });
             
-            if(validationCheck){
-                supportingLiabilityCheck(liabilityStatus);
-            }
         }else if(action=='acknowledgeClaim' && subscriberLiability){
-
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 mustBeFullLiabilityAcepted: true,
                 messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
             });                
+            supportingLiabilityCheck(liabilityStatus);
             
         }else if(action=='acknowledgeClaim' && fixedFeeLiability){
-
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 mustBeFullLiabilityOrSplit: true,
                 messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted or Liability Split."}
             });                
-            
+            supportingLiabilityCheck(liabilityStatus);
+
         }else if(action=='acknowledgeClaim' && validationCheck){
-            supportingLiabilityCheck(liabilityStatus);            
+            
+            supportingLiabilityCheck(liabilityStatus);         
+            
         }else if(action=='referEng' && validationCheck){
 
             supportingLiabilityCheck(liabilityStatus);
@@ -385,12 +390,11 @@
         }
         
         if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == '')
-            $("#reasonOfRejectionId option[value='']").val(-1)
+            $("#reasonOfRejectionId option[value='']").val(-1);
     } 
 
     function supportingLiabilityCheck(liabilityStatus){
 
-        
         if ( liabilityStatus == 2 ){
             $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
