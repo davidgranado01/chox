@@ -309,13 +309,16 @@
         var dateValue = $("form#formAcknowledgeAction #liabilityAgreedDate");
         if(dateValue.val().indexOf(' ') >= 0)
             dateValue.val($.trim(dateValue.val()));
-        
+
+        // Clear the validation error box
+        $('#ACKmessageBox').text("");
+
         // First, lets remove all validation from the Liability Status drop-down and Supporting Notes text entry box
         $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         // and remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
         $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
        
 
         var selectedLiabilityStatusValue = $("#liabilityStatus").val();
@@ -329,13 +332,13 @@
         var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
 
         if(action=='rejectClaim'){
-            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
-                required: true,
-                messages: {required: "You must choose a 'Reason For Rejection'"}
-            });
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
                 required: true,
                 messages: {required: "You must enter 'Supporting Rejection Notes'"}
+            });
+            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
             });
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                 range:[1,6],
