@@ -317,9 +317,10 @@
         $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         // and remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
-        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
-       
+        if (action!='resolveLiability' && action!='updateLiability') {
+            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+            $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
+        }
 
         var selectedLiabilityStatusValue = $("#liabilityStatus").val();
         var currentLiabilityStatusValue= <s:property value="liabilityStatusValue"/>;
