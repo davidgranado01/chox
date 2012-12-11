@@ -113,7 +113,7 @@
                     {name:'choOwnerName'}
                 ]
             });
-
+            
             ds = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: '<%= request.getContextPath()%>/prv/p/doSearchClaim.action',method:'POST'}),
@@ -142,7 +142,6 @@
                       }
                 }
             });
-
 
             ds.setDefaultSort('created', 'desc');
 
@@ -1573,7 +1572,7 @@
                     
                     if(tab.title == 'Inbox' && isInboxShowHistory){
 
-                        ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName")};
+                        ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName"), "inbox": true};
                         doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
 
                     }else if(tab.title == 'Search' && isSearchShowHistory){
