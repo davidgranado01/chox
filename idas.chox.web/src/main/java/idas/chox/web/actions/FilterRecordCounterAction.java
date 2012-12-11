@@ -15,15 +15,18 @@ public class FilterRecordCounterAction extends BaseAction {
     private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
     private int filterOrgId = -1;
     private int filterClaimTypeId = -1;
+    private String filterName;
 
     @Override
     public String execute() throws Exception {
-
+        if(filterName != null && !filterName.equals("")){
+            getSession().put("gridTitle", filterService.getFilter(filterName).getName());
+            getSession().put("filterKey", filterName);
+        }
+        getSession().put("filterOrgId", filterOrgId);
+        getSession().put("filterClaimTypeId", filterClaimTypeId);
         filters = filterService.getAvailableFilters(this.getAuthenticatedUser());
         for (Filter filter : filters) {
-
-            //            filter.setCount(claimService.countClaims(filter.getClaimSearchCriteria())); removed for bug#964
-            
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
             if (getIsCHO())
@@ -68,6 +71,14 @@ public class FilterRecordCounterAction extends BaseAction {
 
     public void setFilterClaimTypeId(int filterClaimTypeId) {
         this.filterClaimTypeId = filterClaimTypeId;
+    }
+
+    public String getFilterName() {
+        return filterName;
+    }
+
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
     }
 
 }

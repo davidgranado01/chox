@@ -397,9 +397,11 @@
             }
         }
         
-        if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == ''){
-            $("#reasonOfRejectionId option[value='']").val(-1);
-        }
+// Not sure what this bit of code is doing here, but this prevents the correct
+// display of the "You must choose a 'Reason For Rejection'" validation message"
+//        if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == ''){
+//            $("#reasonOfRejectionId option[value='']").val(-1);
+//        }
     } 
 
     function addSupportingLiabilityNotesCheck(liabilityStatus){
