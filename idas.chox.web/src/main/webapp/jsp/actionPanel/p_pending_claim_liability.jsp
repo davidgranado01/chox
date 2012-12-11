@@ -62,10 +62,9 @@ function refreshDesc(id){
                         <s:elseif test="isFixedFeeClaim">
                             This claim cannot be rejected as the Fixed Fee notification 10 day SLA has passed.
                         </s:elseif>
+                        <br/><br/>This claim has been pending for <s:property value="daysInStatus" /> day(s).
                     </div>
-                    <div class="status-info">
-                        This claim has been pending for <s:property value="daysInStatus" /> day(s).
-                    </div>
+
                     <div class="status-control-set">
                         <table class="status-table">
 
