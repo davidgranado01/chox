@@ -310,15 +310,14 @@
         if(dateValue.val().indexOf(' ') >= 0)
             dateValue.val($.trim(dateValue.val()));
         
-        // First, lets remove alll validation from the Liability Status drop-down and Supporting Notes text entry box
+        // First, lets remove all validation from the Liability Status drop-down and Supporting Notes text entry box
         $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-        
-        // If we are updating Liability, then remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
-        if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
-            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-            $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
-        }
+        // and remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
+        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+       
+
         var selectedLiabilityStatusValue = $("#liabilityStatus").val();
         var currentLiabilityStatusValue= <s:property value="liabilityStatusValue"/>;
         var liabilityStatusModified=false;
@@ -395,8 +394,9 @@
             }
         }
         
-        if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == '')
+        if(action!='rejectClaim' && $("#reasonOfRejectionId").val() == ''){
             $("#reasonOfRejectionId option[value='']").val(-1);
+        }
     } 
 
     function addSupportingLiabilityNotesCheck(liabilityStatus){
