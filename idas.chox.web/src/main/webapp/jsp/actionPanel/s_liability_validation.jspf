@@ -310,27 +310,26 @@
         if(dateValue.val().indexOf(' ') >= 0)
             dateValue.val($.trim(dateValue.val()));
         
+        // First, lets remove alll validation from the Liability Status drop-down and Supporting Notes text entry box
+        $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
+        
+        // If we are updating Liability, then remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
         if(action!='updateLiability' && $("form#formAcknowledgeAction #reasonOfRejectionId").size() > 0){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
         }
-        var liabilityStatus = $("#liabilityStatus").val();
-        var validationCheck=false;
-        var liabilityStatusValue= <s:property value="liabilityStatusValue"/>;
-        if(liabilityStatusValue >= 0){
-            if(liabilityStatus != liabilityStatusValue){
-                validationCheck=true;
-            }
-        }else{
-            validationCheck=true;
+        var selectedLiabilityStatusValue = $("#liabilityStatus").val();
+        var currentLiabilityStatusValue= <s:property value="liabilityStatusValue"/>;
+        var liabilityStatusModified=false;
+        if(selectedLiabilityStatusValue != currentLiabilityStatusValue){
+                liabilityStatusModified=true;
         }
+
         var subscriberLiability = <s:property value="fullLiability"/>;
         var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
 
         if(action=='rejectClaim'){
-            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
-            $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
@@ -344,12 +343,11 @@
                 messages: {range: "You must select a liability status"}
                 });
             
-            if(validationCheck){
-                supportingLiabilityCheck(liabilityStatus);
+            if(liabilityStatusModified){
+                addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }
             
-        }else if(action=='acknowledgeClaim' && validationCheck){
-            supportingLiabilityCheck(liabilityStatus);
+        }else if(action=='acknowledgeClaim'){
             if(subscriberLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityAcepted: true,
@@ -358,9 +356,7 @@
                 
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
                 
-                if(liabilityStatus == 1){
-                    supportingLiabilityCheck(liabilityStatus);
-                }
+
             } else if (fixedFeeLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityOrSplit: true,
@@ -368,35 +364,34 @@
                 }); 
                 
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
+                if (isLiabilitySplit() && liabilityStatusModified)
+                    addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+            } else {
+                $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                    range:[1,6],
+                    messages: {range: "You must select a liability status"}
+                });
                 
-                if(liabilityStatus == 5 || liabilityStatus == 1){
-                    supportingLiabilityCheck(liabilityStatus);
+                if(liabilityStatusModified){
+                    addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
                 }
-            } 
-        }else if(action=='referEng' && validationCheck){
-
-            supportingLiabilityCheck(liabilityStatus);
-
-        }else if(action=='referFNOL' && validationCheck){
-            
-            supportingLiabilityCheck(liabilityStatus);
-
-        }else if(action=='pending' && validationCheck){
-        
-            supportingLiabilityCheck(liabilityStatus);
-
-        }else if (action=='resolveLiability'){
-
-            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
-
-            if(validationCheck){
-                supportingLiabilityCheck(liabilityStatus);
             }
-        }else if(action=='updateLiability'){
+        }else if(action=='referEng' && liabilityStatusModified){
+            addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+        }else if(action=='referFNOL' && liabilityStatusModified){
+            addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+        }else if(action=='pending' && liabilityStatusModified){
+            addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+        }else if (action=='resolveLiability' || action=='updateLiability'){
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                    range:[1,6],
+                    messages: {range: "You must select a liability status"}
+            });
+            
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
 
-            if(validationCheck){
-                supportingLiabilityCheck(liabilityStatus);
+            if(liabilityStatusModified){
+                addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }
         }
         
@@ -404,7 +399,7 @@
             $("#reasonOfRejectionId option[value='']").val(-1);
     } 
 
-    function supportingLiabilityCheck(liabilityStatus){
+    function addSupportingLiabilityNotesCheck(liabilityStatus){
 
         if ( liabilityStatus == 2 ){
             $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
