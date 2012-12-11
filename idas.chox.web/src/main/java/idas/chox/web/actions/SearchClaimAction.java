@@ -26,7 +26,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
-//    private ClaimObjectService claimObjectService;
     private List<LookupItem> claimStatusesLookupItem;
     private List<LookupItem> claimTypesLookupItem;
     private List<LookupItem> liabilityStatusesLookupItem;
@@ -230,7 +229,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
@@ -281,7 +279,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         } catch (Exception ex) {
             LOG.error("Exception converting results to view data: {}", ex.getMessage());
-//            ex.printStackTrace();
             handleException(ex);
             return null;
         }
@@ -315,7 +312,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 return SUCCESS;
             }
             getSession().put("searchCriteria", claimSearchCriteria);
-
+            
+            filterName = getFilterName();
+            filterOrgId = getFilterOrgId();
+            filterClaimTypeId = getFilterClaimTypeId();
             if (!StringHelper.isEmpty(filterName)) {
                 Filter filter = filterService.getFilter(filterName);
                 ClaimSearchCriteria filterCriteria;
@@ -334,8 +334,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = filterCriteria;
             }
 
-
-            getSession().put("searchReportCriteria", null); // why is this needed ?!?
+            getSession().put("searchReportCriteria", null); 
             getSession().put("searchReportCriteria", claimSearchCriteria);
 
             LOG.debug("Calling search claim service");
@@ -400,11 +399,19 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getFilterName() {
-        return filterName;
+        if (getSession().containsKey("filterKey")) {
+            return (String) getSession().get("filterKey");
+        } else {
+            return filterName;
+        }
     }
 
     public int getFilterOrgId() {
-        return filterOrgId;
+        if (getSession().containsKey("filterOrgId")) {
+            return (Integer) getSession().get("filterOrgId");
+        } else {
+            return filterOrgId;
+        }
     }
 
     public void setFilterName(String filterName) {
@@ -420,10 +427,15 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public int getFilterClaimTypeId() {
-        return filterClaimTypeId;
+        if (getSession().containsKey("filterClaimTypeId")) {
+            return (Integer) getSession().get("filterClaimTypeId");
+        } else {
+            return filterClaimTypeId;
+        }
     }
 
     public void setFilterClaimTypeId(int filterClaimTypeId) {
         this.filterClaimTypeId = filterClaimTypeId;
     }
+    
 }

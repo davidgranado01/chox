@@ -76,8 +76,8 @@ public class InboxAction extends BaseAction {
     public void setShowHistory(int showHistory) {
         LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
         if (showHistory == 10) {
-        	if(getSession()!= null) // TODO when we press "Home" session is null?!?
-        		getSession().put("tabIndex", 0);
+            if(getSession()!= null) // TODO when we press "Home" session is null?!?
+                getSession().put("tabIndex", 0);
             this.showHistory = 0;
         } else {
             this.showHistory = showHistory;
@@ -301,5 +301,37 @@ public class InboxAction extends BaseAction {
             return false;
          } 
         return getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership();
+    }
+
+    public int getFilterOrgId() {
+        if (getSession().containsKey("filterOrgId")) {
+            return (Integer) getSession().get("filterOrgId");
+        } else {
+            return -1;
+        }
+    }
+
+    public int getFilterClaimTypeId() {
+        if (getSession().containsKey("filterClaimTypeId")) {
+            return (Integer) getSession().get("filterClaimTypeId");
+        } else {
+            return -1;
+        }
+    }
+    
+    public String getGridTitle() {
+        if (getSession().containsKey("gridTitle")) {
+            return (String) getSession().get("gridTitle");
+        } else {
+            return "";
+        }
+    }
+    
+    public String getFilterKey() {
+        if (getSession().containsKey("filterKey")) {
+            return (String) getSession().get("filterKey");
+        } else {
+            return "";
+        }
     }
 }
