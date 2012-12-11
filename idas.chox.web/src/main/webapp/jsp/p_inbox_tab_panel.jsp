@@ -55,7 +55,7 @@
             });
                 
             insurerFilterCombo.render('orgFilterDiv');
-            insurerFilterCombo.setValue(-1);              
+            insurerFilterCombo.setValue(<s:property value="filterOrgId" />);              
     </s:if>
 
     <s:elseif test="isInsurer" > 
@@ -103,7 +103,7 @@
                     }
                 });
                 supplierFilterCombo.render('orgFilterDiv');
-                supplierFilterCombo.setValue(-1);
+                supplierFilterCombo.setValue(<s:property value="filterOrgId" />);
             }
             
     </s:elseif>
@@ -152,15 +152,17 @@
                 }
             }
         });
-        claimTypeFilterCombo.setValue(-1);
+        
+        claimTypeFilterCombo.setValue(<s:property value="filterClaimTypeId" />);
         claimTypeFilterCombo.render('claimTypeFilterDiv');
     }
-    
+    filterName = '<s:property value="filterKey" />';
+    title = '<s:property value="gridTitle" />';
     });
 
     function reloadQueues() {
         var orgCombo = Ext.ComponentMgr.get('filterOrgId');
-        var selectedOrg = -1;
+        var selectedOrg = <s:property value="filterOrgId" />;
         if (orgCombo) {
             selectedOrg = orgCombo.getValue();
         }
@@ -169,32 +171,25 @@
             selectedOrg = -1;
         
         var ctCombo = Ext.ComponentMgr.get('filterClaimTypeId');
-        var selectedClaimType = -1;
+        var selectedClaimType = <s:property value="filterClaimTypeId" />;
         if (ctCombo) {
             selectedClaimType = ctCombo.getValue();
         }
-        
-        if (!selectedClaimType)
-            selectedClaimType = -1;
-        
         refreshFilterPanelByOrgOrClaimType(filterName, title, selectedOrg, selectedClaimType);
     }
     
     function updateFilter(key, gridTitle) {
         var orgCombo = Ext.ComponentMgr.get('filterOrgId');
-        var selectedOrg = -1;
+        var selectedOrg = <s:property value="filterOrgId" />;
         if (orgCombo) {
             selectedOrg = orgCombo.getValue();
         }
         
         var ctCombo = Ext.ComponentMgr.get('filterClaimTypeId');
-        var selectedClaimType = -1;
+        var selectedClaimType = <s:property value="filterClaimTypeId" />;
         if (ctCombo) {
             selectedClaimType = ctCombo.getValue();
         }
-        
-        if (!selectedClaimType)
-            selectedClaimType = -1;
         
         filterName = key;
         title = gridTitle;
@@ -203,7 +198,7 @@
     
     function refreshFilterPanelByOrgOrClaimType(filterName, title, orgId, claimTypeId) {
         var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-        var param = {"filterOrgId":orgId, "filterClaimTypeId":claimTypeId};
+        var param = {"filterOrgId":orgId, "filterClaimTypeId":claimTypeId, "filterName":filterName};
         ajax.loadHtml2(url, param, function(data){
             $("div#filterPanel2").html(data);
         });
