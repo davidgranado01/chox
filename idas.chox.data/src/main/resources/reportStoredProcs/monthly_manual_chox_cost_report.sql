@@ -1211,6 +1211,7 @@ FROM
           choid AS chorgId,
           insid AS insurerId) params
 UNION
+
 SELECT 'avg_penalty_paid' AS title ,
 
   (SELECT avg(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
@@ -1424,6 +1425,222 @@ FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
           insid AS insurerId) params
+UNION
+
+SELECT 'total_penalty_paid' AS title ,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
+
+  (SELECT sum(i.hire_penalty_charge_paid + i.repair_penalty_charge_paid)::numeric(8,2)
+   FROM claim c,
+              invoice i,
+                      chorganisation cho
+   WHERE c.invoice_id=i.id
+     AND c.status = 'PaymentReceived'
+     AND (c.insurer_id = params.insurerId
+          OR params.insurerId = -1)
+     AND (i.hire_penalty_charge_paid > 0.0
+          OR i.repair_penalty_charge_paid > 0.0)
+     AND c.chorganisation_id = cho.id
+     AND cho.insurer_upload_only = TRUE
+     AND (params.chorgId = -1
+          OR c.chorganisation_id = params.chorgId)
+     AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate - interval '10 months' , 'MM') || '-01-' || to_char(params.startDate - interval '10 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_11_month
+FROM
+  (SELECT dat1 AS startDate,
+          choid AS chorgId,
+          insid AS insurerId) params
+
 UNION
           
 SELECT 'avg_penalty_charged' AS title ,
