@@ -468,7 +468,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
 
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
 
-            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) || claim.isAutoPenaltyChargeEnabled()) {
+            if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) 
+                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled())) {
                 int penaltyBand = calculateCurrentPenaltyBand(claim);
                 int lastPenaltyBand = getLastPenaltyBand(claim);
                 int nextPenaltyBand = getNextPenaltyBand(claim);
