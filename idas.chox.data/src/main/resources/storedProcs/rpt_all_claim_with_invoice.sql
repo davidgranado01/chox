@@ -1,3 +1,5 @@
+DROP VIEW rpt_all_claim_with_invoice;
+
 CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
  SELECT claim.id AS claim_id, claim.workgroup_id, claim.claim_owner_id as owner,
         claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id,
@@ -28,7 +30,6 @@ CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS
         invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes,
         invoice.hire_rate_charged_per_day, invoice.excess_amount_collected,
         invoice.vat_amount_collected, invoice.hire_penalty_charge as panalty_charge,
-        invoice.penalty_alert_qty as panalty_alert_qty,
         invoice.hire_penalty_charge_applied_date as penalty_charge_applied_date
    FROM claim claim
    LEFT JOIN invoice invoice on claim.invoice_id = invoice.id;

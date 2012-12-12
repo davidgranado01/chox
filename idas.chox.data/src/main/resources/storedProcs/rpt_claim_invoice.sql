@@ -1,3 +1,5 @@
+DROP VIEW rpt_claim_invoice;
+
 CREATE OR REPLACE VIEW rpt_claim_invoice AS 
  SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no,
         invoice.miscellaneous_qty AS cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty,
@@ -17,7 +19,7 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
         invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode,
         invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, 
         invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected,
-        invoice.total_penalty_charge, invoice.penalty_alert_qty, invoice.hire_penalty_charge_applied_date, 
+        invoice.total_penalty_charge, invoice.hire_penalty_charge_applied_date, 
         invoice.repair_penalty_charge_applied_date, claim.id AS claim_id, claim.status,
         claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id,
         third_party.first_name AS policy_holder_first_name,

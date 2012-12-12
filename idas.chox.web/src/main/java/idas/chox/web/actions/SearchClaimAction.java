@@ -39,6 +39,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private int filterClaimTypeId = -1;
     private ClaimSearchCriteria claimSearchCriteria;
     private boolean canLoadData = true;
+    private boolean inbox;
 
     public boolean isCanLoadData() {
         return canLoadData;
@@ -399,7 +400,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getFilterName() {
-        if (getSession().containsKey("filterKey")) {
+        if (getSession().containsKey("filterKey") && inbox) {
             return (String) getSession().get("filterKey");
         } else {
             return filterName;
@@ -407,7 +408,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public int getFilterOrgId() {
-        if (getSession().containsKey("filterOrgId")) {
+        if (getSession().containsKey("filterOrgId") && inbox) {
             return (Integer) getSession().get("filterOrgId");
         } else {
             return filterOrgId;
@@ -427,7 +428,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public int getFilterClaimTypeId() {
-        if (getSession().containsKey("filterClaimTypeId")) {
+        if (getSession().containsKey("filterClaimTypeId") && inbox) {
             return (Integer) getSession().get("filterClaimTypeId");
         } else {
             return filterClaimTypeId;
@@ -436,6 +437,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void setFilterClaimTypeId(int filterClaimTypeId) {
         this.filterClaimTypeId = filterClaimTypeId;
+    }
+
+    public boolean isInbox() {
+        return inbox;
+    }
+
+    public void setInbox(boolean inbox) {
+        this.inbox = inbox;
     }
     
 }
