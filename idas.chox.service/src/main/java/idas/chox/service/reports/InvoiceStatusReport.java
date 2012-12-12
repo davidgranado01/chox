@@ -76,7 +76,7 @@ public class InvoiceStatusReport implements Report {
         return ins;
     }
 
-    
+
     @Override
     public HashMap getReportParameters() {
         HashMap map = new HashMap();
@@ -653,7 +653,7 @@ public class InvoiceStatusReport implements Report {
             }
 
             String createdDateRestriction = createdDateRestrictionSb.toString();
-            LOG.info("For x={}, createdDateRestriction=\n{}", x, createdDateRestriction);
+
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
