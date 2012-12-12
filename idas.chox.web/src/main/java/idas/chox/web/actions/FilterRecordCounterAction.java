@@ -1,11 +1,12 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import idas.chox.core.model.Filter;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.web.viewdata.FilterViewData;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FilterRecordCounterAction extends BaseAction {
 
@@ -29,12 +30,15 @@ public class FilterRecordCounterAction extends BaseAction {
         for (Filter filter : filters) {
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
-            if (getIsCHO())
+            if (getIsCHO()) {
                 filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId)).intValue()));
-            else if (getIsInsurer())
+            }
+            else if (getIsInsurer()) {
                 filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId)).intValue()));
-            else
+            }
+            else {
                 filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId)).intValue()));
+            }
             filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }
