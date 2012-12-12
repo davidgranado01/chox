@@ -1,6 +1,5 @@
---
--- Function: addInvoicePenaltyTask(integer)
---
+DROP FUNCTION addInvoicePenaltyTask(integer);
+
 CREATE OR REPLACE FUNCTION addInvoicePenaltyTask(integer)
   RETURNS boolean AS
 $BODY$
@@ -17,35 +16,36 @@ select c.id, now() + interval '15 days', 'Invoice Approaching 90 Days', 'The inv
        true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
 from claim c, invoice i, insurer ins
 where c.invoice_id = i.id
-  and i.penalty_alert_qty = 2
+  and i.penalty_band = 90
   and c.insurer_id = ins.id
-  and c.claim_type != 3
+  and c.claim_type NOT IN (3,4,5,6,10)
   and ins.is_task_management_enable = true
-  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
-  and extract(epoch from now() - i.created_date)/(3600*24.0) >= 75
-  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
-  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '10 days')
+  and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 75
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '15 days')
   and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) >= 75));
 
 insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
-select c.id, now() + interval '5 days', 'Invoice Approaching ' || 30*(i.penalty_alert_qty+1) || ' Days', 'The invoice was uploaded over ' || 30*(i.penalty_alert_qty+1)-5 || ' days ago and may be subject to penalties in 5 days time.',
+select c.id, now() + interval '5 days', 'Invoice Approaching ' || i.penalty_band || ' Days', 'The invoice was uploaded over ' || i.penalty_band - 5 || ' days ago and may be subject to penalties in 5 days time.',
        true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
 from claim c, invoice i, insurer ins
 where c.invoice_id = i.id
-  and i.penalty_alert_qty >= 0 and i.penalty_alert_qty < 2
+  and i.penalty_band != -1 and i.penalty_band < 90
   and c.insurer_id = ins.id
-  and c.claim_type != 3
+  and c.claim_type NOT IN (3,4,5,6,10)
   and ins.is_task_management_enable = true
-  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
-  and extract(epoch from now() - i.created_date)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
-  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= (i.penalty_band - 5)
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
   and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days')
-  and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) > ((i.penalty_alert_qty+1)*30)-5));
+  and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) > i.penalty_band - 5));
 
 
 update task set complete = true,
                 completed_by = 999,
-                completed_date = now()
+                completed_date = now(),
+                version = version + 1
 where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
 
 
@@ -56,4 +56,4 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
-GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
+GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
