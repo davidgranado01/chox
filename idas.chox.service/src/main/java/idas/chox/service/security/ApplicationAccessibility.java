@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.*;
 import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
@@ -27,6 +28,7 @@ public class ApplicationAccessibility {
     private ClaimService claimService;
     private BreBandService breBandService;
     private PenaltyChargeService penaltyChargeService;
+    private AuditTrailService auditTrailService;
     // ***************************************
     // TAB
     // ***************************************
@@ -532,6 +534,13 @@ public class ApplicationAccessibility {
                 LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
                 return DECLINED;
             }
+            // this fix is for bug 2208 disable revert function when there is no previous status.
+            AuditTrail auditTrail = auditTrailService.getLastChange(claim.getId());
+            if (buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM)
+                    && (auditTrail == null || auditTrail.getOriginalStatus() == null
+                    || auditTrail.getOriginalStatus().isEmpty())) {
+                return DECLINED;
+            }
             // <editor-fold defaultstate="collapsed" desc="BUG#1543 FIX">
             // this fix is for bug 1543 Revert status for subscriber claims at 'AwaitingInvoiceData'
             if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
@@ -695,6 +704,10 @@ public class ApplicationAccessibility {
 
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
         this.penaltyChargeService = penaltyChargeService;
+    }
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
     }
 
     public AccessibilityService getAccessibilityService() {
