@@ -589,10 +589,6 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getRepairPenaltyChargeOriginal();
     }
 
-    public Integer getPenaltyBandOriginal() {
-        return invoiceOriginal.getPenaltyBandOriginal();
-    }
-
     public BigDecimal getTotalToPayOriginal() {
         return invoiceOriginal.getTotalToPayOriginal();
     }

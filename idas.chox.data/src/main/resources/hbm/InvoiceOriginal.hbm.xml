@@ -50,7 +50,6 @@
         <property column="tow_bars_qty" name="towBarsQtyOriginal"/>
         <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFeeOriginal"/>
         <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQtyOriginal"/>
-       
         <property column="admin_fee" name="adminFeeOriginal"/>
         <property column="admin_qty" name="adminQtyOriginal"/>
         <property column="roof_rack_fee" name="roofRackFeeOriginal"/>
@@ -61,7 +60,6 @@
         <property column="delivery_collection_qty" name="deliveryCollectionQtyOriginal"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
-       
         <property column="hire_rate_charged_per_day" name="hireRateChargedPerDayOriginal"/>
         <property column="excess_amount_collected" name="excessAmountCollectedOriginal"/>
         <property column="vat_amount_collected" name="vatAmountCollectedOriginal"/>
@@ -70,8 +68,6 @@
         <property column="repair_penalty_charge" name="repairPenaltyChargeOriginal"/>
         <property column="repair_penalty_percentage" name="repairPenaltyPercentageOriginal"/>
         <property column="total_penalty_charge" name="totalPenaltyChargeOriginal"/>
-        <property column="penalty_band" name="penaltyBandOriginal"/>
-        
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
         
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

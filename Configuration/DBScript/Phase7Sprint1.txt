@@ -182,12 +182,7 @@ INSERT INTO penalty_charge (penalty_type, penalty_start_age, penalty_start_date,
 
 ALTER TABLE invoice ADD COLUMN penalty_band INT;
 
-ALTER TABLE invoice_original ADD COLUMN penalty_band INT;
-
 UPDATE invoice i SET penalty_band =  CASE WHEN i1.penalty_alert_qty = -1 THEN -1 ELSE (i1.penalty_alert_qty + 1) * 30 END FROM invoice i1 WHERE i1.id = i.id;
-
-UPDATE invoice_original i SET penalty_band =  CASE WHEN i1.penalty_alert_qty = -1 THEN -1 ELSE (i1.penalty_alert_qty + 1) * 30 END FROM invoice_original i1 WHERE i1.id = i.id;
-
 
 CREATE TABLE claim_type
 (
