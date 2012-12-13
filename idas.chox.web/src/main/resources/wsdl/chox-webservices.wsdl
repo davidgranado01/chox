@@ -653,34 +653,6 @@
                 </xsd:restriction>
             </xsd:simpleType>
 
-            <xsd:simpleType name="ClaimParseStatus">
-                <xsd:restriction base="xsd:token">
-                    <xsd:enumeration value="newClaim"/>
-                    <xsd:enumeration value="newSubscriberClaim"/>
-                    <xsd:enumeration value="newFixedFeeClaim"/>
-                    <xsd:enumeration value="existClaim"/>
-                    <xsd:enumeration value="existSubscriberClaim"/>
-                    <xsd:enumeration value="existFixedFeeClaim"/>
-                    <xsd:enumeration value="ClaimNotEditable"/>
-                    <xsd:enumeration value="newInvoice"/>
-                    <xsd:enumeration value="existInvoice"/>
-                    <xsd:enumeration value="invalidSchema"/>
-                    <xsd:enumeration value="invalidHireState"/>
-                    <xsd:enumeration value="tpiNotRecognized"/>
-                    <xsd:enumeration value="tpiIntervention"/>
-                    <xsd:enumeration value="tpiNotAcceptedByInsurer"/>
-                    <xsd:enumeration value="subscriberNotAcceptedByInsurer"/>
-                    <xsd:enumeration value="fixedFeeNotAcceptedByInsurer"/>
-                    <xsd:enumeration value="hireMonitoringAndNewInvoice"/>
-                    <xsd:enumeration value="existingSupplementaryInvoice"/>
-                    <xsd:enumeration value="newSupplementaryInvoice"/>
-                    <xsd:enumeration value="hireMonitoring"/>
-                    <xsd:enumeration value="invalidClaimStatus"/>
-                    <xsd:enumeration value="insurerVsInsurerInvoice"/>
-                    <xsd:enumeration value="insurerUpload"/>
-                </xsd:restriction>
-            </xsd:simpleType>
-
             <xsd:simpleType name="ClaimUploadStatus">
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="New Invoice"/>
