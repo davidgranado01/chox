@@ -16,7 +16,7 @@
         var passwordRegex = "^.*(?=.{" + '<s:property value="minPasswordLength" />' + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
         form.validate(
         {
-            errorLabelContainer: "#userChangePasswordMessageBox",
+            errorLabelContainer: "#EXTmessageBox",
             rules: {
                 oldPassword: {required:true},
                 newPassword: {required:true, regex: passwordRegex},
@@ -24,7 +24,7 @@
             }
             ,
             messages: {
-                oldPassword: {required:"You must supply a value for 'Old Password'"},
+                oldPassword: {required:"You must supply a value for 'Current Password'"},
                 newPassword: {required:"You must supply a value for 'New Password'", regex: "Incorrect Password Format"},
                 confirmNewPassword: {equalTo:"Your passwords do not match"}
             }
@@ -100,17 +100,17 @@
         <table>
             <tr>
                 <td align="right"><label class="chox-form-std-label">
-                        Current password <span class="mandatory">*</span></label></td>
+                        Current Password <span class="mandatory">*</span></label></td>
                 <td><input type="password" class="chox-txt" name="oldPassword" id="oldPassword" size="20" maxlength="20" /></td>
             </tr>
             <tr>
                 <td align="right"><label class="chox-form-std-label">
-                        Choose a new password <span class="mandatory">*</span></label></td>
+                        Choose a New Password <span class="mandatory">*</span></label></td>
                 <td><input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" /></td>
             </tr>
             <tr>
                 <td align="right"><label class="chox-form-std-label">
-                        Re-enter new password<span class="mandatory">*</span></label></td>
+                        Re-enter New Password<span class="mandatory">*</span></label></td>
                 <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
             </tr>
             <tr>
