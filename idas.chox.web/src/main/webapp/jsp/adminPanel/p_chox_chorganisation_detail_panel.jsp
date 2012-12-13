@@ -92,35 +92,28 @@
         });
 
     <s:if test="fixedTransactionalFee" >
-            //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#FixedTransactionalValueDiv").show();
     </s:if><s:else >
-            //            console.log("Showing Fixed Transaction stuff");
             $("#fixedTransactionalFeeOpt").val("false");
             $("#FixedTransactionalValueDiv").hide();
     </s:else>
 
     <s:if test="adjustDailyRateCharge" >
-            //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#adjustDailyRateChargeOpt").val("true");
             $("#DailyRateChargeLimitDiv").show();
             addValidationRuleDailyRateChargeLimit()
     </s:if><s:else >
-            //            console.log("Showing Fixed Transaction stuff");
             $("#adjustDailyRateChargeOpt").val("false");
             $("#DailyRateChargeLimitDiv").hide();
     </s:else>
 
 
             ui.ajaxForm(form, function(responseText, statusText){
-
                 var response = eval('(' + responseText.trim() + ')');
-
                 if(response && response.isValid)
                 {
                     if(response.resultType && response.resultType == 'New'){
-                        //                    alert("New Credit hire has been created");
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('New CHO','A new CHO has been created.');
                         updateCHODetailPanel(parseInt(response.result));
@@ -131,7 +124,6 @@
                         updateCHODetailPanel('<s:property value="id" />');
                     }
                 } else {
-                    updateCHODetailPanel('<s:property value="id" />');
                     Ext.MessageBox.show({
                         title: '',
                         msg: response.errors,
@@ -168,10 +160,8 @@
 
         function chargeMethodSelected(fixedTransactionalFee) {
             if (fixedTransactionalFee === 'true') {
-                //            console.log("Showing Fixed Transaction stuff");
                 $("#FixedTransactionalValueDiv").show();
             } else if (fixedTransactionalFee === 'false') {
-                //            console.log("Hiding Fixed Transactional Fee stuff");
                 $("#FixedTransactionalValueDiv").hide();
             }
         }

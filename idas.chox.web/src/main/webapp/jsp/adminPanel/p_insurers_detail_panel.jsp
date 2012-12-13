@@ -584,7 +584,6 @@
                 
             } // end of if else inner loop
         } else {
-            updateInsurerDetailPanel('<s:property value="objectId"/>');
             Ext.MessageBox.show({
                 title: '',
                 msg: response.errors,

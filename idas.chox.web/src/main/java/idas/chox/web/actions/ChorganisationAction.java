@@ -140,7 +140,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
     }
 
-    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public String getObjectId() {
         return this.objectId;
     }
@@ -156,8 +155,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
     @Secured({"ROLE_CHOX_ADMIN"})
     public String triggerChorganisationStatus() throws Exception {
@@ -189,7 +186,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             if (getIsNew()) {
                 if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
                     this.getActionResponse().AddError("Credit hire name already exist!");
-                    return ERROR;
+                    return SUCCESS;
                 }
             }
             checkVersion(Arrays.asList(model));
@@ -227,8 +224,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         }
         return SUCCESS;
     }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
@@ -237,5 +232,4 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
         this.chorganisationAliasService = chorganisationAliasService;
     }
-    // </editor-fold>
 }
