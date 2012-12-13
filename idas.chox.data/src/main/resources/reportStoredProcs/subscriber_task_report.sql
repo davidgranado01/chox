@@ -27,82 +27,104 @@ SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now())) AS "New Task for today's date",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
                 AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 1) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '1 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 2) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '2 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 3) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '3 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 4) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '4 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 5) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '5 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 6) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '6 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 7) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '7 day' AND now()) ELSE 0 END) AS "Tasks Received This week",
+             (SELECT EXTRACT(DOW FROM now()) = 1) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '1 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 2) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '2 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 3) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '3 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 4) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '4 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 5) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '5 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 6) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '6 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 7) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '7 day' AND now()) 
+             ELSE 0 END) AS "Tasks Received This week",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '8 day' AND now() - interval '14 day'
                 AND t.complete = FALSE)) AS "Tasks 7-14 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '15 day' AND now() - interval '30 day'
                 AND t.complete = FALSE)) AS "Tasks 15-30 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '31 day' AND now() - interval '60 day'
                 AND t.complete = FALSE)) AS "Tasks 31-60 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '61 day' AND now() - interval '90 day'
                 AND t.complete = FALSE)) AS "Tasks 61-90 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date <= now() - interval '91 day'
                 AND t.complete = FALSE)) AS "90+ days"
 FROM web_user wu
@@ -114,85 +136,107 @@ GROUP BY 1,
 UNION
 SELECT '0 OWNERS ASSIGNED' AS "Handler",
        wk.name AS "Workgroup Name",
-       sum((SELECT count(*)
+              sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now())) AS "New Task for today's date",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
                 AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 1) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '1 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 2) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '2 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 3) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '3 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 4) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '4 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 5) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '5 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 6) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '6 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 7) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '7 day' AND now()) ELSE 0 END) AS "Tasks Received This week",
+             (SELECT EXTRACT(DOW FROM now()) = 1) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '1 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 2) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '2 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 3) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '3 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 4) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '4 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 5) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '5 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 6) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '6 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 7) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '7 day' AND now()) 
+             ELSE 0 END) AS "Tasks Received This week",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '8 day' AND now() - interval '14 day'
                 AND t.complete = FALSE)) AS "Tasks 7-14 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '15 day' AND now() - interval '30 day'
                 AND t.complete = FALSE)) AS "Tasks 15-30 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '31 day' AND now() - interval '60 day'
                 AND t.complete = FALSE)) AS "Tasks 31-60 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '61 day' AND now() - interval '90 day'
                 AND t.complete = FALSE)) AS "Tasks 61-90 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date <= now() - interval '91 day'
                 AND t.complete = FALSE)) AS "90+ days"
 FROM task t1,
@@ -207,85 +251,107 @@ GROUP BY 1,
 UNION
 SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
        '0 WORKGROUPS ASSIGNED' AS "Workgroup Name",
-       sum((SELECT count(*)
+              sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now())) AS "New Task for today's date",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
                 AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 1) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '1 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 2) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '2 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 3) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '3 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 4) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '4 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 5) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '5 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 6) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '6 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 7) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '7 day' AND now()) ELSE 0 END) AS "Tasks Received This week",
+             (SELECT EXTRACT(DOW FROM now()) = 1) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '1 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 2) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '2 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 3) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '3 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 4) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '4 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 5) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '5 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 6) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '6 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 7) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '7 day' AND now()) 
+             ELSE 0 END) AS "Tasks Received This week",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '8 day' AND now() - interval '14 day'
                 AND t.complete = FALSE)) AS "Tasks 7-14 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '15 day' AND now() - interval '30 day'
                 AND t.complete = FALSE)) AS "Tasks 15-30 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '31 day' AND now() - interval '60 day'
                 AND t.complete = FALSE)) AS "Tasks 31-60 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '61 day' AND now() - interval '90 day'
                 AND t.complete = FALSE)) AS "Tasks 61-90 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date <= now() - interval '91 day'
                 AND t.complete = FALSE)) AS "90+ days"
 FROM task t1,
@@ -300,85 +366,107 @@ GROUP BY 1,
 UNION
 SELECT '0 OWNERS ASSIGNED' AS "Handler",
        '0 WORKGROUPS ASSIGNED' AS "Workgroup Name",
-       sum((SELECT count(*)
+              sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now())) AS "New Task for today's date",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
                 AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 1) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '1 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 2) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '2 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 3) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '3 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 4) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '4 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 5) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '5 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 6) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '6 day' AND now()) WHEN
-             (SELECT EXTRACT(DOW
-                             FROM now()) = 7) THEN
-             (SELECT count(*)
-              FROM task t
-              WHERE t.claim_id = c.id
-                AND t.created_date BETWEEN now() - interval '7 day' AND now()) ELSE 0 END) AS "Tasks Received This week",
+             (SELECT EXTRACT(DOW FROM now()) = 1) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '1 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 2) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '2 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 3) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '3 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 4) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '4 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 5) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '5 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 6) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '6 day' AND now()) 
+             WHEN
+             (SELECT EXTRACT(DOW FROM now()) = 7) 
+             THEN
+                 (SELECT count(*)
+                  FROM task t
+                  WHERE t.claim_id = c.id
+                  AND t.visibility = 3
+                    AND t.created_date BETWEEN now() - interval '7 day' AND now()) 
+             ELSE 0 END) AS "Tasks Received This week",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '8 day' AND now() - interval '14 day'
                 AND t.complete = FALSE)) AS "Tasks 7-14 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '15 day' AND now() - interval '30 day'
                 AND t.complete = FALSE)) AS "Tasks 15-30 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '31 day' AND now() - interval '60 day'
                 AND t.complete = FALSE)) AS "Tasks 31-60 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '61 day' AND now() - interval '90 day'
                 AND t.complete = FALSE)) AS "Tasks 61-90 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
+              AND t.visibility = 3
                 AND t.created_date <= now() - interval '91 day'
                 AND t.complete = FALSE)) AS "90+ days"
 FROM task t1,
