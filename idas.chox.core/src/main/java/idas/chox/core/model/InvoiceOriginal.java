@@ -1,8 +1,9 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,11 +62,8 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal repairPenaltyChargeOriginal;
     private String repairPenaltyPercentageOriginal;
     private Date repairPenaltyChargeAppliedDateOriginal;
-    private int penaltyBandOriginal;
     private BigDecimal totalPenaltyChargeOriginal;
-//    private BigDecimal originalFullTotalToPayOriginal;
     private BigDecimal totalToPayOriginal;
-//    private BigDecimal originalTotalToPayOriginal;
     private BigDecimal totalLossFeeNetOriginal;
     private BigDecimal totalLossFeeVatOriginal;
     private BigDecimal totalLossFeeGrossOriginal;
@@ -355,30 +353,6 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     public void setNonStandardInsurancePremiumQtyOriginal(Integer nonStandardInsurancePremiumQtyOriginal) {
             this.nonStandardInsurancePremiumQtyOriginal = nonStandardInsurancePremiumQtyOriginal;
-    }
-
-//    public BigDecimal getOriginalFullTotalToPayOriginal() {
-//        return originalFullTotalToPayOriginal;
-//    }
-//
-//    public void setOriginalFullTotalToPayOriginal(BigDecimal originalFullTotalToPayOriginal) {
-//            this.originalFullTotalToPayOriginal = originalFullTotalToPayOriginal;
-//    }
-//
-//    public BigDecimal getOriginalTotalToPayOriginal() {
-//        return originalTotalToPayOriginal;
-//    }
-//
-//    public void setOriginalTotalToPayOriginal(BigDecimal originalTotalToPayOriginal) {
-//            this.originalTotalToPayOriginal = originalTotalToPayOriginal;
-//    }
-
-    public int getPenaltyBandOriginal() {
-        return penaltyBandOriginal;
-    }
-
-    public void setPenaltyBandOriginal(int penaltyBandOriginal) {
-            this.penaltyBandOriginal = penaltyBandOriginal;
     }
 
     public BigDecimal getRepairGrossOriginal() {
