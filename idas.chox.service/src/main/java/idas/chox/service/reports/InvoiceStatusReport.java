@@ -30,6 +30,7 @@ public class InvoiceStatusReport implements Report {
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
 
+
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
@@ -75,7 +76,7 @@ public class InvoiceStatusReport implements Report {
         return ins;
     }
 
-    
+
     @Override
     public HashMap getReportParameters() {
         HashMap map = new HashMap();
@@ -635,11 +636,12 @@ public class InvoiceStatusReport implements Report {
 
             if (x == 1) {
                 createdDateRestrictionSb.append(" - interval ' ").append(x).append("  month' ");
-            } else {
+            } else if (x > 1) {
                 createdDateRestrictionSb.append(" - interval ' ").append(x).append("  months' ");
             }
 
-            createdDateRestrictionSb.append("and to_date(to_char(cast(:pStartDate as Date) ");
+            createdDateRestrictionSb.append("and to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
+                .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
 
             if (x == 0) {
                 createdDateRestrictionSb.append(" + interval '1 month'");
@@ -650,20 +652,8 @@ public class InvoiceStatusReport implements Report {
                 createdDateRestrictionSb.append(" - interval '").append(x-1).append(" months'");
             }
 
-            createdDateRestrictionSb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
-
-            if (x == 1) {
-                createdDateRestrictionSb.append(" + interval '1 month'");
-            }
-            else if (x == 2) {
-                createdDateRestrictionSb.append(" - interval '1 month'");
-            } else if (x > 2) {
-                createdDateRestrictionSb.append(" - interval '").append(x-1).append(" months'");
-            }
-
-            createdDateRestrictionSb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
             String createdDateRestriction = createdDateRestrictionSb.toString();
-            
+
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
