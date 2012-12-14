@@ -34,7 +34,7 @@ SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
               WHERE t.claim_id = c.id
               AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
-                AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
+                AND t.complete = FALSE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
              (SELECT EXTRACT(DOW FROM now()) = 1) 
              THEN
@@ -96,7 +96,8 @@ SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
               FROM task t
               WHERE t.claim_id = c.id
               AND t.visibility = 3
-                AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
+                AND t.created_date BETWEEN now() - interval '7 days' AND now()
+                AND t.complete = FALSE)) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
@@ -131,7 +132,7 @@ FROM web_user wu
 LEFT OUTER JOIN claim c ON (wu.id = c.claim_owner_id)
 LEFT OUTER JOIN workgroup wk ON (wk.id = c.workgroup_id)
 WHERE c.insurer_id = insid
-AND c.claim_type = 7
+AND (c.claim_type = 7 OR c.claim_type = 8 OR c.claim_type = 9)
 GROUP BY 1,
          2
 UNION
@@ -147,7 +148,7 @@ SELECT '0 OWNERS ASSIGNED' AS "Handler",
               WHERE t.claim_id = c.id
               AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
-                AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
+                AND t.complete = FALSE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
              (SELECT EXTRACT(DOW FROM now()) = 1) 
              THEN
@@ -209,7 +210,8 @@ SELECT '0 OWNERS ASSIGNED' AS "Handler",
               FROM task t
               WHERE t.claim_id = c.id
               AND t.visibility = 3
-                AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
+                AND t.created_date BETWEEN now() - interval '7 days' AND now()
+                AND t.complete = FALSE)) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
@@ -246,7 +248,7 @@ FROM task t1,
 WHERE c.insurer_id = insid
   AND wk.id = c.claim_owner_id
   AND t1.claim_id = c.id
-  AND c.claim_type = 7
+  AND (c.claim_type = 7 OR c.claim_type = 8 OR c.claim_type = 9)
   AND c.claim_owner_id IS NULL
 GROUP BY 1,
          2
@@ -263,7 +265,7 @@ SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
               WHERE t.claim_id = c.id
               AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
-                AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
+                AND t.complete = FALSE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
              (SELECT EXTRACT(DOW FROM now()) = 1) 
              THEN
@@ -325,7 +327,8 @@ SELECT wu.first_name || ' ' || wu.last_name AS "Handler",
               FROM task t
               WHERE t.claim_id = c.id
               AND t.visibility = 3
-                AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
+                AND t.created_date BETWEEN now() - interval '7 days' AND now()
+                AND t.complete = FALSE)) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
@@ -363,7 +366,7 @@ WHERE c.insurer_id = insid
   AND wu.id = c.claim_owner_id
   AND t1.claim_id = c.id
   AND c.workgroup_id IS NULL
-  AND c.claim_type = 7
+  AND (c.claim_type = 7 OR c.claim_type = 8 OR c.claim_type = 9)
 GROUP BY 1,
          2
 UNION
@@ -379,7 +382,7 @@ SELECT '0 OWNERS ASSIGNED' AS "Handler",
               WHERE t.claim_id = c.id
               AND t.visibility = 3
                 AND t.created_date BETWEEN now() - interval '1 day' AND now()
-                AND t.complete = TRUE)) AS "Tasks Outstanding In Total",
+                AND t.complete = FALSE)) AS "Tasks Outstanding In Total",
        sum(CASE WHEN
              (SELECT EXTRACT(DOW FROM now()) = 1) 
              THEN
@@ -441,7 +444,8 @@ SELECT '0 OWNERS ASSIGNED' AS "Handler",
               FROM task t
               WHERE t.claim_id = c.id
               AND t.visibility = 3
-                AND t.created_date BETWEEN now() - interval '7 days' AND now())) AS "Tasks up to 7 days",
+                AND t.created_date BETWEEN now() - interval '7 days' AND now()
+                AND t.complete = FALSE)) AS "Tasks up to 7 days",
        sum((SELECT count(*)
               FROM task t
               WHERE t.claim_id = c.id
@@ -477,7 +481,7 @@ FROM task t1,
 WHERE c.claim_owner_id IS NULL
   AND c.workgroup_id IS NULL
   AND t1.claim_id = c.id
-  AND c.claim_type = 7
+  AND (c.claim_type = 7 OR c.claim_type = 8 OR c.claim_type = 9)
   AND c.insurer_id = insid
 GROUP BY 1,
          2
