@@ -21,6 +21,7 @@ import idas.chox.web.viewdata.InsurerViewData;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerAction.class);
+    private String originalName;
     private List<InsurerViewData> insurer;
     private String objectId;
     private Insurer model;
@@ -163,7 +164,8 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             if (this.adminInsurerService.getWorkgroup(workgroupIdField) != null) {
                 model.setInvoiceWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
             }
-            ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
+            
+            ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew(), originalName);
             updateModelInSession(Arrays.asList(model));
             setActionResponse(response);
         } catch (Exception ex) {
@@ -215,6 +217,14 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     public void setRelatedInsurerId(int id) {
         this.relatedInsurerId = id;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
     
     

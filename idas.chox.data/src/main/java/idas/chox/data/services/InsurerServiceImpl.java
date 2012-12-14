@@ -1,26 +1,29 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.VehicleClassCeiling;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.util.XmlHelper;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.w3c.dom.Element;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Element;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.InsurerAlias;
+import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.services.InsurerService;
+import idas.chox.core.util.XmlHelper;
 
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerServiceImpl.class);
 
     public boolean isInsurerNameExist(String s) {
-        if (getInsurerByName(s) != null) {
+        if (getInsurerByName(s) != null || getInsurerByAliasName(s) != null) {
             return true;
         }
         return false;
@@ -30,6 +33,12 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         criteria.add(Restrictions.eq("name", s));
         return (Insurer) getByCriteria(criteria);
+    }
+    
+    public InsurerAlias getInsurerByAliasName(String s) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
+        criteria.add(Restrictions.eq("aliasName", s));
+        return (InsurerAlias) getByCriteria(criteria);
     }
 
     public Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
