@@ -6,6 +6,8 @@
         var form = $("form#formChangeContact");
         ui.ajaxForm(form, doChangeTelephoneSucceed, 'html');
         $('#contactTelephoneId').html('<s:property value="authenticatedUser.telephone" />');
+        
+        $('#responseTelMessageBox').fadeOut(10000);
    });
 
    function doChangeTelephoneSucceed(responseText, statusText){
@@ -60,7 +62,7 @@
                     </tr>
                 </table>
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+            <div class="chox-form-submit-result" id="responseTelMessageBox"><s:property value="actionResult" /></div>
                 <div id="submitResult" class="chox-form-submit-result"></div>
                 <div class="action-error-msg" id="userChangeTelephoneMessageBox"></div>
             </div>

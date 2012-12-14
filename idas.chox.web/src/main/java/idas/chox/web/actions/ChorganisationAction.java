@@ -186,13 +186,13 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
             if (getIsNew()) {
                 if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
-                    this.getActionResponse().AddError("Credit hire name already exist!");
+                    this.getActionResponse().AddError("Credit hire name already exists!");
                     return SUCCESS;
                 }
             } else {
                 if(!originalName.equals(model.getName())) {
                     if (this.adminChorganisationService.isChorganisationNameExist(model.getName())){
-                        this.getActionResponse().AddError("Credit hire name already exist!");
+                        this.getActionResponse().AddError("Credit hire name already exists!");
                         return SUCCESS;
                     }
                 }

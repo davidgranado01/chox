@@ -88,7 +88,7 @@ public class AdminInsurerService extends SecureDataService {
 
         if (isNew) {
             if (this.insurerService.isInsurerNameExist(insurer.getName())) {
-                this.actionResponse.AddError("Insurer name already exist!");
+                this.actionResponse.AddError("Insurer name already exists!");
                 isAllowUpdate = false;
             }
         } else {
@@ -98,7 +98,7 @@ public class AdminInsurerService extends SecureDataService {
             
             if(!originalName.equals(insurer.getName())) {
                 if (this.insurerService.isInsurerNameExist(insurer.getName())){
-                    this.getActionResponse().AddError("Insurer name already exist!");
+                    this.getActionResponse().AddError("Insurer name already exists!");
                     isAllowUpdate = false;
                 }
             }

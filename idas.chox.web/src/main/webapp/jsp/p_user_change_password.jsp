@@ -2,8 +2,10 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    Ext.onReady(function(){
+$(function(){
 
+        var passForm = $("form#formChangePassword");
+        
         $.validator.addMethod(
         "regex",
         function(value, element, regexp) {
@@ -12,9 +14,8 @@
             return this.optional(element) || re.test(value);
         }, "Please check your input.");
 
-        var form = $("form#formChangePassword");
         var passwordRegex = "^.*(?=.{" + '<s:property value="minPasswordLength" />' + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
-        form.validate(
+        passForm.validate(
         {
             errorLabelContainer: "#EXTmessageBox",
             rules: {

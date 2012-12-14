@@ -30,9 +30,16 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Email Address</label>
                 <label class="std-data-ro"><s:property value="webUser.email" /></label></div>
-            <div class="chox-form-item">
+            <s:if test="webUser.isCHOXAdmin()">
+                <div class="chox-form-item">
+                <label class="chox-form-std-label">Organisation</label>
+                <label class="std-data-ro">Sherwood</label></div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
                 <label class="chox-form-std-label">Organisation</label>
                 <label class="std-data-ro"><s:property value="webUser.organisationName" /></label></div>
+            </s:else>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Contact Telephone No.</label>
                 <label class="std-data-ro" id="contactTelephoneId" ><s:property value="webUser.telephone" /></label></div>
