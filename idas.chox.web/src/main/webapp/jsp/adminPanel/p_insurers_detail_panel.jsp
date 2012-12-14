@@ -404,7 +404,9 @@
                     return true;
                     }
             );
-        
+      
+        if($('#CCDName').val() != "")
+            $('#nameField').hide();
     });
     
     function displayAutoRoutingTpiAndSusbscriberFields() {
@@ -627,7 +629,7 @@
                     <div class="admin-form-container">
                         <fieldset class="x-fieldset">
                             <legend>Insurer Details</legend>
-                            <div class="chox-form-item">
+                            <div class="chox-form-item" id="nameField">
                                 <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                                 <input type="hidden" name="originalName" id="originalName" value='<s:property value="name"/>'/>
