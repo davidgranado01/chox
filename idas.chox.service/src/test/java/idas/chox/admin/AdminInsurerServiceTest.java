@@ -115,7 +115,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setMaxLoginAttempts(0);
         insurer.setEcdIncreaseTriggerPercentage(0);
 
-        ActionResponse response = adminInsurerService.updateInsurer(insurer, true);
+        ActionResponse response = adminInsurerService.updateInsurer(insurer, true, "test");
         Assert.assertTrue(response.getIsValid());
 
         int insurerId = insurer.getId();
@@ -144,7 +144,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         insurer.setCompanyNo(oCompanyNo);
         insurer.setVatNo(oVatNo);
 
-        ActionResponse response = adminInsurerService.updateInsurer(insurer, false);
+        ActionResponse response = adminInsurerService.updateInsurer(insurer, false, "LKJHGFDSA");
         Insurer insurerNew = adminInsurerService.getInsurer(insurerId);
         Assert.assertTrue(response.getIsValid());
         Assert.assertEquals(insurerNew.getAddress2(), oAddress2);
