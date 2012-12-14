@@ -1423,7 +1423,7 @@
                         sm2,
                         {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                             renderer:function(value,p,r){
-                                return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: hand;">' + value + '</span>'}},
+                                return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>'}},
                         {header: "Claim Type", width: 120, sortable: true, dataIndex: 'claimType'},
                         {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
                         {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
