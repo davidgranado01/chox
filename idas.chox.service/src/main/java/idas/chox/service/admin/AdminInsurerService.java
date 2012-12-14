@@ -81,7 +81,7 @@ public class AdminInsurerService extends SecureDataService {
 
     }
 
-    public ActionResponse updateInsurer(Insurer insurer, boolean isNew) {
+    public ActionResponse updateInsurer(Insurer insurer, boolean isNew, String originalName) {
 
         this.actionResponse = new ActionResponse();
         boolean isAllowUpdate = true;
@@ -95,7 +95,16 @@ public class AdminInsurerService extends SecureDataService {
             if (insurer.isWorkgroupEnable() && !workgroupService.isInsurerWithWorkgroup(insurer.getId())) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is at least one active workgroup exist in order to enable workgroup function");
             }
+            
+            if(!originalName.equals(insurer.getName())) {
+                if (this.insurerService.isInsurerNameExist(insurer.getName())){
+                    this.getActionResponse().AddError("Insurer name already exist!");
+                    isAllowUpdate = false;
+                }
+            }
         }
+        
+        
 
         if (isAllowUpdate) {
 

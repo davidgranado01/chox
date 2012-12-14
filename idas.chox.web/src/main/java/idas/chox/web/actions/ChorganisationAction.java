@@ -36,6 +36,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     private int tpiInsurerId;
     private int tpiWorkgroupId;
     private int tpiClaimOwnerId;
+    private String originalName;
 
     public boolean isTpiActivated() {
         return tpiActivated;
@@ -188,8 +189,16 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                     this.getActionResponse().AddError("Credit hire name already exist!");
                     return SUCCESS;
                 }
+            } else {
+                if(!originalName.equals(model.getName())) {
+                    if (this.adminChorganisationService.isChorganisationNameExist(model.getName())){
+                        this.getActionResponse().AddError("Credit hire name already exist!");
+                        return SUCCESS;
+                    }
+                }
             }
             checkVersion(Arrays.asList(model));
+
             model = adminChorganisationService.updateChorganisation(model);
             updateModelInSession(Arrays.asList(model));
             if (getIsNew()) {
@@ -232,4 +241,13 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
         this.chorganisationAliasService = chorganisationAliasService;
     }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
 }

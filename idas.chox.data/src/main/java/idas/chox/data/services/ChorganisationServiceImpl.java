@@ -1,21 +1,24 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.BreBandOrganisation;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.InsurerChorganisation;
-import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.services.ChorganisationService;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.BreBandOrganisation;
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ChorganisationAlias;
+import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ChorganisationService;
 
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService {
     private static final Logger LOG = LoggerFactory.getLogger(ChorganisationServiceImpl.class);
@@ -134,17 +137,12 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     
     @Override
     public boolean isChorgNameExist(String s) {
-
-        boolean isExist = false;
-
-        if (getChorgByName(s) != null) {
-            isExist = true;
+        if (getChoAliasName(s) != null || getChorgByName(s) != null) {
+            return true;
         }
-
-        return isExist;
-
+        return false;
     }
-
+    
     @Override
     public Chorganisation getChorgByName(String s) {
 
@@ -159,6 +157,20 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
             LOG.error("Error getting CHO by name '{}': {}", s, ex.getMessage());
         }
 
+        return object;
+    }
+    
+    @Override
+    public ChorganisationAlias getChoAliasName(String s) {
+        ChorganisationAlias object = null;
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChorganisationAlias.class);
+            criteria.add(Restrictions.ilike("aliasName", s.replace(" ", "")));
+            object = (ChorganisationAlias) getByCriteria(criteria);
+
+        } catch (Exception ex) {
+            LOG.error("Error getting CHO alias by name '{}': {}", s, ex.getMessage());
+        }
         return object;
     }
 

@@ -630,6 +630,7 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                                 <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
+                                <input type="hidden" name="originalName" id="originalName" value='<s:property value="name"/>'/>
                             </div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
