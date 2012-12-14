@@ -111,11 +111,11 @@ public class AdminUserService extends SecureDataService {
         if (!webUser.getPassword().equals(encodePassword(oldPassword))) {
             LOG.debug("Error trying to update user password for user '{}'", webUser.getId());
             LOG.debug("Current password is '{}' but got '{}'", webUser.getPassword(), encodePassword(oldPassword));
-            this.actionResponse.AddError("Old password is not correct.");
+            this.actionResponse.AddError("'Current Password' is not correct.");
         } else if (webUser.getPassword().equals(encodePassword(newPassword))) {
-            this.actionResponse.AddError("New password is the same as the old one.");
+            this.actionResponse.AddError("'New password' is the same as the old one.");
         } else if (!validatePasswordHistory(webUserId, encodePassword(newPassword))) {
-            this.actionResponse.AddError("New password is the same as a previous one.");
+            this.actionResponse.AddError("'New password' is the same as a previous one.");
         } else {
             LOG.debug("Setting new password '{}'(encoded '{}')", newPassword, encodePassword(newPassword));
             webUser.setPassword(encodePassword(newPassword));

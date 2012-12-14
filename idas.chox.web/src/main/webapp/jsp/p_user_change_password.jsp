@@ -30,11 +30,13 @@
             }
         });
 
-//        ui.ajaxForm(form, doChangePasswordSucceed, 'ajax');
+        $('#responseMessageBox').fadeOut(10000);
 
     });
     
     function changePassword(){
+        $('#responseMessageBox').html('');
+        $('#responseErrorBox').html('');
         var form = $("form#formChangePassword");
         if(form.valid()){
             var queryString = form.formSerialize();
@@ -48,7 +50,6 @@
     }
 
     function doChangePasswordSucceed(options,success,resp){
-//        var response = eval('(' + res.responseText.trim() + ')');
         var response = Ext.util.JSON.decode(resp.responseText);
         if(response && response.isValid)
         {
@@ -117,8 +118,9 @@
                 <td colspan="2" align="center"><input type="button" id="userChangePasswordSubmitButtonId" value="Save" onclick="javascript:changePassword();"/></td>
             </tr>
         </table>
-        <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-        <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+        <div id="EXTmessageBox" class="action-error-msg"></div>
+        <div class="action-error-msg" id="responseErrorBox"><s:property value="actionError" /></div>
+        <div class="chox-form-submit-result" id="responseMessageBox"><s:property value="actionResult" /></div>
     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
 </form>
