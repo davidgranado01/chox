@@ -32,7 +32,7 @@ SET gta_active = status,
 ALTER TABLE reason_of_rejection_template DROP COLUMN status;
 
 ----------------------
---  End of 7.1.1   --
+--  End of 7.1.1    --
 ----------------------
 
 --------------------------------------------------------------------------------
@@ -131,11 +131,11 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id)
     SELECT 'ROLE_INS_PC', 2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
 
 ----------------------
---  End of 7.1.2   --
+--  End of 7.1.2    --
 ----------------------
 
 --------------------------------------------------
---     7.1.5 Penalty Charge Updates      --
+--     7.1.5 Penalty Charge Updates             --
 --------------------------------------------------
 
 
@@ -697,7 +697,7 @@ ALTER TABLE invoice DROP COLUMN penalty_alert_qty;
 ALTER TABLE invoice_original DROP COLUMN penalty_alert_qty;
 
 ----------------------
---  End of 7.1.5   --
+--  End of 7.1.5    --
 ----------------------
 
 
@@ -745,7 +745,7 @@ INSERT INTO penalty_charge (penalty_type, penalty_start_age, penalty_start_date,
      SELECT 'FIXEDFEE', 90, '1950-01-01', '15%', 15, '15%', 15; 
 
 ----------------------
---  End of 7.1.4   --
+--  End of 7.1.4    --
 ----------------------
 
 
@@ -778,12 +778,12 @@ ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
 ALTER TABLE insurer RENAME COLUMN tpi_claim_owner TO invoice_owner;
 
 ----------------------
---  End of 7.1.6   --
+--  End of 7.1.6    --
 ----------------------
 
 
 ------------------------------------------------------------------------------------------------------------------------
--- BUG#2254 - Production - Re-assign Workgroup dropdown available when workgroups disabled             --
+-- BUG#2254 - Production - Re-assign Workgroup dropdown available when workgroups disabled                            --
 ------------------------------------------------------------------------------------------------------------------------
 
 
@@ -804,5 +804,15 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_INS_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLitigationOutcome';
 
 ----------------------
---  End of BUG#2254   --
+--  End of BUG#2254 --
+----------------------
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2293 - Production - Remove the ability to revert claims in the status 'AwaitingInvoiceData' for Insurers       --
+------------------------------------------------------------------------------------------------------------------------
+delete from accessibility_item where role='ROLE_INS' and accessibility_id=(select id from accessibility where name='button.RevertClaimStatus.AwaitingInvoiceData');
+
+----------------------
+--  End of BUG#2293 --
 ----------------------

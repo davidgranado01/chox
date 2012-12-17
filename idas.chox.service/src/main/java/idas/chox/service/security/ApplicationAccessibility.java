@@ -541,20 +541,6 @@ public class ApplicationAccessibility {
                     || auditTrail.getOriginalStatus().isEmpty())) {
                 return DECLINED;
             }
-            // <editor-fold defaultstate="collapsed" desc="BUG#1543 FIX">
-            // this fix is for bug 1543 Revert status for subscriber claims at 'AwaitingInvoiceData'
-            if ((user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
-                                    && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
-                                    && ((!ClaimType.isSubscriber(claim.getClaimType()))
-                                         || (ClaimType.isSubscriber(claim.getClaimType()) 
-                                             && claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED))))
-                    || (user.isCHO() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REVERT_CLAIM) 
-                                     && claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) 
-                                     && ClaimType.isSubscriber(claim.getClaimType())
-                                     && !claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED))) {
-                LOG.debug("Declined access to Button accessibility (Revert claim).");
-                return DECLINED;
-            }
             // </editor-fold>
             LOG.debug("Returning Button accessibility access right: {}", accessRight);
             return accessRight;
