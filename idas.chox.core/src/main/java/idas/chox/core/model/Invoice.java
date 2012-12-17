@@ -1530,11 +1530,11 @@ public class Invoice extends Entity implements Serializable {
             if (getHirePenaltyPercentageAppliedValue() != null && getHirePenaltyPercentage() != null && getHirePenaltyPercentage().endsWith("%")) {
                 BigDecimal selectedHirePenaltyPercentageValue = new BigDecimal(getHirePenaltyPercentage().trim().replace("%", ""));
                 return getHirePenaltyPercentageAppliedValue().compareTo(selectedHirePenaltyPercentageValue) != 0 ? true : false;
-            } else if (getHirePenaltyPercentage().equalsIgnoreCase("commercial")) {
+            } else if (getHirePenaltyPercentage() != null && getHirePenaltyPercentage().equalsIgnoreCase("commercial")) {
                 return true;
             }
-        } catch (NumberFormatException nfx) {
-            LOG.error("Exception while converting HirePenaltyPercentage string '{}' to BigDecimal", getHirePenaltyPercentage(), nfx);
+        } catch (Exception ex) {
+            LOG.error("Exception while converting HirePenaltyPercentage string '{}' to BigDecimal", getHirePenaltyPercentage(), ex);
         }
         return false;
     }
@@ -1546,8 +1546,8 @@ public class Invoice extends Entity implements Serializable {
                 BigDecimal selectedRepairPenaltyPercentageValue = new BigDecimal(getRepairPenaltyPercentage().trim().replace("%", ""));
                 return getRepairPenaltyPercentageAppliedValue().compareTo(selectedRepairPenaltyPercentageValue) != 0 ? true : false;
             }
-        } catch (NumberFormatException nfx) {
-            LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), nfx);
+        } catch (Exception ex) {
+            LOG.error("Exception while converting RepairPenaltyPercentage string '{}' to BigDecimal", getRepairPenaltyPercentage(), ex);
         }
         return false;
     }
