@@ -131,13 +131,17 @@ public class ClaimRejection extends BaseActivity {
             if (subscriberClaimDays > 5 || (subscriberClaimDays == 5 && !DateHelper.isBefore3pm(5))) {
                 throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
             }
+            // Validate Liability Status
+            // TODO
         }
         else if (ClaimType.isFixedFee(claim.getClaimType())) {
-            // Verify Rejected with the 10 day SLA with 5 minute leeway
+            // Verify Rejected with the 14 day SLA with 5 minute leeway
             int fixedFeeClaimDays = claimService.getFixedFeeClaimDays(claim.getId());
-            if (fixedFeeClaimDays > 10 || (fixedFeeClaimDays == 10 && !DateHelper.isBefore3pm(5))) {
-                throw new Exception("Cannot reject fixed fee claim as the 10 day SLA limit has now been reached.");
+            if (fixedFeeClaimDays > 14 || (fixedFeeClaimDays == 14 && !DateHelper.isBefore3pm(5))) {
+                throw new Exception("Cannot reject fixed fee claim as the 14 day SLA limit has now been reached.");
             }
+            // Validate Liability Status
+            // TODO
         }
 
     }

@@ -142,7 +142,7 @@
                             This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
                         </s:elseif>
                         <s:elseif test="isFixedFeeClaim">
-                            This claim cannot be rejected as the Fixed Fee notification 10 day SLA has passed.
+                            This claim cannot be rejected as the Fixed Fee notification 14 day SLA has passed.
                         </s:elseif>
                 </div>
                 <s:hidden name="id" id="claimId" />

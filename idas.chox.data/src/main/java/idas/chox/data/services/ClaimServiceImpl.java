@@ -1088,7 +1088,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getFixedFeeClaimDays(id);
         }
 
-        if (claimAge > 10 || (claimAge == 10 && !DateHelper.isBefore3pm())) {
+        if (claimAge > 14 || (claimAge == 14 && !DateHelper.isBefore3pm())) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1099,7 +1099,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 10 day SLA, claim taken down Fixed Fee route.");
+                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
                 claim.addComment(comment);
                 save(claim);
                 LOG.debug("Comment added and claim saved.");

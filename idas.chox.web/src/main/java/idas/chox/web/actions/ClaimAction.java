@@ -1301,7 +1301,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (claimDays == null) {
                 claimDays = getFixedFeeClaimDays();
             }
-            maxDays = 10;
+            maxDays = 14;
         }
 
         return (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
@@ -1360,7 +1360,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    public boolean isFixedFeeClaimUnder10Days() {
+    public boolean isFixedFeeClaimUnder14Days() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
             return false;
         }
@@ -1380,7 +1380,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claimDays = getFixedFeeClaimDays();
         }
 
-        if (claimDays < 10) {
+        if (claimDays < 14) {
             return true;
         }
 
@@ -1418,7 +1418,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    public boolean isFixedFeeClaimAt10Days() {
+    public boolean isFixedFeeClaimAt14Days() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
             return false;
         }
@@ -1438,7 +1438,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claimDays = getFixedFeeClaimDays();
         }
 
-        if (claimDays == 10) {
+        if (claimDays == 14) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1473,10 +1473,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claimDays = getFixedFeeClaimDays();
         }
 
-        if (claimDays == 9) {
+        if (claimDays == 13) {
             return "1 day remains";
         }
-        return "" + (10 - claimDays) + " days remain";
+        return "" + (14 - claimDays) + " days remain";
     }
     
     /* This function not only gets SubscriberClaimDays but also sometimes add new notes

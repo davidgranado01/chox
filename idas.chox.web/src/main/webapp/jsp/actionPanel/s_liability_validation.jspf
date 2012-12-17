@@ -196,14 +196,14 @@
         $.validator.addMethod(
         "mustBeFullLiabilityAcepted",
         function(value, element) {
-            return (value == 1);
+            return (value == 1) || (value == 6);
         }           
     );
 
         $.validator.addMethod(
         "mustBeFullLiabilityOrSplit",
         function(value, element) {
-            return (value == 1) || (value == 5);
+            return (value == 1) || (value == 5) || (value == 6);
         }           
     );
 
@@ -354,7 +354,7 @@
             if(subscriberLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityAcepted: true,
-                    messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted)."}
+                    messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted or Proceed Without Prejudice)."}
                 });         
                 
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
@@ -363,7 +363,7 @@
             } else if (fixedFeeLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityOrSplit: true,
-                    messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted or Liability Split."}
+                    messages: {mustBeFullLiabilityOrSplit: "Fixed Fee claims can only be accepted when liability is either Full Liability Accepted, Proceed Without Prejudice or Liability Split."}
                 }); 
                 
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
