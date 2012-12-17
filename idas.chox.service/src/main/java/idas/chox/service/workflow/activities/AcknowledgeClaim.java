@@ -1,7 +1,6 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
@@ -135,49 +133,8 @@ public class AcknowledgeClaim extends BaseActivity {
  
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
  
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
-            boolean failedToRespond = false;
-
-            int days = claimService.getSubscriberClaimDays(claim.getId());
-
-            if (days > 5) {
-                failedToRespond = true;
-            }
-            else if (days == 5) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(new Date());
-                if (cal.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    failedToRespond = true;
-                }
-            }
-
-            if (failedToRespond) {
-                // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
-                claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
-            }
-        }
-        else if (ClaimType.isFixedFee(claim.getClaimType())) {
-            boolean failedToRespond = false;
-
-            int days = claimService.getFixedFeeClaimDays(claim.getId());
-
-            if (days > 10) {
-                failedToRespond = true;
-            }
-            else if (days == 10) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(new Date());
-                if (cal.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    failedToRespond = true;
-                }
-            }
-
-            if (failedToRespond) {
-                // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
-                claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 10 day SLA, claim taken down Fixed Fee route."));
-            }
-        }
     }
+
 
     protected ReasonOfRejection getReasonOfRejection() {
         ReasonOfRejection reasonOfRejection = null;
@@ -186,6 +143,7 @@ public class AcknowledgeClaim extends BaseActivity {
         }
         return reasonOfRejection;
     }
+
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
