@@ -713,7 +713,7 @@ public class ClaimFileReportData {
         }
       }
       catch (Exception ex) {
-          LOG.error("Error creating claim file report for claim '{}':\n {}\n**********", claim.getChoReference());
+          LOG.error("Error creating claim file report for claim '{}':\n", claim.getChoReference(), ex);
           if (ex.getCause() != null) {
               LOG.error("    Caused by: {}", ex.getCause().getMessage());
           }
