@@ -31,9 +31,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         claim.setInsurer(insurer);
 
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//        List<Comment> comments = new ArrayList<Comment>();
-//        comments.add(Comment.New(0, "tesing comment"));
-//        claim.setComments(comments);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
@@ -42,8 +39,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
     @Test
     public void testAcknowledgeSubscriberClaim() throws Exception {
 
-//        Claim claim = claimService.getClaim(999);
-        
         Claim claim = new Claim();
         claim.setId(999);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -59,7 +54,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
         Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
-        Assert.assertEquals("RSA failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.", claim.getComments().get(1).getComment());
     }
     
     @Test
@@ -80,7 +74,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
         Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
-        Assert.assertEquals("RSA failed to respond to the Fixed Fee notification within the 10 day SLA, claim taken down Fixed Fee route.", claim.getComments().get(1).getComment());
     }
     
 }
