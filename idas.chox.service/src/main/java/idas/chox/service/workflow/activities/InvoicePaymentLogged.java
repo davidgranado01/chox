@@ -1,14 +1,16 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.math.BigDecimal;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class InvoicePaymentLogged extends BaseActivity {
 
@@ -97,7 +99,8 @@ public class InvoicePaymentLogged extends BaseActivity {
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) ) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) 
+                  || ClaimType.isFixedFee(claim.getClaimType())  ) {
                 invoice.setHireGrossPaid(invoice.getHireGross());
                 invoice.setRepairGrossPaid(invoice.getRepairGross());
                 invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());

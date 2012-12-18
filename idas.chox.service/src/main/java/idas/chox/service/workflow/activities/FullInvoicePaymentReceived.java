@@ -1,11 +1,13 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class FullInvoicePaymentReceived extends BaseActivity {
     private TaskService taskService;

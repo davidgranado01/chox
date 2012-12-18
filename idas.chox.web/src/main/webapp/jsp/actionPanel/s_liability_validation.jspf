@@ -354,7 +354,7 @@
             if(subscriberLiability){
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     mustBeFullLiabilityAcepted: true,
-                    messages: {mustBeFullLiabilityAcepted: "Subscriber claims can only be accepted when liability is clear and agreed 100% at-fault (Full Liability Accepted or Proceed Without Prejudice)."}
+                    messages: {mustBeFullLiabilityAcepted: "Subscriber Claims Can Only Be Accepted When Liability Is Either Full Liability Accepted Or Proceed Without Prejudice."}
                 });         
                 
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
