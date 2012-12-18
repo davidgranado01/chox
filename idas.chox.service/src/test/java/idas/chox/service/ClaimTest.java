@@ -4,20 +4,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Document;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
 
-import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.test.BaseTest;
 
 public class ClaimTest extends BaseTest {
 
@@ -60,5 +62,15 @@ public class ClaimTest extends BaseTest {
         Assert.assertNotNull(savedClaim2);
         Assert.assertEquals(1, savedClaim2.getHireMonitoringEcds().size());
         Assert.assertNotNull(savedClaim2.getLatestHireMonitoringEcd());
+    }
+    
+    @Before
+    public void setUpClass() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(true);
+    }
+
+    @After
+    public void tearDownClass() throws Exception {
+         fakeSecurityInfoProvider.setIsCHO(false);
     }
 }
