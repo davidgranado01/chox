@@ -90,4 +90,6 @@ public abstract class BaseTest {
     protected InsurerIntelligentNoteService insurerIntelligentNoteService;
     @Autowired
     protected IntelligentNoteDisplayEngine displayEngine;
+    @Autowired
+    protected CommentService commentService;
 }

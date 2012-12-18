@@ -1,13 +1,15 @@
 package idas.chox.service.workflow;
 
-import idas.chox.test.BaseTest;
+import org.junit.Assert;
+import org.junit.Test;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import org.junit.Assert;
-import org.junit.Test;
+import idas.chox.test.BaseTest;
 
 public class AcknowledgeClaimActivityTest  extends BaseTest {
 
@@ -29,11 +31,49 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         claim.setInsurer(insurer);
 
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//        List<Comment> comments = new ArrayList<Comment>();
-//        comments.add(Comment.New(0, "tesing comment"));
-//        claim.setComments(comments);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
     }
+    
+    @Test
+    public void testAcknowledgeSubscriberClaim() throws Exception {
+
+        Claim claim = new Claim();
+        claim.setId(999);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        claim.setClaimType(ClaimType.SUBSCRIBER);
+        
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
+        
+        claim.setComments(null);
+        claim.setNotifications(null);
+
+        Activity activity = activityFactory.getActivity("acknowledgeClaim");
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
+        Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
+    }
+    
+    @Test
+    public void testAcknowledgeFixedFeeClaim() throws Exception {
+
+        Claim claim = new Claim();
+        claim.setId(998);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        claim.setClaimType(ClaimType.FIXED_FEE);
+        
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
+        
+        claim.setComments(null);
+        claim.setNotifications(null);
+
+        Activity activity = activityFactory.getActivity("acknowledgeClaim");
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
+        Assert.assertEquals("Liability status changed to 'null'", claim.getComments().get(0).getComment());
+    }
+    
 }
