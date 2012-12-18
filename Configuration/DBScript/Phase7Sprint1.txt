@@ -816,3 +816,14 @@ delete from accessibility_item where role='ROLE_INS' and accessibility_id=(selec
 ----------------------
 --  End of BUG#2293 --
 ----------------------
+
+------------------------------------------------------------------------------------------------------------------------
+-- Dropped the legacy column from claim table (not used in code and not used in reports since 2009)            --
+------------------------------------------------------------------------------------------------------------------------
+
+alter table claim drop column engineer_claim_review_notes;
+alter table claim drop column IS_ANOMALIES;
+
+----------------------
+--  Drooped  --
+----------------------
