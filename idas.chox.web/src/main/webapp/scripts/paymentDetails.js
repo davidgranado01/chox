@@ -373,7 +373,7 @@ Ext.onReady(function(){
         autoHeight: true,
         labelWidth: 210,
         frame:true,
-        title:'<div class="status-info">Please confirm that the below payment details are correct. If you need to modify the payment details you can do so buy clicking on the \'Edit\' button.  Please note that the figures take into account the agreed liability %.</div>',
+        title:'<div class="status-info">Please confirm that the below payment details are correct. If you need to modify the payment details you can do so by clicking on the \'Edit\' button.  Please note that the figures take into account the agreed liability %.</div>',
         buttonAlign : 'center',
         items : [
         checkGroup,
