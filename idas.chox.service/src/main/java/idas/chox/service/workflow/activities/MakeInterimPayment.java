@@ -2,9 +2,11 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -55,6 +57,7 @@ public class MakeInterimPayment extends BaseActivity {
                 && additionalInterimPayment != null && additionalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
 
             if (newTotalInterimPayment.compareTo(BigDecimal.ZERO) == 0) {
+                newTotalInterimPayment = null;
                 comment = Comment.New(0, "The interim payment has been removed");
             } else if (claim.getInvoice().getInterimPaymentMade() != null) {
                 comment = Comment.New(0, "The interim payment made has been modified to a new total of £" + newTotalInterimPayment.toString());
