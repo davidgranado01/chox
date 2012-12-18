@@ -1,12 +1,14 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class InvoicePaymentReceived extends BaseActivity {
     private TaskService taskService;
@@ -35,10 +37,12 @@ public class InvoicePaymentReceived extends BaseActivity {
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         if (claim.getInvoice().getFinalPayment() != null) {
-            if (claim.getInvoice().getInterimPaymentMade() != null)
+            if (claim.getInvoice().getInterimPaymentMade() != null) {
                 claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade().add(claim.getInvoice().getFinalPayment()).setScale(2));
-            else
+            }
+            else {
                 claim.getInvoice().setTotalToPay(claim.getInvoice().getFinalPayment());
+            }
         }
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());

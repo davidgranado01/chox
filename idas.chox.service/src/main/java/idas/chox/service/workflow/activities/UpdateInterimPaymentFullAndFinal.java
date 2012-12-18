@@ -1,13 +1,15 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.security.SecurityInfoProvider;
 import java.math.BigDecimal;
 import java.util.List;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 
 public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
@@ -33,8 +35,6 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
             claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
             claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
             claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade());
-//            if (claim.getInvoice().getFinalPayment() == null)
-//                claim.getInvoice().setFinalPayment(claim.getInvoice().getInterimPaymentMade());
 
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
