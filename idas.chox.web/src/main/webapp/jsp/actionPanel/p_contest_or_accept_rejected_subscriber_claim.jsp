@@ -58,15 +58,14 @@
                         as a new GTA claim within CHOX.
                     </s:if>
                     <s:else>
-                        Please review the Insurer's notes for the reason for the rejection.
+                        Please review the Insurer’s notes for the reason for the rejection.
                         This is the second time the claim has been rejected, as per the agreement
                         this claim can no longer continue down the Subscriber process route.
-                        If the rejection is valid and is agreed then click on the 'Agree
-                        With Subscriber Challenge' button, this will move the status of the
-                        claim to 'AwaitingInvoiceData' so the invoice can be loaded. If the
-                        rejection is not valid, clicking on the 'Send Claim Down GTA Route'
-                        button should be clicked, this will submit the claim to the Insurer
-                        as a new GTA claim within CHOX.
+                        If the rejection is valid and is agreed then click on the ‘Agree
+                        With Subscriber Challenge’ button, this will move the status of the claim
+                        to ‘AwaitingInvoiceData’ so the invoice can be loaded. If the rejection
+                        is not valid, the ‘Send Claim Down GTA Route’ button should be clicked,
+                        this will submit the claim to the Insurer as a new GTA claim within CHOX.
                     </s:else>
                   </s:if>
                   <s:else>
