@@ -759,19 +759,14 @@ ALTER TABLE insurer ADD COLUMN fixed_fee_regex_expression character varying(128)
 ALTER TABLE insurer ADD COLUMN insurer_vs_insurer_regex_expression character varying(128);
 ALTER TABLE insurer ADD COLUMN insurer_manual_regex_expression character varying(128);
 
-UPDATE insurer SET gta_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', subscriber_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', 
-    insurer_vs_insurer_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$', insurer_manual_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$',
-    fixed_fee_regex_expression = '^0??[mM]{1}[vV]{1}(\d{9})$'; 
-
-ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
-ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE insurer ADD COLUMN is_tpi_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN is_gta_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN is_subscriber_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN is_fixed_fee_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN is_insurer_vs_isnurer_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN is_insurer_manual_auto_routing_enable boolean NOT NULL DEFAULT FALSE;
 
 ALTER TABLE claim DROP COLUMN is_tpi_claim_special_routed;
---ALTER TABLE claim DROP COLUMN is_invoice_auto_routed;
 
 ALTER TABLE insurer RENAME COLUMN tpi_workgroup TO invoice_workgroup;
 
