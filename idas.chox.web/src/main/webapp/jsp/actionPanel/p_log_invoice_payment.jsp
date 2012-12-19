@@ -1,11 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<s:if test="#parameters.devp || getText('development')">
-	<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
-</s:if>
-<s:else>
-	<script src="<%= request.getContextPath()%>/scripts/paymentDetails-min.js" type="text/javascript"></script>
-</s:else>
+<%@ include file="paymentDetails.jspf" %>
+
 <script type="text/javascript">
 var penaltyChargeApplied = new Boolean(<s:property value="penaltyChargeApplied"/>);
 var hireGrossPaid = <s:property value="hireGrossPaid"/>;
