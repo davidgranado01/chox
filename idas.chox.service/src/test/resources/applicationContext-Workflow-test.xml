@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
-       xmlns:p="http://www.springframework.org/schema/p"
        default-autowire="byName">
     <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext" scope="prototype">
         <property name="dataService" ref="dataService" />
@@ -17,10 +16,12 @@
         <property name="chainActivity" ref="workgroupRouting" />
         <property name="breBandService" ref="breBandService" />
     </bean>
+    
     <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" scope="prototype"/>
     <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" scope="prototype"/>
     <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" scope="prototype"/>
     <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup" scope="prototype"/>
+    <bean id="assignManualInvoiceOwner" class="idas.chox.service.workflow.activities.AssignManualInvoiceOwner" scope="prototype"/>
     <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" scope="prototype">
         <property name="claimService" ref="claimService" />
     </bean>
@@ -33,15 +34,15 @@
            <property name="claimService" ref="claimService" />
     </bean>     
     <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionContest" scope="prototype"/>
+    <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept" scope="prototype">
+                <property name="taskService" ref="taskService" />
+    </bean>
     <bean id="acceptSubscriberChallenge" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionAccept" scope="prototype">
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService" />
         <property name="taskService" ref="taskService" />
     </bean>
     <bean id="sendClaimGTA" class="idas.chox.service.workflow.activities.SubscriberClaimToGta" scope="prototype">
         <property name="auditTrailService" ref="auditTrailService" />
-    </bean>
-    <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept" scope="prototype">
-                <property name="taskService" ref="taskService" />
     </bean>
     <bean id="updatedByEng" class="idas.chox.service.workflow.activities.ClaimReviewByEng" scope="prototype"/>
     <bean id="awaitingCarHireInfo" class="idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo" scope="prototype"/>
@@ -50,6 +51,7 @@
     <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" scope="prototype"/>
     <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" scope="prototype"/>
     <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" scope="prototype"/>
+	<bean id="fullInvoicePaymentReceived" class="idas.chox.service.workflow.activities.FullInvoicePaymentReceived" scope="prototype"/>
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionContest" scope="prototype"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" scope="prototype"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" scope="prototype"/>
@@ -60,6 +62,10 @@
         <property name="chainActivity" ref="newTpiClaim" />
         <property name="insurerDiscountService" ref="insurerDiscountService" />
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+    </bean>
+    <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
+        <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+        <property name="breBandService" ref="breBandService" />
     </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" scope="prototype"/>
     <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" scope="prototype"/>
@@ -87,7 +93,15 @@
         <property name="chainActivity" ref="invoicePaymentReceived" />
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
-    <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype"/>
-    
+    <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype">
+        <property name="chainActivity" ref="invoicePaymentReceived" />
+    </bean>
+    <bean id="updateManualInvoicePaid" class="idas.chox.service.workflow.activities.UpdateManualInvoicePaid" scope="prototype"/>
+    <bean id="updateManualInvoiceContested" class="idas.chox.service.workflow.activities.UpdateManualInvoiceContested" scope="prototype"/>
+    <bean id="awaitingLitigationOutcome" class="idas.chox.service.workflow.activities.AwaitingLitigationOutcome" scope="prototype"/>
+    <bean id="makeInterimPayment" class="idas.chox.service.workflow.activities.MakeInterimPayment" scope="prototype"/>
+    <bean id="fullPaymentNotReceived" class="idas.chox.service.workflow.activities.FullPaymentNotReceived" scope="prototype">
+        <property name="chainActivity" ref="revertClaim" />
+    </bean>
     
 </beans>
