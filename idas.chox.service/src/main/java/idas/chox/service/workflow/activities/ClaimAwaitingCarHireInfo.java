@@ -1,17 +1,27 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAwaitingCarHireInfo.class);
 
+    @Override
+    protected void beforeProcess(Claim claim) {
+        if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
+            if (claim.getCustomer().getIsTotalLoss() != claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
+                claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
+            }
+        }
+    }
     
     @Override
     protected void validate(Claim claim) throws Exception {
