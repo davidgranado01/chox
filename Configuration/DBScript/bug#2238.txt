@@ -7,7 +7,7 @@
  SET 
      status = a2.new_status,
      previous_status = a2.original_status,
-     status_modified_date = now()
+     status_modified_date = a2.created_date
  FROM 
      audit_trail a INNER JOIN audit_trail a2 ON a2.claim_id = a.claim_id
  WHERE 
