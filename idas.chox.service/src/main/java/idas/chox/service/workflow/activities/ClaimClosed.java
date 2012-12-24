@@ -44,7 +44,6 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
@@ -65,8 +64,6 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
