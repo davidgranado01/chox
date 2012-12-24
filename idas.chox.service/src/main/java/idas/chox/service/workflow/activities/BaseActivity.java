@@ -1,14 +1,20 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
@@ -19,8 +25,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 
 
 
@@ -206,6 +210,7 @@ public abstract class BaseActivity implements Activity {
 
             auditTrail.setUpdateDate(currentDate);
             auditTrail.setUser(getCurrentUser());
+            setPreviousTotalToPay(claim, auditTrail);
             getDataService().save(auditTrail);
         }
     }
@@ -234,7 +239,7 @@ public abstract class BaseActivity implements Activity {
             if (invoiceReasonOfRejection != null) {
                 auditTrail.setInvoiceReasonOfRejection(invoiceReasonOfRejection);
             }
-
+            setPreviousTotalToPay(claim, auditTrail);
             getDataService().save(auditTrail);
         }
     }
@@ -264,4 +269,18 @@ public abstract class BaseActivity implements Activity {
         this.currentStatus = currentStatus;
     }
     
+    private void setPreviousTotalToPay(Claim claim, AuditTrail auditTrail) {
+
+        /*
+         * To-do Item - 7.2.2- If a claim moves into the status 'InvoiceRejectionAccepted' 
+         * or 'ClaimClosed' then the 'Total To Pay' should be set to £0.00.
+         */
+        if (claim.getInvoice() != null
+                && (claim.getStatus().equals(ClaimStatus.CLAIM_CLOSED)
+                || claim.getStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED))) {
+            auditTrail.setPreviousTotalToPay(claim.getInvoice().getTotalToPay());
+            claim.getInvoice().setTotalToPay(BigDecimal.ZERO.setScale(2));
+        }
+    }
+
 }

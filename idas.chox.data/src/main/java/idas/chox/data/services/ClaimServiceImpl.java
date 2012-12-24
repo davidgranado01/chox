@@ -160,6 +160,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.getInvoice().setFinalPayment(null);
                 }
 
+                /*
+                 *  To-do item 7.2.2 - If the claim is moved out of either one of these 
+                 *  closed states('ClaimClosed','InvoiceRejectionAccepted') then the 'Total To Pay' value
+                 *  should revert back to the previous value.
+                 */
+                if (claim.getInvoice() != null
+                        && (auditTrail.getNewStatus().equals(ClaimStatus.CLAIM_CLOSED)
+                        || auditTrail.getNewStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED))) {
+                    claim.getInvoice().setTotalToPay(auditTrail.getPreviousTotalToPay());
+                }
+                
                 auditTrailService.revertAuditEntry(auditTrail.getId());
                 LOG.debug("Audit entry reverted and saved - saving claim");
                 save(claim);
