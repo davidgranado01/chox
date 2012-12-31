@@ -1,0 +1,71 @@
+-----------------------------------------------------
+-- BUG#2218 - Production - Audit Trail clean-up   --
+-----------------------------------------------------
+
+CREATE OR REPLACE FUNCTION alterAuditTrail()
+  RETURNS boolean AS
+$BODY$
+DECLARE
+
+auditRecord RECORD;
+ 
+BEGIN
+
+FOR auditRecord IN 
+
+select 
+    c.cho_reference as cho_reference, a.id as aid, a1.id as a1id, a2.id as a2id
+from 
+     audit_trail a, audit_trail a1,  audit_trail a2, claim c
+where
+     a.claim_id = c.id
+     and a1.claim_id = c.id
+     and a2.claim_id = c.id
+     and a.id > a1.id
+     and a1.id > a2.id
+     and a.reverted = false
+     and a1.reverted = false
+     and a2.reverted = false
+     and a1.new_status = 'ClaimClosed'
+     and a1.original_status = a.new_status
+     and a1.original_status = a2.new_status
+     and a1.new_status = a.original_status
+     and not exists (select * from audit_trail a4 where a4.claim_id = c.id and a4.reverted = false and a4.id < a.id and a4.id > a1.id)
+     and not exists (select * from audit_trail a4 where a4.claim_id = c.id and a4.reverted = false and a4.id < a.id and a4.id < a1.id and a4.id > a2.id)
+     order by c.cho_reference
+
+LOOP
+
+RAISE NOTICE 'choref = %  a.id= % a1.id=  % a2.id= %', auditRecord.cho_reference, auditRecord.aid, auditRecord.a1id, auditRecord.a2id;
+
+UPDATE 
+       audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.a1id;
+
+
+DELETE FROM
+    audit_trail
+WHERE
+    id = auditRecord.aid;
+  
+END LOOP;
+
+RETURN TRUE;
+
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+select alterAuditTrail(); 
+
+DROP FUNCTION alterAuditTrail();
+
+----------------------
+--  END OF BUG#2218  --
+----------------------
