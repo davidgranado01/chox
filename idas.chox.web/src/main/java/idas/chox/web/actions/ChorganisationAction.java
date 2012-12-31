@@ -173,7 +173,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String updateChorganisation() throws Exception {
 
         if ((getUserOrganisationType() == 2)

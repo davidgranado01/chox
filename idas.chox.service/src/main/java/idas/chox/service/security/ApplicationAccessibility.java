@@ -100,6 +100,7 @@ public class ApplicationAccessibility {
     public static final String MENU_ADMIN = "Admin";
     public static final String MENU_INBOX = "Inbox";
     public static final String MENU_SEARCH = "Search";
+    public static final String MENU_UPLOAD = "Upload";
     // ***************************************
     // REPORT
     // ***************************************
