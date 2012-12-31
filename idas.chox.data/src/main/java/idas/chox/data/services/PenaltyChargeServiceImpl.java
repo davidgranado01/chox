@@ -75,7 +75,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         criteria.addOrder(Order.asc("pc.penaltyStartAge"));
 
         /* Subquery to exclude the old entries 
-         *  e.g If two entries present from the query reuslt then 
+         *  e.g If two entries present from the query then 
          *  one entry should be excluded by looking at 'Penalty Start' date.
          * 
          *   DEFAULT 30 01/01/1950       7.5%  7.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
@@ -125,7 +125,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         criteria.addOrder(Order.asc("pc.penaltyStartAge"));
 
         /* Subquery-1 to exclude the old entries 
-         *  e.g If two entries present from the query reuslt then 
+         *  e.g If two entries present from the query then 
          *  one entry should be excluded by looking at 'Penalty Start' date.
          * 
          *   DEFAULT 30 01/01/1950       7.5%  7.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE HIRE START IS >= 15/06/2012.
@@ -148,8 +148,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         penaltyStartDateRestrictionSubQuery.setProjection(Projections.id());
 
         /* SUBQUERY-2 to get 'Penalty Charge' using 'Penalty Age'    
-         *  e.g If three entries are returned from the above query result then 
-         *  two entries should be removed by looking at the 'Penalty Age' of the Inoice.
+         *  e.g If three entries are returned from the above query then 
+         *  two entries should be removed by looking at the 'Penalty Age' of the Invoice.
          * 
          *   DEFAULT 30 15/06/2012      12.5% 12.5   2.5% 2.5 -- THIS ENTRY SHOULD BE REMOVED IF THE INVOICE PENALTY AGE IS > 60 AND <= 90 DAYS.
          *   DEFAULT 60 15/06/2012        20%   20     5%   5 
@@ -190,7 +190,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     public String getPenaltyPercentageDsc(Claim claim, PenaltyName penaltyName) {
 
         Invoice inv = claim.getInvoice();
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
 
         if ((penaltyName.equals(PenaltyName.HIRE) && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) 
@@ -215,7 +216,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     public BigDecimal getPenaltyPercentageVal(Claim claim, PenaltyName penaltyName) {
 
         Invoice inv = claim.getInvoice();
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
 
         if ((penaltyName.equals(PenaltyName.HIRE) && inv.getHireNet().compareTo(BigDecimal.ZERO) == 1) 
@@ -255,7 +257,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     @Override
     public BigDecimal calculatePenaltyChargeVal(Claim claim, String Percentage, PenaltyName penaltyName) {
 
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
 
         if (penaltyName.equals(PenaltyName.HIRE)) {
@@ -283,7 +286,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     public int calculateCurrentPenaltyBand(Claim claim) {
         try {
             Invoice inv = claim.getInvoice();
-            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+            Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                    ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             int dateDiff = inv.getInvoicedDays();
             PenaltyCharge penaltyCharge = getPenaltyCharge(hireStart, dateDiff, penaltyType, PenaltyName.HIRE);
@@ -305,7 +309,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     @Override
     public int getNextPenaltyBand(Claim claim) {
         try {
-            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
+            Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                    ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
             Invoice inv = claim.getInvoice();
@@ -335,7 +340,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     @Override
     public int getFirstPenaltyBand(Claim claim) {
         try {
-            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
+            Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                    ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             return getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE).get(0).getPenaltyStartAge();
         } catch (Exception ex) {
@@ -350,7 +356,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     @Override
     public int getLastPenaltyBand(Claim claim) {
         try {
-            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+            Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                    ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
             int size = penaltyCharges.size();
