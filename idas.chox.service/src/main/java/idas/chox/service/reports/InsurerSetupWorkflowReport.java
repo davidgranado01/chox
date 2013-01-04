@@ -16,6 +16,7 @@ import idas.chox.core.services.ReportDataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.InsurerSetupWorkflowLineItem;
 import idas.chox.service.reports.viewdata.InsurerSetupWorkflowReportObject;
 
 /**
@@ -26,11 +27,11 @@ public class InsurerSetupWorkflowReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerSetupWorkflowReport.class);
     private Map externalParameter;
-    private List<String> reportParameterNames;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
-
+    private boolean workgroupBreakdown;
+    
     @Override
     public void setBaseDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
@@ -50,6 +51,8 @@ public class InsurerSetupWorkflowReport implements Report {
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
+        boolean isWorkgroupEnabled = true;
+        
         try {
             boolean isEngineersEnabled = true;
             Integer insurerId = -1;
@@ -63,6 +66,7 @@ public class InsurerSetupWorkflowReport implements Report {
                 insurerId = user.getInsurer().getId();
                 rptInsurerName = user.getInsurer().getName();
                 isEngineersEnabled = user.getInsurer().isEngineersEnable();
+                isWorkgroupEnabled = user.getInsurer().isWorkgroupEnable();
                 LOG.debug("insurerId={}", insurerId);
             }
             LOG.debug("rptInsurerName={}", rptInsurerName);
@@ -78,97 +82,202 @@ public class InsurerSetupWorkflowReport implements Report {
                 endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
             }
+            
+            workgroupBreakdown = isWorkgroupBreakdown();
 
             if(endDate != null && startDate != null && endDate.before(startDate)){
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
             
-            List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
-
             List<String> statuses = ClaimStatus.getInsurerOutstandingStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
                                         user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated(), user.getInsurer().isUploadEnabled());
+            
+            List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
 
+            if (isWorkgroupEnabled && workgroupBreakdown) {
 
-            for (String status : statuses) {
-                InsurerSetupWorkflowReportObject object = new InsurerSetupWorkflowReportObject(status);
-
-                LOG.debug("Getting stats for status: {}", status);
-                StringBuilder sb = new StringBuilder();
-                sb.append("select ");
-
-                sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a1.claim_id and c.id = a2.claim_id and a1.reverted=false and a2.reverted=false and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
-                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ")
-                    .append("and a1.update_date between :pstartDate and :pendDate")
-                    .append(")  a ) as processed, ");
-
-                sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a.claim_id and a.reverted=false and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date < :pstartDate) ")
-                    .append("and a.new_status = '").append(status).append("') as outstandingStart, ");
-
-                sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a.claim_id and a.reverted=false and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
-                    .append("and a.new_status = '").append(status).append("') as outstanding, ");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day < 5) as outstanding0_5,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day >= 5 and total_day < 10) as outstanding5_10,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day >= 10 and total_day < 15) as outstanding10_15,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day >= 15 and total_day < 20) as outstanding15_20,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.reverted=false and a.new_status = '").append(status).append("') b where total_day >= 20 and total_day < 25) as outstanding20_25,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day >= 25 and total_day < 30) as outstanding25_30,");
-
-                sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_date from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b where total_day >= 30) as outstanding30_,");
-
-                sb.append("(select cast(avg(total_day) as integer) from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
-                    .append("and a.new_status = '").append(status).append("') b) as averageOutstanding,");
-
-                sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a1.claim_id and a1.reverted=false and a2.reverted=false and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
-                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id and a1.update_date <= :pendDate) ")
-                    .append(" union all select EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId and a.reverted=false and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
-                    .append("and a.new_status = '").append(status).append("')  a ) as historicAverage, ");
-
-                sb.append("(select min(a.update_date) from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id ")
-                    .append("and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
-                    .append("and a.new_status = '").append(status).append("') as oldestDate,");
-
-                sb.append("(select cast(max(total_day) as integer) from (select a.update_date as modified_date, case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
-                    .append("and a.new_status = '").append(status).append("') a ) as oldestDays");
-
-
-                Map queryParameters = new HashMap();
+                HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
-                queryParameters.put("pstartDate", startDate);
-                queryParameters.put("pendDate", endDate);
-                List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
-                // parse query results and add to workflowLineItem
-                if (detailData.size() > 0) {
-                    object.updateObject((Map) detailData.get(0));
+                StringBuilder sb = new StringBuilder();
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
+                sb.append("order by name");
+
+                List result = reportDataService.getReportData(sb.toString(), queryParameters);
+
+                for (String status : statuses) {
+                    InsurerSetupWorkflowReportObject object = new InsurerSetupWorkflowReportObject(status);
+                    boolean isFirst = true;
+                    for (Object o : result) {
+                        Map data = (Map) o;
+                        InsurerSetupWorkflowLineItem insurerSetupWorkflowLineItem = new InsurerSetupWorkflowLineItem();
+                        insurerSetupWorkflowLineItem.setWorkgroup(data.get("name").toString());
+                        insurerSetupWorkflowLineItem.setWorkgroupId((Integer) data.get("id"));
+                        if (isFirst) {
+                            isFirst = false;
+                            insurerSetupWorkflowLineItem.setStatus(status);
+                        } else {
+                            insurerSetupWorkflowLineItem.setStatus("");
+                        }
+                        object.getLineItems().add(insurerSetupWorkflowLineItem);
+                    }
                     workflowReportObjects.add(object);
                 }
 
+            } else {
+                for (String status : statuses) {
+                    InsurerSetupWorkflowReportObject object = new InsurerSetupWorkflowReportObject(status);
+                    InsurerSetupWorkflowLineItem insurerSetupWorkflowLineItem = new InsurerSetupWorkflowLineItem();
+                    insurerSetupWorkflowLineItem.setStatus(status);
+                    object.getLineItems().add(insurerSetupWorkflowLineItem);
+                    workflowReportObjects.add(object);
+                }
             }
 
+           
+            for (InsurerSetupWorkflowReportObject workflowReportObject : workflowReportObjects) {
+
+
+                for (InsurerSetupWorkflowLineItem insurerSetupWorkflowLineItem : workflowReportObject.getLineItems()) {
+                    
+                    LOG.debug("Getting stats for status: {}", workflowReportObject.getStatus());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("select ");
+
+                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a1.reverted=false and a2.reverted=false and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
+                      .append("and a2.new_status = '").append(workflowReportObject.getStatus()).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ")
+                      .append("and a1.update_date between :pstartDate and :pendDate")
+                      .append(")  a ) as processed, ");
+
+
+                    sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id = a.claim_id and a.reverted=false and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date < :pstartDate) ")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') as outstandingStart, ");
+
+
+                    sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id = a.claim_id and a.reverted=false and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') as outstanding, ");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day < 5) as outstanding0_5,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 5 and total_day < 10) as outstanding5_10,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 10 and total_day < 15) as outstanding10_15,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 15 and total_day < 20) as outstanding15_20,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.reverted=false and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 20 and total_day < 25) as outstanding20_25,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 25 and total_day < 30) as outstanding25_30,");
+
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_date from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 30) as outstanding30_,");
+
+
+                    sb.append("(select cast(avg(total_day) as integer) from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate)")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b) as averageOutstanding,");
+
+
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id = a1.claim_id and a1.reverted=false and a2.reverted=false and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
+                      .append("and a2.new_status = '").append(workflowReportObject.getStatus()).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id and a1.update_date <= :pendDate) ")
+                      .append(" union all select EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and a.reverted=false and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("')  a ) as historicAverage, ");
+
+
+                    sb.append("(select min(a.update_date) from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') as oldestDate,");
+
+
+                    sb.append("(select cast(max(total_day) as integer) from (select a.update_date as modified_date, case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ");
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    }
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
+                      .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') a ) as oldestDays");
+
+
+                    Map queryParameters = new HashMap();
+
+                    if (isWorkgroupEnabled && workgroupBreakdown) {
+                        queryParameters.put("pWorkgroupId", insurerSetupWorkflowLineItem.getWorkgroupId());
+                    }
+                    queryParameters.put("pInsurerId", insurerId);
+                    queryParameters.put("pstartDate", startDate);
+                    queryParameters.put("pendDate", endDate);
+                    List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
+                    // parse query results and add to workflowLineItem
+                    if (detailData.size() > 0) {
+                        insurerSetupWorkflowLineItem.updateObject((Map) detailData.get(0));
+                    }
+                }
+            }
             // Now build report parameters
             reportParameters.put("insurerName", rptInsurerName);
             reportParameters.put("createdDate", DateHelper.getCurrentDate());
@@ -176,58 +285,18 @@ public class InsurerSetupWorkflowReport implements Report {
             reportParameters.put("endDate", endDate);
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
-            LOG.error("Error thrown generating insurer-setup-workflow report: {}", ex.getMessage());
-//            ex.printStackTrace();
+            LOG.error("Error thrown generating insurer-setup-workflow report: ", ex);
         }
 
         return reportParameters;
     }
 
-/*
-    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI, boolean usesInsurerUpload) {
-        List<String> results = new ArrayList<String>();
-
-        if (usesWorkgroups)
-            results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-
-        if (usesClaimOwnership)
-            results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-
-        results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-
-        if (usesFnol)
-            results.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-
-        results.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        results.add(ClaimStatus.CLAIM_PENDING);
-        if (usesTPI) {
-            results.add(ClaimStatus.INVOICE_UNASSIGNED);
-        }
-        results.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        results.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
-        results.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        results.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        results.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-
-        if (usesEngineers) {
-            results.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            results.add(ClaimStatus.INVOICE_REF_TO_CH);
-            results.add(ClaimStatus.INVOICE_ESCALATED);
-            results.add(ClaimStatus.CLAIM_REF_TO_ENG);
-        }
-        
-        if (usesInsurerUpload) {
-            results.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
-            results.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
- //           results.add(ClaimStatus.MANUAL_INVOICE_PAID);
-        }
-        return results;
-    }
-*/
-    
     @Override
     public String getReportTemplateFileName() {
-        return "template_InsurerSetupWorkflowReport.xls";
+        user = ((WebUser) externalParameter.get("CurrentUser"));
+
+        return (user.getInsurer().isWorkgroupEnable() && isWorkgroupBreakdown()) ? "template_InsurerSetupWorkflowReportByWorkgroupbreakdown.xls"
+                : "template_InsurerSetupWorkflowReport.xls";
     }
 
     @Override
@@ -240,9 +309,18 @@ public class InsurerSetupWorkflowReport implements Report {
     public String getReportCode() {
         return "RPT023";
     }
-    
+
     @Override
     public short[] getColumnsToHide() {
         return null;
+    }
+    
+    private boolean isWorkgroupBreakdown() {
+        boolean returnValue = false;
+        if (((String[]) externalParameter.get("workgroupBreakdownCheckbox")) != null) {
+            returnValue = ((String[]) externalParameter.get("workgroupBreakdownCheckbox"))[0].equalsIgnoreCase("on") ? true : false;
+            LOG.info("workgroupBreakdownCheckbox={}", returnValue);
+        }
+        return returnValue;
     }
 }

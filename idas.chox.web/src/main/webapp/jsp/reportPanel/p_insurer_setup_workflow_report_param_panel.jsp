@@ -9,7 +9,18 @@
         
         ui.dateField('startDate',getTodayDate(),'dateFromDiv');
         ui.dateField('endDate',getTodayDate(),'dateToDiv');
-
+        
+        <s:if test="InsurerIsWorkgroupEnabled" >
+                
+            var workgroupBreakdownCheckbox = new Ext.form.Checkbox({
+                    name:'workgroupBreakdownCheckbox',
+                    id:'workgroupBreakdownCheckboxId',
+                    renderTo:'workgroupBreakdownCheckboxDiv',
+                    checked: false
+             });
+             
+        </s:if>
+            
         $("form#formReportParam").validate(
         {
             errorLabelContainer: "#formReportParamMessageBox",
@@ -76,6 +87,11 @@
                     <tr>
                         <td nowrap><label>Period To</label> Claim Status Workflow Report<span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
+                    <s:if test="InsurerIsWorkgroupEnabled" >
+                        <tr>
+                            <td nowrap>Include Workgroup Breakdown</td><td><div id="workgroupBreakdownCheckboxDiv"/></td>
+                        </tr>
+                    </s:if>
                 </table>
 
                 <div class="chox-report-button">
