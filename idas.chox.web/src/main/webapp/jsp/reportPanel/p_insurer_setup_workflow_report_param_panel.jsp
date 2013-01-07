@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
         
-    var reportName = 'InsurerSetupWorkflowReport-Excel';
+    var reportName = 'ClaimStatusWorkflowReport-Excel';
 
     Ext.onReady(function(){
         

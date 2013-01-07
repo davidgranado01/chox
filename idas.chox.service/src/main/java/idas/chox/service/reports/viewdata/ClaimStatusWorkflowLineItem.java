@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author John
  */
-public class InsurerSetupWorkflowLineItem {
-    private static final Logger LOG = LoggerFactory.getLogger(InsurerSetupWorkflowLineItem.class);
+public class ClaimStatusWorkflowLineItem {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimStatusWorkflowLineItem.class);
     private String status;
     private Integer outstandingStart;
     private Integer outstanding;
