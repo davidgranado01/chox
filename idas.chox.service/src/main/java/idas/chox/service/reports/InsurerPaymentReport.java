@@ -168,7 +168,7 @@ public class InsurerPaymentReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

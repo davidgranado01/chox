@@ -48,7 +48,7 @@ public class InvoiceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
@@ -61,7 +61,11 @@ public class InvoiceReport implements Report {
             Date dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             
-            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+            if (dataEnd == null || dataStart == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (dataEnd.before(dataStart)) {
                 throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
             }
 
@@ -172,13 +176,14 @@ public class InvoiceReport implements Report {
             if (ex.getCause() != null) {
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
             }
+            throw ex;
         }
 
         return reportParameters;
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
@@ -199,7 +204,7 @@ public class InvoiceReport implements Report {
 
     private Chorganisation getChorganisation(String sObjectId) {
 
-        Chorganisation chorganisation = new Chorganisation();
+        Chorganisation chorganisation;
         ReportHelper reportHelper = new ReportHelper();
 
         if (!sObjectId.equalsIgnoreCase("")) {

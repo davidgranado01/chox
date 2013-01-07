@@ -48,7 +48,7 @@ public class NewIncomingHandlerActionsReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap<String, Object> reportParameters = new HashMap<String, Object>();
 
         try {
@@ -74,7 +74,12 @@ public class NewIncomingHandlerActionsReport implements Report {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 endDate = DateHelper.setEndOfDay(endDate);
             }
-            if(endDate != null && startDate != null && endDate.before(startDate)){
+
+            if (endDate == null || startDate == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (endDate.before(startDate)) {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
             
@@ -216,12 +221,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      */
                     
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='ClaimUnacknowledgedRouted' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -233,12 +241,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions ClaimPending
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='ClaimPending' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -250,12 +261,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions ClaimRejectionContested
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='ClaimRejectionContested' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -267,12 +281,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions ClaimUpdatedByEngineer
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='ClaimUpdatedByEngineer' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -284,12 +301,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions InvoiceEscalatedToHandler
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='InvoiceEscalatedToHandler' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -302,12 +322,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * ContestedInvoiceReferredToInsurer
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='ContestedInvoiceReferredToInsurer' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -319,12 +342,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions InvoiceApprovedByBRE
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='InvoiceApprovedByBRE' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -336,12 +362,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions AwaitingLiabilityResolution
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='AwaitingLiabilityResolution' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -353,12 +382,15 @@ public class NewIncomingHandlerActionsReport implements Report {
                      * No of new handler actions AwaitingInvoicePayment
                      */
                     sb.append("(select count(*) from claim c, audit_trail a where c.id=a.claim_id ");
-                    if (isWorkgroupEnabled)
+                    if (isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if (selectedCHOId > 0)
+                    }
+                    if (selectedCHOId > 0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
-                    if (isClaimOwnershipEnabled)
+                    }
+                    if (isClaimOwnershipEnabled) {
                         sb.append("and c.claim_owner_id = :pOwnerId ");
+                    }
                     sb.append("and c.insurer_id = :pInsurerId ")
                         .append("and ((a.new_status='AwaitingInvoicePayment' ")
                         .append("and a.created_date between :pStartDate and :pEndDate ) ")
@@ -373,8 +405,9 @@ public class NewIncomingHandlerActionsReport implements Report {
                     if (selectedCHOId > 0) {
                         queryParameters.put("pChoId", selectedCHOId);
                     }
-                    if (isClaimOwnershipEnabled)
+                    if (isClaimOwnershipEnabled) {
                         queryParameters.put("pOwnerId", handlerActionItem.getId());
+                    }
                     
                     queryParameters.put("pInsurerId", currentUser.getInsurer().getId());
                     queryParameters.put("pStartDate", startDate);
@@ -390,10 +423,12 @@ public class NewIncomingHandlerActionsReport implements Report {
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             // Now build report parameters
-            if (selectedCHOId > 0)
+            if (selectedCHOId > 0) {
                 reportParameters.put("CHOName", getChorganisation(selectedCHOId).getName());
-            else
+            }
+            else {
                 reportParameters.put("CHOName", "ALL");
+            }
             reportParameters.put("insurerName", currentUser.getInsurer().getName());
             reportParameters.put("createdDate", DateHelper.getCurrentDateWithFormat("dd/MM/yyyy HH:mm:ss"));
             reportParameters.put("startDate", sdf.format(startDate));
@@ -401,6 +436,7 @@ public class NewIncomingHandlerActionsReport implements Report {
             reportParameters.put("handlerActionLineItems", handlerActionReportObjects);
         } catch (Exception ex) {
             LOG.debug("Error thrown generating 'New Handler Actions' report: {}", ex.getMessage());
+            throw ex;
         }
 
         return reportParameters;
@@ -418,7 +454,7 @@ public class NewIncomingHandlerActionsReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

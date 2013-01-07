@@ -48,7 +48,7 @@ public class OwnerWorkflowReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
         try {
@@ -96,7 +96,11 @@ public class OwnerWorkflowReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
             
-            if(endDate != null && startDate != null && endDate.before(startDate)){
+            if (endDate == null || startDate == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (endDate.before(startDate)) {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
@@ -488,6 +492,7 @@ public class OwnerWorkflowReport implements Report {
             if (ex.getCause() != null) {
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
             }
+            throw ex;
         }
 
         return reportParameters;
@@ -509,7 +514,7 @@ public class OwnerWorkflowReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

@@ -33,7 +33,7 @@ public class AdminWeeklyOverviewReport implements Report {
     private ReportDataService reportDataService;
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
@@ -73,7 +73,7 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         HashMap reportParameters = new HashMap();
         Date startDate = null;
@@ -101,9 +101,15 @@ public class AdminWeeklyOverviewReport implements Report {
             if(((String[]) externalParameter.get("DateStart"))!=null){
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
             } 
-            if(endDate != null && startDate != null && endDate.before(startDate)){
+
+            if(endDate == null || startDate == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if(endDate.before(startDate)) {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
+
 
             String userOrgLabel = "";
             String userOrgName = "";
@@ -227,6 +233,7 @@ public class AdminWeeklyOverviewReport implements Report {
         } catch (Exception ex) {
             LOG.error("Exception thrown generating Admin Weekly Overview Report: {} [user={}]", ex.getMessage(), currentUser.getId());
             LOG.error("Report params were: startDate={}, endDate={}", startDate, endDate);
+            throw ex;
 //            ex.printStackTrace();
         }
 

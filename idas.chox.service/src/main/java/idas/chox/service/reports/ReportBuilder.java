@@ -8,6 +8,6 @@ import java.io.ByteArrayOutputStream;
  */
 public interface ReportBuilder {
     
-    public ByteArrayOutputStream buildReport(Report report); 
+    public ByteArrayOutputStream buildReport(Report report) throws Exception; 
 
 }

@@ -48,7 +48,7 @@ public class BillingInsurerReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         try {
 
@@ -58,7 +58,11 @@ public class BillingInsurerReport implements Report {
             LOG.debug("Data Start " + bi.getDateFrom());
             LOG.debug("Data End " + bi.getDateTo());
 
-            if(bi.getDateTo() != null && bi.getDateFrom() != null && bi.getDateTo().before(bi.getDateFrom())){
+            if(bi.getDateTo() == null || bi.getDateFrom() == null){
+                throw new Exception("Start and End dates must not be empty.");
+            }
+
+            if(bi.getDateTo().before(bi.getDateFrom())){
                 throw new Exception("End date (" + bi.getDateTo().toString() + ") is before start date (" + bi.getDateFrom().toString() +  ") ");
             }
 
@@ -141,6 +145,7 @@ public class BillingInsurerReport implements Report {
             throw ex;
         } catch (Exception e) {
             LOG.error(e.getMessage(),e);
+            throw e;
         } 
 
         return reportParameters;
@@ -152,7 +157,7 @@ public class BillingInsurerReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

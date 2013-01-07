@@ -61,10 +61,12 @@ public class ClaimFileReport implements Report {
 
         List<ClaimFileEcdData> claimEcds = ClaimFileEcdData.getClaimFileEcdData(claim);
         
-        if (currentUser.isAnInsurer() || currentUser.isCHOXAdmin())
+        if (currentUser.isAnInsurer() || currentUser.isCHOXAdmin()) {
             showInsurer = true;
-        if (!currentUser.isAnInsurer() || currentUser.isCHOXAdmin())
+        }
+        if (!currentUser.isAnInsurer() || currentUser.isCHOXAdmin()) {
             showCHO = true;
+        }
         List<ClaimFileNoteData> claimNotes = ClaimFileNoteData.getClaimFileNoteData(claim, showInsurer, showCHO);
         List<ClaimFileBreData> breMessages = ClaimFileBreData.getClaimFileBreData(claim, showInsurer);
         
@@ -81,7 +83,7 @@ public class ClaimFileReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

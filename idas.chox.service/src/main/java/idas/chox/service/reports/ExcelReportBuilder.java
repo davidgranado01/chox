@@ -19,7 +19,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     private static final String reportTemplatePath = "/reports/";
 
     @Override
-    public ByteArrayOutputStream buildReport(Report report) {
+    public ByteArrayOutputStream buildReport(Report report) throws Exception {
         LOG.info("Building report '{}'", report.getReportCode());
 //        if (!report.canAcess()) {
 //            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());

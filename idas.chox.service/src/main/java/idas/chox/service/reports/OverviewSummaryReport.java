@@ -48,7 +48,7 @@ public class OverviewSummaryReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         HashMap reportParameters = new HashMap();
 
@@ -101,16 +101,20 @@ public class OverviewSummaryReport implements Report {
 
         try {
 
-            if(((String[]) externalParameter.get("DateStart"))!=null){
+            if(((String[]) externalParameter.get("DateStart"))!=null) {
                 dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
 
-            if(((String[]) externalParameter.get("DateStart"))!=null){
+            if(((String[]) externalParameter.get("DateStart"))!=null) {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
             
-            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+            if(dataEnd == null || dataStart == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if(dataEnd.before(dataStart)) {
                 throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
             }
 
@@ -125,10 +129,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as total_no_claims_num, ");
             
@@ -137,10 +143,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_num, ");
             
             
@@ -148,20 +156,24 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_val, ");
             
             
             sb.append("(select case when sum(rpt_all_claim_with_invoice.total_to_pay) is null then 0.00 else sum(rpt_all_claim_with_invoice.total_to_pay) end as no_count from rpt_all_claim_with_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_val, ");
             
             
@@ -171,10 +183,12 @@ public class OverviewSummaryReport implements Report {
               .append(ClaimType.TPI.getClaimTypeValue())
               .append( "))) b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo) as total_no_accepted_claims_num, ");
             
@@ -185,10 +199,12 @@ public class OverviewSummaryReport implements Report {
               .append( "where c.id=a.claim_id and ((reverted=false and new_status='AwaitingCarHireInfo') ")
               .append( "or (c.claim_type=").append(ClaimType.TPI.getClaimTypeValue()).append(")or (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append("))) b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo) as total_no_accepted_claims_val, ");
             
@@ -198,20 +214,24 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a ")
               .append( "where chorganisation_id=insurer_chorganisation.chorganisation_id ")
               .append( "and insurer_id=insurer_chorganisation.insurer_id and (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected'))");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_num, ");
             
             
             
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a ")
               .append( "where (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected')) and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo) as total_no_rejected_claims_val, ");
             
@@ -221,10 +241,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
               .append( "where status in ('InvoicePaymentLogged','PaymentReceived', 'ManualInvoicePaid') and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_num, ");
             
             
@@ -232,10 +254,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
               .append( "where status in ('InvoicePaymentLogged','PaymentReceived', 'ManualInvoicePaid') and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_val, "); 
             
             
@@ -245,10 +269,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, ")
               .append( "(select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo) as total_no_rejected_invoice_num, ");
             
@@ -257,10 +283,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, ")
               .append( "(select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo) as total_no_rejected_invoice_val, ");
             
@@ -271,10 +299,12 @@ public class OverviewSummaryReport implements Report {
               .append( "on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and invoice.insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
             
             
@@ -285,10 +315,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and audit.reverted=false and audit.new_status='PaymentReceived' ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and invoice.insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
             
             
@@ -298,10 +330,12 @@ public class OverviewSummaryReport implements Report {
               .append( "from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire ")
               .append( "on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
             
             
@@ -310,10 +344,12 @@ public class OverviewSummaryReport implements Report {
               .append( "cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
               .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_val, ");
             
             
@@ -322,10 +358,12 @@ public class OverviewSummaryReport implements Report {
               .append( "cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
               .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
             
             
@@ -334,10 +372,12 @@ public class OverviewSummaryReport implements Report {
               .append( "cast(sum(invoice.total_penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
               .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val, ");
             
             
@@ -346,10 +386,12 @@ public class OverviewSummaryReport implements Report {
               .append( "else sum(original_full_total_to_pay - total_to_pay) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and total_to_pay < original_full_total_to_pay) as amount_saved_val, ");
             
             
@@ -357,10 +399,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and repair_gross > 0.0) as total_no_creditrepair_invoice_num, ");
             
             
@@ -368,10 +412,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0) as total_no_creditrepair_invoice_val, ");
             
             
@@ -380,10 +426,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_num, ");
             
             
@@ -391,10 +439,12 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
               .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_val, ");
             
             
@@ -404,10 +454,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_num, ");
             
             
@@ -416,10 +468,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_val, ");
             
             
@@ -429,10 +483,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
               .append( "as total_s_class_paid_invoice_num, ");
             
@@ -443,10 +499,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_s_class_paid_invoice_val, ");
             
             
@@ -456,10 +514,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
               .append( "as total_p_class_invoice_num, ");
             
@@ -469,10 +529,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_p_class_invoice_val, ");
             
             
@@ -483,10 +545,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_p_class_paid_invoice_num, ");
             
             
@@ -496,10 +560,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
               .append( "as total_p_class_paid_invoice_val, ");
             
@@ -510,10 +576,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_num, ");
             
             
@@ -522,10 +590,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_val, ");
             
             
@@ -536,10 +606,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_mv_class_paid_invoice_num, ");
             
             
@@ -548,10 +620,12 @@ public class OverviewSummaryReport implements Report {
               .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
               .append( "as total_mv_class_paid_invoice_val, ");
             
@@ -561,10 +635,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_num, ");
             
             
@@ -573,10 +649,12 @@ public class OverviewSummaryReport implements Report {
               .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_val, ");
             
             
@@ -586,10 +664,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
               .append( "as total_m_class_paid_invoice_num, ");
             
@@ -599,10 +679,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
               .append( "as total_m_class_paid_invoice_val, ");
             
@@ -614,10 +696,12 @@ public class OverviewSummaryReport implements Report {
               .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
               .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_sp_class_invoice_num, ");
             
             
@@ -626,10 +710,12 @@ public class OverviewSummaryReport implements Report {
               .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
               .append( "as total_sp_class_invoice_val, ");
             
@@ -640,10 +726,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_num, ");
             
@@ -653,10 +741,12 @@ public class OverviewSummaryReport implements Report {
               .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_val, ");
             
@@ -667,10 +757,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
               .append( "as total_other_class_invoice_num, ");
             
@@ -680,10 +772,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
               .append( "as total_other_class_invoice_val, ");
             
@@ -694,10 +788,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_num, ");
             
@@ -707,10 +803,12 @@ public class OverviewSummaryReport implements Report {
               .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
               .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
               .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sb.append("and workgroup_id = :pWorkgroupId ");
-            if(selectedOwnerId>0 )
-                  sb.append("and owner = :pOwnerId ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sb.append("and workgroup_id = :pWorkgroupId ");
+            }
+            if(selectedOwnerId>0 ) {
+                sb.append("and owner = :pOwnerId ");
+            }
             sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
               .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_val ");
             
@@ -741,8 +839,9 @@ public class OverviewSummaryReport implements Report {
             if (isWorkgroupEnabled && selectedWorkgroupId>0) {
                 paramMap.put("pWorkgroupId", selectedWorkgroupId);
             }
-            if(selectedOwnerId>0 )
+            if(selectedOwnerId>0 ) {
                 paramMap.put("pOwnerId", selectedOwnerId);
+            }
 
             List result = reportDataService.getReportData(query, paramMap);
 
@@ -782,7 +881,7 @@ public class OverviewSummaryReport implements Report {
         } catch (Exception ex) {
             LOG.error("Exception thrown generating Overview Summary Report: [user={}]", currentUser.getId(), ex);
             LOG.error("Report params were: startDate={}, endDate={}", dataStart, dataEnd);
-//            throw ex;
+            throw ex;
 //            ex.printStackTrace();
         }
 
@@ -1045,10 +1144,12 @@ public class OverviewSummaryReport implements Report {
         if (currentUser.getInsurer()!=null) {
             sb.append("from insurer insurer where insurer.id=:pUserOrgId ");
             sqlStatement1 = "invoice.insurer_id=insurer.id and not exists (select * from chorganisation where insurer_upload_only=true and id=invoice.chorganisation_id) ";
-            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
-                  sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
-            if(selectedOwnerId>0 )
-                  sqlStatement1 += "and invoice.owner = :pOwnerId ";
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 ) {
+                sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
+            }
+            if(selectedOwnerId>0 ) {
+                sqlStatement1 += "and invoice.owner = :pOwnerId ";
+            }
         } else {
             sb.append("from chorganisation chorganisation where chorganisation.id=:pUserOrgId ");
             sqlStatement1 = "invoice.chorganisation_id=chorganisation.id";
@@ -1065,8 +1166,9 @@ public class OverviewSummaryReport implements Report {
         if (isWorkgroupEnabled && selectedWorkgroupId>0) {
                 paramMap.put("pWorkgroupId", selectedWorkgroupId);
             }
-        if(selectedOwnerId>0 )
-                paramMap.put("pOwnerId", selectedOwnerId);
+        if(selectedOwnerId>0 ) {
+            paramMap.put("pOwnerId", selectedOwnerId);
+        }
 
         List result = reportDataService.getReportData(query, paramMap);
 
@@ -1220,7 +1322,7 @@ public class OverviewSummaryReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

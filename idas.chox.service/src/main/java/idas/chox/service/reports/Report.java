@@ -15,11 +15,11 @@ public interface Report {
     
     void setBaseDataService(BaseDataService baseDataService);
     
-    HashMap getReportParameters();
+    HashMap getReportParameters() throws Exception;
 
     String getReportTemplateFileName();
 
-    ByteArrayOutputStream build();
+    ByteArrayOutputStream build() throws Exception;
 
     String getReportCode();
     

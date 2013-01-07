@@ -51,7 +51,7 @@ public class AverageSettlementAmountReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         HashMap reportParameters = new HashMap();
 
@@ -67,10 +67,10 @@ public class AverageSettlementAmountReport implements Report {
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
 
-            String insurerName = "";
-            Integer iInsurerId = -1;
+            String insurerName;
+            Integer iInsurerId;
 
-            Insurer ins = new Insurer();
+            Insurer ins;
             ReportHelper reportHelper = new ReportHelper();
 
             if (!insurerId.equalsIgnoreCase("")) {
@@ -167,6 +167,7 @@ public class AverageSettlementAmountReport implements Report {
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
+            throw ex;
         }
 
         return reportParameters;
@@ -273,7 +274,7 @@ public class AverageSettlementAmountReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

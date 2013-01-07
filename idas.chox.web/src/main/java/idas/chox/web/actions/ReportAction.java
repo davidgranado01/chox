@@ -154,6 +154,15 @@ public class ReportAction extends BaseAction implements ParameterAware {
             LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             getSession().put("exceptionThrown", true);
+        } catch (Exception ex) {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (Exception ex2) {
+                    LOG.error("Exception closing report output stream: {}", ex.getMessage(), ex);
+                }
+            }
+            getSession().put("exceptionThrown", true); 
         }
 
         synchronized (getSession()) {

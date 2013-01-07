@@ -93,7 +93,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
     
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
 
         reportParameters.put("date", new Date());
@@ -124,7 +124,10 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         if (((String[]) externalParameter.get("DateStart")) != null) {
             dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             LOG.debug("dataStart :" + dataStart);
+        } else {
+            throw new Exception("Start date cannot be empty.");
         }
+
 
         if (currentUser.getInsurer() != null) {
 
@@ -279,8 +282,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     .append(ror.getId())
                     .append(" and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_")
                     .append(ror.getRorName());
-                    if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() -1)
-                        sb.append(", ");
+                    if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() -1) {
+                sb.append(", ");
+            }
         }
 
         String query = sb.toString();
@@ -694,8 +698,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                         .append(ror.getId())
                         .append(" and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_")
                         .append(ror.getRorName());
-                        if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() - 1)
-                            sb1.append(", ");
+                        if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() - 1) {
+                    sb1.append(", ");
+                }
             }
             
             String query1 = sb1.toString();
@@ -809,7 +814,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
