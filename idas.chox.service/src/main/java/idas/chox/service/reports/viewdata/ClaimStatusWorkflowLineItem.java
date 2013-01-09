@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author John
  */
-public class InsurerSetupWorkflowReportObject {
-    private static final Logger LOG = LoggerFactory.getLogger(InsurerSetupWorkflowReportObject.class);
+public class ClaimStatusWorkflowLineItem {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimStatusWorkflowLineItem.class);
     private String status;
     private Integer outstandingStart;
     private Integer outstanding;
@@ -35,10 +35,9 @@ public class InsurerSetupWorkflowReportObject {
     private Integer oldestDays;
     private Integer averageOutstanding;
     private Integer historicAverage;
+    private String workgroup;
+    private Integer workgroupId;
 
-    public InsurerSetupWorkflowReportObject(String status) {
-        this.status = status;
-    }
 
     public void updateObject(Map data) {
       try {
@@ -106,6 +105,22 @@ public class InsurerSetupWorkflowReportObject {
         } else {
             return 0;
         }
+    }
+
+    public Integer getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(Integer workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
+    public String getWorkgroup() {
+        return workgroup;
+    }
+
+    public void setWorkgroup(String workgroup) {
+        this.workgroup = workgroup;
     }
 
     public Integer getAverageOutstanding() {

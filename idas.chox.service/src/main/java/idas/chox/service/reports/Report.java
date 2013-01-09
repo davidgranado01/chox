@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 

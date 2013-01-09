@@ -73,8 +73,9 @@ public class ExcelReportBuilder implements ReportBuilder {
             InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
-            if (columnsToHide != null)
+            if (columnsToHide != null) {
                 transformer.setColumnsToHide(columnsToHide);
+            }
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             
             if (addLogo) {
