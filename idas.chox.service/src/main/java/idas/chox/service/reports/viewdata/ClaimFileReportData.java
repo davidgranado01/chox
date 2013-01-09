@@ -607,7 +607,6 @@ public class ClaimFileReportData {
             invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
-            Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : invoice.getDateInvoiced();
             if (invoice.isAppliedHirePenaltyPercentageDifferent() && !currentUser.isCHO()) {
                 invoiceHirePenaltyChargePercentageApplied = invoice.getHirePenaltyPercentageApplied();
             }
