@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.Comment;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
@@ -19,11 +18,9 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.TaskService;
-import idas.chox.core.model.BreBand;
 
 public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
@@ -33,54 +30,40 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     private InsurerService insurerService;
     private AuditTrailService auditTrailService;
     private CommentService commentService;
-    private BreBandService breBandService;
     private TaskService taskService;
     private Insurer newInsurer;
 
     public String getPolicyNumber() {
         return policyNumber;
     }
-
     
     public void setPolicyNumber(String policyNumber) {
         this.policyNumber = policyNumber;
     }
-
     
     public int getInsId() {
         return insId;
     }
-
     
     public void setInsId(int insId) {
         this.insId = insId;
     }
-
     
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
     }
-
-    
-    public void setBreBandService(BreBandService breBandService) {
-        this.breBandService = breBandService;
-    }
-
     
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
-
     
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
-
     
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
-
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -113,18 +96,17 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
             }
         }
     }
-
     
     @Override
     protected void doProcess(Claim claim) {
 
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
 
+        claim.setSwitchingClaim(true);
         claim.setInsurer(newInsurer);
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);
         claim.setPreviousStatus(null);
-        claim.setStatusModifiedDate(new Date());
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
@@ -134,13 +116,6 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setLiabilityAgreedDate(null);
         claim.setCreatedDate(new Date());
 
-        if (newInsurer.isWorkgroupEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        } else if (newInsurer.isClaimOwnershipEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        }
         LOG.debug("Switching Claim : Claim status has been updated");
 
         // update Third party
@@ -151,33 +126,12 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
             thirdParty.setPolicyNumber(policyNumber);
         }
         LOG.debug("Switching Claim: ThirdParty has been updated");
-
-        // delete all Audits entries
-        auditTrailService.deleteAllAuditEntriesByClaimId(claim.getId());
-
-        // delete all Comments entries
+        // revert all Audits entries
+        auditTrailService.revertAllAuditEntriesByClaimId(claim.getId());
+        // revert all Comments entries
         commentService.deleteAllCommentsByClaimId(claim.getId());
-
-        // add CHO contact number comment
-        if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
-            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
-            claim.addComment(comment);
-        }
-
         // delete all Tasks entries
         taskService.deleteAllTasksByClaimId(claim.getId());
-
-        // Set Claim BRE band
-        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-        claim.setBreBand(choBand);
-
-        // Add General Note (specified in BRE band)
-        if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
-            Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
-            claim.addComment(comment);
-        }
-
-        setCurrentStatus("");
         
         if (claim.getInvoice() != null) {
             LOG.debug("This claim has invoice and will be deleted as switching the claim to another insurer");
@@ -190,7 +144,6 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         LOG.debug("Switching Claim: claim details has been updated");
     }
 
-    
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Switching claim AFTER PROCESS method called");

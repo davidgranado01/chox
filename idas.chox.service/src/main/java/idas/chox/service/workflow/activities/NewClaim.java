@@ -40,11 +40,13 @@ public class NewClaim extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
-        if (!claim.isTransient()) {
+        // The claim should not have id assigned to it unless it is being switched.
+        if (!claim.isTransient() && !claim.isSwitchingClaim()) {
             throw new Exception("A process new claim attempt failed due to claim is already exist.");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
+        // Only CHO can create a claim except when claim being switched.
+        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO) && !claim.isSwitchingClaim()) {
             throw new AccessDeniedException("Not in correct role to create a claim.");
         }
     }
@@ -55,10 +57,25 @@ public class NewClaim extends BaseActivity {
         claim.setStatusModifiedDate(new Date());
         // Add note containing CHO telephone number
         if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
-            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
-            claim.addComment(comment);
+            /*
+             *  The below check has been added to eliminate duplicate 
+             *  CHO contact number comment when switching claim.
+             */
+            boolean canAddChoContacNumberComment = true;
+            if (claim.getComments() != null) {
+                for (Comment comment : claim.getComments()) {
+                    if (comment.getComment().startsWith("CHO contact number") 
+                            && !comment.isReverted()) {
+                        canAddChoContacNumberComment = false;
+                    }
+                }
+            }
+            if (canAddChoContacNumberComment) {
+                Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+                claim.addComment(comment);
+            }
         }
-        
+
         // Set Claim BRE band
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);

@@ -63,6 +63,12 @@ public class Claim extends Entity implements Serializable {
     private Date finalReviewDateIns;
     private WebUser finalReviewByCho;
     private WebUser finalReviewByIns;
+    /* 
+     * There is no database entry for this field.
+     * switchingClaim field is used to identify difference 
+     * between switch claim and new claim in the 'newClaim' activity. 
+     */
+    private boolean switchingClaim;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -739,5 +745,13 @@ public class Claim extends Entity implements Serializable {
 
     public void setFinalReviewDateIns(Date finalReviewDateIns) {
         this.finalReviewDateIns = finalReviewDateIns;
+    }
+
+    public boolean isSwitchingClaim() {
+        return switchingClaim;
+    }
+
+    public void setSwitchingClaim(boolean switchingClaim) {
+        this.switchingClaim = switchingClaim;
     }
 }

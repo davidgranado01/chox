@@ -531,4 +531,18 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return false;
     }
 
+    @Override
+    public void revertAllAuditEntriesByClaimId(int claimId) {
+        try {
+            // get audit entries where it has not been reverted earlier.
+            List<AuditTrail> revertAuditTrails = getAuditTrailByClaim(claimId);
+            for (AuditTrail revertAudit : revertAuditTrails) {
+                revertAudit.setReverted(true);
+                LOG.debug("audit entry {} reverted", revertAudit.getId());
+            }
+            this.saveCollections(revertAuditTrails);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown when reverting all auditTrail entries", ex);
+        }
+    }
 }
