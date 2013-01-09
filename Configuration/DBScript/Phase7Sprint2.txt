@@ -61,9 +61,6 @@ insert into accessibility_item(role, access_right, accessibility_id)
 select 'ALL', 0, id from accessibility where name='menu.Upload';
 
 insert into accessibility_item(role, access_right, accessibility_id)
-select 'ROLE_CHO_MI', 1, id from accessibility where name='menu.Upload';
-
-insert into accessibility_item(role, access_right, accessibility_id)
 select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Upload';
 
 insert into accessibility_item(role, access_right, accessibility_id)
