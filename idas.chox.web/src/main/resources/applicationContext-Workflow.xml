@@ -91,6 +91,7 @@
     </bean>
     <bean id="updateInterimPaymentFullAndFinal" class="idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal" scope="prototype">
         <property name="chainActivity" ref="invoicePaymentReceived" />
+        <property name="activityFactory" ref="activityFactory"/>
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype">
