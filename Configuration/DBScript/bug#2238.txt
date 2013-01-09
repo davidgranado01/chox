@@ -22,11 +22,16 @@
      AND a2.id < a.id;
 
 
- DELETE FROM 
+ UPDATE 
      audit_trail 
+ SET
+     reverted = true,
+     last_modified_date = now(),
+     last_modified_by = 999
  WHERE
      new_status = 'ClaimClosed' 
-     AND original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted');
+     AND original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted')
+     AND reverted = false;
 
  
  DELETE FROM accessibility_item WHERE accessibility_id IN(SELECT id FROM accessibility WHERE name='button.CloseClaim.ClaimRejectionAccepted');
