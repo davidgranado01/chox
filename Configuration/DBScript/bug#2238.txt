@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------------------------------------------
+-- BUG#2238 - Production - Should not be possible to move a claim to 'ClaimClosed' from another 'closed' state   --
+--------------------------------------------------------------------------------------------------------------------
+
+ UPDATE 
+     claim 
+ SET 
+     status = a2.new_status,
+     previous_status = a2.original_status,
+     status_modified_date = a2.created_date
+ FROM 
+     audit_trail a INNER JOIN audit_trail a2 ON a2.claim_id = a.claim_id
+ WHERE 
+     a.claim_id = claim.id
+     AND a.new_status = claim.status
+     AND a.new_status = 'ClaimClosed' 
+     AND a.original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted')
+     AND a.reverted = FALSE
+     AND a2.reverted = FALSE
+     AND a2.new_status = a.original_status
+     AND a2.created_date <= a.created_date
+     AND a2.id < a.id;
+
+
+ DELETE FROM 
+     audit_trail 
+ WHERE
+     new_status = 'ClaimClosed' 
+     AND original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted');
+
+ 
+ DELETE FROM accessibility_item WHERE accessibility_id IN(SELECT id FROM accessibility WHERE name='button.CloseClaim.ClaimRejectionAccepted');
+ DELETE FROM accessibility_item WHERE accessibility_id IN(SELECT id FROM accessibility WHERE name='button.CloseClaim.InvoiceRejectionAccepted');
+
+ DELETE FROM accessibility WHERE name = 'button.CloseClaim.ClaimRejectionAccepted';
+ DELETE FROM accessibility WHERE name = 'button.CloseClaim.InvoiceRejectionAccepted';
+
+----------------------
+--  END OF BUG#2238  --
+----------------------
