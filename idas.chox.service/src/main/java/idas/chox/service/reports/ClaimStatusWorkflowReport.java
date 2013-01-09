@@ -319,7 +319,6 @@ public class ClaimStatusWorkflowReport implements Report {
         boolean returnValue = false;
         if (((String[]) externalParameter.get("workgroupBreakdownCheckbox")) != null) {
             returnValue = ((String[]) externalParameter.get("workgroupBreakdownCheckbox"))[0].equalsIgnoreCase("on") ? true : false;
-            LOG.info("workgroupBreakdownCheckbox={}", returnValue);
         }
         return returnValue;
     }
