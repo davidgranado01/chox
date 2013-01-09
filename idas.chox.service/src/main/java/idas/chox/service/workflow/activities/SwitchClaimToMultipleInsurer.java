@@ -102,7 +102,6 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
 
-        claim.setSwitchingClaim(true);
         claim.setInsurer(newInsurer);
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);

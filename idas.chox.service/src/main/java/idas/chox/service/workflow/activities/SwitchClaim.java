@@ -69,7 +69,6 @@ public class SwitchClaim extends BaseActivity {
         Insurer newInsurer = oldInsurer.getRelatedInsurer();
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
         
-        claim.setSwitchingClaim(true);
         claim.setInsurer(newInsurer);
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);
