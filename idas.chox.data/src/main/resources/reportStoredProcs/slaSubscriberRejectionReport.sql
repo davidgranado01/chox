@@ -56,9 +56,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND c.status = 'SubscriberClaimRejected') AS "Total # rejected",
 
@@ -73,9 +73,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 1) AS "# rejected on day 1",
@@ -91,9 +91,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 2) AS "# rejected on day 2",
@@ -109,9 +109,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 3) AS "# rejected on day 3",
@@ -127,9 +127,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 4) AS "# rejected on day 4",
@@ -145,9 +145,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 5) AS "# rejected on day 5";
@@ -198,9 +198,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND c.status = 'SubscriberClaimRejected') AS "Total # rejected",
 
@@ -215,9 +215,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 1) AS "# rejected on day 1",
@@ -233,9 +233,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 2) AS "# rejected on day 2",
@@ -251,9 +251,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 3) AS "# rejected on day 3",
@@ -269,9 +269,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 4) AS "# rejected on day 4",
@@ -287,9 +287,9 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND c.status = a.new_status
                                     AND a.reverted = FALSE
-                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date > a.created_date)
+                                    AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = c.status AND a1.created_date < a.created_date)
                                     AND c.claim_type IN (7,8,9)
-                                    AND ((j=1 AND c.reason_of_rejection_id = reasonOfRejection.id) OR (j=2))
+                                    AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND c.status = 'SubscriberClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND ((a.created_date::date - c.created_date::date) + 1) = 5) AS "# rejected on day 5";
