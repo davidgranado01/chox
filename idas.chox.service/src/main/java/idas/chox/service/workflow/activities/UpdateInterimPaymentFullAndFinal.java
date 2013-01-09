@@ -10,13 +10,12 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.workflow.Activity;
-import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.core.services.ClaimService;
 
 public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateInterimPaymentFullAndFinal.class);
-    private ActivityFactory activityFactory;
+    private ClaimService claimService;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -41,10 +40,9 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
             
             if (claim.getStatus().equals(ClaimStatus.CLAIM_CLOSED)) {
                 try {
-                    Activity activity = activityFactory.getActivity("reopenClaim");
-                    activity.process(claim);
+                    claimService.revertClaim(claim.getId());
                 } catch (Exception ex) {
-                    LOG.debug(" Exception thrown re-opening claim in InterimPaymentFullAndFinal activity: ", ex);
+                    LOG.debug(" Exception thrown while reverting claim in InterimPaymentFullAndFinal activity: ", ex);
                 }
             }
             
@@ -86,11 +84,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
     }
 
-    public ActivityFactory getActivityFactory() {
-        return activityFactory;
-    }
-
-    public void setActivityFactory(ActivityFactory activityFactory) {
-        this.activityFactory = activityFactory;
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }
