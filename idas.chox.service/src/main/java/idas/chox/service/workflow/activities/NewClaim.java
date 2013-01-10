@@ -3,7 +3,6 @@ package idas.chox.service.workflow.activities;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +11,6 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 
 public class NewClaim extends BaseActivity {
@@ -35,19 +32,6 @@ public class NewClaim extends BaseActivity {
         String claimNumber = claim.getClaimNumber();
         if (claimNumber != null && !claimNumber.isEmpty()) {
             claim.setClaimNumber(claimNumber.trim());
-        }
-    }
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        // The claim should not have id assigned to it unless it is being switched.
-        if (!claim.isTransient() && !claim.isSwitchingClaim()) {
-            throw new Exception("A process new claim attempt failed due to claim is already exist.");
-        }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        // Only CHO can create a claim except when claim being switched.
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO) && !claim.isSwitchingClaim()) {
-            throw new AccessDeniedException("Not in correct role to create a claim.");
         }
     }
 
