@@ -1,0 +1,37 @@
+-------------------------------------------------------------------------------------
+-- 7.2.2 Set 'Total To Pay' To Zero 'ClaimClosed' or 'InvoiceRejectionAccepted'    --
+-------------------------------------------------------------------------------------
+
+ALTER TABLE audit_trail ADD COLUMN previous_total_to_pay NUMERIC(10,2) DEFAULT 0.00;
+
+
+UPDATE 
+     audit_trail
+SET 
+     previous_total_to_pay = i.total_to_pay
+FROM 
+     claim c INNER JOIN invoice i ON i.id = c.invoice_id
+WHERE
+     audit_trail.claim_id = c.id
+     AND audit_trail.new_status = c.status
+     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.id > audit_trail.id AND a1.reverted = false AND a1.new_status = c.status)
+     AND audit_trail.reverted = false
+     AND c.status IN ('ClaimClosed','InvoiceRejectionAccepted')
+     AND i.total_to_pay > 0;
+
+
+
+UPDATE 
+     invoice
+SET 
+     total_to_pay = 0.00
+FROM 
+     claim c
+WHERE 
+     c.invoice_id = invoice.id
+     AND c.status IN('ClaimClosed','InvoiceRejectionAccepted')
+     AND invoice.total_to_pay > 0;
+
+----------------------
+--  END OF 7.2.2    --
+----------------------
