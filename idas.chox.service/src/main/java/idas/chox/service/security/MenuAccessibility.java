@@ -9,6 +9,7 @@ public class MenuAccessibility {
     private boolean adminMenuAccessibility;
     private boolean inboxMenuAccessibility;
     private boolean searchMenuAccessibility;
+    private boolean uploadMenuAccessibility;
 
     public MenuAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -17,6 +18,7 @@ public class MenuAccessibility {
         adminMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_ADMIN, user) > 0;
         inboxMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_INBOX, user) > 0;
         searchMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_SEARCH, user) > 0;
+        uploadMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_UPLOAD, user) > 0;
     }
 
     public boolean getIsDashBoardMenuAccessibility() {
@@ -38,4 +40,9 @@ public class MenuAccessibility {
     public boolean getIsSearchMenuAccessibility() {
         return searchMenuAccessibility;
     }
+
+    public boolean getIsUploadMenuAccessibility() {
+        return uploadMenuAccessibility;
+    }
+    
 }

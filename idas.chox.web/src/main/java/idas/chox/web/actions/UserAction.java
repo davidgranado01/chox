@@ -140,7 +140,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return true;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String doRenderActionPage() {
         updateModelInSession(Arrays.asList(model));
         return SUCCESS;
@@ -297,7 +297,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return isEnable;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String updateUserDetail() throws Exception {
 
         try {
@@ -331,7 +331,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String updateUserPassword() throws Exception {
         LOG.debug("Updating user password.");
         try {
@@ -358,7 +358,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String triggerUserAccountStatus() throws Exception {
 
         if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
@@ -380,7 +380,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String triggerPasswordExpiredStatus() {
 
         if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))

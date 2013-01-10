@@ -1544,7 +1544,8 @@
         <s:if test="menuAccessibility.isAdminMenuAccessibility!=true">
                 tabs.remove('adminPanelTabId', true);
         </s:if>
-        <s:if test="isUploadAllowed!=true">
+       
+        <s:if test="menuAccessibility.isUploadMenuAccessibility!=true">
                 tabs.remove('xmlUploadTabId', true);
         </s:if>
 

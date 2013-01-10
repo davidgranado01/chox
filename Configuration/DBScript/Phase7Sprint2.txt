@@ -35,3 +35,79 @@ WHERE
 ----------------------
 --  END OF 7.2.2    --
 ----------------------
+
+------------------------------------------
+-- 7.2.3 User Manager Role For CHOs     --
+------------------------------------------
+
+insert into web_user_role(version, name, description, type_id, is_workgroup_related, is_ownership_related,
+                          created_by, created_date, last_modified_by, last_modified_date)
+select 0, 'ROLE_CHO_USER', 'User Manager', 3, false, false, 999, now(), 999, now();
+
+update accessibility_item set role='ROLE_CHO_USER'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'menu.Admin'
+  and accessibility_item.role = 'ROLE_CHO_MNG';
+
+
+update accessibility_item set role='ROLE_CHO_USER'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'admin.UserManagement'
+  and accessibility_item.role = 'ROLE_CHO_MNG';
+  
+
+
+delete from 
+      accessibility_item 
+where 
+      role = 'ROLE_CHO' 
+      and accessibility_id in (select id from accessibility where name = 'menu.Inbox');
+
+delete from 
+      accessibility_item 
+where 
+      role = 'ROLE_CHO' 
+      and accessibility_id in (select id from accessibility where name = 'menu.Search');
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MI', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MI', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'menu.Upload', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_UPLOAD', 1, id from accessibility where name='menu.Upload';
+
+
+----------------------
+--  End of 7.2.3    --
+----------------------

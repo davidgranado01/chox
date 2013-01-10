@@ -37,7 +37,7 @@ public class UserRoleAction extends BaseAction {
     private AdminUserService adminUserService;
     private WebUserUserRoleService webUserUserRoleService;
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String doRenderActionPage() {
         LOG.debug("doRenderActionPage() called for user: {}", webUserId);
         return SUCCESS;
@@ -219,7 +219,7 @@ public class UserRoleAction extends BaseAction {
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String addNewWebUserRoleMapping() {
         LOG.debug("Adding user role '{}' to user '{}'", webUserRoleId, webUserId);
 
@@ -273,7 +273,7 @@ public class UserRoleAction extends BaseAction {
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG"})
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String removeWebUserRoleMapping() {
         LOG.debug("Removing user role '{}' to user '{}'", webUserRoleId, webUserId);
 

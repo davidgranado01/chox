@@ -173,15 +173,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String updateChorganisation() throws Exception {
-
-        if ((getUserOrganisationType() == 2)
-                || (getUserOrganisationType() == 3 && model.getId().intValue() != getUserOrganisationId())) {
-            LOG.debug("Failed access validation in updateChorganisation() - throwing AccessDeniedException");
-            throw new AccessDeniedException("Error trying to update a CHO to which I have no access (POSSIBLE HACK ATTEMPT)");
-        }
-
         try {
 
             if (getIsNew()) {
@@ -190,8 +183,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                     return SUCCESS;
                 }
             } else {
-                if(!originalName.equals(model.getName())) {
-                    if (this.adminChorganisationService.isChorganisationNameExist(model.getName())){
+                if (!originalName.equals(model.getName())) {
+                    if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
                         this.getActionResponse().AddError("Credit hire name already exists!");
                         return SUCCESS;
                     }
