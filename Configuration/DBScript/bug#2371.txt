@@ -1,9 +1,0 @@
--------------------------------------------------------------------------------------
--- BUG#2371 - Production - 'Claim Status Workflow Report' status count is wrong.   --
--------------------------------------------------------------------------------------
-
-update accessibility set name = 'report.ClaimStatusWorkflowReport' where name = 'report.InsurerSetupWorkflowReport';
-
------------------------
---  END OF BUG#2371  --
------------------------
