@@ -1,17 +1,14 @@
 package idas.chox.service.reports.viewdata;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import idas.chox.core.util.MathHelper;
 
-public class ClaimRejectionLineItem {
+public class ClaimRejectionSumLineItem {
 
     private Integer id;
     private String name;
     private String displayName;
-    private List<ClaimRejectionLineItemDetail> reportColumns = new ArrayList<ClaimRejectionLineItemDetail>();
     private Integer allOrgClaimCount;
     private BigDecimal allOrgClaimCountPerc;
 
@@ -29,14 +26,6 @@ public class ClaimRejectionLineItem {
 
     public void setAllOrgClaimCountPerc(BigDecimal allOrgClaimCountPerc) {
         this.allOrgClaimCountPerc = allOrgClaimCountPerc;
-    }
-
-    public List<ClaimRejectionLineItemDetail> getReportColumns() {
-        return reportColumns;
-    }
-
-    public void setReportColumns(List<ClaimRejectionLineItemDetail> reportColumns) {
-        this.reportColumns = reportColumns;
     }
 
     public String getDisplayName() {
@@ -66,4 +55,5 @@ public class ClaimRejectionLineItem {
     public static String getDisplayNameMap(String name) {
         return name;
     }
+
 }

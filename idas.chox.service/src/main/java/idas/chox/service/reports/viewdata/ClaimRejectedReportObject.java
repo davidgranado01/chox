@@ -3,24 +3,24 @@ package idas.chox.service.reports.viewdata;
 import java.util.Date;
 
 public class ClaimRejectedReportObject {
-    private Date DateFrom;
-    private Date DateTo;
+    private Date dateFrom;
+    private Date dateTo;
     private Date createdDate;
 
     public Date getDateFrom() {
-        return DateFrom;
+        return dateFrom;
     }
 
     public void setDateFrom(Date DateFrom) {
-        this.DateFrom = DateFrom;
+        this.dateFrom = DateFrom;
     }
 
     public Date getDateTo() {
-        return DateTo;
+        return dateTo;
     }
 
-    public void setDateTo(Date DateTo) {
-        this.DateTo = DateTo;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
     public Date getCreatedDate() {
