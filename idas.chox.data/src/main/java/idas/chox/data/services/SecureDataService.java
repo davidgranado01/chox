@@ -82,8 +82,8 @@ public class SecureDataService extends BaseDataService {
 
             StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from insurer ");
-            sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id and b.status=true ");
-            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId order by a.name");
+            sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id ");
+            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId ");
 
             Map extParameters = new HashMap();
 

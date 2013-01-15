@@ -153,8 +153,8 @@ INSERT INTO automatic_routing (id,insurer_id,workgroup_id,expression,created_by,
 
 
 -- insurer_chorganisation
-INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,status,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1006,true,1001,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
-INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,status,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1007,true,1002,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
+INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1006,1001,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
+INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1007,1002,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
 
 
 -- bre_band
