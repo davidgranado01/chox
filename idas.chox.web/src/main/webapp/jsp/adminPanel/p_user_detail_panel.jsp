@@ -7,7 +7,8 @@
     var userDetailPanelTabs;
     var isNew = true;
     var isWorkgroupEnabled = true;
-    var SelectedOrganisationTypeId = '<s:property value="organisationTypeId" />';
+    var selectedOrganisationTypeId = '<s:property value="organisationTypeId" />';
+    var currentUserOrganisationId = '<s:property value="currentUserOrganisationId" />';
 
     Ext.onReady(function(){
 
@@ -34,8 +35,6 @@
                 email:{required:true, email: true},
                 firstName:{required:true},
                 lastName:{required:true},
-                insurerId:{required:true},
-                supplierId:{required:true},
                 password:{required:true, regex: passwordRegex},
                 confirmNewPassword:{equalTo: "#password"}
             },
@@ -44,12 +43,37 @@
                 email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
                 firstName:{required:"You must supply a value for 'First Name'"},
                 lastName:{required:"You must supply a value for 'Last Name'"},
-                insurerId:{required:"Please select 'Insurer Company'"},
-                supplierId:{required:"Please select 'Credit Hire Organisation'"},
                 password:{required:"You must supply a value for 'Password'", regex: "Incorrect Password Format"},
                 confirmNewPassword:{equalTo: "Your passwords do not match"}
             }
         });
+
+        if (currentUserOrganisationId==1) {
+            $.validator.addMethod("comboSelection",
+                function(value) {
+                    if(value < 0) {
+                        return false;
+                    }
+                    return true;
+            }, "Please check your input.");
+
+            // We are CHOX Admin, so add validation to Insurer or CHO name field/drop-down
+            if (selectedOrganisationTypeId==2) {
+                // Insurer
+                $("form#formUpdateUserDetail #insurerId").rules("add", {
+                    comboSelection: true,
+                    messages: {comboSelection: "Please select an 'Insurer Company'"}
+                });
+            }
+            else if (selectedOrganisationTypeId==3) {
+                //CHO
+                $("form#formUpdateUserDetail #supplierId").rules("add", {
+                    comboSelection: true,
+                    messages: {comboSelection: "Please select a 'Credit Hire Company'"}
+                });
+            }
+            
+        }
 
         ui.ajaxForm($("form#formUpdateUserDetail"), function(responseText, statusText){
 
@@ -65,7 +89,7 @@
                             var newObjectId = parseInt(response.result);
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                            var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
+                            var param = {"objectId":newObjectId,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
@@ -76,7 +100,7 @@
                     Ext.MessageBox.alert('Status', 'User "' + '<s:property value="userName" />' + '"has been updated', function() {
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
+                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
@@ -87,7 +111,7 @@
                 Ext.MessageBox.alert('Error', 'Error updating user: '+ response.errors + '\nPlease try again.', function() {
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
+                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
                             ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
@@ -172,10 +196,8 @@
         ajax.loadJson2(url, param, function(data){
             if(data.resultType=='Message'){ 
                 $(target).html(data.result);
-//                var minPasswordLength = parseInt(data.result);
                 var passwordRegex = "^.*(?=.{" + data.result + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
                 $("form#formUpdateUserDetail #password").rules("remove");
-//                $("form#formUpdateUserDetail #password").rules("add", {required: true, regex: passwordRegex});
                 $("form#formUpdateUserDetail #password").rules("add", {required: true, messages: {required: "You must supply a value for 'Password'"}});
                 $("form#formUpdateUserDetail #password").rules("add", {regex: passwordRegex, messages: {regex: "Incorrect Password Format"}});
             }
