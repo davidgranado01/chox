@@ -158,8 +158,9 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.users);
         
-        if (totalCount == 0)
+        if (totalCount == 0) {
             return "{totalCount:" + 1 + ",results:" + userPasswordFormatMessage + "}";
+        }
         return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
     }
 

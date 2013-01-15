@@ -2,8 +2,17 @@ package idas.chox.service.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimStatus;
@@ -26,13 +35,6 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-import java.util.Date;
-import java.util.Set;
-import java.util.regex.Pattern;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AdminUserService extends SecureDataService {
 
@@ -46,7 +48,6 @@ public class AdminUserService extends SecureDataService {
     private WorkgroupService workgroupService;
     private UserWorkgroupService userWorkgroupService;
     private String passwordPatternString = "^.*(?=.{<minPasswordLength>,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
-//    private Pattern passwordPattern = Pattern.compile();
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -95,10 +96,12 @@ public class AdminUserService extends SecureDataService {
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         int minPasswordLength = 6;
         WebUser webUser = userService.getWebUser(webUserId);
-        if (webUser.isAnInsurer())
+        if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
-        else if (!webUser.isCHOXAdmin())
+        }
+        else if (!webUser.isCHOXAdmin()) {
             minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
+        }
         
         this.actionResponse = new ActionResponse();
         Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
@@ -165,7 +168,6 @@ public class AdminUserService extends SecureDataService {
     }
 
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir) {
-//        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
         return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
     }
     
@@ -174,10 +176,12 @@ public class AdminUserService extends SecureDataService {
     public ActionResponse updateUserPassword(WebUser webUser) {
         int minPasswordLength = 6;
 
-        if (webUser.isAnInsurer())
+        if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
-        else if (!webUser.isCHOXAdmin())
+        }
+        else if (!webUser.isCHOXAdmin()) {
             minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
+        }
         
         this.actionResponse = new ActionResponse();
         Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
@@ -213,8 +217,9 @@ public class AdminUserService extends SecureDataService {
             webUser.setBlockedDate(null);
             webUser.setStatus(true);
         }
-        else
+        else {
             webUser.setStatus(!webUser.getStatus());
+        }
 
         boolean isAllowUpdate = true;
 
@@ -554,14 +559,6 @@ public class AdminUserService extends SecureDataService {
             uniqueHistory = webUser.getChorganisation().getUniquePasswordHistory();
         }
 
-        // First check against current password
-        if (uniqueHistory > 0) {
-            if (encodeNewPassword.equals(webUser.getPassword())) {
-                passwordOk = false;
-            }
-            uniqueHistory--;
-        }
-        
         if (passwordOk && uniqueHistory > 0) {
             List<PasswordHistory> passwordHistory = userService.getPasswordHistory(webUserId, uniqueHistory);
         
@@ -576,7 +573,7 @@ public class AdminUserService extends SecureDataService {
         if (passwordOk) {
             // Add current password to password history
             PasswordHistory p = new PasswordHistory();
-            p.setPassword(webUser.getPassword());
+            p.setPassword(encodeNewPassword);
             p.setWebUser(webUser);
             userService.savePasswordHistory(p);
         }
