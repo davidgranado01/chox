@@ -1,11 +1,13 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimClosed extends BaseActivity {
     private TaskService taskService;
@@ -47,27 +49,24 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
         expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
+        expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
     }
 }
