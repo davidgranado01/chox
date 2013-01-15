@@ -54,7 +54,7 @@
         
             
         var userManagementPagingBar = new Ext.PagingToolbar({
-            pageSize: 25,
+            pageSize: 23,
             store: userManagementgridStore,
             displayInfo: true,
             displayMsg: 'Displaying users {0} - {1} of {2}'
@@ -82,7 +82,7 @@
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
-            height:500,
+            height:540,
             width: 775,
             bbar: userManagementPagingBar
         });
@@ -129,16 +129,12 @@
 
     function loadGridViewList(){
 
-//        getParameters();
         userManagementgridStore.removeAll();
         userManagementgridStore.load({
             params:
                 {
                 start:0, 
-                limit:25
-//                ,organisationTypeId:selectedOrganisationTypeId,
-//                organisationId:selectedOrganisationId,
-//                userRoleId:selectedUserRoleId
+                limit:23
             }
         });
 
