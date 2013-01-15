@@ -59,6 +59,7 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
         expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
         expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
+        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
     }
 
 	public BigDecimal getPartialInterimPayment() {
