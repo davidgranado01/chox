@@ -1,10 +1,12 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.services.BusinessRulesEngService;
-import idas.chox.core.xmlValidation.ClaimResult;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.services.BusinessRulesEngService;
+import idas.chox.core.xmlValidation.ClaimResult;
 
 /**
  *
@@ -26,20 +28,14 @@ public class BordereauReader {
                     LOG.debug("Claim '{}' isDataValid={}", claimResult.getClaim().getChoReference(), claimResult.isDataValid());
                     LOG.debug("Claim '{}' isValid={}", claimResult.getClaim().getChoReference(), claimResult.isValid());
                 }
-                else
-                    LOG.debug("No claim in claim result.");
+                else {
+                LOG.debug("No claim in claim result.");
+            }
+                boolean firstReader = true;
                 for (Reader r : subEntityReaders) {
-                    if (claimResult.getClaim() != null)
-                        LOG.debug("Processing subEntityReaders for claim '{}'...", claimResult.getClaim().getChoReference());
-                    else
-                        LOG.debug("Processing subEntityReaders (no claim in claimResult).");
+                    LOG.debug("Processing using reader {}", r.getClass());
                     try {
-                        if(claimResult.isValid()){
-                            r.execute(claimResult); 
-                        }else{
-                           LOG.debug("claimResult is not valid."); 
-                        }
-                           
+                            r.execute(claimResult);                            
                     }
                     catch (Exception ex) {
                         LOG.error("Exception thrown reading claim with reader {}", r.getClass(), ex);
@@ -49,13 +45,18 @@ public class BordereauReader {
                             LOG.error("    Caused by: {}", ex.getCause().getMessage());
                         }
                     }
+                    
                     LOG.debug("    isCheckDataValid={}", claimResult.isCheckDataValid());
                     LOG.debug("    isDataValid={}", claimResult.isDataValid());
                     LOG.debug("    isValid={}", claimResult.isValid());
-                    if (claimResult.getClaim() != null)
-                        LOG.debug("Done Processing subEntityReaders for claim '{}'.", claimResult.getClaim().getChoReference());
-                    else
-                        LOG.debug("Done Processing subEntityReaders (no claim in claimResult).");
+
+                    // If there is an error in the Claim Header reader then stop processing
+                    // The ClaimHeader reader will always be the first reader called
+                    if (firstReader && !claimResult.isValid()) {
+                        LOG.debug("Claim Header is invalid - stopping processing.");
+                        break;
+                    }
+                    firstReader = false;
                 }
         }
         catch (Exception ex) {
