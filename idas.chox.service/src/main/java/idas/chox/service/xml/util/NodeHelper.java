@@ -72,7 +72,7 @@ public class NodeHelper {
 
                 if (alias.getChorganisation() != null) {
 
-                    if (!insurerChorganisationService.isActiveObjectExist(insurerId, alias.getChorganisation().getId())) {
+                    if (!insurerChorganisationService.isMapped(insurerId, alias.getChorganisation().getId())) {
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
                     }
@@ -120,7 +120,7 @@ public class NodeHelper {
 
                 if (alias.getInsurer() != null) {
 
-                    if (!insurerChorganisationService.isActiveObjectExist(alias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
+                    if (!insurerChorganisationService.isMapped(alias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
                     }

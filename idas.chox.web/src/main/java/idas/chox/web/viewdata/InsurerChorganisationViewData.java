@@ -10,8 +10,6 @@ public class InsurerChorganisationViewData {
     private int chorganisationId;
     private String insurerName;
     private String chorganisationName;
-    private boolean chorganisationStatus;
-    private String chorganisationStatusDesc;
     private boolean status;
     private String statusDesc;
     private String createdBy;
@@ -33,22 +31,13 @@ public class InsurerChorganisationViewData {
 
         this.createdBy = insurerChorganisation.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(insurerChorganisation.getCreatedDate());
-        this.status = insurerChorganisation.isStatus();
-        this.chorganisationStatus = insurerChorganisation.getChorganisation().isStatus();
+        this.status = insurerChorganisation.getChorganisation().isStatus();
 
-        if (insurerChorganisation.isStatus()) {
+        if (insurerChorganisation.getChorganisation().isStatus()) {
             this.statusDesc = "Yes";
         } else {
             this.statusDesc = "No";
-        }
-
-        if (insurerChorganisation.getChorganisation().isStatus()) {
-            this.chorganisationStatusDesc = "Yes";
-        } else {
-            this.chorganisationStatusDesc = "No";
-        }
-
-        
+        }        
     }
 
     public int getChorganisationId() {
@@ -86,14 +75,5 @@ public class InsurerChorganisationViewData {
     public String getStatusDesc() {
         return statusDesc;
     }
-
-    public boolean isChorganisationStatus() {
-        return chorganisationStatus;
-    }
-
-    public String getChorganisationStatusDesc() {
-        return chorganisationStatusDesc;
-    }
-
    
 }

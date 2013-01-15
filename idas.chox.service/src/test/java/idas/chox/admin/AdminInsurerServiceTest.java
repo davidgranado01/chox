@@ -628,7 +628,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         for (InsurerChorganisation insCho : insSelChorganisations) {
             ActionResponse response = adminInsurerService.removeInsurerChorganisation(insCho.getId());
             Assert.assertTrue(response.getIsValid());
-            validateError("", response, "Not allowed to delete Thic Credit Hire From This insuere. Please remove the Bre Band assigned to this Credit Hire First");
+            validateError("", response, "Not allowed to delete this Credit Hire Org from this Insurer. Please remove the Bre Band assigned to this Credit Hire Organisation first.");
         }
 
         List<InsurerChorganisation> insSelChorganisationsAfter = adminInsurerService.getInsurerChorganisations(insurer.getId());

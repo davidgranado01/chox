@@ -1,5 +1,12 @@
 package idas.chox.service.admin;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.BreBand;
@@ -31,13 +38,6 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AdminInsurerService extends SecureDataService {
 
@@ -379,7 +379,6 @@ public class AdminInsurerService extends SecureDataService {
 
         insurerChorganisation.setChorganisation(chorganisationService.getChorganisation(chorganisationId));
         insurerChorganisation.setInsurer(insurerService.getInsurer(insurerId));
-        insurerChorganisation.setStatus(true);
         insurerChorganisationService.saveInsurerChorganisation(insurerChorganisation);
 
         return this.actionResponse;
@@ -391,10 +390,9 @@ public class AdminInsurerService extends SecureDataService {
         InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurerChorganisationId);
 
         if (chorganisationService.isActiveChorganisationsByInsurerCreditHireWithBreBand(insurerChorganisation.getInsurer().getId(), insurerChorganisation.getChorganisation().getId())) {
-            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Not allowed to delete Thic Credit Hire From This insuere. Please remove the Bre Band assigned to this Credit Hire First");
+            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Not allowed to delete this Credit Hire Org from this Insurer. Please remove the Bre Band assigned to this Credit Hire Organisation first.");
         } else {
-            insurerChorganisation.setStatus(false);
-            insurerChorganisationService.saveInsurerChorganisation(insurerChorganisation);
+            insurerChorganisationService.deleteInsurerChorganisation(insurerChorganisation);
         }
 
         return this.actionResponse;

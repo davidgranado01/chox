@@ -57,8 +57,6 @@
                 {name:'chorganisationId'},
                 {name:'insurerName'},
                 {name:'chorganisationName'},
-                {name:'chorganisationStatus'},
-                {name:'chorganisationStatusDesc'},
                 {name:'status'},
                 {name:'statusDesc'},
                 {name:'createdBy'},
@@ -81,7 +79,7 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 170, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
