@@ -1,0 +1,8 @@
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2399 - Production - Multiple mapping entries in insurer_chorganisation table                                   --
+------------------------------------------------------------------------------------------------------------------------
+DELETE FROM insurer_chorganisation WHERE status=false;
+ALTER TABLE insurer_chorganisation DROP COLUMN status;
+----------------------
+--  End of BUG#2399 --
+----------------------
