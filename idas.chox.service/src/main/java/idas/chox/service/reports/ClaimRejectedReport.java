@@ -58,7 +58,7 @@ public class ClaimRejectedReport implements Report {
     }
     
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
@@ -83,7 +83,7 @@ public class ClaimRejectedReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         currentUser = ((WebUser) externalParameter.get("CurrentUser"));
         try {
@@ -143,6 +143,7 @@ public class ClaimRejectedReport implements Report {
             
         } catch (Exception ex) {
             LOG.error("Exception thrown: {}", ex.getMessage());
+            throw ex;
         }
         return reportParameters;
     }

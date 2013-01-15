@@ -48,7 +48,7 @@ public class ClaimStatusWorkflowReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
         boolean isWorkgroupEnabled = true;
@@ -286,6 +286,7 @@ public class ClaimStatusWorkflowReport implements Report {
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
             LOG.error("Error thrown generating insurer-setup-workflow report: ", ex);
+            throw ex;
         }
 
         return reportParameters;
@@ -300,7 +301,7 @@ public class ClaimStatusWorkflowReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }
