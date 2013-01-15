@@ -1,11 +1,13 @@
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.core.util.DateHelper;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -41,12 +43,6 @@ public class ClaimStatusWorkflowLineItem {
 
     public void updateObject(Map data) {
       try {
-//        Iterator it = data.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pairs = (Map.Entry)it.next();
-//            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
-//        }
-
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
@@ -57,6 +53,7 @@ public class ClaimStatusWorkflowLineItem {
         this.setOutstanding20_25(getIntegerValue(data.get("outstanding20_25")));
         this.setOutstanding25_30(getIntegerValue(data.get("outstanding25_30")));
         this.setOutstanding30_(getIntegerValue(data.get("outstanding30_")));
+
         // Derive % column values
         if (outstanding == 0) {
             this.setOutstandingPercentage0_5(0.0);
@@ -76,22 +73,19 @@ public class ClaimStatusWorkflowLineItem {
             this.setOutstandingPercentage25_30((outstanding25_30*1.0/outstanding));
             this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
+
         if (data.get("oldestDate".toLowerCase()) != null) {
-//            LOG.debug("Getting oldest date from '{}'", data.get("oldestDate".toLowerCase()));
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
         }
-//        LOG.debug("oldestDate={}", this.getOldestDate());
         if (data.get("oldestDays".toLowerCase()) != null) {
-//            LOG.debug("Setting oldest days to '{}'", data.get("oldestDays".toLowerCase()).toString());
             this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase())));
         }
-//        LOG.debug("oldestDays={}", this.getOldestDays());
-        if (data.get("averageOutstanding".toLowerCase()) != null)
-            this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
-//        LOG.debug("AverageOutstanding={}", this.getAverageOutstanding());
-        if (data.get("historicAverage".toLowerCase()) != null)
-            this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
-//        LOG.debug("HistoricAverage={}", this.getHistoricAverage());
+        if (data.get("averageOutstanding".toLowerCase()) != null) {
+              this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
+        }
+        if (data.get("historicAverage".toLowerCase()) != null) {
+              this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
+        }
       } catch (Exception ex) {
           LOG.error("Exception thrown: {}", ex.getMessage());
       }
