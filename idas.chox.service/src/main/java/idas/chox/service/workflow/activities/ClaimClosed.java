@@ -31,6 +31,14 @@ public class ClaimClosed extends BaseActivity {
                            || claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_CONTESTED)))) {
             throw new AccessDeniedException("Not in correct role to close a claim.");
         }
+        
+        /*
+         * bug#2380 - Claim with open Interim Payment cannot be closed
+         */
+        if (claim.getInvoice() != null && claim.getInvoice().getInterimPaymentMade() != null
+                && claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
+            throw new AccessDeniedException("It is currently not possible to close this claim as an outstanding interim payment has been made (i.e. not marked as received).");
+        }
 
     }
 
