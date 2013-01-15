@@ -1,0 +1,10 @@
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2397 - Production - Production - Remove 'Close Claim' button from claims in status                             --
+--            'ClaimRejected' and 'ContestedInvoiceReferredToCHO'                                                     --
+------------------------------------------------------------------------------------------------------------------------
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ClaimRejected');
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO');
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted');
+----------------------
+--  End of BUG#2397 --
+----------------------
