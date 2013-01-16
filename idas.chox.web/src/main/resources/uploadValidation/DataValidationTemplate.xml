@@ -1005,8 +1005,6 @@
         <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
         <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
         <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>

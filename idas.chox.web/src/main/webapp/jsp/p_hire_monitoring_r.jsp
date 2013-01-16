@@ -165,14 +165,14 @@
                 <tr>
                     <td><label class="std-label-ro">Inspection Booked Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Inspection Booked Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -180,14 +180,14 @@
                 <tr>
                     <td><label class="std-label-ro">Inspection Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img src="../images/sign_info.png" width="13" alt="info" height="13" id="inspectionDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img src="../images/sign_info.png" width="13" alt="" height="13" id="inspectionDate_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Inspection Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img style="display: none" src="../images/sign_info.png" width="13" alt="info" height="13" id="inspectionDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img style="display: none" src="../images/sign_info.png" width="13" alt="" height="13" id="inspectionDate_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -195,14 +195,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Repair Authorised</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Repair Authorised</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -210,14 +210,14 @@
                 <tr>
                     <td><label class="std-label-ro">Repair Book In Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="repairBookInDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="repairBookInDate_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Repair Book In Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="repairBookInDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="repairBookInDate_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -225,14 +225,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Repair Commenced</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img src="../images/sign_info.png" width="13" alt="info" height="13" id="dateRepairCommenced_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img src="../images/sign_info.png" width="13" alt="" height="13" id="dateRepairCommenced_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Repair Commenced</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairCommenced_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairCommenced_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -240,14 +240,14 @@
                 <tr>
                     <td><label class="std-label-ro">Repair Completion Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /> <img src="../images/sign_info.png" alt="info" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /> <img src="../images/sign_info.png" alt="" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Repair Completion Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -255,14 +255,14 @@
                 <tr>
                     <td><label class="std-label-ro">Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="isTotalLoss_r_Id" /></label></td>
+                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="isTotalLoss_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" alt="info" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td>
+                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" alt="" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -270,14 +270,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Offer Made</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Offer Made</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -285,14 +285,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Offer Accepted</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Offer Accepted</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -300,14 +300,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Cheque Issued</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Cheque Issued</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -315,14 +315,14 @@
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Cheque Received</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Date Total Loss Cheque Received</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -360,14 +360,14 @@
                 <tr>
                     <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -375,14 +375,14 @@
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img  src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img  src="../images/sign_info.png" alt="" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
             </s:else>
 
@@ -390,14 +390,14 @@
                 <tr>
                     <td><label class="std-label-ro">Is Your Client VAT Registered?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /> <img  src="../images/sign_info.png" alt="info" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /> <img  src="../images/sign_info.png" alt="" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
                     <td><label class="std-label-ro">Is Your Client VAT Registered?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /><img style="display: none" src="../images/sign_info.png" alt="info" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:property value="clientVatRegisteredDesc" /><img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateClientVatRegistered_r_Id" /></label></td>
                 </tr>
             </s:else>
 
