@@ -77,7 +77,7 @@ public class BillingInsurerReport implements Report {
                 sb.append("cho.name as cho_name, ");
                 sb.append("tp.policy_number, ");
                 sb.append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ");
-                sb.append("case when tp.first_name is null and tp.last_name is null then '-' else case when tp.first_name is null then tp.last_name else case when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ");
+                sb.append("case when tp.first_name is null and tp.last_name is null then '-' when tp.first_name is null then tp.last_name when tp.last_name is null then tp.first_name else tp.first_name || ' ' || tp.last_name end as name, ");
                 sb.append("at.update_date as received_date, ");
                 sb.append("bid.net_claim_cost as net_claim_cost, ");
                 sb.append("bid.vat_claim_cost as vat_claim_cost, ");
