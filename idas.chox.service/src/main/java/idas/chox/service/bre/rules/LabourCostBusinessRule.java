@@ -40,7 +40,6 @@ public class LabourCostBusinessRule implements IBusinessRule {
 
                 if (iNumberOfHireDay > iNumberDayOfLabourCostWorthy) {
                     success = false;
-//                    narrative = "The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided.";
                     narrative = "The number of hire days billed by the CHO (" + iNumberOfHireDay + " days) is not relative to the number of expected hire days (" + iNumberDayOfLabourCostWorthy + " days) based on the labour information provided.";
                     LOG.debug("LabourCostBusinessRule failed: Number of hire days {} > Number of Labour cost worthy {}", iNumberOfHireDay, iNumberDayOfLabourCostWorthy);
                 }
@@ -107,14 +106,6 @@ public class LabourCostBusinessRule implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-
-        // LabourCostBusinessRule().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
-        // return ClaimStatus.INVOICE_ESCALATED;
-
-        // CARLSON @ 20091012
-        // return ClaimStatus.INVOICE_ESCALATED_TO_CH; 
-
-        // CARLSON @ 20091028
         if (isTpiClaim) {
             return ClaimStatus.INVOICE_ESCALATED_TO_CH;
         }
