@@ -25,14 +25,14 @@ IF org ILIKE 'INS' THEN
     t.task_type as "Task Type", 
     t.description as "Description",
     t.created_date as "Created Date", 
-    case when (ins.name is null and cho.name is null) then 'System' 
-         when cho.name is null then w.first_name || ' ' || w.last_name || ' (' || ins.name || ')' 
+    case when (ins is null and cho is null) then 'System' 
+         when cho is null then w.first_name || ' ' || w.last_name || ' (' || ins.name || ')' 
          else w.first_name || ' ' || w.last_name || ' (' || cho.name || ')' end as "Created By", 
-    case when (t.visibility_role = 'ROLE_INS_CH' and c.id is not null) then w2.first_name || ' ' || w2.last_name
+    case when (t.visibility_role = 'ROLE_INS_CH') then w2.first_name || ' ' || w2.last_name
          else 'N/A' end  as "Owner",
     wur.description as "Role Assigned To"
   from 
-    task t left outer join claim c on (c.id = t.claim_id)
+    task t inner join claim c on (c.id = t.claim_id)
            left outer join web_user w on ( w.id = t.created_by)
            left outer join web_user w2 on ( w2.id = c.claim_owner_id)
            left outer join insurer ins on (ins.id = w.insurer_id)
@@ -57,13 +57,13 @@ ELSIF org ILIKE 'CHO' THEN
     t.task_type as "Task Type",
     t.description as "Description",
     t.created_date as "Created Date",
-    case when (ins.name is null and cho.name is null) then 'System' 
-         when cho.name is null then w.first_name || ' ' || w.last_name || ' (' || ins.name || ')' 
+    case when (ins is null and cho is null) then 'System' 
+         when cho is null then w.first_name || ' ' || w.last_name || ' (' || ins.name || ')' 
          else w.first_name || ' ' || w.last_name || ' (' || cho.name || ')' end as "Created By", 
     w2.first_name || ' ' || w2.last_name as "Owner", 
     wur.description as "Role Assigned To"
   from 
-    task t left outer join claim c on (c.id = t.claim_id)
+    task t inner join claim c on (c.id = t.claim_id)
            left outer join web_user w on ( w.id = t.created_by)
            left outer join web_user w2 on ( w2.id = c.cho_claim_owner_id)
            left outer join insurer ins on (ins.id = w.insurer_id)
