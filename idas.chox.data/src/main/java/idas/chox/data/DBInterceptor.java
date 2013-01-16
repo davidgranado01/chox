@@ -333,7 +333,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
 
-                    LOG.debug("propertyNames[" + i + "]" + propertyNames[i]);
+                    LOG.debug("propertyNames[{}]={}", i, propertyNames[i]);
                     state1[i] = DateHelper.getCurrentDateTime();
 
                     LOG.debug("state1[" + i + "]" + state1[i]);
@@ -777,8 +777,9 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
                     String newStatus = state1[i] != null ? state1[i].toString() : null;
                     String oldStatus = null;
-                    if (state2[i] != null)
+                    if (state2[i] != null) {
                         oldStatus = state2[i].toString();
+                    }
                     LOG.debug("newStatus   " + newStatus);
                     LOG.debug("oldStatus   " + oldStatus);
 

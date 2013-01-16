@@ -254,7 +254,7 @@ public class NodeHelper {
 
     public static boolean isDataLengthCorrect(String dataValue, NodeRuleModel nodeRuleModel) {
         boolean returnValue = true;
-        LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
+        LOG.debug("checking value length for {} [{}>{}] ", new Object[]{nodeRuleModel.getNodeName(), dataValue.trim().length(), nodeRuleModel.getLength()});
         if (nodeRuleModel.getLength() > 0) {
             if (dataValue.trim().length() > nodeRuleModel.getLength()) {
                 returnValue = false;
