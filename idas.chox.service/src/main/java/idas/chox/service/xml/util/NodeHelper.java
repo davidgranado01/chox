@@ -25,14 +25,21 @@ import idas.chox.service.xml.validations.DataValidationParameter;
 public class NodeHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
-    private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
-    private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
-    private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
+    private static String mandatoryDataErrorMsg
+            = "No '%s' information supplied for '%s'. Please re-submit with this information.";
+    private static String INCORRECT_DATA_LENGTH_ERROR_MSG
+            = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
+    private static String IncorrectDataErrorMsg
+            = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
-    private static String IncorrectInsurerAlias = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
-    private static String IncorrectChorganisationAlias = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
-    public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
-    public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
+    private static String IncorrectInsurerAlias
+            = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
+    private static String IncorrectChorganisationAlias
+            = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
+    public static final String REG_TIMESTAMP
+            = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
+    public static final String REG_DATETIME
+            = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
     public static final String REG_BOOLEAN = "^[ynYN]";
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
@@ -41,7 +48,8 @@ public class NodeHelper {
         return TextHelper.trimWhiteSpace(sectionName.toLowerCase() + "-" + nodeName);
     }
 
-    private static NodeRuleModel getNodeRule(String sectionName, String nodeName, DataValidationParameter dataValidationParameter) {
+    private static NodeRuleModel getNodeRule(String sectionName, String nodeName,
+                                             DataValidationParameter dataValidationParameter) {
         String NodeRuleName = getNodeRuleName(sectionName, nodeName);
         return dataValidationParameter.getValidationElementByField(NodeRuleName);
     }
@@ -120,7 +128,8 @@ public class NodeHelper {
 
                 if (alias.getInsurer() != null) {
 
-                    if (!insurerChorganisationService.isMapped(alias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
+                    if (!insurerChorganisationService.isMapped(alias.getInsurer().getId(),
+                                                            claimResult.getClaim().getChorganisation().getId())) {
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
                     }
@@ -149,30 +158,42 @@ public class NodeHelper {
         if (claimResult.getClaimParseStatus() != null) {
             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM) && value.isNewClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM) && value.isNewSubscriberClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                                            && value.isNewSubscriberClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM) && value.isNewFixedFeeClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
+                                            && value.isNewFixedFeeClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM) && value.isExistingClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
+                                            && value.isExistingClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM) && value.isExistingSubscriberClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
+                                            && value.isExistingSubscriberClaimDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM) && value.isExistingFixedFeeClaimDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)
+                                            && value.isExistingFixedFeeClaimDataMandatory()) {
                 return true;
             } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
-                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)) && value.isNewInvoiceDataMandatory()) {
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE))
+                                            && value.isNewInvoiceDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_INVOICE) && value.isExistingInvoiceDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_INVOICE)
+                                            && value.isExistingInvoiceDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD) && value.isInsurerUploadDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                                            && value.isInsurerUploadDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION) && value.isTpiInterventionDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                                            && value.isTpiInterventionDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE) && value.isOffHiredDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                                            && value.isOffHiredDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING) && value.isHireMonitoringDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
+                                            && value.isHireMonitoringDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE) && value.isNewSupplementaryInvoiceMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                                            && value.isNewSupplementaryInvoiceMandatory()) {
                 return true;
             } else {
                 return false;
@@ -191,6 +212,46 @@ public class NodeHelper {
 
     }
 
+        private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value,
+                                                  String sectionName, String nodeName) throws Exception {
+        boolean isValid = true;
+        LOG.debug("coreNodevalidation: validating value='{}' with NodeRuleModel='{}' in section '{}'",
+                new Object[]{value, val, sectionName});
+
+        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
+            isValid = false;
+            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+        }
+
+        if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
+            isValid = false;
+            claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
+        }
+
+        if (!isDataLengthCorrect(value, val)) {
+            LOG.debug("Invalid length: for {} ", val.getNodeName());
+            isValid = false;
+            claimResult.getMessage().add(String.format(INCORRECT_DATA_LENGTH_ERROR_MSG, nodeName, val.getLength()));
+        }
+
+        LOG.debug("coreNodevalidation: {}", isValid);
+
+        return setStatus(claimResult, isValid);
+    }
+
+    
+    private static ClaimResult setStatus(ClaimResult claimResult, boolean isValid) {
+        if (!isValid) {
+            claimResult.setCheckDataValid(false);
+            claimResult.setDataValid(false);
+            claimResult.setValid(false);
+        }
+        return claimResult;
+    }
+
+
     public static boolean isDataLengthCorrect(String dataValue, NodeRuleModel nodeRuleModel) {
         boolean returnValue = true;
         LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
@@ -201,6 +262,7 @@ public class NodeHelper {
         }
         return returnValue;
     }
+
 
     public static ClaimResult nodeVehicleClassValidate(
             String sectionName,
@@ -218,7 +280,8 @@ public class NodeHelper {
         if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'",
+                    String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         }
 
         // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
@@ -236,8 +299,8 @@ public class NodeHelper {
         setStatus(claimResult, isValid);
 
         return claimResult;
-
     }
+
 
     public static ClaimResult nodeValidate(
             String sectionName,
@@ -252,6 +315,7 @@ public class NodeHelper {
         LOG.debug("NoduRuleModel value: {}", val.toString());
         return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
+
 
     public static boolean nodeValidateBoolean(
             String sectionName,
@@ -277,6 +341,7 @@ public class NodeHelper {
         return bFlag;
     }
 
+
     public static ClaimResult nodeContentValidate(
             String sectionName,
             String nodeName,
@@ -289,6 +354,7 @@ public class NodeHelper {
         LOG.debug("Validating content for nodeName '{}': {}", nodeName, value);
         return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
+
 
     public static ClaimResult nodeValidateDefaultDescription(
             String sectionName,
@@ -308,45 +374,8 @@ public class NodeHelper {
         return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
 
-    private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName, String nodeName) throws Exception {
-
-        boolean isValid = true;
-        LOG.debug("coreNodevalidation: validating value='{}' with NodeRuleModel={} in section " + sectionName, value, val);
-
-        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
-            isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-        }
-
-        if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
-            isValid = false;
-            claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
-        }
-
-        if (!isDataLengthCorrect(value, val)) {
-            LOG.debug("Invalid length: for {} ", val.getNodeName());
-            isValid = false;
-            claimResult.getMessage().add(String.format(INCORRECT_DATA_LENGTH_ERROR_MSG, nodeName, val.getLength()));
-        }
-
-        LOG.debug("coreNodevalidation: {}", isValid);
-
-        return setStatus(claimResult, isValid);
-    }
-
-    private static ClaimResult setStatus(ClaimResult claimResult, boolean isValid) {
-        if (!isValid) {
-            claimResult.setCheckDataValid(false);
-            claimResult.setDataValid(false);
-            claimResult.setValid(false);
-        }
-        return claimResult;
-    }
 
     public static Boolean isValidDataType(String dataValue, String dataType, String regExp) throws Exception {
-
         Boolean bFlag = true;
 
         try {
@@ -390,8 +419,8 @@ public class NodeHelper {
         return bFlag;
     }
 
+    
     public boolean isRegularExpressionCheckPass(String regExpression, String value) {
-
         boolean bFlag = false;
 
         if (!regExpression.equalsIgnoreCase("")) {
@@ -406,8 +435,7 @@ public class NodeHelper {
             }
         }
 
-
-
         return bFlag;
     }
+
 }
