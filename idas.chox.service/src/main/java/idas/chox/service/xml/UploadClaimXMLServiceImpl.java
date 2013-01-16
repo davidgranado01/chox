@@ -51,6 +51,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
 
+        
     @Override
     public String getErrorMessage() {
         return errorMessage;
@@ -176,10 +177,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
                 
             } catch (Exception ex) {
-                if (claimResult.getClaim() != null)
+                if (claimResult.getClaim() != null) {
                     LOG.error("Exception caught processing claim '{}': ", claimResult.getClaim().getChoReference(), ex);
-                else
+                }
+                else {
                     LOG.error("Exception caught processing claim (no claim in claimResult): {}", ex.getMessage());
+                }
                 if (ex.getCause() != null) {
                     LOG.error("Caused by: {}", ex.getCause().getMessage());
                 }
@@ -207,29 +210,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return true;
     }
 
-    private void checkECD(Claim claim) {
-        LOG.debug("Checking ECD is present...");
-        // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
-        // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
-        if (claim.getCustomer() != null && claim.getVehicleHire() != null && (claim.getCustomer().getInitialECD() == null && (claim.getHireMonitoringEcds() == null || claim.getHireMonitoringEcds().isEmpty()))) {
-            LOG.debug("No ECD - using hire-end");
-
-            List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
-            if (hireMonitoringEcds == null) {
-                hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
-                claim.setHireMonitoringEcds(hireMonitoringEcds);
-            }
-            HireMonitoringEcd ecd = new HireMonitoringEcd();
-            ecd.setClaim(claim);
-            ecd.setEcdDate(claim.getVehicleHire().getHireEnd());
-            ecd.setReason("First ECD");
-            ecd.setSequence(1);
-            ecd.setSupportingNote("No original ECD supplied so hire end date used as first ECD supplied.");
-            hireMonitoringEcds.add(ecd);
-        }
-        else
-            LOG.debug("No ECD added.");
-    }
 
     @Override
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
@@ -253,65 +233,47 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return claimElements;
     }
 
-    private void validate(ClaimResult claimResult, List<String> choReferences) {
-        LOG.debug("Validating CHO references are unique");
-//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)) {
-
-        if (claimResult.getClaim() != null) {
-
-            // CHECK DUPLICATE
-            if (claimResult.getClaim().getChoReference() != null && !claimResult.getClaim().getChoReference().equalsIgnoreCase("")) {
-
-                if (choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())) {
-                    LOG.info("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
-                    claimResult.setValid(false);
-                    claimResult.setDuplicateClaimInSameXmlFile(true);
-                    claimResult.getMessage().add("Duplicate Supplier Reference -  Supplier Reference already exists in bordereau");
-
-                } else {
-                    choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
-                }
-            }
-
-
-        }
-    }
 
     public void setBordereauReader(BordereauReader bordereauReader) {
         this.bordereauReader = bordereauReader;
     }
 
+
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
     }
+
 
     @Override
     public boolean validateFile(File uploadedFile) {
         return false;
     }
 
+
     @Override
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean processFile(int bordereauId, Map session) {
-        int totalRecord = 0;
-        int totalProcessed = 0;
-        Document document = null;
-        List<ClaimResult> claimResults = null;
+        int noClaims = 0;
+        int noProcessed = 0;
+        int noSuccessfullyProcessed = 0;
+        Document document;
+        List<ClaimResult> claimResults;
         List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
         List<String> choReferences = new ArrayList<String>();
 
-        LOG.debug("Processing bordereau with id={}", bordereauId);
         if (!isValidBordereauId(bordereauId)) {
             return false;
         }
+        LOG.debug("Processing bordereau with id={}", bordereauId);
 
         Bordereau bordereau = getBordereauFromId(bordereauId);
         WebUser user = bordereau.getCreatedBy();
-        Integer orgId = null;
-        if (user.isAnInsurer())
+        Integer orgId;
+        if (user.isAnInsurer()) {
             orgId = user.getInsurer().getId();
-        else
+        }
+        else {
             orgId = user.getChorganisation().getId();
+        }
 
         if (!isAutherisedUser(orgId, bordereau.getFileName())) {
             LOG.error("User (id={}) not authorised to process file.", user.getId());
@@ -324,24 +286,23 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
 
-        if (bordereau.isProcessed() || !bordereau.isValid()) {
-            if (!bordereau.isValid()) {
-                LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
-                setErrorMessage("Invalid Schema.");
-                return false;
-            }
-            LOG.error("this file have been processed already: {}", bordereau.getFileName());
+        if (!bordereau.isValid()) {
+            LOG.error("Invalid schema found in file : {} [id={}]", bordereau.getFileName(), bordereau.getId());
+            setErrorMessage("Invalid Schema.");
+            return false;
+        }
+        if (bordereau.isProcessed()) {
+            LOG.error("This file has already been processed: {} [id={}]", bordereau.getFileName(), bordereau.getId());
             setErrorMessage("This bordereau has already been processed.");
             return false;
         }
-
 
         InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer());
 
         try {
             document = DocumentHelper.getDocumentFromStream(inputStream);
         } catch (Exception ex) {
-            LOG.error("Exception thrown creating document from bordereau with id={} : {}", bordereau.getId(), ex.getMessage());
+            LOG.error("Exception thrown creating document from bordereau with id={}:\n", bordereau.getId(), ex);
             setErrorMessage("Error occured while processing Bordereau.");
             return false;
         }
@@ -350,7 +311,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             claimResults = formClaimResults(document);
-            totalRecord = claimResults.size(); // (or) bordereau.getTotalClaims();
+            noClaims = claimResults.size(); // (or) bordereau.getTotalClaims();
         } catch (Exception ex) {
             LOG.error("Error thrown while getting claims from brodereau with id={} ", bordereau.getId(), ex);
             setErrorMessage("An unexpected error occurred while processing this Bordereau.");
@@ -368,11 +329,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
 
                 if (doProcessBordereauResult(claimResult, choReferences)) {
-                    totalProcessed++;
                     xmlClaimsDetail.setValid(true);
+                    noSuccessfullyProcessed++;
                 } else {
                     xmlClaimsDetail.setValid(false);
                 }
+                noProcessed++;
                 setXmlClaimDetailsProperties(xmlClaimsDetail,bordereau,claimResult);
                 claimsDetails.add(0, xmlClaimsDetail);
                 LOG.debug("Synchronizing on session");
@@ -381,7 +343,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
                 LOG.debug("Finished synchronizing on session");
                 LOG.debug("claimDetails added to session - total size of claimDetails is: {}", claimsDetails.size());
-                LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+                LOG.debug("{} of {} claims have been processed", noProcessed, noClaims);
             }
         } catch (Exception ex) {
             LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage(), ex);
@@ -399,11 +361,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         LOG.debug("Finished processing bordereau.");
         
         try {
-            setBordereauProperties(totalProcessed, totalRecord, bordereau);
+            setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
             setSuccessMessage("The Bordereau has been processed successfully.");
             uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
             bordereauService.saveBordereau(bordereau);
-            LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
+            LOG.debug("The bordereau file '{}' has been processed successfully", bordereau.getFileName());
             return true;
         } catch (Exception ex) {
             /*
@@ -417,7 +379,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             
             getCurrentSession().clear();
             bordereau = (Bordereau) getSession().load(Bordereau.class, bordereau.getId());
-            setBordereauProperties(totalProcessed, totalRecord, bordereau);
+            setBordereauProperties(noSuccessfullyProcessed, noClaims, bordereau);
             bordereauService.saveBordereau(bordereau);
             LOG.error("Unexpected error thrown while saving Bordereau : {}", ex.getMessage(), ex);
             setErrorMessage("An unexpected error has occured - please report to CHOX support.");
@@ -425,72 +387,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
 
-    private void setBordereauProperties(int totalProcessed, int totalRecord, Bordereau bordereau) {
-        if (totalProcessed >= totalRecord) {
-            bordereau.setStatus(BordereauParseStatus.ALL_UPLOADED.getDescription());
-            bordereau.setDescription("All claims have been uploaded successfully");
-        } else if (totalProcessed < totalRecord && totalProcessed != 0) {
-            bordereau.setStatus(BordereauParseStatus.PARTIAL_UPLOAD.getDescription());
-            bordereau.setDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
-        } else if (totalProcessed == 0) {
-            bordereau.setStatus(BordereauParseStatus.ALL_REJECTED.getDescription());
-            bordereau.setDescription("All " + totalRecord + " claims have been rejected");
-        }
-        bordereau.setProcessed(true);
-        bordereau.setBeingProcessed(false);
-    }
-    
-    private void setXmlClaimDetailsProperties(UploadedXMLClaimsDetail xmlClaimsDetail, Bordereau bordereau, ClaimResult claimResult) {
-        xmlClaimsDetail.setBordereauId(bordereau.getId());
-        xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
-
-        if (!claimResult.getMessage().isEmpty()) {
-            xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
-        } else {
-            xmlClaimsDetail.setMessage("");
-        }
-
-        if (claimResult.getClaim() != null && claimResult.getClaim().getHistories() != null) {
-            LOG.debug("claim and histories is not null");
-            String historiesMessage = "";
-
-            for (History h : claimResult.getClaim().getHistories()) {
-
-                if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
-                    historiesMessage += h.getNarrative() + ".,";
-                }
-            }
-            xmlClaimsDetail.setBreFailureMessages(historiesMessage);
-        } else {
-            LOG.debug("claim and histories is null");
-            xmlClaimsDetail.setBreFailureMessages("");
-        }
-
-        xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
-        if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
-            xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-            if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
-                if (claimResult.isDuplicateClaimInSameXmlFile()) {
-                    xmlClaimsDetail.setClaimId(0);
-                    xmlClaimsDetail.setClaimStatus("N/A");
-                } else {
-                    xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
-                    xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
-                }
-                evictClaim(claimResult.getClaim());
-                LOG.debug("Claim evicted.");
-            } else {
-                xmlClaimsDetail.setClaimStatus("N/A");
-            }
-        }
-    }
 
     @Override
     public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName) {
-
-        List<ClaimResult> claimResults = null;
-        Document document = null;
-        FileInputStream streamIn = null;
+        List<ClaimResult> claimResults;
+        Document document;
+        FileInputStream streamIn;
         Bordereau bordereau = new Bordereau();
 
         try {
@@ -559,6 +461,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     }
 
+
     @Override
     public void evictClaim(Claim claim) {
         getHibernateTemplate().flush();
@@ -566,58 +469,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         LOG.debug("Claim evicted.");
     }
 
-    private void saveBordereau(Bordereau bordereau, File uploadedFile, String uploadedFileFileName, byte fileContent[]) {
-        bordereau.setFileSize((Long) uploadedFile.length());
-        bordereau.setFileName(uploadedFileFileName);
-        bordereau.setFileBuffer(fileContent);
-        bordereau.setProcessed(false);
-        bordereauService.saveBordereau(bordereau);
-    }
-
-    private Bordereau getBordereauFromId(int bordereauId) {
-        return bordereauService.getBordereauById(bordereauId);
-    }
-
-    private boolean isValidBordereauId(int bordereauId) {
-        if (bordereauId <= 0) {
-            LOG.warn("Bordereau not found: id={}", bordereauId);
-            setErrorMessage("Bordereau not found.");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isAutherisedUser(int orgId, String fileName) {
-
-        if ((getCurrentUser().isAnInsurer() && !getCurrentUser().getInsurer().getId().equals(orgId)) ||
-                (!getCurrentUser().isAnInsurer() && !getCurrentUser().getChorganisation().getId().equals(orgId))) {
-            LOG.error("Un authOrised user trying to process the file : file name :{}, user name : {}", fileName, getCurrentUser().getUserName());
-            setErrorMessage("You do not have permission to process this file. Please contact CHOX support.");
-            return false;
-        }
-        return true;
-    }
-
-    private void setBordereauProcessingStatus(Bordereau bordereau) {
-        bordereau.setStatus("Processing..");
-        bordereau.setBeingProcessed(true);
-        bordereau.setDescription("File is being processed on the server");
-        bordereauService.saveBordereau(bordereau);
-    }
-    
-    private void setBordreauProcessFilureStatus(Bordereau bordereau) {
-        bordereau.setStatus("Error");
-        bordereau.setBeingProcessed(false);
-        bordereau.setProcessed(true);
-        bordereau.setDescription("Error");
-        bordereauService.saveBordereau(bordereau);
-    }
 
     @Override
     public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
 
-        Document document = null;
-        List<ClaimResult> claimResults = null;
+        Document document;
+        List<ClaimResult> claimResults;
         List<String> choReferences = new ArrayList<String>();
         UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
 
@@ -684,6 +541,169 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlClaimsDetail.setMessage("An unexpected error has occured - please report to CHOX support.");
             return xmlClaimsDetail;
         }
-
     }
+
+
+    private void setBordereauProperties(int noSuccessfullyProcessed, int noClaims, Bordereau bordereau) {
+        if (noSuccessfullyProcessed >= noClaims) {
+            bordereau.setStatus(BordereauParseStatus.ALL_UPLOADED.getDescription());
+            bordereau.setDescription("All claims have been successfully uploaded");
+        } else if (noSuccessfullyProcessed < noClaims && noSuccessfullyProcessed != 0) {
+            bordereau.setStatus(BordereauParseStatus.PARTIAL_UPLOAD.getDescription());
+            bordereau.setDescription(noSuccessfullyProcessed + " out of " + noClaims + " claims have been uploaded");
+        } else if (noSuccessfullyProcessed == 0) {
+            bordereau.setStatus(BordereauParseStatus.ALL_REJECTED.getDescription());
+            bordereau.setDescription("All " + noClaims + " claims have been rejected");
+        }
+        bordereau.setProcessed(true);
+        bordereau.setBeingProcessed(false);
+    }
+    
+
+    private void setXmlClaimDetailsProperties(UploadedXMLClaimsDetail xmlClaimsDetail, Bordereau bordereau, ClaimResult claimResult) {
+        xmlClaimsDetail.setBordereauId(bordereau.getId());
+        xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+
+        if (!claimResult.getMessage().isEmpty()) {
+            xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
+        } else {
+            xmlClaimsDetail.setMessage("");
+        }
+
+        if (claimResult.getClaim() != null && claimResult.getClaim().getHistories() != null) {
+            LOG.debug("claim and histories is not null");
+            String historiesMessage = "";
+
+            for (History h : claimResult.getClaim().getHistories()) {
+
+                if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
+                    historiesMessage += h.getNarrative() + ".,";
+                }
+            }
+            xmlClaimsDetail.setBreFailureMessages(historiesMessage);
+        } else {
+            LOG.debug("claim and histories is null");
+            xmlClaimsDetail.setBreFailureMessages("");
+        }
+
+        xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
+        if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+            xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+            if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                    xmlClaimsDetail.setClaimId(0);
+                    xmlClaimsDetail.setClaimStatus("N/A");
+                } else {
+                    xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                    xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                }
+                evictClaim(claimResult.getClaim());
+                LOG.debug("Claim evicted.");
+            } else {
+                xmlClaimsDetail.setClaimStatus("N/A");
+            }
+        }
+    }
+
+
+    private void saveBordereau(Bordereau bordereau, File uploadedFile, String uploadedFileFileName, byte fileContent[]) {
+        bordereau.setFileSize((Long) uploadedFile.length());
+        bordereau.setFileName(uploadedFileFileName);
+        bordereau.setFileBuffer(fileContent);
+        bordereau.setProcessed(false);
+        bordereauService.saveBordereau(bordereau);
+    }
+
+
+    private Bordereau getBordereauFromId(int bordereauId) {
+        return bordereauService.getBordereauById(bordereauId);
+    }
+
+
+    private boolean isValidBordereauId(int bordereauId) {
+        if (bordereauId <= 0) {
+            LOG.warn("Bordereau not found: id={}", bordereauId);
+            setErrorMessage("Bordereau not found.");
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean isAutherisedUser(int orgId, String fileName) {
+
+        if ((getCurrentUser().isAnInsurer() && !getCurrentUser().getInsurer().getId().equals(orgId)) ||
+                (!getCurrentUser().isAnInsurer() && !getCurrentUser().getChorganisation().getId().equals(orgId))) {
+            LOG.error("Un authOrised user trying to process the file : file name :{}, user name : {}", fileName, getCurrentUser().getUserName());
+            setErrorMessage("You do not have permission to process this file. Please contact CHOX support.");
+            return false;
+        }
+        return true;
+    }
+
+
+    private void setBordereauProcessingStatus(Bordereau bordereau) {
+        bordereau.setStatus("Processing..");
+        bordereau.setBeingProcessed(true);
+        bordereau.setDescription("File is being processed on the server");
+        bordereauService.saveBordereau(bordereau);
+    }
+
+
+    private void setBordreauProcessFilureStatus(Bordereau bordereau) {
+        bordereau.setStatus("Error");
+        bordereau.setBeingProcessed(false);
+        bordereau.setProcessed(true);
+        bordereau.setDescription("Error");
+        bordereauService.saveBordereau(bordereau);
+    }
+
+
+    private void validate(ClaimResult claimResult, List<String> choReferences) {
+        LOG.debug("Validating CHO references are unique");
+
+        if (claimResult.getClaim() != null) {
+
+            // CHECK DUPLICATE
+            if (claimResult.getClaim().getChoReference() != null && !claimResult.getClaim().getChoReference().equalsIgnoreCase("")) {
+
+                if (choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())) {
+                    LOG.info("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
+                    claimResult.setValid(false);
+                    claimResult.setDuplicateClaimInSameXmlFile(true);
+                    claimResult.getMessage().add("Duplicate Supplier Reference -  Supplier Reference already exists in bordereau");
+
+                } else {
+                    choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
+                }
+            }
+        }
+    }
+
+
+    private void checkECD(Claim claim) {
+        LOG.debug("Checking ECD is present...");
+        // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
+        // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
+        if (claim.getCustomer() != null && claim.getVehicleHire() != null && (claim.getCustomer().getInitialECD() == null && (claim.getHireMonitoringEcds() == null || claim.getHireMonitoringEcds().isEmpty()))) {
+            LOG.debug("No ECD - using hire-end");
+
+            List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
+            if (hireMonitoringEcds == null) {
+                hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+                claim.setHireMonitoringEcds(hireMonitoringEcds);
+            }
+            HireMonitoringEcd ecd = new HireMonitoringEcd();
+            ecd.setClaim(claim);
+            ecd.setEcdDate(claim.getVehicleHire().getHireEnd());
+            ecd.setReason("First ECD");
+            ecd.setSequence(1);
+            ecd.setSupportingNote("No original ECD supplied so hire end date used as first ECD supplied.");
+            hireMonitoringEcds.add(ecd);
+        }
+        else {
+            LOG.debug("No ECD added.");
+        }
+    }
+
 }

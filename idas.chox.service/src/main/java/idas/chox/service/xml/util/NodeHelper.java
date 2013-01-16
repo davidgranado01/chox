@@ -201,10 +201,10 @@ public class NodeHelper {
         } else {
 
             if (value.isNewClaimDataMandatory()) {
-                LOG.debug("new claim isDataMandatory value ture ");
+                LOG.debug("New Claim isDataMandatory is true ");
                 return true;
             } else {
-                LOG.debug("Data Mandatory is false ");
+                LOG.debug("New Claim isDataMandatory is false ");
                 return false;
             }
 
