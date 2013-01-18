@@ -1,5 +1,14 @@
 package idas.chox.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.math.BigDecimal;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.BreBand;
@@ -14,13 +23,6 @@ import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.UserService;
 import idas.chox.service.ActionResponse;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
 
 public class AdminInsurerServiceTest extends BaseTest {
 
