@@ -186,7 +186,7 @@ public class AdminUserServiceTest extends BaseTest {
         List<WebUserUserRole> selectedUserRoles = adminUserService.getMappedUserRole(webUser.getId());
         List availableUserRole = adminUserService.getAvailableUserRoles(3, webUser.getId());
         Assert.assertEquals(2, selectedUserRoles.size());
-        Assert.assertEquals(1, availableUserRole.size());
+        Assert.assertEquals(2, availableUserRole.size());
 //        IdLookupItem item = (IdLookupItem) (availableUserRole.get(0));
 //        int webUserUserRoleId = item.getId();
         // ADD NEW WEB-USER-USER ROLE
@@ -208,7 +208,7 @@ public class AdminUserServiceTest extends BaseTest {
         List<WebUserUserRole> selectedUserRoles = adminUserService.getMappedUserRole(webUser.getId());
         List availableUserRole = adminUserService.getAvailableUserRoles(3, webUser.getId());
         Assert.assertEquals(2, selectedUserRoles.size());
-        Assert.assertEquals(1, availableUserRole.size());
+        Assert.assertEquals(2, availableUserRole.size());
 
         int webUserUserRoleId = selectedUserRoles.get(0).getId();
 
@@ -216,7 +216,7 @@ public class AdminUserServiceTest extends BaseTest {
         ActionResponse response1 = adminUserService.deleteWebUserRoleMapping(webUserUserRoleId);
         Assert.assertTrue(response1.getIsValid());
         Assert.assertEquals(1, (adminUserService.getMappedUserRole(webUser.getId())).size());
-        Assert.assertEquals(2, (adminUserService.getAvailableUserRoles(3, webUser.getId())).size());
+        Assert.assertEquals(3, (adminUserService.getAvailableUserRoles(3, webUser.getId())).size());
 
     }
 
