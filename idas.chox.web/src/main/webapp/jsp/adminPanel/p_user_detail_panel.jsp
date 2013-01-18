@@ -47,6 +47,7 @@
                 confirmNewPassword:{equalTo: "Your passwords do not match"}
             }
         });
+ <s:if test="isNew">
 
         if (currentUserOrganisationId==1) {
             $.validator.addMethod("comboSelection",
@@ -74,7 +75,7 @@
             }
             
         }
-
+</s:if>
         ui.ajaxForm($("form#formUpdateUserDetail"), function(responseText, statusText){
 
             var response = eval('(' + responseText.trim() + ')');
