@@ -172,7 +172,7 @@ public class ClaimRejectedReport implements Report {
             sb.append("chorganisation.id, chorganisation.name ");
             sb.append("from insurer_chorganisation insurer_chorganisation ");
             sb.append("inner join chorganisation chorganisation on chorganisation.id=insurer_chorganisation.chorganisation_id ");
-            sb.append("where insurer_chorganisation.insurer_id=:pOrgId and insurer_chorganisation.status=true ");
+            sb.append("where insurer_chorganisation.insurer_id=:pOrgId ");
             sb.append("order by chorganisation.name asc ");
         } else {
             sb.append("insurer.id, insurer.name ");
