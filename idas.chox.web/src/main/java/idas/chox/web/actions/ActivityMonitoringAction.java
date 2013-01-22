@@ -39,7 +39,8 @@ public class ActivityMonitoringAction extends BaseAction {
             try {
                 claim = claimService.getClaim(claimId);
             } catch (Exception ex) {
-                LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
+                // This happens only when a claim has been switched
+                LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
                 return SUCCESS;
            }
@@ -62,13 +63,13 @@ public class ActivityMonitoringAction extends BaseAction {
                             && getAuthenticatedUser().getInsurer().getId().intValue() != user.getInsurer().getId().intValue())
                             || (getAuthenticatedUser().isCHO() && user.isCHO()
                             && getAuthenticatedUser().getChorganisation().getId().intValue() != user.getChorganisation().getId().intValue())) {
-                        LOG.error("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim with id={}",
+                        LOG.warn("User {} ('{}') and user {} ('{}') from different org but same org type both viewing claim with id={}",
                                 new Object[]{currentUserID, getAuthenticatedUser().toString(), user.getId(), user.toString(), claimId});
                     } else if (user.isAnInsurer() && user.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
-                        LOG.error("Insurer User {} ('{}') from org '{}' viewing claim with id={} from different org '{}': please check claim has recently been switched",
+                        LOG.warn("Insurer User {} ('{}') from org '{}' viewing claim with id={} from different org '{}': please check claim has recently been switched",
                                 new Object[]{user.getId(), user.toString(), user.getInsurer().getName(), claimId, claim.getInsurer().getName()});
                     } else if (user.isCHO() && user.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
-                        LOG.error("CHO User {} ('{}') from org '{}' viewing claim with id={} from different org '{}'",
+                        LOG.warn("CHO User {} ('{}') from org '{}' viewing claim with id={} from different org '{}'",
                                 new Object[]{user.getId(), user.toString(), user.getChorganisation().getName(), claimId, claim.getChorganisation().getName()});
                     } else {
                         LOG.debug("A user is currently viewing this claim: {}", user.getFullName());

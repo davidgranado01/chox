@@ -3,13 +3,24 @@
 
 <script type="text/javascript">
         
-    var reportName = 'InsurerSetupWorkflowReport-Excel';
+    var reportName = 'ClaimStatusWorkflowReport-Excel';
 
     Ext.onReady(function(){
         
         ui.dateField('startDate',getTodayDate(),'dateFromDiv');
         ui.dateField('endDate',getTodayDate(),'dateToDiv');
-
+        
+        <s:if test="InsurerIsWorkgroupEnabled" >
+                
+            var workgroupBreakdownCheckbox = new Ext.form.Checkbox({
+                    name:'workgroupBreakdownCheckbox',
+                    id:'workgroupBreakdownCheckboxId',
+                    renderTo:'workgroupBreakdownCheckboxDiv',
+                    checked: false
+             });
+             
+        </s:if>
+            
         $("form#formReportParam").validate(
         {
             errorLabelContainer: "#formReportParamMessageBox",
@@ -66,7 +77,7 @@
             <div class="form-container">
 
                 <div class="instruction-message">
-                    This report provides an insight into the outstanding work at all the various statuses that are the responsibility of the Insurer.  The report also displays the number of processed actions during the selected period.  The dates below determine the number of actions processed during the selected period and all the outstanding action columns are based on outstanding work as at the date selected in the 'Period To' field, the 'Period From' selection does not have an influence on the outstanding action figures.
+                    This report provides an insight into the outstanding work at all the various statuses that are the responsibility of the Insurer.  The report also displays the number of processed actions during the selected period.  The dates below determine the number of actions processed during the selected period and all the outstanding action columns are based on outstanding work as at the date selected in the 'Period To' field, the 'Period From' selection does not have an influence on the outstanding action figures.  You can include Workgroups on this report by ticking 'Include Workgroup Breakdown' below. 
                 </div>
 
                 <table class="report-form">
@@ -76,6 +87,11 @@
                     <tr>
                         <td nowrap><label>Period To</label> Claim Status Workflow Report<span class="mandatory">*</span></td><td><div id="dateToDiv"/></td>
                     </tr>
+                    <s:if test="InsurerIsWorkgroupEnabled" >
+                        <tr>
+                            <td nowrap>Include Workgroup Breakdown</td><td><div id="workgroupBreakdownCheckboxDiv"/></td>
+                        </tr>
+                    </s:if>
                 </table>
 
                 <div class="chox-report-button">

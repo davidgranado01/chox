@@ -1,5 +1,14 @@
 package idas.chox.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.math.BigDecimal;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.BreBand;
@@ -14,13 +23,6 @@ import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.UserService;
 import idas.chox.service.ActionResponse;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
 
 public class AdminInsurerServiceTest extends BaseTest {
 
@@ -628,7 +630,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         for (InsurerChorganisation insCho : insSelChorganisations) {
             ActionResponse response = adminInsurerService.removeInsurerChorganisation(insCho.getId());
             Assert.assertTrue(response.getIsValid());
-            validateError("", response, "Not allowed to delete Thic Credit Hire From This insuere. Please remove the Bre Band assigned to this Credit Hire First");
+            validateError("", response, "Not allowed to delete this Credit Hire Org from this Insurer. Please remove the Bre Band assigned to this Credit Hire Organisation first.");
         }
 
         List<InsurerChorganisation> insSelChorganisationsAfter = adminInsurerService.getInsurerChorganisations(insurer.getId());

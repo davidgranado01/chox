@@ -100,6 +100,7 @@ public class ApplicationAccessibility {
     public static final String MENU_ADMIN = "Admin";
     public static final String MENU_INBOX = "Inbox";
     public static final String MENU_SEARCH = "Search";
+    public static final String MENU_UPLOAD = "Upload";
     // ***************************************
     // REPORT
     // ***************************************
@@ -118,7 +119,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
     public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
-    public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
+    public static final String REPORT_INSURER_WORKFLOW_REPORT = "ClaimStatusWorkflowReport";
     public static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
     public static final String REPORT_HANDLER_PERFORMANCE_REPORT = "HandlerPerformanceReport";
     public static final String REPORT_HANDLER_ACTIONS_REPORT = "IncomingHandlerActionsReport";

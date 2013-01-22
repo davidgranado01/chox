@@ -826,7 +826,7 @@
             <result name="HandlerPerformanceReport-Excel">/jsp/reportPanel/p_handler_performance_report_param_panel.jsp</result>
             <result name="TeamWorkflowReport-Excel">/jsp/reportPanel/p_team_workflow_report_param_panel.jsp</result>
             <result name="TeamPerformanceReport-Excel">/jsp/reportPanel/p_team_performance_report_param_panel.jsp</result>
-            <result name="InsurerSetupWorkflowReport-Excel">/jsp/reportPanel/p_insurer_setup_workflow_report_param_panel.jsp</result>
+            <result name="ClaimStatusWorkflowReport-Excel">/jsp/reportPanel/p_insurer_setup_workflow_report_param_panel.jsp</result>
             <result name="BreInvoiceApprovalDisputeReport-Excel">/jsp/reportPanel/p_bre_invoice_approval_dispute_report_panel.jsp</result>
             <result name="InvoiceStatusReport-Excel">/jsp/reportPanel/p_invoice_status_report_panel.jsp</result>
             <result name="TeamSiteBreInvoiceReport-Excel">/jsp/reportPanel/p_team_site_bre_report_panel.jsp</result>

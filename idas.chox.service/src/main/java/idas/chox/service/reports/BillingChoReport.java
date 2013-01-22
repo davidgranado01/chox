@@ -51,7 +51,7 @@ public class BillingChoReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         try {
             final String billingId = ((String[]) externalParameter.get("billingId"))[0];
@@ -61,7 +61,11 @@ public class BillingChoReport implements Report {
             LOG.debug("Data Start: {}", bc.getDateFrom());
             LOG.debug("Data End: {}", bc.getDateTo());
             
-            if(bc.getDateTo() != null && bc.getDateFrom() != null && bc.getDateTo().before(bc.getDateFrom())){
+            if(bc.getDateTo() == null || bc.getDateFrom() == null){
+                throw new Exception("Start and End dates must not be empty.");
+            }
+
+            if(bc.getDateTo().before(bc.getDateFrom())){
                 throw new Exception("End date (" + bc.getDateTo().toString() + ") is before start date (" + bc.getDateFrom().toString() +  ") ");
             }
 
@@ -126,6 +130,7 @@ public class BillingChoReport implements Report {
         
         } catch (Exception ex) {
             LOG.error("Exception thrown getting report parameters: {}", ex.getMessage(), ex);
+            throw ex;
         } 
         
         return reportParameters;
@@ -137,7 +142,7 @@ public class BillingChoReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

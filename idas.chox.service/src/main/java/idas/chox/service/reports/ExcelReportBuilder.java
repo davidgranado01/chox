@@ -19,7 +19,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     private static final String reportTemplatePath = "/reports/";
 
     @Override
-    public ByteArrayOutputStream buildReport(Report report) {
+    public ByteArrayOutputStream buildReport(Report report) throws Exception {
         LOG.info("Building report '{}'", report.getReportCode());
 //        if (!report.canAcess()) {
 //            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());
@@ -73,8 +73,9 @@ public class ExcelReportBuilder implements ReportBuilder {
             InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
-            if (columnsToHide != null)
+            if (columnsToHide != null) {
                 transformer.setColumnsToHide(columnsToHide);
+            }
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             
             if (addLogo) {

@@ -44,7 +44,7 @@ public class OwnerPerformanceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap reportParameters = new HashMap();
         try {
             boolean isWorkgroupEnabled = true;
@@ -86,7 +86,11 @@ public class OwnerPerformanceReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
 
-            if(endDate != null && startDate != null && endDate.before(startDate)){
+            if (endDate == null || startDate == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (endDate.before(startDate)) {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
@@ -301,7 +305,7 @@ public class OwnerPerformanceReport implements Report {
             reportParameters.put("performanceLineItems", performanceReportObjects);
         } catch (Exception ex) {
             LOG.error("Error thrown generating owner-performance report: {}", ex.getMessage());
-//            ex.printStackTrace();
+            throw ex;
         }
 
         return reportParameters;
@@ -322,7 +326,7 @@ public class OwnerPerformanceReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

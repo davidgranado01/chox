@@ -1,0 +1,424 @@
+-------------------------------------------------------------------------------------
+-- 7.2.2 Set 'Total To Pay' To Zero 'ClaimClosed' or 'InvoiceRejectionAccepted'    --
+-------------------------------------------------------------------------------------
+
+ALTER TABLE audit_trail ADD COLUMN previous_total_to_pay NUMERIC(10,2) DEFAULT 0.00;
+
+
+UPDATE 
+     audit_trail
+SET 
+     previous_total_to_pay = i.total_to_pay
+FROM 
+     claim c INNER JOIN invoice i ON i.id = c.invoice_id
+WHERE
+     audit_trail.claim_id = c.id
+     AND audit_trail.new_status = c.status
+     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.id > audit_trail.id AND a1.reverted = false AND a1.new_status = c.status)
+     AND audit_trail.reverted = false
+     AND c.status IN ('ClaimClosed','InvoiceRejectionAccepted')
+     AND i.total_to_pay > 0;
+
+
+
+UPDATE 
+     invoice
+SET 
+     total_to_pay = 0.00
+FROM 
+     claim c
+WHERE 
+     c.invoice_id = invoice.id
+     AND c.status IN('ClaimClosed','InvoiceRejectionAccepted')
+     AND invoice.total_to_pay > 0;
+
+----------------------
+--  END OF 7.2.2    --
+----------------------
+
+------------------------------------------
+-- 7.2.3 User Manager Role For CHOs     --
+------------------------------------------
+
+insert into web_user_role(version, name, description, type_id, is_workgroup_related, is_ownership_related,
+                          created_by, created_date, last_modified_by, last_modified_date)
+select 0, 'ROLE_CHO_USER', 'User Manager', 3, false, false, 999, now(), 999, now();
+
+update accessibility_item set role='ROLE_CHO_USER'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'menu.Admin'
+  and accessibility_item.role = 'ROLE_CHO_MNG';
+
+
+update accessibility_item set role='ROLE_CHO_USER'
+from accessibility
+where accessibility_item.accessibility_id = accessibility.id
+  and accessibility.name = 'admin.UserManagement'
+  and accessibility_item.role = 'ROLE_CHO_MNG';
+  
+
+
+delete from 
+      accessibility_item 
+where 
+      role = 'ROLE_CHO' 
+      and accessibility_id in (select id from accessibility where name = 'menu.Inbox');
+
+delete from 
+      accessibility_item 
+where 
+      role = 'ROLE_CHO' 
+      and accessibility_id in (select id from accessibility where name = 'menu.Search');
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MI', 1, id from accessibility where name='menu.Search';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MI', 1, id from accessibility where name='menu.Inbox';
+
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'menu.Upload', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='menu.Upload';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_UPLOAD', 1, id from accessibility where name='menu.Upload';
+
+
+----------------------
+--  End of 7.2.3    --
+----------------------
+
+-------------------------------------------------------------------------------------
+-- BUG#2371 - Production - 'Claim Status Workflow Report' status count is wrong.   --
+-------------------------------------------------------------------------------------
+
+update accessibility set name = 'report.ClaimStatusWorkflowReport' where name = 'report.InsurerSetupWorkflowReport';
+
+-----------------------
+--  END OF BUG#2371  --
+-----------------------
+
+--------------------------------------------------------------------------------------------------------------------
+-- BUG#2238 - Production - Should not be possible to move a claim to 'ClaimClosed' from another 'closed' state   --
+--------------------------------------------------------------------------------------------------------------------
+
+ UPDATE 
+     claim 
+ SET 
+     status = a2.new_status,
+     previous_status = a2.original_status,
+     status_modified_date = a2.created_date
+ FROM 
+     audit_trail a INNER JOIN audit_trail a2 ON a2.claim_id = a.claim_id
+ WHERE 
+     a.claim_id = claim.id
+     AND a.new_status = claim.status
+     AND a.new_status = 'ClaimClosed' 
+     AND a.original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted')
+     AND a.reverted = FALSE
+     AND a2.reverted = FALSE
+     AND a2.new_status = a.original_status
+     AND a2.created_date <= a.created_date
+     AND a2.id < a.id;
+
+
+ UPDATE 
+     audit_trail 
+ SET
+     reverted = true,
+     last_modified_date = now(),
+     last_modified_by = 999
+ WHERE
+     new_status = 'ClaimClosed' 
+     AND original_status IN ('ClaimRejectionAccepted','InvoiceRejectionAccepted')
+     AND reverted = false;
+
+ 
+ DELETE FROM accessibility_item WHERE accessibility_id IN(SELECT id FROM accessibility WHERE name='button.CloseClaim.ClaimRejectionAccepted');
+ DELETE FROM accessibility_item WHERE accessibility_id IN(SELECT id FROM accessibility WHERE name='button.CloseClaim.InvoiceRejectionAccepted');
+
+ DELETE FROM accessibility WHERE name = 'button.CloseClaim.ClaimRejectionAccepted';
+ DELETE FROM accessibility WHERE name = 'button.CloseClaim.InvoiceRejectionAccepted';
+
+----------------------
+--  END OF BUG#2238  --
+----------------------
+
+-----------------------------------------------------
+-- BUG#2218 - Production - Audit Trail clean-up   --
+-----------------------------------------------------
+
+CREATE OR REPLACE FUNCTION alterAuditTrail()
+  RETURNS boolean AS
+$BODY$
+DECLARE
+
+auditRecord RECORD;
+ 
+BEGIN
+
+FOR auditRecord IN 
+
+select 
+    c.cho_reference as cho_reference, a.id as delete_audit, a1.id as update_audit
+from 
+     audit_trail a, audit_trail a1,  audit_trail a2, claim c
+where
+     a.claim_id = c.id
+     and a1.claim_id = c.id
+     and a2.claim_id = c.id
+     and a.created_date > a1.created_date
+     and a1.created_date > a2.created_date
+     and a.reverted = false
+     and a1.reverted = false
+     and a2.reverted = false
+     and a1.new_status = 'ClaimClosed'
+     and a1.original_status = a.new_status
+     and a1.original_status = a2.new_status
+     and a1.new_status = a.original_status
+     and not exists (select * from audit_trail a4 where a4.claim_id = c.id and a4.reverted = false and a4.created_date < a.created_date and a4.created_date > a1.created_date)
+     and not exists (select * from audit_trail a4 where a4.claim_id = c.id and a4.reverted = false and a4.created_date < a.created_date and a4.created_date < a1.created_date and a4.created_date > a2.created_date)
+     order by c.cho_reference
+
+LOOP
+
+RAISE NOTICE 'choref = %  delete_audit_id= % updated_audit_id=  %', auditRecord.cho_reference, auditRecord.delete_audit, auditRecord.update_audit;
+
+UPDATE 
+       audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.update_audit;
+
+
+DELETE FROM
+    audit_trail
+WHERE
+    id = auditRecord.delete_audit;
+  
+END LOOP;
+
+
+RAISE NOTICE 'Updating ClaimClosed to AwaitingInvoicePayment audit_trail entries';
+
+FOR auditRecord IN 
+
+select 
+     c.cho_reference as cho_reference, a.id as revert_audit, a.original_status as revert_original_status, a1.id as update_audit
+from 
+     audit_trail a, audit_trail a1, claim c
+where
+     a.claim_id = c.id
+     and a1.claim_id = c.id
+     and a.created_date < a1.created_date
+     and a.reverted = false
+     and a1.reverted = false
+     and a.new_status = 'ClaimClosed'
+     and a1.new_status = 'AwaitingInvoicePayment'
+     and a1.original_status = a.new_status
+     and not exists (select * from audit_trail a2 where a2.claim_id = c.id and a2.reverted = false and a2.created_date < a1.created_date and a2.created_date > a.created_date)
+
+LOOP
+
+ RAISE NOTICE 'choref = %  revert_audit_id= % updated_audit_id=  %', auditRecord.cho_reference, auditRecord.revert_audit, auditRecord.update_audit;
+
+UPDATE 
+    audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.revert_audit;
+
+
+UPDATE 
+    audit_trail 
+SET
+    original_status = auditRecord.revert_original_status,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.update_audit;
+
+
+END LOOP;
+
+
+RAISE NOTICE 'Updating InvoiceRejectionAccepted to AwaitingInvoicePayment audit_trail entries';
+
+FOR auditRecord IN 
+
+select 
+     c.cho_reference as cho_reference, a.id as revert_audit, a.original_status as revert_original_status, a1.id as update_audit
+from 
+     audit_trail a, audit_trail a1, claim c
+where
+     a.claim_id = c.id
+     and a1.claim_id = c.id
+     and a.id < a1.id
+     and a.reverted = false
+     and a1.reverted = false
+     and a.new_status = 'InvoiceRejectionAccepted'
+     and a1.original_status = a.new_status
+     and not exists (select * from audit_trail a2 where a2.claim_id = c.id and a2.reverted = false and a2.id < a1.id and a2.id > a.id)
+
+LOOP
+
+ RAISE NOTICE 'choref = %  revert_audit_id= % updated_audit_id=  %', auditRecord.cho_reference, auditRecord.revert_audit, auditRecord.update_audit;
+
+UPDATE 
+    audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.revert_audit;
+
+
+UPDATE 
+    audit_trail 
+SET
+    original_status = auditRecord.revert_original_status,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.update_audit;
+
+
+END LOOP;
+
+
+RAISE NOTICE 'Updating switch claim to related insurer audit_trail entries';
+
+FOR auditRecord IN 
+
+select 
+       c.cho_reference, c.id as claim_id, a.id as first_audit_id_after_switch
+from
+       claim c, comment cm, audit_trail a
+where
+       cm.claim_id = c.id
+       and cm.reverted = false
+       and a.claim_id = c.id
+       and a.created_date <= cm.created_date
+       and a.reverted = false
+       and a.new_status in ('ClaimUnacknowledgedUnrouted','ClaimUnacknowledgedUnassigned','ClaimUnacknowledgedRouted')
+       and (cm.comment ilike 'Claim switched from%' or cm.comment ilike 'Claim has been switched from%')
+       and not exists (select * from comment cm1 where cm1.claim_id = c.id and (cm1.comment ilike 'Claim switched from%' or cm1.comment ilike 'Claim has been switched from%') and cm1.created_date > cm.created_date and cm1.reverted = false)
+       and not exists (select * from audit_trail a1 where a1.claim_id = c.id and a1.created_date <= cm.created_date and a1.id > a.id and a1.reverted = false)
+LOOP
+
+ RAISE NOTICE 'choref = %  first audit entry id after switch = % ', auditRecord.cho_reference, auditRecord.first_audit_id_after_switch;
+
+UPDATE 
+    audit_trail 
+SET
+    original_status = '',
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = auditRecord.first_audit_id_after_switch;
+
+
+UPDATE 
+    audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    claim_id = auditRecord.claim_id
+    and reverted = false
+    and id < auditRecord.first_audit_id_after_switch;
+
+
+END LOOP;
+
+RAISE NOTICE 'Manual update where no entries present in the comment table about switching claims';
+
+UPDATE 
+    audit_trail 
+SET
+    original_status = '',
+    last_modified_date = now(),
+    last_modified_by = 999
+WHERE
+    id = 87904;
+
+
+UPDATE 
+    audit_trail 
+SET
+    reverted = true,
+    last_modified_date = now(),
+    last_modified_by = 999
+FROM audit_trail a
+WHERE
+    a.id = 87904
+    and audit_trail.claim_id = a.claim_id
+    and audit_trail.reverted = false
+    and audit_trail.id < a.id;
+
+RETURN TRUE;
+
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+select alterAuditTrail(); 
+
+DROP FUNCTION alterAuditTrail();
+
+----------------------
+--  END OF BUG#2218  --
+----------------------
+
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2397 - Production - Production - Remove 'Close Claim' button from claims in status                             --
+--            'ClaimRejected' and 'ContestedInvoiceReferredToCHO'                                                     --
+------------------------------------------------------------------------------------------------------------------------
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ClaimRejected');
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO');
+DELETE FROM accessibility_item WHERE access_right!= 0 AND accessibility_id in (select id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted');
+----------------------
+--  End of BUG#2397 --
+----------------------
+
+------------------------------------------------------------------------------------------------------------------------
+-- BUG#2399 - Production - Multiple mapping entries in insurer_chorganisation table                                   --
+------------------------------------------------------------------------------------------------------------------------
+DELETE FROM insurer_chorganisation WHERE status=false;
+ALTER TABLE insurer_chorganisation DROP COLUMN status;
+----------------------
+--  End of BUG#2399 --
+----------------------

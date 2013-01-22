@@ -7,7 +7,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import idas.chox.core.workflow.*;
 
-public class ActivityFactory implements BeanFactoryAware{
+public class ActivityFactory implements BeanFactoryAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivityFactory.class);
 

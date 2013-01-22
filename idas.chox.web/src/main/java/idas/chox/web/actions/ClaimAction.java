@@ -364,7 +364,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = true;
         }
    
-        LOG.info("isSubscriber-FullLiability={}", result);
         return result;
     }
 
@@ -378,7 +377,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = true;
         }
    
-        LOG.info("isFixedFee - FullLiability or split={}", result);
         return result;
     }
 
@@ -2187,7 +2185,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyPercentageJsonString() {
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         List<PenaltyCharge> repairPenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.REPAIR);
         List<LookupItem> luItems = new ArrayList<LookupItem>(repairPenaltyCharges.size());
         for (PenaltyCharge repairPenaltyPercentageEnum : repairPenaltyCharges) {
@@ -2203,7 +2202,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getHirePenaltyPercentageJsonString() {
-        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
+                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         List<PenaltyCharge> hirePenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.HIRE);
         List<LookupItem> luItems = new ArrayList<LookupItem>(hirePenaltyCharges.size());
         for (PenaltyCharge hirePenaltyPercentageEnum : hirePenaltyCharges) {
@@ -2257,7 +2257,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getHirePenaltyAmount() {
-//        Date hireStart = claim.getVehicleHire() != null ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", Boolean.TRUE);
         jsonObject.put("hirePenaltyAmount", penaltyChargeService.calculatePenaltyChargeVal(claim, hirePenaltyPercentage, PenaltyName.HIRE));
@@ -2424,21 +2423,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (role.getName().contains(WebUserRole.ROLE_INS_MNG)
                     || role.getName().contains(WebUserRole.ROLE_INS_SUP)
                     || role.getName().contains(WebUserRole.ROLE_INS_MI)) {
-                LOG.info("User role allows for supervisor");
+                LOG.debug("User role allows for supervisor");
                 return true;
             }
         }
-        LOG.info("User role does not allow for supervisor");
+        LOG.debug("User role does not allow for supervisor");
         return false;
     }
 
     private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction) {
         if (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
                 || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction) {
-            LOG.info("Claim is escalated to supervisor");
+            LOG.debug("Claim has been escalated to supervisor");
             return true;
         }
-        LOG.info("Claim has not been escalated to supervisor");
+        LOG.debug("Claim has not been escalated to supervisor");
         return false;
     }
     

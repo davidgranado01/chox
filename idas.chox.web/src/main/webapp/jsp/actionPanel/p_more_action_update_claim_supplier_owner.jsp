@@ -2,8 +2,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-var testCombo;
-var testStore;
     function overideCombo() {
         // The 'setValue' function on the combo box doesn't work
         // as, fue to the asynchronous nature of the widget, the store may
@@ -57,8 +55,6 @@ var testStore;
                             ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId":supplierId}}),
                             reader : supplierClaimOwnerReader
         });
-        
-//         supplierClaimOwnerStore.load({ params : {"supplierId":supplierId}});
 
         var supplierClaimOwnerCombo = new Ext.form.ComboBox({
                             store : supplierClaimOwnerStore,

@@ -153,8 +153,8 @@ INSERT INTO automatic_routing (id,insurer_id,workgroup_id,expression,created_by,
 
 
 -- insurer_chorganisation
-INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,status,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1006,true,1001,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
-INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,status,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1007,true,1002,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
+INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1006,1001,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
+INSERT INTO insurer_chorganisation (insurer_id,chorganisation_id,id,created_by,last_modified_by,created_date,last_modified_date,version) VALUES (3,1007,1002,999,999,{ts '2009-07-08 15:40:30'},{ts '2009-07-08 15:40:30'},1);
 
 
 -- bre_band
@@ -193,6 +193,7 @@ INSERT INTO web_user_role (id,name,created_by,created_date,last_modified_by,last
 INSERT INTO web_user_role (id,name,created_by,created_date,last_modified_by,last_modified_date,description,type_id,is_workgroup_related,is_ownership_related,version,is_fnol_related,is_engineer_related,show_workgroup_disabled,show_ownership_disabled,show_insurer_upload_disabled,show_admin_only,can_be_assigned_tasks) VALUES (13,'ROLE_COM',999,{ts '2009-07-08 15:40:30'},999,{ts '2009-07-08 15:40:30'},'COM',2,true,false,1,false,false,true,true,true,false,true);
 INSERT INTO web_user_role (id,name,created_by,created_date,last_modified_by,last_modified_date,description,type_id,is_workgroup_related,is_ownership_related,version,is_fnol_related,is_engineer_related,show_workgroup_disabled,show_ownership_disabled,show_insurer_upload_disabled,show_admin_only,can_be_assigned_tasks) VALUES (14,'ROLE_INS_UPLOAD',999,{ts '2008-11-18 12:48:50'},999,{ts '2008-11-18 12:48:50'},'Insurer Upload',2,false,false,1,false,false,true,true,true,false,true);
 INSERT INTO web_user_role (id,name,created_by,created_date,last_modified_by,last_modified_date,description,type_id,is_workgroup_related,is_ownership_related,version,is_fnol_related,is_engineer_related,show_workgroup_disabled,show_ownership_disabled,show_insurer_upload_disabled,show_admin_only,can_be_assigned_tasks) VALUES (15,'ROLE_INS_ADMIN',999,{ts '2008-11-18 12:48:50'},999,{ts '2008-11-18 12:48:50'},'Insurer Upload',2,false,false,1,false,false,true,true,true, true,true);
+INSERT INTO web_user_role (id,name,created_by,created_date,last_modified_by,last_modified_date,description,type_id,is_workgroup_related,is_ownership_related,version,is_fnol_related,is_engineer_related,show_workgroup_disabled,show_ownership_disabled,show_insurer_upload_disabled,show_admin_only,can_be_assigned_tasks) VALUES (16,'ROLE_CHO_USER',999,{ts '2008-11-18 12:49:07'},999,{ts '2008-11-18 12:49:07'},'User Manager',3,false,false,1,false,false,true,true,true,false,true);
 
 
 -- web_user_user_role

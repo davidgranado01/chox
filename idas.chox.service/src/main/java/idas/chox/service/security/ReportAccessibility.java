@@ -26,7 +26,7 @@ public class ReportAccessibility {
     private short ownerPerformanceReportAccessibility;
     private short teamWorkflowReportAccessibility;
     private short teamPerformanceReportAccessibility;
-    private short insurerSetupWorkflowReportAccessibility;
+    private short claimStatusWorkflowReportAccessibility;
     private short invoiceStatusReportAccessibility;
     private short handlerPerformanceReportAccessibility;
     private short newIncomingHandlerActionsAccessibility;
@@ -54,7 +54,7 @@ public class ReportAccessibility {
         ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
         teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
-        insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
+        claimStatusWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
         breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
         invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
         handlerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_PERFORMANCE_REPORT, user);
@@ -103,7 +103,7 @@ public class ReportAccessibility {
         else if (reportCode.equals("RPT055"))
             accessibility = getTeamPerformanceReportAccessibility();
         else if (reportCode.equals("RPT023"))
-            accessibility = getInsurerSetupWorkflowReportAccessibility();
+            accessibility = getClaimStatusWorkflowReportAccessibility();
         else if (reportCode.equals("RPT030"))
             accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
         else if (reportCode.equals("RPT025"))
@@ -191,8 +191,8 @@ public class ReportAccessibility {
     }
 
    
-    public short getInsurerSetupWorkflowReportAccessibility() {
-        return insurerSetupWorkflowReportAccessibility;
+    public short getClaimStatusWorkflowReportAccessibility() {
+        return claimStatusWorkflowReportAccessibility;
     }
 
     public short getBreInvoiceApprovalDisputeReportAccessibility() {

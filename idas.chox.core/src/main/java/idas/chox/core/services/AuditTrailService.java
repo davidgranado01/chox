@@ -51,5 +51,7 @@ public interface AuditTrailService {
     public boolean isSubscriberClaimRejectedAndAgreed(int claimId);
         
     public void deleteAllAuditEntriesByClaimId(int claimId);
+    
+    public void revertAllAuditEntriesByClaimId(int claimId);
 
 }

@@ -39,7 +39,7 @@ public class AdminAction extends BaseAction {
     }
 
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_MNG", "ROLE_INS_ADMIN"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER", "ROLE_INS_ADMIN"})
     public String loadAdminPanel() {
         // Check User has access to Admin Panel name requested
         if (("ChoxInsurerMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsInsurerCompaniesAdminAccessibility())

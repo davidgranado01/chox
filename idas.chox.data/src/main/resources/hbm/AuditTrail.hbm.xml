@@ -15,6 +15,7 @@
         <property column="new_status" name="newStatus"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
+        <property column="previous_total_to_pay" name="previousTotalToPay"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="user_id" name="user" not-null="true"/>

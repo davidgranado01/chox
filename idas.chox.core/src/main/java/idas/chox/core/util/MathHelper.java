@@ -49,7 +49,7 @@ public class MathHelper {
         }
     }  
    
-    public static BigDecimal Round(BigDecimal iValue, int decimalPlace){
+    public static BigDecimal round(BigDecimal iValue, int decimalPlace){
         iValue.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return iValue;
     }

@@ -17,7 +17,7 @@ public class ReportFactory {
     public static final String OWNER_PERFORMANCE_RPT = "OwnerPerformanceReport-Excel";
     public static final String TEAM_WORKFLOW_RPT = "TeamWorkflowReport-Excel";
     public static final String TEAM_PERFORMANCE_RPT = "TeamPerformanceReport-Excel";
-    public static final String INSURER_WORKFLOW_RPT = "InsurerSetupWorkflowReport-Excel";
+    public static final String INSURER_WORKFLOW_RPT = "ClaimStatusWorkflowReport-Excel";
     public static final String BRE_INVOICE_APPROVAL_DISPUTE_RPT = "BreInvoiceApprovalDisputeReport-Excel";
     public static final String INVOICE_STATUS_RPT = "InvoiceStatusReport-Excel";
     public static final String WORKGROUP_OWNER_BRE_RPT = "WorkgroupOwnerBreInvoiceReport-Excel";
@@ -60,7 +60,7 @@ public class ReportFactory {
         } else if (name.equalsIgnoreCase(TEAM_PERFORMANCE_RPT)) {
             report = new TeamPerformanceReport();
         } else if (name.equalsIgnoreCase(INSURER_WORKFLOW_RPT)){
-            report = new InsurerSetupWorkflowReport();
+            report = new ClaimStatusWorkflowReport();
         } else if (name.equalsIgnoreCase(BRE_INVOICE_APPROVAL_DISPUTE_RPT)){
             report = new BreInvoiceApprovalDisputeReport();
         } else if (name.equalsIgnoreCase(INVOICE_STATUS_RPT)){

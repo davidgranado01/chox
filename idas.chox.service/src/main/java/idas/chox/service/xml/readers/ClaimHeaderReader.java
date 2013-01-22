@@ -316,7 +316,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setManagingRepair(managingRepair);
             }
             claim.setPolicyHolderContactDate(firstContactDate);
-            // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
@@ -414,12 +413,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setManagingRepair(managingRepair);
             }
             claim.setPolicyHolderContactDate(firstContactDate);
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
@@ -478,12 +476,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
             claim.setClaimType(ClaimType.SUBSCRIBER);
             claim.setPolicyHolderContactDate(firstContactDate);
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
@@ -542,12 +539,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
             claim.setClaimType(ClaimType.FIXED_FEE);
             claim.setPolicyHolderContactDate(firstContactDate);
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(BigDecimal.ZERO.setScale(2));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(BigDecimal.ZERO.setScale(2));
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
@@ -592,7 +588,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
 
             claim.setPolicyHolderContactDate(firstContactDate);
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);

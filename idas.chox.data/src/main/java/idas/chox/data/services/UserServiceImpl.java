@@ -184,7 +184,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     if (userRoleId > 0) {
                         criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
                         criteria.add(Restrictions.eq("role.id", userRoleId));
-//                    total = (BigInteger) getSession().createSQLQuery("select count(*) from web_user, web_user_user_role, web_user_role where web_user.id = web_user_user_role.web_user_id and web_user.insurer_id=" + organisationId + " and web_user_role.id = web_user_user_role.web_user_role_id and web_user_role.id =" + userRoleId).uniqueResult();
                     }
                 } else {
 
@@ -197,7 +196,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     if (userRoleId > 0) {
                         criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
                         criteria.add(Restrictions.eq("role.id", userRoleId));
-//                    total = (BigInteger) getSession().createSQLQuery("select count(*) from web_user, web_user_user_role, web_user_role where web_user.id = web_user_user_role.web_user_id and web_user.chorganisation_id=" + organisationId + " and web_user_role.id = web_user_user_role.web_user_role_id and web_user_role.id =" + userRoleId).uniqueResult();
                     }
                 } else {
                     criteria.add(Restrictions.isNotNull("chorganisation.id"));
@@ -235,11 +233,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                 }
             } else if (sort.equalsIgnoreCase("statusDesc")) {
                 addSort(criteria, "status", dir);
-//            } else if (sort.equalsIgnoreCase("role")) {
-//                if (userRoleId <= 0) {
-//                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-//                }
-//                addSort(criteria, "role.id", dir);
             } else if (sort.equalsIgnoreCase("isExpired")) {
                 addSort(criteria, "isExpired", dir);
             } else if (sort.equalsIgnoreCase("lastLoginDate")) {
@@ -271,32 +264,24 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         }
 
-
-
-//        
-//        for (WebUser h : userData) {
-//            if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {
-//                if (!h.getUserName().equals("system")) {
-//                    users.add(h);
-//                }
-//            }
-//        }
         return new SearchResult(users, totalCount);
-
     }
 
+    
     @Override
     public List<WebUser> getUsers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
         return findByCriteria(criteria);
     }
 
+    
     @Override
     public WebUser getWebUser(int id) {
         WebUser user = (WebUser) get(WebUser.class, id);
         return user;
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void saveUser(WebUser user) {
@@ -307,6 +292,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         LOG.debug("User '{}' saved (password='{}')", user.getFullName(), user.getPassword());
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void persist(WebUser user) {
@@ -315,6 +301,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void updateLastLogin(int userId) {
@@ -326,6 +313,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void block(int userId) {
@@ -335,6 +323,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         save(user);        
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void unblock(int userId) {
@@ -364,6 +353,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return user.isBlocked();
     }
 
+
     @Override
     public List<PasswordHistory> getPasswordHistory(int userId, int count) {
         List<PasswordHistory> passwordHistory = new ArrayList<PasswordHistory>(count);
@@ -376,13 +366,16 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
             List<PasswordHistory> results = findByCriteria(criteria);
         
-            if (results != null && !results.isEmpty())
-                for (int i=0; i<count && i<results.size(); i++)
+            if (results != null && !results.isEmpty()) {
+                for (int i=0; i<count && i<results.size(); i++) {
                     passwordHistory.add(results.get(i));
+                }
+            }
         }
 
         return passwordHistory;
     }
+
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

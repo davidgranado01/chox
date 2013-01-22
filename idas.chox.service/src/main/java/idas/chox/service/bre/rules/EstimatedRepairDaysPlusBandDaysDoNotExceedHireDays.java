@@ -2,6 +2,7 @@ package idas.chox.service.bre.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -75,7 +76,6 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 } else {
                     LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
-//                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
                     narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's estimated days under repair.";
                     res.setResult(RuleEvaluationResult.RULE_FAILED);
 
@@ -107,8 +107,9 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        if (isTpiClaim)
+        if (isTpiClaim) {
             return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        }
         
         return ClaimStatus.INVOICE_ESCALATED;
     }

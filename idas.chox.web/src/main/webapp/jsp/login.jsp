@@ -70,6 +70,9 @@
         <div style="text-align:center; padding-top:10px;">
             <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>
-        <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
+        <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/>
+Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and<br/>
+prosecution under pertinent legislation will apply. This system uses cookies, signing into this system will<br/>
+be taken as consent to use cookies, for details on how cookies are used see ‘Terms of Service’ above.</div>
    </body>
 </html>

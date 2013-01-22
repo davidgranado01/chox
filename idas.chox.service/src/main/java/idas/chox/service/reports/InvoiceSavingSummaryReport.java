@@ -48,7 +48,7 @@ public class InvoiceSavingSummaryReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         HashMap reportParameters = new HashMap();
 
@@ -62,17 +62,22 @@ public class InvoiceSavingSummaryReport implements Report {
             Date dataEnd = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             
-            if(dataEnd != null && dataStart != null && dataEnd.before(dataStart)){
+            if (dataEnd == null || dataStart == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (dataEnd.before(dataStart)) {
                 throw new Exception("End date (" + dataEnd.toString() + ") is before start date (" + dataStart.toString() +  ") ");
             }
+
 
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
             final String chOrganisationId = ((String[]) externalParameter.get("chOrganisationId"))[0];
 
-            String insurerName = "";
-            String chOrganisationName = "";
-            Integer iInsurerId = -1;
-            Integer iChOrganisationId = -1;
+            String insurerName;
+            String chOrganisationName;
+            Integer iInsurerId;
+            Integer iChOrganisationId;
 
             // GET INSURER NAME AND ID
             Insurer ins = getInsurer(insurerId);
@@ -131,13 +136,14 @@ public class InvoiceSavingSummaryReport implements Report {
             if (ex.getCause() != null) {
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
             }
+            throw ex;
         }
 
         return reportParameters;
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
@@ -158,7 +164,7 @@ public class InvoiceSavingSummaryReport implements Report {
 
     private Insurer getInsurer(String sObjectId) {
 
-        Insurer insurer = new Insurer();
+        Insurer insurer;
         ReportHelper reportHelper = new ReportHelper();
 
         if (!sObjectId.equalsIgnoreCase("")) {
@@ -173,7 +179,7 @@ public class InvoiceSavingSummaryReport implements Report {
 
     private Chorganisation getChorganisation(String sObjectId) {
 
-        Chorganisation chorganisation = new Chorganisation();
+        Chorganisation chorganisation;
         ReportHelper reportHelper = new ReportHelper();
 
         if (!sObjectId.equalsIgnoreCase("")) {

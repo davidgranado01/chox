@@ -84,7 +84,7 @@
                                                     <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Claim Owner BRE Invoice Approval Dispute Report</a></li>
                                                 </s:else>
                                     </s:if>
-                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility || reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility || reportAccessibility.claimStatusWorkflowReportAccessibility">
                                         <li class='report-type-header'>Workflow Reports</li>
                                         <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
                                             <s:if test="insurerIsWorkgroupEnabled">
@@ -97,8 +97,8 @@
                                         <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
                                             <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
                                         </s:if>
-                                        <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
-                                            <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
+                                        <s:if test="reportAccessibility.claimStatusWorkflowReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('ClaimStatusWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
                                         </s:if>
                                          <s:if test="reportAccessibility.newIncomingHandlerActionsAccessibility && (insurerIsClaimOwnershipEnabled || insurerIsWorkgroupEnabled)">
                                             <li><a href="javascript:renderParameterPanel('NewIncomingHandlerActionsReport-Excel');">New Incoming Actions Report</a></li>

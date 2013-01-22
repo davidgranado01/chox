@@ -14,14 +14,16 @@ Ext.onReady(function(){
 	        layout: 'form',
 	        collapsed: false,   
 	        collapsible: false,
+            height: 150,
 	        defaultType:'numberfield',
 	        defaults: {              
 	            labelStyle: 'text-align: right;',
 	            allowBlank:false,
-	            width : 80,
+	            width : 75,
 	            allowNegative : false,
 	            decimalPrecision : 2,
-	            minValue : 0.00,
+	            minValue : 0.01,
+                minText: 'Must be > 0.00',
 	            style: {
 	                'text-align':'left'
 	            }
@@ -31,7 +33,7 @@ Ext.onReady(function(){
 	            fieldLabel: 'Amount Received',
 	            id : 'amountReceivedId',
 	            name: 'interimPaymentReceived',
-	            blankText: 'Cofirm Amount Received'
+	            blankText: 'Enter Amount Received'
 	        },{
 	            xtype : 'hidden',
 	            id : 'nonceId',
@@ -119,7 +121,6 @@ function confirmNotFullPayRec(){
     function doUpdatePaymentReceived(action) {
     	
     	$("#formUpdatePaymentReceivedName").val(action);
-//console.log("status is: " + <s:property value="status"/>);
     	if (action=='invoicePaymentReceived') {
             if (partialInterimPayment != undefined &&  partialInterimPayment > 0){
                 Ext.Msg.show({
@@ -128,8 +129,6 @@ function confirmNotFullPayRec(){
                     buttons: {yes: 'Ok', no: 'Cancel'},   // or Ext.Msg.OKCANCEL
                     fn: function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}}
                 });
-//            	Ext.MessageBox.confirm('Confirm', 'Please note that there is an interim payment on this claim which has not yet been marked as received, marking the claim as ‘Full Payment Received’ will also mark the interim payment as received.' 
-//            			,function(btn){if(btn=='yes'){$("form#formUpdatePaymentReceived").submit();}else{return false;}});
             }else{
             	$("form#formUpdatePaymentReceived").submit();
             }

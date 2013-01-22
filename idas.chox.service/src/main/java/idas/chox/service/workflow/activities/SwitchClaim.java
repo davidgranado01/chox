@@ -17,10 +17,12 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.AuditTrailService;
 
 public class SwitchClaim extends BaseActivity {
+    
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaim.class);
-
+    private AuditTrailService auditTrailService;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -66,12 +68,11 @@ public class SwitchClaim extends BaseActivity {
         Insurer oldInsurer = claim.getInsurer();
         Insurer newInsurer = oldInsurer.getRelatedInsurer();
         LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
-
+        
         claim.setInsurer(newInsurer);
         claim.setClaimOwner(null);
         claim.setWorkgroup(null);
-        claim.setPreviousStatus(claim.getStatus());
-        claim.setStatusModifiedDate(new Date());
+        claim.setPreviousStatus(null);
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
         if(claim.getNotifications()!=null) {
             claim.getNotifications().removeAll(claim.getNotifications());
@@ -81,13 +82,6 @@ public class SwitchClaim extends BaseActivity {
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setCreatedDate(new Date());
 
-        if (newInsurer.isWorkgroupEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        } else if (newInsurer.isClaimOwnershipEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        }
         LOG.debug("Switching Claim : Claim status has been updated");
 
         ThirdParty thirdParty = claim.getThirdParty();
@@ -100,8 +94,10 @@ public class SwitchClaim extends BaseActivity {
         claim.addComment(comment);
         setMessage(newComment);
         LOG.debug("Switching Claim: Comment has been updated");
+        
+        // revert all Audits entries
+        auditTrailService.revertAllAuditEntriesByClaimId(claim.getId());
     }
-
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
@@ -109,7 +105,6 @@ public class SwitchClaim extends BaseActivity {
         super.afterProcess(claim);
         LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
     }
-    
     
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
@@ -127,5 +122,7 @@ public class SwitchClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
     }
     
-    
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
 }

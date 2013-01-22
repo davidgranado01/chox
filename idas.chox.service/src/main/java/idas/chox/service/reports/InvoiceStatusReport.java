@@ -78,7 +78,7 @@ public class InvoiceStatusReport implements Report {
 
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
         HashMap map = new HashMap();
         Date dataStart = null;
         String supplierId;
@@ -104,6 +104,8 @@ public class InvoiceStatusReport implements Report {
         if (((String[]) externalParameter.get("DateStart")) != null) {
             dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             LOG.debug("dataStart :" + dataStart);
+        } else {
+            throw new Exception("Start date cannot be empty.");
         }
 
         if (currentUser.getInsurer() != null) {
@@ -1178,6 +1180,7 @@ public class InvoiceStatusReport implements Report {
         } catch (Exception ex) {
             LOG.error("Exception thrown generating Invoice Status Report: {} [user={}]", ex.getMessage(), currentUser.getId());
             LOG.error("Report params were: startDate={}", dataStart);
+            throw ex;
         }
 
         map.put("invoiceStatusReportCummulative", invoiceStatusReportDataCumm);
@@ -1201,7 +1204,7 @@ public class InvoiceStatusReport implements Report {
 
     
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

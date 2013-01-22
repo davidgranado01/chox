@@ -71,15 +71,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return securityInfoProvider.getIsCHO();
     }
 
-    public boolean getIsUploadAllowed() {
-        boolean allowed = false;
-        
-        if (getIsInsurer()) {
-            allowed = getAuthenticatedUser().getInsurer().isUploadEnabled() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD);
-        }
-        return securityInfoProvider.getIsCHO() || allowed;
-    }
-
     public boolean getIsAdmin() {
         return securityInfoProvider.getIsCHOXAdmin()
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_ADMIN)

@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ public class AuditTrail extends Entity implements Serializable {
     private ReasonOfRejection claimReasonOfRejection;
     private ReasonOfRejection invoiceReasonOfRejection;
     private boolean reverted = false;
+    private BigDecimal previousTotalToPay; 
 
     public Claim getClaim() {
         return claim;
@@ -83,5 +85,13 @@ public class AuditTrail extends Entity implements Serializable {
 
     public void setReverted(boolean reverted) {
         this.reverted = reverted;
+    }
+    
+    public BigDecimal getPreviousTotalToPay() {
+        return previousTotalToPay;
+    }
+
+    public void setPreviousTotalToPay(BigDecimal previousTotalToPay) {
+        this.previousTotalToPay = previousTotalToPay;
     }
 }

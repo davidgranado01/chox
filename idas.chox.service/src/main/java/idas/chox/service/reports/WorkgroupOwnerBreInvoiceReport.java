@@ -53,7 +53,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public HashMap getReportParameters() throws Exception {
 
         LOG.debug("getReportParameters '{}' ");
         HashMap reportParameters = new HashMap();
@@ -123,7 +123,11 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                 LOG.debug("endDate={}", endDate.toString());
             }
             
-            if(endDate != null && startDate != null && endDate.before(startDate)){
+            if (endDate == null || startDate == null) {
+                throw new Exception("Start and End dates cannot be empty.");
+            }
+
+            if (endDate.before(startDate)) {
                 throw new Exception("End date (" + endDate.toString() + ") is before start date (" + startDate.toString() +  ") ");
             }
 
@@ -201,10 +205,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * No of Invoices uploaded
                      */
                     sb.append("(select count(*) from claim c, invoice i where c.invoice_id=i.id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId and c.claim_type != 10 ");
                     sb.append("and c.insurer_id = :pInsurerId and i.created_date between :pStartDate and :pEndDate ) as no_invoices_uploaded, ");
 
@@ -213,10 +219,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -228,10 +236,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(distinct b.id) from (select c.id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -246,10 +256,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -266,10 +278,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -284,10 +298,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -302,10 +318,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * 
                      */
                     sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                    if(isWorkgroupEnabled)
+                    if(isWorkgroupEnabled) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    if(selectedCHOId>0)
-                         sb.append("and c.chorganisation_id = :pChoId ");
+                    }
+                    if(selectedCHOId>0) {
+                        sb.append("and c.chorganisation_id = :pChoId ");
+                    }
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id= :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -317,10 +335,12 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
 
                     for(ReasonOfRejection ror : reasonsOfRejection){
                         sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
-                        if(isWorkgroupEnabled)
+                        if(isWorkgroupEnabled) {
                             sb.append("and c.workgroup_id = :pWorkgroupId ");
-                        if(selectedCHOId>0)
-                             sb.append("and c.chorganisation_id = :pChoId ");
+                        }
+                        if(selectedCHOId>0) {
+                            sb.append("and c.chorganisation_id = :pChoId ");
+                        }
                         sb.append("and c.claim_owner_id = :pOwnerId ")
                             .append("and c.insurer_id = :pInsurerId ")
                             .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
@@ -331,8 +351,9 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                             .append(ror.getId())
                             .append(" and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.reverted=false and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_")
                             .append(ror.getRorName());
-                            if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() -1)
-                                sb.append(", ");
+                            if(reasonsOfRejection.indexOf(ror) != reasonsOfRejection.size() -1) {
+                            sb.append(", ");
+                        }
                     }
                     
                     queryParameters = new HashMap();
@@ -346,8 +367,6 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     queryParameters.put("pInsurerId", insurerId);
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
-//                    LOG.debug("Query: {}", sb.toString());
-//                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
                     List detailData = reportDataService.getReportData(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
                     if (detailData.size() > 0) {
@@ -369,7 +388,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
             LOG.debug("Error thrown generating owner-workflow report: {}", ex.getMessage());
-//            ex.printStackTrace();
+            throw ex;
         }
 
         return reportParameters;
@@ -388,7 +407,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     }
 
     @Override
-    public ByteArrayOutputStream build() {
+    public ByteArrayOutputStream build() throws Exception {
 
         LOG.debug("build '{}' ");
         ReportBuilder builder = new ExcelReportBuilder();

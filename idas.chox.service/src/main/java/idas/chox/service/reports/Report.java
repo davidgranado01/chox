@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.ReportDataService;
 import idas.chox.data.services.BaseDataService;
 
@@ -16,11 +15,11 @@ public interface Report {
     
     void setBaseDataService(BaseDataService baseDataService);
     
-    HashMap getReportParameters();
+    HashMap getReportParameters() throws Exception;
 
     String getReportTemplateFileName();
 
-    ByteArrayOutputStream build();
+    ByteArrayOutputStream build() throws Exception;
 
     String getReportCode();
     

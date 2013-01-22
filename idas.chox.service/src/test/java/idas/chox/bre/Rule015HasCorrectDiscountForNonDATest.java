@@ -111,7 +111,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
         // SET INVOICE
         // claim.getInvoice().setDiscount(new BigDecimal("-17.50"));
         BigDecimal bDiscount = CalcHelper.VAT_RATE.multiply(new BigDecimal(-100));
-        claim.getInvoice().setDiscount(MathHelper.Round(bDiscount, 2));
+        claim.getInvoice().setDiscount(MathHelper.round(bDiscount, 2));
 
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
         // System.out.println((claim.getInsurer().getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate());

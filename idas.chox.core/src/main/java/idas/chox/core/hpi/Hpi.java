@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -37,7 +38,7 @@ public final class Hpi {
     private static final String productCodeParam = "HPI11";
     private static final String functionParam = "SEARCH";
     private static final String deviceTypeParam = "XM";
-    private static Hpi instance = new Hpi();
+    private static final Hpi INSTANCE = new Hpi();
     private Map<String, String> params;
     private List<String> session;
     private HttpClient httpClient;
@@ -48,6 +49,9 @@ public final class Hpi {
     private boolean active = false;
 
     private Hpi() {
+        if (INSTANCE != null) {
+            throw new IllegalStateException("HPI Already instantiated");
+        }
         // Create and initialize HTTP parameters
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
@@ -66,15 +70,15 @@ public final class Hpi {
         httpClient = new DefaultHttpClient(cm);
 
 //        httpclient = new HttpClient(new MultiThreadedHttpConnectionManager());
-        LOG.info("HPI I/F class has been created (url={})", hpiUrl);
+        LOG.info("HPI I/F (singleton) utility class has been created.");
     }
 
     public static Hpi getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     public static HpiResponse getHpiInfo(String vrn) throws HpiException {
-        return instance.getHpi(vrn);
+        return getInstance().getHpi(vrn);
     }
 
     public void setActive(boolean active) {

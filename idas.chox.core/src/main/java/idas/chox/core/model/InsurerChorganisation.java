@@ -6,7 +6,6 @@ public class InsurerChorganisation extends Entity implements Serializable {
 
     private Insurer insurer;
     private Chorganisation chorganisation;
-    private boolean status;
    
     public Chorganisation getChorganisation() {
         return chorganisation;
@@ -14,14 +13,6 @@ public class InsurerChorganisation extends Entity implements Serializable {
 
     public void setChorganisation(Chorganisation chorganisation) {
         this.chorganisation = chorganisation;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public Insurer getInsurer() {

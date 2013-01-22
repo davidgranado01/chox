@@ -333,7 +333,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
 
-                    LOG.debug("propertyNames[" + i + "]" + propertyNames[i]);
+                    LOG.debug("propertyNames[{}]={}", i, propertyNames[i]);
                     state1[i] = DateHelper.getCurrentDateTime();
 
                     LOG.debug("state1[" + i + "]" + state1[i]);
@@ -354,11 +354,23 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                     }
                 } else if ("status".equals(propertyNames[i])) {
 
-                    String newStatus = state1[i].toString();
-                    String oldStatus = state2[i].toString();
+                    String newStatus;
+                    if (state1[i] != null) {
+                        newStatus = state1[i].toString();
+                    }
+                    else {
+                        newStatus = "";
+                    }
+                    
+                    String oldStatus;
+                    if (state2[i] != null) {
+                        oldStatus = state2[i].toString();
+                    } else {
+                        oldStatus = "";
+                    }
 
-                    LOG.debug("newStatus" + newStatus + "state1[i]" + state1[i]);
-                    LOG.debug("oldStatus" + oldStatus + "state2[i]" + state2[i]);
+                    LOG.debug("newStatus=" + newStatus + ", oldStatus=" + oldStatus);
+                    
 
                     if (!newStatus.equals(oldStatus)) {
                         LOG.debug("Status change from '{}' to '{}': updating statusModifiedDate", oldStatus, newStatus);
@@ -765,8 +777,9 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
                     String newStatus = state1[i] != null ? state1[i].toString() : null;
                     String oldStatus = null;
-                    if (state2[i] != null)
+                    if (state2[i] != null) {
                         oldStatus = state2[i].toString();
+                    }
                     LOG.debug("newStatus   " + newStatus);
                     LOG.debug("oldStatus   " + oldStatus);
 

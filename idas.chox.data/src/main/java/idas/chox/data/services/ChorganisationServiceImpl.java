@@ -59,7 +59,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         // GET ALL CHORGANISATIONS ASSIGNED TO INSURER
         DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
         insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
-        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
         insurerChorganisationCirteria.setProjection(Property.forName("chorganisation.id"));
 
         // RETURN SEARCH RESULT
@@ -74,7 +73,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
         DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
         insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
-        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
 
         // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
         DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
@@ -92,10 +90,9 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     public boolean isActiveChorganisationsByInsurerCreditHireWithBreBand(int insurerId, int chorganisationId) {
 
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
-        DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
-        insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
-        insurerChorganisationCirteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
-        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
+        DetachedCriteria insurerChorganisationCriteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+        insurerChorganisationCriteria.add(Restrictions.eq("insurer.id", insurerId));
+        insurerChorganisationCriteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         
         // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
         DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
@@ -104,10 +101,10 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         breBandOrganisationCirteria.setProjection(Property.forName("chorganisation.id"));
         
         // RETURN SEARCH RESULT
-        insurerChorganisationCirteria.add(Property.forName("chorganisation.id").in(breBandOrganisationCirteria));
-        insurerChorganisationCirteria.setProjection(Property.forName("chorganisation"));
+        insurerChorganisationCriteria.add(Property.forName("chorganisation.id").in(breBandOrganisationCirteria));
+        insurerChorganisationCriteria.setProjection(Property.forName("chorganisation"));
 
-        if(findByCriteria(insurerChorganisationCirteria).size()<=0){
+        if(findByCriteria(insurerChorganisationCriteria).size()<=0){
             return false;
         }
 

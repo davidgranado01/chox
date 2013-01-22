@@ -3,7 +3,6 @@ package idas.chox.service.workflow.activities;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +11,6 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 
 public class NewClaim extends BaseActivity {
@@ -39,26 +36,30 @@ public class NewClaim extends BaseActivity {
     }
 
     @Override
-    protected void validate(Claim claim) throws Exception {
-        if (!claim.isTransient()) {
-            throw new Exception("A process new claim attempt failed due to claim is already exist.");
-        }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
-            throw new AccessDeniedException("Not in correct role to create a claim.");
-        }
-    }
-
-    @Override
     protected void doProcess(Claim claim) throws Exception {
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         claim.setStatusModifiedDate(new Date());
         // Add note containing CHO telephone number
         if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
-            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
-            claim.addComment(comment);
+            /*
+             *  The below check has been added to eliminate duplicate 
+             *  CHO contact number comment when switching claim.
+             */
+            boolean canAddChoContacNumberComment = true;
+            if (claim.getComments() != null) {
+                for (Comment comment : claim.getComments()) {
+                    if (comment.getComment().startsWith("CHO contact number") 
+                            && !comment.isReverted()) {
+                        canAddChoContacNumberComment = false;
+                    }
+                }
+            }
+            if (canAddChoContacNumberComment) {
+                Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+                claim.addComment(comment);
+            }
         }
-        
+
         // Set Claim BRE band
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         claim.setBreBand(choBand);
