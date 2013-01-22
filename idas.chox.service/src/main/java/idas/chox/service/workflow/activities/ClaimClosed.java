@@ -37,7 +37,7 @@ public class ClaimClosed extends BaseActivity {
          */
         if (claim.getInvoice() != null && claim.getInvoice().getInterimPaymentMade() != null
                 && claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
-            throw new AccessDeniedException("It is currently not possible to close this claim as an outstanding interim payment has been made (i.e. not marked as received).");
+            throw new Exception("It is currently not possible to close this claim as it contains an outstanding interim payment.");
         }
 
     }
