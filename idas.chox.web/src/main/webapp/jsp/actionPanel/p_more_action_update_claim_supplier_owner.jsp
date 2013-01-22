@@ -2,7 +2,8 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-
+var testCombo;
+var testStore;
     function overideCombo() {
         // The 'setValue' function on the combo box doesn't work
         // as, fue to the asynchronous nature of the widget, the store may
@@ -56,6 +57,8 @@
                             ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId":supplierId}}),
                             reader : supplierClaimOwnerReader
         });
+        
+//         supplierClaimOwnerStore.load({ params : {"supplierId":supplierId}});
 
         var supplierClaimOwnerCombo = new Ext.form.ComboBox({
                             store : supplierClaimOwnerStore,
@@ -72,16 +75,17 @@
                             forceSelection: true,
                             mode : 'local',
                             emptyText : '--- Please Select ---',
-                            listeners: { blur: function () {
-                                                   if(this.getRawValue() == "" ) {
-                                                       this.clearValue(); this.reset();
-                                               }
-                            }}
+                            listeners: { 
+                                blur: function () {
+                                   if(this.getRawValue() == "" ) {
+                                       this.clearValue(); this.reset();
+                                       }
+                                   }
+                            }
         });
         $.validator.addMethod("claimOwnerSelection",
                             function(value) {
                                 if(value === "") {
-//                                if(value === "--- Please Select ---") {
                                     return false;
                                 }
                                 return true;
@@ -97,10 +101,21 @@
                 supplierClaimOwnerId: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
         });
-        supplierClaimOwnerStore.load({ params : {"supplierId":supplierId}});
-        if (currentOwnerId) {
-            supplierClaimOwnerCombo.setValue(currentOwnerId);
-        }
+        
+        supplierClaimOwnerStore.load({
+            params: {
+                "supplierId":supplierId
+            },
+            callback: function (records, operation, success) {
+                if (currentOwnerId) {
+                        if(typeof Ext.StoreMgr.lookup(supplierClaimOwnerStore).getById(currentOwnerId) === 'object'){
+                            supplierClaimOwnerCombo.setValue(currentOwnerId);
+                        } else {
+                            supplierClaimOwnerCombo.reset();
+                        }
+                    }
+            }
+        });
     });
     
     $("#formSupplierOwnershipAction").submit(function() {
