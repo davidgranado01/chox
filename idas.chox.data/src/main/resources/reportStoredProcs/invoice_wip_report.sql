@@ -39,15 +39,15 @@ WHERE
    AND c.status NOT IN ('ClaimClosed', 'PaymentReceived', 'InvoiceRejectionAccepted')
    AND ins.id = c.insurer_id
    AND a.claim_id = c.id
-   AND (case when array_length($1, 1) > 0 then c.chorganisation_id = ANY($1) else -1 = -1 end)
-   AND (case when array_length($2, 1) > 0  then c.insurer_id = ANY($2) else -1 = -1 end)
+   AND (case when array_length($1, 1) > 0 then c.chorganisation_id = ANY($1) else true end)
+   AND (case when array_length($2, 1) > 0  then c.insurer_id = ANY($2) else true end)
    AND a.new_status = c.status
    AND a.reverted = false
    AND i.created_date BETWEEN DATE_FROM AND DATE_TO
    AND co.id = (SELECT id FROM comment co WHERE co.claim_id = c.id 
                 AND co.visibility_type = 0 
                 AND co.created_by != 999
-                AND (co.created_by in (select id from web_user where case when array_length($1, 1) > 0 then chorganisation_id = ANY($1) end))
+                AND (co.created_by in (select id from web_user where chorganisation_id IS NOT null))
                 AND co.created_date = (select max(created_date) FROM comment WHERE claim_id = c.id 
 			    AND (comment NOT LIKE ('%failed to respond to the Subscriber notification within%')
 					OR comment NOT LIKE ('%failed to respond to the Fixed Fee notification within%')
