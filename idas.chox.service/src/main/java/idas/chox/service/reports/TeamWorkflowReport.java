@@ -179,8 +179,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-//                      sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where reverted=false and claim_id = c.id and update_date < :pStartDate) ");
-                      sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pStartDate) order by id desc limit 1) ");
+                      sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date < :pStartDate) order by id desc limit 1) ");
                           
                       sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as outstandingStart, ");
 

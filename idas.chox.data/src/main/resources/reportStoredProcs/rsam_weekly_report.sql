@@ -66,7 +66,7 @@ SELECT 'ALL' as Grouping,
 	        FROM audit_trail a3
 	        WHERE a3.claim_id = c.id
 	          AND a3.reverted=FALSE
-	          AND a3.created_date > datEnd)
+	          AND a3.created_date < datEnd)
 	   ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
@@ -335,7 +335,7 @@ SELECT cho1.name AS Grouping,
         FROM audit_trail a3
         WHERE a3.claim_id = c.id
           AND a3.reverted=FALSE
-          AND a3.created_date > datEnd)
+          AND a3.created_date < datEnd)
    ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
@@ -580,7 +580,7 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
         FROM audit_trail a3
         WHERE a3.claim_id = c.id
           AND a3.reverted=FALSE
-          AND a3.created_date > datEnd)
+          AND a3.created_date < datEnd)
    ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
