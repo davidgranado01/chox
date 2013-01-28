@@ -70,8 +70,9 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         ecd.setEcdDate(ecdDate);
                         ecd.setReason(ecdDelayReason);
                         ecd.setSupportingNote(ecdDelaySuppNote);
+                        ecd.setUpdateInsurer(true);
                         LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecd.getEcdDate().toString(), ecd.getReason(), ecd.getSupportingNote()});
-                        hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd, true);
+                        hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
                         statusString.append("Success: Updated.");
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");

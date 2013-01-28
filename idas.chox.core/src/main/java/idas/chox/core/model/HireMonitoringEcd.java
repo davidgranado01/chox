@@ -22,6 +22,16 @@ public class HireMonitoringEcd extends Entity implements Serializable {
      */
     private Claim claim;
     private String supportingNote;
+    private boolean updateInsurer = false;
+
+    public boolean isUpdateInsurer() {
+        return updateInsurer;
+    }
+
+    public void setUpdateInsurer(boolean updateInsurer) {
+        this.updateInsurer = updateInsurer;
+    }
+
 
     /**
      * Method 'HireMonitoringEcd'

@@ -6,6 +6,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
+import java.util.Date;
 import org.w3c.dom.*;
 
 public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
@@ -17,11 +18,13 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
 
         Element element = XMLUtils.getElement(claimResult.getElement(), "repair-details");
 
-        HireMonitoringDetail hireMonitoringdtl = new HireMonitoringDetail();
+        HireMonitoringDetail hireMonitoringdtl;
         boolean isNotEmpty = false;
 
         if (claimResult.getClaim().getHireMonitoringDetail() != null) {
             hireMonitoringdtl = claimResult.getClaim().getHireMonitoringDetail();
+        } else {
+            hireMonitoringdtl = new HireMonitoringDetail();
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "repairer"))) {
@@ -41,7 +44,14 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
 
         if (XmlHelper.isNotNullDate(XmlHelper.getNodeValue(element, "repair-book-in-date"))) {
             isNotEmpty = true;
+            Date currentRepairBookInDate = hireMonitoringdtl.getRepairBookInDate();
             hireMonitoringdtl.setRepairBookInDate(XmlHelper.getDateFromNode(element, "repair-book-in-date"));
+            // Check if changed and and flag for anomaly checking
+            if (currentRepairBookInDate != null && currentRepairBookInDate.compareTo(hireMonitoringdtl.getRepairBookInDate()) != 0) {
+                claimResult.setCheckForRepairAnomalies(true);
+            }
+            // This seems dodgy to me as this could already have been set. However, as the intelligent claim note on
+            // hire repair uses this, the only way to remove this note is to set here. To be investigated. TODO
             hireMonitoringdtl.setOriginalRepairBookInDate(XmlHelper.getDateFromNode(element, "repair-book-in-date"));
         }
 
@@ -101,6 +111,7 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
         }
 
         if (isNotEmpty) {
+            hireMonitoringdtl.setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
             claimResult.getClaim().setHireMonitoringDetail(hireMonitoringdtl);
         }
     }

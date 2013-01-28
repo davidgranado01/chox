@@ -1,7 +1,7 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Entity;
 import java.util.List;
+import idas.chox.core.model.Entity;
 
 /**
  *

@@ -484,8 +484,9 @@ public class UploadServiceBean {
                     ecd.setEcdDate(ecdDate);
                     ecd.setReason(delayReason);
                     ecd.setSupportingNote(supportingNote);
+                    ecd.setUpdateInsurer(true);
                     LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecd.getEcdDate().toString(), ecd.getReason(), ecd.getSupportingNote()});
-                    hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd, true);
+                    hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
                     result.setStatus(true);
                 }
             }

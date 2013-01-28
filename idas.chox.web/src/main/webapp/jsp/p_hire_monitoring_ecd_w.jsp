@@ -50,7 +50,7 @@
         document.formAddNewHireMonitoringEcd.ecdDate.value = "";
         document.formAddNewHireMonitoringEcd.reasonOfDelayId.value = "";
         document.formAddNewHireMonitoringEcd.supportingNote.value = "";
-        document.formAddNewHireMonitoringEcd.isUpdateInsurer.checked = false;
+        document.formAddNewHireMonitoringEcd.updateInsurer.checked = false;
     }
     
     function doPopulateNote(){
@@ -95,7 +95,7 @@
                 </div>
                 <div class="chox-form-item-button">
                     <input type="submit" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" />&nbsp;&nbsp;&nbsp;
-                    <s:checkbox id="hireMonitoringEcdisUpdateInsurerId" name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                    <s:checkbox id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
                 <div id="ECDMessageBox" class="action-error-msg"></div>

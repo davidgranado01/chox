@@ -20,6 +20,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.TaskService;
 
 public class SwitchClaimToMultipleInsurer extends BaseActivity {
@@ -31,6 +32,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     private AuditTrailService auditTrailService;
     private CommentService commentService;
     private TaskService taskService;
+    private NotificationService notificationService;
     private Insurer newInsurer;
 
     public String getPolicyNumber() {
@@ -109,13 +111,13 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
-        if(claim.getNotifications()!=null) {
-            claim.getNotifications().removeAll(claim.getNotifications());
-        }
         claim.setLiabilityAgreedDate(null);
         claim.setCreatedDate(new Date());
 
-        LOG.debug("Switching Claim : Claim status has been updated");
+        LOG.debug("Switching Claim : Claim details has been updated");
+
+        notificationService.removeAllNotifications(claim.getId());
+        LOG.debug("Switching Claim : Claim notifications have been removed");
 
         // update Third party
         ThirdParty thirdParty = claim.getThirdParty();
@@ -168,5 +170,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
-    
+
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
 }

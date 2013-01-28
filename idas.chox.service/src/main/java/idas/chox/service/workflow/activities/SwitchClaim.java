@@ -18,11 +18,13 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.NotificationService;
 
 public class SwitchClaim extends BaseActivity {
     
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaim.class);
     private AuditTrailService auditTrailService;
+    private NotificationService notificationService;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -74,15 +76,15 @@ public class SwitchClaim extends BaseActivity {
         claim.setWorkgroup(null);
         claim.setPreviousStatus(null);
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
-        if(claim.getNotifications()!=null) {
-            claim.getNotifications().removeAll(claim.getNotifications());
-        }
         claim.setLiabilityAgreedDate(null);
         claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setCreatedDate(new Date());
 
-        LOG.debug("Switching Claim : Claim status has been updated");
+        LOG.debug("Switching Claim : Claim details has been updated");
+
+        notificationService.removeAllNotifications(claim.getId());
+        LOG.debug("Switching Claim : Claim notifications have been removed");
 
         ThirdParty thirdParty = claim.getThirdParty();
         thirdParty.setInsurer(newInsurer);
@@ -122,7 +124,13 @@ public class SwitchClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
     }
     
+
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
+    }
+
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 }

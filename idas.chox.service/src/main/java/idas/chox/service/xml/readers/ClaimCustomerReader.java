@@ -3,6 +3,7 @@ package idas.chox.service.xml.readers;
 import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
 import idas.chox.core.hpi.HpiResponse;
+import idas.chox.core.model.Customer;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.TextHelper;
 import idas.chox.core.util.XMLUtils;
@@ -37,7 +38,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
             LOG.debug("Validating new claim");
-            isAllowToReadData = true;
+
             claimResult.setCheckDataValid(true);
 
             // INSURER            
@@ -77,68 +78,68 @@ public class ClaimCustomerReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimElement, "customer");
         LOG.debug("Processing claim customer element...");
         if (claimResult.getClaim().getCustomer() != null) {
-
+            Customer customer = claimResult.getClaim().getCustomer();
             String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
-                LOG.debug("Setting VehicleClass...");
-                VehicleClass vehicleClass = null;
-                vehicleClass = getBordereauReaderContext().getVehicleClassService().getVehicleClassByNodeName(element, "vehicle-class");
+                VehicleClass vehicleClass = getBordereauReaderContext().getVehicleClassService().getVehicleClassByNodeName(element, "vehicle-class");
                 claimResult.getClaim().getCustomer().setVehicleClass(vehicleClass);
             }
 
-            LOG.debug("Setting InsurerName...");
-            claimResult.getClaim().getCustomer().setInsurerName(XmlHelper.getNodeValue(element, "name"));
-            LOG.debug("Setting PolicyNumber...");
-            claimResult.getClaim().getCustomer().setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
-            LOG.debug("Setting ClaimReference...");
-            claimResult.getClaim().getCustomer().setClaimReference(XmlHelper.getNodeValue(element, "claim-number"));
-            LOG.debug("Setting Comprehensive...");
-            claimResult.getClaim().getCustomer().setComprehensive(XmlHelper.getBooleanFromNode(element, "comprehensive"));
-            LOG.debug("Setting VehicleRegistration...");
-            String oldVrn = claimResult.getClaim().getCustomer().getVehicleRegistration();
-            claimResult.getClaim().getCustomer().setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(element, "vehicle-registration")));
+            customer.setInsurerName(XmlHelper.getNodeValue(element, "name"));
+            customer.setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
+            customer.setClaimReference(XmlHelper.getNodeValue(element, "claim-number"));
+            customer.setComprehensive(XmlHelper.getBooleanFromNode(element, "comprehensive"));
+            String oldVrn = customer.getVehicleRegistration();
+            customer.setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(element, "vehicle-registration")));
             // If the VRN changes, we need to update the HPI information
-            if (oldVrn != null && oldVrn.length() > 0 && !oldVrn.equals(claimResult.getClaim().getCustomer().getVehicleRegistration())) {
+            if (oldVrn != null && oldVrn.length() > 0 && !oldVrn.equals(customer.getVehicleRegistration())) {
                 // Perform HPI check
                 try {
-                    HpiResponse response = Hpi.getHpiInfo(claimResult.getClaim().getCustomer().getVehicleRegistration());
-                    claimResult.getClaim().getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
-                    claimResult.getClaim().getCustomer().setHpiVehicleModel(response.getModel());
-                    claimResult.getClaim().getCustomer().setHpiVehicleYear(response.getYear());
-                    claimResult.getClaim().getCustomer().setHpiVehicleCapacity(response.getCapacity());
-                    claimResult.getClaim().getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
-                    claimResult.getClaim().getCustomer().setHpiVehicleTransmission(response.getTransmission());
-                    claimResult.getClaim().getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
-                    claimResult.getClaim().getCustomer().setHpiError(null);
+                    HpiResponse response = Hpi.getHpiInfo(customer.getVehicleRegistration());
+                    customer.setHpiVehicleManufacturer(response.getManufacturer());
+                    customer.setHpiVehicleModel(response.getModel());
+                    customer.setHpiVehicleYear(response.getYear());
+                    customer.setHpiVehicleCapacity(response.getCapacity());
+                    customer.setHpiVehicleDoorplan(response.getDoorPlan());
+                    customer.setHpiVehicleTransmission(response.getTransmission());
+                    customer.setHpiFirstRegistration(response.getFirstRegistration());
+                    customer.setHpiError(null);
                 } catch (HpiException ex) {
                     LOG.warn("Error getting HPI info for vrn '{}': {}", claimResult.getClaim().getCustomer().getVehicleRegistration(), ex.getMessage());
-                    claimResult.getClaim().getCustomer().setHpiError(ex.getMessage());
-                    claimResult.getClaim().getCustomer().setHpiVehicleManufacturer(null);
-                    claimResult.getClaim().getCustomer().setHpiVehicleModel(null);
-                    claimResult.getClaim().getCustomer().setHpiVehicleYear(null);
-                    claimResult.getClaim().getCustomer().setHpiVehicleCapacity(null);
-                    claimResult.getClaim().getCustomer().setHpiVehicleDoorplan(null);
-                    claimResult.getClaim().getCustomer().setHpiVehicleTransmission(null);
-                    claimResult.getClaim().getCustomer().setHpiFirstRegistration(null);
+                    customer.setHpiError(ex.getMessage());
+                    customer.setHpiVehicleManufacturer(null);
+                    customer.setHpiVehicleModel(null);
+                    customer.setHpiVehicleYear(null);
+                    customer.setHpiVehicleCapacity(null);
+                    customer.setHpiVehicleDoorplan(null);
+                    customer.setHpiVehicleTransmission(null);
+                    customer.setHpiFirstRegistration(null);
                 }
 
             }
-            LOG.debug("Setting VehicleManufacturer...");
-            claimResult.getClaim().getCustomer().setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
-            LOG.debug("Setting VehicleModel...");
-            claimResult.getClaim().getCustomer().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
-            LOG.debug("Setting VehicleYear...");
-            claimResult.getClaim().getCustomer().setVehicleYear(XmlHelper.getNodeValue(element, "year-of-manufacture"));
-            LOG.debug("Setting IsUsable...");
-            claimResult.getClaim().getCustomer().setIsUsable(XmlHelper.getBooleanFromNode(element, "usable"));
-            LOG.debug("Setting Location...");
-            claimResult.getClaim().getCustomer().setLocation(XmlHelper.getNodeValue(element, "location"));
-            LOG.debug("Setting Damage...");
-            claimResult.getClaim().getCustomer().setDamage(XmlHelper.getNodeValue(element, "damage"));
-            LOG.debug("Setting InitialECD...");
-            claimResult.getClaim().getCustomer().setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
-            LOG.debug("Setting IsTotalLoss...");
-            claimResult.getClaim().getCustomer().setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
+            
+            customer.setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
+            customer.setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
+            customer.setVehicleYear(XmlHelper.getNodeValue(element, "year-of-manufacture"));
+            boolean currentIsUsable = customer.getIsUsable();
+            customer.setIsUsable(XmlHelper.getBooleanFromNode(element, "usable"));
+            // If 'usable' status has changed and this is not a new claim (or new customer)
+            // then we need to flag for repair anomaly checking
+            if (currentIsUsable != customer.getIsUsable()
+                    && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
+                claimResult.setCheckForRepairAnomalies(true);
+            }
+            customer.setLocation(XmlHelper.getNodeValue(element, "location"));
+            customer.setDamage(XmlHelper.getNodeValue(element, "damage"));
+            customer.setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
+            boolean currentIsTotalLoss = customer.getIsTotalLoss();
+            customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
+            if (customer.getIsTotalLoss() && !currentIsTotalLoss 
+                    && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
+                claimResult.setCheckForTotalLossAnomalies(true);
+            }
         }
     }
 }

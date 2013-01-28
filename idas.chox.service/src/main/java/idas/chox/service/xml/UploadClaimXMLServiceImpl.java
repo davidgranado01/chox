@@ -25,6 +25,7 @@ import idas.chox.core.model.History;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BordereauService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.util.DocumentHelper;
@@ -33,7 +34,7 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.BordereauParseStatus;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.data.services.*;
+import idas.chox.data.services.SecureDataService;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
@@ -46,6 +47,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private String errorMessage;
     private String successMessage;
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
+    private ClaimService claimService;
     private BordereauSchemaValidation bordereauSchemaValidation;
     private static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
     private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
@@ -82,8 +84,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         this.bordereauSchemaValidation = bordereauSchemaValidation;
     }
 
-    @Override
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
+
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
@@ -104,6 +110,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             try {
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
 
+                if (claimResult.isCheckForRepairAnomalies()) {
+                    LOG.debug("Checking for repair anomalies.");
+                    claimService.checkRepairBookedInDateAnomaly(claimResult.getClaim());
+                }
+                if (claimResult.isCheckForTotalLossAnomalies()) {
+                    LOG.debug("Checking for repair anomalies.");
+                    claimService.checkTotalLossAnomaly(claimResult.getClaim());
+                }
                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)) {

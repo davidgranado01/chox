@@ -61,10 +61,6 @@
       <key column="claim_id"/>
       <one-to-many class="idas.chox.core.model.HireMonitoringEcd"/>
     </bag>
-    <bag cascade="all, delete-orphan" inverse="true" name="notifications" order-by="created_date desc, message asc">
-      <key column="claim_id"/>
-      <one-to-many class="idas.chox.core.model.Notification"/>
-    </bag>
     <bag cascade="all, delete-orphan" inverse="true" name="attachments">
       <key column="claim_id"/>
       <one-to-many class="idas.chox.core.model.Attachment"/>

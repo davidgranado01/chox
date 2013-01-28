@@ -18,7 +18,6 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 public class ClaimRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejection.class);
@@ -162,7 +161,6 @@ public class ClaimRejection extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);                
-                claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);

@@ -31,6 +31,10 @@ public interface ClaimService extends DataService {
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir);
 
     public void updateClaim(Claim claim);
+    
+    public void checkRepairBookedInDateAnomaly(Claim claim);
+
+    public void checkTotalLossAnomaly(Claim claim);
 
     public Boolean revertClaim(int claimId);
 

@@ -1,5 +1,7 @@
 package idas.chox.bre.mock;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -12,7 +14,6 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.util.DateHelper;
-import java.math.BigDecimal;
 
 public class MockObjects {
 

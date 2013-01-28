@@ -15,7 +15,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 public class UpdateLiability extends BaseActivity {
 
@@ -69,7 +68,6 @@ public class UpdateLiability extends BaseActivity {
                 comment.setClaim(claim);
                 claim.addComment(comment);
                 claim.setLiabilityStatus(liabilityStatus);
-                claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + claimReviewNotes));

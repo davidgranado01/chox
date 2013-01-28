@@ -1,14 +1,15 @@
 package idas.chox.service.xml.readers;
 
+import org.w3c.dom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Customer;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CustomerReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerReader.class);
@@ -21,9 +22,7 @@ public class CustomerReader extends BaseEntityReader {
         LOG.debug("Validating Customer: ClaimParseStatus is {}", claimResult.getClaimParseStatus());
 
         Element rootElement = claimResult.getElement();
-        LOG.debug("Got root element: {}", rootElement);
-        LOG.debug("Got root element: {}", rootElement.getTagName());
-        LOG.debug("Got drivers element");
+
         Element element = XMLUtils.getElement(rootElement, "driver");
         LOG.debug("Got driver element");
 
@@ -36,7 +35,6 @@ public class CustomerReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
             LOG.debug("Validating new claim");
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             claimResult = NodeHelper.nodeValidate(sectionName, "title", element, claimResult, getDataValidationParameter());
@@ -54,7 +52,6 @@ public class CustomerReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "age", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "occupation", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "policy-usage", element, claimResult, getDataValidationParameter());
-//            claimResult = NodeHelper.nodeValidate(sectionName, "primary-driver", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
             LOG.debug("Validated new claim: {}", isAllowToReadData);

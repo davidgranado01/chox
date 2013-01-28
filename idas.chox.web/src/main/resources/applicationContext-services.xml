@@ -11,6 +11,7 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
+        <property name="notificationService" ref="notificationService"/>
         <property name="enableActivityMonitor" value="${activity_monitor_enabled}"/>
         <property name="activityMonitorRequestInterval" value="${activity_monitor_request_interval}"/>
     </bean>
@@ -162,6 +163,7 @@
     </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="claimService" ref="claimService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>
@@ -286,8 +288,8 @@
     
     <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="newECDAddedChecker" ref="newECDAddedChecker"/>
         <property name="claimService" ref="claimService"/>
+        <property name="notificationService" ref="notificationService"/>
     </bean>
     
     <bean id="insurerIntelligentNoteService" class="idas.chox.data.services.InsurerIntelligentNoteServiceImpl" scope="prototype">
@@ -296,6 +298,10 @@
     </bean>
     
     <bean id="penaltyChargeService" class="idas.chox.data.services.PenaltyChargeServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>
