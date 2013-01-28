@@ -1,5 +1,5 @@
-DROP FUNCTION invoiceWipReport(IN choId INTEGER, IN insId INTEGER, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR);
-CREATE OR REPLACE FUNCTION invoiceWipReport(IN choId INTEGER,IN insId INTEGER, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR)
+DROP FUNCTION invoiceWipReport(IN choIds INTEGER[], IN insIds INTEGER[], invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR);
+CREATE OR REPLACE FUNCTION invoiceWipReport(IN choIds INTEGER[],IN insIds INTEGER[], invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR)
   RETURNS TABLE("Supplier Reference" VARCHAR, "Insurer Claim Number" VARCHAR, "Insurer" VARCHAR, "Invoice Upload Date" TIMESTAMP, 
                 "Time Since Invoice Upload (Days)" INTEGER, "Current Status" VARCHAR, "Time In Current Status (Days)" INTEGER, 
                 "Days Since Last Action (By CHO)" INTEGER) AS
@@ -28,26 +28,26 @@ SELECT
    (CURRENT_DATE - a.created_date::DATE) + 1 AS "Time In Current Status (Days)",
    (CURRENT_DATE - co.created_date::DATE) + 1 AS "Days Since Last Action"
 FROM 
-   claim c, 
+   
    invoice i,
    audit_trail a,
    insurer ins,
-   comment co
+   claim c LEFT OUTER JOIN comment co
+   ON c.id = co.claim_id
 WHERE 
    c.invoice_id = i.id
    AND c.status NOT IN ('ClaimClosed', 'PaymentReceived', 'InvoiceRejectionAccepted')
    AND ins.id = c.insurer_id
    AND a.claim_id = c.id
-   AND co.claim_id = c.id
-   AND (c.chorganisation_id = $1 or $1 = -1)
-   AND (c.insurer_id = $2 or $2 = -1)
+   AND (case when array_length($1, 1) > 0 then c.chorganisation_id = ANY($1) else -1 = -1 end)
+   AND (case when array_length($2, 1) > 0  then c.insurer_id = ANY($2) else -1 = -1 end)
    AND a.new_status = c.status
    AND a.reverted = false
    AND i.created_date BETWEEN DATE_FROM AND DATE_TO
    AND co.id = (SELECT id FROM comment co WHERE co.claim_id = c.id 
                 AND co.visibility_type = 0 
                 AND co.created_by != 999
-                AND (co.created_by in (select id from web_user where case when $1 != -1 then chorganisation_id = $1 when $2 != -1 then insurer_id = $2 end))
+                AND (co.created_by in (select id from web_user where case when array_length($1, 1) > 0 then chorganisation_id = ANY($1) end))
                 AND co.created_date = (select max(created_date) FROM comment WHERE claim_id = c.id 
 			    AND (comment NOT LIKE ('%failed to respond to the Subscriber notification within%')
 					OR comment NOT LIKE ('%failed to respond to the Fixed Fee notification within%')
@@ -79,4 +79,4 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-GRANT EXECUTE ON FUNCTION invoiceWipReport(IN choId INTEGER,IN insId INTEGER, invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR) TO chox_user;
+GRANT EXECUTE ON FUNCTION invoiceWipReport(IN choIds INTEGER[],IN insIds INTEGER[], invoice_upload_date_from VARCHAR, invoice_upload_date_to VARCHAR) TO chox_user;
