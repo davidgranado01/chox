@@ -1,4 +1,13 @@
 -------------------------------------------------------------------------------------
+-- 7.1.1 New Hire Update/Notification Warning Check                                --
+-------------------------------------------------------------------------------------
+ALTER TABLE notification ADD COLUMN is_deleted boolean NOT NULL DEFAULT false;
+
+----------------------
+--  END OF 7.1.1    --
+----------------------
+
+-------------------------------------------------------------------------------------
 -- 7.2.2 Set 'Total To Pay' To Zero 'ClaimClosed' or 'InvoiceRejectionAccepted'    --
 -------------------------------------------------------------------------------------
 
@@ -31,10 +40,6 @@ WHERE
      c.invoice_id = invoice.id
      AND c.status IN('ClaimClosed','InvoiceRejectionAccepted')
      AND invoice.total_to_pay > 0;
-
-----------------------
---  END OF 7.2.2    --
-----------------------
 
 ------------------------------------------
 -- 7.2.3 User Manager Role For CHOs     --

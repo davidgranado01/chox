@@ -118,7 +118,6 @@ public class ClaimObjectService {
         newClaim.setAttachments(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);
-        newClaim.setNotifications(null);
 
         return newClaim;
 

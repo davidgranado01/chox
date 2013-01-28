@@ -279,7 +279,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
 
         } catch (Exception ex) {
-            LOG.error("Exception converting results to view data: {}", ex.getMessage());
+            LOG.error("Exception converting results to view data: {}", ex.getMessage(), ex);
             handleException(ex);
             return null;
         }

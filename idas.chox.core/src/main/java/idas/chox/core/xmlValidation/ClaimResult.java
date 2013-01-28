@@ -20,6 +20,8 @@ public class ClaimResult {
     private boolean valid;
     private boolean dataValid;
     private boolean checkDataValid;
+    private boolean checkForRepairAnomalies;
+    private boolean checkForTotalLossAnomalies;
     private List<String> message = new ArrayList<String>();
     private boolean duplicateClaimInSameXmlFile;
     private List<Witness> witnesses;
@@ -80,6 +82,22 @@ public class ClaimResult {
 
     public void setDataValid(boolean dataValid) {
         this.dataValid = dataValid;
+    }
+
+    public boolean isCheckForRepairAnomalies() {
+        return checkForRepairAnomalies;
+    }
+
+    public void setCheckForRepairAnomalies(boolean checkForRepairAnomalies) {
+        this.checkForRepairAnomalies = checkForRepairAnomalies;
+    }
+
+    public boolean isCheckForTotalLossAnomalies() {
+        return checkForTotalLossAnomalies;
+    }
+
+    public void setCheckForTotalLossAnomalies(boolean checkForTotalLossAnomalies) {
+        this.checkForTotalLossAnomalies = checkForTotalLossAnomalies;
     }
 
     public Claim getClaim() {

@@ -3,7 +3,6 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-//import javax.validation.constraints.DecimalMax;
 
 
 
@@ -81,6 +80,25 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private Date isRepairOnlyCheckLastModified;
     private Date isNFInsurerManagingRepairLastModified;
     private Date clientVatRegisteredLastModified;
+    private boolean updateInsurer = false;
+    private Claim claim;
+
+    
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
+
+    public boolean isUpdateInsurer() {
+        return updateInsurer;
+    }
+
+    public void setUpdateInsurer(boolean updateInsurer) {
+        this.updateInsurer = updateInsurer;
+    }
 
     /**
      * Method 'HireMonitoringDetail'
@@ -292,17 +310,6 @@ public class HireMonitoringDetail extends Entity implements Serializable {
 
     public void setNextReviewDate(Date nextReviewDate) {
         this.nextReviewDate = nextReviewDate;
-    }
-
-    // FOR ONLY RepairBookedInOnFridayNotificationChecker ONLY
-    private Date notificationRepairBookInDate;
-    
-    public Date getNotificationRepairBookInDate() {
-        return notificationRepairBookInDate;
-    }
-
-    public void setNotificationRepairBookInDate(Date notificationRepairBookInDate) {
-        this.notificationRepairBookInDate = notificationRepairBookInDate;
     }
 
     public Date getRepairAuthorisedDate() {

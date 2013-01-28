@@ -2,18 +2,23 @@ package idas.chox.core.model;
 
 /**
  *
- * @author emmanuel
+ * @author John
  */
 public class Notification extends Entity {
-
-    public static String TYPE_UPDATE = "Update";
-    public static String TYPE_ANOMALOUS = "Anomalous";
     private String type;
     private String message;
-    private boolean isacknowledged;
+    private boolean acknowledged;
+    private boolean deleted;
     private Claim claim;
 
-    public Notification() {
+    public Notification() {}
+
+    public Notification(Notification notification) {
+        this.type = notification.getType();
+        this.message = notification.getMessage();
+        this.acknowledged = notification.isAcknowledged();
+        this.deleted = notification.isDeleted();
+        this.claim = notification.getClaim();
     }
 
     public Notification(String type, String message) {
@@ -66,21 +71,25 @@ public class Notification extends Entity {
         this.claim = claim;
     }
     
-    public NotificationType getNotificationType(){
-    	return NotificationType.valueOf(getType());
+    /**
+     * @return the acknowledged
+     */
+    public boolean isAcknowledged() {
+        return acknowledged;
     }
 
     /**
-     * @return the isacknowledged
+     * @param acknowledged the iacknowledged to set
      */
-    public boolean isIsacknowledged() {
-        return isacknowledged;
+    public void setAcknowledged(boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 
-    /**
-     * @param isacknowledged the isacknowledged to set
-     */
-    public void setIsacknowledged(boolean isacknowledged) {
-        this.isacknowledged = isacknowledged;
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

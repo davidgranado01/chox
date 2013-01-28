@@ -9,7 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.notifications.AnomalousCheck;
 import idas.chox.core.util.DateHelper;
 
 public class Claim extends Entity implements Serializable {
@@ -52,7 +51,6 @@ public class Claim extends Entity implements Serializable {
     private Workgroup workgroup;
     private Workgroup workgroupOriginal;
     private List<HireMonitoringEcd> hireMonitoringEcds;
-    private List<Notification> notifications;
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
@@ -132,10 +130,12 @@ public class Claim extends Entity implements Serializable {
     }
 
     public Customer getCustomer() {
+        customer.setClaim(this);
         return customer;
     }
 
     public void setCustomer(Customer customer) {
+        customer.setClaim(this);
         this.customer = customer;
     }
 
@@ -152,6 +152,9 @@ public class Claim extends Entity implements Serializable {
     }
 
     public void setHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
+        if (hireMonitoringDetail != null) {
+            hireMonitoringDetail.setClaim(this);
+        }
         this.hireMonitoringDetail = hireMonitoringDetail;
     }
 
@@ -335,14 +338,6 @@ public class Claim extends Entity implements Serializable {
         return isQuantumDispute ? "Yes" : "No";
     }
 
-    public boolean getIsIsAnomalies() {
-        return notifications != null ? notifications.size() > 0 : false;
-    }
-
-    public String getIsAnomaliesDesc() {
-        return getIsIsAnomalies() ? "Yes" : "No";
-    }
-
     public Long getDaysInStatus() {
         Date now = new Date();
         Date lastStatusModified = this.getStatusModifiedDate();
@@ -470,147 +465,6 @@ public class Claim extends Entity implements Serializable {
             history.setClaim(this);
             this.histories.add(history);
         }
-    }
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
-
-    //Add a list of  notification to claim
-    //the isAnomalies will automatic mark as true
-    public void addNotifications(List<AnomalousCheck> anomalousChecks, List<Notification> notifications) {
-
-        removeNotification(anomalousChecks);
-
-        if (notifications != null) {
-            for (Notification notification : notifications) {
-                addNotification(notification);
-            }
-        }
-
-    }
-
-    private void removeNotification(List<AnomalousCheck> anomalousChecks) {
-
-        if (this.notifications.size() > 0) {
-
-            for (AnomalousCheck anc : anomalousChecks) {
-
-                if (anc.isRefreshRequired()) {
-
-                    boolean isDeletable = true;
-
-                    // DO NOT DELETE DAY CHECK WHEN THE RepairBookInDate Doesn't Changed
-                    if (anc.BuildNotification().getType().equalsIgnoreCase("EcdAnomalousNotification") || (anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification")) && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
-
-                        isDeletable = false;
-
-                    }
-
-                    if (isDeletable) {
-
-                        Notification notificationToBeRemoved = getNotificationByType(anc.BuildNotification().getType());
-
-                        if (notificationToBeRemoved != null) {
-                            removeNotifications(notificationToBeRemoved);
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    public void addNotification(Notification notification) {
-        if (notification != null) {
-            if (this.notifications == null) {
-                this.notifications = new ArrayList<Notification>();
-            }
-            notification.setClaim(this);
-            notifications.add(notification);
-        }
-    }
-
-    public void acknowledgeNotifications(Notification notification) {
-
-        if (notification != null) {
-            notification.setIsacknowledged(true);
-        }
-    }
-
-    public void acknowledgeAllNotifications() {
-        for (Notification notification : notifications) {
-            if (notification.getNotificationType().isInsurerType()) {
-                notification.setIsacknowledged(true);
-            }
-        }
-    }
-
-    private Notification getSameTypeOfNotificationExist(Notification notification) {
-        if (this.notifications != null) {
-            for (Notification n : notifications) {
-                if (n.getType().equals(notification.getType())) {
-                    return n;
-                }
-            }
-        }
-        return null;
-    }
-
-    public void removeAllInsurerNotifications() {
-        List<Notification> toRemoveList = new ArrayList<Notification>();
-        for (Notification notification : notifications) {
-            if (notification.getNotificationType().isInsurerType()) {
-                toRemoveList.add(notification);
-            }
-        }
-
-        for (Notification obj : toRemoveList) {
-            notifications.remove(obj);
-        }
-    }
-
-    public void removeAllCHONotifications() {
-        List<Notification> toRemoveList = new ArrayList<Notification>();
-        for (Notification notification : notifications) {
-            if (!notification.getNotificationType().isInsurerType()) {
-                toRemoveList.add(notification);
-            }
-        }
-
-        for (Notification obj : toRemoveList) {
-            notifications.remove(obj);
-        }
-    }
-
-    public void removeNotifications(Notification notification) {
-        notifications.remove(notification);
-    }
-
-    private Notification getNotificationByType(String type) {
-
-        for (Notification notification : notifications) {
-
-            if (notification.getType().equalsIgnoreCase(type)) {
-                return notification;
-            }
-
-        }
-
-        return null;
-    }
-
-    public Notification getNotificationById(int id) {
-        for (Notification notification : notifications) {
-            if (notification.getId().intValue() == id) {
-                return notification;
-            }
-        }
-        return null;
     }
 
     public WebUser getClaimOwner() {

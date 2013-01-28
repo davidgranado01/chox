@@ -1,14 +1,5 @@
 package idas.chox.data.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Entity;
-import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.util.DateHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -16,12 +7,22 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Entity;
+import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.util.DateHelper;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
@@ -220,10 +221,12 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     public List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        if (descending)
+        if (descending) {
             criteria.addOrder(Order.desc("updateDate"));
-        else
+        }
+        else {
             criteria.addOrder(Order.asc("updateDate"));
+        }
         return findByCriteria(criteria);
 
     }
@@ -312,10 +315,12 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateInStatus);
             int dayInStatus=cal.get(Calendar.DAY_OF_YEAR);
-            if (lastDayCounted != dayInStatus)
+            if (lastDayCounted != dayInStatus) {
                 days += DateHelper.getNumberOfDaysBetween(dateInStatus, new Date()) + 1;
-            else
+            }
+            else {
                 days += DateHelper.getNumberOfDaysBetween(dateInStatus, new Date());
+            }
         }
 
         LOG.debug("Claim {} in statuses for {} days", claimId, days);

@@ -30,7 +30,6 @@ public class ActivityMonitoringAction extends BaseAction {
     public String execute() {
 
         method = "execute";
-        usersViewingThisClaim = new ArrayList<String>();
         int currentUserID = getUserId();
         Integer claimId = getModelIdFromSession(Claim.class);
         Claim claim;
@@ -45,7 +44,7 @@ public class ActivityMonitoringAction extends BaseAction {
                 return SUCCESS;
            }
         } else {
-            LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId in session {}.",
+            LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not have claimId in session {}.",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
             return SUCCESS;
         }
@@ -73,6 +72,9 @@ public class ActivityMonitoringAction extends BaseAction {
                                 new Object[]{user.getId(), user.toString(), user.getChorganisation().getName(), claimId, claim.getChorganisation().getName()});
                     } else {
                         LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
+                        if (usersViewingThisClaim == null) {
+                            usersViewingThisClaim = new ArrayList<String>(5);
+                        }
                         usersViewingThisClaim.add(user.toString());
                     }
                 }
@@ -80,8 +82,11 @@ public class ActivityMonitoringAction extends BaseAction {
         } else {
                 LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
-         }
+        }
 
+        if (usersViewingThisClaim == null) {
+            usersViewingThisClaim = new ArrayList<String>(0);
+        }
         return SUCCESS;
     }
 

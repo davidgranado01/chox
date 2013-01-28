@@ -16,7 +16,6 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
-import idas.chox.data.notifications.LiabilityStatusUpdatedNotification;
 
 
 public class AcknowledgeClaim extends BaseActivity {
@@ -107,7 +106,6 @@ public class AcknowledgeClaim extends BaseActivity {
             Comment comment = Comment.New(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
-            claim.addNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);

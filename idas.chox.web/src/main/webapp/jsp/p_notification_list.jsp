@@ -1,11 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script type="text/javascript">
-
-   
-</script>
-
 <s:if test="hasNotifications">
     <div class="chox-claim-header x-panel-bwrap chox-form-container" >
         <fieldset class="x-fieldset">
@@ -19,7 +14,7 @@
                                 <ul>
                                     <s:iterator value="filteredNotifications">
                                         <li><s:property value="message"/> - <s:date name="createdDate" format="dd/MM/yyyy HH:mm:ss"  /> <s:if test="isClaimNotificationEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if>
-                                            <s:if test="isClaimNotificationEditable && !isacknowledged ">(<a href='javascript:acknowledgeNotification(<s:property value="id"/>);'>Acknowledge note</a>)</s:if>
+                                            <s:if test="isClaimNotificationEditable && !acknowledged ">(<a href='javascript:acknowledgeNotification(<s:property value="id"/>);'>Acknowledge note</a>)</s:if>
                                             <s:elseif test="isClaimNotificationEditable">(Note acknowledged)</s:elseif>
 
                                         </li>
@@ -52,7 +47,7 @@
                             <ul>
                                 <s:iterator value="filteredNotifications">
                                     <li><s:property value="message"/> - <s:date name="createdDate" format="dd/MM/yyyy HH:mm:ss"  /> <s:if test="isClaimNotificationEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if>
-                                        <s:if test="isClaimNotificationEditable && !isacknowledged ">(<a href='javascript:acknowledgeNotification(<s:property value="id"/>);'>Acknowledge note</a>)</s:if>
+                                        <s:if test="isClaimNotificationEditable && !acknowledged ">(<a href='javascript:acknowledgeNotification(<s:property value="id"/>);'>Acknowledge note</a>)</s:if>
                                         <s:else>(Note acknowledged)</s:else>
 
                                     </li>

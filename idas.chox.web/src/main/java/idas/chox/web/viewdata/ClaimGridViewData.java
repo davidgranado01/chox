@@ -1,5 +1,11 @@
 package idas.chox.web.viewdata;
 
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
@@ -8,11 +14,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.util.AccessibilityHelper;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class ClaimGridViewData {
 
@@ -56,8 +57,9 @@ public class ClaimGridViewData {
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
-        if (claim.getStatusModifiedDate() != null)
+        if (claim.getStatusModifiedDate() != null) {
             this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
+        }
 
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();

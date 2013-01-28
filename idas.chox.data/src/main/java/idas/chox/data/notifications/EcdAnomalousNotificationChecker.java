@@ -14,9 +14,9 @@ import idas.chox.core.util.DateHelper;
 public class EcdAnomalousNotificationChecker implements AnomalousCheck {
 
     @Override
-    public boolean check(Claim c) {
+    public boolean check(Claim claim) {
 
-        return isClaimAnomalies(c);
+        return isClaimAnomalies(claim);
 
     }
 
@@ -60,12 +60,12 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
     }
 
     @Override
-    public Notification BuildNotification() {
+    public Notification buildNotification() {
         return new EcdAnomalousNotification();
     }
 
     @Override
     public boolean isRefreshRequired() {
-        return true;
+        return false;
     }
 }

@@ -2,7 +2,15 @@ package idas.chox.data.services;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -29,28 +37,43 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
-import idas.chox.core.model.NotificationType;
+import idas.chox.data.notifications.NotificationType;
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
+import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
-    private AuditTrailService auditTrailService;
-    private CommentService commentService;
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
+
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
+    private AuditTrailService auditTrailService;
+    private CommentService commentService;
+    private NotificationService notificationService;
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
+    private static final Set anomaliesStatus = new HashSet(9);
+
+    static {
+            anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            anomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
+            anomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
+            anomaliesStatus.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+            anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+            anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+    }
 
     @Override
     public int getActivityMonitorRequestInterval() {
@@ -78,6 +101,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         this.commentService = commentService;
     }
 
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     public ClaimServiceImpl() {
         super();
     }
@@ -93,6 +120,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
         LOG.debug("Claim updated and saved.");
     }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void checkRepairBookedInDateAnomaly(Claim claim) {
+        try {
+            LOG.debug("Adding hire monitoring detail anomalies - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            notificationService.checkForAnomalies(claim, NotificationType.RepairBookedInDateAnomalousNotification.getType());
+            LOG.debug("Hire monitoring detail anomalies added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+        } catch (Exception ex) {
+            LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
+                        NotificationType.RepairBookedInDateAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
+        }
+   }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void checkTotalLossAnomaly(Claim claim) {
+        try {
+            LOG.debug("Adding total loss anomaly - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+            notificationService.checkForAnomalies(claim, NotificationType.TotalLossAnomalousNotification.getType());
+            LOG.debug("Hire total loss anomaly added - claim version={}, hmd version={}", claim.getVersion(), claim.getHireMonitoringDetail().getVersion());
+        } catch (Exception ex) {
+            LOG.error("Exception thrown adding notifications of type '{}' to claim={}: {}", new Object[]{
+                        NotificationType.TotalLossAnomalousNotification.getType(), claim.getId(), ex.getMessage()});
+        }
+   }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -114,8 +167,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
      */
     @Override
     public Claim updateClaimWithInvalidSessionVersion(Claim claim) {
+        LOG.debug("Evicting claim={} with version={}", claim.getId(), claim.getVersion());
         evict(claim);
-        return (Claim) getSession().load(Claim.class, claim.getId());
+        claim = (Claim) getSession().load(Claim.class, claim.getId());
+        LOG.debug("Loaded new claim={} with version={}", claim.getId(), claim.getVersion());
+        return claim;
     }
     
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -671,7 +727,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty()) {
             if (searchCriteria.getStatuses().contains(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
                 ArrayList<String> handlersActionStatus = new ArrayList<String>();
-                handlersActionStatus.addAll(Arrays.asList("ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"));
+                handlersActionStatus.addAll(ClaimStatus.getHandlerOutstandingStatusList());
                 if (searchCriteria.getStatuses().size() > 1) {
                     handlersActionStatus.addAll(searchCriteria.getStatuses());
                 }
@@ -700,21 +756,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getIsAnomalies()) {
 
-            Set anomaliesStatus = new HashSet();
-            anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            anomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
-            anomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
-            anomaliesStatus.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-            anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
 
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("isacknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
-            criteria.add(Subqueries.propertyIn("id", noti));
+//            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
+            DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Projections.property("claim"));
+            DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
+            criteria.add(Subqueries.propertyIn("id", inSubclause));
             criteria.add(Restrictions.in("status", anomaliesStatus));
-
+// criteria.add(Restrictions.sqlRestriction("exists (select * from notification notific where notific.claim_id=this.id and type in ('','','','','') "));
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
@@ -745,7 +793,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
             } else {
-                LOG.debug("Supplier Id={}", getCurrentUser().getChorganisation().getId());
                 // Get the id's of the BRE Bands mapped to this CHO
                 DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation").createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
                 bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
@@ -776,9 +823,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getLiabilityStatuses() != null && !searchCriteria.getLiabilityStatuses().isEmpty()) {
             criteria.add(Restrictions.in("liabilityStatus", searchCriteria.getLiabilityStatuses().toArray()));
-            LOG.debug("Liability Search Criteria: {}", Arrays.toString(searchCriteria.getLiabilityStatuses().toArray()));
-        } else {
-            LOG.debug("Liability Search Criteria not present");
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

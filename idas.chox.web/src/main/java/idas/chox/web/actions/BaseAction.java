@@ -389,6 +389,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
             throw new AccessDeniedException(ex.getMessage());
         } else {
             LOG.warn("handleException: exception is {} of class '{}'", ex.getMessage(), ex.getClass());
+            if (ex.getCause() != null) {
+                LOG.warn("     caused by: {}", ex.getCause(), ex.getCause());
+            }
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);

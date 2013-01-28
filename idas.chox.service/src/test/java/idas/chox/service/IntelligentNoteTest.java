@@ -6,11 +6,9 @@ import java.util.List;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import idas.chox.core.model.*;
 import idas.chox.test.BaseTest;
-import idas.chox.core.services.InsurerIntelligentNoteService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.intelligentNotes.*;
 

@@ -41,13 +41,16 @@ public class FilterByStatus extends BaseFilter {
         if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
         }
-        if (choId > -1) {
-            claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
-        }
+
         if (claimTypeId > -1) {
-            claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.values()[claimTypeId])));
-            if(ClaimType.FIXED_FEE.equals(ClaimType.values()[claimTypeId]) && getStatus().equals(ClaimStatus.CLAIM_REJECTED))
-                return null;
+            // Set filter on Claim Type
+            if(ClaimType.FIXED_FEE.getClaimTypeValue() == claimTypeId && getStatus().equals(ClaimStatus.CLAIM_REJECTED)) {
+                // FixedFee rejected claims have their own queue/filter so we don't want to return anything in this filter.
+                // Therefore give an empty set for the claim types
+                claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>());
+            } else {
+                claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.values()[claimTypeId])));
+            }
         }
 
         if (ClaimStatus.AWAITING_LIABILITY_RESOLUTION.equals(getStatus())) {

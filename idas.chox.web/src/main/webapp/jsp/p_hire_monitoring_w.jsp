@@ -71,9 +71,6 @@
         ui.ajaxForm(form,onHireMonitoringSubmitResponseReceived,'html');
         $("#HMsuccessBox").fadeOut(10000);
 
-        var repairBookDt = $("#repairBookInDate").val();
-        $("#notificationRepairBookInDate").val(repairBookDt);
-
         //Call Information Help ToolTip
         createInfoHelp();
 
@@ -101,8 +98,8 @@
     }
         
     function onHireMonitoringSubmitResponseReceived(responseText, statusText){
-        var repairBookDt = $("#repairBookInDate").val();
-        $("#notificationRepairBookInDate").val(repairBookDt);            
+//        var repairBookDt = $("#repairBookInDate").val();
+//        $("#notificationRepairBookInDate").val(repairBookDt);            
     }
 
     function createInfoHelp(){
@@ -279,7 +276,6 @@
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" id="date_compare_field" value=''>
-    <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
     <fieldset class="x-fieldset partial">
 
@@ -445,22 +441,22 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Name of IME</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringnameOfImeId" name="nameOfIme" value="<s:property value="nameOfIme" />"/>
+                <input type="text" class="chox-ttxt" id="hireMonitoringnameOfImeId" name="nameOfIme" value="<s:property value="nameOfIme" />"/>
             </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Labour Rate (Per Hour)</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourRateId" name="labourRate" value="<s:property value="labourRate" />"/>
+                <input type="text" class="chox-ttxt" id="hireMonitoringlabourRateId" name="labourRate" value="<s:property value="labourRate" />"/>
             </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Labour Hours</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourHourId" name="labourHour" value="<s:property value="labourHour" />"/>
+                <input type="text" class="chox-ttxt" id="hireMonitoringlabourHourId" name="labourHour" value="<s:property value="labourHour" />"/>
             </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Total Labour Cost</label>
-                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourCostId" name="labourCost" value="<s:property value="labourCost" />"/>
+                <input type="text" class="chox-ttxt" id="hireMonitoringlabourCostId" name="labourCost" value="<s:property value="labourCost" />"/>
             </div>
 
             <div class="chox-form-item">
@@ -477,13 +473,13 @@
             <s:if test="isRepairOnlyCheckLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Repair Only (No Hire)? </label>
-                    <table><tr><td><s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
+                    <table><tr><td><s:checkbox id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
-                    <s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
+                    <s:checkbox id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
                 </div>
             </s:else>
 
@@ -497,14 +493,14 @@
             <s:else>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
-                    <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
+                    <s:checkbox id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
                 </div>
             </s:else>
 
             <s:if test="clientVatRegisteredLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">Is Your Client VAT Registered?</label>
-                    <table><tr><td><s:checkbox   id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" alt="" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
+                    <table><tr><td><s:checkbox id="clientVatRegisteredId" name="clientVatRegistered" /></td><td><img src="../images/sign_info.png" width="13" alt="" height="13" id="dateClientVatRegisteredId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
@@ -515,7 +511,7 @@
             </s:else>
 
             <div class="chox-form-item-button">
-                <input type="button"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+                <input type="button" id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="updateInsurer" /><label>Update Insurer</label>
             </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg">
                 <s:property value="actionError" />

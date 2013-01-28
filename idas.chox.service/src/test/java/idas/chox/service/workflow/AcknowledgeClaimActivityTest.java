@@ -48,7 +48,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         claim.setInsurer(insurer);
         
         claim.setComments(null);
-        claim.setNotifications(null);
 
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
@@ -68,7 +67,6 @@ public class AcknowledgeClaimActivityTest  extends BaseTest {
         claim.setInsurer(insurer);
         
         claim.setComments(null);
-        claim.setNotifications(null);
 
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);

@@ -38,9 +38,10 @@ public class ClaimStatus {
     public static final String MANUAL_INVOICE_CONTESTED = "ManualInvoiceContested";
     public static final String AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcome";
     public static final String MANUAL_INVOICE_UNASSIGNED = "ManualInvoiceUnassigned";
-    private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>();
-    private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>();
-    private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>();
+    private static final List<String> invoiceWithInsurerStatuses = new ArrayList<String>(12);
+    private static final List<String> awaitingLiabilityStatuses = new ArrayList<String>(1);
+    private static final List<String> invoiceWithCHOStatuses = new ArrayList<String>(3);
+    private static final List<String> handlerOutstandingStatusList = new ArrayList<String>(10);
 
     static {
         invoiceWithInsurerStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
@@ -62,6 +63,16 @@ public class ClaimStatus {
         invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         invoiceWithCHOStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
 
+        handlerOutstandingStatusList.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        handlerOutstandingStatusList.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        handlerOutstandingStatusList.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+        handlerOutstandingStatusList.add(ClaimStatus.INVOICE_REF_TO_CH);
+        handlerOutstandingStatusList.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        handlerOutstandingStatusList.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+        handlerOutstandingStatusList.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        handlerOutstandingStatusList.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        handlerOutstandingStatusList.add(ClaimStatus.CLAIM_PENDING);
+        handlerOutstandingStatusList.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
     }
 
     public static List<String> getAwaitingLiabilityStatusList() {
@@ -203,6 +214,11 @@ public class ClaimStatus {
  //           results.add(ClaimStatus.MANUAL_INVOICE_PAID);
         }
         return results;
+    }
+
+
+    public static List<String> getHandlerOutstandingStatusList() {
+        return handlerOutstandingStatusList;
     }
 
     public static String getHandlerOutstandingStatusListAsString() {

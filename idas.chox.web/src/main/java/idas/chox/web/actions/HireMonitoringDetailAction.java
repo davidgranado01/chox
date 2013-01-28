@@ -1,37 +1,32 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Customer;
-import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.services.LookupService;
-import idas.chox.data.notifications.ClaimAnomalousChecker;
-import idas.chox.data.notifications.HireUpdatedNotification;
-import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-//import javax.validation.ConstraintViolation;
-//import javax.validation.Validation;
-//import javax.validation.Validator;
-//import javax.validation.ValidatorFactory;
+
+import idas.chox.core.model.Customer;
+import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.services.LookupService;
+import idas.chox.service.security.ApplicationAccessibility;
 
 /**
  *
- * @author Emmanuel
+ * @author John
  */
 public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringDetail> {
     
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
-    private ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker;
-    private Boolean isUpdateInsurer;
     private Boolean isTotalLossOriginal;
+    private Date repairBookedInDateOriginal;
     private String labourRate;
     private String labourHour;
     private String labourCost;
-//    private static Validator validator;
     
     public String getLabourCost() {
         return labourCost;
@@ -67,6 +62,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
         if (hireMonitoringDetail != null) {
             isTotalLossOriginal = hireMonitoringDetail.isIsTotalLostCheck();
+            repairBookedInDateOriginal = hireMonitoringDetail.getRepairBookInDate();
             return hireMonitoringDetail;
         }
         isTotalLossOriginal = false;
@@ -102,19 +98,30 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 model.setLabourRate(null);
             }
 
-//        if (validateModel(model).equals(ERROR)) {
-//            return ERROR;            
-//        }
-
-            claim.setHireMonitoringDetail(model);
-            claim.addNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
-
-            if (isUpdateInsurer) {
-                claim.addNotification(new HireUpdatedNotification());
+            boolean updated = false;
+            if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
+                    || (model.getRepairBookInDate() == null && repairBookedInDateOriginal != null)
+                    || (repairBookedInDateOriginal != null && model.getRepairBookInDate() != null 
+                            && repairBookedInDateOriginal.compareTo(model.getRepairBookInDate()) != 0)) {
+                claimService.checkRepairBookedInDateAnomaly(claim);
+                // update model in session before calling super.updateModel as model version
+                // may have been increased when anomalous added or removed from claim.
+                updated = true;
             }
-            isTotalLossOriginal = model.isIsTotalLostCheck();
-            // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.
-            updateModelInSession(Arrays.asList(claim));
+
+            if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
+                claimService.checkTotalLossAnomaly(claim);
+                updated=true;
+            }
+        
+            if (updated) {
+                // update model in session before calling super.updateModel as model version
+                // may have been increased when anomalous added or removed from claim.
+                updateModelInSession(Arrays.asList(claim, model, claim.getCustomer()));
+            }
+
+            LOG.debug("HireMonitoringDetail to be updated: claim version={}, hmd version={}", claim.getVersion(), model.getVersion());
+
             return super.updateModel();
         } catch (Exception ex) {
             handleException(ex);
@@ -135,30 +142,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             LOG.debug(" HireMonitoringDetailAction validation is not done as claim is null");
         }
     }
-    
-//    private String validateModel(HireMonitoringDetail model) {
-//        
-//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//        validator = factory.getValidator();
-//        
-//        Set<ConstraintViolation<HireMonitoringDetail>> constraintViolations = validator.validate(model);
-//        
-//        if (constraintViolations.size() > 0) {
-//            LOG.info("hiremonitoring field validation failed.");
-//            List errorMessage = new ArrayList(0);
-//            for (ConstraintViolation<HireMonitoringDetail> violation : constraintViolations) {
-//                LOG.info(violation.getPropertyPath().toString() + " = " + violation.getMessage());
-//                errorMessage.add(violation.getMessage());
-//            }
-//            super.setActionError(errorMessage.toString());
-//            return ERROR;
-//        } else {
-//            LOG.debug("Hiremonitoring field validation success .");
-//            return SUCCESS;
-//        }
-//        
-//    }
-    
+        
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
@@ -176,15 +160,4 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         return nonProvisionReasons;
     }
     
-    public void setHireMonitoringDetailUpdatedChecker(ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker) {
-        this.hireMonitoringDetailUpdatedChecker = hireMonitoringDetailUpdatedChecker;
-    }
-    
-    public Boolean getIsUpdateInsurer() {
-        return isUpdateInsurer;
-    }
-    
-    public void setIsUpdateInsurer(Boolean isUpdateInsurer) {
-        this.isUpdateInsurer = isUpdateInsurer;
-    }
 }

@@ -144,6 +144,7 @@
     </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="claimService" ref="claimService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>
@@ -256,6 +257,10 @@
     </bean>
     
     <bean id="penaltyChargeService" class="idas.chox.data.services.PenaltyChargeServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>

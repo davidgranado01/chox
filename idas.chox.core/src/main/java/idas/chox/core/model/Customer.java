@@ -150,6 +150,15 @@ public class Customer extends Entity implements Serializable {
     private String hpiVehicleTransmission;
     private String hpiError;
     private Date hpiFirstRegistration;
+    private Claim claim;
+
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
 
     public String getInsurerName() {
         return insurerName;
@@ -394,8 +403,9 @@ public class Customer extends Entity implements Serializable {
      */
     public void setVehicleRegistration(java.lang.String vehicleRegistration) {
         this.vehicleRegistration = vehicleRegistration;
-        if (this.vehicleRegistration != null)
+        if (this.vehicleRegistration != null) {
             this.vehicleRegistration = this.vehicleRegistration.replaceAll(" ", "");
+        }
     }
 
     /**
@@ -674,8 +684,9 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getIsTotalLossDesc() {
-        if (isTotalLoss == null)
+        if (isTotalLoss == null) {
             return "";
+        }
         return this.isTotalLoss ? "Yes" : "No";
     }
 
@@ -726,10 +737,12 @@ public class Customer extends Entity implements Serializable {
         return canAccessOtherVehicle;
     }
     public String getCanAccessOtherVehicleDesc() {
-        if (canAccessOtherVehicle == null)
+        if (canAccessOtherVehicle == null) {
             return "";
-        else
+        }
+        else {
             return canAccessOtherVehicle ? "Yes" : "No";
+        }
     }
 
     public void setCanAccessOtherVehicle(Boolean canAccessOtherVehicle) {
@@ -740,10 +753,12 @@ public class Customer extends Entity implements Serializable {
         return courtesyCarEntitled;
     }
     public String getCourtesyCarEntitledDesc() {
-        if (courtesyCarEntitled == null)
+        if (courtesyCarEntitled == null) {
             return "";
-        else
+        }
+        else {
             return courtesyCarEntitled ? "Yes" : "No";
+        }
     }
 
     public void setCourtesyCarEntitled(Boolean courtesyCarEntitled) {
@@ -751,9 +766,6 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getOtherVehicle() {
-//        if (otherVehicle == null)
-//            return "";
-//        else
             return otherVehicle;
     }
 
@@ -765,10 +777,12 @@ public class Customer extends Entity implements Serializable {
         return otherVehicleUsed;
     }
     public String getOtherVehicleUsedDesc() {
-        if (otherVehicleUsed == null)
+        if (otherVehicleUsed == null) {
             return "";
-        else
+        }
+        else {
             return otherVehicleUsed ? "Yes" : "No";
+        }
     }
 
     public void setOtherVehicleUsed(Boolean otherVehicleUsed) {
@@ -776,9 +790,6 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getSpecialRequirements() {
-//        if (specialRequirements == null)
-//            return "";
-//        else
             return specialRequirements;
     }
 
@@ -787,9 +798,6 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getSpecificVehicleReason() {
-//        if (specificVehicleReason == null)
-//            return "";
-//        else
             return specificVehicleReason;
     }
 
@@ -801,10 +809,12 @@ public class Customer extends Entity implements Serializable {
         return specificVehicleRequired;
     }
     public String getSpecificVehicleRequiredDesc() {
-        if (specificVehicleRequired == null)
+        if (specificVehicleRequired == null) {
             return "";
-        else
+        }
+        else {
             return specificVehicleRequired ? "Yes" : "No";
+        }
     }
 
     public void setSpecificVehicleRequired(Boolean specificVehicleRequired) {
@@ -812,9 +822,6 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getTypeVehicleRequired() {
-//        if (typeVehicleRequired == null)
-//            return "";
-//        else
             return typeVehicleRequired;
     }
 
@@ -893,10 +900,12 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getIsTotalLossOriginalDesc() {
-        if (isTotalLossOriginal == null)
+        if (isTotalLossOriginal == null) {
             return "";
-        else
+        }
+        else {
             return isTotalLossOriginal ? "(Yes)" : "(No)";
+        }
     }
 
     public void setIsTotalLossOriginal(Boolean isTotalLossOriginal) {

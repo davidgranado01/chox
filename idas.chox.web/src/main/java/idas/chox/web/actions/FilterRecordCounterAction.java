@@ -3,12 +3,16 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Filter;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.web.viewdata.FilterViewData;
 
 public class FilterRecordCounterAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(FilterRecordCounterAction.class);
 
     private FilterService filterService;
     private List<Filter> filters;
@@ -28,17 +32,23 @@ public class FilterRecordCounterAction extends BaseAction {
         getSession().put("filterClaimTypeId", filterClaimTypeId);
         filters = filterService.getAvailableFilters(this.getAuthenticatedUser());
         for (Filter filter : filters) {
+            LOG.debug("Setting up filter '{}'", filter.getName());
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
-            if (getIsCHO()) {
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId)).intValue()));
+            try {
+                if (getIsCHO()) {
+                    filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.TRUE, filterOrgId, -1, filterClaimTypeId)).intValue()));
+                }
+                else if (getIsInsurer()) {
+                    filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId)).intValue()));
+                }
+                else {
+                    filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId)).intValue()));
+                }
+            } catch (Exception ex) {
+                LOG.error("Error setting up filter '{}': ", filter.getName(), ex);
             }
-            else if (getIsInsurer()) {
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(Boolean.FALSE, -1, filterOrgId, filterClaimTypeId)).intValue()));
-            }
-            else {
-                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(null, -1, -1, filterClaimTypeId)).intValue()));
-            }
+            LOG.debug("    filter description: '{}'", filterViewData.getDescription());
             filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }

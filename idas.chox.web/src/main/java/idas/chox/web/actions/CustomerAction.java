@@ -7,6 +7,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
     private VehicleClassService vehicleClassService;
     private int vehicleClassId;
     private String oldVRN;
-
+    private boolean isUsableOriginal;
     @Override
     protected Customer loadModel() {
 
@@ -28,6 +29,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             return new Customer();
         } else {
             oldVRN = claim.getCustomer().getVehicleRegistration();
+            isUsableOriginal = claim.getCustomer().getIsUsable();
             return claim.getCustomer();
         }
     }
@@ -60,6 +62,14 @@ public class CustomerAction extends ClaimModelAction<Customer> {
                 model.setHpiVehicleTransmission(null);
                 model.setHpiFirstRegistration(null);
             }
+        }
+        // If cusomer car is now usable, we need to check for hire anomolies
+        if (!isUsableOriginal && model.getIsUsable()) {
+                claimService.checkRepairBookedInDateAnomaly(claim);
+                // update model in session before calling super.updateModel as model version
+                // may have been increased when anomalous added or removed from claim.
+//                updateModelInSession(Arrays.asList(claim, claim.getHireMonitoringDetail(), model));
+            
         }
         claim.setCustomer(model);
         if (vehicleClassId >= 0) {

@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.data.notifications.NotificationType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -26,8 +27,8 @@ import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import idas.chox.core.model.*;
 import static idas.chox.core.model.PenaltyCharge.*;
+import idas.chox.core.model.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.claim.ClaimObjectService;
@@ -101,6 +102,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String fLiabilityNotes;
     private ClaimObjectService claimObjectService;
     private ClaimService service;
+    private NotificationService notificationService;
     private InvoiceService invoiceService;
     private LookupService lookupService;
     private WorkgroupService workgroupService;
@@ -130,6 +132,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
         this.penaltyChargeService = penaltyChargeService;
+    }
+    
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
     
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
@@ -1004,18 +1010,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     public List<Notification> getFilteredNotifications() {
         List<Notification> returnList;
-        LOG.debug("Total list size " + claim.getNotifications());
+        List<Notification> notifications = notificationService.getNotifications(claim.getId());
+        LOG.debug("Total list size={} ", notifications.size());
         if (getIsInsurer()) {
-            returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
+            returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
                     LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
                             + " " + object.getClaim().getChoReference()
-                            + " " + object.getNotificationType()
-                            + " " + object.getNotificationType().isInsurerType());
-                    if (object.getNotificationType().isInsurerType()) {
+                            + " " + object.getType());
+                    if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return true;
                     }
                     return false;
@@ -1024,16 +1030,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             LOG.debug("Notification Return List Size Insurer " + returnList.size());
             return returnList;
         } else {
-            returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
+            returnList = ListUtils.filter(notifications, new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
                     LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
-                            + " " + object.getClaim().getChoReference()
-                            + " " + object.getNotificationType()
-                            + " " + object.getNotificationType().isInsurerType());
-                    if (object.getNotificationType().isInsurerType()) {
+                            + " " + object.getClaim().getChoReference());
+                    if (NotificationType.getNotificationType(object.getType()).isInsurerType()) {
                         return false;
                     }
                     return true;
@@ -1053,21 +1057,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String removeNotification() {
 
         if (notificationId > 0) {
-
-            Notification notification = claim.getNotificationById(notificationId);
-            if (notification != null) {
-                claim.removeNotifications(notification);
-                service.updateClaim(claim);
-            }
-
-        } else {
+            notificationService.removeNotificationById(notificationId);
+        } else { // No id given so remove all notifications
             if (getIsInsurer()) {
-                claim.removeAllInsurerNotifications();
+                notificationService.removeAllInsurerNotifications(claim.getId());
             } else {
-                claim.removeAllCHONotifications();
+                notificationService.removeAllCHONotifications(claim.getId());
             }
-            service.updateClaim(claim);
-
         }
 
         return SUCCESS;
@@ -1076,21 +1072,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String acknowledgeNotification() {
 
         if (notificationId > 0) {
-
-            Notification notification = claim.getNotificationById(notificationId);
-            if (notification != null) {
-                claim.acknowledgeNotifications(notification);
-                service.updateClaim(claim);
-            }
-
+                notificationService.acknowledgeNotificationById(notificationId);
         } else {
             LOG.debug("Acknowledge All Notifications");
             if (getIsInsurer()) {
                 LOG.debug("Acknowledge All Notifications for Insurer ");
-                claim.acknowledgeAllNotifications();
+                notificationService.acknowledgeAllInsurerNotifications(claim.getId());
+            } else {
+                LOG.debug("Acknowledge All Notifications for CHO ");
+                notificationService.acknowledgeAllCHONotifications(claim.getId());
             }
-
-            service.updateClaim(claim);
         }
 
         return SUCCESS;
@@ -1160,10 +1151,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Boolean getHasNotifications() {
         LOG.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
         return getFilteredNotifications().size() > 0;
-    }
-
-    public Boolean getIsClaimAnomalous() {
-        return claim.getIsIsAnomalies();
     }
 
     public boolean getIsManualInvoice() {

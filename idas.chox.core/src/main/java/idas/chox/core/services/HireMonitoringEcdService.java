@@ -1,9 +1,10 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.HireMonitoringEcd;
 import java.util.Date;
 import java.util.List;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.HireMonitoringEcd;
 
 public interface HireMonitoringEcdService {
 
@@ -17,5 +18,5 @@ public interface HireMonitoringEcdService {
 
     public Date getLatestHireMonitoringECDDate(Claim claim);
     
-    public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd, boolean isUpdateInsurer);
+    public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd);
 }

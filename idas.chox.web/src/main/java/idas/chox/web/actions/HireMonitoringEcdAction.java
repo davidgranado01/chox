@@ -13,7 +13,6 @@ import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.data.notifications.ClaimAnomalousChecker;
 import idas.chox.service.security.ApplicationAccessibility;
 
 /**
@@ -28,8 +27,6 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
     private List reasonOfDelay;
     private LookupService lookupService;
     private int reasonOfDelayId = -1;
-    private ClaimAnomalousChecker newECDAddedChecker;
-    private boolean isUpdateInsurer;
     private HireMonitoringEcdService hireMonitoringEcdService;
 
     @Override
@@ -52,8 +49,9 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
             if (reasonOfDelayId > 0) {
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());
-                hireMonitoringEcdService.addNewHireMonitoringEcd(claim, model, isIsUpdateInsurer());
-                // update model in session before calling super.updateModel as claim version has been increased when anomalous removed from claim.
+                hireMonitoringEcdService.addNewHireMonitoringEcd(claim, model);
+                // update claim in session before calling super.updateModel as claim version
+                // has been increased when ECD added
                 updateModelInSession(Arrays.asList(claim));
                 super.updateModel();
             }
@@ -119,18 +117,6 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
-    }
-
-    public void setNewECDAddedChecker(ClaimAnomalousChecker claimAnomalousChecker) {
-        this.newECDAddedChecker = claimAnomalousChecker;
-    }
-
-    public boolean isIsUpdateInsurer() {
-        return isUpdateInsurer;
-    }
-
-    public void setIsUpdateInsurer(boolean isUpdateInsurer) {
-        this.isUpdateInsurer = isUpdateInsurer;
     }
 
     public Integer getIECDFormAccessRight() {

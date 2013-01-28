@@ -3,13 +3,13 @@ package idas.chox.core.search;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
-import java.util.*;
 
 /**
  *
