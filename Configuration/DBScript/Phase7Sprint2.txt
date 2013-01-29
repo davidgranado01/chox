@@ -791,7 +791,7 @@ SELECT cho1.name AS Grouping,
        (SELECT max(created_date) AS max_created_date
         FROM audit_trail a3
         WHERE a3.claim_id = c.id
-          AND (a3.reverted=FALSE a3.last_modified_date > datStart)
+          AND (a3.reverted=FALSE or a3.last_modified_date > datStart)
           AND a3.created_date < datStart)
    ORDER BY id DESC LIMIT 1)) as "Open Claims Period End ",
                                
