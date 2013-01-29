@@ -1,6 +1,7 @@
 DROP FUNCTION taskExportReport(character varying, numeric, IN integer[]);
 CREATE OR REPLACE FUNCTION taskExportReport(IN org character varying, IN orgid numeric, IN integer[])
   RETURNS TABLE("Supplier Reference" character varying,
+                "Workgroup" character varying,
                 "Current CHOX Status" character varying,   
                 "Status Of Claim When Task Created" character varying, 
                 "Due Date" timestamp without time zone,
@@ -21,7 +22,8 @@ IF org ILIKE 'INS' THEN
  RETURN QUERY
 
    select 
-    c.cho_reference as "Supplier Reference", 
+    c.cho_reference as "Supplier Reference",
+    wkgp.name as "Workgroup",
     c.status as "Current CHOX Status",
     a.new_status "Status Of Claim When Task Created",
     t.due_date as "Due Date",
@@ -41,6 +43,7 @@ IF org ILIKE 'INS' THEN
            left outer join insurer ins on (ins.id = w.insurer_id)
            left outer join chorganisation cho on (cho.id = w.chorganisation_id)
            left outer join web_user_role wur on (wur.name = t.visibility_role)
+           left outer join workgroup wkgp on (wkgp.workgroup_id = c.workgroup_id)
            inner join audit_trail a on (a.claim_id = c.id)
   where 
     t.complete = false 
