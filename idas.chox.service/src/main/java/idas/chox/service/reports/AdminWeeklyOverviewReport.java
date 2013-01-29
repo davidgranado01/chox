@@ -158,18 +158,12 @@ public class AdminWeeklyOverviewReport implements Report {
             // GET START DATE
             Calendar c1 = Calendar.getInstance();
             c1.setTime(startDate);
-//            Integer dayOfWeek1 = c1.get(Calendar.DAY_OF_WEEK);
-//            c1.add(Calendar.DATE, -dayOfWeek1 + 2);
             Date dateFirstMonday = startDate;
             Date currentMonday = dateFirstMonday;
 
             // GET END DATE
             Calendar c2 = Calendar.getInstance();
             c2.setTime(endDate);
-//            Integer dayOfWeek2 = c2.get(Calendar.DAY_OF_WEEK);
-//            c2.add(Calendar.DATE, -dayOfWeek2 + 2);
-//            Date dateLastMonday = c2.getTime();
-//            c2.add(Calendar.DATE, 6);
             Date dateLastSunday = c2.getTime();
             
             List<WeekSummary> weekSummaries = new ArrayList<WeekSummary>();
@@ -234,7 +228,6 @@ public class AdminWeeklyOverviewReport implements Report {
             LOG.error("Exception thrown generating Admin Weekly Overview Report: {} [user={}]", ex.getMessage(), currentUser.getId());
             LOG.error("Report params were: startDate={}, endDate={}", startDate, endDate);
             throw ex;
-//            ex.printStackTrace();
         }
 
         return reportParameters;

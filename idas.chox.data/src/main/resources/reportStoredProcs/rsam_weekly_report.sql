@@ -25,9 +25,9 @@ datStart date;
 datEnd date;
 insId int;
 BEGIN 
-	datStart = dat::date;
-	datEnd = (datStart - interval '1 week')::date;
-	insId = insurerId;
+    datStart = dat::date;
+    datEnd = (datStart - interval '1 week')::date;
+    insId = insurerId;
 RETURN QUERY
 
 --Column 1: Grouping
@@ -46,27 +46,28 @@ SELECT 'ALL' as Grouping,
 
 --Column 4: Open Claims Period Start - all claims in an open status at the end of the previous week (2359 Sunday minus 1 week).     
   (SELECT count(*)
-	FROM audit_trail a, claim c
-	JOIN chorganisation cho ON c.chorganisation_id = cho.id
+    FROM audit_trail a, claim c
+    JOIN chorganisation cho ON c.chorganisation_id = cho.id
     WHERE cho.insurer_upload_only = FALSE
-	  AND c.id = a.claim_id
+      AND c.id = a.claim_id
       AND c.insurer_id = insId
       AND c.created_date < datEnd
-	  AND a.new_status NOT IN ('PaymentReceived',
-	                           'ClaimClosed',
-	                           'ClaimRejectionAccepted',
-	                           'InvoiceRejectionAccepted')
-	  AND a.id =
-	    (SELECT max(id)
-	     FROM audit_trail a2
-	     WHERE a2.claim_id=c.id
-	       AND a2.update_date =
-	         (SELECT max(update_date)
-	          FROM audit_trail a3
-	          WHERE a3.claim_id=c.id
-	            AND a3. update_date < datEnd
-	            AND (a3.reverted=FALSE
-	                 OR a3.last_modified_date > datEnd)))) as "Open Claims Period Start ",
+      AND a.new_status NOT IN ('PaymentReceived',
+                               'ClaimClosed',
+                               'ClaimRejectionAccepted',
+                               'InvoiceRejectionAccepted')
+      AND a.id =
+	  (SELECT id
+	   FROM audit_trail AT
+	   WHERE AT.claim_id=c.id
+	     AND AT.reverted=FALSE
+	     AND AT.created_date =
+	       (SELECT max(created_date) AS max_created_date
+	        FROM audit_trail a3
+	        WHERE a3.claim_id = c.id
+	          AND (a3.reverted=FALSE or a3.last_modified_date > datEnd)
+	          AND a3.created_date < datEnd)
+	   ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
@@ -81,16 +82,17 @@ SELECT 'ALL' as Grouping,
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted')
       AND a.id =
-        (SELECT max(id)
-         FROM audit_trail a2
-         WHERE a2.claim_id=c.id
-           AND a2.update_date =
-             (SELECT max(update_date)
-              FROM audit_trail a3
-              WHERE a3.claim_id=c.id
-                AND a3. update_date < datStart
-                AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > datStart)))) as "Open Claims Period End ",
+	  (SELECT id
+	   FROM audit_trail AT
+	   WHERE AT.claim_id=c.id
+	     AND AT.reverted=FALSE
+	     AND AT.created_date =
+	       (SELECT max(created_date) AS max_created_date
+	        FROM audit_trail a3
+	        WHERE a3.claim_id = c.id
+	          AND (a3.reverted=FALSE or a3.last_modified_date > datStart)
+	          AND a3.created_date < datStart)
+	   ORDER BY id DESC LIMIT 1)) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
@@ -324,16 +326,17 @@ SELECT cho1.name AS Grouping,
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted')
       AND a.id =
-        (SELECT max(id)
-         FROM audit_trail a2
-         WHERE a2.claim_id=c.id
-           AND a2.update_date =
-             (SELECT max(update_date)
-              FROM audit_trail a3
-              WHERE a3.claim_id=c.id
-                AND a3. update_date < datEnd
-                AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > datEnd)))) as "Open Claims Period Start ",
+  (SELECT id
+   FROM audit_trail AT
+   WHERE AT.claim_id=c.id
+     AND AT.reverted=FALSE
+     AND AT.created_date =
+       (SELECT max(created_date) AS max_created_date
+        FROM audit_trail a3
+        WHERE a3.claim_id = c.id
+          AND (a3.reverted=FALSE or a3.last_modified_date > datEnd)
+          AND a3.created_date < datEnd)
+   ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
@@ -346,16 +349,17 @@ SELECT cho1.name AS Grouping,
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted')
       AND a.id =
-        (SELECT max(id)
-         FROM audit_trail a2
-         WHERE a2.claim_id=c.id
-           AND a2.update_date =
-             (SELECT max(update_date)
-              FROM audit_trail a3
-              WHERE a3.claim_id=c.id
-                AND a3. update_date < datStart
-                AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > datStart)))) as "Open Claims Period End ",
+  (SELECT id
+   FROM audit_trail AT
+   WHERE AT.claim_id=c.id
+     AND AT.reverted=FALSE
+     AND AT.created_date =
+       (SELECT max(created_date) AS max_created_date
+        FROM audit_trail a3
+        WHERE a3.claim_id = c.id
+          AND (a3.reverted=FALSE a3.last_modified_date > datStart)
+          AND a3.created_date < datStart)
+   ORDER BY id DESC LIMIT 1)) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
@@ -567,16 +571,17 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted')
       AND a.id =
-        (SELECT max(id)
-         FROM audit_trail a2
-         WHERE a2.claim_id=c.id
-           AND a2.update_date =
-             (SELECT max(update_date)
-              FROM audit_trail a3
-              WHERE a3.claim_id=c.id 
-                AND a3.update_date < datEnd
-                AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > datEnd)))) as "Open Claims Period Start ",
+  (SELECT id
+   FROM audit_trail AT
+   WHERE AT.claim_id=c.id
+     AND AT.reverted=FALSE
+     AND AT.created_date =
+       (SELECT max(created_date) AS max_created_date
+        FROM audit_trail a3
+        WHERE a3.claim_id = c.id
+          AND (a3.reverted=FALSE OR a3.last_modified_date > datEnd)
+          AND a3.created_date < datEnd)
+   ORDER BY id DESC LIMIT 1)) as "Open Claims Period Start ",
      
 --Column 5: Open Claims Period End - all claims in an open status at the end of the week (2359 Sunday).                               
   (SELECT count(*)
@@ -591,16 +596,17 @@ SELECT wu.first_name || ' '  || wu.last_name AS Grouping,
                                'ClaimRejectionAccepted',
                                'InvoiceRejectionAccepted')
       AND a.id =
-        (SELECT max(id)
-         FROM audit_trail a2
-         WHERE a2.claim_id=c.id
-           AND a2.update_date =
-             (SELECT max(update_date)
-              FROM audit_trail a3
-              WHERE a3.claim_id=c.id
-                AND a3.update_date < datStart
-                AND (a3.reverted=FALSE
-                     OR a3.last_modified_date > datStart)))) as "Open Claims Period End ",
+  (SELECT id
+   FROM audit_trail AT
+   WHERE AT.claim_id=c.id
+     AND AT.reverted=FALSE
+     AND AT.created_date =
+       (SELECT max(created_date) AS max_created_date
+        FROM audit_trail a3
+        WHERE a3.claim_id = c.id
+          AND (a3.reverted=FALSE OR a3.last_modified_date > datStart)
+          AND a3.created_date > datStart)
+   ORDER BY id DESC LIMIT 1)) as "Open Claims Period End ",
                                
 --Column 6: Settled/Closed Claims - all claims that moved to a 'closed' status during the week (any of Claim Closed, Claim Rejection Accepted, Invoice Rejection Accepted or Payment Received).                               
   (SELECT count(*)
