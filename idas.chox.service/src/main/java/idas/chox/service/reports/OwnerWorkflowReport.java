@@ -203,7 +203,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date < :pStartDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date < :pStartDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as outstandingStart,");
 
                     /*
@@ -215,7 +215,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as outstanding,");
 
                     /*
@@ -227,7 +227,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 5) as outstanding0_5,");
 
                     /*
@@ -239,7 +239,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 5 and total_day < 10) as outstanding5_10,");
 
                     /*
@@ -251,7 +251,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 10 and total_day < 15) as outstanding10_15,");
 
                     /*
@@ -263,7 +263,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 15 and total_day < 20) as outstanding15_20,");
 
                     /*
@@ -275,7 +275,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 20 and total_day < 25) as outstanding20_25,");
 
                     /*
@@ -287,7 +287,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 25 and total_day < 30) as outstanding25_30,");
 
                     /*
@@ -299,7 +299,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 30) as outstanding30_,");
 
                     /*
@@ -310,7 +310,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id = a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
                     /*
@@ -330,7 +330,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and c.id=a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
 
                     /*
@@ -354,7 +354,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as oldestDate,");
 
                     /*
@@ -365,7 +365,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a ) as oldestDays, ");
 
                     /*
@@ -391,7 +391,7 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
 
                     /*
@@ -402,49 +402,49 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                     sb.append("and a.reverted=false and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                     /*
