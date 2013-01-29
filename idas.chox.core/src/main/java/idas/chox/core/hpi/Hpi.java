@@ -2,10 +2,8 @@ package idas.chox.core.hpi;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -40,14 +38,15 @@ public final class Hpi {
     private static final String deviceTypeParam = "XM";
     private static final Hpi INSTANCE = new Hpi();
     private Map<String, String> params;
-    private List<String> session;
+    private String session;
     private HttpClient httpClient;
     private String hpiUrl;
     private String efxidParam;
     private String passwordParam;
     private String initialsParam;
     private boolean active = false;
-
+    private static final Integer lock = new Integer(0);
+    
     private Hpi() {
         if (INSTANCE != null) {
             throw new IllegalStateException("HPI Already instantiated");
@@ -124,8 +123,6 @@ public final class Hpi {
     }
 
     private HpiResponse getHpi(String vrn) throws HpiException {
-        String sessionId = null;
-
         if (!active) {
             LOG.debug("HPI check functionality has been disabled.");
             throw new HpiException("HPI check functionality has been de-activated.");
@@ -140,38 +137,39 @@ public final class Hpi {
             params.put("product", productCodeParam);
             params.put("deviceType", deviceTypeParam);
         }
-        if (!getDate().equals(today)) {
-            // initialize sessions
-            today = getDate();
-            session = new ArrayList<String>();
-            LOG.info("New HPI session list created for today={}", today);
-        } else {
-            sessionId = getSession();
-            if (sessionId != null) {
-                LOG.debug("Using todays session '{}'", sessionId);
+        
+        synchronized (lock) {
+            if (today == null || !getDate().equals(today)) {
+                // initialize sessions
+                today = getDate();
+                setSession(null);
+                LOG.info("A new HPI session will be created for today: '{}'", today);
             } else {
-                LOG.debug("No sessions available - a new one will be created.");
+                if (session != null) {
+                    LOG.debug("Using todays session '{}'", session);
+                } else {
+                    LOG.debug("No sessions available - a new one will be created.");
+                }
             }
         }
 
-        String url = getURL(vrn, sessionId);
+        String url = getURL(vrn, getSession());
 
         HttpGet httpget = new HttpGet(url);
 
-        LOG.info("Executing HPI request with sessionId={} : {} ", sessionId, httpget.getURI());
+        LOG.info("Executing HPI request with sessionId={} : {} ", getSession(), httpget.getURI());
 
         // Create a response handler
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         String responseBody = null;
         HpiResponse hpiResponse = null;
         try {
-//            responseBody = httpClient.execute(httpget, responseHandler);
             HttpResponse response = httpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 // do something useful with the entity
                 hpiResponse = HpiResponse.parseResponse(entity.getContent());
-                saveSession(hpiResponse.getSessionId());
+                setSession(hpiResponse.getSessionId());
             }
             // ensure the connection gets released to the manager
             EntityUtils.consume(entity);
@@ -201,16 +199,11 @@ public final class Hpi {
     }
 
     private synchronized String getSession() {
-        if (session.size() > 0) {
-            return session.remove(0);
-        }
-
-        return null;
+        return session;
     }
 
-    private synchronized void saveSession(String sessionId) {
-        session.add(sessionId);
-        LOG.debug("Session saved: {}", sessionId);
+    private synchronized void setSession(String session) {
+        this.session = session;
     }
 
     private static String getDate() {
