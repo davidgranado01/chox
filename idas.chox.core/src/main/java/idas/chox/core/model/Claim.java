@@ -130,7 +130,6 @@ public class Claim extends Entity implements Serializable {
     }
 
     public Customer getCustomer() {
-        customer.setClaim(this);
         return customer;
     }
 
