@@ -135,7 +135,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             customer.setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
             Boolean currentIsTotalLoss = customer.getIsTotalLoss();
             customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
-            if (customer.getIsTotalLoss() && currentIsTotalLoss != null && !currentIsTotalLoss 
+            if (currentIsTotalLoss != null && currentIsTotalLoss != customer.getIsTotalLoss()
                     && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
                 claimResult.setCheckForTotalLossAnomalies(true);
