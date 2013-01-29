@@ -85,7 +85,7 @@ public class WorkgroupDropDownAction extends BaseAction {
         LOG.debug("ClaimSearchCombo action called.");
         if (getOrgId() != null) {
             for (Integer insId : getOrgId()) {
-               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false)); 
+               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true)); 
             }
         }
         LOG.debug("Workgroups retrieved: {}", workgroups.size());
