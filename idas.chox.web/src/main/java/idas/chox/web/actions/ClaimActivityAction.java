@@ -1,15 +1,18 @@
-
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-import net.sf.json.JSONObject;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+
+import net.sf.json.JSONObject;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.BreBandService;
@@ -94,9 +97,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             claim.setBreBand(choBand);
         }
 
-        // Skip version checking if we are processing multiple claims
-//        if (selectedClaimIdList == null || selectedClaimIdList.isEmpty())
-//            checkVersion();
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
 
@@ -122,7 +122,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                         throw new AccessDeniedException("Attempt to access a claim that you do not own.");
                     }
                     activity.process(claim);
-//                    updateModelInSession(Arrays.asList(claim));
                 }
             } catch(AccessDeniedException ex) {
                 throw(ex);
@@ -139,7 +138,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     
     @Override
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
         JSONObject jsonObject = new JSONObject();
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
@@ -163,8 +161,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             jsonObject.put("success", Boolean.TRUE);
             if (getMessage() != null)
                 jsonObject.put("message", getMessage());
-//            else
-//                jsonObject.put("message", "Claim has been Successfully Processed.");
             setJsonData(jsonObject.toString());
             
             return SUCCESS;
@@ -183,9 +179,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public void setName(String name) {
         this.name = name;
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Services">
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
     }
@@ -197,8 +191,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
     }
-
-    // </editor-fold>
 
     public Integer getId() {
         if (claim != null) {

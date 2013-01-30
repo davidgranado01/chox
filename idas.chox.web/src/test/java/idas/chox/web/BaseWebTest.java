@@ -6,7 +6,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { 
-	    "classpath:applicationContext-Notification.xml", 
 	    "classpath:applicationContext-IntelligentNote.xml",
 	    "classpath:applicationContext-Filters.xml",
 	    "classpath:applicationContext-Workflow.xml",

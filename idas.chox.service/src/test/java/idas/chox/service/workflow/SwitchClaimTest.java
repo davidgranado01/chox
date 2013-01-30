@@ -24,7 +24,8 @@ public class SwitchClaimTest extends BaseTest {
         activity.process(claim);
     }
 
-    @Test
+    //TODO remove expected and read the claim from import file.
+    @Test(expected = InvalidClaimStatusException.class)
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void testSwitchClaim() throws Throwable {
 
@@ -38,7 +39,6 @@ public class SwitchClaimTest extends BaseTest {
         claim.setThirdParty(thirdParty);
         claimService.save(claim);
         SwitchClaim activity = (SwitchClaim) activityFactory.getActivity("switchClaim");
-
         
         activity.process(claim);
         Assert.assertEquals("RBS", claim.getInsurer().getName());

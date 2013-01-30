@@ -84,10 +84,10 @@
         <property name="notificationService" ref="notificationService" />
     </bean>
     <bean id="switchClaimToMulIns" class="idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer" scope="prototype">
+        <property name="chainActivity" ref="newClaim" />
         <property name="insurerService" ref="insurerService" />
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="commentService" ref="commentService" />
-        <property name="breBandService" ref="breBandService" />
         <property name="taskService" ref="taskService" />
         <property name="notificationService" ref="notificationService" />
     </bean>
@@ -96,6 +96,7 @@
     </bean>
     <bean id="updateInterimPaymentFullAndFinal" class="idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal" scope="prototype">
         <property name="chainActivity" ref="invoicePaymentReceived" />
+        <property name="claimService" ref="claimService" />
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype">

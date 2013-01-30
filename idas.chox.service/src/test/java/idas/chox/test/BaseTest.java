@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-    "classpath:applicationContext-Notification-test.xml", 
     "classpath:applicationContext-Filters-test.xml",
     "classpath:applicationContext-Workflow-test.xml",
     "classpath:applicationContext-test.xml",
@@ -92,4 +91,6 @@ public abstract class BaseTest {
     protected IntelligentNoteDisplayEngine displayEngine;
     @Autowired
     protected CommentService commentService;
+    @Autowired
+    protected NotificationService notificationService;
 }

@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
-       xmlns:p="http://www.springframework.org/schema/p"
        default-autowire="byName">
     <bean id="rulesEngine" class="idas.chox.core.bre.RulesEngine">
         <property name="businessRules">
@@ -36,7 +35,9 @@
                 <bean class="idas.chox.service.bre.rules.LabourCostBusinessRule"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedVehicleClassRepairNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.NumberOfHireDaysReconcile"></bean>
-                <bean class="idas.chox.service.bre.rules.HasCorrectAdminFee"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectAdminFee">
+                    <property name="adminFeeService" ref="adminFeeService"/>
+                </bean>
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnThursday"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnFriday"></bean>
                 <bean class="idas.chox.service.bre.rules.FlaggedForManualInvoiceReview"></bean>
@@ -94,8 +95,9 @@
                 </bean>
                 <bean class="idas.chox.service.bre.rules.HireTerminatedAfterRepairCompletionCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.OverlappingHireCheck">
-                    <property name="claimService" ref="claimService"/>    
+                    <property name="claimService" ref="claimService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.MaximumLabourRate"></bean>
             </list>
         </property>
     </bean>

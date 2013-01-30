@@ -54,6 +54,7 @@ public class NotificationTest extends BaseTest {
         Assert.assertTrue(claimResults.size() > 0);
         notificationService.addNotification(c, new HireUpdatedNotification());
         
+        
         // TODO : check claim is anomalous
     }
 
