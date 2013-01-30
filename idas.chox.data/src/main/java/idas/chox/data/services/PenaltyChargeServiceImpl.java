@@ -60,7 +60,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     
     @Override
     public List<PenaltyCharge> getPenaltyCharges(Date hireStart, PenaltyType penaltyType, PenaltyName penaltyName) {
-
+        LOG.debug("Getting penalty charge for hireStart='{}', PenaltyType='{}', PenaltyName='{}'",
+                    new Object[]{hireStart, penaltyType, penaltyName});
         List<PenaltyCharge> penaltyCharges = new ArrayList<PenaltyCharge>();
 
         // Get all hire penalty charges where penaltyStartDate <= hireStart
@@ -103,6 +104,11 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             penaltyCharges = findByCriteria(criteria);
         } catch (Exception ex) {
             LOG.error("Exception in executing HIRE penalty percentage query: ", ex);
+        }
+        
+        if (penaltyCharges == null || penaltyCharges.isEmpty()) {
+            LOG.error("No penelty charges found for hireStart='{}', PenaltyType='{}', PenaltyName='{}'",
+                    new Object[]{hireStart, penaltyType, penaltyName});
         }
         return penaltyCharges;
     }
@@ -343,7 +349,8 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
                     ? claim.getVehicleHire().getHireStart() : claim.getInvoice() != null ? claim.getInvoice().getDateInvoiced() : new Date();
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
-            return getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE).get(0).getPenaltyStartAge();
+            List<PenaltyCharge> penaltyCharges =  getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
+            return penaltyCharges.isEmpty() ? 0 : penaltyCharges.get(0).getPenaltyStartAge();
         } catch (Exception ex) {
             LOG.error("Exception in getting first available penalty band: ", ex);
             return 0;
@@ -361,7 +368,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             PenaltyType penaltyType = ClaimType.getPenaltyType(claim.getClaimType());
             List<PenaltyCharge> penaltyCharges = getPenaltyCharges(hireStart, penaltyType, PenaltyName.HIRE);
             int size = penaltyCharges.size();
-            return penaltyCharges.get(size - 1).getPenaltyStartAge();
+            return penaltyCharges.isEmpty() ? 0 : penaltyCharges.get(size - 1).getPenaltyStartAge();
         } catch (Exception ex) {
             LOG.error("Exception in getting last available penalty band: ", ex);
             return 0;
