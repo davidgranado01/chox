@@ -201,7 +201,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
-            } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
+            } else if (claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED) || claimStatus.equals(ClaimStatus.INVOICE_UNASSIGNED)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CR);
                 //Also create a new task visible by CH
                 Task taskCH = new Task();
