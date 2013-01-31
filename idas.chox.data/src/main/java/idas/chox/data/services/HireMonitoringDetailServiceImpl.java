@@ -1,26 +1,23 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.services.HireMonitoringDetailService;
-import idas.chox.core.xmlValidation.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.services.HireMonitoringDetailService;
+import idas.chox.core.xmlValidation.ClaimResult;
+
 public class HireMonitoringDetailServiceImpl extends SecureDataService implements HireMonitoringDetailService {
 
     @Override
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
-        HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringDetail.class);
         criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
 
-        hiremonitoringdetail = (HireMonitoringDetail) getByCriteria(criteria);
-
-
-        return hiremonitoringdetail;
+        return (HireMonitoringDetail) getByCriteria(criteria);
     }
 
     @Override
