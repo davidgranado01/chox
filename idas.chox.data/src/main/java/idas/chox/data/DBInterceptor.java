@@ -35,7 +35,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
     private FullAuditService fullAuditService;
     private NotificationService notificationService;
     private BeanFactory bf;
-    private final Integer lock = null;
 
     @Override
     public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
@@ -407,16 +406,6 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
 
         if (entity instanceof FullAudit && getSecurityInfoProvider().getCurrentUser() != null) {
             LOG.debug("   onFlushDirty(): we have a FullAudit entity");
-            synchronized (lock) {
-                if (fullAuditService == null) {
-                    /*
-                     * This is a bit of a hack....
-                     * Letting spring inject this bean causes a circular dependency error,
-                     * so we'll make this class BeanFactoryAware and get the bean ourselves
-                     */
-                    fullAuditService = (FullAuditService) bf.getBean("fullAuditService");
-                }
-            }
             for (int i = 0; i < propertyNames.length; i++) {
                 // ignore auditable entries
                 if (!"lastModifiedDate".equals(propertyNames[i])
@@ -434,7 +423,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         if (currentState[i] != null) {
                             newValue = currentState[i].toString();
                         }
-                        fullAuditService.logAuditEntry(entity.getClass().toString(), id,
+                        getFullAuditService().logAuditEntry(entity.getClass().toString(), id,
                                 propertyNames[i], oldValue, newValue,
                                 getSecurityInfoProvider().getCurrentUser());
                         LOG.debug("Audit entry: table='{}', id={}, parameter='{}', old_value='{}', new_value='{}', by='{}'",
@@ -774,6 +763,19 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
         return notificationService;
     }
 
+    public synchronized FullAuditService getFullAuditService() {
+        if (fullAuditService == null) {
+            /*
+             * This is a bit of a hack....
+             * Letting spring inject this bean causes a circular dependency error,
+             * so we'll make this class BeanFactoryAware and get the bean ourselves
+             */
+            fullAuditService = (FullAuditService) bf.getBean("fullAuditService");
+        }
+        return fullAuditService;
+    }
+
+    
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
