@@ -27,6 +27,9 @@
     </bean> -->
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="entityInterceptor">
+            <ref bean="auditInterceptor"/>
+        </property>
         <property name="dataSource">
             <ref bean="dataSource" />
         </property>
@@ -114,5 +117,6 @@
     <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-
+    
+    
 </beans>

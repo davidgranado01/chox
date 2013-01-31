@@ -301,4 +301,10 @@
     <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="customerServcie" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 </beans>

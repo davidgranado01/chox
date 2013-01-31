@@ -93,4 +93,8 @@ public abstract class BaseTest {
     protected CommentService commentService;
     @Autowired
     protected NotificationService notificationService;
+    @Autowired
+    protected HireMonitoringDetailService hireMonitoringDetailService;
+    @Autowired
+    protected CustomerService customerService;
 }
