@@ -43,7 +43,7 @@ IF org ILIKE 'INS' THEN
            left outer join insurer ins on (ins.id = w.insurer_id)
            left outer join chorganisation cho on (cho.id = w.chorganisation_id)
            left outer join web_user_role wur on (wur.name = t.visibility_role)
-           left outer join workgroup wkgp on (wkgp.workgroup_id = c.workgroup_id)
+           left outer join workgroup wkgp on (wkgp.id = c.workgroup_id)
            inner join audit_trail a on (a.claim_id = c.id)
   where 
     t.complete = false 
@@ -60,6 +60,7 @@ ELSIF org ILIKE 'CHO' THEN
 
     select 
     c.cho_reference as "Supplier Reference", 
+    '-' as "Workgroup",
     c.status as "Current CHOX Status", 
     a.new_status "Status Of Claim When Task Created",
     t.due_date as "Due Date",
