@@ -11,14 +11,14 @@ public enum NotificationType {
     RepairBookedInDateAnomalousNotification("RepairBookedInDateAnomalousNotification"),
     EcdUpdatedNotification("EcdUpdatedNotification"),
     HireUpdatedNotification("HireUpdatedNotification"),
-    LiabilityStatusUpdatedNotification("") {
+    TotalLossAnomalousNotification("TotalLossAnomalousNotification"),
+    LiabilityStatusUpdatedNotification("LiabilityStatusUpdatedNotification") {
         @Override
         public boolean isInsurerType() {
 
             return false;
         }
-    },
-    TotalLossAnomalousNotification("TotalLossAnomalousNotification");
+    };
 
     private String type;
     private static final Set insurerNotifications;
