@@ -47,6 +47,7 @@ public class ClaimRevert extends BaseActivity {
         this.amountReceived = amountReceived;
     }
 
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -65,6 +66,7 @@ public class ClaimRevert extends BaseActivity {
         }
     }
 
+
     @Override
     protected void doProcess(Claim claim) {
         boolean reOpenTasks = false;
@@ -73,13 +75,15 @@ public class ClaimRevert extends BaseActivity {
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
-                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus()))
-            reOpenTasks = true; // indicates reverting from a closed to an open state
+                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {
+            reOpenTasks = true;
+        } // indicates reverting from a closed to an open state
         if (ClaimStatus.CLAIM_CLOSED.equals(claim.getPreviousStatus())
                 || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getPreviousStatus())
                 || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getPreviousStatus())
-                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
-            reCloseTasks = true; // Indicates reverting to a closed state
+                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus())) {
+            reCloseTasks = true;
+        } // Indicates reverting to a closed state
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
         String originalStatus = claim.getStatus();
         Date originalStatusModifiedDate = claim.getStatusModifiedDate();
@@ -87,24 +91,28 @@ public class ClaimRevert extends BaseActivity {
         if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}') : {} -> {}",
                     new Object[] {claim.getId(), claim.getChoReference(), originalStatus, claim.getStatus()});
-            if (reOpenTasks && !reCloseTasks)
+            if (reOpenTasks && !reCloseTasks) {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
-            else if (reCloseTasks)
+            }
+            else if (reCloseTasks) {
                 taskService.autoCompleteTasksForClaim(claim.getId());
+            }
             // Make sure we have a BRE Band
             if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus()) && getCurrentUser().isCHO()) {
                 // CHO has reverted back from InvoicePaymentLogged - add a note
                 Comment comment;
-                if (amountReceived == null)
+                if (amountReceived == null) {
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
-                            + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
-                else
+                            + ", however the CHO has not received the payment. Please check the payment details in your claim system and if available add the cheque/BACS reference, date cashed, amount raised and reference the payment was sent under.");
+                }
+                else {
                     comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
                             + amountReceived + " as there is an amount outstanding. Please check " 
                             + "the payment details in your claim system and mark the claim as 'Invoice Payment Logged' when the outstanding amount has been paid.");
+                }
                 claim.addComment(comment);
             } else if (ClaimStatus.AWAITING_INVOICE_PAYMENT.equals(claim.getStatus())) { // and we are an Insurer or CHOX Admin
                 // we need to remove the note added when the claim moved to INVOICE_PAYMENT_LOGGED
@@ -141,25 +149,22 @@ public class ClaimRevert extends BaseActivity {
                         + "' and the penalty charge counter started " + claim.getInvoice().getInvoicedDays()
                         + " days ago, please confirm the correct penalty charges have been applied to the invoice.");
             }
-            else
+            else {
                 setMessage("Claim successfully reverted back from '" + originalStatus + "' to '" + claim.getStatus() + "'.");
+            }
         }
-        else
+        else {
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+        }
     }
-    
+
+
     /*
      * We'll overide the afterProcess as we do not want to log a state change for a revert operation.
      * The claim is also saved in the service, so we do not need to do this either.
      */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-//        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-//        getDataService().save(claim);
-//        LOG.debug("Claim saved - logging transaction...");
-//        logTransaction(claim);
-//        LOG.debug("Claim saved & transaction logged.");
-
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());
