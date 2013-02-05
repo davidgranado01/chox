@@ -2172,8 +2172,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getRepairPenaltyPercentageJsonString() {
-        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
-                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         List<PenaltyCharge> repairPenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.REPAIR);
         List<LookupItem> luItems = new ArrayList<LookupItem>(repairPenaltyCharges.size());
         for (PenaltyCharge repairPenaltyPercentageEnum : repairPenaltyCharges) {
@@ -2189,8 +2189,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getHirePenaltyPercentageJsonString() {
-        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null)
-                ? claim.getVehicleHire().getHireStart() : claim.getInvoice().getDateInvoiced();
+        Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
         List<PenaltyCharge> hirePenaltyCharges = penaltyChargeService.getPenaltyCharges(hireStart, ClaimType.getPenaltyType(claim.getClaimType()), PenaltyName.HIRE);
         List<LookupItem> luItems = new ArrayList<LookupItem>(hirePenaltyCharges.size());
         for (PenaltyCharge hirePenaltyPercentageEnum : hirePenaltyCharges) {

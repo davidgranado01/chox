@@ -1255,3 +1255,20 @@ GRANT EXECUTE ON FUNCTION rsam_weekly_report(text, integer) TO chox_mi;
 ----------------------
 --  End of BUG#2383 --
 ----------------------
+
+
+----------------------------------------------------------------------------------------
+-- BUG#2400 - Production - Passwords stored in plain-text in password_history table   --
+----------------------------------------------------------------------------------------
+
+UPDATE password_history SET password = md5(password) WHERE length(password) < 32;
+
+ALTER TABLE password_history ALTER COLUMN password TYPE character varying(32);
+
+ALTER TABLE web_user ALTER COLUMN password TYPE character varying(32);
+
+ALTER TABLE web_user ALTER COLUMN user_name TYPE character varying(64);
+
+-----------------------
+--  END OF BUG#2400  --
+-----------------------
