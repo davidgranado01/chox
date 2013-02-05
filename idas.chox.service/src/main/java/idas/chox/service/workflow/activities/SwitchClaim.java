@@ -103,9 +103,16 @@ public class SwitchClaim extends BaseActivity {
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Switching claim AFTER PROCESS method called");
-        super.afterProcess(claim);
-        LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
+        /*
+         * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
+         * This prevents the claim being saved and the transaction logged
+         */
+        claim.setStatus(null);
+        if (getChainActivity() != null) {
+            LOG.debug("Processing next chain activity.");
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
+        }
     }
     
     @Override

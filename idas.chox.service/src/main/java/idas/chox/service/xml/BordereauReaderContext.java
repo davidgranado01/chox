@@ -22,7 +22,6 @@ public class BordereauReaderContext {
     private InsurerAliasService insurerAliasService;
     private ChorganisationAliasService chorganisationAliasService;
     private InsurerChorganisationService insurerChorganisationService;
-//    private BusinessRulesEngService businessRuleEngService;
     private DataValidationParameter dataValidationParameter;
     private SecurityInfoProvider securityInfoProvider;
     private ClaimObjectService claimObjectService;
@@ -100,14 +99,6 @@ public class BordereauReaderContext {
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
         this.insurerChorganisationService = insurerChorganisationService;
     }
-
-//    public BusinessRulesEngService getBusinessRuleEngService() {
-//        return businessRuleEngService;
-//    }
-//
-//    public void setBusinessRuleEngService(BusinessRulesEngService businessRuleEngService) {
-//        this.businessRuleEngService = businessRuleEngService;
-//    }
 
     public DataValidationParameter getDataValidationParameter() {
         return dataValidationParameter;
