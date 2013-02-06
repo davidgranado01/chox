@@ -176,6 +176,8 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+
+ 
     }
 
 
