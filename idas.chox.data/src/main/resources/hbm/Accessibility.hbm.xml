@@ -9,6 +9,7 @@
             </generator>
         </id>
         <property column="name" name="name" not-null="true"/>
+        <property column="claim_type" name="claimType" type="idas.chox.data.hibernate.ClaimTypeMapping"/>
         <property column="is_workgroup_check" name="workgroupCheck"/>
         <property column="is_ownership_check" name="ownershipCheck"/>
         <property column="check_workgroup_enabled" name="checkWorkgroupEnabled"/>

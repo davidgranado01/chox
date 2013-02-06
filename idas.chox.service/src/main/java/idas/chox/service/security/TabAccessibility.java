@@ -13,22 +13,22 @@ public class TabAccessibility {
     private short tasksTabAccessibility;
     private short paymentPackTabAccessibility;
     private short auditTrailTabAccessibility;
-    private short invoiceUnassignedAccessibility;
 
     public TabAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim) {
         claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL, user, claim);
         hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING, user, claim);
         historyTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY, user, claim);
-        if (historyTabAccessibility > 0 && claim.getInvoice() == null )
+        if (historyTabAccessibility > 0 && claim.getInvoice() == null ) {
             historyTabAccessibility = 0;
+        }
         invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL, user, claim);
-        if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null )
+        if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null ) {
             invoiceDetailTabAccessibility = 0;
+        }
         paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK, user, claim);
         notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES, user, claim);
         tasksTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_TASKS, user, claim);
         auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_AUDIT_TRAIL, user, claim);
-        invoiceUnassignedAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_UNASSIGNED, user, claim);
 
     }
 
@@ -64,7 +64,4 @@ public class TabAccessibility {
         return tasksTabAccessibility;
     }
 
-    public short getInvoiceUnassignedAccessibility() {
-        return invoiceUnassignedAccessibility;
-    }
 }

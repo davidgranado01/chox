@@ -50,8 +50,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     private void setMessage(String message) {
         this.message = message;
-        if (message != null && !message.isEmpty())
+        if (message != null && !message.isEmpty()) {
             showMessage = true;
+        }
     }
 
     public boolean isShowMessage() {
@@ -159,8 +160,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             }
             LOG.debug("claim activity returning success");
             jsonObject.put("success", Boolean.TRUE);
-            if (getMessage() != null)
+            if (getMessage() != null) {
                 jsonObject.put("message", getMessage());
+            }
             setJsonData(jsonObject.toString());
             
             return SUCCESS;

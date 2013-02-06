@@ -1,16 +1,18 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Accessibility;
 import java.util.HashMap;
 import java.util.List;
+
+import idas.chox.core.model.Accessibility;
+import idas.chox.core.model.ClaimType;
 
 public interface AccessibilityService {
 
     public List<Accessibility> getBatchUpdateAccessibilityMap(String accessibilityKey);
 
-    public Accessibility getAccessibility(String accessibilityKey);
+    public Accessibility getAccessibility(String accessibilityKey, ClaimType claimType);
 
-    public HashMap getAccessibilityMap();
+    public HashMap<String, HashMap> getAccessibilityMap();
 
-    public HashMap getAccessibilityKeyMap();
+    public HashMap<String, ClaimType> getAccessibilityKeyMap();
 }

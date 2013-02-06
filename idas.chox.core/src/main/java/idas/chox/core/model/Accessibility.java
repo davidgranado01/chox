@@ -8,6 +8,7 @@ public class Accessibility implements Serializable {
 
     private Integer id;
     private String name;
+    private ClaimType claimType;
     private Set accessibilityItem = new HashSet();
     private boolean workgroupCheck;
     private boolean ownershipCheck;
@@ -116,5 +117,13 @@ public class Accessibility implements Serializable {
 
     public void setAccessibilityItem(Set accessibilityItem) {
         this.accessibilityItem = accessibilityItem;
+    }
+
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
     }
 }
