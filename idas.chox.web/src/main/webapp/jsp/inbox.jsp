@@ -191,7 +191,7 @@
                         doClaimRoutedAction.setText('Re-Route Claim(s)'); 
                         if (<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>)) {
                             doClaimRoutedAction.setHidden(true);
-                        } else {
+                    } else {
                             doClaimRoutedAction.setHidden(false); 
                         }
                     } else {
@@ -610,7 +610,7 @@
 
                 /**** BATCH UPDATE - ASSIGN SUPPLIER CLAIM OWNER ********************************/
                 var supplierClaimOwnerSelectionDlg;
-                var isHidden = <s:property value="isInsurer"/> || (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>);
+                var isHidden = <s:property value="isInsurer"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>);
                 var doSupplierClaimOwnerAction = new Ext.Action
                 ({
                     text: 'Assign Claim(s) Owner',
@@ -752,7 +752,7 @@
                 var claimOwnerSelectionDlg;
                 doClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Workgroup And Claim Owner',
-                    hidden: <s:property value="isCHO"/> 
+                    hidden: <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> 
                         || !(<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>),
                     handler: function(){
 
@@ -1021,7 +1021,7 @@
                 var insurerClaimOwnerSelectionDlg;
                 doInsurerClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Owner',
-                    hidden:<s:property value="isCHO"/> || (!manualInvoiceFilter && !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+                    hidden:<s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (!manualInvoiceFilter && !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
 //                                || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) && <s:property value="enableManualInvoiceOwnership"/>)),
                     handler: function(){
 
@@ -1571,13 +1571,18 @@
                         }
                     }
                     
+                     if(tab.title == 'Search'){
+                        doClaimRoutedAction.setHidden(<s:property value="isCHO"/>);
+                        doClaimRoutedAction.setText('Route Claim(s)');
+                    }
+                    
                     if(tab.title == 'Inbox' && isInboxShowHistory){
 
                         ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName"), "inbox": true};
                         doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
 
                     }else if(tab.title == 'Search' && isSearchShowHistory){
-
+                        
                         ds.baseParams = Ext.state.Manager.get("grid_baseParams");
                         doDataLoad(Ext.state.Manager.get("search_grid_start"), Ext.state.Manager.get("search_grid_limit"),"Search Result");
                     }else{
