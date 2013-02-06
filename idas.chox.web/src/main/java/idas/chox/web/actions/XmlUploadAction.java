@@ -234,9 +234,8 @@ public class XmlUploadAction extends BaseAction {
             defaultDays = days;
         }
         List<BordereauViewData> viewDatas = new ArrayList<BordereauViewData>();
-        List<BordereauWithoutFile> uploadedFileList = null;
         SearchResult searchResult = bordereauService.getUploadedFiles(getAuthenticatedUser(), defaultDays, sort, dir, start, limit);
-        uploadedFileList = searchResult.getResult();
+        List<BordereauWithoutFile> uploadedFileList = searchResult.getResult();
         for (BordereauWithoutFile bordereau : uploadedFileList) {
             viewDatas.add(new BordereauViewData(bordereau));
         }
@@ -268,15 +267,15 @@ public class XmlUploadAction extends BaseAction {
     public String getUploadedClaimsDetails() {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
-            Integer userOrgId, bordereauOrgId;
+            int userOrgId, bordereauOrgId;
             if (getAuthenticatedUser().isAnInsurer()) {
-                userOrgId = getAuthenticatedUser().getInsurer().getId();
-                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId();
+                userOrgId = getAuthenticatedUser().getInsurer().getId().intValue();
+                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId().intValue();
             } else {
                 userOrgId = getAuthenticatedUser().getChorganisation().getId();
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
-            if (userOrgId.equals(bordereauOrgId)) {
+            if (userOrgId != bordereauOrgId) {
                     List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                     if (bordereau.isProcessed()) {
                         claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
@@ -286,7 +285,6 @@ public class XmlUploadAction extends BaseAction {
                         synchronized (getSession()) {
                             if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
                                 claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
-//                            LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
                             }
                         }
                         LOG.debug("Finished synchronizing on session");
@@ -298,7 +296,8 @@ public class XmlUploadAction extends BaseAction {
                     totalCount = this.jObject.size();
                     return SUCCESS;
             } else {
-                LOG.error("Un authorised user trying to access the uploaded claims detail : file name : {}, user name : {}", bordereau.getFileName(), getAuthenticatedUser().getUserName());
+                LOG.error("User trying to access bordereau of different org : file name='{}', user name='{}', user org='{}', bordereau org='{}'",
+                        new Object[]{bordereau.getFileName(), getAuthenticatedUser().getUserName(), userOrgId, bordereauOrgId});
                 this.getActionResponse().AddError("You do not have permission to get details of this file. Please contact CHOX support.");
                 return ERROR;
             }
