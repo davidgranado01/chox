@@ -37,7 +37,7 @@ public class AdminInsurerServiceTest extends BaseTest {
 
         // CHECK SELECT ALL INSURERS
         List<Insurer> insurers = adminInsurerService.getInsurers();
-        Assert.assertEquals(6, insurers.size());
+        Assert.assertEquals(7, insurers.size());
 
         // CHECK EVERY SINGLE INSURER
         for (Insurer ins : insurers) {
@@ -53,7 +53,7 @@ public class AdminInsurerServiceTest extends BaseTest {
 
         // CHECK SELECT ALL INSURERS
         List<Insurer> insurers = adminInsurerService.getInsurers();
-        Assert.assertEquals(6, insurers.size());
+        Assert.assertEquals(7, insurers.size());
 
         // CHECK EVERY SINGLE INSURER
         Insurer insurer = insurers.get(0);
@@ -131,7 +131,7 @@ public class AdminInsurerServiceTest extends BaseTest {
 
         // CHECK SELECT ALL INSURERS
         List<Insurer> insurers = adminInsurerService.getInsurers();
-        Assert.assertEquals(6, insurers.size());
+        Assert.assertEquals(7, insurers.size());
 
         Insurer insurer = insurers.get(0);
         int insurerId = insurer.getId();
