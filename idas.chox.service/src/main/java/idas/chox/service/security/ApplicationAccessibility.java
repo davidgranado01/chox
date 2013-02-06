@@ -649,10 +649,10 @@ public class ApplicationAccessibility {
                 if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && user.isCHO() && !user.getChorganisation().isClaimOwnershipEnable()) {
                     accessRight = 0;
                 }
-                if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && !user.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isEnableManualInvoiceWorkgroups()) {
                     accessRight = 0;
                 }
-                if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && !user.getInsurer().isEnableManualInvoiceOwnership()) {
+                if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isEnableManualInvoiceOwnership()) {
                     accessRight = 0;
                 }
 
