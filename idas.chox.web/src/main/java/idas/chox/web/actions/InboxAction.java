@@ -127,6 +127,12 @@ public class InboxAction extends BaseAction {
                 }
             }
 
+            if (batchUpdateAction.equalsIgnoreCase("routeClaims") && claim.getInsurer().isClaimOwnershipEnable()
+                    && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
+                getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                return SUCCESS;
+            }
+            
             if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
