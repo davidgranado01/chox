@@ -1,17 +1,18 @@
 package idas.chox.data.services;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.BreBandService;
-import org.hibernate.criterion.Restrictions;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class BreBandServiceImpl extends SecureDataService implements BreBandService {
 
@@ -33,8 +34,6 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
 
         boolean bFlag = false;
 
-        List<BreBand> objects = new ArrayList<BreBand>();
-
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
         criteria.add(Restrictions.eq("name", object.getName()));
         criteria.add(Restrictions.eq("insurer.id", object.getInsurer().getId()));
@@ -45,7 +44,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
             }
         }
 
-        objects = findByCriteria(criteria);
+        List<BreBand> objects = findByCriteria(criteria);
 
         if (objects.size() > 0) {
             bFlag = true;

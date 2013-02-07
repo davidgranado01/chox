@@ -1,11 +1,8 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Entity;
-import idas.chox.core.services.ClaimService;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.security.ApplicationAccessibility;
-
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,21 +10,27 @@ import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import java.util.Arrays;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Entity;
+import idas.chox.core.services.ClaimService;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.security.ApplicationAccessibility;
+
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
     protected int claimId = 0;
     protected ClaimService claimService;
     protected BaseDataService baseDataService;
-    protected ApplicationAccessibility applicationAccessibility;
     protected Claim claim;
     protected T model;
+    private ApplicationAccessibility applicationAccessibility;
     // </editor-fold>
 
     abstract String getTabName();
@@ -75,10 +78,10 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             throw new AccessDeniedException("Illegal claim access detected.");
         }
         String tabName = getTabName();
-        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
+        Short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
-        LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
+        LOG.debug("Returning accessibility={} for tab '{}' in status={}", new Object[]{result, tabName, claim.getStatus()});
         return result;
     }
 

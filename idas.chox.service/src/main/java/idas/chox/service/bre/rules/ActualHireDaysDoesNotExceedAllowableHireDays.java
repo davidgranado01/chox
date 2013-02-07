@@ -70,9 +70,6 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        // CARLSON @ 20091012
-        // ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
-        // return ClaimStatus.INVOICE_ESCALATED;
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
     

@@ -5,11 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.model.*;
+import idas.chox.core.model.Accessibility;
+import idas.chox.core.model.AccessibilityItem;
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BreBand;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
@@ -19,11 +28,14 @@ import idas.chox.core.util.AccessibilityHelper;
 
 public class ApplicationAccessibility {
 
+    // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
     public static final Short DECLINED = 0;
     public static final Short READ_ONLY = 1;
     public static final Short EDITABLE = 2;
-    private HashMap<String, HashMap> accessibilityMap;
+    private Map<String, Object[]> accessibilityMap;
+    private Map<String, Object[]> accessibilityByClaimTypeMap;
+    private Map<String, List<Accessibility>> batchUpdateAccessibilityMap;
     private AccessibilityService accessibilityService;
     private ClaimService claimService;
     private BreBandService breBandService;
@@ -146,19 +158,20 @@ public class ApplicationAccessibility {
         LOG.debug("Checking action accessibility for action {}, user {}", actionName, user.getFullName());
         String accessibilityKey = getActionAccessibilityKey(actionName, claim.getStatus(), claim.getClaimType());
         LOG.debug("Claim='{}', accessibilityKey={}", claim.getChoReference(), accessibilityKey);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = getAccessibilityMap().get(accessibilityKey);
-
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), claim.getClaimType());
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            Object[] obj = (Object[])getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap roleMap = (HashMap)obj[1];
+            
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
-        LOG.debug("Action access '{}' declined (no access rights defined).", accessibilityKey);
+        LOG.debug("Action access for '{}' declined (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
@@ -171,32 +184,18 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus(), claim.getClaimType());
-        LOG.debug("Checking accessibility for key: '{}'", accessibilityKey);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), claim.getClaimType());
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+        LOG.debug("Checking ExtraAction accessibility for key: '{}'", accessibilityKey);
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            LOG.debug("Key '{}' exists.", accessibilityKey);
+            Object[] obj = (Object[])getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap roleMap = (HashMap)obj[1];
             Short accessRight = checkAccessibility(roleMap, user);
+
             LOG.debug("Extra Action Access rights for '{}' is {}", accessibilityKey, accessRight);
             LOG.debug("accessibility.isCheckWorkgroupEnabled(): {}, claim.getInsurer().isWorkgroupEnable(): {}", accessibility.isCheckWorkgroupEnabled(), claim.getInsurer().isWorkgroupEnable());
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
+            if (accessRight > 0 && !canAccess(accessibility, claim)) {
                 accessRight = 0;
-                LOG.debug("accessRight made to 0 in WORKGROUP CHECK  '{}' is {}", accessibilityKey, accessRight);
-            }
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()) {
-                accessRight = 0;
-                LOG.debug("accessRight made to 0 in CLAIM OWNERSHIP CHECK for  '{}' is {}", accessibilityKey, accessRight);
-            }
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()) {
-                accessRight = 0;
-                LOG.debug("accessRight made to 0 in FNOL ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
-            }
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()) {
-                accessRight = 0;
-                LOG.debug("accessRight made to 0 in ENGINEER ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
-            }
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
-                accessRight = 0;
-                LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
             }
             if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER) && claim.getInsurer().isWorkgroupEnable()) {
                  accessRight = 0;
@@ -337,6 +336,7 @@ public class ApplicationAccessibility {
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
+        LOG.debug("ExtraAction access '{}' declined (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
 
@@ -353,8 +353,8 @@ public class ApplicationAccessibility {
 
     public Short checkNotificationAccessibility(String notificationName, WebUser user, String claimStatus, ClaimType claimType) {
         String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus, claimType);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityByClaimTypeMap().get(accessibilityKey)[1];
             return checkAccessibility(roleMap, user);
         }
         return DECLINED;
@@ -362,15 +362,17 @@ public class ApplicationAccessibility {
 
     public short checkNotificationEditableCheck(String notificationName, WebUser user, Claim claim) {
         String accessibilityKey = getNotificationAccessibilityKey(notificationName, claim.getStatus(), claim.getClaimType());
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), claim.getClaimType());
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            Object[] obj = (Object[])getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap roleMap = (HashMap)obj[1];
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
                 LOG.debug("Access Right for '{}' is now {}.", accessibilityKey, accessRight);
             }
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
@@ -391,18 +393,18 @@ public class ApplicationAccessibility {
 
         String accessibilityKey = getTabAccessibilityKey(tabName, claim.getStatus(), claim.getClaimType());
 
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), claim.getClaimType());
-
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            Object[] obj = (Object[])getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap roleMap = (HashMap)obj[1];
+            
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
+            LOG.debug("Tab '{}' Access right is: {} - checking claim editable.....", accessibilityKey, accessRight);
             //log.debug(accessibilityKey + " " + accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
 
             return accessRight;
         }
@@ -417,20 +419,20 @@ public class ApplicationAccessibility {
     }
 
     private String getPanelAccessibilityKey(String filterName) {
-        return String.format("panel.%1$s.ALL", filterName);
+        return String.format("panel.%1$s", filterName);
     }
 
     public Short checkPanelAccessibility(String filterName, WebUser user) {
 
         String accessibilityKey = getPanelAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey)[1];
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
-        LOG.debug("Access declined (no access rights defined).");
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
@@ -441,20 +443,20 @@ public class ApplicationAccessibility {
     }
 
     private String getMenuAccessibilityKey(String menuName) {
-        return String.format("menu.%1$s.ALL", menuName);
+        return String.format("menu.%1$s", menuName);
     }
 
     public Short checkMenuAccessibility(String menuName, WebUser user) {
 
         String accessibilityKey = getMenuAccessibilityKey(menuName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey)[1];
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
-        LOG.debug("Access declined (no access rights defined).");
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
@@ -465,43 +467,33 @@ public class ApplicationAccessibility {
     }
 
     private String getReportAccessibilityKey(String reportName) {
-        return String.format("report.%1$s.ALL", reportName);
+        return String.format("report.%1$s", reportName);
     }
 
     public Short checkReportAccessibility(String reportName, WebUser user) {
 
         String accessibilityKey = getReportAccessibilityKey(reportName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), null);
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Object[] obj = (Object[])getAccessibilityMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap roleMap = (HashMap)obj[1];
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable()) {
+            if (accessRight > 0 && !canAccess(accessibility, user)) {
                 accessRight = 0;
             }
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !user.getInsurer().isFnolEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !user.getInsurer().isEngineersEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
-            LOG.debug("Returned access Right for '{}' is {}.", accessibilityKey, accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - ADMIN">
     private String getAdminAccessibilityKey(String adminName) {
-        return String.format("admin.%1$s.ALL", adminName);
+        return String.format("admin.%1$s", adminName);
     }
 
     public AdminAccessibility getAdminAccessibility(WebUser user) {
@@ -512,13 +504,13 @@ public class ApplicationAccessibility {
 
         String accessibilityKey = getAdminAccessibilityKey(adminName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey)[1];
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
-        LOG.debug("Access declined (no access rights defined).");
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
@@ -538,9 +530,9 @@ public class ApplicationAccessibility {
 
         String accessibilityKey = getButtonAccessibilityKey(buttonName, claim.getStatus(), claim.getClaimType());
 
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
 
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityByClaimTypeMap().get(accessibilityKey)[1];
             Short accessRight = checkAccessibility(roleMap, user);
 
             if (user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REOPEN_CLAIM) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
@@ -555,11 +547,11 @@ public class ApplicationAccessibility {
                 LOG.debug("Access declined: revert with no original status.");
                 return DECLINED;
             }
-            // </editor-fold>
-            LOG.debug("Returning Button accessibility access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
 
         }
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
 
         return DECLINED;
     }
@@ -567,20 +559,19 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - FILTER OR QUEUE">
     private String getFilterAccessibilityKey(String filterName) {
-        //log.debug("Filter : "+String.format("filter.%1$s", filterName));
-        return String.format("filter.%1$s.ALL", filterName);
+        return String.format("filter.%1$s", filterName);
     }
 
     public Short checkFilterAccessibility(String filterName, WebUser user) {
         String accessibilityKey = getFilterAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey)[1];
 
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Returning access right: {}", accessRight);
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
-        LOG.debug("Access declined (no access rights defined).");
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
@@ -594,133 +585,140 @@ public class ApplicationAccessibility {
 
         String accessibilityKey = getBatchUpdateAccessibilityKey(actionName, claim.getStatus(), claim.getClaimType());
 
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-
-            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey.substring(0, accessibilityKey.lastIndexOf('.')), claim.getClaimType());
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            Object[] obj = (Object[])getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Accessibility accessibility = (Accessibility)obj[0];
+            HashMap<String, Short> roleMap = (HashMap<String, Short>)obj[1];
+            
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
+            if (accessRight > 0 && !canAccess(accessibility, claim)) {
                 accessRight = 0;
             }
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
-                accessRight = 0;
-            }
-            if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && !claim.getInsurer().isEnableManualInvoiceOwnership()) {
-                accessRight = 0;
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
 
-            if (accessRight >= 2) {
-                LOG.debug("Before editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
-                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
-                LOG.debug("after editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
-            }
-            LOG.debug("Returning access rights for batchupdate '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
         return DECLINED;
     }
 
+    
     public List<String> checkBatchUpdateAccessibility(String actionName, WebUser user) {
-
 
         List<String> statuses = new ArrayList<String>();
 
         // GET LIST OF ACCESSIBILITY BY ACTION NAME
-        String accessibilityKey = String.format("batch.%1$s", actionName);
-        List<Accessibility> accessibilities = this.accessibilityService.getBatchUpdateAccessibilityMap(accessibilityKey);
+        List<Accessibility> accessibilities = getBatchUpdateAccessibilityMap().get(String.format("batch.%1$s", actionName));
 
         for (Accessibility accessibility : accessibilities) {
 
-            HashMap roleMap = new HashMap();
+            Map roleMap = new HashMap();
             for (Object item : accessibility.getAccessibilityItem()) {
                 AccessibilityItem aItem = (AccessibilityItem) item;
                 Short accessRight = aItem.getAccessRight();
-                if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isWorkgroupEnable()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isClaimOwnershipEnable()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isAnInsurer() && !user.getInsurer().isFnolEnable()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isAnInsurer() && !user.getInsurer().isEngineersEnable()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && user.isCHO() && !user.getChorganisation().isClaimOwnershipEnable()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckManualInvoiceWrokgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isEnableManualInvoiceWorkgroups()) {
-                    accessRight = 0;
-                }
-                if (accessRight > 0 && accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isEnableManualInvoiceOwnership()) {
-                    accessRight = 0;
-                }
-
                 roleMap.put(aItem.getRole().trim(), accessRight);
             }
-
+            roleMap = restrictAccess(roleMap, accessibility, user);
             if (checkAccessibility(roleMap, user) > 0) {
                 String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1), (accessibility.getName()).length());
                 statuses.add(status);
             }
+
         }
         return statuses;
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="GET SET">
-    private HashMap<String, HashMap> getAccessibilityMap() {
+    // <editor-fold defaultstate="collapsed" desc="Private Functions">
+    private Map<String, Object[]> getAccessibilityMap() {
 
         if (accessibilityMap == null) {
-            accessibilityMap = this.accessibilityService.getAccessibilityMap();
+// We shouldn't need to synchronize this map as it will be read only
+//            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
+            accessibilityMap = accessibilityService.getAccessibilityMap();
         }
         return accessibilityMap;
     }
+    private Map<String, Object[]> getAccessibilityByClaimTypeMap() {
 
-    public ClaimService getClaimService() {
-        return claimService;
+        if (accessibilityByClaimTypeMap == null) {
+// We shouldn't need to synchronize this map as it will be read only
+//            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
+            accessibilityByClaimTypeMap = accessibilityService.getAccessibilityByClaimTypeMap();
+        }
+        return accessibilityByClaimTypeMap;
+    }
+    private Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
+
+        if (batchUpdateAccessibilityMap == null) {
+// We shouldn't need to synchronize this map as it will be read only
+//            batchUpdateAccessibilityMap = Collections.synchronizedMap(accessibilityService.getBatchUpdateAccessibilityMap());
+            batchUpdateAccessibilityMap = accessibilityService.getBatchUpdateAccessibilityMap();
+        }
+        return batchUpdateAccessibilityMap;
     }
 
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
+    private Map restrictAccess(Map<String, Short> map, Accessibility accessibility, WebUser user) {
+        Map results = new HashMap(map.size());
+        
+        for (String key : map.keySet()) {
+            if (map.get(key) > 0 && canAccess(accessibility, user)) {
+                results.put(key, map.get(key));
+            } else {
+                results.put(key, 0);
+            }
+        }
+        return results;
     }
 
-    public void setBreBandService(BreBandService BreBandService) {
-        this.breBandService = BreBandService;
+    private boolean canAccess(Accessibility accessibility, Claim claim) {
+            if (accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
+                return false;
+            }
+            if (accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()) {
+                return false;
+            }
+            if (accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()) {
+                return false;
+            }
+            if (accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()) {
+                return false;
+            }
+            if (accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
+                return false;
+            }
+            if (accessibility.isCheckManualInvoiceWrokgroupEnabled() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                return false;
+            }
+            if (accessibility.isCheckManualInvoiceClaimOwnershipEnabled() && !claim.getInsurer().isEnableManualInvoiceOwnership()) {
+                return false;
+            }
+
+            return true;
+    }
+    
+    private boolean canAccess(Accessibility accessibility, WebUser user) {
+            if (accessibility.isCheckWorkgroupEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isWorkgroupEnable())) {
+                return false;
+            }
+            if (accessibility.isCheckClaimOwnershipEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isClaimOwnershipEnable())) {
+                return false;
+            }
+            if (accessibility.isCheckFnolEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isFnolEnable())) {
+                return false;
+            }
+            if (accessibility.isCheckEngineerEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isEngineersEnable())) {
+                return false;
+            }
+            if (accessibility.isCheckSupplierClaimOwnershipEnabled() && (user.getInsurer()!=null || !user.getChorganisation().isClaimOwnershipEnable())) {
+                return false;
+            }
+
+            return true;
     }
 
-    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
-        this.penaltyChargeService = penaltyChargeService;
-    }
-
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
-    }
-
-    public AccessibilityService getAccessibilityService() {
-        return accessibilityService;
-    }
-
-    public void setAccessibilityService(AccessibilityService accessibilityService) {
-        this.accessibilityService = accessibilityService;
-    }
-    // </editor-fold>
-
-    private Short checkAccessibility(HashMap roleMap, WebUser user) {
+    private Short checkAccessibility(Map roleMap, WebUser user) {
 
         short right = 0;
         boolean isRoleSpecified = false;
@@ -750,4 +748,33 @@ public class ApplicationAccessibility {
 
         return right;
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Getters / Setters">
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setBreBandService(BreBandService BreBandService) {
+        this.breBandService = BreBandService;
+    }
+
+    public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
+        this.penaltyChargeService = penaltyChargeService;
+    }
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+    public void setAccessibilityService(AccessibilityService accessibilityService) {
+        this.accessibilityService = accessibilityService;
+    }
+    // </editor-fold>
+
 }
