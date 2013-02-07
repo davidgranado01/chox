@@ -1273,14 +1273,3 @@ ALTER TABLE web_user ALTER COLUMN user_name TYPE character varying(64);
 --  END OF BUG#2400  --
 -----------------------
 
-
------------------------------------------------------------------------------------------
--- BUG#2279 - Production - Assign Claim Owner Is Grayed Out When Doing Batch Update.   --
------------------------------------------------------------------------------------------
-
-DELETE FROM accessibility_item where accessibility_id IN (SELECT id FROM accessibility WHERE name LIKE 'batch.routeClaims.%') 
-	AND accessibility_id NOT IN (SELECT id FROM accessibility WHERE name LIKE 'batch.routeClaims.ClaimUnacknowledgedUnrouted');
-
------------------------
---  END OF BUG#2279  --
------------------------
