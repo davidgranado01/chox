@@ -70,9 +70,6 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(boolean isTpiClaim) {
-        // CARLSON @ 20091012
-        // ClaimHasZeroDiscountForDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect; 
-        //return ClaimStatus.INVOICE_ESCALATED;
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

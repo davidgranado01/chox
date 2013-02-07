@@ -106,6 +106,7 @@ public class InboxAction extends BaseAction {
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
         List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser());
         List<String> insurerName = new ArrayList<String>();
+
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
@@ -116,13 +117,11 @@ public class InboxAction extends BaseAction {
                 // in case we have manual invoice ownership batch update enabled 
                 if (batchUpdateAction.equals("claimOwnership")
                         && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership()) {
-                    getActionResponse().AssignYesNoResult(Boolean.FALSE);
                     return SUCCESS;
                 }
                 // in case we have manual invoice workgroup and ownership batch update enabled
                 if (batchUpdateAction.equals("updateClaimWorkgroupAndOwner") 
                         && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups()) {
-                    getActionResponse().AssignYesNoResult(Boolean.FALSE);
                     return SUCCESS;
                 }
             }
@@ -134,11 +133,11 @@ public class InboxAction extends BaseAction {
             }
             
             if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {
-                getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
-            getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
+
+        getActionResponse().AssignYesNoResult(Boolean.TRUE);
 
         return SUCCESS;
     }

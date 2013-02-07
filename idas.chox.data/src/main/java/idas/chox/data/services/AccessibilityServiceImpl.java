@@ -2,6 +2,8 @@ package idas.chox.data.services;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -10,36 +12,42 @@ import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.AccessibilityService;
-import org.hibernate.criterion.Order;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
 
-    @Override
-    public List<Accessibility> getBatchUpdateAccessibilityMap(String accessibilityKey) {
-        DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
-        c.add(Restrictions.like("name", accessibilityKey + ".%"));
-        return findByCriteria(c);
-    }
 
     @Override
-    public HashMap getAccessibilityKeyMap() {
-
-        HashMap<String, ClaimType> map = new HashMap<String, ClaimType>();
+    public Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
+        Map<String, List<Accessibility>> batchUpdateAccessibilityMap = new HashMap<String, List<Accessibility>>(120);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
-        List result = findByCriteria(c);
-
-        for (Object o : result) {
-            Accessibility a = (Accessibility) o;
-            map.put(a.getName(), a.getClaimType());
+        c.add(Restrictions.like("name", "batch.%"));
+        List<Accessibility> accessibilities = findByCriteria(c);
+        // Now split into a map with the key on 'batch.<action name>'
+        for (Accessibility a : accessibilities) {
+            for (Object item : a.getAccessibilityItem()) {
+                // Just force the loading of the items to prevent lazy loading
+                // exception later
+            }
+            String key = a.getName().substring(0, a.getName().lastIndexOf('.'));
+            if (batchUpdateAccessibilityMap.containsKey(key)) {
+                List<Accessibility> access = batchUpdateAccessibilityMap.remove(key);
+                access.add(a);
+                batchUpdateAccessibilityMap.put(key, access);
+            } else {
+                List<Accessibility> access = new ArrayList<Accessibility>();
+                access.add(a);
+                batchUpdateAccessibilityMap.put(key, access);
+            }
         }
 
-        return map;
+        return batchUpdateAccessibilityMap;
     }
 
-    @Override
-    public HashMap<String, HashMap> getAccessibilityMap() {
 
-        HashMap<String, HashMap> map = new HashMap<String, HashMap>();
+    @Override
+    public Map<String, Object[]> getAccessibilityMap() {
+
+        HashMap<String, Object[]> map = new HashMap<String, Object[]>(1000);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         List result = findByCriteria(c);
 
@@ -56,43 +64,15 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             if (a.getClaimType() == null) {
                 // Valid for all claim types
                 for (ClaimType type : ClaimType.values()) {
-                    map.put(a.getName() + "." + type.name(), roleMap);
+                    map.put(a.getName() + "." + type.name(), new Object[]{a,roleMap});
                 }
-                map.put(a.getName() + ".ALL", roleMap);
+                map.put(a.getName() + ".ALL", new Object[]{a,roleMap});
             } else {
-                map.put(a.getName() + "." + a.getClaimType().name(), roleMap);
+                map.put(a.getName() + "." + a.getClaimType().name(), new Object[]{a,roleMap});
             }
         }
 
         return map;
     }
 
-    @Override
-    public Accessibility getAccessibility(String accessibilityKey, ClaimType claimType) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
-        criteria.add(Restrictions.eq("name", accessibilityKey));
-        if (claimType == null) {
-            criteria.add(Restrictions.isNull("claimType"));
-        } else {
-            criteria.add(Restrictions.disjunction().add(Restrictions.eq("claimType", claimType))
-                                                   .add(Restrictions.isNull("claimType")))
-                    .addOrder(Order.asc("claimType"));
-        }
-        return (Accessibility) getByCriteria(criteria);
-    }
-
-    private int getAccessibilityId(String accessibilityKey) {
-
-        int oResult = -1;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
-        criteria.add(Restrictions.eq("name", accessibilityKey));
-        Accessibility object = (Accessibility) getByCriteria(criteria);
-
-        if (object != null) {
-            oResult = object.getId();
-        }
-
-        return oResult;
-    }
-    }
+}

@@ -46,7 +46,6 @@ public abstract class EmailSchedulerJob implements Scheduler{
     private String smtpPort;
     private String smtpEmailUser;
     private String smtpEmailPassword;
-//    private boolean existingTransaction;
     private SecurityInfoProvider securityInfoProvider;
     private Session session;
     private SessionFactory sessionFactory;
@@ -85,8 +84,9 @@ public abstract class EmailSchedulerJob implements Scheduler{
                 // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION DO NOT RUN ON PRODUCTION SERVER.
                 if (!hostName.equalsIgnoreCase("PRODUCTION")) {
                     String emailSubjectPrefix = hostName + "-";
-                    if (!serverConfig.getServletContext().getContextPath().isEmpty())
+                    if (!serverConfig.getServletContext().getContextPath().isEmpty()) {
                         emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";
+                    }
                     emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
                 } else {
                     emailSubject = schedulerJob.getEmailSubject();
@@ -106,7 +106,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
                         mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
                         LOG.debug("Mapped login user {} is authenticated for sender '{}'.", loginUsername, sender);
                         List<InputStream> attachmentStreams = imapMailReceiver.fetchAttachements(message, "xls");
-                        Map<Integer, List<String>> xlsDataMap = null;
+                        Map<Integer, List<String>> xlsDataMap;
                         try {
                             if (attachmentStreams.size() > 0) {
                                 for (InputStream attachemt : attachmentStreams) {

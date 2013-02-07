@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------------
+-- 7.3.1 Refactoring of functional access to take into account the claim type      --
+-------------------------------------------------------------------------------------
+ALTER TABLE accessibility ADD COLUMN claim_type integer;
+CREATE UNIQUE INDEX accessibility_ui ON accessibility(name, claim_type);
+----------------------
+--  END OF 7.3.1    --
+----------------------
