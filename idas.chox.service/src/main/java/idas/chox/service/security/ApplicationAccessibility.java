@@ -597,7 +597,6 @@ public class ApplicationAccessibility {
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-
             return accessRight;
         }
         return DECLINED;
@@ -617,7 +616,7 @@ public class ApplicationAccessibility {
             for (Object item : accessibility.getAccessibilityItem()) {
                 AccessibilityItem aItem = (AccessibilityItem) item;
                 Short accessRight = aItem.getAccessRight();
-                roleMap.put(aItem.getRole().trim(), accessRight);
+               roleMap.put(aItem.getRole().trim(), accessRight);
             }
             roleMap = restrictAccess(roleMap, accessibility, user);
             if (checkAccessibility(roleMap, user) > 0) {
@@ -640,6 +639,7 @@ public class ApplicationAccessibility {
         }
         return accessibilityMap;
     }
+
     private Map<String, Object[]> getAccessibilityByClaimTypeMap() {
 
         if (accessibilityByClaimTypeMap == null) {
@@ -649,6 +649,7 @@ public class ApplicationAccessibility {
         }
         return accessibilityByClaimTypeMap;
     }
+
     private Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
 
         if (batchUpdateAccessibilityMap == null) {
@@ -719,7 +720,6 @@ public class ApplicationAccessibility {
     }
 
     private Short checkAccessibility(Map roleMap, WebUser user) {
-
         short right = 0;
         boolean isRoleSpecified = false;
 
