@@ -590,17 +590,17 @@ public class ApplicationAccessibility {
             Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
             
             Short accessRight = checkAccessibility(roleMap, user);
-            LOG.debug("Initial access right for key '{}': {}", accessibilityKey, accessRight);
+//            LOG.debug("Initial access right for key '{}': {}", accessibilityKey, accessRight);
             if (accessRight > 0 && !canAccess(accessibility, claim)) {
                 accessRight = 0;
             }
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
+//            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
-        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
+//        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
 
@@ -620,7 +620,7 @@ public class ApplicationAccessibility {
             if (checkAccessibility(roleMap, user) > 0) {
                 String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1),
                         (accessibility.getName()).length());
-                LOG.debug("Status allowed for batch update '{}': {}", actionName, status);
+//                LOG.debug("Status allowed for batch update '{}': {}", actionName, status);
                 statuses.add(status);
             }
 
@@ -700,19 +700,19 @@ public class ApplicationAccessibility {
     }
     
     private boolean canAccess(Accessibility accessibility, WebUser user) {
-            if (accessibility.isCheckWorkgroupEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isWorkgroupEnable())) {
+            if (accessibility.isCheckWorkgroupEnabled() && user.getInsurer() != null && !user.getInsurer().isWorkgroupEnable()) {
                 return false;
             }
-            if (accessibility.isCheckClaimOwnershipEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isClaimOwnershipEnable())) {
+            if (accessibility.isCheckClaimOwnershipEnabled() && user.getInsurer() != null && !user.getInsurer().isClaimOwnershipEnable()) {
                 return false;
             }
-            if (accessibility.isCheckFnolEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isFnolEnable())) {
+            if (accessibility.isCheckFnolEnabled() && user.getInsurer() != null && !user.getInsurer().isFnolEnable()) {
                 return false;
             }
-            if (accessibility.isCheckEngineerEnabled() && (user.getChorganisation()!=null || !user.getInsurer().isEngineersEnable())) {
+            if (accessibility.isCheckEngineerEnabled() && user.getInsurer() != null && !user.getInsurer().isEngineersEnable()) {
                 return false;
             }
-            if (accessibility.isCheckSupplierClaimOwnershipEnabled() && (user.getInsurer()!=null || !user.getChorganisation().isClaimOwnershipEnable())) {
+            if (accessibility.isCheckSupplierClaimOwnershipEnabled() && user.getChorganisation() != null && !user.getChorganisation().isClaimOwnershipEnable()) {
                 return false;
             }
 
