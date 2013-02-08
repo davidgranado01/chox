@@ -132,6 +132,15 @@ public class InboxAction extends BaseAction {
                 return SUCCESS;
             }
             
+            if (batchUpdateAction.equalsIgnoreCase("routeClaims") 
+                    && (!claim.getInsurer().isWorkgroupEnable() 
+                        || (ClaimStatus.isManualStatus(claim.getStatus()) 
+                            && ((!claim.getInsurer().isEnableManualInvoiceWorkgroups()) 
+                                || (claim.getInsurer().isClaimOwnershipEnable() || claim.getInsurer().isEnableManualInvoiceOwnership()))))) {
+                getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                return SUCCESS;
+            }
+            
             if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {
                 return SUCCESS;
             }
