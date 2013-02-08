@@ -162,16 +162,14 @@
                         doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
                     } else {
                         doClaimOwnerAction.setText('Update Claim(s) Workgroup And Claim Owner');
-                        doClaimRoutedAction.setText('Re-Route Claim(s)');
+                        if (<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+                            doClaimRoutedAction.setText('Route Claim(s)');
+                        } else {
+                            doClaimRoutedAction.setText('Re-Route Claim(s)');
+                        }
                         doInsurerClaimOwnerAction.setText('Update Claim(s) Owner');
                     }
                     
-                    if (!(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> 
-                        && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))) {
-                        doClaimRoutedAction.setHidden(true);
-                    } else {
-                        doClaimRoutedAction.setHidden(false);
-                    }
                     if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) 
                         && <s:property value="enableManualInvoiceOwnership"/>)) {
                         doInsurerClaimOwnerAction.setHidden(true);
@@ -187,13 +185,8 @@
                         && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
                    
                    // Route Claim BATCH UPDATE LOGIC
-                    if (filterName != 'NewClaimsToBerouted') {
+                    if (filterName != 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
                         doClaimRoutedAction.setText('Re-Route Claim(s)'); 
-                        if (<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>)) {
-                            doClaimRoutedAction.setHidden(true);
-                    } else {
-                            doClaimRoutedAction.setHidden(false); 
-                        }
                     } else {
                         doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
                         doClaimRoutedAction.setText('Route Claim(s)'); 
@@ -1571,8 +1564,7 @@
                         }
                     }
                     
-                     if(tab.title == 'Search'){
-                        doClaimRoutedAction.setHidden(<s:property value="isCHO"/>);
+                    if(tab.title == 'Search'){
                         doClaimRoutedAction.setText('Route Claim(s)');
                     }
                     
