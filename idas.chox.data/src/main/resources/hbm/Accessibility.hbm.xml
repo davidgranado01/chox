@@ -19,9 +19,10 @@
         <property column="check_engineer_enabled" name="checkEngineerEnabled"/>
         <property column="check_manual_inv_workgroup_enabled" name="checkManualInvoiceWrokgroupEnabled"/>
         <property column="check_manual_inv_claimownership_enabled" name="checkManualInvoiceClaimOwnershipEnabled"/>
-        <set lazy="extra" name="AccessibilityItem">
+        <map lazy="false" name="accessibilityRoleMap" table="accessibility_item" cascade="all">
             <key column="accessibility_id"/>
-            <one-to-many class="idas.chox.core.model.AccessibilityItem"/>
-        </set>
+            <index column="role" type="string"/>
+            <element column="access_right" type="short"/>
+        </map>
     </class>
 </hibernate-mapping>

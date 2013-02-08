@@ -7,27 +7,25 @@ import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.AccessibilityService;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
+    private static final Logger LOG = LoggerFactory.getLogger(AccessibilityServiceImpl.class);
 
 
     @Override
     public Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
-        Map<String, List<Accessibility>> batchUpdateAccessibilityMap = new HashMap<String, List<Accessibility>>(120);
+        Map<String, List<Accessibility>> batchUpdateAccessibilityMap = new HashMap<String, List<Accessibility>>(10);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         c.add(Restrictions.like("name", "batch.%"));
         List<Accessibility> accessibilities = findByCriteria(c);
         // Now split into a map with the key on 'batch.<action name>'
         for (Accessibility a : accessibilities) {
-            for (Object item : a.getAccessibilityItem()) {
-                // Just force the loading of the items to prevent lazy loading
-                // exception later
-            }
             String key = a.getName().substring(0, a.getName().lastIndexOf('.'));
             if (batchUpdateAccessibilityMap.containsKey(key)) {
                 List<Accessibility> access = batchUpdateAccessibilityMap.remove(key);
@@ -40,14 +38,17 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             }
         }
 
+        if (batchUpdateAccessibilityMap.size() > 10) {
+            LOG.error("Please update initial batchUpdateAccessibilityMap size: current size=10, should be {}", batchUpdateAccessibilityMap.size());
+        }
         return batchUpdateAccessibilityMap;
     }
 
 
     @Override
-    public Map<String, Object[]> getAccessibilityByClaimTypeMap() {
+    public Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
 
-        HashMap<String, Object[]> map = new HashMap<String, Object[]>(10000);
+        Map<String, Accessibility> map = new HashMap<String, Accessibility>(14000);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         // Only interested in actions that are broken down by claim type
         c.add(Restrictions.disjunction().add(Restrictions.like("name", "batch.%"))
@@ -60,30 +61,28 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         for (Accessibility a : accessibilities) {
 
-            HashMap roleMap = new HashMap();
-            for (Object item : a.getAccessibilityItem()) {
-
-                AccessibilityItem aItem = (AccessibilityItem) item;
-                roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
-            }
             if (a.getClaimType() == null) {
                 // Valid for all claim types
                 for (ClaimType type : ClaimType.values()) {
-                    map.put(a.getName() + "." + type.name(), new Object[]{a,roleMap});
+                    map.put(a.getName() + "." + type.name(), a);
                 }
-                map.put(a.getName() + ".ALL", new Object[]{a,roleMap});
+                map.put(a.getName() + ".ALL", a);
             } else {
-                map.put(a.getName() + "." + a.getClaimType().name(), new Object[]{a,roleMap});
+                map.put(a.getName() + "." + a.getClaimType().name(), a);
             }
         }
 
+        if (map.size() > 10) {
+            LOG.error("Please update initial AccessibilityByClaimTypeMap size: current init size=14000, shuld be {}", map.size());
+        }
         return map;
     }
 
-    @Override
-    public Map<String, Object[]> getAccessibilityMap() {
 
-        HashMap<String, Object[]> map = new HashMap<String, Object[]>(1000);
+    @Override
+    public Map<String, Accessibility> getAccessibilityMap() {
+
+        Map<String, Accessibility> map = new HashMap<String, Accessibility>(100);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         // Not interested in actions that are broken down by claim type
         c.add(Restrictions.conjunction().add(Restrictions.not(Restrictions.like("name", "batch.%")))
@@ -92,19 +91,16 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
          .add(Restrictions.not(Restrictions.like("name", "notification.%")))
          .add(Restrictions.not(Restrictions.like("name", "button.%")))
          .add(Restrictions.not(Restrictions.like("name", "tab.%"))));
+
         List<Accessibility> accessibilities = findByCriteria(c);
 
         for (Accessibility a : accessibilities) {
-
-            HashMap roleMap = new HashMap();
-            for (Object item : a.getAccessibilityItem()) {
-
-                AccessibilityItem aItem = (AccessibilityItem) item;
-                roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
-            }
-            map.put(a.getName(), new Object[]{a,roleMap});
+            map.put(a.getName(), a);
         }
 
+        if (map.size() > 10) {
+            LOG.error("Please update initial AccessibilityMap size: current init size=100, shuld be {}", map.size());
+        }
         return map;
     }
 

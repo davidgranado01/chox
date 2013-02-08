@@ -2,6 +2,7 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +105,7 @@ public class InboxAction extends BaseAction {
     public String checkBatchUpdateStatus() {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
-        List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser());
+        List<String> statusAllow = applicationAccessibility.getAllowedStatusesForBatchUpdate(batchUpdateAction, super.getAuthenticatedUser());
         List<String> insurerName = new ArrayList<String>();
 
         for (Integer id : selectedClaimIdList) {
@@ -128,6 +129,15 @@ public class InboxAction extends BaseAction {
 
             if (batchUpdateAction.equalsIgnoreCase("routeClaims") && claim.getInsurer().isClaimOwnershipEnable()
                     && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
+                getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                return SUCCESS;
+            }
+            
+            if (batchUpdateAction.equalsIgnoreCase("routeClaims") 
+                    && (!claim.getInsurer().isWorkgroupEnable() 
+                        || (ClaimStatus.isManualStatus(claim.getStatus()) 
+                            && ((!claim.getInsurer().isEnableManualInvoiceWorkgroups()) 
+                                || (claim.getInsurer().isClaimOwnershipEnable() || claim.getInsurer().isEnableManualInvoiceOwnership()))))) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
@@ -161,7 +171,8 @@ public class InboxAction extends BaseAction {
     // Below functionality implemented for bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
     public String getUniqueWorkgroupId() {
         List<Integer> workgrouId = new ArrayList<Integer>();
-        for (Integer id : selectedClaimIdList) {
+        for (Iterator<Integer> it = selectedClaimIdList.iterator(); it.hasNext();) {
+            Integer id = it.next();
             Claim claim = claimService.getClaim(id);
             if (claim.getWorkgroup() == null || (!workgrouId.isEmpty() && !workgrouId.contains(claim.getWorkgroup().getId()))) {
                 setJsonData("{workgroupId:-1}");

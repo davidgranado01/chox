@@ -1,15 +1,14 @@
 package idas.chox.core.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
+import java.util.Map;
 
 public class Accessibility implements Serializable {
 
     private Integer id;
     private String name;
     private ClaimType claimType;
-    private Set accessibilityItem = new HashSet();
+    private Map<String, Short> accessibilityRoleMap;
     private boolean workgroupCheck;
     private boolean ownershipCheck;
     private boolean checkWorkgroupEnabled;
@@ -19,6 +18,9 @@ public class Accessibility implements Serializable {
     private boolean checkEngineerEnabled;
     private boolean checkManualInvoiceWrokgroupEnabled;
     private boolean checkManualInvoiceClaimOwnershipEnabled;
+
+    public Accessibility() {
+    }
 
     public boolean isCheckManualInvoiceClaimOwnershipEnabled() {
         return checkManualInvoiceClaimOwnershipEnabled;
@@ -92,31 +94,28 @@ public class Accessibility implements Serializable {
         this.checkWorkgroupEnabled = checkWorkgroupEnabled;
     }
 
-    public Accessibility() {
-    }
-
-    public java.lang.Integer getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(java.lang.Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Set getAccessibilityItem() {
-        return accessibilityItem;
+    public Map<String, Short> getAccessibilityRoleMap() {
+        return accessibilityRoleMap;
     }
 
-    public void setAccessibilityItem(Set accessibilityItem) {
-        this.accessibilityItem = accessibilityItem;
+    public void setAccessibilityRoleMap(Map<String, Short> accessibilityRoleMap) {
+        this.accessibilityRoleMap = accessibilityRoleMap;
     }
 
     public ClaimType getClaimType() {
