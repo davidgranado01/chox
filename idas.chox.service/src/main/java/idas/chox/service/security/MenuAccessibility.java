@@ -11,14 +11,18 @@ public class MenuAccessibility {
     private boolean searchMenuAccessibility;
     private boolean uploadMenuAccessibility;
 
+    private String getMenuAccessibilityKey(String menuName) {
+        return String.format("menu.%1$s", menuName);
+    }
+
     public MenuAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
-        dashBoardMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_DASHBOARD, user) > 0;
-        reportMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_REPORT, user) > 0;
-        adminMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_ADMIN, user) > 0;
-        inboxMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_INBOX, user) > 0;
-        searchMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_SEARCH, user) > 0;
-        uploadMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_UPLOAD, user) > 0;
+        dashBoardMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_DASHBOARD), user) > 0;
+        reportMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_REPORT), user) > 0;
+        adminMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_ADMIN), user) > 0;
+        inboxMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_INBOX), user) > 0;
+        searchMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_SEARCH), user) > 0;
+        uploadMenuAccessibility = applicationAccessibility.checkAccessibilityForUser(getMenuAccessibilityKey(ApplicationAccessibility.MENU_UPLOAD), user) > 0;
     }
 
     public boolean getIsDashBoardMenuAccessibility() {

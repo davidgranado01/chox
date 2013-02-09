@@ -6,8 +6,13 @@ public class PanelAccessibility {
 
     private boolean fnolReviewedPanelAccessible;
 
+    private String getPanelAccessibilityKey(String filterName) {
+        return String.format("panel.%1$s", filterName);
+    }
+
+
     public PanelAccessibility(ApplicationAccessibility accessibility, WebUser user) {
-        fnolReviewedPanelAccessible = accessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED, user) > 0;
+        fnolReviewedPanelAccessible = accessibility.checkAccessibilityForUser(getPanelAccessibilityKey(ApplicationAccessibility.PANEL_FNOL_REVIEWED), user) > 0;
     }
 
     public boolean getFnolReviewedPanelAccessible() {

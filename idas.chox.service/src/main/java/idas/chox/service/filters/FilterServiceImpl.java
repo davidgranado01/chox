@@ -1,16 +1,18 @@
 package idas.chox.service.filters;
 
-import idas.chox.core.services.FilterService;
-import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
-import idas.chox.core.model.Filter;
-import idas.chox.core.model.WebUser;
 import java.util.ArrayList;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.FilterService;
+import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.core.model.Filter;
 
 public class FilterServiceImpl implements FilterService, BeanFactoryAware {
 
@@ -18,6 +20,11 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
     private List<Filter> availableFilters;
     private BeanFactory beanFactory;
     private ApplicationAccessibility applicationAccessibility;
+
+    private String getFilterAccessibilityKey(String filterName) {
+        return String.format("filter.%1$s", filterName);
+    }
+
 
     @Override
     public List<Filter> getAvailableFilters(WebUser webUser) {
@@ -27,7 +34,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
         if (availableFilters != null) {
             if (webUser != null) {
                 for (Filter filter : availableFilters) {
-                    if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser) > 0) {
+                    if (applicationAccessibility.checkAccessibilityForUser(getFilterAccessibilityKey(filter.getKey()), webUser) > 0) {
                         if (!filter.getIsManualFilter() && filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
                             LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
                             continue;

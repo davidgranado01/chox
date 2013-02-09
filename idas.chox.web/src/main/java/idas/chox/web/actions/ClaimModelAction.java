@@ -1,8 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +76,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             throw new AccessDeniedException("Illegal claim access detected.");
         }
         String tabName = getTabName();
-        Short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
+        Short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
+                ApplicationAccessibility.getTabAccessibilityKey(tabName, claim.getStatus(), claim.getClaimType()),
+                super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab '{}' in status={}", new Object[]{result, tabName, claim.getStatus()});

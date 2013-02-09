@@ -3,8 +3,19 @@ package idas.chox.web.actions;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
@@ -18,14 +29,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import net.sf.json.JSONArray;
-import org.springframework.security.access.AccessDeniedException;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -256,7 +259,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public String getIsChoOrIns() {
-        String userName = null;
+        String userName;
         if (getIsCHO()) {
             userName = "Insurer";
         } else {
@@ -266,7 +269,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public String getWhoCreated() {
-        String userName = null;
+        String userName;
         if (getIsCHO()) {
             userName = "CHO";
         } else {

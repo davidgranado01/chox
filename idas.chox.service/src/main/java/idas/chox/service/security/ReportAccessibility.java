@@ -37,30 +37,35 @@ public class ReportAccessibility {
     private short teamSiteBreReportAccessibility;
     private short workgroupOwnerBreReportAccessibility;
 
+    private String getReportAccessibilityKey(String reportName) {
+        return String.format("report.%1$s", reportName);
+    }
+
+
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
-        invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, user);
-        insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY, user);
-        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, user);
-        insurerPaymentReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_PAYMENT, user);
-        overviewSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OVERVIEW_SUMMARY, user);
-        insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_AVERAGE_SETTLEMENT, user);
-        invoiceSavingSummaryReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SAVING_SUMMARY, user);
-        invoiceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_REPORT, user);
-        billingChoReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_CHO_REPORT, user);
-        billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
-        claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
-        ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
-        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
-        teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
-        teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
-        claimStatusWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
-        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
-        invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
-        handlerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_PERFORMANCE_REPORT, user);
-        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
-        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
-        newIncomingHandlerActionsAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_ACTIONS_REPORT, user);
+        invoiceSummaryAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INVOICE_SUMMARY), user);
+        insurerWeeklySummaryAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY), user);
+        claimRejectionAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_CLAIM_REJECTION), user);
+        insurerPaymentReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INSURER_PAYMENT), user);
+        overviewSummaryAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_OVERVIEW_SUMMARY), user);
+        insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_AVERAGE_SETTLEMENT), user);
+        invoiceSavingSummaryReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INVOICE_SAVING_SUMMARY), user);
+        invoiceReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INVOICE_REPORT), user);
+        billingChoReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_BILLING_CHO_REPORT), user);
+        billingInsReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_BILLING_INS_REPORT), user);
+        claimFileReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT), user);
+        ownerWorkflowReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT), user);
+        ownerPerformanceReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT), user);
+        teamWorkflowReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT), user);
+        teamPerformanceReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT), user);
+        claimStatusWorkflowReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT), user);
+        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE), user);
+        invoiceStatusReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT), user);
+        handlerPerformanceReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_HANDLER_PERFORMANCE_REPORT), user);
+        teamSiteBreReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT), user);
+        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT), user);
+        newIncomingHandlerActionsAccessibility = applicationAccessibility.checkAccessibilityForUser(getReportAccessibilityKey(ApplicationAccessibility.REPORT_HANDLER_ACTIONS_REPORT), user);
         
     }
 
@@ -68,56 +73,79 @@ public class ReportAccessibility {
         short accessibility = ApplicationAccessibility.DECLINED;
 
         LOG.debug("Checking accessibbility for report '{}'", reportCode);
-        if (reportCode.equals("RPT008"))
+        if (reportCode.equals("RPT008")) {
             accessibility = getInvoiceReportAccessibility();
-        else if (reportCode.equals("RPT007"))
+        }
+        else if (reportCode.equals("RPT007")) {
             accessibility = getInvoiceSavingSummaryReportAccessibility();
-        else if (reportCode.equals("RPT019"))
+        }
+        else if (reportCode.equals("RPT019")) {
             accessibility = getInvoiceSummaryAccessibility();
-        else if (reportCode.equals("RPT003"))
+        }
+        else if (reportCode.equals("RPT003")) {
             accessibility = getClaimRejectionAccessibility();
-        else if (reportCode.equals("RPT002"))
+        }
+        else if (reportCode.equals("RPT002")) {
             accessibility = getInsurerPaymentReportAccessibility();
-        else if (reportCode.equals("RPT001"))
+        }
+        else if (reportCode.equals("RPT001")) {
             accessibility = getOverviewSummaryAccessibility();
-        else if (reportCode.equals("RPT006"))
+        }
+        else if (reportCode.equals("RPT006")) {
             accessibility = getInsurerAverageClaimSettlementReportAccessibility();
-        else if (reportCode.equals("RPT058"))
+        }
+        else if (reportCode.equals("RPT058")) {
             accessibility = getNewIncomingHandlerActionsAccessibility();
-        else if (reportCode.equals("RPT010"))
+        }
+        else if (reportCode.equals("RPT010")) {
             accessibility = getBillingChoReportAccessibility();
-        else if (reportCode.equals("RPT009"))
+        }
+        else if (reportCode.equals("RPT009")) {
             accessibility = getBillingInsReportAccessibility();
-        else if (reportCode.equals("RPT100"))
+        }
+        else if (reportCode.equals("RPT100")) {
             accessibility = getClaimFileReportAccessibility();
-        else if (reportCode.equals("RPT018"))
+        }
+        else if (reportCode.equals("RPT018")) {
             accessibility = getInsurerWeeklySummaryAccessibility();
-        else if (reportCode.equals("RPT021"))
+        }
+        else if (reportCode.equals("RPT021")) {
             accessibility = getOwnerWorkflowReportAccessibility();
-        else if (reportCode.equals("RPT056"))
+        }
+        else if (reportCode.equals("RPT056")) {
             accessibility = getOwnerPerformanceReportAccessibility();
-        else if (reportCode.equals("RPT057"))
+        }
+        else if (reportCode.equals("RPT057")) {
             accessibility = getHandlerPerformanceReportAccessibility();
-        else if (reportCode.equals("RPT022"))
+        }
+        else if (reportCode.equals("RPT022")) {
             accessibility = getTeamWorkflowReportAccessibility();
-        else if (reportCode.equals("RPT055"))
+        }
+        else if (reportCode.equals("RPT055")) {
             accessibility = getTeamPerformanceReportAccessibility();
-        else if (reportCode.equals("RPT023"))
+        }
+        else if (reportCode.equals("RPT023")) {
             accessibility = getClaimStatusWorkflowReportAccessibility();
-        else if (reportCode.equals("RPT030"))
+        }
+        else if (reportCode.equals("RPT030")) {
             accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
-        else if (reportCode.equals("RPT025"))
+        }
+        else if (reportCode.equals("RPT025")) {
             accessibility = getInvoiceStatusReportAccessibility();
-        else if(reportCode.equals("RPT031"))
+        }
+        else if(reportCode.equals("RPT031")) {
             accessibility = getTeamSiteBreReportAccessibility();
-        else if(reportCode.equals("RPT032"))
+        }
+        else if(reportCode.equals("RPT032")) {
             accessibility = getWorkgroupOwnerBreReportAccessibility();
+        }
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
         LOG.debug("Accessibbility for report '{}' is {}", reportCode, accessibility);
-        if (accessibility == ApplicationAccessibility.DECLINED)
+        if (accessibility == ApplicationAccessibility.DECLINED) {
             return false;
+        }
 
         return true;
     }

@@ -1,10 +1,11 @@
 package idas.chox.web.actions;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+
 import idas.chox.core.model.WebUser;
 import idas.chox.service.security.AdminAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 
 public class AdminAction extends BaseAction {
 
@@ -46,8 +47,9 @@ public class AdminAction extends BaseAction {
             || ("ChoxCreditHireMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsCreditHireOrgAdminAccessibility())
             || ("UserMgmt".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
             || ("UserroleMapping".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
-            || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin())))
-            throw new AccessDeniedException("You do not have the privileges to access the requested resource. You will now be logged out."); 
+            || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin()))) {
+            throw new AccessDeniedException("You do not have the privileges to access the requested resource. You will now be logged out.");
+        } 
                     
         return this.adminPanelName;
     }
