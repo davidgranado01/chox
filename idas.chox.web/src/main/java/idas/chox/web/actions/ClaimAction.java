@@ -1740,7 +1740,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<String> actions = ActionPanel.getPanelActions();
 
         for (String action : actions) {
-            short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
+            short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
+                    ApplicationAccessibility.getActionAccessibilityKey(action, claim.getStatus(), claim.getClaimType()),
+                    getAuthenticatedUser(), claim);
             LOG.debug("Access right for panel '{}' : {}", action, accessRight);
             if (accessRight >= 2) {
                 LOG.debug("Returning action: {}", action);
@@ -1761,7 +1763,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsClaimNotificationEditable() {
-        if (applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser(), claim) < 2) {
+        if (applicationAccessibility.checkAccessibilityEditableForClaim(
+                ApplicationAccessibility.getNotificationAccessibilityKey("NotificationNotesNotification", claim.getStatus(), claim.getClaimType()),
+                getAuthenticatedUser(), claim) < 2) {
             return false;
         }
         return true;
@@ -1771,25 +1775,155 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         List<String> actions = ExtraAction.getExtraActions();
         extraActionList = new ArrayList<LookupItem>();
-        for (String action : actions) {
+        for (String actionName : actions) {
             String extraActionDescription;
-            LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
-            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
+            LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", actionName, claim.getStatus());
+            short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
+                    ApplicationAccessibility.getExtraActionAccessibilityKey(actionName, claim.getStatus(), claim.getClaimType()),
+                    getAuthenticatedUser(), claim);
+            /*
+             * If any of this condition !(insurerWorkgroupEnabled or
+             * insurerClaimOwnershipEnabled) or !(manualInvoiceWorkgroupEnabled
+             * or manualInvoiceClaimOwnershipEnabled) is true then disable the  1QQ
+             * manual invoice extra action. And this condiont is equal to
+             * (insurerWorkgroupDisabled and insurerClaimOwnershipDisabled) or
+             * (manualInvoiceWorkgroupDisabled and
+             * manualInvoiceClaimOwnershipDisabled).
+             *
+             */
+            if (accessRight > 0 && actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                    && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
+                    || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
+                accessRight = 0;
+//                LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
+            }
+            
+            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
+                    && claim.getInsurer().isClaimOwnershipEnable()) {
+                accessRight = 0;
+//                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
+            }
+            
+
+            if (accessRight >= 2) {
+                if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
+                    boolean b = true;
+                    try {
+                        // If there is an outstanding interim payment to be received, this action panel
+                        // is already visible so do not display this more action
+                        if (claim.getInvoice() == null || claim.getInvoice().getInterimPaymentMade() == null
+                                || claim.getInvoice().getInterimPaymentReceived() == null
+                                ||  claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0) {
+                            b = false;
+                        }
+
+                    } catch (Exception e) {
+//                        LOG.debug("thrown exception is {}", e.getMessage());
+                        b = false;
+                    }
+                    if (!b) {
+//                        LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
+                        accessRight = 0;
+                    }
+                } else if (actionName.equals(ExtraAction.UPDATE_PENALTY_CHARGES)) {
+                    // Check invoice was uploaded at least 30 days ago
+                    Invoice invoice = claim.getInvoice();
+                    if (invoice != null) {
+                        int days = invoice.getInvoicedDays();
+                        /*
+                         * For manual invoices always show 'Adjust Penalty
+                         * Charges' more action. 
+                         *  "7.1.2 Insurer Manual Invoice Process Updates" says - 
+                         * the age of the invoice does
+                         * not have to be over say 30 days in order to be able
+                         * to apply the penalty charges
+                         */
+                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && claim.getClaimType() != ClaimType.INSURER_UPLOAD) {
+//                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
+                            accessRight = 0;
+                        }
+                        // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
+                        else if (invoice.getPenaltyBand() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
+                            if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                    || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
+                                        && (!claim.isAutoPenaltyChargeEnabled() 
+                                            || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim)))) 
+                                    && days > invoice.getPenaltyBand()) {
+//                                LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
+                                accessRight = 0;
+                            }
+                        }
+                        // Check Penalty Charges disallowed and no current charges
+                        if (accessRight != 0) {
+                            if (claim.getBreBand() == null) {
+                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                claim.setBreBand(choBand);
+                            }
+                            if (!claim.getBreBand().isAllowPenaltyCharges() && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0) ) {
+                                accessRight = 0;
+//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
+                            }
+                        }
+                        
+                    } else {
+                        // No invoice!
+//                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
+                        accessRight = 0;
+                    }
+//                    LOG.debug("Access right for Update Penalty Charges is {}", accessRight);
+                } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
+                    Invoice invoice = claim.getInvoice();
+                    if (claim.getInvoice() != null) {
+                        if (claim.getBreBand() == null) {
+                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                            claim.setBreBand(choBand);
+                        }
+
+                        if (!claim.getBreBand().isAllowPenaltyCharges()) {
+//                            LOG.debug("BRE Band does not allow penalty charges");
+                            accessRight = 0;
+                        }
+                    } else { // No invoice! or wrong claim type
+//                        LOG.debug("No invoice or wrong claim type - no access to Penalty Charge Config");
+                        accessRight = 0;
+                    }
+//                    LOG.debug("Access right for Penalty Charges Configuration is {}", accessRight);
+                } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
+
+                    String customerClaimRef = claim.getCustomer().getClaimReference();
+
+                    if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
+                        List<Claim> claims = service.getClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
+                        if (claims.size() > 1) {
+                            for (Claim claim1 : claims) {
+                                if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {
+                                    accessRight = 0;
+                                }
+                            }
+                        } else {
+                            accessRight = 0;
+                        }
+                    } else {
+                        accessRight = 0;
+                    }
+
+                }
+            }
+            LOG.debug("More Action Accessibility for action '{}': {}", actionName, accessRight);
 
             if (accessRight >= 2) {
 
-                if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
                         && !claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
                     extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP);
-                } else if (action.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
+                } else if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
                         && claim.getInsurer().isEnableManualInvoiceOwnership() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
                     extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER);
                 } else {
-                    extraActionDescription = ExtraAction.getExtraActionName(action);
+                    extraActionDescription = ExtraAction.getExtraActionName(actionName);
                 }
 
-                extraActionList.add(new LookupItem(action, extraActionDescription));
+                extraActionList.add(new LookupItem(actionName, extraActionDescription));
             }
         }
 

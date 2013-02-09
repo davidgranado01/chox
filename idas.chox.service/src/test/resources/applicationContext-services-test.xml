@@ -22,7 +22,6 @@
     </bean>
     <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility">
         <property name="accessibilityService" ref="accessibilityService"/>
-        <property name="breBandService" ref="breBandService"/>
     </bean>
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
