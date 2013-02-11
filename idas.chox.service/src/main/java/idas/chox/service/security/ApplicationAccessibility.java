@@ -41,7 +41,7 @@ public class ApplicationAccessibility {
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
     // ***************************************
-    // Button
+    // Activities
     // ***************************************
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaimStatus";

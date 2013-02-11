@@ -58,7 +58,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         .add(Restrictions.like("name", "action.%"))
         .add(Restrictions.like("name", "extraAction.%"))
         .add(Restrictions.like("name", "notification.%"))
-        .add(Restrictions.like("name", "button.%"))
+        .add(Restrictions.like("name", "activity.%"))
         .add(Restrictions.like("name", "tab.%")));
         List<Accessibility>  accessibilities = findByCriteria(c);
 
@@ -93,7 +93,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
          .add(Restrictions.not(Restrictions.like("name", "action.%")))
          .add(Restrictions.not(Restrictions.like("name", "extraAction.%")))
          .add(Restrictions.not(Restrictions.like("name", "notification.%")))
-         .add(Restrictions.not(Restrictions.like("name", "button.%")))
+         .add(Restrictions.not(Restrictions.like("name", "activity.%")))
          .add(Restrictions.not(Restrictions.like("name", "tab.%"))));
 
         List<Accessibility> accessibilities = findByCriteria(c);
