@@ -3,6 +3,10 @@
 -------------------------------------------------------------------------------------
 ALTER TABLE accessibility ADD COLUMN claim_type integer;
 CREATE UNIQUE INDEX accessibility_ui ON accessibility(name, claim_type);
+
+UPDATE accessibility set name = 'activity' || substring(name, 7)
+WHERE name like 'button.%';
+
 ----------------------
 --  END OF 7.3.1    --
 ----------------------
