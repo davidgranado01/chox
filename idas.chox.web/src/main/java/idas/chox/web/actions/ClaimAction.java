@@ -35,7 +35,7 @@ import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ActionPanel;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.service.security.ButtonAccessibility;
+import idas.chox.service.security.ActivityAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
@@ -114,7 +114,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPaymentMade;
     private BigDecimal interimPaymentReceived;
     private BigDecimal finalPayment;
-    private ButtonAccessibility buttonAccessibility;
+    private ActivityAccessibility activityAccessibility;
     private int actionSelected;
     private String nonce;
     private String jsonData;
@@ -571,23 +571,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getCanCloseClaim() {
-        LOG.debug("canCloseClaim: {}", getButtonAccessibility().getCloseClaimAccessibility());
-        return getButtonAccessibility().getCloseClaimAccessibility();
+        return getActivityAccessibility().getCloseClaimAccessibility();
     }
 
     public boolean getCanReopenClaim() {
-        LOG.debug("canReopenClaim: {}", getButtonAccessibility().getReopenClaimAccessibility());
-        return getButtonAccessibility().getReopenClaimAccessibility();
+        return getActivityAccessibility().getReopenClaimAccessibility();
     }
 
     public boolean getCanRevertClaimStatus() {
-        LOG.debug("canRevertClaim: {}", getButtonAccessibility().getRevertClaimAccessibility());
-        return getButtonAccessibility().getRevertClaimAccessibility();
+        return getActivityAccessibility().getRevertClaimAccessibility();
     }
 
     public boolean getShowPayNotReceivedButton() {
-        LOG.debug("canShowPaymentNotReceivedButton: {}", getButtonAccessibility().getUpdatePaymentNotReceived());
-        return getButtonAccessibility().getUpdatePaymentNotReceived();
+        return getActivityAccessibility().getUpdatePaymentNotReceived();
     }
 
     public boolean getIsClaimNumberDuplicated() {
@@ -2154,12 +2150,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     // </editor-fold>
-    public ButtonAccessibility getButtonAccessibility() {
+    public ActivityAccessibility getActivityAccessibility() {
 
-        if (buttonAccessibility == null) {
-            setButtonAccessibility(new ButtonAccessibility(applicationAccessibility, getAuthenticatedUser(), claim));
+        if (activityAccessibility == null) {
+            activityAccessibility = new ActivityAccessibility(applicationAccessibility, getAuthenticatedUser(), claim);
         }
-        return buttonAccessibility;
+        return activityAccessibility;
     }
 
     public String getChoRef() {
@@ -2182,7 +2178,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimButton() {
 
-        if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null) && claim.getInvoice() == null) {
+        if ((getActivityAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null) && claim.getInvoice() == null) {
             return true;
         }
 
@@ -2191,7 +2187,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimToMultipleInsButton() {
 
-        if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility())) {
+        if ((getActivityAccessibility().getSwitchClaimToMultipleInsurerAccessibility())) {
             return true;
         }
 
@@ -2239,14 +2235,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statusList.contains(claim.getStatus());
     }
 
-    /**
-     * @param buttonAccessibility the buttonAccessibility to set
-     */
-    public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
-        this.buttonAccessibility = buttonAccessibility;
-    }
-
-    public boolean isAtInvoicePaymentLogged() {
+     public boolean isAtInvoicePaymentLogged() {
         return ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus());
     }
 

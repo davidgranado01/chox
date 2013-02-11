@@ -13,8 +13,8 @@ import idas.chox.core.services.AuditTrailService;
  *
  * @author seenimurugan
  */
-public class ButtonAccessibility {
-    private static final Logger LOG = LoggerFactory.getLogger(ButtonAccessibility.class);
+public class ActivityAccessibility {
+    private static final Logger LOG = LoggerFactory.getLogger(ActivityAccessibility.class);
 
     private boolean switchClaimAccessibility;
     private boolean revertClaimAccessibility;
@@ -24,19 +24,19 @@ public class ButtonAccessibility {
     private boolean updatePaymentNotReceived;
     private AuditTrailService auditTrailService;
 
-    private String getButtonAccessibilityKey(String buttonName, String claimStatus, ClaimType claimType) {
-        return String.format("button.%1$s.%2$s.%3$s", buttonName, claimStatus, claimType.name());
+    private String getActivityAccessibilityKey(String buttonName, String claimStatus, ClaimType claimType) {
+        return String.format("activity.%1$s.%2$s.%3$s", buttonName, claimStatus, claimType.name());
     }
 
 
-    public ButtonAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim){
+    public ActivityAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim){
 
-        switchClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
-        revertClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.REVERT_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
-        closeClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.CLOSE_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
-        reopenClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.REOPEN_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
-        switchClaimToMultipleInsurerAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS, claim.getStatus(), claim.getClaimType()), user, claim)>0;
-        updatePaymentNotReceived = applicationAccessibility.checkAccessibilityForClaimType(getButtonAccessibilityKey(ApplicationAccessibility.UPDATE_PAYMENT_NOT_RECEIVED, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        switchClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        revertClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.REVERT_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        closeClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.CLOSE_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        reopenClaimAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.REOPEN_CLAIM, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        switchClaimToMultipleInsurerAccessibility = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS, claim.getStatus(), claim.getClaimType()), user, claim)>0;
+        updatePaymentNotReceived = applicationAccessibility.checkAccessibilityForClaimType(getActivityAccessibilityKey(ApplicationAccessibility.UPDATE_PAYMENT_NOT_RECEIVED, claim.getStatus(), claim.getClaimType()), user, claim)>0;
 
         if (reopenClaimAccessibility && user.isAnInsurer() && !ClaimType.isInsurerUpload(claim.getClaimType())) {
             reopenClaimAccessibility = false;
