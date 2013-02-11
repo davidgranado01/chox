@@ -377,34 +377,6 @@ public class ApplicationAccessibility {
 
 
     // <editor-fold defaultstate="collapsed" desc="Getters / Setters">
-    public ReportAccessibility getReportAccessibility(WebUser user) {
-        return new ReportAccessibility(this, user);
-    }
-
-    public MenuAccessibility getMenuAccessibility(WebUser user) {
-        return new MenuAccessibility(this, user);
-    }
-
-    public AdminAccessibility getAdminAccessibility(WebUser user) {
-        return new AdminAccessibility(this, user);
-    }
-
-    public NotificationAccessibility getNotificationAccessibility(WebUser user, String claimStatus, ClaimType claimType) {
-        return new NotificationAccessibility(this, user, claimStatus, claimType);
-    }
-
-    public TabAccessibility getTabAccessibility(WebUser user, Claim claim) {
-        return new TabAccessibility(this, user, claim);
-    }
-
-    public PanelAccessibility getPanelAccessibility(WebUser user) {
-        return new PanelAccessibility(this, user);
-    }
-
-    public ButtonAccessibility getButtonAccessibility(WebUser user, Claim claim) {
-        return new ButtonAccessibility(this, user, claim);
-    }
-
     public void setAccessibilityService(AccessibilityService accessibilityService) {
         this.accessibilityService = accessibilityService;
     }

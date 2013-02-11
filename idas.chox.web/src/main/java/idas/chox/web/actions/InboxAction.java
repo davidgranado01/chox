@@ -96,7 +96,7 @@ public class InboxAction extends BaseAction {
     
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
-            menuAccessibility = applicationAccessibility.getMenuAccessibility(super.getAuthenticatedUser());
+            menuAccessibility = new MenuAccessibility(applicationAccessibility, getAuthenticatedUser());
         }
         return menuAccessibility;
     }

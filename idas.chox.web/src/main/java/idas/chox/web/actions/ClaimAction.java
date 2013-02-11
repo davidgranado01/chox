@@ -977,7 +977,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public TabAccessibility getTabAccessibility() {
 
         if (tabAccessibility == null) {
-            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser(), claim);
+            tabAccessibility = new TabAccessibility(applicationAccessibility, getAuthenticatedUser(), claim);
         }
         return tabAccessibility;
     }
@@ -985,7 +985,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public NotificationAccessibility getNotificationAccessibility() {
 
         if (notificationAccessibility == null) {
-            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus(), claim.getClaimType());
+            notificationAccessibility = new NotificationAccessibility(applicationAccessibility, getAuthenticatedUser(), claim);
         }
         LOG.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
         return notificationAccessibility;
@@ -993,7 +993,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public PanelAccessibility getPanelAccessibility() {
         if (panelAccessibility == null) {
-            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser());
+            panelAccessibility = new PanelAccessibility(applicationAccessibility, getAuthenticatedUser());
         }
         return panelAccessibility;
     }
@@ -2157,7 +2157,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public ButtonAccessibility getButtonAccessibility() {
 
         if (buttonAccessibility == null) {
-            setButtonAccessibility(applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim));
+            setButtonAccessibility(new ButtonAccessibility(applicationAccessibility, getAuthenticatedUser(), claim));
         }
         return buttonAccessibility;
     }

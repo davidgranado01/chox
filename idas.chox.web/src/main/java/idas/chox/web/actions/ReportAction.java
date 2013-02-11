@@ -89,7 +89,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public ReportAccessibility getReportAccessibility() {
 
         if (reportAccessibility == null) {
-            reportAccessibility = applicationAccessibility.getReportAccessibility(super.getAuthenticatedUser());
+            reportAccessibility = new ReportAccessibility(applicationAccessibility, getAuthenticatedUser());
         }
         return reportAccessibility;
     }

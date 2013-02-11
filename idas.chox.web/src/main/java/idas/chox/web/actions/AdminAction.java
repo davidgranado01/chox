@@ -22,7 +22,7 @@ public class AdminAction extends BaseAction {
     public AdminAccessibility getAdminAccessibility() {
 
         if (adminAccessibility == null) {
-            adminAccessibility = applicationAccessibility.getAdminAccessibility(super.getAuthenticatedUser());
+            adminAccessibility = new AdminAccessibility(applicationAccessibility, super.getAuthenticatedUser());
         }
         return adminAccessibility;
     }
