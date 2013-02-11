@@ -165,7 +165,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id = a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') as outstanding, ");
 
 
@@ -173,7 +173,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day < 5) as outstanding0_5,");
 
 
@@ -181,7 +181,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 5 and total_day < 10) as outstanding5_10,");
 
 
@@ -189,7 +189,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 10 and total_day < 15) as outstanding10_15,");
 
 
@@ -197,7 +197,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 15 and total_day < 20) as outstanding15_20,");
 
 
@@ -205,7 +205,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.reverted=false and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 20 and total_day < 25) as outstanding20_25,");
 
 
@@ -213,7 +213,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 25 and total_day < 30) as outstanding25_30,");
 
 
@@ -221,7 +221,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b where total_day >= 30) as outstanding30_,");
 
 
@@ -229,7 +229,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') b) as averageOutstanding,");
 
 
@@ -251,7 +251,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') as oldestDate,");
 
 
@@ -259,7 +259,7 @@ public class ClaimStatusWorkflowReport implements Report {
                     if (isWorkgroupEnabled && workgroupBreakdown) {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pstartDate) order by id desc limit 1) ")
+                    sb.append("and c.id=a.claim_id and a.reverted=false and a.id = (select id from audit_trail at where at.claim_id = c.id and at.reverted = false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted = false and a3.created_date <= :pendDate) order by id desc limit 1) ")
                       .append("and a.new_status = '").append(workflowReportObject.getStatus()).append("') a ) as oldestDays");
 
 
