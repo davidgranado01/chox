@@ -7,6 +7,121 @@ CREATE UNIQUE INDEX accessibility_ui ON accessibility(name, claim_type);
 UPDATE accessibility set name = 'activity' || substring(name, 7)
 WHERE name like 'button.%';
 
+UPDATE accessibility set name = 'activity.RevertClaim' || substring(name, 27)
+WHERE name like 'activity.RevertClaimStatus.%';
+
+UPDATE accessibility set name = 'activity.PaymentNotReceived.InvoicePaymentLogged' WHERE name like 'activity.UpdatePaymentNotReceived.InvoicePaymentLogged';
+
+UPDATE accessibility set name = 'activity' || substring(name, 7)
+WHERE name like 'action.%';
+
+UPDATE accessibility set name = 'activity.AssignWorkgroup' || substring(name, 35)
+WHERE name like 'activity.updateclaimlineofbusiness.%';
+..
+UPDATE accessibility set name = 'activity.AcknowledgeClaim' || substring(name, 34)
+WHERE name like 'activity.updateclaiminsurerdetail.%';
+
+UPDATE accessibility set name = 'activity.ClaimRejectionContest' || substring(name, 38)
+WHERE name like 'activity.contestOrAcceptRejectedClaim.%';
+
+UPDATE accessibility set name = 'activity.AcknowledgeClaim.ClaimRejectionContested'
+WHERE name = 'activity.approveContestedClaim.ClaimRejectionContested';
+
+UPDATE accessibility set name = 'activity.ClaimAwaitingCarHireInfo' || substring(name, 34)
+WHERE name like 'activity.updateclaimcarhiredetail.%';
+
+UPDATE accessibility set name = 'activity.InvoiceResubmit' || substring(name, 51)
+WHERE name like 'activity.updateinvoicedtailforcalculationincorrect.%';
+
+UPDATE accessibility set name = 'activity.InvoiceAccepted' || substring(name, 31)
+WHERE name like 'activity.approveBREPassedClaim.%';
+
+UPDATE accessibility set name = 'activity.InvoicePaymentLogged' || substring(name, 27)
+WHERE name like 'activity.logInvoicePayment.%';
+
+UPDATE accessibility set name = 'activity.ClaimRegisterByFnol' || substring(name, 31)
+WHERE name like 'activity.registeredclaimbyfnol.%';
+
+UPDATE accessibility set name = 'activity.ClaimPending' || substring(name, 22)
+WHERE name like 'activity.claimPending.%';
+
+UPDATE accessibility set name = 'activity.InvoicePaymentReceived' || substring(name, 31)
+WHERE name like 'activity.updatePaymentReceived.%';
+
+UPDATE accessibility set name = 'activity.AssignOwner' || substring(name, 30)
+WHERE name like 'activity.assignClaimOwnership.%';
+
+UPDATE accessibility set name = 'activity.AssignManualInvoiceOwner' || substring(name, 32)
+WHERE name like 'activity.assignInvoiceOwnership.%';
+
+UPDATE accessibility set name = 'activity.ResolveLiability' || substring(name, 25)
+WHERE name like 'activity.updateLiability.%';
+
+UPDATE accessibility set name = 'activity.UpdateManualInvoicePaid' || substring(name, 29)
+WHERE name like 'activity.updateManualInvoice.%';
+
+UPDATE accessibility set name = 'activity.AssignManualInvoiceOwner' || substring(name, 46)
+WHERE name like 'activity.updateManualInvoiceWorkgroupAndOwner.%';
+
+
 ----------------------
 --  END OF 7.3.1    --
 ----------------------
+select id, name from accessibility order by name;
+
+Activities:
+
+Already covered from old 'action.*' activities:
+
+** AcknowledgeClaim
+** AssignManualInvoiceOwner
+** AssignOwner
+** AssignWorkgroup
+** ClaimAwaitingCarHireInfo
+** ClaimPending
+** ClaimRegisterByFnol
+** ClaimRejectionContest
+** CloseClaim
+** InvoiceAccepted
+** InvoicePaymentLogged
+** InvoicePaymentReceived
+** InvoiceReferToCH
+** InvoiceResubmit
+** ReopenClaim
+** RevertClaim
+** SwitchClaim
+** SwitchClaimToMultipleInsurer
+** ResolveLiability
+** UpdateManualInvoicePaid
+
+Therefore need to define accessibility for following activities:
+
+activity.AssignSupplierOwner
+activity.AwaitingLitigationOutcome
+activity.ClaimOwnerAssigning
+activity.ClaimReferToEng
+activity.ClaimReferToFnol
+activity.ClaimRejection
+activity.ClaimRejectionAccept
+activity.ClaimReviewByEng
+activity.FullInvoicePaymentReceived
+activity.FullPaymentNotReceived
+activity.InsurerUpload
+activity.InvoiceReferToEng
+activity.InvoiceRejection
+activity.InvoiceRejectionAccept
+activity.InvoiceRejectionContest
+activity.MakeInterimPayment
+activity.MoveToInvoicePaymentLogged
+activity.NewClaim
+activity.NewInvoice
+activity.NewSupplementaryInvoice
+activity.NewTpiClaim
+activity.PaymentNotReceived
+activity.SubscriberClaimRejectionAccept
+activity.SubscriberClaimToGta
+activity.UpdateInterimPaymentFullAndFinal
+activity.UpdateInterimPaymentReceived
+activity.UpdateLiability
+activity.UpdateManualInvoiceContested
+activity.WorkgroupRouting

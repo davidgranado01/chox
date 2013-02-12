@@ -1,23 +1,23 @@
 package idas.chox.service.workflow;
 
-import idas.chox.test.BaseTest;
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.Workgroup;
-import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import idas.chox.service.workflow.activities.ClaimRevert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class ClaimRevertTest extends BaseTest{
+import idas.chox.test.BaseTest;
+import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.workflow.Activity;
+import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import idas.chox.service.workflow.activities.RevertClaim;
+
+public class RevertClaimTest extends BaseTest{
 
     @Test(expected = InvalidClaimStatusException.class)
-    public void testClaimRevertWithInvalidStatus() throws Exception {
+    public void testRevertClaimWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
@@ -27,7 +27,7 @@ public class ClaimRevertTest extends BaseTest{
 
     @Test
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void testClaimRevert() throws Throwable {
+    public void testRevertClaim() throws Throwable {
 
         Claim claim = new Claim();
         Insurer insurer = insurerService.getInsurer(3);
@@ -40,7 +40,7 @@ public class ClaimRevertTest extends BaseTest{
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim);
-        ClaimRevert activity = (ClaimRevert) activityFactory.getActivity("revertClaim");
+        RevertClaim activity = (RevertClaim) activityFactory.getActivity("revertClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
     }

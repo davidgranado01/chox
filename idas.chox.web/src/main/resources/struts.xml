@@ -427,32 +427,31 @@
 
        <!-- ACTION PANEL VALIDATION !-->
         <action name="getActionPanel" class="idas.chox.web.actions.ClaimAction" method="getActionPanel">
-            <result name="updateclaimlineofbusiness">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
-            <result name="updateclaiminsurerdetail">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
-            <result name="contestOrAcceptRejectedClaim">/jsp/actionPanel/p_contest_or_accept_rejected_claim.jsp</result>
+            <result name="AssignWorkgroup">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
+            <result name="AcknowledgeClaim">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
+            <result name="ClaimRejectionContest">/jsp/actionPanel/p_contest_or_accept_rejected_claim.jsp</result>
             <result name="contestOrAcceptRejectedSubscriberClaim">/jsp/actionPanel/p_contest_or_accept_rejected_subscriber_claim.jsp</result>
-            <result name="approveContestedClaim">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
-            <result name="updateclaimcarhiredetail">/jsp/actionPanel/p_update_car_hire_info.jsp</result>
+            <result name="ClaimAwaitingCarHireInfo">/jsp/actionPanel/p_update_car_hire_info.jsp</result>
             <result name="uploadInvoiceData">/jsp/actionPanel/p_upload_invoice_data.jsp</result>
-            <result name="updateinvoicedtailforcalculationincorrect">/jsp/actionPanel/p_resubmit_invoice_data.jsp</result>
-            <result name="approveBREPassedClaim">/jsp/actionPanel/p_approve_bre_passed_claim.jsp</result>
+            <result name="InvoiceResubmit">/jsp/actionPanel/p_resubmit_invoice_data.jsp</result>
+            <result name="InvoiceAccepted">/jsp/actionPanel/p_approve_bre_passed_claim.jsp</result>
             <result name="approveEscalatedInvoice">/jsp/actionPanel/p_invoice_escalated.jsp</result>
             <result name="approveContestedInvoice">/jsp/actionPanel/p_approve_contested_invoice.jsp</result>
             <result name="approveContestedInvoiceToEng">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
-            <result name="logInvoicePayment">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
+            <result name="InvoicePaymentLogged">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
             <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer_liability.jsp</result>
             <result name="approveBREPassedByClaimHandler">/jsp/actionPanel/p_approve_bre_passed_by_claim_handler.jsp</result>
-            <result name="registeredclaimbyfnol">/jsp/actionPanel/p_registered_claim_by_fnol.jsp</result>
-            <result name="claimPending">/jsp/actionPanel/p_pending_claim_liability.jsp</result>
+            <result name="ClaimRegisterByFnol">/jsp/actionPanel/p_registered_claim_by_fnol.jsp</result>
+            <result name="ClaimPending">/jsp/actionPanel/p_pending_claim_liability.jsp</result>
             <result name="updateInvoiceReferredByEngineer">/jsp/actionPanel/p_approve_invoice_referred_by_eng.jsp</result>
-            <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
-            <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
+            <result name="InvoicePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
+            <result name="AssignOwner">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
             <result name="assignInvoiceOwnership">/jsp/actionPanel/p_assign_invoice_ownership.jsp</result>
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
-            <result name="updateLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
-            <result name="updateManualInvoiceWorkgroupAndOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
-            <result name="updateManualInvoice">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
+            <result name="ResolveLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
+            <result name="AssignManualInvoiceOwner">/jsp/actionPanel/p_update_manual_invoice.jsp</result>
+            <result name="UpdateManualInvoicePaid">/jsp/actionPanel/p_update_manual_invoice_status.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 

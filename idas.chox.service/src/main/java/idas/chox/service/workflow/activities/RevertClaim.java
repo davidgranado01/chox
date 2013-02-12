@@ -19,8 +19,8 @@ import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.util.DateHelper;
 
-public class ClaimRevert extends BaseActivity {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
+public class RevertClaim extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(RevertClaim.class);
     private BigDecimal amountReceived = null;
     private ClaimService claimService;
     private TaskService taskService;

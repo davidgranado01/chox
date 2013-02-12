@@ -53,7 +53,7 @@ public class CloseClaim {
     }
 
     public static void closeClaim(UploadService uploadService, String choReference) {
-        Result result = null;
+        Result result;
 
         LOG.debug("Calling closeClaim Web Service for claim with CHO reference '{}'...", choReference);
         try {

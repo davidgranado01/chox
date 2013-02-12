@@ -9,7 +9,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.TaskService;
 
-public class ClaimClosed extends BaseActivity {
+public class CloseClaim extends BaseActivity {
     private TaskService taskService;
 
     public void setTaskService(TaskService taskService) {

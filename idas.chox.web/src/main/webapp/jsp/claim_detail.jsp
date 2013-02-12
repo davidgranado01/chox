@@ -319,7 +319,7 @@
     
 
     function loadPage(result, request){
-        <s:if test="isAdminChox" >
+        <s:if test="isChoxAdmin" >
             Ext.get('claimDetailScreenDiv').mask();
             Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
         

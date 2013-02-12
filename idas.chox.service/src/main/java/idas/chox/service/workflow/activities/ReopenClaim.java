@@ -14,8 +14,8 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
 
-public class ClaimReopen extends BaseActivity {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimReopen.class);
+public class ReopenClaim extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(ReopenClaim.class);
     private TaskService taskService;
     private ClaimService claimService;
     private PenaltyChargeService penaltyChargeService;

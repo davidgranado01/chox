@@ -192,7 +192,7 @@ function confirmNotFullPayRec(){
                                 <input type="button" id="UPRPaymentReceivedButtonId" value="Payment Received But Not Full Amount" onclick="doUpdatePaymentReceived('fullPaymentAmountNotReceived');" />
                             </s:if>
                             <s:if test="paymentLoggedOverDays && showPayNotReceivedButton">
-                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
+                                <input type="button" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('paymentNotReceived');" />
                             </s:if>
                         </td>
                     </tr>

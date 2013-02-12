@@ -57,7 +57,7 @@ public class FullPaymentNotReceived extends BaseActivity {
 
     /*
      * We'll override the afterProcess as we need to feed in the interimPaymentReceived amount
-     * to the ClaimRevert activity (in order to generate the correct comment/note)
+     * to the RevertClaim activity (in order to generate the correct comment/note)
      */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
@@ -70,7 +70,7 @@ public class FullPaymentNotReceived extends BaseActivity {
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());
-            ((ClaimRevert)getChainActivity()).setAmountReceived(interimPaymentReceived);
+            ((RevertClaim)getChainActivity()).setAmountReceived(interimPaymentReceived);
             getChainActivity().processInBatch(claim);
             setMessage(getChainActivity().getMessage());
         }

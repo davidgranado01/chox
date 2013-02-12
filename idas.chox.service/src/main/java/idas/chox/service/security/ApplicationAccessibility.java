@@ -44,11 +44,11 @@ public class ApplicationAccessibility {
     // Activities
     // ***************************************
     public static final String SWITCH_CLAIM = "SwitchClaim";
-    public static final String REVERT_CLAIM = "RevertClaimStatus";
+    public static final String REVERT_CLAIM = "RevertClaim";
     public static final String CLOSE_CLAIM = "CloseClaim";
     public static final String REOPEN_CLAIM = "ReopenClaim";
     public static final String SWITCH_CLAIM_MULTIPLE_INS = "SwitchClaimToMultipleInsurer";
-    public static final String UPDATE_PAYMENT_NOT_RECEIVED = "UpdatePaymentNotReceived";
+    public static final String PAYMENT_NOT_RECEIVED = "PaymentNotReceived";
     // ***************************************
     // NOTIFICATION
     // ***************************************
@@ -138,12 +138,12 @@ public class ApplicationAccessibility {
 
 
     // <editor-fold defaultstate="collapsed" desc="Utility  Functions - Public Static">
-    public static String getExtraActionAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("extraAction.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
+    public static String getActivityAccessibilityKey(String buttonName, String claimStatus, ClaimType claimType) {
+        return String.format("activity.%1$s.%2$s.%3$s", buttonName, claimStatus, claimType.name());
     }
 
-    public static String getActionAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("action.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
+    public static String getExtraActionAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
+        return String.format("extraAction.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
     }
 
     public static String getNotificationAccessibilityKey(String notificationName, String claimStatus, ClaimType claimType) {
@@ -154,9 +154,14 @@ public class ApplicationAccessibility {
         return String.format("tab.%1$s.%2$s.%3$s", tabName, claimStatus, claimType.name());
     }
 
-    public static  String getBatchUpdateAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
+    public static String getBatchUpdateAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
         return String.format("batch.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
     }
+    
+    public static String getPanelAccessibilityKey(String filterName) {
+        return String.format("panel.%1$s", filterName);
+    }
+
     // </editor-fold>
 
 
@@ -333,17 +338,20 @@ public class ApplicationAccessibility {
     
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By Claim Type">
     public Short checkAccessibilityForClaimType(String accessibilityKey, WebUser user, Claim claim) {
+LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
         if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
             Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
             Short accessRight = checkAccessibility(roleMap, user);
-
+LOG.debug("    Access is {}", accessRight);
             if (accessRight > 0 && claim != null && !canAccess(accessibility, claim)) {
                 accessRight = 0;
             }
+LOG.debug("    Returning Access of {}", accessRight);
       
             return accessRight;
         }
+LOG.debug("Key '{}' not found",  accessibilityKey);
         return DECLINED;
     }
 

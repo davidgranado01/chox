@@ -54,12 +54,12 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         Map<String, Accessibility> map = new HashMap<String, Accessibility>(ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         // Only interested in actions that are broken down by claim type
-        c.add(Restrictions.disjunction().add(Restrictions.like("name", "batch.%"))
-        .add(Restrictions.like("name", "action.%"))
-        .add(Restrictions.like("name", "extraAction.%"))
-        .add(Restrictions.like("name", "notification.%"))
-        .add(Restrictions.like("name", "activity.%"))
-        .add(Restrictions.like("name", "tab.%")));
+        c.add(Restrictions.disjunction()
+                .add(Restrictions.like("name", "activity.%"))
+                .add(Restrictions.like("name", "batch.%"))
+                .add(Restrictions.like("name", "extraAction.%"))
+                .add(Restrictions.like("name", "notification.%"))
+                .add(Restrictions.like("name", "tab.%")));
         List<Accessibility>  accessibilities = findByCriteria(c);
 
         for (Accessibility a : accessibilities) {
@@ -89,12 +89,12 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         Map<String, Accessibility> map = new HashMap<String, Accessibility>(ACCESSIBILITY_MAP_SIZE);
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         // Not interested in actions that are broken down by claim type
-        c.add(Restrictions.conjunction().add(Restrictions.not(Restrictions.like("name", "batch.%")))
-         .add(Restrictions.not(Restrictions.like("name", "action.%")))
-         .add(Restrictions.not(Restrictions.like("name", "extraAction.%")))
-         .add(Restrictions.not(Restrictions.like("name", "notification.%")))
-         .add(Restrictions.not(Restrictions.like("name", "activity.%")))
-         .add(Restrictions.not(Restrictions.like("name", "tab.%"))));
+        c.add(Restrictions.conjunction()
+                .add(Restrictions.not(Restrictions.like("name", "batch.%")))
+                .add(Restrictions.not(Restrictions.like("name", "activity.%")))
+                .add(Restrictions.not(Restrictions.like("name", "extraAction.%")))
+                .add(Restrictions.not(Restrictions.like("name", "notification.%")))
+                .add(Restrictions.not(Restrictions.like("name", "tab.%"))));
 
         List<Accessibility> accessibilities = findByCriteria(c);
 
