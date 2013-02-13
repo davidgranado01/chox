@@ -275,7 +275,7 @@ public class XmlUploadAction extends BaseAction {
                 userOrgId = getAuthenticatedUser().getChorganisation().getId();
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
-            if (userOrgId != bordereauOrgId) {
+            if (userOrgId == bordereauOrgId) {
                     List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                     if (bordereau.isProcessed()) {
                         claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
