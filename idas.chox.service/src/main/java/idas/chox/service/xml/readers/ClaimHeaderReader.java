@@ -256,7 +256,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
-            claim.setClaimType(ClaimType.INSURER_UPLOAD);
+            claim.setClaimType(ClaimType.INSURER_INVOICE);
             ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
                 ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);

@@ -60,7 +60,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         items.add(new LookupItem(ClaimType.FIXED_FEE.toString(), Integer.toString(ClaimType.FIXED_FEE.getClaimTypeValue())));
         items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
         items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.INSURER_INVOICE.toString(), Integer.toString(ClaimType.INSURER_INVOICE.getClaimTypeValue())));
         
         return items;
     }

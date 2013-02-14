@@ -21,7 +21,7 @@ public enum ClaimType {
     SUBSCRIBER                                  (7, "Subscriber"),
     SUBSCRIBER_ORIGINAL_INVOICE                 (8, "Subscriber (Orig. Invoice)"),
     SUBSCRIBER_SUPPLEMENTARY_INVOICE            (9, "Subscriber (Supp. Invoice)"),
-    INSURER_UPLOAD                              (10, "Insurer Manual Invoice"),
+    INSURER_INVOICE                             (10, "Insurer Manual Invoice"),
     FIXED_FEE                                   (11, "Fixed Fee"),
     FIXED_FEE_ORIGINAL_INVOICE                  (12, "Fixed Fee (Orig. Invoice)"),
     FIXED_FEE_SUPPLEMENTARY_INVOICE             (13, "Fixed Fee (Supp. Invoice)");
@@ -61,8 +61,8 @@ public enum ClaimType {
         return false;
     }
 
-    public static boolean allowPenaltyCharges(ClaimType claimType) {
-        if (claimType == ClaimType.GTA || claimType == ClaimType.SUBSCRIBER || claimType == ClaimType.FIXED_FEE) {
+    public static boolean allowAutomaticPenaltyCharges(ClaimType claimType) {
+        if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType)) {
             return true;
         }
         
@@ -80,7 +80,7 @@ public enum ClaimType {
     }
 
     public static boolean isInsurerUpload(ClaimType claimType) {
-        if (claimType == ClaimType.INSURER_UPLOAD) {
+        if (claimType == ClaimType.INSURER_INVOICE) {
             return true;
         }
         

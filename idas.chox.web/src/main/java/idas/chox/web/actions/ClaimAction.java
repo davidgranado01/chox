@@ -1069,7 +1069,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return applicationAccessibility.checkAccessibilityForClaimType(
                                             ApplicationAccessibility.getActivityAccessibilityKey(
                                                             ApplicationAccessibility.PAYMENT_NOT_RECEIVED, claim.getStatus(), claim.getClaimType()),
-                                            getAuthenticatedUser(), claim)>0;
+                                            getAuthenticatedUser(), claim) > 0;
     }
 
     public boolean getCanShowSwitchClaimButton() {
@@ -1077,7 +1077,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return applicationAccessibility.checkAccessibilityForClaimType(
                 ApplicationAccessibility.getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM,
                                                                      claim.getStatus(), claim.getClaimType()),
-                getAuthenticatedUser(), claim)>0;
+                getAuthenticatedUser(), claim) > 0;
     }
 
 
@@ -1086,14 +1086,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return applicationAccessibility.checkAccessibilityForClaimType(
                 ApplicationAccessibility.getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS,
                                                                         claim.getStatus(), claim.getClaimType()),
-                getAuthenticatedUser(), claim)>0;
+                getAuthenticatedUser(), claim) > 0;
     }
 
 
     public boolean getIsFnolPanelVisible() {
-        return applicationAccessibility.checkAccessibilityForUser(
-                ApplicationAccessibility.getPanelAccessibilityKey(ApplicationAccessibility.PANEL_FNOL_REVIEWED),
-                getAuthenticatedUser()) > 0;
+        boolean visible = false;
+        
+        if (claim.isIsFnolReviewed()) {
+            visible = applicationAccessibility.checkAccessibilityForClaimType(
+                        ApplicationAccessibility.getPanelAccessibilityKey(ApplicationAccessibility.PANEL_FNOL_REVIEWED,
+                                                                        claim.getStatus(), claim.getClaimType()),
+                        getAuthenticatedUser(), claim) > 0;
+        }
+        return visible;
     }
 
 
@@ -1191,12 +1197,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                          * not have to be over say 30 days in order to be able
                          * to apply the penalty charges
                          */
-                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && claim.getClaimType() != ClaimType.INSURER_UPLOAD) {
+                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && claim.getClaimType() != ClaimType.INSURER_INVOICE) {
 //                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                        else if (invoice.getPenaltyBand() > -1 && claim.getClaimType() != ClaimType.INSURER_UPLOAD) { // Check if not removed from penalty queue
+                        else if (invoice.getPenaltyBand() > -1 && claim.getClaimType() != ClaimType.INSURER_INVOICE) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() 
@@ -2390,7 +2396,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                 && penaltyChargeService.calculateCurrentPenaltyBand(claim) < penaltyChargeService.getLastPenaltyBand(claim)
-                && ClaimType.allowPenaltyCharges(claim.getClaimType()));
+                && ClaimType.allowAutomaticPenaltyCharges(claim.getClaimType()));
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})

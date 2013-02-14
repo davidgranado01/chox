@@ -1,12 +1,14 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 
 public class UpdateManualInvoiceContested extends BaseActivity {
 

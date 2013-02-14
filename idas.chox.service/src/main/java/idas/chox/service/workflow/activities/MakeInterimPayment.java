@@ -42,9 +42,9 @@ public class MakeInterimPayment extends BaseActivity {
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if ((!securityInfoProvider.isInRoleOf("ROLE_INS") && !securityInfoProvider.getIsCHOXAdmin())
-                || (securityInfoProvider.isInRoleOf("ROLE_CHO")
-                    && (claim.getChorganisation().getId().compareTo(
-                            securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
+                || (securityInfoProvider.isInRoleOf("ROLE_INS")
+                    && (claim.getInsurer().getId().compareTo(
+                            securityInfoProvider.getCurrentUser().getInsurer().getId())) != 0)) {
             throw new AccessDeniedException("Not in correct role to make an interim Payment.");
         }
 

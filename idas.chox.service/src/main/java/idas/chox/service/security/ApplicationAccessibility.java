@@ -158,10 +158,9 @@ public class ApplicationAccessibility {
         return String.format("batch.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
     }
     
-    public static String getPanelAccessibilityKey(String filterName) {
-        return String.format("panel.%1$s", filterName);
+    public static String getPanelAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
+        return String.format("panel.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
     }
-
     // </editor-fold>
 
 
@@ -338,20 +337,20 @@ public class ApplicationAccessibility {
     
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By Claim Type">
     public Short checkAccessibilityForClaimType(String accessibilityKey, WebUser user, Claim claim) {
-LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
+//      LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
         if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
             Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
             Short accessRight = checkAccessibility(roleMap, user);
-LOG.debug("    Access is {}", accessRight);
+//          LOG.debug("    Access is {}", accessRight);
             if (accessRight > 0 && claim != null && !canAccess(accessibility, claim)) {
                 accessRight = 0;
             }
-LOG.debug("    Returning Access of {}", accessRight);
+//          LOG.debug("    Returning Access of {}", accessRight);
       
             return accessRight;
         }
-LOG.debug("Key '{}' not found",  accessibilityKey);
+//      LOG.debug("Key '{}' not found",  accessibilityKey);
         return DECLINED;
     }
 

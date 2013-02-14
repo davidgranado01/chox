@@ -9,16 +9,16 @@ returns table
    last_12_months numeric(10,2),
    current_month numeric(10,2),
    previous_month numeric(10,2),
-   previous_2_months numeric(10,2),
-   previous_3_months numeric(10,2),
-   previous_4_months numeric(10,2),
-   previous_5_months numeric(10,2),
-   previous_6_months numeric(10,2),
-   previous_7_months numeric(10,2),
-   previous_8_months numeric(10,2),
-   previous_9_months numeric(10,2),
-   previous_10_months numeric(10,2),
-   previous_11_months numeric(10,2)
+   previous_2_month numeric(10,2),
+   previous_3_month numeric(10,2),
+   previous_4_month numeric(10,2),
+   previous_5_month numeric(10,2),
+   previous_6_month numeric(10,2),
+   previous_7_month numeric(10,2),
+   previous_8_month numeric(10,2),
+   previous_9_month numeric(10,2),
+   previous_10_month numeric(10,2),
+   previous_11_month numeric(10,2)
 )
 as $$ DECLARE dat1 date
 ;

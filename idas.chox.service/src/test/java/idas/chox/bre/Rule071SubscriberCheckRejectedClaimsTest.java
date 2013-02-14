@@ -80,7 +80,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
     @Test
     public void testSkipped_InsurerUpload() throws IOException {
         Claim claim = getTestClaim();
-        claim.setClaimType(ClaimType.INSURER_UPLOAD);
+        claim.setClaimType(ClaimType.INSURER_INVOICE);
         claim.getBreBand().setSubscriberCheckRejectedClaims(true);
         SubscriberCheckRejectedClaims rule = new SubscriberCheckRejectedClaims();
         RuleEvaluation rv = rule.applyToClaim(claim);

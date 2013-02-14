@@ -856,8 +856,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (searchCriteria.getClaimTypes().contains(ClaimType.GTA)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE,ClaimType.GTA_SUPPLEMENTARY_INVOICE));
             } 
-            if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_UPLOAD)) {
-                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_UPLOAD));
+            if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_INVOICE)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_INVOICE));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.INSURER_VS_INSURER)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.INSURER_VS_INSURER,ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE));

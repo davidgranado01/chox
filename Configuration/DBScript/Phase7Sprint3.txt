@@ -17,7 +17,7 @@ WHERE name like 'action.%';
 
 UPDATE accessibility set name = 'activity.AssignWorkgroup' || substring(name, 35)
 WHERE name like 'activity.updateclaimlineofbusiness.%';
-..
+
 UPDATE accessibility set name = 'activity.AcknowledgeClaim' || substring(name, 34)
 WHERE name like 'activity.updateclaiminsurerdetail.%';
 
@@ -63,65 +63,31 @@ WHERE name like 'activity.updateManualInvoice.%';
 UPDATE accessibility set name = 'activity.AssignManualInvoiceOwner' || substring(name, 46)
 WHERE name like 'activity.updateManualInvoiceWorkgroupAndOwner.%';
 
+UPDATE accessibility SET name = 'panel.FNOLReviewed.ClaimUnacknowledgedRouted',
+           check_fnol_enabled = true
+WHERE name = 'panel.FNOLReviewed';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled)
+SELECT 'panel.FNOLReviewed.ClaimUnacknowledgedUnassigned', false, false, false, false, true;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'panel.FNOLReviewed.ClaimUnacknowledgedRouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT a2.id, ai.role, ai.access_right
+	FROM accessibility a, accessibility_item ai, accessibility a2
+	WHERE a.name = 'panel.FNOLReviewed.ClaimUnacknowledgedRouted'
+	  AND ai.accessibility_id = a.id
+	  AND a2.name='panel.FNOLReviewed.ClaimUnacknowledgedUnassigned';
+
+-- Delete all accessibility items with access right of 0:
+--   this table gives access, not removes
+DELETE FROM accessibility_item WHERE access_right=0;
 
 ----------------------
 --  END OF 7.3.1    --
 ----------------------
-select id, name from accessibility order by name;
-
-Activities:
-
-Already covered from old 'action.*' activities:
-
-** AcknowledgeClaim
-** AssignManualInvoiceOwner
-** AssignOwner
-** AssignWorkgroup
-** ClaimAwaitingCarHireInfo
-** ClaimPending
-** ClaimRegisterByFnol
-** ClaimRejectionContest
-** CloseClaim
-** InvoiceAccepted
-** InvoicePaymentLogged
-** InvoicePaymentReceived
-** InvoiceReferToCH
-** InvoiceResubmit
-** ReopenClaim
-** RevertClaim
-** SwitchClaim
-** SwitchClaimToMultipleInsurer
-** ResolveLiability
-** UpdateManualInvoicePaid
-
-Therefore need to define accessibility for following activities:
-
-activity.AssignSupplierOwner
-activity.AwaitingLitigationOutcome
-activity.ClaimOwnerAssigning
-activity.ClaimReferToEng
-activity.ClaimReferToFnol
-activity.ClaimRejection
-activity.ClaimRejectionAccept
-activity.ClaimReviewByEng
-activity.FullInvoicePaymentReceived
-activity.FullPaymentNotReceived
-activity.InsurerUpload
-activity.InvoiceReferToEng
-activity.InvoiceRejection
-activity.InvoiceRejectionAccept
-activity.InvoiceRejectionContest
-activity.MakeInterimPayment
-activity.MoveToInvoicePaymentLogged
-activity.NewClaim
-activity.NewInvoice
-activity.NewSupplementaryInvoice
-activity.NewTpiClaim
-activity.PaymentNotReceived
-activity.SubscriberClaimRejectionAccept
-activity.SubscriberClaimToGta
-activity.UpdateInterimPaymentFullAndFinal
-activity.UpdateInterimPaymentReceived
-activity.UpdateLiability
-activity.UpdateManualInvoiceContested
-activity.WorkgroupRouting

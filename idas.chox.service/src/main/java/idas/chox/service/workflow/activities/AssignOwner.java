@@ -1,5 +1,9 @@
 package idas.chox.service.workflow.activities;
 
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -8,8 +12,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
 
 public class AssignOwner extends BaseActivity {
 
@@ -71,7 +73,6 @@ public class AssignOwner extends BaseActivity {
             claim.setWorkgroup(workgroup);
         }
         if (!ClaimType.isTPI(claim.getClaimType())) {
-            claim.setIsFnolReviewed(false);
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         } else {
             claim.setStatus(claim.getTpiClaimStatus());

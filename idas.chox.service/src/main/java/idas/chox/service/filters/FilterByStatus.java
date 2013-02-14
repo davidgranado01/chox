@@ -30,7 +30,7 @@ public class FilterByStatus extends BaseFilter {
             claimTypes.add(ClaimType.GTA);
             claimTypes.add(ClaimType.SUBSCRIBER);
             claimTypes.add(ClaimType.TPI);
-            claimTypes.add(ClaimType.INSURER_UPLOAD);
+            claimTypes.add(ClaimType.INSURER_INVOICE);
             claimTypes.add(ClaimType.INSURER_VS_INSURER);
             claimSearchCriteria.setClaimTypes(claimTypes);
         }

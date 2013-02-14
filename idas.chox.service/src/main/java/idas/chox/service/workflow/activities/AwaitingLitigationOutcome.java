@@ -1,14 +1,16 @@
 package idas.chox.service.workflow.activities;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Comment;
-import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.security.SecurityInfoProvider;
 
 public class AwaitingLitigationOutcome extends BaseActivity {
 

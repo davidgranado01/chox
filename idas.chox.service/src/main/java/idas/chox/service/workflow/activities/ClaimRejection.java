@@ -171,7 +171,6 @@ public class ClaimRejection extends BaseActivity {
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setIsFnolReviewed(false);
         if (percentageLiabilityCho != null) {
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
         }

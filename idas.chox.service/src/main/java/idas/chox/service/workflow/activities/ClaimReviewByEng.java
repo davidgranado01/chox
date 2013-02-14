@@ -46,8 +46,6 @@ public class ClaimReviewByEng extends BaseActivity {
         claim.setIndemnityAmount(getIndemnityAmount());
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setIsQuantumDispute(isIsQuantumDispute());
-        claim.setIsFnolReviewed(false);
-
     }
 
     @Override

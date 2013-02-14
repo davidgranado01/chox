@@ -1,7 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.Claim;
@@ -11,9 +16,6 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.xml.util.NodeHelper;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 public class WorkgroupRouting extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupRouting.class);
@@ -128,8 +130,8 @@ public class WorkgroupRouting extends BaseActivity {
         BigDecimal age = BigDecimal.ZERO;
         Date hireStart = null;
         BigDecimal vehicleClassPrice;
-        VehicleClass vehicleClass = null;
-        Date firstRegistration = null;
+        VehicleClass vehicleClass;
+        Date firstRegistration;
         
         if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null) {
             hireStart = claim.getVehicleHire().getHireStart();
