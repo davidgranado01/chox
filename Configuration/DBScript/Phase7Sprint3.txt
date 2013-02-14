@@ -51,9 +51,6 @@ WHERE name like 'activity.updatePaymentReceived.%';
 UPDATE accessibility set name = 'activity.AssignOwner' || substring(name, 30)
 WHERE name like 'activity.assignClaimOwnership.%';
 
-UPDATE accessibility set name = 'activity.AssignManualInvoiceOwner' || substring(name, 32)
-WHERE name like 'activity.assignInvoiceOwnership.%';
-
 UPDATE accessibility set name = 'activity.ResolveLiability' || substring(name, 25)
 WHERE name like 'activity.updateLiability.%';
 
