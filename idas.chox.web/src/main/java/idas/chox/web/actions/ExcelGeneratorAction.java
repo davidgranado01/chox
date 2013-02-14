@@ -7,31 +7,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
 import net.sf.jxls.transformer.XLSTransformer;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.ReportDataService;
-import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.*;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.reports.ClaimsGridExportReport;
-import org.springframework.security.access.AccessDeniedException;
 
 
 public class ExcelGeneratorAction extends BaseAction {
@@ -40,8 +36,6 @@ public class ExcelGeneratorAction extends BaseAction {
     private static final int MAX_EXPORT_SIZE = 65535; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
-    private VehicleHireService vehicleHireService;
-    private AuditTrailService auditTrailService;
     private String claimSizeError;
     private int exportedClaimCount;
     private boolean exportFinished;
@@ -124,10 +118,6 @@ public class ExcelGeneratorAction extends BaseAction {
         this.claimSizeError = claimSizeError;
     }
 
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
-    }
-
     public InputStream getExcelStream() {
         return excelStream;
     }
@@ -187,8 +177,9 @@ public class ExcelGeneratorAction extends BaseAction {
                 LOG.debug("Total No of Claims : '{}'", claims.size());
                 if (claims.size() > 0 && claims.size() <= 10000) {
                     List claimIds = new ArrayList<Integer>(claims.size());
-                    for(Claim claim : claims)
+                    for(Claim claim : claims) {
                         claimIds.add(claim.getId());
+                    }
                     try {
                         if (!generateXML(claimIds)) {
                             if (getSession().get("tooManyRows") != null) {
@@ -199,8 +190,9 @@ public class ExcelGeneratorAction extends BaseAction {
                                 LOG.debug("Report cancelled");
                             }
                         }
-                        else
+                        else {
                             rtnStr = SUCCESS;
+                        }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
                         setClaimSizeError("Error encountered generating report.");
@@ -227,17 +219,17 @@ public class ExcelGeneratorAction extends BaseAction {
         gridExportReport.setDataService(dataService);
         gridExportReport.setReportDataService(reportDataService);
         
-        boolean isCho = this.getIsCHO();
-        boolean isInsurer = this.getIsInsurer();
         int noClaims = claimIds.size();
         int processedClaim = 0;
         LOG.info("Exporting to excel with {} claims.", noClaims);
 
         Boolean isIns = null;
-        if (this.getIsInsurer())
+        if (this.getIsInsurer()) {
             isIns = Boolean.TRUE;
-        else if (this.getIsCHO())
+        }
+        else if (this.getIsCHO()) {
             isIns = Boolean.FALSE;
+        }
         List<ExcelClaim> excelClaims = gridExportReport.getExcelClaims(claimIds, isIns);
 
         processedClaim += claimIds.size() / 5;
@@ -342,7 +334,6 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("cycle", claimCycle);
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
-        Calendar cal = Calendar.getInstance();
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
@@ -415,8 +406,9 @@ public class ExcelGeneratorAction extends BaseAction {
                 getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                 getSession().put("writingToFile", false);
             }
-            else
+            else {
                 throw new Exception("Error Generating Report.");
+            }
         }
 
         return true;
@@ -431,8 +423,9 @@ public class ExcelGeneratorAction extends BaseAction {
                 setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
                 if (getSession().get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
-                } else
+                } else {
                     setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
+                }
             } else {
                 setExportedClaimCount(0);
                 setExportFinished((Boolean) getSession().get("isExportFinished"));
@@ -440,12 +433,15 @@ public class ExcelGeneratorAction extends BaseAction {
                 setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
                 if (getSession().get("exceptionThrown") == null) {
                     setExceptionOccured(Boolean.FALSE);
-                } else
+                } else {
                     setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
-                if (getSession().get("tooManyRows") == null)
+                }
+                if (getSession().get("tooManyRows") == null) {
                     setTooManyRows(Boolean.FALSE);
-                else
+                }
+                else {
                     setTooManyRows((Boolean) getSession().get("tooManyRows"));
+                }
             }
         }
         return SUCCESS;
@@ -479,20 +475,15 @@ public class ExcelGeneratorAction extends BaseAction {
             throw new AccessDeniedException("Illegal attempt to generate Export file.");
         }
 
-        if (!getCanExport()) {
-            LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
-            throw new AccessDeniedException("Illegal attempt to generate Export file.");
-        }
-
         if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");
             try {
-                result = doExportExcel();
+                doExportExcel();
             } catch (Exception ex) {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                 getSession().put("exceptionThrown", true);
-                result = ERROR;
+//                result = ERROR;
             }
         }
 

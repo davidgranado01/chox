@@ -8,11 +8,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -549,5 +551,30 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         } catch (Exception ex) {
             LOG.error("Exception thrown when reverting all auditTrail entries", ex);
         }
+    }
+    
+    @Override
+    public AuditTrail getAuditTrailByTaskCreatedDate(int claimId, Date taskCreatedDate) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+
+        DetachedCriteria auditCreatedDateCriteria = DetachedCriteria.forClass(AuditTrail.class);
+        auditCreatedDateCriteria.setProjection(Projections.max("createdDate"));
+        auditCreatedDateCriteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        auditCreatedDateCriteria.add(Restrictions.disjunction()
+                .add(Restrictions.conjunction()
+                    .add(Restrictions.le("createdDate", taskCreatedDate))
+                    .add(Restrictions.eq("reverted", false)))
+                .add(Restrictions.conjunction()
+                    .add(Restrictions.le("createdDate", taskCreatedDate))
+                    .add(Restrictions.eq("reverted", true))
+                    .add(Restrictions.gt("lastModifiedDate", taskCreatedDate))));
+
+        criteria.add(Subqueries.propertyEq("createdDate", auditCreatedDateCriteria));
+        
+        List<AuditTrail> auditTrails = findByCriteria(criteria);
+
+        return auditTrails.get(0);
     }
 }

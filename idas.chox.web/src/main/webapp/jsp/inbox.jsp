@@ -1373,6 +1373,17 @@
                             doInvoicePaymentReceivedAction
                         ]}
                 });
+                
+                var claimsExportToExcelTbar = new Ext.Toolbar({
+                items:[{
+                        text:'Export To Excel',
+                        id : 'claimsExportToExcelButtonId',
+                        disabled : !<s:property value="canExport" />,
+                        handler : function() {
+                            doExportExcel();
+                        }
+                    }]
+                });
 
                 actionMenu.on('arrowclick', function()
                 {
@@ -1443,7 +1454,7 @@
                     title:' ',
                     viewConfig:{forceFit:true},
                     bbar: pagingBar,
-                    tbar:[actionMenu]
+                    tbar:[actionMenu, '->', claimsExportToExcelTbar]
                 });
                 //            grid.render('gridHolder');
             }
@@ -1771,18 +1782,9 @@
             </form>
         </div>
     </div>
-    <div id="gridPanel" class="x-hide-display">
-        <s:if test="canExport">
-            <div class="excel-export">
-                <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
-            </div>
-        </s:if>
-    </div>
+    <div id="gridPanel" class="x-hide-display"></div>
 
     <div id="xmlClaimsStatusGridDiv" class="x-hide-display">
         <div id="xmlClaimsStatusGrid"></div>
-        <div class="excel-export" id="UploadedClaimDetailsExportId">
-            <form action=""><a href="javascript:doExportUploadedClaimDetailsToExcel();">Export To Excel</a></form>
-        </div>
     </div>
 </div>

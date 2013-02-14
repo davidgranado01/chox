@@ -11,8 +11,8 @@ import java.util.List;
 public interface TaskService {
     public SearchResult getAllTasks(int start, int limit, String sort, String dir);
     public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir);
-    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir);
-    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir);
+    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
+    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
     public List<Task> getAllTasksByClaim(int claimId);
     public List<Task> getIncompleteTasksByClaim(int claimId);
     public List<Task> getIncompleteTasksByClaim(int webUserId, int claimId);
