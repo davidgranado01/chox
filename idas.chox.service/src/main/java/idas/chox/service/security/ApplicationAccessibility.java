@@ -139,27 +139,54 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="Utility  Functions - Public Static">
     public static String getActivityAccessibilityKey(String buttonName, String claimStatus, ClaimType claimType) {
-        return String.format("activity.%1$s.%2$s.%3$s", buttonName, claimStatus, claimType.name());
+        
+        return String.format("activity.%1$s.%2$s.%3$s", buttonName, claimStatus, getClaimTypeKey(claimType));
     }
 
     public static String getExtraActionAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("extraAction.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
+        return String.format("extraAction.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
     }
 
     public static String getNotificationAccessibilityKey(String notificationName, String claimStatus, ClaimType claimType) {
-        return String.format("notification.%1$s.%2$s.%3$s", notificationName, claimStatus, claimType.name());
+        return String.format("notification.%1$s.%2$s.%3$s", notificationName, claimStatus, getClaimTypeKey(claimType));
     }
 
     public static String getTabAccessibilityKey(String tabName, String claimStatus, ClaimType claimType) {
-        return String.format("tab.%1$s.%2$s.%3$s", tabName, claimStatus, claimType.name());
+        return String.format("tab.%1$s.%2$s.%3$s", tabName, claimStatus, getClaimTypeKey(claimType));
     }
 
     public static String getBatchUpdateAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("batch.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
+        return String.format("batch.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
     }
     
     public static String getPanelAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("panel.%1$s.%2$s.%3$s", actionName, claimStatus, claimType.name());
+        return String.format("panel.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
+    }
+    
+    private static String getClaimTypeKey(ClaimType claimType) {
+        String claimTypeString;
+        if (ClaimType.isGTA(claimType)) {
+            claimTypeString = ClaimType.GTA.name();
+        }
+        else if (ClaimType.isFixedFee(claimType)) {
+            claimTypeString = ClaimType.FIXED_FEE.name();
+        }
+        else if (ClaimType.isSubscriber(claimType)) {
+            claimTypeString = ClaimType.SUBSCRIBER.name();
+        }
+        else if (ClaimType.isInsurerVsInsurer(claimType)) {
+            claimTypeString = ClaimType.INSURER_VS_INSURER.name();
+        }
+        else if (ClaimType.isTPI(claimType)) {
+            claimTypeString = ClaimType.TPI.name();
+        }
+        else if (ClaimType.isInsurerUpload(claimType)) {
+            claimTypeString = ClaimType.INSURER_INVOICE.name();
+        }
+        else {
+            claimTypeString = "";
+        }
+        return claimTypeString;
     }
     // </editor-fold>
 

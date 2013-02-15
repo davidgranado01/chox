@@ -62,16 +62,55 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                 .add(Restrictions.like("name", "tab.%")));
         List<Accessibility>  accessibilities = findByCriteria(c);
 
+        String key;
         for (Accessibility a : accessibilities) {
 
             if (a.getClaimType() == null) {
                 // Valid for all claim types
-                for (ClaimType type : ClaimType.values()) {
-                    map.put(a.getName() + "." + type.name(), a);
+                key = a.getName() + "." + ClaimType.GTA.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
                 }
-                map.put(a.getName() + ".ALL", a);
+                key = a.getName() + "." + ClaimType.SUBSCRIBER.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                }
+                key = a.getName() + "." + ClaimType.FIXED_FEE.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                }
+                key = a.getName() + "." + ClaimType.INSURER_VS_INSURER.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                }
+                key = a.getName() + "." + ClaimType.TPI.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                }
+                key = a.getName() + "." + ClaimType.INSURER_INVOICE.name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                }
+//               map.put(a.getName() + ".ALL", a);
             } else {
-                map.put(a.getName() + "." + a.getClaimType().name(), a);
+                key = a.getName() + "." + a.getClaimType().name();
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);
+                } else {
+                    map.put(key, a);
+                }
             }
         }
 
@@ -82,6 +121,10 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         return map;
     }
 
+    private void addRolesToAccessibility(Accessibility a1, Accessibility a2) {
+        Map<String, Short> roleMap = a1.getAccessibilityRoleMap();
+        roleMap.putAll(a2.getAccessibilityRoleMap());
+    }
 
     @Override
     public Map<String, Accessibility> getAccessibilityMap() {
