@@ -1,3 +1,5 @@
+DROP FUNCTION slaFixedFeeRejectionReport(IN startdate TEXT, IN enddate TEXT, IN insurerid INTEGER);
+
 CREATE OR REPLACE FUNCTION slaFixedFeeRejectionReport(IN startdate TEXT, IN enddate TEXT, IN insurerid INTEGER)
   RETURNS TABLE("Workgroup/Claim Owner" TEXT, "Rejection Reason" VARCHAR, "Total # rejected" BIGINT, "# rejected on day 1" BIGINT, "# rejected on day 2" BIGINT, "# rejected on day 3" BIGINT, "# rejected on day 4" BIGINT, "# rejected on day 5" BIGINT,
                                                "# rejected on day 6" BIGINT, "# rejected on day 7" BIGINT, "# rejected on day 8" BIGINT, "# rejected on day 9" BIGINT, "# rejected on day 10" BIGINT,
