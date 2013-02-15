@@ -110,7 +110,8 @@
                     {name:'isWorkgroupEditable', type:'boolean'},
                     {name:'isOwnershipEditable', type:'boolean'},
                     {name:'ownerName'},
-                    {name:'choOwnerName'}
+                    {name:'choOwnerName'},
+                    {name:'claimHasAttachment'}
                 ]
             });
             
@@ -1414,24 +1415,27 @@
                     width: 1000,
                     columns: [
                         sm2,
-                        {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
+                        {header: "Supplier Ref", width: 100, sortable: true, dataIndex: 'supplierReference',
                             renderer:function(value,p,r){
                                 return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>'}},
-                        {header: "Claim Type", width: 120, sortable: true, dataIndex: 'claimType'},
-                        {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
-                        {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
-                        {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
-                        {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
-                        {header: "Total To Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
+                        {header: "Claim Type", width: 50, sortable: true, dataIndex: 'claimType'},
+                        {header: "Claim No", width: 60, sortable: true, dataIndex: 'claimNumber'},
+                        {header: "Insurer's Policy No", width: 60, sortable: true, dataIndex: 'policyNumber'},
+                        {header: "Invoice Upload Date", width: 60, sortable: true, dataIndex: 'invoiceUploadDate'},
+                        {header: "Status", width: 100, sortable: true, dataIndex: 'status'},
+                        {header: "Total To Pay", width: 60, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                         {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
-                        {header: "Ins Owner", width: 90, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
-                        {header: "CHO Owner", width: 90, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
-                        {header: "Status Modified Date", width: 90, sortable: true, dataIndex: 'statusModifiedDate'},
-                        {header: "Review Date", width: 90, sortable: true, dataIndex: 'reviewDate'},
-                        {header: "CHO", width: 100, sortable: true, dataIndex: 'cho'},
-                        {header: "Insurer", width: 100, sortable: true, dataIndex: 'insurer'},
-                        {header: "Viewing", width: 60, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
-                                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}}
+                        {header: "Ins Owner", width: 50, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
+                        {header: "CHO Owner", width: 50, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
+                        {header: "Status Modified Date", width: 50, sortable: true, dataIndex: 'statusModifiedDate'},
+                        {header: "Review Date", width: 50, sortable: true, dataIndex: 'reviewDate'},
+                        {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
+                        {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
+                        {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
+                                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}},
+                        {header: "", width : 20, sortable : true, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
+                                if(value){metaData.css = 'paperClip';} 
+                            }}
                     ],
                     stateId:'chox_claim_grid',
                     stateful:true,
