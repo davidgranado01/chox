@@ -43,8 +43,6 @@
                 reader:tasksJsonReader,
                 remoteSort: true
             });
-            $('#taskMarkId').attr('disabled', 'disabled');
-            $('#taskCreateId').attr('disabled', 'disabled');
         </s:if>
         <s:else >
             tasksDataStore = new Ext.data.Store({
@@ -111,13 +109,15 @@
                      {
                          text:'Mark As Complete',
                          id : 'markAsCompleteButtonId',
-                         handler : markAsComplete
+                         handler : markAsComplete,
+                         disabled : <s:property value="isChoxAdmin" />
                      }
                     ,'-'
                     ,{
                         text:'Add New Task',
                         id : 'addNewTaskButtonId',
-                        handler : addNewTask
+                        handler : addNewTask,
+                        disabled : <s:property value="isChoxAdmin" />
                     }
                     ,'-'
                     ,{
@@ -137,7 +137,7 @@
                     }
                     ,'-'
                     ,{
-                        text:'Show all tasks',
+                        text:'Show All Tasks',
                         id : 'assignedTasksOnlyButtonId',
                         enableToggle: true,
                         toggleHandler: function() {

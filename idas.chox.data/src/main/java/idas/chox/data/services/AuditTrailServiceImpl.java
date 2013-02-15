@@ -564,17 +564,20 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         auditCreatedDateCriteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         auditCreatedDateCriteria.add(Restrictions.disjunction()
                 .add(Restrictions.conjunction()
-                    .add(Restrictions.le("createdDate", taskCreatedDate))
-                    .add(Restrictions.eq("reverted", false)))
+                .add(Restrictions.le("createdDate", taskCreatedDate))
+                .add(Restrictions.eq("reverted", false)))
                 .add(Restrictions.conjunction()
-                    .add(Restrictions.le("createdDate", taskCreatedDate))
-                    .add(Restrictions.eq("reverted", true))
-                    .add(Restrictions.gt("lastModifiedDate", taskCreatedDate))));
+                .add(Restrictions.le("createdDate", taskCreatedDate))
+                .add(Restrictions.eq("reverted", true))
+                .add(Restrictions.gt("lastModifiedDate", taskCreatedDate))));
 
         criteria.add(Subqueries.propertyEq("createdDate", auditCreatedDateCriteria));
-        
-        List<AuditTrail> auditTrails = findByCriteria(criteria);
 
+        List<AuditTrail> auditTrails = findByCriteria(criteria);
+        if (auditTrails == null || auditTrails.isEmpty()) {
+            LOG.error("No auditTrail entry returned when retriving AuditTrail By Task CreatedDate: claimId='{}', task created date='{}'", claimId, taskCreatedDate);
+            return null;
+        }
         return auditTrails.get(0);
     }
 }
