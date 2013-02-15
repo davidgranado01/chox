@@ -314,23 +314,14 @@ public class ApplicationAccessibility {
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - Editable By Claim">
     public Short checkAccessibilityEditableForClaim(String accessibilityKey, WebUser user, Claim claim) {
 //        LOG.debug("Claim='{}', accessibilityKey={}", claim.getChoReference(), accessibilityKey);
-        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
-            Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
-            Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
-            
-            Short accessRight = checkAccessibility(roleMap, user);
-            if (accessRight > 0 && !canAccess(accessibility, claim)) {
-                accessRight = 0;
-            }
+            Short accessRight = checkAccessibilityForClaimType(accessibilityKey, user, claim);
 //            LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
             if (accessRight >= 2) {
+                Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-//            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
-            return accessRight;
-        }
 //        LOG.debug("Action access for '{}' declined (no access rights defined).", accessibilityKey);
-        return DECLINED;
+            return accessRight;
     }
     // </editor-fold>
 

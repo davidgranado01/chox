@@ -25,7 +25,6 @@
     <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" scope="prototype">
         <property name="claimService" ref="claimService" />
     </bean>
-    <bean id="claimOwnerAssigning" class="idas.chox.service.workflow.activities.ClaimOwnerAssigning" scope="prototype"/>
     <bean id="referFNOL" class="idas.chox.service.workflow.activities.ClaimReferToFnol" scope="prototype"/>
     <bean id="registerFNOL" class="idas.chox.service.workflow.activities.ClaimRegisterByFnol" scope="prototype"/>
     <bean id="pending" class="idas.chox.service.workflow.activities.ClaimPending" scope="prototype"/>

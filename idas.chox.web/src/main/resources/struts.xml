@@ -437,7 +437,7 @@
             <result name="InvoiceAccepted">/jsp/actionPanel/p_approve_bre_passed_claim.jsp</result>
             <result name="approveEscalatedInvoice">/jsp/actionPanel/p_invoice_escalated.jsp</result>
             <result name="approveContestedInvoice">/jsp/actionPanel/p_approve_contested_invoice.jsp</result>
-            <result name="approveContestedInvoiceToEng">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
+            <result name="InvoiceReferToCH">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
             <result name="InvoicePaymentLogged">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
             <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer_liability.jsp</result>

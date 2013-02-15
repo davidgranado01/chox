@@ -4,16 +4,28 @@
 ALTER TABLE accessibility ADD COLUMN claim_type integer;
 CREATE UNIQUE INDEX accessibility_ui ON accessibility(name, claim_type);
 
+-- First delete all accessibility items with access right of 0:
+--   this table gives access, not removes
+DELETE FROM accessibility_item WHERE access_right=0;
+
+-- Rename both 'button' and 'action' accessibility to 'activity' accessibity
 UPDATE accessibility set name = 'activity' || substring(name, 7)
 WHERE name like 'button.%';
 
+UPDATE accessibility set name = 'activity' || substring(name, 7)
+WHERE name like 'action.%';
+
+-- Delete strange activity without status (not used)
+DELETE FROM accessibility_item
+WHERE accessibility_id  = (select id from accessibility where name = 'activity.updateClaimWorkgroupAndOwner');
+
+DELETE FROM accessibility WHERE name = 'activity.updateClaimWorkgroupAndOwner';
+
+-- Change activity names to match class names of activities
 UPDATE accessibility set name = 'activity.RevertClaim' || substring(name, 27)
 WHERE name like 'activity.RevertClaimStatus.%';
 
 UPDATE accessibility set name = 'activity.PaymentNotReceived.InvoicePaymentLogged' WHERE name like 'activity.UpdatePaymentNotReceived.InvoicePaymentLogged';
-
-UPDATE accessibility set name = 'activity' || substring(name, 7)
-WHERE name like 'action.%';
 
 UPDATE accessibility set name = 'activity.AssignWorkgroup' || substring(name, 35)
 WHERE name like 'activity.updateclaimlineofbusiness.%';
@@ -60,6 +72,20 @@ WHERE name like 'activity.updateManualInvoice.%';
 UPDATE accessibility set name = 'activity.AssignManualInvoiceOwner' || substring(name, 46)
 WHERE name like 'activity.updateManualInvoiceWorkgroupAndOwner.%';
 
+UPDATE accessibility set name = 'activity.InvoiceReferToCH' || substring(name, 38)
+WHERE name like 'activity.approveContestedInvoiceToEng.%';
+
+UPDATE accessibility set name = 'activity.ClaimReviewByEng' || substring(name, 26)
+WHERE name like 'activity.reviewByEngineer.%';
+
+UPDATE accessibility set name = 'activity.AssignOwner' || substring(name, 32)
+WHERE name like 'activity.assignInvoiceOwnership.%';
+
+UPDATE accessibility set name = 'activity.SubscriberClaimRejectionAccept' || substring(name, 48)
+WHERE name like 'activity.contestOrAcceptRejectedSubscriberClaim.%';
+
+
+-- Update access to 'FNOL Reviewed' panel
 UPDATE accessibility SET name = 'panel.FNOLReviewed.ClaimUnacknowledgedRouted',
            check_fnol_enabled = true
 WHERE name = 'panel.FNOLReviewed';
@@ -81,9 +107,6 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	  AND ai.accessibility_id = a.id
 	  AND a2.name='panel.FNOLReviewed.ClaimUnacknowledgedUnassigned';
 
--- Delete all accessibility items with access right of 0:
---   this table gives access, not removes
-DELETE FROM accessibility_item WHERE access_right=0;
 
 ----------------------
 --  END OF 7.3.1    --
