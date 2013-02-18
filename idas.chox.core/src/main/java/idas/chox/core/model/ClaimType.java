@@ -61,11 +61,11 @@ public enum ClaimType {
         return false;
     }
 
-    public static boolean allowPenaltyCharges(ClaimType claimType) {
-        if (claimType == ClaimType.GTA || claimType == ClaimType.SUBSCRIBER || claimType == ClaimType.FIXED_FEE) {
+    public static boolean allowAutoPenaltyCharges(ClaimType claimType) {
+        if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType)) {
             return true;
         }
-        
+
         return false;
     }
 

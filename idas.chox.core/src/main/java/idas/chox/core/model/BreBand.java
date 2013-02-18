@@ -99,7 +99,12 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean autoRestoreOneDayRepairCheck;
     private boolean insurancePremiumTaxCheck;
     private boolean mobileVehicleTotalLossCheck;
-    private boolean allowPenaltyCharges = true;
+    private boolean allowGTAPenaltyCharges = true;
+    private boolean allowSubscriberPenaltyCharges = true;
+    private boolean allowFixedFeePenaltyCharges = true;
+    private boolean allowTPIPenaltyCharges = true;
+    private boolean allowInsurervsInsurerPenaltyCharges = true;
+    private boolean allowManualInvoicePenaltyCharges = true;
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
@@ -145,12 +150,65 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.isActive = isActive;
     }
 
-    public boolean isAllowPenaltyCharges() {
-        return allowPenaltyCharges;
+    public boolean isAllowPenaltyCharges(ClaimType claimType) {
+        boolean allowPenalty = false;
+        if ((ClaimType.isGTA(claimType) && isAllowGTAPenaltyCharges())
+                || (ClaimType.isSubscriber(claimType) && isAllowSubscriberPenaltyCharges())
+                || (ClaimType.isFixedFee(claimType) && isAllowFixedFeePenaltyCharges())
+                || (ClaimType.isInsurerVsInsurer(claimType) && isAllowInsurervsInsurerPenaltyCharges())
+                || (ClaimType.isInsurerUpload(claimType) && isAllowManualInvoicePenaltyCharges())
+                || (ClaimType.isTPI(claimType) && isAllowTPIPenaltyCharges())) {
+            allowPenalty = true;
+        }
+        return allowPenalty;
     }
 
-    public void setAllowPenaltyCharges(boolean allowPenaltyCharges) {
-        this.allowPenaltyCharges = allowPenaltyCharges;
+    public boolean isAllowGTAPenaltyCharges() {
+        return allowGTAPenaltyCharges;
+    }
+
+    public void setAllowGTAPenaltyCharges(boolean allowGTAPenaltyCharges) {
+        this.allowGTAPenaltyCharges = allowGTAPenaltyCharges;
+    }
+
+    public boolean isAllowSubscriberPenaltyCharges() {
+        return allowSubscriberPenaltyCharges;
+    }
+
+    public void setAllowSubscriberPenaltyCharges(boolean allowSubscriberPenaltyCharges) {
+        this.allowSubscriberPenaltyCharges = allowSubscriberPenaltyCharges;
+    }
+
+    public boolean isAllowFixedFeePenaltyCharges() {
+        return allowFixedFeePenaltyCharges;
+    }
+
+    public void setAllowFixedFeePenaltyCharges(boolean allowFixedFeePenaltyCharges) {
+        this.allowFixedFeePenaltyCharges = allowFixedFeePenaltyCharges;
+    }
+
+    public boolean isAllowTPIPenaltyCharges() {
+        return allowTPIPenaltyCharges;
+    }
+
+    public void setAllowTPIPenaltyCharges(boolean allowTPIPenaltyCharges) {
+        this.allowTPIPenaltyCharges = allowTPIPenaltyCharges;
+    }
+
+    public boolean isAllowInsurervsInsurerPenaltyCharges() {
+        return allowInsurervsInsurerPenaltyCharges;
+    }
+
+    public void setAllowInsurervsInsurerPenaltyCharges(boolean allowInsurervsInsurerPenaltyCharges) {
+        this.allowInsurervsInsurerPenaltyCharges = allowInsurervsInsurerPenaltyCharges;
+    }
+
+    public boolean isAllowManualInvoicePenaltyCharges() {
+        return allowManualInvoicePenaltyCharges;
+    }
+
+    public void setAllowManualInvoicePenaltyCharges(boolean allowManualInvoicePenaltyCharges) {
+        this.allowManualInvoicePenaltyCharges = allowManualInvoicePenaltyCharges;
     }
 
     public boolean isHasTotalGrossSumCheck() {

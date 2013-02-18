@@ -1,6 +1,32 @@
--- Function: applyautopenaltycharge(integer, integer)
+--------------------------------------------------------------------------------
+-- 7.3.6 - Claim Type On/Off Penalty Charges In BRE Band                      --
+--------------------------------------------------------------------------------
 
--- DROP FUNCTION applyautopenaltycharge(integer, integer);
+ALTER TABLE bre_band ADD COLUMN allow_gta_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN allow_subscriber_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN allow_fixed_fee_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN allow_tpi_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN allow_ins_vs_ins_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN allow_manual_inv_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+
+UPDATE  
+   bre_band 
+SET 
+   allow_gta_penalty_charges = false,
+   allow_subscriber_penalty_charges = false,
+   allow_fixed_fee_penalty_charges = false,
+   allow_tpi_penalty_charges = false,
+   allow_ins_vs_ins_penalty_charges = false,
+   allow_manual_inv_penalty_charges = false
+WHERE
+  allow_penalty_charges = false;
+
+ALTER TABLE bre_band DROP COLUMN allow_penalty_charges;
+
+
+--------- applyAutoPenaltyCharge stored procedure ------
+
+DROP FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer);
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
@@ -333,3 +359,11 @@ END;
 $BODY$
   LANGUAGE plpgsql;
   GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
+
+--------- end of applyAutoPenaltyCharge stored procedure ------
+
+----------------------
+--  End of 7.3.6    --
+----------------------
+
+

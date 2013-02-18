@@ -2255,7 +2255,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                 && penaltyChargeService.calculateCurrentPenaltyBand(claim) < penaltyChargeService.getLastPenaltyBand(claim)
-                && ClaimType.allowPenaltyCharges(claim.getClaimType()));
+                && ClaimType.allowAutoPenaltyCharges(claim.getClaimType()));
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})

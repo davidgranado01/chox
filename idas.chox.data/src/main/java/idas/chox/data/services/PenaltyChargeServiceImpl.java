@@ -551,7 +551,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             claim.setBreBand(choBand);
             if (claim.getBreBand() == null) {
                 LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
-            } else if (!claim.getBreBand().isAllowPenaltyCharges()) {
+            } else if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
                 allowPenaltyCharges = false;
             }
             if (allowPenaltyCharges && invoice != null

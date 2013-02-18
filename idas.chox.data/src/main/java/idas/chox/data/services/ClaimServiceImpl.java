@@ -788,17 +788,44 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ge("iv.penaltyBand", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_band)"));
-            criteria.add(Restrictions.disjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE)).add(Restrictions.conjunction().add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE)).add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
+            criteria.add(Restrictions.disjunction()
+                                    .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.FALSE))
+                                    .add(Restrictions.conjunction()
+                                        .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
+                                        .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
             } else {
                 // Get the id's of the BRE Bands mapped to this CHO
-                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation").createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
+                        .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                        .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
                 bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
 
                 // Get the insurers from the BRE Band which don't allow penalty charges to be added
-                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband").add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE)).add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list())).setProjection(Projections.property("breband.insurer"));
+                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
+                        .add(Restrictions.disjunction()
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowGTAPenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowSubscriberPenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowInsurervsInsurerPenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                            .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_UPLOAD)))))
+                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list()))
+                        .setProjection(Projections.property("breband.insurer"));
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
                 criteria.add(Property.forName("this.insurer").notIn(pCriteria));
