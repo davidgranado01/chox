@@ -1,6 +1,7 @@
 DROP FUNCTION taskExportReport(character varying, numeric, IN integer[]);
 CREATE OR REPLACE FUNCTION taskExportReport(IN org character varying, IN orgid numeric, IN integer[])
   RETURNS TABLE("Supplier Reference" character varying,
+                "Insurer Claim Number" character varying,
                 "Workgroup" character varying,
                 "Current CHOX Status" character varying,   
                 "Status Of Claim When Task Created" character varying, 
@@ -23,6 +24,7 @@ IF org ILIKE 'INS' THEN
 
    select 
     c.cho_reference as "Supplier Reference",
+    c.claim_number as "Insurer Claim Number",
     wkgp.name as "Workgroup",
     c.status as "Current CHOX Status",
     a.new_status "Status Of Claim When Task Created",
@@ -50,7 +52,7 @@ IF org ILIKE 'INS' THEN
     and ((t.visibility = 2 and t.insurer is true) or (t.visibility = 3 and t.insurer is false))
     and (c.insurer_id = orgId or (c.insurer_id is null and w.insurer_id = orgId))
     and ((-1 = ANY ($3)) OR (c.claim_type = ANY ($3)))
-    and a.id = (select id from audit_trail at where at.claim_id=c.id and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and ((a3.created_date <= t.created_date and reverted = false) or (a3.created_date <= t.created_date and reverted = true and last_modified_date > t.created_date))) order by id desc limit 1)
+    and (a.id = (select id from audit_trail at where at.claim_id=c.id and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and ((a3.created_date <= t.created_date and reverted = false) or (a3.created_date <= t.created_date and reverted = true and last_modified_date > t.created_date))) order by id desc limit 1))
   order by c.cho_reference, t.created_date;
 
 
@@ -60,7 +62,8 @@ ELSIF org ILIKE 'CHO' THEN
 
     select 
     c.cho_reference as "Supplier Reference", 
-    '-' as "Workgroup",
+    c.claim_number as "Insurer Claim Number",
+    '-'::varchar as "Workgroup",
     c.status as "Current CHOX Status", 
     a.new_status "Status Of Claim When Task Created",
     t.due_date as "Due Date",
@@ -85,7 +88,7 @@ ELSIF org ILIKE 'CHO' THEN
     and ((t.visibility = 2 and t.insurer is false) or (t.visibility = 3 and t.insurer is true))
     and (c.chorganisation_id = orgId or (c.chorganisation_id is null and w.chorganisation_id = orgId))
     and ((-1 = ANY ($3)) OR (c.claim_type = ANY ($3)))
-    and a.id = (select id from audit_trail at where at.claim_id=c.id and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and ((a3.created_date <= t.created_date and reverted = false) or (a3.created_date <= t.created_date and reverted = true and last_modified_date > t.created_date))) order by id desc limit 1)
+    and (a.id = (select id from audit_trail at where at.claim_id=c.id and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and ((a3.created_date <= t.created_date and reverted = false) or (a3.created_date <= t.created_date and reverted = true and last_modified_date > t.created_date))) order by id desc limit 1))
     order by c.cho_reference, t.created_date;      
 
 
