@@ -41,6 +41,10 @@ WHERE
      AND c.status IN('ClaimClosed','InvoiceRejectionAccepted')
      AND invoice.total_to_pay > 0;
 
+-------------------------
+--  End of 7.2.2       --
+-------------------------
+
 ------------------------------------------
 -- 7.2.3 User Manager Role For CHOs     --
 ------------------------------------------
