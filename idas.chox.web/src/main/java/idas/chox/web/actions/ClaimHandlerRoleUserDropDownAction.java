@@ -91,7 +91,37 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
                 if (insurer != null) {
                     if (workgroupId != null) {
                         for (Integer id : this.workgroupId) {
-                            users.addAll(userService.getClaimHanldersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
+                            users.addAll(userService.getActiveClaimHandlersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
+                        }
+                    }
+                }
+            }
+            for (WebUser user : users) {
+                claimhandlers.add(new IdLookupItem(user.getId(), user.getDisplayName()));
+            }
+        }
+
+        return SUCCESS;
+    }
+
+    
+    public String getAllClaimHandlers() throws Exception {
+
+        claimhandlers = new ArrayList<IdLookupItem>();
+
+        if (getIsInsurer()) {
+            insurerId.clear();
+            insurerId.add(getAuthenticatedUser().getInsurer().getId());
+        }
+
+        if (insurerId != null) {
+            List<WebUser> users = new ArrayList<WebUser>();
+            for (Integer insId : insurerId) {
+                Insurer insurer = insurerService.getInsurer(insId);
+                if (insurer != null) {
+                    if (workgroupId != null) {
+                        for (Integer id : this.workgroupId) {
+                            users.addAll(userService.getAllClaimHandlersByInsurerWorkgroup(insId, id, insurer.isWorkgroupEnable()));
                         }
                     }
                 }
