@@ -7,6 +7,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
   SELECT id, 'ROLE_INS_MNG', 1
   FROM accessibility WHERE name='notification.NotificationNotesNotification.AwaitingLitigationOutcome';
 
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+  SELECT id, 'ROLE_INS_CH', 1
+  FROM accessibility WHERE name='notification.NotificationNotesNotification.AwaitingLitigationOutcome';
+
 UPDATE accessibility set is_workgroup_check = false, is_ownership_check = false
 WHERE name like 'notification.NotificationNotesNotification.%';
 
