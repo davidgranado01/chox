@@ -126,7 +126,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Override
-    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
+    public List<WebUser> getActiveClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
@@ -140,6 +140,32 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
+        criteria.addOrder(Order.asc("lastName"));
+
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<HashMap> resultMap = criteria.list();
+
+        for (HashMap m : resultMap) {
+            users.add((WebUser) m.get("this"));
+        }
+
+        return users;
+    }
+
+    @Override
+    public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
+
+        List<WebUser> users = new ArrayList<WebUser>();
+
+        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
+
+        if (workgroupEnable && selectedWorkgroupId > 0) {
+            criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+        }
+
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.addOrder(Order.asc("lastName"));
 
         criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
