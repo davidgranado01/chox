@@ -2,17 +2,14 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
@@ -45,25 +42,6 @@ public class RevertClaim extends BaseActivity {
 
     public void setAmountReceived(BigDecimal amountReceived) {
         this.amountReceived = amountReceived;
-    }
-
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if ((securityInfoProvider.getIsCHO() && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
-                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED) && !claim.getStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
-                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
-                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED) && !claim.getStatus().equals(ClaimStatus.AWAITING_LITIGATION_OUTCOME))
-                || (securityInfoProvider.getIsINS() && !claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
-                && !claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) && !claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
-                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG) && !claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_ENG)
-                && !claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_PAID) && !claim.getStatus().equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)
-                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
-                && !claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_CONTESTED))) {
-            throw new AccessDeniedException("Not in correct role to revert claim in status '" + claim.getStatus() + "'.");
-        }
     }
 
 
@@ -173,33 +151,4 @@ public class RevertClaim extends BaseActivity {
     }
 
 
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
-        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
-        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
-        expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-        expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-        expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
-        expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_PAID);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        expectingStatuses.add(ClaimStatus.AWAITING_LITIGATION_OUTCOME);
-    }
 }

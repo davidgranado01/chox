@@ -1,9 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +9,6 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 
 /**
@@ -21,19 +18,6 @@ import idas.chox.core.services.BreBandService;
 public class NewSupplementaryInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")) {
-            throw new AccessDeniedException("Not in correct role to create a claim.");
-        }
-    }
-
-    @Override
-    protected void beforeProcess(Claim claim) {
-    }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
@@ -60,11 +44,6 @@ public class NewSupplementaryInvoice extends BaseActivity {
             }
         }
 
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(null);
     }
 
     @Override

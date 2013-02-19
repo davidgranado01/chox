@@ -1,18 +1,15 @@
 package idas.chox.service.workflow.activities;
 
-import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.security.SecurityInfoProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AssignManualInvoiceOwner extends BaseActivity {
 
@@ -27,7 +24,6 @@ public class AssignManualInvoiceOwner extends BaseActivity {
     
     @Override
     protected void validate(Claim claim) throws Exception {
-        
         super.validate(claim);
         if (claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getInsurer().isWorkgroupEnable()) {
             workgroupsEnabled = true;
@@ -42,10 +38,6 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
                 throw new Exception("Invalid workgroup id. workgroup is null.");
-            }
-            // Check if workgroup belongs to the Insurer
-            if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
-                throw new AccessDeniedException("Workgroup does not belong to Insurer");
             }
         }
 
@@ -62,13 +54,6 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             }
         }
 
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                && !securityInfoProvider.getIsCHOXAdmin()
-                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM)
-                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)) {
-            throw new AccessDeniedException("Not in correct role to assign owner.");
-        }
     }
 
     @Override
@@ -132,15 +117,6 @@ public class AssignManualInvoiceOwner extends BaseActivity {
             Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
             claim.addComment(comment);
         }
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_PAID);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
-        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
     }
 
     public int getClaimOwnerId() {

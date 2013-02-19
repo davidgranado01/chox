@@ -1,16 +1,12 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
-import java.util.List;
-
-import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.security.SecurityInfoProvider;
 
 public class InvoicePaymentLogged extends BaseActivity {
 
@@ -86,16 +82,6 @@ public class InvoicePaymentLogged extends BaseActivity {
     }
 
     @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_PC")
-                && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to log invoice payment.");
-        }
-    }
-
-    @Override
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
@@ -166,8 +152,4 @@ public class InvoicePaymentLogged extends BaseActivity {
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
     }
 
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-    }
 }

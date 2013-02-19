@@ -1,6 +1,5 @@
 package idas.chox.service.workflow.activities;
 
-import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
 
@@ -9,9 +8,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.security.SecurityInfoProvider;
 
 public class AssignOwner extends BaseActivity {
 
@@ -23,10 +20,6 @@ public class AssignOwner extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
-        if (ClaimType.isTPI(claim.getClaimType())) {
-            getExpectingStatuses().clear();
-            getExpectingStatuses().add(ClaimStatus.INVOICE_UNASSIGNED);
-        }
         super.validate(claim);
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
@@ -56,14 +49,6 @@ public class AssignOwner extends BaseActivity {
             }
         }
 
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if ((!ClaimType.isTPI(claim.getClaimType()) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM))
-                || (ClaimType.isTPI(claim.getClaimType()) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
-                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin())) {
-            throw new AccessDeniedException("Not in correct role to assign owner.");
-        }
     }
 
     @Override
@@ -81,11 +66,6 @@ public class AssignOwner extends BaseActivity {
             Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
         }
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
     }
 
     public int getOasWorkgroupId() {

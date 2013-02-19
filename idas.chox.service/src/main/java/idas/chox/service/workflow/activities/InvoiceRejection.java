@@ -1,14 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.security.SecurityInfoProvider;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 public class InvoiceRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejection.class);
@@ -21,27 +19,21 @@ public class InvoiceRejection extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_SCR")
-                    && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to reject invoice.");
+        if (getReasonOfRejection() == null) {
+            LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
+            throw new Exception("No 'Reason of Rejection' specified");
         }
     }
 
     @Override
     protected void doProcess(Claim claim) {
 
-        if (getReasonOfRejection() != null) {
-            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
-            if(rejectionDescription != null && !rejectionDescription.equals(""))
-            	claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
-        }
-        else {
-            LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
+        claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
+        if(rejectionDescription != null && !rejectionDescription.equals("")) {
+            claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
         }
         
         claim.getInvoice().setReasonOfRejection(getReasonOfRejection());
-       // claim.getInvoice().setSupportingRejectionNotes(getSupportingRejectionNotes());
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
     }
 
@@ -65,17 +57,6 @@ public class InvoiceRejection extends BaseActivity {
             getChainActivity().processInBatch(claim);
         }
     }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-    }
-
 
 
     public int getReasonOfRejectionId() {

@@ -1,16 +1,13 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.*;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
@@ -40,29 +37,6 @@ public class NewInvoice extends BaseActivity {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        LOG.debug("Validating Claim in NewInvoice activity: {}", claim.getChoReference());
-        if (ClaimType.isTPI(claim.getClaimType())) {
-            LOG.debug("Validating a TPI claim");
-            if (!claim.isTransient()) {
-                LOG.error("Claim isn't transient!!! : {}", claim.getChoReference());
-                throw new Exception("A process new claim attempt failed due to claim is already exist.");
-            }
-            getExpectingStatuses().clear();
-            getExpectingStatuses().add(null);
-
-        } else {
-            LOG.debug("Non TPI claim");
-        }
-        super.validate(claim);
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
-            throw new AccessDeniedException("Not in correct role to upload an invoice.");
-        }
-        LOG.debug("Claim validated in NewInvoice activity: {}", claim.getChoReference());
     }
 
     @Override
@@ -188,12 +162,6 @@ public class NewInvoice extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
-    }
-
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
 
 

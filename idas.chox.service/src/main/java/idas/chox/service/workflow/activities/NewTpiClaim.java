@@ -2,9 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +12,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class NewTpiClaim extends BaseActivity {
@@ -39,17 +36,6 @@ public class NewTpiClaim extends BaseActivity {
                         || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase()))) {
                 autoRoutedInvoice = true;
             }
-    }
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        // Note that although CHOX Admin cannot upload a TPI claim, they can re-submit a claim which activity
-        // is also chained to this one for TPI claim types
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to create a TPI claim.");
-        }
     }
 
     @Override
@@ -161,8 +147,4 @@ public class NewTpiClaim extends BaseActivity {
         return "";
     }
 
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(null);
-    }
 }

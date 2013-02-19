@@ -113,12 +113,6 @@ public class ClaimRejection extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                    && !securityInfoProvider.isInRoleOf("ROLE_INS_CR")
-                    && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to reject claim.");
-        }
         
         if (getReasonOfRejection() == null) {
             throw new Exception("No Reason of Rejection provided");
@@ -232,16 +226,6 @@ public class ClaimRejection extends BaseActivity {
             getChainActivity().setWorkflowContext(getProcessContext());
             getChainActivity().processInBatch(claim);
         }
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
-        expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }
 
     /**

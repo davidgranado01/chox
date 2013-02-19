@@ -1,15 +1,11 @@
 package idas.chox.service.workflow.activities;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.security.SecurityInfoProvider;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAwaitingCarHireInfo.class);
@@ -25,13 +21,8 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
     
     @Override
     protected void validate(Claim claim) throws Exception {
-        StringBuffer sb = new StringBuffer(150);
         super.validate(claim);
-
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to add car hire info.");
-        }
+        StringBuffer sb = new StringBuffer(150);
 
         
         // VALIDATE HIRE MORNITORING ECD, MUST HAVE AT LEAST ONE ECD (initial or added)
@@ -97,10 +88,5 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
         return true;
     }
-
     
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-    }
 }

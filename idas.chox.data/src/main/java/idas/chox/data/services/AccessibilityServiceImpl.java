@@ -103,7 +103,6 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                 } else {
                     map.put(key, a);
                 }
-//               map.put(a.getName() + ".ALL", a);
             } else {
                 key = a.getName() + "." + a.getClaimType().name();
                 if (map.containsKey(key)) {

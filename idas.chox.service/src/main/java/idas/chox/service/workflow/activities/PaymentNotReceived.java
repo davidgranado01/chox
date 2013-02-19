@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,9 +112,4 @@ public class PaymentNotReceived extends BaseActivity {
     }
 
 
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-    }
 }

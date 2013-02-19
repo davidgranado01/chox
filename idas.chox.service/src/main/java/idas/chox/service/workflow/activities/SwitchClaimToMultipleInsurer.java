@@ -2,14 +2,12 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
@@ -70,11 +68,6 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
-            throw new AccessDeniedException("Not in correct role to switch claim.");
-        }
 
         LOG.debug("insurer id is  '{}' ", insId);
         LOG.debug("insurer service class is {}", insurerService.toString());
@@ -160,27 +153,6 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     }
 
     
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
-        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-        expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-
- 
-    }
-
-
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }

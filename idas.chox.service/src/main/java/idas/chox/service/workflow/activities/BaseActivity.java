@@ -1,7 +1,6 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,7 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import idas.chox.service.security.ApplicationAccessibility;
 
 
 
@@ -33,10 +32,11 @@ public abstract class BaseActivity implements Activity {
     private WorkflowContext processContext;
     private Activity chainActivity;
     private String currentStatus;
-    private List<String> expectingStatuses;
     private String message;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
+    @Autowired
+    private ApplicationAccessibility applicationAccessibility;
 
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
@@ -62,11 +62,6 @@ public abstract class BaseActivity implements Activity {
         this.message = message;
     }
 
-    public BaseActivity() {
-        expectingStatuses = new ArrayList<String>();
-        setupExpectingStatuses(expectingStatuses);
-    }
-
     public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
         this.userWorkgroupService = userWorkgroupService;
     }
@@ -83,6 +78,10 @@ public abstract class BaseActivity implements Activity {
 
     public WorkflowContext getWorkflowContext() {
         return getProcessContext();
+    }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
     }
 
     @Override
@@ -122,15 +121,24 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected void validate(Claim claim) throws Exception {
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         
-        if (!expectingStatuses.contains(claim.getStatus())) {
-            LOG.warn("Invalid status found: {}", claim.getStatus());
-            LOG.warn("Expecting one of: ({})", getExpectingStatuses());
-            throw new InvalidClaimStatusException(claim);
+        if (applicationAccessibility.checkAccessibilityForClaimType(
+                ApplicationAccessibility.getActivityAccessibilityKey(getClass().getName(), claim.getStatus(), claim.getClaimType()),
+                securityInfoProvider.getCurrentUser(), claim) < 1) {
+            LOG.error("No access to activity '{}' for claim '{}'", getClass().getName(), claim.getChoReference());
+            throw new AccessDeniedException("No access to activity " + getClass().getName());
         }
         
+        // Check that, if we are an insurer or CHO, then the claim belongs to us
+        if ((securityInfoProvider.getIsINS() &&
+                claim.getInsurer().getId().intValue() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
+                || (securityInfoProvider.getIsCHO() &&
+                claim.getChorganisation().getId().intValue() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue())) {
+                LOG.error("User with id={} has attempted to action claim '{}' from a different organisation", getCurrentUser().getId(), claim.getChoReference());
+                throw new AccessDeniedException("Attempt to action a claim that you do not own");
+        }
         // If Insurer is locked and claim ownership is enabled, and if the user is a CH, then the user must own the claim
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
                 && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
@@ -168,7 +176,6 @@ public abstract class BaseActivity implements Activity {
 
     protected abstract void doProcess(Claim claim) throws Exception;
 
-    protected abstract void setupExpectingStatuses(List<String> expectingStatuses);
 
     // <editor-fold defaultstate="collapsed" desc="Member functions">
     protected WebUser getCurrentUser() {
@@ -256,13 +263,6 @@ public abstract class BaseActivity implements Activity {
      */
     public Activity getChainActivity() {
         return chainActivity;
-    }
-
-    /**
-     * @return the expectingStatuses
-     */
-    public List<String> getExpectingStatuses() {
-        return expectingStatuses;
     }
 
     public void setCurrentStatus(String currentStatus) {

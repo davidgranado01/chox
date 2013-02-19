@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.security.SecurityInfoProvider;
 
 public class ClaimReferToFnol extends BaseActivity {
 
@@ -104,7 +102,6 @@ public class ClaimReferToFnol extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
-
         super.validate(claim);
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
@@ -139,11 +136,6 @@ public class ClaimReferToFnol extends BaseActivity {
                 || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
-        }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to refer claim to FNOL.");
         }
     }
 
@@ -209,13 +201,6 @@ public class ClaimReferToFnol extends BaseActivity {
 
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setIsFnolReviewed(false);
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
     }
 
     protected ReasonOfRejection getReasonOfRejection() {

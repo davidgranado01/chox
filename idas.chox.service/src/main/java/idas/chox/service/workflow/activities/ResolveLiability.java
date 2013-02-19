@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.security.SecurityInfoProvider;
 
 
 public class ResolveLiability extends BaseActivity {
@@ -49,11 +47,6 @@ public class ResolveLiability extends BaseActivity {
                     || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
-        }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to resolve liability");
         }
     }
 
@@ -98,17 +91,6 @@ public class ResolveLiability extends BaseActivity {
         }else{
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
-        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
-        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
     }
 
     /**

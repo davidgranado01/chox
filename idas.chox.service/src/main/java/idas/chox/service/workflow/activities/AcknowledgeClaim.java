@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 
 
@@ -83,11 +81,6 @@ public class AcknowledgeClaim extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.isInRoleOf("ROLE_INS_SCR")
-                && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to acknowledge claim.");
-        }
     }
 
     @Override
@@ -141,15 +134,6 @@ public class AcknowledgeClaim extends BaseActivity {
         return reasonOfRejection;
     }
 
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
-        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
-        expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-    }
 
     /**
      * @return the percentageLiabilityCho

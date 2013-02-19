@@ -1,13 +1,11 @@
 package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
-import java.util.List;
-import org.springframework.security.access.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.security.SecurityInfoProvider;
 
 public class FullPaymentNotReceived extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(FullPaymentNotReceived.class);
@@ -21,20 +19,6 @@ public class FullPaymentNotReceived extends BaseActivity {
         this.interimPaymentReceived = interimPaymentReceived;
     }
     
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if ((!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin())
-                || (securityInfoProvider.isInRoleOf("ROLE_CHO") && (claim.getChorganisation().getId().compareTo(
-                                securityInfoProvider.getCurrentUser().getChorganisation().getId())) != 0)) {
-            throw new AccessDeniedException("Not in correct role to reject a full payment.");
-        }
-
-    }
-
     @Override
     protected void doProcess(Claim claim) {
         if (claim.getInvoice().getInterimPaymentMade() != null) {
@@ -48,11 +32,6 @@ public class FullPaymentNotReceived extends BaseActivity {
             claim.getInvoice().setInterimPaymentReceived(interimPaymentReceived);
         }
         LOG.debug("Claim updated...");
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
     }
 
     /*

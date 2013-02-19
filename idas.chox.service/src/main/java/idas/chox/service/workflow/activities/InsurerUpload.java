@@ -1,9 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +13,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.xml.util.NodeHelper;
@@ -60,19 +56,6 @@ public class InsurerUpload extends BaseActivity {
             autoRoutedInvoice = true;
         }
         
-    }
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-        if (!claim.isTransient()) {
-            throw new Exception("A process new claim attempt failed due to claim is already exist.");
-        }
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD)) {
-            throw new AccessDeniedException("Not in correct role to create a claim.");
-        }
-        LOG.debug("Insurer Upload activity validated.");
     }
 
     @Override
@@ -202,8 +185,4 @@ public class InsurerUpload extends BaseActivity {
         return "";
     }
 
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(null);
-    }
 }

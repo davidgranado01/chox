@@ -189,9 +189,4 @@ public class WorkgroupRouting extends BaseActivity {
         return false;
 
     }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-    }
 }

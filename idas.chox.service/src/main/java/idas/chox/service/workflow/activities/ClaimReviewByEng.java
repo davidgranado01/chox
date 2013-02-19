@@ -32,16 +32,6 @@ public class ClaimReviewByEng extends BaseActivity {
     // </editor-fold>
 
     @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_SCR") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                && !securityInfoProvider.getIsCHOXAdmin()) {
-            throw new AccessDeniedException("Not in correct role to review claim.");
-        }
-    }
-
-    @Override
     protected void beforeProcess(Claim claim) {
         claim.setIndemnityAmount(getIndemnityAmount());
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
@@ -69,11 +59,6 @@ public class ClaimReviewByEng extends BaseActivity {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
         claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-    }
-
-    @Override
-    protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
     }
 
     /**
