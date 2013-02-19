@@ -121,7 +121,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         }
         LOG.debug("Switching Claim: ThirdParty has been updated");
         // revert all Audits entries
-        auditTrailService.revertAllAuditEntriesByClaimId(claim.getId());
+        auditTrailService.deleteAllAuditEntriesByClaimId(claim.getId());
         // revert all Comments entries
         commentService.deleteAllCommentsByClaimId(claim.getId());
         // delete all Tasks entries

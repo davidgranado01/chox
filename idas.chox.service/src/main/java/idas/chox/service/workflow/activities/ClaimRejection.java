@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.util.StringHelper;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,7 +14,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 
@@ -36,6 +34,7 @@ public class ClaimRejection extends BaseActivity {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ClaimService claimService;
+    private ReasonOfRejection reasonOfRejection;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -45,7 +44,7 @@ public class ClaimRejection extends BaseActivity {
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
-            claimNumber.trim();
+            claimNumber = claimNumber.trim();
         }
         this.claimNumber = claimNumber;
     }
@@ -114,7 +113,8 @@ public class ClaimRejection extends BaseActivity {
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         
-        if (getReasonOfRejection() == null) {
+        reasonOfRejection = getReasonOfRejection();
+        if (reasonOfRejection == null) {
             throw new Exception("No Reason of Rejection provided");
         }
 
@@ -138,6 +138,7 @@ public class ClaimRejection extends BaseActivity {
         }
 
     }
+
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -164,7 +165,7 @@ public class ClaimRejection extends BaseActivity {
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
-        claim.setReasonOfRejection(getReasonOfRejection());
+        claim.setReasonOfRejection(reasonOfRejection);
         if (percentageLiabilityCho != null) {
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
         }
@@ -190,8 +191,8 @@ public class ClaimRejection extends BaseActivity {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
         
-        if (getReasonOfRejection() != null) {
-            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
+        if (reasonOfRejection != null) {
+            claim.addComment(Comment.New(0, "Reason For Rejection: " + reasonOfRejection.getRorName()));
             if(rejectionDescription != null && !rejectionDescription.equals("")) {
                 claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
             }
@@ -209,11 +210,11 @@ public class ClaimRejection extends BaseActivity {
     }
 
     protected ReasonOfRejection getReasonOfRejection() {
-        ReasonOfRejection reasonOfRejection = null;
+        ReasonOfRejection ror = null;
         if (reasonOfRejectionId > 0) {
-            reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
+            ror = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
-        return reasonOfRejection;
+        return ror;
     }
 
     @Override
