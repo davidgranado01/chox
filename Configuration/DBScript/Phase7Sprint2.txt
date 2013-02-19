@@ -1288,3 +1288,28 @@ ALTER TABLE web_user ALTER COLUMN user_name TYPE character varying(64);
 --  END OF BUG#2400  --
 -----------------------
 
+----------------------------------------------------------------------------------------
+-- BUG#2479 - New GTA vehicle classes - NT3 and NT4                                   --
+----------------------------------------------------------------------------------------
+INSERT INTO vehicle_class(name, version, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 'NT3', 0, 999, now(), 999, now();
+INSERT INTO vehicle_class(name, version, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 'NT4', 0, 999, now(), 999, now();
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 0, id, 83.87, '2012-12-01', 3.0, 999, now(), 999, now()
+    FROM vehicle_class where name='NT3';
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 0, id, 55.91, '2012-12-01', 99.99, 999, now(), 999, now()
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 0, id, 106.25, '2012-12-01', 3.0, 999, now(), 999, now()
+    FROM vehicle_class where name='NT4';
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date)
+    SELECT 0, id, 73.81, '2012-12-01', 99.99, 999, now(), 999, now()
+    FROM vehicle_class where name='NT4';
+
+-----------------------
+--  END OF BUG#2479  --
+-----------------------
