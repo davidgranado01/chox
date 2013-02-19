@@ -766,7 +766,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).setProjection(Projections.projectionList().add(Projections.property("claim")));
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).add(Restrictions.eq("deleted", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
             criteria.add(Subqueries.propertyIn("id", noti));
         }
 
