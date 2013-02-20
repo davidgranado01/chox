@@ -26,6 +26,11 @@ public class WorkgroupRouting extends BaseActivity {
     }
 
     @Override
+    public boolean needsOwnershipCheck() {
+        return false;
+    }
+
+    @Override
     public boolean isRequired(Claim claim) {
         return true;
     }

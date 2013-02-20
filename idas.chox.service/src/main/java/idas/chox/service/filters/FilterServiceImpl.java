@@ -21,11 +21,6 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
     private BeanFactory beanFactory;
     private ApplicationAccessibility applicationAccessibility;
 
-    private String getFilterAccessibilityKey(String filterName) {
-        return String.format("filter.%1$s", filterName);
-    }
-
-
     @Override
     public List<Filter> getAvailableFilters(WebUser webUser) {
 
@@ -34,7 +29,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
         if (availableFilters != null) {
             if (webUser != null) {
                 for (Filter filter : availableFilters) {
-                    if (applicationAccessibility.checkAccessibilityForUser(getFilterAccessibilityKey(filter.getKey()), webUser) > 0) {
+                    if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser) > 0) {
                         if (!filter.getIsManualFilter() && filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
                             LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
                             continue;

@@ -82,6 +82,11 @@ public class InvoicePaymentLogged extends BaseActivity {
     }
 
     @Override
+    public boolean needsClaimLockedCheck() {
+        return true;
+    }
+
+    @Override
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice

@@ -141,7 +141,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     public String execute() {
         JSONObject jsonObject = new JSONObject();
-        LOG.debug("Activity " + name + " class " + activity.getClass().getName());
+        LOG.debug("Activity " + name + " class " + activity.getClass().getSimpleName());
         if (activity != null) {
             try {
                 checkVersion(Arrays.asList(claim));

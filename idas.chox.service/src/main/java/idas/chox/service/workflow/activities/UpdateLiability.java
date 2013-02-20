@@ -29,6 +29,11 @@ public class UpdateLiability extends BaseActivity {
 
 
     @Override
+    public boolean needsClaimLockedCheck() {
+        return true;
+    }
+
+    @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
 //        if ((liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED) || liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))

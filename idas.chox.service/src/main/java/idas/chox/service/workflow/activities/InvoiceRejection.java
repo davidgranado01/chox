@@ -17,6 +17,11 @@ public class InvoiceRejection extends BaseActivity {
     // </editor-fold>
 
     @Override
+    public boolean needsClaimLockedCheck() {
+        return true;
+    }
+
+    @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         if (getReasonOfRejection() == null) {

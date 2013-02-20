@@ -192,8 +192,7 @@ public class InboxAction extends BaseAction {
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
 
-            if (applicationAccessibility.checkAccessibilityEditableForClaim(
-                    ApplicationAccessibility.getBatchUpdateAccessibilityKey (batchUpdateAction, claim.getStatus(), claim.getClaimType()),
+            if (applicationAccessibility.checkBatchUpdateAccessibilityEditable(batchUpdateAction,
                     super.getAuthenticatedUser(), claim) < 2) {
                 LOG.debug("checking batchupdate editable accessibility failed for {} this action", batchUpdateAction);
                 notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";

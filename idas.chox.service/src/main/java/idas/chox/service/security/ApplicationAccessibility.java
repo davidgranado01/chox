@@ -137,32 +137,131 @@ public class ApplicationAccessibility {
     // </editor-fold>
 
 
-    // <editor-fold defaultstate="collapsed" desc="Utility  Functions - Public Static">
-    public static String getActivityAccessibilityKey(String buttonName, String claimStatus, ClaimType claimType) {
+    // <editor-fold defaultstate="collapsed" desc="Public  Functions">
+    public Short checkActivityAccessibilityForActionPanel(String buttonName, WebUser user, Claim claim) {
         
-        return String.format("activity.%1$s.%2$s.%3$s", buttonName, claimStatus, getClaimTypeKey(claimType));
+        return checkAccessibilityEditableForClaimType(String.format("activity.%1$s.%2$s.%3$s", buttonName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
     }
 
-    public static String getExtraActionAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("extraAction.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
+
+    public Short checkActivityAccessibility(String buttonName, WebUser user, Claim claim) {
+        
+        return checkAccessibilityForClaimType(String.format("activity.%1$s.%2$s.%3$s", buttonName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
     }
 
-    public static String getNotificationAccessibilityKey(String notificationName, String claimStatus, ClaimType claimType) {
-        return String.format("notification.%1$s.%2$s.%3$s", notificationName, claimStatus, getClaimTypeKey(claimType));
-    }
-
-    public static String getTabAccessibilityKey(String tabName, String claimStatus, ClaimType claimType) {
-        return String.format("tab.%1$s.%2$s.%3$s", tabName, claimStatus, getClaimTypeKey(claimType));
-    }
-
-    public static String getBatchUpdateAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("batch.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
+    public Short checkBatchUpdateAccessibilityEditable(String actionName, WebUser user, Claim claim) {
+        return checkAccessibilityEditableForClaimType(String.format("batch.%1$s.%2$s.%3$s", actionName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
     }
     
-    public static String getPanelAccessibilityKey(String actionName, String claimStatus, ClaimType claimType) {
-        return String.format("panel.%1$s.%2$s.%3$s", actionName, claimStatus, getClaimTypeKey(claimType));
+    public Short checkTabAccessibilityEditable(String tabName, WebUser user, Claim claim) {
+        return checkAccessibilityEditableForClaimType(String.format("tab.%1$s.%2$s.%3$s", tabName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
     }
+
+    public Short checkAdminAccessibility(String adminName, WebUser user) {
+        return checkAccessibilityForUser(String.format("admin.%1$s", adminName), user);
+    }
+
+    public Short checkMenuAccessibility(String menuName, WebUser user) {
+        return checkAccessibilityForUser(String.format("menu.%1$s", menuName), user);
+    }
+
+    public Short checkReportAccessibility(String reportName, WebUser user) {
+        return checkAccessibilityForUser(String.format("report.%1$s", reportName), user);
+    }
+
+    public Short checkFilterAccessibility(String filterName, WebUser user) {
+        return checkAccessibilityForUser(String.format("filter.%1$s", filterName), user);
+    }
+
+
+    public Short checkExtraActionAccessibilityEditable(String actionName, WebUser user, Claim claim) {
+        return checkAccessibilityEditableForClaimType(String.format("extraAction.%1$s.%2$s.%3$s", actionName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
+    }
+
+    public Short checkNotificationAccessibilityEditable(String notificationName, WebUser user, Claim claim) {
+        return checkAccessibilityEditableForClaimType(String.format("notification.%1$s.%2$s.%3$s", notificationName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
+    }
+
+    public Short checkNotificationAccessibility(String notificationName, WebUser user, Claim claim) {
+        return checkAccessibilityForClaimType(String.format("notification.%1$s.%2$s.%3$s", notificationName, claim.getStatus(), getClaimTypeKey(claim.getClaimType())),
+                user, claim);
+    }
+
+    public Short checkPanelAccessibility(String actionName, WebUser user, Claim claim) {
+        return checkAccessibilityForUser(String.format("panel.%1$s.%2$s", actionName, claim.getStatus()), user);
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - Statuses Allowed For Batch Update">
+    public List<String> getAllowedStatusesForBatchUpdate(String actionName, WebUser user) {
+
+        List<String> statuses = new ArrayList<String>();
+
+        // GET LIST OF ACCESSIBILITY BY ACTION NAME
+        List<Accessibility> accessibilities = getBatchUpdateAccessibilityMap().get(
+                String.format("batch.%1$s", actionName));
+
+        for (Accessibility accessibility : accessibilities) {
+
+            Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
+            roleMap = restrictAccess(roleMap, accessibility, user);
+            if (checkAccessibility(roleMap, user) > 0) {
+                String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1),
+                        (accessibility.getName()).length());
+//                LOG.debug("Status allowed for batch update '{}': {}", actionName, status);
+                statuses.add(status);
+            }
+
+        }
+        return statuses;
+    }
+    // </editor-fold>
+
+
+    // </editor-fold>
+
     
+    // <editor-fold defaultstate="collapsed" desc="Private Functions">
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - Editable By Claim">
+    private Short checkAccessibilityEditableForClaimType(String accessibilityKey, WebUser user, Claim claim) {
+        LOG.debug("Claim='{}', accessibilityKey={}", claim.getChoReference(), accessibilityKey);
+        Short accessRight = checkAccessibilityForClaimType(accessibilityKey, user, claim);
+        LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
+        if (accessRight >= 2) {
+            Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+        }
+        LOG.debug("AccessibilityEditable access for '{}'={}", accessibilityKey, accessRight);
+        return accessRight;
+    }
+    // </editor-fold>
+
+    
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By Claim Type">
+    private Short checkAccessibilityForClaimType(String accessibilityKey, WebUser user, Claim claim) {
+        LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
+        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
+            Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
+            Short accessRight = checkAccessibility(roleMap, user);
+            LOG.debug("    Access is {}", accessRight);
+            if (accessRight > 0 && claim != null && !canAccess(accessibility, claim)) {
+                accessRight = 0;
+            }
+            LOG.debug("    Returning Access of {}", accessRight);
+      
+            return accessRight;
+        }
+        LOG.debug("Key '{}' not found",  accessibilityKey);
+        return DECLINED;
+    }
+        
+
     private static String getClaimTypeKey(ClaimType claimType) {
         String claimTypeString;
         if (ClaimType.isGTA(claimType)) {
@@ -188,10 +287,7 @@ public class ApplicationAccessibility {
         }
         return claimTypeString;
     }
-    // </editor-fold>
 
-
-    // <editor-fold defaultstate="collapsed" desc="Private Functions">
     private Map<String, Accessibility> getAccessibilityMap() {
 
         if (accessibilityMap == null) {
@@ -315,89 +411,28 @@ public class ApplicationAccessibility {
 
         return right;
     }
-    // </editor-fold>
 
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By User">
-    public Short checkAccessibilityForUser(String accessibilityKey, WebUser user) {
+    private Short checkAccessibilityForUser(String accessibilityKey, WebUser user) {
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = (Accessibility)getAccessibilityMap().get(accessibilityKey);
             Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
             Short accessRight = checkAccessibility(roleMap, user);
-//            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
+            LOG.debug("Access right for before access for key '{}': {}", accessibilityKey, accessRight);
             if (accessRight > 0 && !canAccess(accessibility, user)) {
                 accessRight = 0;
             }
+            LOG.debug("Returning access right for key '{}': {}", accessibilityKey, accessRight);
             return accessRight;
         }
 
-//        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
+        LOG.debug("Access declined for key '{}' (no access rights defined).", accessibilityKey);
         return DECLINED;
     }
     // </editor-fold>
     
-
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - Editable By Claim">
-    public Short checkAccessibilityEditableForClaim(String accessibilityKey, WebUser user, Claim claim) {
-//        LOG.debug("Claim='{}', accessibilityKey={}", claim.getChoReference(), accessibilityKey);
-            Short accessRight = checkAccessibilityForClaimType(accessibilityKey, user, claim);
-//            LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
-            if (accessRight >= 2) {
-                Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
-                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
-            }
-//        LOG.debug("Action access for '{}' declined (no access rights defined).", accessibilityKey);
-            return accessRight;
-    }
-    // </editor-fold>
-
-    
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - By Claim Type">
-    public Short checkAccessibilityForClaimType(String accessibilityKey, WebUser user, Claim claim) {
-//      LOG.debug("Checking accessibility for key '{}' in status '{}'", accessibilityKey, claim.getStatus());
-        if (getAccessibilityByClaimTypeMap().containsKey(accessibilityKey)) {
-            Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
-            Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
-            Short accessRight = checkAccessibility(roleMap, user);
-//          LOG.debug("    Access is {}", accessRight);
-            if (accessRight > 0 && claim != null && !canAccess(accessibility, claim)) {
-                accessRight = 0;
-            }
-//          LOG.debug("    Returning Access of {}", accessRight);
-      
-            return accessRight;
-        }
-//      LOG.debug("Key '{}' not found",  accessibilityKey);
-        return DECLINED;
-    }
-
-    // </editor-fold>
-        
-
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - Statuses Allowed For Batch Update">
-    public List<String> getAllowedStatusesForBatchUpdate(String actionName, WebUser user) {
-
-        List<String> statuses = new ArrayList<String>();
-
-        // GET LIST OF ACCESSIBILITY BY ACTION NAME
-        List<Accessibility> accessibilities = getBatchUpdateAccessibilityMap().get(
-                String.format("batch.%1$s", actionName));
-
-        for (Accessibility accessibility : accessibilities) {
-
-            Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
-            roleMap = restrictAccess(roleMap, accessibility, user);
-            if (checkAccessibility(roleMap, user) > 0) {
-                String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1),
-                        (accessibility.getName()).length());
-//                LOG.debug("Status allowed for batch update '{}': {}", actionName, status);
-                statuses.add(status);
-            }
-
-        }
-        return statuses;
-    }
     // </editor-fold>
 
 

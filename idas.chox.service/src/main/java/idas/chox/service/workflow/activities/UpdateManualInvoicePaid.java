@@ -11,6 +11,11 @@ public class UpdateManualInvoicePaid extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(UpdateManualInvoicePaid.class);
 
     @Override
+    public boolean needsClaimLockedCheck() {
+        return true;
+    }
+
+    @Override
     protected void doProcess(Claim claim) {
 
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);

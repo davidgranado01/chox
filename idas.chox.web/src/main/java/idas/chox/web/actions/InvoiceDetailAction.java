@@ -2354,8 +2354,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public String execute() {
 
         String tabName = getTabName();
-        accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(tabName, claim.getStatus(), claim.getClaimType()),
+        accessRight = applicationAccessibility.checkTabAccessibilityEditable(tabName,
                 super.getAuthenticatedUser(), claim);
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());

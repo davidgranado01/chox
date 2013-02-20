@@ -5,7 +5,9 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.hpi.*;
+import idas.chox.core.hpi.Hpi;
+import idas.chox.core.hpi.HpiException;
+import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -18,6 +20,12 @@ public class NewClaim extends BaseActivity {
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
+    }
+
+
+    @Override
+    public boolean needsOwnershipCheck() {
+        return false;
     }
 
 

@@ -216,7 +216,8 @@
     function revertClaimStatus(){
         
         var warningMessage = 'Are you sure you want to revert the status of this claim?';
-        if(<s:property value="invoiceDeleteWarning" /> != null && <s:property value="invoiceDeleteWarning" />){
+        var showDeleteWarning = '<s:property value="invoiceDeleteWarning" />';
+        if(showDeleteWarning === 'true'){
             warningMessage = 'This Claim has an Invoice. If you revert the status of this Claim, the Invoice will be deleted. Are you sure you want to continue?';
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){

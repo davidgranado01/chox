@@ -36,7 +36,7 @@ public abstract class BaseActivity implements Activity {
     @Autowired
     private UserWorkgroupService userWorkgroupService;
     @Autowired
-    private ApplicationAccessibility applicationAccessibility;
+    protected ApplicationAccessibility applicationAccessibility;
 
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
@@ -46,6 +46,14 @@ public abstract class BaseActivity implements Activity {
 
     public boolean isXmlActivityProcessing() {
         return xmlActivityProcessing;
+    }
+    
+    public boolean needsOwnershipCheck() {
+        return true;
+    }
+
+    public boolean needsClaimLockedCheck() {
+        return false;
     }
 
     @Override
@@ -123,23 +131,22 @@ public abstract class BaseActivity implements Activity {
     protected void validate(Claim claim) throws Exception {
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         
-        if (applicationAccessibility.checkAccessibilityForClaimType(
-                ApplicationAccessibility.getActivityAccessibilityKey(getClass().getName(), claim.getStatus(), claim.getClaimType()),
+        if (applicationAccessibility.checkActivityAccessibility(getClass().getSimpleName(),
                 securityInfoProvider.getCurrentUser(), claim) < 1) {
-            LOG.error("No access to activity '{}' for claim '{}'", getClass().getName(), claim.getChoReference());
-            throw new AccessDeniedException("No access to activity " + getClass().getName());
+            LOG.error("No access to activity '{}' for claim '{}'", getClass().getSimpleName(), claim.getChoReference());
+            throw new AccessDeniedException("No access to activity " + getClass().getSimpleName());
         }
         
         // Check that, if we are an insurer or CHO, then the claim belongs to us
-        if ((securityInfoProvider.getIsINS() &&
+        if (needsOwnershipCheck() && ((securityInfoProvider.getIsINS() &&
                 claim.getInsurer().getId().intValue() != securityInfoProvider.getCurrentUser().getInsurer().getId().intValue())
                 || (securityInfoProvider.getIsCHO() &&
-                claim.getChorganisation().getId().intValue() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue())) {
+                claim.getChorganisation().getId().intValue() != securityInfoProvider.getCurrentUser().getChorganisation().getId().intValue()))) {
                 LOG.error("User with id={} has attempted to action claim '{}' from a different organisation", getCurrentUser().getId(), claim.getChoReference());
                 throw new AccessDeniedException("Attempt to action a claim that you do not own");
         }
         // If Insurer is locked and claim ownership is enabled, and if the user is a CH, then the user must own the claim
-        if (claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
+        if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
                 && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
             if (claim.getClaimOwner() == null || claim.getClaimOwner().getId().intValue() != getCurrentUser().getId().intValue()) {
@@ -149,7 +156,7 @@ public abstract class BaseActivity implements Activity {
         }
         
         // If Insurer is locked and workgroups are enabled, and if the user is a COM or FNOL, then the user must be in the same workgroup
-        if (claim.getInsurer().isClaimLocked() && claim.getInsurer().isWorkgroupEnable() && securityInfoProvider.getIsINS()
+        if (needsClaimLockedCheck() && claim.getInsurer().isClaimLocked() && claim.getInsurer().isWorkgroupEnable() && securityInfoProvider.getIsINS()
                 && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
             if (claim.getWorkgroup() == null || !userWorkgroupService.isUserWorkgroupExist(claim.getWorkgroup().getId(), getCurrentUser().getId())) {

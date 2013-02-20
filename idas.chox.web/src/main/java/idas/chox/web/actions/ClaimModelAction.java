@@ -76,8 +76,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             throw new AccessDeniedException("Illegal claim access detected.");
         }
         String tabName = getTabName();
-        Short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(tabName, claim.getStatus(), claim.getClaimType()),
+        Short accessRight = applicationAccessibility.checkTabAccessibilityEditable(tabName,
                 super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;

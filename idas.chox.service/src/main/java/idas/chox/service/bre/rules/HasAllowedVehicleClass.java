@@ -1,7 +1,10 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -12,7 +15,6 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.bre.util.ClaimCalcHelper;
-import java.math.BigDecimal;
 
 public class HasAllowedVehicleClass implements IBusinessRule {
 

@@ -33,6 +33,11 @@ public class MakeInterimPayment extends BaseActivity {
 
 
     @Override
+    public boolean needsClaimLockedCheck() {
+        return true;
+    }
+
+    @Override
     protected void doProcess(Claim claim) {
         Comment comment = null;
         if (newTotalInterimPayment != null && newTotalInterimPayment.compareTo(BigDecimal.ZERO) >= 0

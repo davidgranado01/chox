@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -73,6 +72,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.service.workflow.activities.ClaimRejection;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
@@ -1032,16 +1032,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getCanCloseClaim() {
-        return applicationAccessibility.checkAccessibilityForClaimType(
-                                    ApplicationAccessibility.getActivityAccessibilityKey(
-                                                    ApplicationAccessibility.CLOSE_CLAIM, claim.getStatus(), claim.getClaimType()),
+        return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.CLOSE_CLAIM,
                                     getAuthenticatedUser(), claim)>0;
     }
 
     public boolean getCanReopenClaim() {
-        boolean access = applicationAccessibility.checkAccessibilityForClaimType(
-                                    ApplicationAccessibility.getActivityAccessibilityKey(
-                                                ApplicationAccessibility.REOPEN_CLAIM, claim.getStatus(), claim.getClaimType()),
+        boolean access = applicationAccessibility.checkActivityAccessibility(
+                                    ApplicationAccessibility.REOPEN_CLAIM,
                                     getAuthenticatedUser(), claim)>0;
         if (access && getAuthenticatedUser().isAnInsurer() && !ClaimType.isInsurerUpload(claim.getClaimType())) {
             access = false;
@@ -1050,10 +1047,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getCanRevertClaimStatus() {
-        boolean access = applicationAccessibility.checkAccessibilityForClaimType(
-                                                ApplicationAccessibility.getActivityAccessibilityKey(
-                                                    ApplicationAccessibility.REVERT_CLAIM, claim.getStatus(), claim.getClaimType()),
-                                                getAuthenticatedUser(), claim)>0;
+        boolean access = applicationAccessibility.checkActivityAccessibility(
+                                    ApplicationAccessibility.REVERT_CLAIM,
+                                    getAuthenticatedUser(), claim)>0;
         if (access) {
             // this fix is for bug 2208 disable revert function when there is no previous status.
             AuditTrail auditTrail = auditTrailService.getLastChange(claim.getId());
@@ -1066,26 +1062,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getShowPayNotReceivedButton() {
-        return applicationAccessibility.checkAccessibilityForClaimType(
-                                            ApplicationAccessibility.getActivityAccessibilityKey(
-                                                            ApplicationAccessibility.PAYMENT_NOT_RECEIVED, claim.getStatus(), claim.getClaimType()),
-                                            getAuthenticatedUser(), claim) > 0;
+        return applicationAccessibility.checkActivityAccessibility(
+                                     ApplicationAccessibility.PAYMENT_NOT_RECEIVED,
+                                     getAuthenticatedUser(), claim) > 0;
     }
 
     public boolean getCanShowSwitchClaimButton() {
 
-        return applicationAccessibility.checkAccessibilityForClaimType(
-                ApplicationAccessibility.getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM,
-                                                                     claim.getStatus(), claim.getClaimType()),
+        return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
                 getAuthenticatedUser(), claim) > 0;
     }
 
 
     public boolean getCanShowSwitchClaimToMultipleInsButton() {
 
-        return applicationAccessibility.checkAccessibilityForClaimType(
-                ApplicationAccessibility.getActivityAccessibilityKey(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS,
-                                                                        claim.getStatus(), claim.getClaimType()),
+        return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS,
                 getAuthenticatedUser(), claim) > 0;
     }
 
@@ -1094,9 +1085,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean visible = false;
         
         if (claim.isIsFnolReviewed()) {
-            visible = applicationAccessibility.checkAccessibilityForClaimType(
-                        ApplicationAccessibility.getPanelAccessibilityKey(ApplicationAccessibility.PANEL_FNOL_REVIEWED,
-                                                                        claim.getStatus(), claim.getClaimType()),
+            visible = applicationAccessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED,
                         getAuthenticatedUser(), claim) > 0;
         }
         return visible;
@@ -1108,8 +1097,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<String> actions = ActionPanel.getPanelActions();
 
         for (String action : actions) {
-            short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
-                    ApplicationAccessibility.getActivityAccessibilityKey(action, claim.getStatus(), claim.getClaimType()),
+            short accessRight = applicationAccessibility.checkActivityAccessibilityForActionPanel(action,
                     getAuthenticatedUser(), claim);
             LOG.debug("Access right for panel '{}' : {}", action, accessRight);
             if (accessRight >= 2) {
@@ -1122,8 +1110,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsClaimNotificationEditable() {
-        if (applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getNotificationAccessibilityKey("NotificationNotesNotification", claim.getStatus(), claim.getClaimType()),
+        if (applicationAccessibility.checkNotificationAccessibilityEditable("NotificationNotesNotification",
                 getAuthenticatedUser(), claim) < 2) {
             return false;
         }
@@ -1137,8 +1124,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String actionName : actions) {
             String extraActionDescription;
             LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", actionName, claim.getStatus());
-            short accessRight = applicationAccessibility.checkAccessibilityEditableForClaim(
-                    ApplicationAccessibility.getExtraActionAccessibilityKey(actionName, claim.getStatus(), claim.getClaimType()),
+            short accessRight = applicationAccessibility.checkExtraActionAccessibilityEditable(actionName,
                     getAuthenticatedUser(), claim);
             /*
              * If any of this condition !(insurerWorkgroupEnabled or
@@ -1157,8 +1143,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 //                LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
+            // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
             if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
                     && claim.getInsurer().isClaimOwnershipEnable()) {
+                accessRight = 0;
+//                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
+            }
+            
+            if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
+                    && claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
 //                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
@@ -1553,26 +1546,31 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
     public boolean isRejectButtonEnabled() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())) {
-            return true;
-        }
-        int maxDays = 0;
+        boolean rejectEnabled = applicationAccessibility.checkActivityAccessibility(
+                                            ClaimRejection.class.getSimpleName(),
+                                            getAuthenticatedUser(), claim) > 0;
+        
+        // If we have a subscriber or fixed-fee claim, we need to check the age of the claim
+        if (rejectEnabled && ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+            int maxDays = 0;
 
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
-            maxDays = 5;
-            if (claimDays == null) {
-                getSubscriberClaimDays();
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                maxDays = 5;
+                if (claimDays == null) {
+                    getSubscriberClaimDays();
+                }
             }
-        }
-        else if (ClaimType.isFixedFee(claim.getClaimType())) {
-            if (claimDays == null) {
-                claimDays = getFixedFeeClaimDays();
+            else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                if (claimDays == null) {
+                    claimDays = getFixedFeeClaimDays();
+                }
+                maxDays = 14;
             }
-            maxDays = 14;
+
+            rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
         }
 
-        return (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
-
+        return rejectEnabled;
     }
 
     public boolean isSubscriberClaimRejectedMoreThanOnce() {

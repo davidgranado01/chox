@@ -1245,23 +1245,6 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.AwaitingLitigationOutcome.ContestedInvoiceReferredToCHO';
 
 -- ClaimAwaitingCarHireInfo
-INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
-                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
-                          check_fnol_enabled)
-	SELECT 'activity.ClaimAwaitingCarHireInfo.AwaitingCarHireInfo', false, false, false, false, false;
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHOX_ADMIN', 2
-	FROM accessibility
-	WHERE name = 'activity.ClaimAwaitingCarHireInfo.AwaitingCarHireInfo';
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_MNG', 2
-	FROM accessibility
-	WHERE name = 'activity.ClaimAwaitingCarHireInfo.AwaitingCarHireInfo';
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_OPR', 2
-	FROM accessibility
-	WHERE name = 'activity.ClaimAwaitingCarHireInfo.AwaitingCarHireInfo';
-
 -- ClaimPending
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
@@ -1551,6 +1534,506 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=11;
 
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=4;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=7;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=11;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedRouted', false, false, false, false, false, 0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedRouted', false, false, false, false, false, 4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=4;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedRouted', false, false, false, false, false, 7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=7;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUnacknowledgedRouted', false, false, false, false, false, 11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=11;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimRejectionContested', false, false, false, false, false, 0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimRejectionContested', false, false, false, false, false, 4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=4;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimRejectionContested', false, false, false, false, false, 7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=7;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimRejectionContested', false, false, false, false, false, 11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimRejectionContested' and claim_type=11;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimPending', false, false, false, false, false, 0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimPending', false, false, false, false, false, 4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=4;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimPending', false, false, false, false, false, 7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=7;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimPending', false, false, false, false, false, 11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimPending' and claim_type=11;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUpdatedByEngineer', false, false, false, false, false, 0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=0;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=0;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUpdatedByEngineer', false, false, false, false, false, 4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=4;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUpdatedByEngineer', false, false, false, false, false, 7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=7;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.ClaimRejection.ClaimUpdatedByEngineer', false, false, false, false, false, 11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=11;
+
 -- ClaimRejectionAccept
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
@@ -1622,6 +2105,18 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.ClaimRejectionContest.SubscriberClaimRejected' and claim_type=7;
 
 -- ClaimReviewByEng
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 2
+	FROM accessibility
+	WHERE name = 'activity.ClaimReviewByEng.ClaimReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'activity.ClaimReviewByEng.ClaimReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_SCR', 2
+	FROM accessibility
+	WHERE name = 'activity.ClaimReviewByEng.ClaimReferredToEngineer';
 
 -- CloseClaim
 UPDATE accessibility set claim_type=10
@@ -1727,13 +2222,13 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
-	WHERE name = 'activity.InsurerUpload.' and claim_type=10;
+	WHERE name = 'activity.InsurerUpload.null' and claim_type=10;
 
 -- InvoiceAccepted
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
                           check_fnol_enabled)
-	SELECT 'activity.InvoiceAccepted.ContestedInvoiceReferredToInsurer.', false, false, false, false, false;
+	SELECT 'activity.InvoiceAccepted.ContestedInvoiceReferredToInsurer', false, false, false, false, false;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHOX_ADMIN', 1
 	FROM accessibility
@@ -1955,6 +2450,48 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_SCR', 1
 	FROM accessibility
 	WHERE name = 'activity.InvoiceRejection.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled)
+	SELECT 'activity.InvoiceRejection.InvoiceEscalated', false, false, false, false, false;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceEscalated';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceEscalated';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceEscalated';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_SCR', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceEscalated';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled)
+	SELECT 'activity.InvoiceRejection.InvoiceReferredToEngineer', false, false, false, false, false;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_SCR', 1
+	FROM accessibility
+	WHERE name = 'activity.InvoiceRejection.InvoiceReferredToEngineer';
 
 
 -- InvoiceRejectionAccept
@@ -2247,23 +2784,6 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
                           check_fnol_enabled)
-	SELECT 'activity.MoveToInvoicePaymentLogged.', false, false, false, false, false;
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHOX_ADMIN', 1
-	FROM accessibility
-	WHERE name = '';
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_MNG', 1
-	FROM accessibility
-	WHERE name = '';
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_OPR', 1
-	FROM accessibility
-	WHERE name = '';
-
-INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
-                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
-                          check_fnol_enabled)
 	SELECT 'activity.MoveToInvoicePaymentLogged.InvoiceReferredToEngineer', false, false, false, false, false;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHOX_ADMIN', 1
@@ -2453,7 +2973,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.NewClaim.null' and claim_type=10;
-I
+
 -- NewInvoice
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
@@ -2497,14 +3017,9 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.NewTpiClaim.null';
 
 -- PaymentNotReceived
-INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
-                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
-                          check_fnol_enabled)
-	SELECT 'activity.PaymentNotReceived.InvoicePaymentLogged', false, false, false, false, false;
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHOX_ADMIN', 1
-	FROM accessibility
-	WHERE name = 'activity.PaymentNotReceived.InvoicePaymentLogged';
+DELETE FROM accessibility_item
+WHERE role='ROLE_CHO'
+  AND accessibility_id=(select id from accessibility where name = 'activity.PaymentNotReceived.InvoicePaymentLogged');
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 1
 	FROM accessibility
@@ -2793,7 +3308,6 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.ClaimRejected';
 
-
 UPDATE accessibility
   SET claim_type = 10
 WHERE name='activity.RevertClaim.ManualInvoicePaid';
@@ -2804,6 +3318,15 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_PC', 1
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.ManualInvoiceContested' and claim_type=10;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.RevertClaim.AwaitingCarHireInfo';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.RevertClaim.AwaitingCarHireInfo';
 
 -- SubscriberClaimRejectionAccept
 UPDATE accessibility
@@ -3763,6 +4286,26 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_FNOL', 1
+	FROM accessibility
+	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
 
 ----------------------
 --  END OF 7.3.1    --
@@ -4029,19 +4572,6 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_CH', 1
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.AwaitingInvoiceData' and claim_type=10;
-
-INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
-                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
-                          check_fnol_enabled, claim_type)
-	SELECT 'activity.RevertClaim.AwaitingCarHireInfo', false, false, false, false, false, 10;
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_INS_MNG', 1
-	FROM accessibility
-	WHERE name = 'activity.RevertClaim.AwaitingCarHireInfo' and claim_type=10;
-INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_INS_CH', 1
-	FROM accessibility
-	WHERE name = 'activity.RevertClaim.AwaitingCarHireInfo' and claim_type=10;
 
 -- SubscriberClaimRejectionAccept
 -- SubscriberClaimToGta

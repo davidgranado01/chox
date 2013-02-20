@@ -20,6 +20,11 @@ public class NewTpiClaim extends BaseActivity {
     private boolean autoRoutedInvoice = false;
 
     @Override
+    public boolean needsOwnershipCheck() {
+        return false;
+    }
+
+    @Override
     protected void beforeProcess(Claim claim) {
         if (claim.getStatus() == null && claim.getHireMonitoringDetail() != null
                     && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {

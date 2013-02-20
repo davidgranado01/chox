@@ -15,35 +15,27 @@ public class TabAccessibility {
     private short auditTrailTabAccessibility;
 
     public TabAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim) {
-        claimDetailTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                        ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_CLAIM_DETAIL, claim.getStatus(), claim.getClaimType()),
+        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_CLAIM_DETAIL,
                         user, claim);
-        hireMonitoringTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_HIRE_MONITORING, claim.getStatus(), claim.getClaimType()),
+        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_HIRE_MONITORING,
                 user, claim);
-        historyTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_HISTORY, claim.getStatus(), claim.getClaimType()),
+        historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_HISTORY,
                 user, claim);
         if (historyTabAccessibility > 0 && claim.getInvoice() == null ) {
             historyTabAccessibility = 0;
         }
-        invoiceDetailTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_INVOICE_DETAIL, claim.getStatus(), claim.getClaimType()),
+        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_INVOICE_DETAIL,
                 user, claim);
         if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null ) {
             invoiceDetailTabAccessibility = 0;
         }
-        paymentPackTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_PAYMENT_PACK, claim.getStatus(), claim.getClaimType()),
+        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_PAYMENT_PACK,
                 user, claim);
-        notesTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_NOTES, claim.getStatus(), claim.getClaimType()),
+        notesTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_NOTES,
                 user, claim);
-        tasksTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_TASKS, claim.getStatus(), claim.getClaimType()),
+        tasksTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_TASKS,
                 user, claim);
-        auditTrailTabAccessibility = applicationAccessibility.checkAccessibilityEditableForClaim(
-                ApplicationAccessibility.getTabAccessibilityKey(ApplicationAccessibility.TAB_AUDIT_TRAIL, claim.getStatus(), claim.getClaimType()),
+        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_AUDIT_TRAIL,
                 user, claim);
 
     }
