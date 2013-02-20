@@ -403,16 +403,24 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="allowGTAPenaltyCharges" value="allowGTAPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on GTA Invoices</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue GTA invoices.</div>
-                            <div class="chox-form-checkbox"><s:checkbox name="allowSubscriberPenaltyCharges" value="allowSubscriberPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Subscriber Invoices</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Subscriber invoices.</div>
-                            <div class="chox-form-checkbox"><s:checkbox name="allowFixedFeePenaltyCharges" value="allowFixedFeePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Fixed Fee Invoices</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Fixed Fee invoices.</div>
-                            <div class="chox-form-checkbox"><s:checkbox name="allowTPIPenaltyCharges" value="allowTPIPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue TPI invoices.</div>
+                            <s:if test="subscriberClaimsEnabled">
+                                <div class="chox-form-checkbox"><s:checkbox name="allowSubscriberPenaltyCharges" value="allowSubscriberPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Subscriber Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Subscriber invoices.</div>
+                            </s:if>
+                            <s:if test="fixedFeeClaimsEnabled">
+                                <div class="chox-form-checkbox"><s:checkbox name="allowFixedFeePenaltyCharges" value="allowFixedFeePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Fixed Fee Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Fixed Fee invoices.</div>
+                            </s:if>
+                            <s:if test="tpiClaimsEnabled">
+                                <div class="chox-form-checkbox"><s:checkbox name="allowTPIPenaltyCharges" value="allowTPIPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue TPI invoices.</div>
+                            </s:if>
                             <div class="chox-form-checkbox"><s:checkbox name="allowInsurervsInsurerPenaltyCharges" value="allowInsurervsInsurerPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Insurer vs Insurer Invoices</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Insurer vs Insurer invoices.</div>
-                            <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Manual Invoices</b></label>
-                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Manual invoices.</div>
+                            <s:if test="manualClaimsEnabled">
+                                <div class="chox-form-checkbox"><s:checkbox name="allowManualInvoicePenaltyCharges" value="allowManualInvoicePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Manual Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Manual invoices.</div>
+                            </s:if>
                         </div>
                     </div>
                             
