@@ -19,7 +19,7 @@
     </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("TEST")'>
         <then>
-            <include resource="logback-test.xml"/>
+            <include resource="logback-testServer.xml"/>
         </then>  
     </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("PRODUCTION")'>
