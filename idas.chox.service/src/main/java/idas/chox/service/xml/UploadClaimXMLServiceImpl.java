@@ -110,14 +110,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             try {
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
 
-                if (claimResult.isCheckForRepairAnomalies()) {
-                    LOG.debug("Checking for repair anomalies.");
-                    claimService.checkRepairBookedInDateAnomaly(claimResult.getClaim());
-                }
-                if (claimResult.isCheckForTotalLossAnomalies()) {
-                    LOG.debug("Checking for repair anomalies.");
-                    claimService.checkTotalLossAnomaly(claimResult.getClaim());
-                }
                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)) {
@@ -190,6 +182,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                 }
                 
+                if (claimResult.isCheckForRepairAnomalies()) {
+                    LOG.debug("Checking for repair anomalies.");
+                    claimService.checkRepairBookedInDateAnomaly(claimResult.getClaim());
+                }
+
+                if (claimResult.isCheckForTotalLossAnomalies()) {
+                    LOG.debug("Checking for repair anomalies.");
+                    claimService.checkTotalLossAnomaly(claimResult.getClaim());
+                }
+                                
             } catch (Exception ex) {
                 if (claimResult.getClaim() != null) {
                     LOG.error("Exception caught processing claim '{}': ", claimResult.getClaim().getChoReference(), ex);
