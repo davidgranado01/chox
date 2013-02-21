@@ -771,7 +771,7 @@
 
                             var claimOwnerStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
+                                ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
                                 reader : claimOwnerReader
                             });
 
@@ -812,7 +812,7 @@
 
                                 workgroupStore = new Ext.data.Store({
                                     proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"insurerId":-1}}),
+                                    ({url : "<%= request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action", method:'GET', params : {"insurerId":-1}}),
                                     reader : workgroupJsonReader
                                 });
 
@@ -1033,7 +1033,7 @@
 
                             var claimOwnerStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
+                                ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
                                 reader : claimOwnerReader
                             });
 

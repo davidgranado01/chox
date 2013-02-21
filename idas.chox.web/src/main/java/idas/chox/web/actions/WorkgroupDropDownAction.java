@@ -116,8 +116,9 @@ public class WorkgroupDropDownAction extends BaseAction {
             LOG.debug("Need to get workgroups for current claim id={}.", claimId);
             workgroups = service.getWorkgroupsByClaimId(claimId, true);
         }
-        else
+        else {
             workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
+        }
         return SUCCESS;
     }
 }
