@@ -115,8 +115,7 @@ public class WorkgroupRouting extends BaseActivity {
                 }
             }
         } else {
-            LOG.error("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
-            throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
+            LOG.warn("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
         }
 
         return false;
@@ -187,8 +186,7 @@ public class WorkgroupRouting extends BaseActivity {
                 }
             }
         } else {
-            LOG.error("Automatic Routing Mapping based on price is Not Defined for claim '{}'", claim.getChoReference());
-            throw new Exception("Automatic Routing Mapping  based on is Not Defined, Please contact CHOX Admin");
+            LOG.warn("Automatic Routing Mapping based on price is Not Defined for claim '{}'", claim.getChoReference());
         }
 
         return false;
