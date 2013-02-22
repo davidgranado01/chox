@@ -2,6 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+    var claimId = -1;
     var insurerId = -1;
     var claimOwnerId = -1;
     var workgroupId=-1;
@@ -19,6 +20,7 @@
     
 
         insurerId = '<s:property value="insurer.id"/>';
+        claimId = '<s:property value="id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
 
         // Add claim owner combo box
@@ -92,7 +94,7 @@
 
             workgroupStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"orgId":insurerId}}),
+                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":claimId}}),
                 reader: wgrpJsonReader
             });
 
@@ -138,7 +140,7 @@
                 return true;
             }
         );
-            workgroupStore.load({ params : {"orgId":insurerId}});
+            workgroupStore.load({ params : {"claimId":claimId}});
         }
 
         var form = $("form#formOwnershipAssignmentAction");
