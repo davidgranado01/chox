@@ -84,7 +84,8 @@ public class VehicleClass extends Entity implements Serializable {
          * All CSs
          * All CMs
          */
-        if (className.charAt(0) == 'T' || className.startsWith("PT") || className.startsWith("PV")
+        if (className.charAt(0) == 'T' || className.startsWith("PT") || className.startsWith("NT")
+               || className.startsWith("PV")
                || className.startsWith("CV") || className.startsWith("RV")
                || className.startsWith("CP") || className.startsWith("CS")
                || className.startsWith("CM") ) {
