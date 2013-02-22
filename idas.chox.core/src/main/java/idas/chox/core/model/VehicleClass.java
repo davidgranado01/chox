@@ -1,7 +1,6 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class VehicleClass extends Entity implements Serializable {
 
@@ -41,8 +40,9 @@ public class VehicleClass extends Entity implements Serializable {
          *      RV1-RV2, CP1-CP3, CS1-CS5, CM1-CM3, T5-T14.
          *      PT9 & PT13, B4-B6
          */
-        if (className == null || className.length()==0)
+        if (className == null || className.length()==0) {
             return false;
+        }
         
         if (className.startsWith("M5") || className.startsWith("M6")
                 || className.startsWith("F4") || className.startsWith("F5")
@@ -66,8 +66,9 @@ public class VehicleClass extends Entity implements Serializable {
                 || className.startsWith("T11") || className.startsWith("T12")
                 || className.startsWith("T13") || className.startsWith("T14")
                 || className.startsWith("PT9") || className.startsWith("PT13")
-                || className.startsWith("B4") || className.startsWith("B5") || className.startsWith("B6"))
+                || className.startsWith("B4") || className.startsWith("B5") || className.startsWith("B6")) {
             return true;
+        }
         
         return false;
     }
@@ -113,6 +114,9 @@ public class VehicleClass extends Entity implements Serializable {
         else if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
             return true;
         }
+        else if(className.charAt(0) == 'N' && className.charAt(1) == 'T'  && className.charAt(2) >= '3' && className.charAt(2) <= '4') {
+            return true;
+        }
 
         return false;
     }
@@ -131,14 +135,17 @@ public class VehicleClass extends Entity implements Serializable {
         //      classDifference(P1, P1) = 0
         int unknown = -999;
 
-        if (class1.getName().charAt(0) != 'P' || !(class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9'))
+        if (class1.getName().charAt(0) != 'P' || !(class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9')) {
             throw new IllegalArgumentException("Cannot compare non-prestige vehicle.");
+        }
 
-        if ((class2.getName().charAt(0) != 'P' && class2.getName().charAt(0) != 'S') || !(class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9'))
+        if ((class2.getName().charAt(0) != 'P' && class2.getName().charAt(0) != 'S') || !(class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9')) {
             throw new IllegalArgumentException("Cannot compare prestige vehicle to class " + class2.getName() + ".");
+        }
 
-        if (class1.getName().equals(class2.getName()))
+        if (class1.getName().equals(class2.getName())) {
             return 0;
+        }
 
         if (class1.getName().charAt(0) == class2.getName().charAt(0)
                 && class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9'
