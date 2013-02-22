@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 public class DateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
+    public static final int SUBSCRIBER_SLA_DAYS = 5;
+    public static final int FIXED_FEE_SLA_DAYS = 14;
 
     public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();

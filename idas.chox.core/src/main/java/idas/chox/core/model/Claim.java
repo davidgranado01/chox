@@ -61,11 +61,20 @@ public class Claim extends Entity implements Serializable {
     private Date finalReviewDateIns;
     private WebUser finalReviewByCho;
     private WebUser finalReviewByIns;
+    private int slaExtDays;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
+    }
+
+    public int getSlaExtDays() {
+        return slaExtDays;
+    }
+
+    public void setSlaExtDays(int slaExtDays) {
+        this.slaExtDays = slaExtDays;
     }
 
     public boolean isAutoPenaltyChargeEnabled() {

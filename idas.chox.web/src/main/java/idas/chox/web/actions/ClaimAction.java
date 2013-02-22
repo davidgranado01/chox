@@ -129,6 +129,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean finalReviewRequired;
     private String finalReviewReason;
     private PenaltyChargeService penaltyChargeService;
+    private CommentService commentService;
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
         this.penaltyChargeService = penaltyChargeService;
@@ -1270,6 +1275,88 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return ClaimType.isInsurerUpload(claim.getClaimType());
     }
 
+    public boolean getCanShowSlaExtensionButton() {
+        
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
+                && !claim.getStatus().equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
+            return false;
+        }
+        
+        int maxDays = 0;
+        int maxAllowedSlaExtDays = 0;
+        
+        if (getIsCHO() || getIsAdminChox()) {
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
+                maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
+                if (claimDays == null) {
+                    getSubscriberClaimDays();
+                }
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForFixedFee();
+                maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
+                if (claimDays == null) {
+                    getFixedFeeClaimDays();
+                }
+            }
+        }
+        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBefore3pm() && (claim.getSlaExtDays() < maxAllowedSlaExtDays))) ? true : false;
+    }
+    
+    public int getAvailableSlaExtensionDays() {
+        int availableDays = 0;
+        if (getIsCHO() || getIsAdminChox()) {
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                int maxAllowedSlaExtForSubscriber = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
+                if (maxAllowedSlaExtForSubscriber > 0 && maxAllowedSlaExtForSubscriber > claim.getSlaExtDays()) {
+                    availableDays = maxAllowedSlaExtForSubscriber - claim.getSlaExtDays();
+                }
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                int maxAllowedSlaExtForFixedFee = claim.getChorganisation().getMaxAllowedSlaExtForFixedFee();
+                if (maxAllowedSlaExtForFixedFee > 0 && maxAllowedSlaExtForFixedFee > claim.getSlaExtDays()) {
+                    availableDays = maxAllowedSlaExtForFixedFee - claim.getSlaExtDays();
+                }
+            }
+        }
+        return availableDays;
+    }
+
+    public String updateSlaExtensionDays() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            checkVersion(Arrays.asList(claim));
+
+            if ((ClaimType.isSubscriber(claim.getClaimType()) && (claim.getSlaExtDays() > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getChorganisation().getMaxAllowedSlaExtForSubscriber())))
+                    || (ClaimType.isFixedFee(claim.getClaimType()) && (claim.getSlaExtDays() > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getChorganisation().getMaxAllowedSlaExtForFixedFee())))) {
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", "Applied days are greater than the allowed SLA extension days.");
+            } else {
+                String newComment = claim.getSlaExtDays() + " day extension granted.";
+                if (claim.getSlaExtDays() > 1) {
+                    newComment = claim.getSlaExtDays() + " days extension granted.";
+                }
+                Comment comment = Comment.New(0, newComment);
+                claim.addComment(comment);
+                this.service.updateClaim(claim);
+                jsonObject.put("success", Boolean.TRUE);
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown updating sla extension days '{}': ", claim.getChoReference(), ex);
+            claim = service.updateClaimWithInvalidSessionVersion(claim);
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("errors", ex.getMessage());
+        }
+        setJsonData(jsonObject.toString());
+        return SUCCESS;
+    }
+
     public boolean isRejectButtonEnabled() {
         if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())) {
             return true;
@@ -1277,16 +1364,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         int maxDays = 0;
 
         if (ClaimType.isSubscriber(claim.getClaimType())) {
-            maxDays = 5;
+            maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
             if (claimDays == null) {
                 getSubscriberClaimDays();
             }
         }
         else if (ClaimType.isFixedFee(claim.getClaimType())) {
             if (claimDays == null) {
-                claimDays = getFixedFeeClaimDays();
+                getFixedFeeClaimDays();
             }
-            maxDays = 14;
+            maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
         }
 
         return (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
@@ -1338,7 +1425,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getSubscriberClaimDays();
         }
 
-        if (claimDays < 5) {
+        if (claimDays < (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
             return true;
         }
 
@@ -1362,10 +1449,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays < 14) {
+        if (claimDays < (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
             return true;
         }
 
@@ -1392,7 +1479,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getSubscriberClaimDays();
         }
 
-        if (claimDays == 5) {
+        if (claimDays == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1420,10 +1507,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays == 14) {
+        if (claimDays == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1443,10 +1530,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getSubscriberClaimDays();
         }
 
-        if (claimDays == 4) {
+        if (claimDays == ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
             return "1 day remains";
         }
-        return "" + (5 - claimDays) + " days remain";
+        return "" + ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
 
     public String getFixedFeeTimeLeft() {
@@ -1455,13 +1542,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays == 13) {
+        if (claimDays == ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
             return "1 day remains";
         }
-        return "" + (14 - claimDays) + " days remain";
+        return "" + ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
     
     /* This function not only gets SubscriberClaimDays but also sometimes add new notes
@@ -1473,10 +1560,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
-    private Integer getFixedFeeClaimDays() {
-        Integer days = service.getFixedFeeClaimDays(claim.getId());
+    private void getFixedFeeClaimDays() {
+        claimDays = service.getFixedFeeClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
-        return days;
     }
 
     public BigDecimal getFormattedInsLiab() {

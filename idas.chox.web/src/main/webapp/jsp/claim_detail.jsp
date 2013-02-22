@@ -26,6 +26,8 @@
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    var availableSlaExtensionDays = <s:property value="availableSlaExtensionDays" />;
+    var appliedSlaExtDays = <s:property value="slaExtDays" />;
  
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
@@ -451,6 +453,11 @@
                                         
                                <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
                        
+                            </s:if>
+                            <s:if test="canShowSlaExtensionButton">
+
+                                <input value="Grant Extension" type="button" onclick="javascript: return setSlaExtension();"/>
+
                             </s:if>
                          </td>
                      </tr>

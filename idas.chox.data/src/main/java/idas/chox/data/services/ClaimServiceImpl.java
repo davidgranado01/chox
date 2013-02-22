@@ -1110,7 +1110,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
 
-        if (claimAge > 5 || (claimAge == 5 && !DateHelper.isBefore3pm())) {
+        if (claimAge > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm())) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1122,6 +1122,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             if (addComment) {
                 Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                if (claim.getSlaExtDays() > 0) {
+                    comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
+                }
                 claim.addComment(comment);
                 save(claim);
                 LOG.debug("Comment added and claim saved.");
@@ -1143,7 +1146,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claimAge = auditTrailService.getFixedFeeClaimDays(id);
         }
 
-        if (claimAge > 14 || (claimAge == 14 && !DateHelper.isBefore3pm())) {
+        if (claimAge > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (claimAge == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm())) {
             boolean addComment = true;
             List<Comment> comments = commentService.getCommentByClaimId(claim.getId());
             for (Comment comment : comments) {
@@ -1155,6 +1158,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             if (addComment) {
                 Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
+                if (claim.getSlaExtDays() > 0) {
+                    comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
+                }
                 claim.addComment(comment);
                 save(claim);
                 LOG.debug("Comment added and claim saved.");

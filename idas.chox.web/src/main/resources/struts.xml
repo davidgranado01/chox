@@ -1370,6 +1370,10 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
+        <action name ="updateSlaExtensionDays" class ="idas.chox.web.actions.ClaimAction" method="updateSlaExtensionDays">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name ="updatePaymentDetails" class ="idas.chox.web.actions.ClaimActivityAction">
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>

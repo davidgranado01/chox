@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------------
+-- 7.3.7  Day Extension For Subscriber Claims                                      --
+-------------------------------------------------------------------------------------
+
+ALTER TABLE claim ADD COLUMN sla_ext_days integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_allowed_sla_ext_for_subscriber integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_allowed_sla_ext_for_fixed_fee integer not null default 0;
+
+----------------------
+--  END OF 7.3.7    --
+----------------------

@@ -33,6 +33,8 @@
         <property column="force_password_change" name="forcePasswordChange" not-null="true"/>
         <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
         <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
+        <property column="max_allowed_sla_ext_for_subscriber" name="maxAllowedSlaExtForSubscriber" not-null="true"/>
+        <property column="max_allowed_sla_ext_for_fixed_fee" name="maxAllowedSlaExtForFixedFee" not-null="true"/>
         <property column="insurer_upload_only" name="insurerUploadOnly" not-null="true"/>
         <property column="enable_subscriber_claims" name="enableSubscriberClaims" not-null="true"/>
         <property column="enable_fixedfee_claims" name="enableFixedFeeClaims" not-null="true"/>
