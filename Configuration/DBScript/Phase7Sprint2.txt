@@ -1310,6 +1310,98 @@ INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, ag
     SELECT 0, id, 73.81, '2012-12-01', 99.99, 999, now(), 999, now()
     FROM vehicle_class where name='NT4';
 
+--
+-- Special Rates
+--
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 75.48, '2012-12-01', 3.0, 999, now(), 999, now(), 23, 1007
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 50.32, '2012-12-01', 99.99, 999, now(), 999, now(), 23, 1007
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 95.63, '2012-12-01', 3.0, 999, now(), 999, now(), 23, 1007
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 66.43, '2012-12-01', 99.99, 999, now(), 999, now(), 23, 1007
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1013
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1013
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1029
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1029
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1030
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1030
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 83.87, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1007
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 106.25, '2012-12-01', 99.99, 999, now(), 999, now(), 19, 1007
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1013
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1013
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1014
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1014
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1029
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1029
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 59.89, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1030
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 79.36, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1030
+    FROM vehicle_class where name='NT4';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 83.87, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1007
+    FROM vehicle_class where name='NT3';
+
+INSERT INTO vehicle_class_price_special_rate(version, vehicle_class_id, price, start_date, age, created_by, created_date, last_modified_by, last_modified_date, insurer_id, chorganisation_id)
+    SELECT 0, id, 106.25, '2012-12-01', 99.99, 999, now(), 999, now(), 3, 1007
+    FROM vehicle_class where name='NT4';
+
+
 -----------------------
 --  END OF BUG#2479  --
 -----------------------
