@@ -138,6 +138,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             if (currentIsTotalLoss != null && currentIsTotalLoss != customer.getIsTotalLoss()
                     && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE))) {
+                customer.setIsTotalLossOriginal(currentIsTotalLoss);
                 claimResult.setCheckForTotalLossAnomalies(true);
             }
         }
