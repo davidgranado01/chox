@@ -8,6 +8,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.util.XmlHelper;
 import idas.chox.service.xml.util.NodeHelper;
+import java.util.Date;
 
 public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
 
@@ -20,11 +21,12 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
 
         HireMonitoringDetail hireMonitoringdtl;
         boolean isNotEmpty = false;
-
+        boolean isNew = false;
         if (claimResult.getClaim().getHireMonitoringDetail() != null) {
             hireMonitoringdtl = claimResult.getClaim().getHireMonitoringDetail();
         } else {
             hireMonitoringdtl = new HireMonitoringDetail();
+            isNew = true;
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "repairer"))) {
@@ -44,13 +46,15 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
 
         if (XmlHelper.isNotNullDate(XmlHelper.getNodeValue(element, "repair-book-in-date"))) {
             isNotEmpty = true;
+            Date oldRepairBookInDate = hireMonitoringdtl.getRepairBookInDate();
             hireMonitoringdtl.setRepairBookInDate(XmlHelper.getDateFromNode(element, "repair-book-in-date"));
             // Check if changed and and flag for anomaly checking
-            if (hireMonitoringdtl.getRepairBookInDate() != null) {
+            if (!isNew && hireMonitoringdtl.getRepairBookInDate() != null && (oldRepairBookInDate == null
+                    || oldRepairBookInDate.compareTo(hireMonitoringdtl.getRepairBookInDate()) != 0)) {
                 claimResult.setCheckForRepairAnomalies(true);
             }
 
-            // If this is the first time the repair book-in date has been set, then save this 'origina' value.
+            // If this is the first time the repair book-in date has been set, then save this 'original' value.
             if (hireMonitoringdtl.getOriginalRepairBookInDate() == null) {
                 hireMonitoringdtl.setOriginalRepairBookInDate(XmlHelper.getDateFromNode(element, "repair-book-in-date"));
             }
