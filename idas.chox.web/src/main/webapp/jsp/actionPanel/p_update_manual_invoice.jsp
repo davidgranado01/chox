@@ -39,7 +39,7 @@ Ext.onReady(function(){
     
         claimOwnerStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
             reader : claimOwnerReader
         });
     
