@@ -112,7 +112,9 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
         }
 
         if (isNotEmpty) {
-            hireMonitoringdtl.setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
+            if (claimResult.getClaim().getCustomer() != null && claimResult.getClaim().getCustomer().getIsTotalLoss() != null) {
+                hireMonitoringdtl.setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
+            }
             claimResult.getClaim().setHireMonitoringDetail(hireMonitoringdtl);
         }
     }
