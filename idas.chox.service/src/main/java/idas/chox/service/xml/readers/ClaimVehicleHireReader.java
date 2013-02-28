@@ -119,8 +119,9 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                         && claimResult.getClaim().getCustomer() != null) {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
             }
-            else
+            else {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(false);
+            }
 
             int rentalDays = 0;
 

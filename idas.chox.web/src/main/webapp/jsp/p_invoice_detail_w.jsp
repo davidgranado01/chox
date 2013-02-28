@@ -1962,6 +1962,52 @@
                             </fieldset>
                         </div>
                     </div>
+                <s:if test="isSubscriberClaim">
+                    <div>
+                        <div id="formRepairExtras" class="XXentity-form">
+                            <fieldset class="x-fieldset  partial">
+                                <legend>Repair Extras</legend>
+
+                                <div class="inv-form-container" id="formRepairExtrasWId">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairAdminFee" value="<s:property value="repairAdminFee" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="repairAdminFee!=repairAdminFeeOriginal&&(repairAdminFeeOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairAdminFeeOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Acquisition Fee<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairAcquisitionFee" value="<s:property value="repairAcquisitionFee" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <s:if test="repairAcquisitionFee!=repairAcquisitionFeeOriginal&&(repairAcquisitionFeeOriginal!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairAcquisitionFeeOriginal" />)</label>
+                                                    </s:if>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </s:if>
                     <div>
                         <div id="formEngRptAction" class="XXentity-form">
 

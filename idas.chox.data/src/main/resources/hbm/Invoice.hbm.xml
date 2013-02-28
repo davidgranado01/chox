@@ -97,6 +97,8 @@
         <property column="insurer_discount_fee_paid" name="insurerDiscountFeePaid"/>
         <property column="penalty_charges_paid" name="penaltyChargesPaid"/>
         <property column="final_payment" name="finalPayment"/>
+        <property column="repair_admin_fee" name="repairAdminFee"/>
+        <property column="repair_acquisition_fee" name="repairAcquisitionFee"/>
         <many-to-one cascade="save-update,delete" class="idas.chox.core.model.InvoiceOriginal" column="invoice_original_id" name="invoiceOriginal"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

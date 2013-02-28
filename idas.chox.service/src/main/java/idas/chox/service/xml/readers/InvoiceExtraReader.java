@@ -25,8 +25,9 @@ public class InvoiceExtraReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(invoiceElement, "extras");
         List<Element> elements = null;
         
-        if (element != null)
+        if (element != null) {
             elements = XMLUtils.getElements(element.getOwnerDocument(), element, "extra");
+        }
 
         boolean isAllowToReadData = false;
         boolean isAdminFeeExist = false;
@@ -143,6 +144,10 @@ public class InvoiceExtraReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Repair Admin")) {
+            invoice.setRepairAdminFee(dIntemCost);
+        } else if (nodeName.equalsIgnoreCase("Repair Acquisition")) {
+            invoice.setRepairAcquisitionFee(dIntemCost);
         }
     }
 

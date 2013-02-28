@@ -556,6 +556,14 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     public java.math.BigDecimal getAdminFeeOriginal() {
         return invoiceOriginal.getAdminFeeOriginal();
     }
+    
+    public java.math.BigDecimal getRepairAdminFeeOriginal() {
+        return invoiceOriginal.getRepairAdminFeeOriginal();
+    }
+    
+    public java.math.BigDecimal getRepairAcquisitionFeeOriginal() {
+        return invoiceOriginal.getRepairAcquisitionFeeOriginal();
+    }
 
     public java.math.BigDecimal getRoofRackFeeOriginal() {
         return invoiceOriginal.getRoofRackFeeOriginal();
@@ -1121,9 +1129,29 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoice.getAdminFee();
     }
 
+    public java.math.BigDecimal getRepairAdminFee() {
+        return invoice.getRepairAdminFee();
+    }
+    
+    public java.math.BigDecimal getRepairAcquisitionFee() {
+        return invoice.getRepairAcquisitionFee();
+    }
+    
     public void setAdminFee(java.math.BigDecimal adminFee) {
         if (actionSelected != reset && invoice != null) {
             invoice.setAdminFee(adminFee);
+        }
+    }
+    
+    public void setRepairAdminFee(java.math.BigDecimal adminFee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairAdminFee(adminFee);
+        }
+    }
+
+    public void setRepairAcquisitionFee(java.math.BigDecimal adminFee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setRepairAcquisitionFee(adminFee);
         }
     }
 
