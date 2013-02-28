@@ -99,6 +99,8 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             }
 
             boolean updated = false;
+            claim.setHireMonitoringDetail(model);
+
             if ((repairBookedInDateOriginal == null && model.getRepairBookInDate() != null)
                     || (model.getRepairBookInDate() == null && repairBookedInDateOriginal != null)
                     || (repairBookedInDateOriginal != null && model.getRepairBookInDate() != null 
