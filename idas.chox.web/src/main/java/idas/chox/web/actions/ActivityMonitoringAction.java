@@ -80,7 +80,7 @@ public class ActivityMonitoringAction extends BaseAction {
                 }
             }
         } else {
-                LOG.error("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
+                LOG.warn("Activity Monitoring: User (with id={}, orgId={}, Organisation type={}) is viewing a claim which does not exist: {}",
                     new Object[]{currentUserID, getOrganisationId(), getOrganisationType(), claimId});
         }
 
