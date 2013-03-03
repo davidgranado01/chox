@@ -13,7 +13,7 @@ public class NodeRuleModel {
     private boolean newClaimDataMandatory;
     private boolean newSubscriberClaimDataMandatory;
     private boolean newFixedFeeClaimDataMandatory;
-    private boolean insurerUploadDataMandatory;
+    private boolean insurerInvoiceDataMandatory;
     private boolean existingClaimDataMandatory;
     private boolean existingSubscriberClaimDataMandatory;
     private boolean existingFixedFeeClaimDataMandatory;
@@ -23,6 +23,7 @@ public class NodeRuleModel {
     private boolean hireMonitoringDataMandatory;
     private boolean newSupplementaryInvoiceMandatory;
     private boolean offHiredDataMandatory;
+    private boolean insurerClaimDataMandatory;
     private String regExp;
 
     public boolean isOffHiredDataMandatory() {
@@ -145,14 +146,25 @@ public class NodeRuleModel {
         }
     }
 
-    public boolean isInsurerUploadDataMandatory() {
-        return insurerUploadDataMandatory;
+    public boolean isInsurerInvoiceDataMandatory() {
+        return insurerInvoiceDataMandatory;
     }
 
-    public void setInsurerUploadDataMandatory(String insurerUploadDataMandatory) {
-        this.insurerUploadDataMandatory = false;
+    public void setInsurerInvoiceDataMandatory(String insurerUploadDataMandatory) {
+        this.insurerInvoiceDataMandatory = false;
         if (insurerUploadDataMandatory.trim().equalsIgnoreCase("t")) {
-            this.insurerUploadDataMandatory = true;
+            this.insurerInvoiceDataMandatory = true;
+        }
+    }
+
+    public boolean isInsurerClaimDataMandatory() {
+        return insurerClaimDataMandatory;
+    }
+
+    public void setInsurerClaimDataMandatory(String insurerClaimDataMandatory) {
+        this.insurerClaimDataMandatory = false;
+        if (insurerClaimDataMandatory.trim().equalsIgnoreCase("t")) {
+            this.insurerClaimDataMandatory = true;
         }
     }
 
@@ -212,6 +224,6 @@ public class NodeRuleModel {
 
     @Override
     public String toString() {
-        return nodeDesc + " " + nodeName + " " + dataType + " " + newClaimDataMandatory + insurerUploadDataMandatory + newInvoiceDataMandatory + existingClaimDataMandatory + existingInvoiceDataMandatory + tpiInterventionDataMandatory+hireMonitoringDataMandatory+newSupplementaryInvoiceMandatory;
+        return nodeDesc + " " + nodeName + " " + dataType + " " + newClaimDataMandatory + insurerInvoiceDataMandatory + newInvoiceDataMandatory + existingClaimDataMandatory + existingInvoiceDataMandatory + tpiInterventionDataMandatory+hireMonitoringDataMandatory+newSupplementaryInvoiceMandatory;
     }
 }

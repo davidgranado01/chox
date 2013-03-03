@@ -34,26 +34,25 @@ public class InsurerUpload extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        LOG.debug("Insurer Upload activity: in beforeProcess");
-        if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
-            claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
-        }
-        //Normalize claim number
-        String claimNumber = claim.getClaimNumber();
-        if (claimNumber != null && !claimNumber.isEmpty()) {
-            claim.setClaimNumber(claimNumber.trim());
-        }
-        LOG.debug("Insurer Upload activity: finished beforeProcess");
+        if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+            if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
+                claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
+            }
+            //Normalize claim number
+            String claimNumber = claim.getClaimNumber();
+            if (claimNumber != null && !claimNumber.isEmpty()) {
+                claim.setClaimNumber(claimNumber.trim());
+            }
         
-        NodeHelper nodeHelper = new NodeHelper();
+            NodeHelper nodeHelper = new NodeHelper();
         
-        if (ClaimType.isInsurerUpload(claim.getClaimType())
-                && claim.getInsurer().isInsurerManualAutoRoutingEnable()
-                && (claimNumber == null 
-                    || claim.getInsurer().getInsurerManualRegexExpression() == null
-                    || claim.getInsurer().getInsurerManualRegexExpression().isEmpty()
-                    || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase()))) {
-            autoRoutedInvoice = true;
+            if (claim.getInsurer().isInsurerManualAutoRoutingEnable()
+                    && (claimNumber == null 
+                        || claim.getInsurer().getInsurerManualRegexExpression() == null
+                        || claim.getInsurer().getInsurerManualRegexExpression().isEmpty()
+                        || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claimNumber.toUpperCase()))) {
+                autoRoutedInvoice = true;
+            }
         }
         
     }
@@ -73,27 +72,28 @@ public class InsurerUpload extends BaseActivity {
         }
 
         // Perform HPI check on customer vehicle
-        LOG.debug("Performing HPI check on customer vehicle...");
-        try {
-            HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
-            claim.getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
-            claim.getCustomer().setHpiVehicleModel(response.getModel());
-            claim.getCustomer().setHpiVehicleYear(response.getYear());
-            claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
-            claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
-            claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
-            claim.getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
-        } catch (HpiException ex) {
-            LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
-            claim.getCustomer().setHpiError(ex.getMessage());
-        } catch (Exception ex) {
-            if (claim.getCustomer() == null) { 
-                LOG.warn("Error getting HPI info: no customer available.");
-            }
-            else {
+        if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+            LOG.debug("Performing HPI check on customer vehicle...");
+            try {
+                HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
+                claim.getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
+                claim.getCustomer().setHpiVehicleModel(response.getModel());
+                claim.getCustomer().setHpiVehicleYear(response.getYear());
+                claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
+                claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
+                claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
+                claim.getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
+            } catch (HpiException ex) {
                 LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                claim.getCustomer().setHpiError(ex.getMessage());
+            } catch (Exception ex) {
+                if (claim.getCustomer() == null) {
+                    LOG.warn("Error getting HPI info: no customer available.");
+                } else {
+                    LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                }
+                claim.getCustomer().setHpiError(ex.getMessage());
             }
-            claim.getCustomer().setHpiError(ex.getMessage());
         }
         // Perform HPI check on hire vehicle
         LOG.debug("Performing HPI check on hire vehicle...");
@@ -163,17 +163,26 @@ public class InsurerUpload extends BaseActivity {
                     claim.setManualInvoiceApproved(true);
                 }
 
-            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && !isEnableManualInvoiceWorkgroupOwnership) {
+            } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && !isEnableManualInvoiceWorkgroupOwnership) {
                     claim.setManualInvoiceApproved(true);
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
-            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+            } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                     claim.setManualInvoiceApproved(true);
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
-            } else {
+            } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
                 claim.setManualInvoiceApproved(false);
                 if(isEnableManualInvoiceWorkgroupOwnership){
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
                 } else {
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
+                }
+            } else {
+                // Insurer Claim
+                if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                    claim.setManualInvoiceApproved(true);
+                    claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
+                } else {
+                    claim.setManualInvoiceApproved(false);
                     claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
                 }
             }

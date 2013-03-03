@@ -346,19 +346,15 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             String prevStatus = null;
 
             for (int i = 0; i < propertyNames.length; i++) {
+                LOG.debug("Checking auditable property [{}]:{}", i, propertyNames[i]);
                 if ("lastModifiedDate".equals(propertyNames[i])) {
-
-                    LOG.debug("propertyNames[{}]={}", i, propertyNames[i]);
                     currentState[i] = DateHelper.getCurrentDateTime();
-
-                    LOG.debug("currentState[{}]='{}'", i, currentState[i]);
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
                     currentState[i] = getSecurityInfoProvider().getCurrentUser();
                 } else if ("statusModifiedDate".equals(propertyNames[i])) {
                     if (statusModifiedDate == null) {
                         indexOfStatusModifiedDate = i;
                     } else {
-                        LOG.debug("Setting statusModifiedDate='{}'", statusModifiedDate);
                         currentState[i] = statusModifiedDate;
                     }
                 } else if ("previousStatus".equals(propertyNames[i])) {

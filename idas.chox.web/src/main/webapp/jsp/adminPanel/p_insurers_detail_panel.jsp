@@ -425,7 +425,7 @@
         else
             $("#fixedFeeTr").hide();
         
-        if($('form#formUpdateInsurerDetail input[name="uploadEnabled"]:checked').val())
+        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val())
             $("#insurerManualTr").show();
         else
             $("#insurerManualTr").hide();
@@ -513,7 +513,7 @@
 
     function doEnableManualInvoiceCheck(claimWorkgroupEnable,claimOwnershipEnable){
         
-        if($('form#formUpdateInsurerDetail input[name="uploadEnabled"]:checked').val()){
+        if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val()){
             if (claimOwnershipEnable) {
               $("#manualInvoiceOwnershipHolder").slideDown();  
             }
@@ -749,20 +749,21 @@
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable FNOL</label>
                                         <s:checkbox name="fnolEnable" value="fnolEnable" onclick="doPageLoadCheck(this);"/>
-                                    </div></td>
+                                    </div>
+                                </td>
                                 
                             </tr>
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Manual Invoices</label>
-                                        <s:checkbox name="uploadEnabled" value="uploadEnabled" onclick="doPageLoadCheck(this);"/>
+                                        <label class="chox-form-std-label">Enable Manual Claims</label>
+                                        <s:checkbox name="claimUploadEnabled" value="claimUploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Allow Subscriber Claims</label>
-                                        <s:checkbox name="allowSubscriberClaims" value="allowSubscriberClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
+                                        <label class="chox-form-std-label">Enable Manual Invoices</label>
+                                        <s:checkbox name="invoiceUploadEnabled" value="invoiceUploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                             </tr>
@@ -784,8 +785,8 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
-                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
+                                        <label class="chox-form-std-label">Allow Subscriber Claims</label>
+                                        <s:checkbox name="allowSubscriberClaims" value="allowSubscriberClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
                                     </div>
                                 </td>
                                 <td>
@@ -794,6 +795,15 @@
                                         <s:checkbox name="allowFixedFeeClaims" value="allowFixedFeeClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
+                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
+                                    </div>
+                                </td>
+                                <td></td>
                             </tr>
                         </table>
                              <div class="chox-form-item" id="tpiIdentifierId">

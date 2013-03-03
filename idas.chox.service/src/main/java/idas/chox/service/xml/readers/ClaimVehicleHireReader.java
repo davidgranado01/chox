@@ -1,5 +1,9 @@
 package idas.chox.service.xml.readers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
+
 import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
 import idas.chox.core.hpi.HpiResponse;
@@ -13,9 +17,6 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Element;
 
 public class ClaimVehicleHireReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimCustomerReader.class);
@@ -35,10 +36,14 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXISTS_INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)
@@ -46,7 +51,6 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
@@ -79,7 +83,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
             String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
-                VehicleClass vehicleClass = null;
+                VehicleClass vehicleClass;
                 vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, "vehicle-class");
                 claimResult.getClaim().getVehicleHire().setVehicleClass(vehicleClass);
             }
@@ -119,8 +123,9 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                         && claimResult.getClaim().getCustomer() != null) {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
             }
-            else
+            else {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(false);
+            }
 
             int rentalDays = 0;
 

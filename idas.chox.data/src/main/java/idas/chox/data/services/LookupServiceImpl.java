@@ -42,11 +42,15 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List<LookupItem> getLiabilityStatuses(boolean withNull) {
         List<LookupItem> items = new ArrayList<LookupItem>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
-            if (!withNull && s.getLiablityValue() == 0) continue;
-            else if (withNull && s.getLiablityValue() == 0)
+            if (!withNull && s.getLiablityValue() == 0) {
+                continue;
+            }
+            else if (withNull && s.getLiablityValue() == 0) {
                 items.add(new LookupItem("<i>(Not Specified)</i>", Integer.toString(s.getLiablityValue())));
-            else
+            }
+            else {
                 items.add(new LookupItem(s.toString(), Integer.toString(s.getLiablityValue())));
+            }
         }
         return items;
     }
@@ -60,7 +64,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         items.add(new LookupItem(ClaimType.FIXED_FEE.toString(), Integer.toString(ClaimType.FIXED_FEE.getClaimTypeValue())));
         items.add(new LookupItem(ClaimType.TPI.toString(), Integer.toString(ClaimType.TPI.getClaimTypeValue())));
         items.add(new LookupItem(ClaimType.INSURER_VS_INSURER.toString(), Integer.toString(ClaimType.INSURER_VS_INSURER.getClaimTypeValue())));
-        items.add(new LookupItem(ClaimType.INSURER_INVOICE.toString(), Integer.toString(ClaimType.INSURER_INVOICE.getClaimTypeValue())));
+        items.add(new LookupItem(ClaimType.INSURER_UPLOAD.toString(), Integer.toString(ClaimType.INSURER_UPLOAD.getClaimTypeValue())));
         
         return items;
     }

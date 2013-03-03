@@ -39,29 +39,17 @@ public class ClaimObjectService {
             dropDownMapWithNulls = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 0; i < arr.length; i++) {
-                if (i==0)
+                if (i==0) {
                     dropDownMapWithNulls.put(arr[i].getLiablityValue(), "-- Please Select --");
-                else
+                }
+                else {
                     dropDownMapWithNulls.put(arr[i].getLiablityValue(), arr[i].toString());
+                }
             }
         }
         return withNulls ? dropDownMapWithNulls: dropDownMap ;
     }
 
-    /**
-     * @return the dropDownList
-     */
-
-//    public Map getLiabilityStatusSearchMap() {
-//        if (dropDownMapSearch == null) {
-//            dropDownMapSearch = new HashMap();
-//            LiabilityStatus[] arr = LiabilityStatus.values();
-//            for (int i = 1; i < arr.length; i++) {
-//                dropDownMapSearch.put(arr[i].getLiablityValue(), arr[i]);
-//            }
-//        }
-//        return dropDownMapSearch;
-//    }
 
     public Claim cloneClaimForSupplementaryInvoice(Claim claim) {
 
@@ -89,14 +77,13 @@ public class ClaimObjectService {
         newClaim.setChoReference(null);
         newClaim.setVehicleHire(null);
         newClaim.setHireMonitoringDetail(null);
-//        newClaim.setOriginalSupplementaryInvoicedClaim(false);
         if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
-        }
-        else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+        } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.INSURER_SUPPLEMENTARY_INVOICE);
+        } else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
-        }
-        else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+        } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
         } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE);
@@ -114,7 +101,6 @@ public class ClaimObjectService {
             newClaim.setWorkgroup(claim.getWorkgroupOriginal());
         }
         newClaim.setInvoice(null);
-//        newClaim.setInvoiceOriginal(null);
         newClaim.setAttachments(null);
         newClaim.setComments(null);
         newClaim.setHistories(null);

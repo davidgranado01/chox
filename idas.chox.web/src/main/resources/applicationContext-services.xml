@@ -208,14 +208,7 @@
                 <ref bean="RejectedClaims" />
                 <ref bean="RejectedSubscriberClaims" />
                 <ref bean="RejectedFixedFeeClaims" />
-                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
-                <ref bean="AwaitingInvoiceData" />
                 <ref bean="LiabilityUpdate"/>
-                <ref bean="IncorrectInvoiceDataCalculations" />
-                <ref bean="ContestedInvoicesReferredToCHO" />
-                <ref bean="PenaltyChargesApplied" />
-                <ref bean="InvoicePaymentLogged" />
-                <ref bean="InterimPayment" />
                 <ref bean="AwaitingLitigationOutcome" />
                 <ref bean="NewClaimsToBerouted" />
                 <ref bean="ClaimUnacknowledgedUnassigned" />
@@ -226,6 +219,11 @@
                 <ref bean="ClaimReferredToEngineer" />
                 <ref bean="ClaimUpdatedByEngineer" />
                 <ref bean="HireUpdateAnomalies" />
+                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
+                <ref bean="AwaitingInvoiceData" />
+                <ref bean="IncorrectInvoiceDataCalculations" />
+                <ref bean="ContestedInvoicesReferredToCHO" />
+                <ref bean="PenaltyChargesApplied" />
                 <ref bean="EscalatedInvoices" />
                 <ref bean="InvoiceEscalatedToHandler" />
                 <ref bean="InvoicesReferredToEngineer" />
@@ -236,6 +234,8 @@
                 <ref bean="FinalReviewCho" />
                 <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
+                <ref bean="InvoicePaymentLogged" />
+                <ref bean="InterimPayment" />
                 <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />

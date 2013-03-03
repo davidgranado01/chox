@@ -1,11 +1,12 @@
 package idas.chox.service.xml.readers;
 
+import org.w3c.dom.Element;
+
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.*;
 
 /**
  *
@@ -26,7 +27,8 @@ public class InvoiceTotalLossFeeReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)) {
 

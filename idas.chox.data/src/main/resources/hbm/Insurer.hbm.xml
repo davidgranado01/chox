@@ -56,7 +56,8 @@
     <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
     <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
     <property column="is_insurer_discount_enable" name="insurerDiscountEnable"/>
-    <property column="is_upload_enabled" name="uploadEnabled"/>
+    <property column="is_invoice_upload_enabled" name="invoiceUploadEnabled"  not-null="true"/>
+    <property column="is_claim_upload_enabled" name="claimUploadEnabled" not-null="true"/>
     <property column="allow_subscriber_claims" name="allowSubscriberClaims" not-null="true"/>
     <property column="allow_fixedfee_claims" name="allowFixedFeeClaims" not-null="true"/>
     <property column="days_before_escalated" name="daysBeforeEscalated"/>

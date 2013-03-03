@@ -3,7 +3,7 @@ package idas.chox.service.xml.readers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.util.XmlHelper;
@@ -30,17 +30,20 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXISTS_INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
             LOG.debug("Validating Customer Mitigation");
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             // MITIGATION - moved to separate reader
@@ -79,10 +82,12 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
              * should be left blank. (TO-DO-ITEM 7.1.2)
              */
             Boolean canAccessOtherVehicle = XmlHelper.getBooleanFromNode(element, "access-another-vehicle");
-            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD))
+            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)) {
                 claimResult.getClaim().setIsInvoiceReviewRequired((canAccessOtherVehicle != null && canAccessOtherVehicle == true) ? true : false);
-            else
+            }
+            else {
                 claimResult.getClaim().getCustomer().setCanAccessOtherVehicle(canAccessOtherVehicle);
+            }
             LOG.debug("Setting OtherVehicle...");
             claimResult.getClaim().getCustomer().setOtherVehicle(XmlHelper.getNodeValue(element, "other-vehicle"));
             LOG.debug("Setting OtherVehicleUsed...");

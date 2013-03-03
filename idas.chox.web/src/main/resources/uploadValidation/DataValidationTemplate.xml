@@ -20,6 +20,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-first-contact>
 
     <claimheader-managing-repair>
@@ -40,6 +41,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-managing-repair>
 
     <claimheader-agreement-signed>
@@ -60,6 +62,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </claimheader-agreement-signed>
 
     <claimheader-gta-notice>
@@ -80,6 +83,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </claimheader-gta-notice>
 
     <claimheader-hire-state>
@@ -100,6 +104,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-hire-state>
 
     <claimheader-supplier-name>
@@ -120,6 +125,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </claimheader-supplier-name>
 
     <claimheader-supplier-reference>
@@ -140,6 +146,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-supplier-reference>
 
 	<!-- ### DRIVER / CUSTOMER ##################################### !-->
@@ -162,6 +169,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>32</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-title>
 
     <customer-firstnames>
@@ -182,6 +190,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-firstnames>
 
     <customer-lastname>
@@ -202,6 +211,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-lastname>
 
     <customer-address1>
@@ -222,6 +232,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-address1>
 
     <customer-address2>
@@ -242,6 +253,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-address2>
 
     <customer-address3>
@@ -262,6 +274,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-address3>
 
     <customer-address4>
@@ -282,6 +295,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-address4>
 
     <customer-address5>
@@ -302,6 +316,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-address5>
 
     <customer-postcode>
@@ -322,6 +337,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-postcode>
 
     <customer-telephone-day>
@@ -342,6 +358,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-telephone-day>
 
     <customer-telephone-evening>
@@ -362,6 +379,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-telephone-evening>
 
     <customer-email>
@@ -382,6 +400,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-email>
 
     <customer-age>
@@ -402,6 +421,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>10</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-age>
 
     <customer-occupation>
@@ -422,6 +442,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-occupation>
 
     <customer-policy-usage>
@@ -442,6 +463,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customer-policy-usage>
 <!-- ### CLAIM > Mitigation Question ##################################### !-->
 
@@ -463,6 +485,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-access-another-vehicle>
 
     <customermitigationdetail-other-vehicle>
@@ -483,6 +506,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-other-vehicle>
 
     <customermitigationdetail-other-vehicle-regular-user>
@@ -503,26 +527,28 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-other-vehicle-regular-user>
 
     <customermitigationdetail-entitled-courtesy-car>
         <data-description>entitled-courtesy-car</data-description>
         <data-type>char</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
-        <data-mandatory-insurerUpload>f</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
+        <data-mandatory-insurerUpload></data-mandatory-insurerUpload>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
+        <data-mandatory-newInvoice></data-mandatory-newInvoice>
+        <data-mandatory-existingInvoice></data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>f</data-mandatory-offHired>                
-        <data-mandatory-hireMonitoring>f</data-mandatory-hireMonitoring>        
+        <data-mandatory-offHired></data-mandatory-offHired>                
+        <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>        
         <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-entitled-courtesy-car>
 
     <customermitigationdetail-specific-required>
@@ -543,6 +569,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-specific-required>
 
     <customermitigationdetail-why-specific>
@@ -563,6 +590,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-why-specific>
 
     <customermitigationdetail-type-required>
@@ -583,6 +611,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-type-required>
 
     <customermitigationdetail-special-requirements>
@@ -603,6 +632,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-special-requirements>
 
     <customermitigationdetail-ave-daily-mileage>
@@ -623,6 +653,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customermitigationdetail-ave-daily-mileage>
 
 
@@ -646,6 +677,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-name>
 
     <customerdetail-policy-number>
@@ -666,6 +698,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>32</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-policy-number>
 
     <customerdetail-claim-number>
@@ -686,6 +719,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-claim-number>
 
     <customerdetail-comprehensive>
@@ -706,6 +740,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-comprehensive>
 
     <customerdetail-vehicle-registration>
@@ -726,6 +761,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp>^\w.*$</reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-vehicle-registration>
 
     <customerdetail-vehicle-manufacturer>
@@ -746,6 +782,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-vehicle-manufacturer>
 
     <customerdetail-vehicle-model>
@@ -766,6 +803,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-vehicle-model>
 
     <customerdetail-vehicle-class>
@@ -774,11 +812,11 @@
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
         <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>f</data-mandatory-offHired>      
-        <data-mandatory-hireMonitoring>f</data-mandatory-hireMonitoring>   
+        <data-mandatory-newInvoice></data-mandatory-newInvoice>
+        <data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+        <data-mandatory-offHired></data-mandatory-offHired>      
+        <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>   
         <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
@@ -786,6 +824,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-vehicle-class>
 
     <customerdetail-year-of-manufacture>
@@ -806,6 +845,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>8</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-year-of-manufacture>
 
     <customerdetail-location>
@@ -816,7 +856,7 @@
         <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>     
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
@@ -826,6 +866,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>160</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-location>
 
 	<!-- ### CLAIM > THIRD PARTY INFORMATION ##################################### !-->
@@ -849,6 +890,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>32</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-title>
 
     <thirdpartydetails-firstnames>
@@ -869,6 +911,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-firstnames>
 
     <thirdpartydetails-lastname>
@@ -889,6 +932,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-lastname>
 
     <thirdpartydetails-address1>
@@ -909,6 +953,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-address1>
 
     <thirdpartydetails-address2>
@@ -929,6 +974,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-address2>
 
     <thirdpartydetails-address3>
@@ -949,6 +995,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-address3>
 
     <thirdpartydetails-address4>
@@ -969,6 +1016,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-address4>
 
     <thirdpartydetails-address5>
@@ -989,6 +1037,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-address5>
 
     <thirdpartydetails-postcode>
@@ -1009,6 +1058,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-postcode>
 
     <thirdpartydetails-telephone-day>
@@ -1029,6 +1079,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-telephone-day>
 
     <thirdpartydetails-telephone-evening>
@@ -1049,6 +1100,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-telephone-evening>
 
     <thirdpartydetails-email>
@@ -1069,6 +1121,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-email>
 
     <thirdpartydetails-name>
@@ -1089,6 +1142,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </thirdpartydetails-name>
 
     <thirdpartydetails-policy-number>
@@ -1099,7 +1153,7 @@
         <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>       
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
@@ -1109,6 +1163,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>32</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </thirdpartydetails-policy-number>
 
     <thirdpartydetails-claim-number>
@@ -1129,6 +1184,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-claim-number>
 
     <thirdpartydetails-vehicle-registration>
@@ -1139,7 +1195,7 @@
         <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>        
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
@@ -1149,6 +1205,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </thirdpartydetails-vehicle-registration>
 
     <thirdpartydetails-vehicle-manufacturer>
@@ -1169,6 +1226,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-vehicle-manufacturer>
 
     <thirdpartydetails-vehicle-model>
@@ -1189,6 +1247,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-vehicle-model>
 
     <thirdpartydetails-vehicle-class>
@@ -1209,6 +1268,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </thirdpartydetails-vehicle-class>
 
 	<!-- ### CLAIM > CUSTOMER VEHICLE DAMAGE ##################################### !-->
@@ -1221,7 +1281,7 @@
         <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>           
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
@@ -1231,6 +1291,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>y</data-mandatory-newInsurerClaim>
     </customerdetail-damage>
 
     <customerdetail-usable>
@@ -1251,6 +1312,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-usable>
 
     <customerdetail-total-loss>
@@ -1271,6 +1333,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-total-loss>
 
     <customerdetail-initial-ecd>
@@ -1291,6 +1354,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </customerdetail-initial-ecd>
 
 	<!-- ### INCIDENT ##################################### !-->
@@ -1313,6 +1377,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incident-date>
 
     <incident-location>
@@ -1333,6 +1398,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </incident-location>
 
     <incident-police-involved>
@@ -1353,6 +1419,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incident-police-involved>
 
     <incident-description>
@@ -1373,6 +1440,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </incident-description>
 
 	<!-- ### WITNESS ##################################### !-->
@@ -1395,6 +1463,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-name>
 
     <incidentwitness-address1>
@@ -1415,6 +1484,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-address1>
 
     <incidentwitness-address2>
@@ -1435,6 +1505,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-address2>
 
     <incidentwitness-address3>
@@ -1455,6 +1526,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-address3>
 
     <incidentwitness-address4>
@@ -1475,6 +1547,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-address4>
 
     <incidentwitness-address5>
@@ -1495,6 +1568,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-address5>
 
     <incidentwitness-postcode>
@@ -1515,6 +1589,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-postcode>
 
     <incidentwitness-telephone-day>
@@ -1535,6 +1610,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-telephone-day>
 
     <incidentwitness-telephone-evening>
@@ -1555,6 +1631,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-telephone-evening>
 
     <incidentwitness-email>
@@ -1575,6 +1652,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentwitness-email>
 
 <!-- ### INJURY ##################################### !-->
@@ -1597,6 +1675,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-name>
 
     <incidentinjury-address1>
@@ -1617,6 +1696,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-address1>
 
     <incidentinjury-address2>
@@ -1637,6 +1717,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-address2>
 
     <incidentinjury-address3>
@@ -1657,6 +1738,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-address3>
 
     <incidentinjury-address4>
@@ -1677,6 +1759,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-address4>
 
     <incidentinjury-address5>
@@ -1697,6 +1780,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-address5>
 
     <incidentinjury-postcode>
@@ -1717,6 +1801,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-postcode>
 
     <incidentinjury-telephone-day>
@@ -1737,6 +1822,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-telephone-day>
 
     <incidentinjury-telephone-evening>
@@ -1757,6 +1843,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-telephone-evening>
 
     <incidentinjury-email>
@@ -1777,6 +1864,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incidentinjury-email>
 
 <!-- ### INJURY SOLICITOR ##################################### !-->
@@ -1799,6 +1887,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-name>
 
     <injurysolicitor-address1>
@@ -1819,6 +1908,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-address1>
 
     <injurysolicitor-address2>
@@ -1839,6 +1929,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-address2>
 
     <injurysolicitor-address3>
@@ -1859,6 +1950,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-address3>
 
     <injurysolicitor-address4>
@@ -1879,6 +1971,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-address4>
 
     <injurysolicitor-address5>
@@ -1899,6 +1992,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-address5>
 
     <injurysolicitor-postcode>
@@ -1919,6 +2013,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-postcode>
 
     <injurysolicitor-telephone>
@@ -1939,6 +2034,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-telephone>
 
     <injurysolicitor-email>
@@ -1959,6 +2055,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </injurysolicitor-email>
 
 	<!-- ### ENGINEERING REPORT ##################################### !-->
@@ -1981,6 +2078,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>10</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-labour-amount>
 
     <engineeringreport-total-amount>
@@ -2001,6 +2099,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>10</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-total-amount>
 
     <engineeringreport-days>
@@ -2021,6 +2120,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-days>
 
     <engineeringreport-usable>
@@ -2041,6 +2141,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-usable>
 
     <engineeringreport-name>
@@ -2061,6 +2162,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-name>
 
     <engineeringreport-company>
@@ -2081,6 +2183,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-company>
 
     <engineeringreport-address1>
@@ -2101,6 +2204,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-address1>
 
     <engineeringreport-address2>
@@ -2121,6 +2225,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-address2>
 
     <engineeringreport-address3>
@@ -2141,6 +2246,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-address3>
 
     <engineeringreport-address4>
@@ -2161,6 +2267,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-address4>
 
     <engineeringreport-address5>
@@ -2181,6 +2288,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-address5>
 
     <engineeringreport-postcode>
@@ -2201,6 +2309,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-postcode>
 
     <engineeringreport-telephone>
@@ -2221,6 +2330,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>50</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-telephone>
 
     <engineeringreport-email>
@@ -2241,6 +2351,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </engineeringreport-email>
 
 	<!-- ### REPAIR DETAILS ##################################### !-->
@@ -2263,6 +2374,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-repairer>
 
     <hiremonitoringdetail-inspection-booked-date>
@@ -2283,6 +2395,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-inspection-booked-date>
 
     <hiremonitoringdetail-inspection-date>
@@ -2303,6 +2416,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-inspection-date>
 
     <hiremonitoringdetail-repair-book-in-date>
@@ -2323,6 +2437,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-repair-book-in-date>
 
     <hiremonitoringdetail-repair-authorised-date>
@@ -2343,6 +2458,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-repair-authorised-date>
 
     <hiremonitoringdetail-repair-started-date>
@@ -2363,6 +2479,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-repair-started-date>
 
     <hiremonitoringdetail-repair-complete-date>
@@ -2383,6 +2500,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-repair-complete-date>
 
     <hiremonitoringdetail-tl-offer-made-date>
@@ -2403,6 +2521,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-tl-offer-made-date>
 
     <hiremonitoringdetail-tl-offer-accepted-date>
@@ -2423,6 +2542,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-tl-offer-accepted-date>
 
     <hiremonitoringdetail-tl-cheque-issued>
@@ -2443,6 +2563,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-tl-cheque-issued>
 
     <hiremonitoringdetail-tl-cheque-received>
@@ -2463,6 +2584,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-tl-cheque-received>
 
     <hiremonitoringdetail-name-ime>
@@ -2483,6 +2605,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-name-ime>
 
     <hiremonitoringdetail-labour-rate>
@@ -2503,6 +2626,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>10</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-labour-rate>
 
     <hiremonitoringdetail-labour-hours>
@@ -2523,6 +2647,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>8</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-labour-hours>
 
     <hiremonitoringdetail-labour-cost>
@@ -2543,6 +2668,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>10</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </hiremonitoringdetail-labour-cost>
 
 	<!-- ### VEHICLE HIRE ##################################### !-->
@@ -2550,161 +2676,169 @@
     <vehiclehiredetails-vehicle-registration>
         <data-description>Registration</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>16</data-length>
         <reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-vehicle-registration>
 
     <vehiclehiredetails-vehicle-manufacturer>
         <data-description>Manufacturer</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-vehicle-manufacturer>
 
     <vehiclehiredetails-vehicle-model>
         <data-description>Model</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>64</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-vehicle-model>
 
     <vehiclehiredetails-vehicle-class>
         <data-description>Replacement Vehicle Class</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-vehicle-class>
 
     <vehiclehiredetails-rental-start>
         <data-description>Hire Start</data-description>
         <data-type>date</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-rental-start>
 
     <vehiclehiredetails-rental-end>
         <data-description>Hire End</data-description>
         <data-type>date</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-rental-end>
 
     <vehiclehiredetails-collection-reason>
         <data-description>Reason For Collection</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-collection-reason>
 
     <vehiclehiredetails-rental-days>
         <data-description>Number Days Hire</data-description>
         <data-type>int</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </vehiclehiredetails-rental-days>
 
     <invoiceextra-cover-note-required>
@@ -2725,26 +2859,28 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceextra-cover-note-required>
 
     <invoicevehicle-day-rate>
         <data-description>Hire Rate Charged Per Day</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicevehicle-day-rate>
 
 	<!-- ### EXTRA ##################################### !-->
@@ -2752,61 +2888,64 @@
     <invoiceextra-name>
         <data-description>Name</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceextra-name>
 
     <invoiceextra-quantity>
         <data-description>Quantity</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceextra-quantity>
 
     <invoiceextra-item-cost>
         <data-description>Cost</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceextra-item-cost>
 
 	<!-- ### INVOICE ##################################### !-->
@@ -2830,6 +2969,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicesupplier-excess-collected>
 
     <invoicesupplier-vat-collected>
@@ -2850,6 +2990,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicesupplier-vat-collected>
 
     <invoicesupplier-handling-invoice-no>
@@ -2870,6 +3011,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicesupplier-handling-invoice-no>
 
     <invoicesupplier-handling-invoice-amount>
@@ -2890,326 +3032,343 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicesupplier-handling-invoice-amount>
 
     <invoicesupplier-claim-invoice-no>
         <data-description>Supplier Claim Invoice Number</data-description>
         <data-type></data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicesupplier-claim-invoice-no>
 
     <invoicevehicle-net>
         <data-description>Hire Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicevehicle-net>
 
     <invoicevehicle-vat>
         <data-description>Hire VAT</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicevehicle-vat>
 
     <invoicevehicle-gross>
         <data-description>Hire Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicevehicle-gross>
 
     <invoicerepair-net>
         <data-description>Repair Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicerepair-net>
 
     <invoicerepair-vat>
         <data-description>Repair Vat</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>              
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicerepair-vat>
 
     <invoicerepair-gross>
         <data-description>Repair Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicerepair-gross>
 
     <invoicestoragerecovery-net>
         <data-description>Storage Repair Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicestoragerecovery-net>
 
     <invoicestoragerecovery-vat>
         <data-description>Storage Repair Vat</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicestoragerecovery-vat>
 
     <invoicestoragerecovery-gross>
         <data-description>Storage Repair Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicestoragerecovery-gross>
 
     <invoiceengineeringfee-net>
         <data-description>Engineering Fee Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>              
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceengineeringfee-net>
 
     <invoiceengineeringfee-vat>
         <data-description>Engineering Fee Vat</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceengineeringfee-vat>
 
     <invoiceengineeringfee-gross>
         <data-description>Engineering Fee Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoiceengineeringfee-gross>
 
     <invoicetotallossfee-net>
         <data-description>Total Loss Fee Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicetotallossfee-net>
 
     <invoicetotallossfee-vat>
         <data-description>Total Loss Fee Vat</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicetotallossfee-vat>
 
     <invoicetotallossfee-gross>
         <data-description>Total Loss Fee Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>              
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoicetotallossfee-gross>
 
 
@@ -3217,140 +3376,147 @@
     <invoice-less-handling-fee>
         <data-description>Less Claims Handling Fee</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-less-handling-fee>
 
     <invoice-net>
         <data-description>Total Net</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>              
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-net>
 
     <invoice-vat>
         <data-description>Total VAT</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-vat>
 
     <invoice-gross>
         <data-description>Total Gross</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-gross>
 
     <invoice-less-discount>
         <data-description>Less Discount</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-less-discount>
 
     <invoice-total-to-pay>
         <data-description>Total to Pay</data-description>
         <data-type>numeric</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>                
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-total-to-pay>
 
     <invoice-date-invoiced>
         <data-description>Date Invoiced</data-description>
         <data-type>date</data-type>
-        <data-mandatory-newClaim>f</data-mandatory-newClaim>
+        <data-mandatory-newClaim></data-mandatory-newClaim>
         <data-mandatory-insurerUpload>t</data-mandatory-insurerUpload>
-        <data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
         <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring></data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>f</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>f</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>f</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>f</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newSubscriberClaim></data-mandatory-newSubscriberClaim>
+        <data-mandatory-existingSubscriberClaim></data-mandatory-existingSubscriberClaim>
+        <data-mandatory-newFixedFeeClaim></data-mandatory-newFixedFeeClaim>
+        <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </invoice-date-invoiced>
 </chox>

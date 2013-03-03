@@ -45,7 +45,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
-                        } else if (filter.getIsManualFilter() && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
+                        } else if (filter.getIsManualFilter() && webUser.isAnInsurer() && !webUser.getInsurer().isInvoiceUploadEnabled()) {
                             LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
                             continue;
                         } else if (filter.getKey().equals(Filter.FILTER_MANUAL_INVOICES_TO_BE_ASSIGNED) && webUser.isAnInsurer()
@@ -62,6 +62,14 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         }  else if (filter.getKey().equals(Filter.FILTER_REJECTED_FIXEDFEE_CLAIMS)
                                 && webUser.isCHO() && !webUser.getChorganisation().isEnableFixedFeeClaims()) {
                             LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
+                            continue;
+                        }  else if (filter.getKey().equals(Filter.FILTER_AWAITING_INVOICE_DATA)
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isClaimUploadEnabled()) {
+                            LOG.debug("Not adding queue '{}' as claim upload not enabled.", filter.getName());
+                            continue;
+                        }  else if (filter.getKey().equals(Filter.FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO)
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isClaimUploadEnabled()) {
+                            LOG.debug("Not adding queue '{}' as claim upload not enabled.", filter.getName());
                             continue;
                         }
                         

@@ -1,12 +1,13 @@
 package idas.chox.service.xml.readers;
 
+import org.w3c.dom.Element;
+
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.*;
 
 public class ClaimEngineeringReportReader extends BaseEntityReader {
 
@@ -24,17 +25,20 @@ public class ClaimEngineeringReportReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXISTS_INSURER_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
             claimResult = NodeHelper.nodeValidate(sectionName, "labour-amount", element, claimResult, getDataValidationParameter());
@@ -66,10 +70,12 @@ public class ClaimEngineeringReportReader extends BaseEntityReader {
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-amount")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "total-amount")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "days")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "company")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "telephone")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "email")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "usable"))) {
 
-            EngineerReport engineerReport = new EngineerReport();
+            EngineerReport engineerReport;
 
             if (claimResult.getClaim().getEngineerReport() != null) {
                 engineerReport = claimResult.getClaim().getEngineerReport();
+            } else {
+                engineerReport = new EngineerReport();
             }
 
             engineerReport.setDays(XmlHelper.getIntegerFromNode(element, "days"));

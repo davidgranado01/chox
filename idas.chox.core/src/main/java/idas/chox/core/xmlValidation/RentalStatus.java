@@ -11,7 +11,7 @@ public enum RentalStatus {
     HIREMONITORING("hiremonitoring"),
     SUPPLEMENTARYINVOICE("supplementaryinvoice"),
     INSURERVSINSURER("insurervsinsurer"),
-    INSURERUPLOAD("insurerupload"),
+    INVOICEONLY("invoiceonly"),
     SUBSCRIBER("subscriber"),
     FIXEDFEE("fixedfee");
 
@@ -22,7 +22,20 @@ public enum RentalStatus {
     }
     
     public String getDescription() { return description;}
-    
+
+    public static RentalStatus fromString(String str) {
+        if (str != null) {
+            for (RentalStatus rentalStatus : RentalStatus.values()) {
+                if (str.equalsIgnoreCase(rentalStatus.description)) {
+                    return rentalStatus;
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("No RentalStatus from (null) description");
+        }
+        throw new IllegalArgumentException("No RentalStatus with description '" + str + "' found");
+    }
+
     public static boolean isInProgressOrComplete(String rentalStatus) {
         if (RentalStatus.COMPLETE.getDescription().equals(rentalStatus)
                 || RentalStatus.INPROGRESS.getDescription().equals(rentalStatus)) {
@@ -65,7 +78,12 @@ public enum RentalStatus {
     }
 
     public static boolean isInsurerUploadRentalStatus(String rentalStatus) {
-        if (RentalStatus.INSURERUPLOAD.getDescription().equals(rentalStatus)) {
+        if (RentalStatus.INVOICEONLY.getDescription().equals(rentalStatus)
+                || RentalStatus.INPROGRESS.getDescription().equals(rentalStatus)
+                || RentalStatus.COMPLETE.getDescription().equals(rentalStatus)
+                || RentalStatus.OFFHIRED.getDescription().equals(rentalStatus)
+                || RentalStatus.HIREMONITORING.getDescription().equals(rentalStatus)
+                || RentalStatus.SUPPLEMENTARYINVOICE.getDescription().equals(rentalStatus)) {
             return true;
         }
 

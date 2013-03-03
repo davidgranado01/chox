@@ -36,7 +36,7 @@ public class DataValidationParameter {
     }
 
     public NodeRuleModel getValidationElementByField(String nodeName) {
-
+        LOG.debug("Getting validation for field: {}", nodeName);
         NodeRuleModel ruleModel = new NodeRuleModel();
 
         try {
@@ -51,7 +51,7 @@ public class DataValidationParameter {
             
             ruleModel.setNewClaimDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
             
-            ruleModel.setInsurerUploadDataMandatory(fieldNode.getChildNodes().item(7).getTextContent());
+            ruleModel.setInsurerInvoiceDataMandatory(fieldNode.getChildNodes().item(7).getTextContent());
             
             ruleModel.setExistingClaimDataMandatory(fieldNode.getChildNodes().item(9).getTextContent());
             
@@ -79,7 +79,9 @@ public class DataValidationParameter {
             
             ruleModel.setRegExp(fieldNode.getChildNodes().item(33).getTextContent());
             
-
+            ruleModel.setInsurerClaimDataMandatory(fieldNode.getChildNodes().item(35).getTextContent());
+            LOG.debug("    Set InsurerClaim Validation to '{}'", ruleModel.isInsurerClaimDataMandatory());
+            
         } catch (Exception ex) {
             LOG.error("Exception thrown getting field validation element '{}': {}", nodeName, ex.getMessage());
         }

@@ -30,7 +30,6 @@ public class FilterByStatus extends BaseFilter {
             claimTypes.add(ClaimType.GTA);
             claimTypes.add(ClaimType.SUBSCRIBER);
             claimTypes.add(ClaimType.TPI);
-            claimTypes.add(ClaimType.INSURER_INVOICE);
             claimTypes.add(ClaimType.INSURER_VS_INSURER);
             claimSearchCriteria.setClaimTypes(claimTypes);
         }
@@ -63,6 +62,16 @@ public class FilterByStatus extends BaseFilter {
                 claimSearchCriteria.setFinalReviewIns(Boolean.FALSE);
             }
         }
+        
+        if (isCHO != null && !isCHO
+                && (ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO.equals(getStatus())
+                    || ClaimStatus.CLAIM_AWAITING_INVOICE_DATA.equals(getStatus())) ) {
+            // Insurer should only see Insurer Uploaded Claims in these queue
+            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+            claimTypes.add(ClaimType.INSURER_UPLOAD);
+            claimSearchCriteria.setClaimTypes(claimTypes);
+        }
+
         return claimSearchCriteria;
     }
     

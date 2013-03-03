@@ -154,8 +154,9 @@ public class NodeHelper {
 
     public static boolean isDataMandatory(ClaimResult claimResult, NodeRuleModel value) {
 
-        LOG.debug("checking inside isDataMandatory method");
+        LOG.debug("checking inside isDataMandatory method...");
         if (claimResult.getClaimParseStatus() != null) {
+            LOG.debug("        parse status: '{}'", claimResult.getClaimParseStatus());
             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM) && value.isNewClaimDataMandatory()) {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
@@ -180,11 +181,20 @@ public class NodeHelper {
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_INVOICE)
                                             && value.isExistingInvoiceDataMandatory()) {
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
-                                            && value.isInsurerUploadDataMandatory()) {
+            } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_EXIST_INVOICE)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE))
+                                            && value.isInsurerInvoiceDataMandatory()) {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
                                             && value.isTpiInterventionDataMandatory()) {
+                return true;
+            } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXISTS_INSURER_CLAIM)
+                    || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING))
+                                            && value.isInsurerClaimDataMandatory()) {
+                LOG.debug("insurerClaimDataMandatory: {} - '{}'", value.getNodeName(), value.getNodeDesc());
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                                             && value.isOffHiredDataMandatory()) {
@@ -195,9 +205,8 @@ public class NodeHelper {
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
                                             && value.isNewSupplementaryInvoiceMandatory()) {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         } else {
 
             if (value.isNewClaimDataMandatory()) {

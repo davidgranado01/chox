@@ -255,7 +255,9 @@
                     <xsd:enumeration value="T1"/>
                     <xsd:enumeration value="T2"/>
                     <xsd:enumeration value="T3"/>
+                    <xsd:enumeration value="NT3"/>
                     <xsd:enumeration value="T4"/>
+                    <xsd:enumeration value="NT4"/>
                     <xsd:enumeration value="T5"/>
                     <xsd:enumeration value="T6"/>
                     <xsd:enumeration value="T7"/>
@@ -659,10 +661,16 @@
                     <xsd:enumeration value="hireMonitoring"/>
                     <xsd:enumeration value="invalidClaimStatus"/>
                     <xsd:enumeration value="insurerVsInsurerInvoice"/>
-                    <xsd:enumeration value="insurerUpload"/>
+                    <xsd:enumeration value="invoiceOnly"/>
                     <xsd:enumeration value="newFixedFeeClaim"/>
                     <xsd:enumeration value="fixedFeeNotAcceptedByInsurer"/>
                     <xsd:enumeration value="existFixedFeeClaim"/>
+                    <xsd:enumeration value="newInsurerClaim"/>
+                    <xsd:enumeration value="existsInsurerClaim"/>
+                    <xsd:enumeration value="insurerHireMonitoringAndNewInvoice"/>
+                    <xsd:enumeration value="insurerHireMonitoring"/>
+                    <xsd:enumeration value="existInsurerInvoice"/>
+                    <xsd:enumeration value="newInsurerSupplementaryInvoice"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -690,8 +698,14 @@
                     <xsd:enumeration value="Supplementary Invoice Already Exists"/>
                     <xsd:enumeration value="New Supplementary Invoice"/>
                     <xsd:enumeration value="Invalid Claim Status"/>
-                    <xsd:enumeration value="New Claim/Invoice (Insurer Upload)"/>
+                    <xsd:enumeration value="New Insurer Invoice"/>
                     <xsd:enumeration value="Error"/>
+                    <xsd:enumeration value="New Insurer Claim"/>
+                    <xsd:enumeration value="Insurer Claim Already Exists"/>
+                    <xsd:enumeration value="Insurer Hire Monitoring and New Invoice"/>
+                    <xsd:enumeration value="Insurer Hire Monitoring"/>
+                    <xsd:enumeration value="Insurer Invoice Already Exists"/>
+                    <xsd:enumeration value="New Insurer Supplementary Invoice"/>
                 </xsd:restriction>
             </xsd:simpleType>
 

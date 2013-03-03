@@ -280,7 +280,7 @@ public class ApplicationAccessibility {
             claimTypeString = ClaimType.TPI.name();
         }
         else if (ClaimType.isInsurerUpload(claimType)) {
-            claimTypeString = ClaimType.INSURER_INVOICE.name();
+            claimTypeString = ClaimType.INSURER_UPLOAD.name();
         }
         else {
             claimTypeString = "";

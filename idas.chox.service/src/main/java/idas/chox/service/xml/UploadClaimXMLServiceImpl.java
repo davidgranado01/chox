@@ -20,6 +20,8 @@ import org.w3c.dom.Element;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
@@ -96,13 +98,18 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         try {
             claimResult.setValid(true);
             bordereauReader.execute(claimResult);
-
         } catch (Exception ex) {
             LOG.error("Exception thrown when reading the Bordereau file: {}", ex.getMessage(), ex);
             return false;
         }
 
         validate(claimResult, choReferences);
+//                                   (23, "New Insurer Claim"),
+//    EXISTS_INSURER_CLAIM                        (24, "Insurer Claim Already Exists"),
+//         (25, "Insurer Hire Monitoring and New Invoice"),
+//                         (26, "Insurer Hire Monitoring"),
+//    INSURER_EXIST_INVOICE                       (27, "Insurer Invoice Already Exists"),
+//               (28, "New Insurer Supplementary Invoice");
 
         if (claimResult.isValid() && claimResult.isDataValid()) {
             LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
@@ -111,6 +118,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
 
                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)) {
                     LOG.debug("Processing '{}' activity.", claimResult.getClaimParseStatus());
@@ -125,13 +133,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
                     LOG.debug("Processing hire monitoring and newInvoice activity.");
 
                     Claim claim = claimResult.getClaim();
@@ -150,8 +160,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     claim.setInvoice(claimResult.getInvoice());
                     activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claim);
-                    LOG.debug("ewInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)) {
+                    LOG.debug("NewInvoice activity completed.");
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING)) {
                     LOG.debug("Processing hire monitering activity.");
 
                     // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
@@ -166,7 +177,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering activity completed.");
 
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)) {
                     LOG.debug("Processing insurer upload activity.");
 
 
@@ -335,8 +346,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return false;
         }
         /*
-         * processing claims begin here each claim in claimResults is processed
-         * , saved then evicted from cache one by one. xmlClaimsDetail is used
+         * processing claims begin here each claim in claimResults is processed,
+         * saved then evicted from cache one by one. xmlClaimsDetail is used
          * to give live update to the front end by putting these details in
          * session and for future reference it is saved in DB.
          */
@@ -701,7 +712,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         LOG.debug("Checking ECD is present...");
         // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
         // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
-        if (claim.getCustomer() != null && claim.getVehicleHire() != null && (claim.getCustomer().getInitialECD() == null && (claim.getHireMonitoringEcds() == null || claim.getHireMonitoringEcds().isEmpty()))) {
+        if (!ClaimType.isInsurerUpload(claim.getClaimType())
+                && claim.getCustomer() != null && claim.getVehicleHire() != null && (claim.getCustomer().getInitialECD() == null && (claim.getHireMonitoringEcds() == null || claim.getHireMonitoringEcds().isEmpty()))) {
             LOG.debug("No ECD - using hire-end");
 
             List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();

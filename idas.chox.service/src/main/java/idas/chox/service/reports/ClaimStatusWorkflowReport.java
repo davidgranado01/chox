@@ -90,7 +90,7 @@ public class ClaimStatusWorkflowReport implements Report {
             }
             
             List<String> statuses = ClaimStatus.getInsurerOutstandingStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
-                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated(), user.getInsurer().isUploadEnabled());
+                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated(), user.getInsurer().isInvoiceUploadEnabled());
             
             List<ClaimStatusWorkflowReportObject> workflowReportObjects = new ArrayList<ClaimStatusWorkflowReportObject>();
 

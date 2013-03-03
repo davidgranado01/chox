@@ -64,7 +64,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         String key;
         for (Accessibility a : accessibilities) {
-
+            this.evict(a);
             if (a.getClaimType() == null) {
                 // Valid for all claim types
                 key = a.getName() + "." + ClaimType.GTA.name();
@@ -97,7 +97,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                 } else {
                     map.put(key, a);
                 }
-                key = a.getName() + "." + ClaimType.INSURER_INVOICE.name();
+                key = a.getName() + "." + ClaimType.INSURER_UPLOAD.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {

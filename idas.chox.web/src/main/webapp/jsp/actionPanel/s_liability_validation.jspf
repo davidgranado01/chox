@@ -331,6 +331,7 @@
 
         var subscriberLiability = <s:property value="fullLiability"/>;
         var fixedFeeLiability = <s:property value="fullLiabilityOrSplit"/>;
+        var insurerClaim = <s:property value="insurerClaim"/>;
 
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
@@ -369,7 +370,7 @@
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove","required");
                 if (isLiabilitySplit() && liabilityStatusModified)
                     addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-            } else {
+            } else if(!insurerClaim) {
                 $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     range:[1,6],
                     messages: {range: "You must select a liability status"}
@@ -379,13 +380,13 @@
                     addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
                 }
             }
-        }else if(action=='referEng' && liabilityStatusModified){
+        }else if(action=='referEng' && liabilityStatusModified && !insurerClaim){
             addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-        }else if(action=='referFNOL' && liabilityStatusModified){
+        }else if(action=='referFNOL' && liabilityStatusModified && !insurerClaim){
             addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-        }else if(action=='pending' && liabilityStatusModified){
+        }else if(action=='pending' && liabilityStatusModified && !insurerClaim){
             addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-        }else if (action=='resolveLiability' || action=='updateLiability'){
+        }else if (!insurerClaim && (action=='resolveLiability' || action=='updateLiability')){
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     range:[1,6],
                     messages: {range: "You must select a liability status"}

@@ -52,16 +52,16 @@ public class NewClaim extends BaseActivity {
              *  The below check has been added to eliminate duplicate 
              *  CHO contact number comment when switching claim.
              */
-            boolean canAddChoContacNumberComment = true;
+            boolean canAddChoContactNumberComment = true;
             if (claim.getComments() != null) {
                 for (Comment comment : claim.getComments()) {
                     if (comment.getComment().startsWith("CHO contact number") 
                             && !comment.isReverted()) {
-                        canAddChoContacNumberComment = false;
+                        canAddChoContactNumberComment = false;
                     }
                 }
             }
-            if (canAddChoContacNumberComment) {
+            if (canAddChoContactNumberComment) {
                 Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
                 claim.addComment(comment);
             }
