@@ -29,6 +29,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         List<Accessibility> accessibilities = findByCriteria(c);
         // Now split into a map with the key on 'batch.<action name>'
         for (Accessibility a : accessibilities) {
+            this.evict(a);
             String key = a.getName().substring(0, a.getName().lastIndexOf('.'));
             if (batchUpdateAccessibilityMap.containsKey(key)) {
                 List<Accessibility> access = batchUpdateAccessibilityMap.remove(key);
@@ -141,6 +142,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         List<Accessibility> accessibilities = findByCriteria(c);
 
         for (Accessibility a : accessibilities) {
+            this.evict(a);
             map.put(a.getName(), a);
         }
 
