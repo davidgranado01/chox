@@ -14,22 +14,22 @@
     
     <if condition='property("HOSTNAME").equalsIgnoreCase("LOCAL")'>
         <then>
-            <include resource="logback-local.xml"/>
+            <include resource="logback-localServer.xml"/>
         </then>  
     </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("TEST")'>
         <then>
-            <include resource="logback-testing.xml"/>
+            <include resource="logback-testServer.xml"/>
         </then>  
     </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("PRODUCTION")'>
         <then>
-            <include resource="logback-production.xml"/>
+            <include resource="logback-productionServer.xml"/>
         </then>  
     </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("TRAINING")'>
         <then>
-            <include resource="logback-training.xml"/>
+            <include resource="logback-trainingServer.xml"/>
         </then>  
     </if>
     

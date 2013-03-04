@@ -36,6 +36,7 @@ public class ClaimRejection extends BaseActivity {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private ClaimService claimService;
+    private ReasonOfRejection reasonOfRejection;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -45,7 +46,7 @@ public class ClaimRejection extends BaseActivity {
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
-            claimNumber.trim();
+            claimNumber = claimNumber.trim();
         }
         this.claimNumber = claimNumber;
     }
@@ -120,7 +121,8 @@ public class ClaimRejection extends BaseActivity {
             throw new AccessDeniedException("Not in correct role to reject claim.");
         }
         
-        if (getReasonOfRejection() == null) {
+        reasonOfRejection = getReasonOfRejection();
+        if (reasonOfRejection == null) {
             throw new Exception("No Reason of Rejection provided");
         }
 
@@ -170,7 +172,7 @@ public class ClaimRejection extends BaseActivity {
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
-        claim.setReasonOfRejection(getReasonOfRejection());
+        claim.setReasonOfRejection(reasonOfRejection);
         claim.setIsFnolReviewed(false);
         if (percentageLiabilityCho != null) {
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
@@ -197,8 +199,8 @@ public class ClaimRejection extends BaseActivity {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
         
-        if (getReasonOfRejection() != null) {
-            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
+        if (reasonOfRejection != null) {
+            claim.addComment(Comment.New(0, "Reason For Rejection: " + reasonOfRejection.getRorName()));
             if(rejectionDescription != null && !rejectionDescription.equals("")) {
                 claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + rejectionDescription));
             }
@@ -216,11 +218,11 @@ public class ClaimRejection extends BaseActivity {
     }
 
     protected ReasonOfRejection getReasonOfRejection() {
-        ReasonOfRejection reasonOfRejection = null;
+        ReasonOfRejection ror = null;
         if (reasonOfRejectionId > 0) {
-            reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
+            ror = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
-        return reasonOfRejection;
+        return ror;
     }
 
     @Override
