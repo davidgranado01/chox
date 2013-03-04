@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.HireMonitoringDetail;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
@@ -26,12 +27,12 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
         
         // VALIDATE HIRE MORNITORING ECD, MUST HAVE AT LEAST ONE ECD (initial or added)
-        if ((claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) && claim.getHireMonitoringEcds().isEmpty()) {
+        if (!ClaimType.isInsurerUpload(claim.getClaimType()) && (claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) && claim.getHireMonitoringEcds().isEmpty()) {
                 sb.append("* You need to provide an Estimated Completion Date (ECD) in order to proceed this claim.");
         }
         
 
-        if (!isHireMonitoringLabourDetailCorrect(claim)) {
+        if (!ClaimType.isInsurerUpload(claim.getClaimType()) && !isHireMonitoringLabourDetailCorrect(claim)) {
             sb.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required. If this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
 
