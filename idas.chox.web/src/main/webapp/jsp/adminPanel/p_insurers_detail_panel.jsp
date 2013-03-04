@@ -882,7 +882,7 @@
                                             Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for 
                                             the following claim types (note an exclusion regex can optionally be specified which, 
                                             if matched on the claim number, will NOT move or re-route the invoice). 
-                                            Note that Insurer Invoices will be routed to 'ManualInvoiceBREApproved: </label>
+                                            Note that Insurer Upload Invoices will be moved directly to 'ManualInvoiceBREApproved: </label>
                                         </div>
                                     </td>
                                 </tr>
@@ -959,7 +959,7 @@
                                 <tr id="insurerManualTr">
                                     <td width="40%">
                                         <div class="chox-form-item" id="insurerManualOwnershipHolder">
-                                            <label class="chox-form-std-label">Insurer Invoices</label>
+                                            <label class="chox-form-std-label">Insurer Upload</label>
                                             <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
                                         </div>
                                     </td>
