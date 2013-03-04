@@ -221,6 +221,7 @@
                 <ref bean="HireUpdateAnomalies" />
                 <ref bean="ClaimsAwaitingHireMonitoringInformation" />
                 <ref bean="AwaitingInvoiceData" />
+                <ref bean="InvoiceUnassigned" />
                 <ref bean="IncorrectInvoiceDataCalculations" />
                 <ref bean="ContestedInvoicesReferredToCHO" />
                 <ref bean="PenaltyChargesApplied" />
@@ -231,17 +232,16 @@
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
                 <ref bean="AwaitingLiabilityResolution" />
+                <ref bean="InterimPayment" />
+                <ref bean="EscalatedInvoicesToSupervisor" />
                 <ref bean="FinalReviewCho" />
                 <ref bean="FinalReviewIns" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoicePaymentLogged" />
-                <ref bean="InterimPayment" />
-                <ref bean="InvoiceUnassigned" />
                 <ref bean="ManualInvoicesToBeAssigned" />
                 <ref bean="ManualInvoiceBREApproved" />
                 <ref bean="ManualInvoiceBRERejected" />
                 <ref bean="ManualInvoiceContested" />
-                <ref bean="EscalatedInvoicesToSupervisor" />
             </list>
         </property>
     </bean>
