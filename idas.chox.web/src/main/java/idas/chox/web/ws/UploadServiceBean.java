@@ -141,7 +141,7 @@ public class UploadServiceBean {
                 result.setUploadStatus(ClaimUploadStatus.NEW_TPI_CLAIM);
             }
             else if (uploadResult.getRemark().equals("Insurer is not accepting TPI invoices")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICE);
+                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICES);
             }
             else if (uploadResult.getRemark().equals("Insurer is not accepting Subscriber Claims")) {
                 result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_SUBSCRIBER_CLAIMS);
