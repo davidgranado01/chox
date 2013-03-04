@@ -45,13 +45,11 @@ public class InsurerUpload extends BaseActivity {
             }
         }
 
-        NodeHelper nodeHelper = new NodeHelper();
-
         if (claim.getInsurer().isInsurerManualAutoRoutingEnable()
                 && (claim.getClaimNumber() == null
                 || claim.getInsurer().getInsurerManualRegexExpression() == null
                 || claim.getInsurer().getInsurerManualRegexExpression().isEmpty()
-                || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claim.getClaimNumber().toUpperCase()))) {
+                || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getInsurerManualRegexExpression(), claim.getClaimNumber().toUpperCase()))) {
             autoRoutedInvoice = true;
         }
 

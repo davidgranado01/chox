@@ -44,6 +44,8 @@ public class NodeHelper {
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
 
+    private NodeHelper() {};
+
     private static String getNodeRuleName(String sectionName, String nodeName) {
         return TextHelper.trimWhiteSpace(sectionName.toLowerCase() + "-" + nodeName);
     }
@@ -429,7 +431,7 @@ public class NodeHelper {
     }
 
     
-    public boolean isRegularExpressionCheckPass(String regExpression, String value) {
+    public static boolean isRegularExpressionCheckPass(String regExpression, String value) {
         boolean bFlag = false;
 
         if (!regExpression.equalsIgnoreCase("")) {
