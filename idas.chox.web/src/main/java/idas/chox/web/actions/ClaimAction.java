@@ -2559,9 +2559,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction) {
-        if (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
-                || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction) {
+    private boolean isEscalatedToSupervisor(Integer daysBeforeEscaltedRestriction, Integer timesInStatusContestedRestionction) {
+        if ((daysBeforeEscaltedRestriction != null && service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction)
+                || (timesInStatusContestedRestionction != null && service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction)) {
             LOG.debug("Claim has been escalated to supervisor");
             return true;
         }
