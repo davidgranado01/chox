@@ -1,3 +1,5 @@
+DROP FUNCTION slaFixedFeeRejectionReport(IN startdate TEXT, IN enddate TEXT, IN insurerid INTEGER);
+
 CREATE OR REPLACE FUNCTION slaFixedFeeRejectionReport(IN startdate TEXT, IN enddate TEXT, IN insurerid INTEGER)
   RETURNS TABLE("Workgroup/Claim Owner" TEXT, "Rejection Reason" VARCHAR, "Total # rejected" BIGINT, "# rejected on day 1" BIGINT, "# rejected on day 2" BIGINT, "# rejected on day 3" BIGINT, "# rejected on day 4" BIGINT, "# rejected on day 5" BIGINT,
                                                "# rejected on day 6" BIGINT, "# rejected on day 7" BIGINT, "# rejected on day 8" BIGINT, "# rejected on day 9" BIGINT, "# rejected on day 10" BIGINT,
@@ -56,7 +58,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND a.new_status = 'ClaimRejected') AS "Total # rejected",
@@ -72,7 +74,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -89,7 +91,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -106,7 +108,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -123,7 +125,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -140,7 +142,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -157,7 +159,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -175,7 +177,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -192,7 +194,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -210,7 +212,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -227,7 +229,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -244,7 +246,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -261,7 +263,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -278,7 +280,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -295,7 +297,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -347,7 +349,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.created_date between $1::DATE AND $2::DATE
                                     AND a.new_status = 'ClaimRejected') AS "Total # rejected",
@@ -363,7 +365,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -380,7 +382,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -397,7 +399,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -414,7 +416,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -431,7 +433,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -448,7 +450,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -465,7 +467,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -483,7 +485,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -500,7 +502,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -517,7 +519,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -534,7 +536,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -551,7 +553,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -568,7 +570,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE
@@ -585,7 +587,7 @@ BEGIN
                                     AND a.claim_id = c.id
                                     AND a.reverted = FALSE
                                     AND NOT EXISTS (SELECT * FROM audit_trail a1 WHERE a1.claim_id = c.id AND a1.new_status = a.new_status AND a1.created_date < a.created_date AND a1.reverted=FALSE)
-                                    AND c.claim_type IN (11,12,13)
+                                    AND ((c.claim_type IN (11,12,13)) OR ( c.id IN (SELECT cm.claim_id FROM comment cm WHERE cm.claim_id = c.id AND cm.reverted = FALSE AND cm.comment ILIKE 'Claim switched from Fixed Fee to GTA.')))
                                     AND ((j=1 AND a.claim_reason_of_rejection = reasonOfRejection.id) OR (j=2))
                                     AND a.new_status = 'ClaimRejected'
                                     AND a.created_date between $1::DATE AND $2::DATE

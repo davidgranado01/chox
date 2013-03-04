@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
     var selectedWorkgroupId = -1;
+    var claimId = -1;
     var insurerId = -1;
     var claimOwnerId = -1;
     var isWorkgroupEnable = false;
@@ -43,6 +44,7 @@
                 this.value = v;
             }});
 
+        claimId = '<s:property value="id"/>';
         insurerId = '<s:property value="insurer.id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
 
@@ -59,7 +61,7 @@
 
         claimOwnerStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
             reader : claimOwnerReader
         });
 
@@ -112,7 +114,7 @@
 
             var workgroupStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":insurerId}}),
+                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":claimId}}),
                 reader: wgrpJsonReader
             });
 
@@ -145,7 +147,7 @@
                     }
                 }
             });
-            workgroupStore.load({ params : {"orgId":insurerId}});
+            workgroupStore.load({ params : {"claimId":claimId}});
             workgroupCombo.setValue(selectedWorkgroupId);
         }
      

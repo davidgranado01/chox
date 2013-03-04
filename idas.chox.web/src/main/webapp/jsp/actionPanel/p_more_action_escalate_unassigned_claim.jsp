@@ -5,6 +5,7 @@
 
     $(document).ready(function(){
             var insurerId = '<s:property value="insurer.id"/>';
+            var claimId = '<s:property value="id"/>';
             var wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -17,7 +18,7 @@
 
             var workgroupStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":insurerId}}),
+                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":claimId}}),
                 reader: wgrpJsonReader
             });
 
@@ -43,7 +44,7 @@
                                             }
                                            }
             });
-            workgroupStore.load({ params : {"orgId":insurerId}});
+            workgroupStore.load({ params : {"claimId":claimId}});
             
             $("#formEscalateClaimAction").submit(function() {
                 if ($("#escalateWorkgroupComboId").val() != "--- Please Select ---") {
