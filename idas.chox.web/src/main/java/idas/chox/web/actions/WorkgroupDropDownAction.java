@@ -1,15 +1,18 @@
 package idas.chox.web.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import net.sf.json.JSONArray;
-import idas.chox.core.model.LookupItem;
-import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.LookupService;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.LookupItem;
+import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.LookupService;
 
 public class WorkgroupDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupDropDownAction.class);
@@ -43,10 +46,12 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setOrgId(Set<Integer> orgId) {
-        if (orgId.contains(null)) 
+        if (orgId.contains(null)) { 
             this.orgId = null;
-        else
+        }
+        else {
             this.orgId = orgId;
+        }
     }
 
     public void setLookupService(LookupService service) {
@@ -92,6 +97,17 @@ public class WorkgroupDropDownAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String getAllInsurerWorkgroups() throws Exception {
+        LOG.debug("ClaimSearchCombo action called.");
+        if (getOrgId() != null) {
+            for (Integer insId : getOrgId()) {
+               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false)); 
+            }
+        }
+        LOG.debug("Workgroups retrieved: {}", workgroups.size());
+        return SUCCESS;
+    }
+
     @Override
     public String execute() throws Exception {
         LOG.debug("execute called in WorkgroupDropDownAction.");
@@ -100,8 +116,9 @@ public class WorkgroupDropDownAction extends BaseAction {
             LOG.debug("Need to get workgroups for current claim id={}.", claimId);
             workgroups = service.getWorkgroupsByClaimId(claimId, true);
         }
-        else
+        else {
             workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
+        }
         return SUCCESS;
     }
 }

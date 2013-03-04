@@ -12,29 +12,27 @@ import idas.chox.core.util.DateHelper;
  * @author John
  */
 public class RepairBookedInDateAnomalousNotificationChecker implements AnomalousCheck {
+
     private String dayString;
-    
+
     @Override
     public boolean check(Claim c) {
         //Check repair book in date is either a Firday, Saturday or Sunday.
         boolean bFlag = false;
 
-        if (c.getHireMonitoringDetail() != null) {
+        if (c.getHireMonitoringDetail() != null && c.getHireMonitoringDetail().getRepairBookInDate() != null
+                && c.getCustomer() != null && c.getCustomer().getIsUsable()) {
 
-            if (c.getCustomer().getIsUsable()) {
-                if (c.getHireMonitoringDetail().getRepairBookInDate() != null) {
-                    int day = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate());
-                    if (day == Calendar.FRIDAY) {
-                        dayString = "Friday";
-                        bFlag = true;
-                    } else if (day == Calendar.SATURDAY) {
-                        dayString = "Saturday";
-                        bFlag = true;
-                    } else if (day == Calendar.SUNDAY) {
-                        dayString = "Sunday";
-                        bFlag = true;
-                    }
-                }
+            int day = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate());
+            if (day == Calendar.FRIDAY) {
+                dayString = "Friday";
+                bFlag = true;
+            } else if (day == Calendar.SATURDAY) {
+                dayString = "Saturday";
+                bFlag = true;
+            } else if (day == Calendar.SUNDAY) {
+                dayString = "Sunday";
+                bFlag = true;
             }
         }
 
@@ -51,5 +49,4 @@ public class RepairBookedInDateAnomalousNotificationChecker implements Anomalous
     public boolean isRefreshRequired() {
         return true;
     }
-   
 }

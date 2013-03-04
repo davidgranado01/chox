@@ -335,7 +335,7 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             Object[] previousState, String[] propertyNames, Type[] types) {
        LOG.debug("In onFlushDirty() for entity class '{}': {}", entity.getClass(), entity);
         if (getSecurityInfoProvider().getCurrentUser() == null) {
-            LOG.error("No 'current' user found in DB Interceptor for entity class '{}'", entity.getClass());
+            LOG.warn("No 'current' user found in DB Interceptor for entity class '{}'", entity.getClass());
         }
 
         if (entity instanceof Auditable && getSecurityInfoProvider().getCurrentUser() != null) {

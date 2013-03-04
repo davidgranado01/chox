@@ -39,7 +39,7 @@ Ext.onReady(function(){
     
         claimOwnerStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+            ({url : "<%= request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction2.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
             reader : claimOwnerReader
         });
     
@@ -86,7 +86,7 @@ Ext.onReady(function(){
 
         var workgroupStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":insurerId}}),
+            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":<s:property value="id"/>}}),
             reader: wgrpJsonReader,
              listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
         });
@@ -124,7 +124,7 @@ Ext.onReady(function(){
                 }
             }
         });
-        workgroupStore.load({ params : {"orgId":insurerId}});
+        workgroupStore.load({ params : {"claimId":<s:property value="id"/>}});
     }
 
 });

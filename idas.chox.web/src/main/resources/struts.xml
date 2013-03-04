@@ -369,7 +369,7 @@
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
         </action>
-        <action name="WorkgroupDropDownActionByInsurer2" class="idas.chox.web.actions.WorkgroupDropDownAction"  method="getInsurerWorkgroup">
+        <action name="WorkgroupDropDownActionByInsurer2" class="idas.chox.web.actions.WorkgroupDropDownAction"  method="getAllInsurerWorkgroups">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getUniqueWorkgroupId" class="idas.chox.web.actions.InboxAction"  method="getUniqueWorkgroupId">
@@ -381,13 +381,15 @@
         <action name="TeamDropDownActionByInsurer" class="idas.chox.web.actions.TeamDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
+        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="getAllClaimHandlers">
             <result>/jsp/p_jsonData.jsp</result>
-            <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
         </action>
         <action name="SearchSupplierClaimOwnerDropDownAction" class="idas.chox.web.actions.SupplierClaimOwnerDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
+        </action>
+        <action name="ClaimHandlerRoleUserDropDownAction2" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
+            <result>/jsp/p_jsonData.jsp</result>
         </action>
         <action name="ClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/dropdown/p_dropdown_claimHandlerUser.jsp</result>

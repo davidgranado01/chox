@@ -108,8 +108,7 @@ public class WorkgroupRouting extends BaseActivity {
                 }
             }
         } else {
-            LOG.error("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
-            throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
+            LOG.warn("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
         }
 
         return false;
@@ -128,8 +127,8 @@ public class WorkgroupRouting extends BaseActivity {
         BigDecimal age = BigDecimal.ZERO;
         Date hireStart = null;
         BigDecimal vehicleClassPrice;
-        VehicleClass vehicleClass = null;
-        Date firstRegistration = null;
+        VehicleClass vehicleClass;
+        Date firstRegistration;
         
         if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null) {
             hireStart = claim.getVehicleHire().getHireStart();
@@ -180,8 +179,7 @@ public class WorkgroupRouting extends BaseActivity {
                 }
             }
         } else {
-            LOG.error("Automatic Routing Mapping based on price is Not Defined for claim '{}'", claim.getChoReference());
-            throw new Exception("Automatic Routing Mapping  based on is Not Defined, Please contact CHOX Admin");
+            LOG.warn("Automatic Routing Mapping based on price is Not Defined for claim '{}'", claim.getChoReference());
         }
 
         return false;
