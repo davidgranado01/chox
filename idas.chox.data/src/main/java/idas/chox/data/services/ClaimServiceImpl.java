@@ -808,13 +808,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.isEscalatedToSupervisor()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             
-            criteria.add(Restrictions.disjunction()
+            if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null && getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
+                criteria.add(Restrictions.disjunction()
                     .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
                     .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
                     "where a.claim_id = {alias}.id " +
                     "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
                     "and a.reverted = false " +
                     "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" )));
+            } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
+                criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
+            } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
+                criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
+                    "where a.claim_id = {alias}.id " +
+                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
+                    "and a.reverted = false " +
+                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" ));
+            } else {
+                // Supervisor activated but no details given - therefore queue should be empty
+                criteria.add(Restrictions.eq("status", "NoSuchStatus"));
+            }
         }
 
         if (searchCriteria.getIsInterimPaymentMade()) {
