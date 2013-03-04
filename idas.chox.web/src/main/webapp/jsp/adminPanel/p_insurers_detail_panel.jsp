@@ -756,13 +756,13 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Manual Claims</label>
+                                        <label class="chox-form-std-label">Enable Insurer Claims</label>
                                         <s:checkbox name="claimUploadEnabled" value="claimUploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Manual Invoices</label>
+                                        <label class="chox-form-std-label">Enable Insurer Invoices</label>
                                         <s:checkbox name="invoiceUploadEnabled" value="invoiceUploadEnabled" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
@@ -861,7 +861,7 @@
                                 <tr>
                                     <td colspan=2>
                                         <div class="chox-form-item" id="manualInvoiceWorkgroupHolder">
-                                            <label class="chox-form-std-label">Enable Manual Invoice Workgroups</label>
+                                            <label class="chox-form-std-label">Enable Insurer Invoice Workgroups</label>
                                             <s:checkbox name="enableManualInvoiceWorkgroups" id="enableManualInvoiceWorkgroupCheckboxId" value="enableManualInvoiceWorkgroups" />
                                         </div>
                                     </td>
@@ -869,7 +869,7 @@
                                <tr>
                                     <td colspan=2>
                                         <div class="chox-form-item" id="manualInvoiceOwnershipHolder">
-                                            <label class="chox-form-std-label">Enable Manual Invoice Ownership</label>
+                                            <label class="chox-form-std-label">Enable Insurer Invoice Ownership</label>
                                             <s:checkbox name="enableManualInvoiceOwnership" id="enableManualInvoiceOwnershipCheckboxId" value="enableManualInvoiceOwnership" />
                                         </div>
                                     </td>
@@ -882,7 +882,7 @@
                                             Allow BRE Approved Invoices to move directly to 'AwaitingInvoicePayment' and be re-routed for 
                                             the following claim types (note an exclusion regex can optionally be specified which, 
                                             if matched on the claim number, will NOT move or re-route the invoice). 
-                                            Note that Manual Invoices will be routed to 'ManualInvoiceBREApproved: </label>
+                                            Note that Insurer Invoices will be routed to 'ManualInvoiceBREApproved: </label>
                                         </div>
                                     </td>
                                 </tr>
@@ -959,7 +959,7 @@
                                 <tr id="insurerManualTr">
                                     <td width="40%">
                                         <div class="chox-form-item" id="insurerManualOwnershipHolder">
-                                            <label class="chox-form-std-label">Manual Invoices</label>
+                                            <label class="chox-form-std-label">Insurer Invoices</label>
                                             <s:checkbox name="insurerManualAutoRoutingEnable" id="insurerManualAutoRoutingEnable" value="insurerManualAutoRoutingEnable" />
                                         </div>
                                     </td>

@@ -37,14 +37,14 @@ function doUpdateManualInvoice(action){
                             <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                                 <tr>
                                     <td colspan="2" class="choice" nowrap="true">
-                                        <input type="button" id="UMIPFormId" value="Manual Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
+                                        <input type="button" id="UMIPFormId" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" />
                                         <input type="button" id="UMICFormId" value="Invoice Contested With CHO" onclick="doUpdateManualInvoice('updateManualInvoiceContested');" />
                                     </td>
                                 </tr>
                             </s:if>
                             <s:else>
                                 <tr>
-                                    <td><input type="button" id="UMIPFormId" value="Manual Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" /></td>
+                                    <td><input type="button" id="UMIPFormId" value="Insurer Invoice Paid" onclick="doUpdateManualInvoice('updateManualInvoicePaid');" /></td>
                                 </tr>
                             </s:else>   
                         </table>
