@@ -758,7 +758,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
 //            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
-            DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Projections.property("claim"));
+            DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
             DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
             criteria.add(Subqueries.propertyIn("id", inSubclause));
             criteria.add(Restrictions.in("status", anomaliesStatus));
@@ -766,7 +766,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).setProjection(Projections.projectionList().add(Projections.property("claim")));
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).add(Restrictions.eq("deleted", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
             criteria.add(Subqueries.propertyIn("id", noti));
         }
 
