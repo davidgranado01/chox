@@ -277,7 +277,7 @@
                 && $('#ACKmessageBox').text().indexOf('Reason For Rejection') == -1){
                 $('#ACKmessageBox').append('<br/>').append("You must choose a 'Reason For Rejection'").append('<br/>').show();
             }else if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
-                    var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+                    var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
                     var claimId = $("form#formAcknowledgeAction #claimId").val();
                     var form = $("form#formAcknowledgeAction");
 
@@ -291,7 +291,7 @@
             }
             else{
                
-                var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+                var claimNumber = $("form#formAcknowledgeAction #claimNumber").val();
                 var claimId = $("form#formAcknowledgeAction #claimId").val();
                 var form = $("form#formAcknowledgeAction");
 
