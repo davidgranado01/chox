@@ -270,7 +270,9 @@
                     <xsd:enumeration value="T1"/>
                     <xsd:enumeration value="T2"/>
                     <xsd:enumeration value="T3"/>
+                    <xsd:enumeration value="NT3"/>
                     <xsd:enumeration value="T4"/>
+                    <xsd:enumeration value="NT4"/>
                     <xsd:enumeration value="T5"/>
                     <xsd:enumeration value="T6"/>
                     <xsd:enumeration value="T7"/>
@@ -669,7 +671,7 @@
                     <xsd:enumeration value="Incorrect Hire State"/>
                     <xsd:enumeration value="Incorrect XML Structure"/>
                     <xsd:enumeration value="Incorrect Value Provided for Hire State"/>
-                    <xsd:enumeration value="Insurer is not accepting TPI invoice"/>
+                    <xsd:enumeration value="Insurer is not accepting TPI invoices"/>
                     <xsd:enumeration value="Insurer is not accepting Subscriber Claims"/>
                     <xsd:enumeration value="Insurer is not accepting Fixed Fee Claims"/>
                     <xsd:enumeration value="New TPI Claim"/>
@@ -678,12 +680,13 @@
                     <xsd:enumeration value="New Supplementary Invoice"/>
                     <xsd:enumeration value="Invalid Claim Status"/>
                     <xsd:enumeration value="New Insurer Invoice"/>
+                    <xsd:enumeration value="Error"/>
                     <xsd:enumeration value="New Insurer Claim"/>
                     <xsd:enumeration value="Insurer Claim Already Exists"/>
                     <xsd:enumeration value="Insurer Hire Monitoring and New Invoice"/>
                     <xsd:enumeration value="Insurer Hire Monitoring"/>
                     <xsd:enumeration value="Insurer Invoice Already Exists"/>
-                    <xsd:enumeration value="Error"/>
+                    <xsd:enumeration value="New Insurer Supplementary Invoice"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
