@@ -117,6 +117,17 @@
             <result name="error">/jsp/excel_generation_overlimit.jsp</result>
         </action>
         
+        <action name="doTaskExportExcel" method="exportTask" class="idas.chox.web.actions.TasksAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">attachment;filename="excel_report.xls"</param>
+                <param name="bufferSize">65536</param>
+            </result>
+            <result name="failed">/jsp/excel_generation_failed.jsp</result>
+            <result name="error">/jsp/excel_task_generation_overlimit.jsp</result>
+        </action>
+        
         <action name="generateExcelReportForProcessedClaimDetails" method="generateExcelReport" class="idas.chox.web.actions.XmlUploadAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
@@ -313,13 +324,21 @@
         <action name="updateExportClaimsCount" class="idas.chox.web.actions.ExcelGeneratorAction" method="getExportedClaimsCount">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="updateExportTasksCount" class="idas.chox.web.actions.TasksAction" method="getExportedTasksCount">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="cancelExport" class="idas.chox.web.actions.ExcelGeneratorAction" method="cancelExportOperation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="cancelTaskExport" class="idas.chox.web.actions.TasksAction" method="cancelTaskExportOperation">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="generateExportFile" class="idas.chox.web.actions.ExcelGeneratorAction" method="doExportExcel">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        
+        <action name="generateTaskExportFile" class="idas.chox.web.actions.TasksAction" method="doTaskExportToExcel">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="userBrowserWarning" class="idas.chox.web.actions.UserAccountAction" method="UserBrowserWarning">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>

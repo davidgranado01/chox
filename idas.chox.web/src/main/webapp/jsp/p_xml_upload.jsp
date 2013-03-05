@@ -331,6 +331,14 @@
             ]
         });
 
+        var exortToExcelTbar = new Ext.Toolbar({
+            items:['->',{
+                    text:'Export To Excel',
+                    id : 'xmlUploadClaimsExportToExcelButtonId',
+                    handler : doExportUploadedClaimDetailsToExcel
+                }]
+        });
+        
         /*
          *        Uploaded Files Grid
          */
@@ -469,6 +477,7 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             title:'Uploaded Claim Details',
+            tbar : exortToExcelTbar,
             columns: [
                 //                claimsDetailGridSelectionModel,
                 new Ext.grid.RowNumberer({width:40}),
@@ -838,7 +847,7 @@
         sm.selectRow(lastSelectedFile);
     }
 
-    
+
 </script>
  <!--<form autocomplete="off" id="generateUploadedClaimsDetailFormId" action="<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action"  method="post">
     <input type="hidden"  name="jsonData" value="" id="jsonDataId" />
@@ -889,6 +898,4 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
     <div id="uploadedFileGrid"></div>
-
-
 </div>

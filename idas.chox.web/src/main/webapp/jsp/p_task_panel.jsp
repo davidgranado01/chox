@@ -7,6 +7,7 @@
     var tasksGrid;
     var dateRenderer;
     var hideCompleted = true;
+    var showAssignedTasksOnly = true;
     var createNewTaskWindow;
     var visibilityCombo;
     var taskTypeStore;
@@ -42,8 +43,6 @@
                 reader:tasksJsonReader,
                 remoteSort: true
             });
-            $('#taskMarkId').attr('disabled', 'disabled');
-            $('#taskCreateId').attr('disabled', 'disabled');
         </s:if>
         <s:else >
             tasksDataStore = new Ext.data.Store({
@@ -104,6 +103,65 @@
             emptyMsg: "No Tasks to display"
         });
 
+        
+        var tbar = new Ext.Toolbar({
+            items:[
+                     {
+                         text:'Mark As Complete',
+                         id : 'markAsCompleteButtonId',
+                         handler : markAsComplete,
+                         disabled : <s:property value="isChoxAdmin" />
+                     }
+                    ,'-'
+                    ,{
+                        text:'Add New Task',
+                        id : 'addNewTaskButtonId',
+                        handler : addNewTask,
+                        disabled : <s:property value="isChoxAdmin" />
+                    }
+                    ,'-'
+                    ,{
+                        text:'Show Completed Tasks',
+                        id : 'hideCompletedTasksButtonId',
+                        enableToggle: true,
+                        toggleHandler: function() {
+                            toggleComplete(this);
+                            if (this.pressed) 
+                            {
+                                this.setText('Hide Completed Tasks');
+                            } else {
+                                this.setText('Show Completed Tasks');
+                            }
+                        },
+                        pressed: false
+                    }
+                    ,'-'
+                    ,{
+                        text:'Show All Tasks',
+                        id : 'assignedTasksOnlyButtonId',
+                        enableToggle: true,
+                        toggleHandler: function() {
+                            toggleShowAssignedTasksOnly(this);
+                            if (this.pressed) 
+                            {
+                                this.setText('Show my assigned tasks only');
+                            } else {
+                                this.setText('Show all tasks');
+                            }
+                        },
+                        pressed: false,
+                        disabled : !<s:property value="isUserHasManagerRole" />
+                    }
+                    ,'->'
+                    ,{
+                        text:'Export To Excel',
+                        id : 'taskExportToExcelButtonId',
+                        handler : doTaskExportExcel
+                     }
+                 ]
+        });
+        
+        
    if (document.getElementById('tasksGridId')) {
 
         tasksGrid = new Ext.grid.GridPanel({
@@ -119,6 +177,8 @@
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
             bbar: pagingBar,
+            tbar:tbar,
+            title : '<div style="text-align:center;">Task Management</div>',
             loadMask: true,
             columns: [
                 checkBoxSelMod,
@@ -139,7 +199,7 @@
             //            autoHeight: true
             //            maxHeight: 200
             //            autoWidth: true,
-            height:160
+            height:220
         });
 
         tasksGrid.getView().getRowClass = function(record, index) {
@@ -391,7 +451,7 @@
                                 if(data.resultType=='YesNo'){
                                     if(data.result=='yes'){
                                         createNewTaskWindow.hide();
-                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
+//                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
                                         loadTasks();
                                     }
                                 }else if(data.resultType=='Message'){
@@ -478,7 +538,7 @@
                                 if(data.resultType=='YesNo'){
                                     if(data.result=='yes'){
                                         createNewTaskWindow.hide();
-                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
+//                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
                                         loadTasks();
                                     }
                                 }else if(data.resultType=='Message'){
@@ -538,18 +598,8 @@
         }
     }
 
-//    function gridRefresh() {
-//
-//        if ($('#inboxPanelTabId').is(':visible')) {
-//            tasksGrid.getView().refresh();
-//        }
-//        else { // if the grid is not visible, no point in refreshing.
-//            // so we'll add another timed event to try again'
-//            setTimeout("gridRefresh()", 500);
-//        }
-//    }
     function loadTasks(){
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted }
+        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
     }
 
@@ -569,6 +619,14 @@
                 }
             });
             setTimeout("loadTasks()", 100);
+        } else {
+            Ext.MessageBox.show({
+//                title: 'Error',
+                msg: 'No task selected. Please select a task.',
+                width:300,
+                buttons: Ext.MessageBox.OK,
+                icon : Ext.MessageBox.INFO
+            });
         }
     }
 
@@ -591,25 +649,12 @@
         loadTasks();
     }
     
+    function toggleShowAssignedTasksOnly(el) {
+        showAssignedTasksOnly = !showAssignedTasksOnly;
+        loadTasks();
+    }
+    
 </script>
 
-<div class="chox-form-item">
-    <label id="taskPanelLabelId">Task Management</label>
-</div>
-<div class="chox-form-container-taskPanel" style="display:block">
-    <br/>
-    <div class="chox-form-item" style="float:left">
-        <input type="button" value="Mark As Complete" id="taskMarkId" onclick="markAsComplete()"/>
-    </div>
-    <div class="chox-form-item" style="float:right">
-        <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onClick="toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
-    </div>
-    <label class="emptyLabel" style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-    <div style="float:right" class="chox-form-item">
-        <input type="button" value="Add New Task" id="taskCreateId" onclick="addNewTask()"/>
-    </div>
-    <br/>
-    <br/>
-</div>
 <div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
 

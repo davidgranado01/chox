@@ -2,10 +2,6 @@ package idas.chox.web.viewdata;
 
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 
-/**
- *
- * @author seeni
- */
 public class UploadedClaimDetailViewData {
 
     private String supplierReferenceNumber;
@@ -16,7 +12,6 @@ public class UploadedClaimDetailViewData {
     private String breFailureMessages;
     private int bordereauId;
     private Integer claimId;
-//    private int rowNumber;
     private boolean valid;
 
     public UploadedClaimDetailViewData(UploadedXMLClaimsDetail data) {
@@ -30,9 +25,6 @@ public class UploadedClaimDetailViewData {
         this.claimId = data.getClaimId();
         this.valid = data.isValid();
         this.breFailureMessages = data.getBreFailureMessages();
-//        if (data.getId() != null) {
-//            this.rowNumber = data.getId();
-//        }
     }
 
     public UploadedClaimDetailViewData() {
@@ -101,14 +93,6 @@ public class UploadedClaimDetailViewData {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
-//    public int getRowNumber() {
-//        return rowNumber;
-//    }
-//
-//    public void setRowNumber(int rowNumber) {
-//        this.rowNumber = rowNumber;
-//    }
 
     public String getBreFailureMessages() {
         return breFailureMessages;

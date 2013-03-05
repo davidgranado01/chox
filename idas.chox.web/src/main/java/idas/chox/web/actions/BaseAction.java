@@ -381,6 +381,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
         this.baseDataService = baseDataService;
     }
 
+    public boolean getIsUserHasManagerRole() {
+        return (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) ? true 
+                : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG)) ? true : false;
+    }
+    
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException)) {
