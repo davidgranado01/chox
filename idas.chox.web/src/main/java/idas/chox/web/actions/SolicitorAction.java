@@ -1,7 +1,7 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Incident;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import idas.chox.core.model.Injury;
 
 /**
@@ -37,6 +37,6 @@ public class SolicitorAction extends ClaimModelAction<Injury> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+        return TabAccessibility.TAB_CLAIM_DETAIL;
     }
 }

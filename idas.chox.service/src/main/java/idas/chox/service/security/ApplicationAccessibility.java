@@ -28,20 +28,9 @@ public class ApplicationAccessibility {
     private Map<String, Accessibility> accessibilityByClaimTypeMap;
     private Map<String, List<Accessibility>> batchUpdateAccessibilityMap;
     private AccessibilityService accessibilityService;
+
     // ***************************************
-    // TAB
-    // ***************************************
-    public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
-    public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
-    public static final String TAB_HIRE_MONITORING = "HireMonitoring";
-    public static final String TAB_PAYMENT_PACK = "PaymentPack";
-    public static final String TAB_HISTORY = "History";
-    public static final String TAB_NOTES = "Notes";
-    public static final String TAB_TASKS = "Tasks";
-    public static final String TAB_AUDIT_TRAIL = "AuditTrail";
-    public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
-    // ***************************************
-    // Activities
+    // Activities via buttons
     // ***************************************
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaim";
@@ -49,15 +38,7 @@ public class ApplicationAccessibility {
     public static final String REOPEN_CLAIM = "ReopenClaim";
     public static final String SWITCH_CLAIM_MULTIPLE_INS = "SwitchClaimToMultipleInsurer";
     public static final String PAYMENT_NOT_RECEIVED = "PaymentNotReceived";
-    // ***************************************
-    // NOTIFICATION
-    // ***************************************
-    public static final String NOTE_CLAIM_NUMBER = "ClaimNumberNotification";
-    public static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
-    public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
-    public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
-    public static final String NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE = "DuplicatedSupplementaryInvoiceNotification";
-    public static final String NOTE_AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcomeNotification";
+
     // ***************************************
     // FILTER
     // ***************************************
@@ -91,49 +72,6 @@ public class ApplicationAccessibility {
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED = "FNOLReviewed";
-    // ***************************************
-    // MENU
-    // ***************************************
-    public static final String MENU_DASHBOARD = "Dashboard";
-    public static final String MENU_REPORT = "Report";
-    public static final String MENU_ADMIN = "Admin";
-    public static final String MENU_INBOX = "Inbox";
-    public static final String MENU_SEARCH = "Search";
-    public static final String MENU_UPLOAD = "Upload";
-    // ***************************************
-    // REPORT
-    // ***************************************
-    public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
-    public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
-    public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
-    public static final String REPORT_INSURER_PAYMENT = "InsurerPayment";
-    public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
-    public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
-    public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
-    public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
-    public static final String REPORT_BILLING_CHO_REPORT = "BillingCHOReport";
-    public static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
-    public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
-    public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
-    public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
-    public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
-    public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
-    public static final String REPORT_INSURER_WORKFLOW_REPORT = "ClaimStatusWorkflowReport";
-    public static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
-    public static final String REPORT_HANDLER_PERFORMANCE_REPORT = "HandlerPerformanceReport";
-    public static final String REPORT_HANDLER_ACTIONS_REPORT = "IncomingHandlerActionsReport";
-    //BRE Invoice Approval Report
-    public static final String REPORT_BRE_INVOICE_APPROVAL_DISPUTE = "BreInvoiceApprovalDisputeReport";
-    public static final String REPORT_TEAM_SITE_BRE_REPORT = "TeamSiteBreWorkflowReport";
-    public static final String REPORT_WORKGROUP_OWNER_BRE_REPORT = "WorkgroupOwnerBreInvoiceReport";
-    // ***************************************
-    // ADMIN
-    // ***************************************
-    public static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
-    public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
-    public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
-    public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
-    public static final String ADMIN_BILLING = "Billing";
     // </editor-fold>
 
 

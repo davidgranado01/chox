@@ -13,7 +13,7 @@ import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -31,7 +31,7 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_HIRE_MONITORING;
+        return TabAccessibility.TAB_HIRE_MONITORING;
     }
 
     @Override

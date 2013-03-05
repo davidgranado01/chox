@@ -18,6 +18,7 @@ import idas.chox.core.services.*;
 import idas.chox.core.util.CalcHelper;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import idas.chox.web.VehicleClassPriceMapperComparator;
@@ -1506,7 +1507,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceAction">
     String getTabName() {
-        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
+        return TabAccessibility.TAB_INVOICE_DETAIL;
     }
 
     public String getDaysWithCHOForReview() {
@@ -2418,7 +2419,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
-        Date hireStart = null;
+        Date hireStart;
         if (claim.getVehicleHire() == null) {
             LOG.warn("No vehicle hire for claim: {}", claim.getChoReference());
             hireStart = new Date();

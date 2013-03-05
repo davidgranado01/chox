@@ -3,6 +3,12 @@ package idas.chox.service.security;
 import idas.chox.core.model.WebUser;
 
 public class MenuAccessibility {
+    private static final String MENU_DASHBOARD = "Dashboard";
+    private static final String MENU_REPORT = "Report";
+    private static final String MENU_ADMIN = "Admin";
+    private static final String MENU_INBOX = "Inbox";
+    private static final String MENU_SEARCH = "Search";
+    private static final String MENU_UPLOAD = "Upload";
 
     private boolean dashBoardMenuAccessibility;
     private boolean reportMenuAccessibility;
@@ -17,12 +23,12 @@ public class MenuAccessibility {
 
     public MenuAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
-        dashBoardMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_DASHBOARD, user) > 0;
-        reportMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_REPORT, user) > 0;
-        adminMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_ADMIN, user) > 0;
-        inboxMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_INBOX, user) > 0;
-        searchMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_SEARCH, user) > 0;
-        uploadMenuAccessibility = applicationAccessibility.checkMenuAccessibility(ApplicationAccessibility.MENU_UPLOAD, user) > 0;
+        dashBoardMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_DASHBOARD, user) > 0;
+        reportMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_REPORT, user) > 0;
+        adminMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_ADMIN, user) > 0;
+        inboxMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_INBOX, user) > 0;
+        searchMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_SEARCH, user) > 0;
+        uploadMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_UPLOAD, user) > 0;
     }
 
     public boolean getIsDashBoardMenuAccessibility() {

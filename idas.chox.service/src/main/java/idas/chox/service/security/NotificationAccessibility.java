@@ -4,6 +4,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 
 public class NotificationAccessibility {
+    private static final String NOTE_CLAIM_NUMBER = "ClaimNumberNotification";
+    private static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
+    private static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
+    private static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
+    private static final String NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE = "DuplicatedSupplementaryInvoiceNotification";
+    private static final String NOTE_AWAITING_LITIGATION_OUTCOME = "AwaitingLitigationOutcomeNotification";
 
     private short claimNumberNotificationAccessibility;
     private short userViewingNotificationAccessibility;
@@ -14,17 +20,17 @@ public class NotificationAccessibility {
 
     public NotificationAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim) {
         claimNumberNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_CLAIM_NUMBER, user, claim);
+                                                    NOTE_CLAIM_NUMBER, user, claim);
         userViewingNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_CLAIM_VIEWING, user, claim);
+                                                    NOTE_CLAIM_VIEWING, user, claim);
         intelligentNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_CLAIM_INTELLIGENT_NOTE, user, claim);
+                                                    NOTE_CLAIM_INTELLIGENT_NOTE, user, claim);
         notificationNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_CLAIM_NOTES, user, claim);
+                                                    NOTE_CLAIM_NOTES, user, claim);
         duplicatedSupplementaryInvoiceNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE, user, claim);
+                                                    NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE, user, claim);
         awaitingLitigationOutcomeNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(
-                                                    ApplicationAccessibility.NOTE_AWAITING_LITIGATION_OUTCOME, user, claim);
+                                                    NOTE_AWAITING_LITIGATION_OUTCOME, user, claim);
     }
 
     public boolean getDuplicatedSupplementaryInvoiceNotificationAccessibility() {

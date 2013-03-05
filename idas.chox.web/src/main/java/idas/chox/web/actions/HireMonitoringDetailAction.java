@@ -11,7 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -147,7 +147,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_HIRE_MONITORING;
+        return TabAccessibility.TAB_HIRE_MONITORING;
     }
     
     public Customer getCustomer() {

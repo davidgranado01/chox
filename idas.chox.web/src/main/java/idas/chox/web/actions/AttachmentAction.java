@@ -27,7 +27,7 @@ import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
@@ -69,7 +69,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     // <editor-fold defaultstate="collapsed" desc="Implementation of BaseModelAction">
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_PAYMENT_PACK;
+        return TabAccessibility.TAB_PAYMENT_PACK;
     }
     // </editor-fold>
 

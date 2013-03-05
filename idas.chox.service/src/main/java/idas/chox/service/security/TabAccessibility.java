@@ -4,6 +4,15 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 
 public class TabAccessibility {
+    public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
+    public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
+    public static final String TAB_HIRE_MONITORING = "HireMonitoring";
+    public static final String TAB_PAYMENT_PACK = "PaymentPack";
+    public static final String TAB_HISTORY = "History";
+    public static final String TAB_NOTES = "Notes";
+    public static final String TAB_TASKS = "Tasks";
+    public static final String TAB_AUDIT_TRAIL = "AuditTrail";
+    public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
 
     private short claimDetailTabAccessibility;
     private short invoiceDetailTabAccessibility;
@@ -15,27 +24,27 @@ public class TabAccessibility {
     private short auditTrailTabAccessibility;
 
     public TabAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, Claim claim) {
-        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_CLAIM_DETAIL,
+        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_CLAIM_DETAIL,
                         user, claim);
-        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_HIRE_MONITORING,
+        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HIRE_MONITORING,
                 user, claim);
-        historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_HISTORY,
+        historyTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_HISTORY,
                 user, claim);
         if (historyTabAccessibility > 0 && claim.getInvoice() == null ) {
             historyTabAccessibility = 0;
         }
-        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_INVOICE_DETAIL,
+        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_INVOICE_DETAIL,
                 user, claim);
         if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null ) {
             invoiceDetailTabAccessibility = 0;
         }
-        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_PAYMENT_PACK,
+        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_PAYMENT_PACK,
                 user, claim);
-        notesTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_NOTES,
+        notesTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_NOTES,
                 user, claim);
-        tasksTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_TASKS,
+        tasksTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_TASKS,
                 user, claim);
-        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(ApplicationAccessibility.TAB_AUDIT_TRAIL,
+        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibilityEditable(TAB_AUDIT_TRAIL,
                 user, claim);
 
     }

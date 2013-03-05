@@ -13,7 +13,7 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.CommentService;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.core.util.DateHelper;
 
@@ -87,7 +87,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_NOTES;
+        return TabAccessibility.TAB_NOTES;
     }
 
     public String getComment() {
