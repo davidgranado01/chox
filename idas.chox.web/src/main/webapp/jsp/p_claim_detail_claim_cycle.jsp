@@ -30,7 +30,6 @@
         });
 
         var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
-        auditTrailData.setDefaultSort('modifiedDate', 'desc');
 
         auditGrid = new Ext.grid.GridPanel({
             id: 'audit_trail_grid_id',
@@ -45,9 +44,9 @@
  //             return (record.data.reverted ? 'gray-row' : 'black-row' );
             }},
             columns: [
-                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: true, resizable: true, renderer: dateRenderer},
-                {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true},
-                {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true }
+                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true, renderer: dateRenderer},
+                {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: false, resizable: true},
+                {header: "Status", width: 500, dataIndex: 'status', sortable: false, resizable: true }
             ],
             width:990,
             height:300

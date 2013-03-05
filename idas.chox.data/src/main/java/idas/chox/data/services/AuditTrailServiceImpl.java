@@ -193,6 +193,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.desc("updateDate"));
+        criteria.addOrder(Order.desc("id"));
         return findByCriteria(criteria);
 
     }
@@ -223,9 +224,11 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         if (descending) {
             criteria.addOrder(Order.desc("updateDate"));
-        }
+            criteria.addOrder(Order.desc("id"));
+       }
         else {
             criteria.addOrder(Order.asc("updateDate"));
+            criteria.addOrder(Order.asc("id"));
         }
         return findByCriteria(criteria);
 

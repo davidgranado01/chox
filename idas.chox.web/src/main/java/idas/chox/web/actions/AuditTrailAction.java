@@ -1,15 +1,17 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.AuditTrail;
-// import idas.chox.core.model.Claim;
-import idas.chox.core.services.AuditTrailService;
-import idas.chox.web.viewdata.AuditTrailViewData;
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
-import idas.chox.service.security.ApplicationAccessibility;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.web.viewdata.AuditTrailViewData;
 
 public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
     private static final Logger LOG = LoggerFactory.getLogger(AuditTrailAction.class);
@@ -37,7 +39,7 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
 
 
     public String getAuditTrails() {
-        List<AuditTrail> auditTrailData = null;
+        List<AuditTrail> auditTrailData;
         
         if (hideReverted) {
             LOG.debug("Getting non-reverted audit trail...");
