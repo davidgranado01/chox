@@ -113,15 +113,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
-    public boolean getInsurerIsUploadEnabled() {
+    public boolean isInsurerUploadEnabled() {
         if (!getIsInsurer()) {
-            LOG.debug("returning insurerIsUploadEnabled: true (not insurer)");
+            LOG.debug("returning insurerUploadEnabled: true (not insurer)");
             return true;
         } else {
-            LOG.debug("returning insurerIsUploadEnabled: {}", getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled());
-            return getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled();
+            LOG.debug("returning insurerUploadEnabled: {}", getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled());
+            return getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled() || getAuthenticatedUser().getInsurer().isClaimUploadEnabled();
         }
     }
+
 
     public boolean getIsTpiEnabledEnabled() {
         if (getIsCHO()) {

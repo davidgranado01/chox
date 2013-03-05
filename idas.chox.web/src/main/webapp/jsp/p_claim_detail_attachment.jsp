@@ -343,10 +343,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
-                        <td>
-                            <s:checkbox name="notifyTask" value="true" id="checkboxId" />
-                        </td>
+                        <s:if test="!insurerUploadedClaim">
+                            <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
+                            <td>
+                                <s:checkbox name="notifyTask" value="true" id="checkboxId" />
+                            </td>
+                        </s:if>
+                        <s:else>
+                            <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
+                            <td>
+                                <s:checkbox name="notifyTask" value="false" id="checkboxId" disabled="true"/>
+                            </td>
+                        </s:else>    
                     </tr>
                     <tr>
 

@@ -172,7 +172,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return adminInsurerService.getInsurer(insurerId).isThirdPartyInterventionActivated();
     }
     
-    public boolean isInsurerInvoicesEnabled() {
+    public boolean isInsurerUploadEnabled() {
         return adminInsurerService.getInsurer(insurerId).isClaimUploadEnabled()
                 || adminInsurerService.getInsurer(insurerId).isInvoiceUploadEnabled();
     }

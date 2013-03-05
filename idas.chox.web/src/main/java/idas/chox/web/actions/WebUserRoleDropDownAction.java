@@ -33,7 +33,7 @@ public class WebUserRoleDropDownAction extends BaseAction {
     private void getUserRoleList(String id) {
         this.userroleList = new ArrayList();
         this.userroleList = service.getWebUserRolesLookupItem(Integer.valueOf(id), getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), getInsurerIsSupervisorEnabled(), true);
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), getInsurerIsSupervisorEnabled(), true);
     }
 
     public String getSelectedOrganisationTypeId() {

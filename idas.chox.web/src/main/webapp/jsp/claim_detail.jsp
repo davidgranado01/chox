@@ -922,7 +922,7 @@
                                         <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
                                     </s:action>
                                 </div>
-                                <s:if test="!isManualInvoice" >
+                                <s:if test="!isInsurerInvoice" >
                                     <div>
                                         <s:action name="getVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
                                             <s:param name="claimId"><s:property value="id" /></s:param>

@@ -54,7 +54,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             claimStatusesLookupItem = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
                                     getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
                                     getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(),
-                                    getInsurerIsUploadEnabled(), getIsSubscriberEnabled());
+                                    isInsurerUploadEnabled(), getIsSubscriberEnabled());
         }
         return claimStatusesLookupItem;
     }

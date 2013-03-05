@@ -1434,8 +1434,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
 
-    public boolean getIsManualInvoice() {
-        return ClaimStatus.isManualStatus(claim.getStatus());
+    public boolean getIsInsurerInvoice() {
+        return claim.getClaimType() == ClaimType.INSURER_INVOICE;
     }
 
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
@@ -1447,7 +1447,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
                     getInsurerIsClaimOwnershipEnabled(),
                     getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(),
-                    getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled(),
+                    getIsTpiEnabledEnabled(), isInsurerUploadEnabled(),
                     getIsSubscriberEnabled());
         }
         return statuses;

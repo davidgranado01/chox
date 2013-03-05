@@ -10,6 +10,8 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
@@ -48,6 +50,12 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public void setClaimId(int claimId) {
         this.claimId = claimId;
     }
+
+    // <editor-fold defaultstate="collapsed" desc="Utility functions">
+    public boolean isInsurerUploadedClaim() {
+        return ClaimType.isInsurerUpload(claim.getClaimType());
+    }
+    // </editor-fold>
 
     @Override
     public void prepare() throws Exception {
