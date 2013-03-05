@@ -36,6 +36,7 @@ public class ClaimGridViewData {
     private boolean isWorkgroupEditable;
     private String ownerName;
     private String choOwnerName;
+    private boolean claimHasAttachment;
 
     public ClaimGridViewData(Claim claim, WebUser user) {
 
@@ -82,6 +83,10 @@ public class ClaimGridViewData {
         }
         if (claim.getSupplierClaimOwner() != null) {
             this.choOwnerName = claim.getSupplierClaimOwner().getDisplayName();
+        }
+        
+        if (claim.getAttachments() != null && claim.getAttachments().size() > 0) {
+            this.claimHasAttachment = true;
         }
     }
 
@@ -195,6 +200,14 @@ public class ClaimGridViewData {
 
     public void setClaimType(String claimType) {
         this.claimType = claimType;
+    }
+
+    public boolean isClaimHasAttachment() {
+        return claimHasAttachment;
+    }
+
+    public void setClaimHasAttachment(boolean claimHasAttachment) {
+        this.claimHasAttachment = claimHasAttachment;
     }
 
 }
