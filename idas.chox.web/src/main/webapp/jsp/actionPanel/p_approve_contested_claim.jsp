@@ -209,10 +209,20 @@
                         Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                     </s:if>
                     <s:elseif test="isSubscriberClaim">
-                        This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
+                        <s:if test="slaExtDays > 0">
+                            This claim cannot be rejected as the Subscriber notification 5 day SLA + <s:property value="slaExtDays"/> day extension has passed.
+                        </s:if>
+                        <s:else>
+                            This claim cannot be rejected as the Subscriber notification 5 day SLA has passed.
+                        </s:else>
                     </s:elseif>
                     <s:elseif test="isFixedFeeClaim">
-                        This claim cannot be rejected as the Fixed Fee notification 14 day SLA has passed.
+                        <s:if test="slaExtDays > 0">
+                            This claim cannot be rejected as the Fixed Fee notification 14 day SLA + <s:property value="slaExtDays"/> day extension has passed.
+                        </s:if>
+                        <s:else>
+                            This claim cannot be rejected as the Fixed Fee notification 14 day SLA has passed.
+                        </s:else>
                     </s:elseif>
                 </div>
                 <div class="status-control-set">

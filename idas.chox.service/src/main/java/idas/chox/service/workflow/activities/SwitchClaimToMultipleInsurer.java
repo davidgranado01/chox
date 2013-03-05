@@ -13,8 +13,6 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.InsurerService;

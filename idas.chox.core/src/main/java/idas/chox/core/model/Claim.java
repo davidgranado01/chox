@@ -61,11 +61,20 @@ public class Claim extends Entity implements Serializable {
     private List<Attachment> attachments;
     private List<History> histories;
     private List<Comment> comments;
+    private int slaExtDays;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
+    }
+
+    public int getSlaExtDays() {
+        return slaExtDays;
+    }
+
+    public void setSlaExtDays(int slaExtDays) {
+        this.slaExtDays = slaExtDays;
     }
 
     public boolean isAutoPenaltyChargeEnabled() {

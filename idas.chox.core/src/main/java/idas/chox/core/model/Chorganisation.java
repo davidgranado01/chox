@@ -68,6 +68,24 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean disablePrivateNotes;
     private String blockedMessage;
     private boolean restrictExport;
+    private int maxAllowedSlaExtForSubscriber;
+    private int maxAllowedSlaExtForFixedFee;
+
+    public int getMaxAllowedSlaExtForSubscriber() {
+        return maxAllowedSlaExtForSubscriber;
+    }
+
+    public void setMaxAllowedSlaExtForSubscriber(int maxAllowedSlaExtForSubscriber) {
+        this.maxAllowedSlaExtForSubscriber = maxAllowedSlaExtForSubscriber;
+    }
+
+    public int getMaxAllowedSlaExtForFixedFee() {
+        return maxAllowedSlaExtForFixedFee;
+    }
+
+    public void setMaxAllowedSlaExtForFixedFee(int maxAllowedSlaExtForFixedFee) {
+        this.maxAllowedSlaExtForFixedFee = maxAllowedSlaExtForFixedFee;
+    }
 
     public String getBlockedMessage() {
         return blockedMessage;

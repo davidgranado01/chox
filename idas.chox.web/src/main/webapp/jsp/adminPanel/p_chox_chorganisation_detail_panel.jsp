@@ -8,6 +8,7 @@
     var isNew = true;
     var insurerUploadOnly = false;
     var disableIPWhitelistTab = true;
+    var numArray=[];
     // var isNew = true;
 
     Ext.onReady(function(){
@@ -31,7 +32,49 @@
         if(document.getElementById('insurerUploadOnlyCheckBoxId').checked){
              markFieldReadOnly();            
         }
-          
+        
+        for (var i=0;i<=5;i++) {numArray.push([i,i]);}
+        
+        var slaExtWgStore = new Ext.data.SimpleStore({
+            fields: ['field1', 'field2'],
+            data : numArray
+        });
+        
+        var subscriberSlaExtWgCombo = new Ext.form.ComboBox({
+            store: slaExtWgStore,
+            width: 40,
+            renderTo: 'subscriberSlaExtWgComboDiv',
+            valueField: 'field1',
+            value : <s:property value="maxAllowedSlaExtForSubscriber"/>,
+            id: 'maxAllowedSlaExtForSubscriberwgComboId',
+            hiddenName: 'maxAllowedSlaExtForSubscriber',
+            displayField:'field2',
+            mode: 'local',
+            triggerAction: 'all',
+            forceSelection: true,
+            listWidth: 40,
+            selectOnFocus: true,
+            editable : false
+        });
+
+
+        var fixedFeeSlaExtWgCombo = new Ext.form.ComboBox({
+            store: slaExtWgStore,
+            width: 40,
+            renderTo: 'fixedFeeSlaExtWgComboDiv',
+            valueField: 'field1',
+            value : <s:property value="maxAllowedSlaExtForFixedFee"/>,
+            id: 'maxAllowedSlaExtForFixedFeewgComboId',
+            hiddenName: 'maxAllowedSlaExtForFixedFee',
+            displayField:'field2',
+            mode: 'local',
+            triggerAction: 'all',
+            listWidth: 40,
+            selectOnFocus: true,
+            forceSelection : true,
+            editable : false
+        });
+        
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -515,10 +558,29 @@
                                         <s:checkbox name="enableIPWhitelist" value="enableIPWhitelist" />
                                     </div>
                                 </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Max allowed SLA extension<br/> for Subscriber claims</label>
+                                        <div id="subscriberSlaExtWgComboDiv"></div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Max allowed SLA extension<br/> for Fixed-Fee claims</label>
+                                        <div id="fixedFeeSlaExtWgComboDiv"></div>
+                                    </div>
+                                </td>
                                 <td></td>
                             </tr>
                         </table>
                         <div class="chox-form-button">
+                            <br/>
                             <input type="submit" value="Save Changes" onclick="doInsurerUploadOnlyValidationSetup();"/>
                             <input type="button" value="Cancel" class="cancel" onclick="javascript: doChorganisationCancelBack();" />
                         </div>

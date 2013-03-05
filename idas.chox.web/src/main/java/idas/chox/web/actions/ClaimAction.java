@@ -61,6 +61,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.CommentService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
@@ -160,10 +161,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
+    private CommentService commentService;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
+    }
+    
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
@@ -1544,34 +1551,77 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
     public boolean isRejectButtonEnabled() {
         boolean rejectEnabled = applicationAccessibility.checkActivityAccessibility(
-                                            ClaimRejection.class.getSimpleName(),
-                                            getAuthenticatedUser(), claim) > 0;
-        
+                ApplicationAccessibility.CLAIM_REJECTION,
+                getAuthenticatedUser(), claim) > 0;
+
         // If we have a subscriber or fixed-fee claim, we need to check the age of the claim
         if (rejectEnabled && ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
             int maxDays = 0;
 
             if (ClaimType.isSubscriber(claim.getClaimType())) {
-                maxDays = 5;
+                maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
                 if (claimDays == null) {
                     getSubscriberClaimDays();
                 }
-            }
-            else if (ClaimType.isFixedFee(claim.getClaimType())) {
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
                 if (claimDays == null) {
-                    claimDays = getFixedFeeClaimDays();
+                    getFixedFeeClaimDays();
                 }
-                maxDays = 14;
+                maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
             }
 
             rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBefore3pm())) ? true : false;
         }
 
         return rejectEnabled;
+    }
+    
+    public boolean getCanShowSlaExtensionButton() {
+
+        boolean slaExtensionEnabled = applicationAccessibility.checkActivityAccessibility(
+                ApplicationAccessibility.SLA_EXTENSION,
+                getAuthenticatedUser(), claim) > 0;
+
+        int maxDays = 0;
+        int maxAllowedSlaExtDays = 0;
+
+        if (slaExtensionEnabled) {
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
+                maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
+                if (claimDays == null) {
+                    getSubscriberClaimDays();
+                }
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForFixedFee();
+                maxDays = DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays();
+                if (claimDays == null) {
+                    getFixedFeeClaimDays();
+                }
+            }
+        }
+        return ((claimDays < maxDays && (claim.getSlaExtDays() < maxAllowedSlaExtDays)) || (claimDays == maxDays && DateHelper.isBefore3pm() && (claim.getSlaExtDays() < maxAllowedSlaExtDays))) ? true : false;
+    }
+    
+    public int getAvailableSlaExtensionDays() {
+        int availableDays = 0;
+        if (getIsCHO() || getIsChoxAdmin()) {
+            if (ClaimType.isSubscriber(claim.getClaimType())) {
+                int maxAllowedSlaExtForSubscriber = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
+                if (maxAllowedSlaExtForSubscriber > 0 && maxAllowedSlaExtForSubscriber > claim.getSlaExtDays()) {
+                    availableDays = maxAllowedSlaExtForSubscriber - claim.getSlaExtDays();
+                }
+            } else if (ClaimType.isFixedFee(claim.getClaimType())) {
+                int maxAllowedSlaExtForFixedFee = claim.getChorganisation().getMaxAllowedSlaExtForFixedFee();
+                if (maxAllowedSlaExtForFixedFee > 0 && maxAllowedSlaExtForFixedFee > claim.getSlaExtDays()) {
+                    availableDays = maxAllowedSlaExtForFixedFee - claim.getSlaExtDays();
+                }
+            }
+        }
+        return availableDays;
     }
 
     public boolean isSubscriberClaimRejectedMoreThanOnce() {
@@ -1619,14 +1669,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             getSubscriberClaimDays();
         }
 
-        if (claimDays < 5) {
+        if (claimDays < (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
             return true;
         }
 
         return false;
     }
     
-   public boolean isSubscriberClaimAt5Days() {
+    public boolean isSubscriberClaimAt5Days() {
         if (!ClaimType.isSubscriber(claim.getClaimType())) {
             return false;
         }
@@ -1645,8 +1695,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (claimDays == null) {
             getSubscriberClaimDays();
         }
-
-        if (claimDays == 5) {
+        if (claimDays == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays())) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1657,20 +1706,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    public String getSubscriberTimeLeft() {
-        if (!ClaimType.isSubscriber(claim.getClaimType())) {
-            return null;
-        }
-
-        if (claimDays == null) {
-            getSubscriberClaimDays();
-        }
-
-        if (claimDays == 4) {
-            return "1 day remains";
-        }
-        return "" + (5 - claimDays) + " days remain";
-    }
 
     /* This function not only gets SubscriberClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
@@ -1699,10 +1734,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays < 14) {
+        if (claimDays < (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
             return true;
         }
 
@@ -1726,10 +1761,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays == 14) {
+        if (claimDays == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays())) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             if (cal.get(Calendar.HOUR_OF_DAY) < 15) {
@@ -1740,6 +1775,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
+    public String getSubscriberTimeLeft() {
+        if (!ClaimType.isSubscriber(claim.getClaimType())) {
+            return null;
+        }
+
+        if (claimDays == null) {
+            getSubscriberClaimDays();
+        }
+
+        if (claimDays == ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
+            return "1 day remains";
+        }
+        return "" + ((DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
+    }
 
     public String getFixedFeeTimeLeft() {
         if (!ClaimType.isFixedFee(claim.getClaimType())) {
@@ -1747,21 +1796,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claimDays == null) {
-            claimDays = getFixedFeeClaimDays();
+            getFixedFeeClaimDays();
         }
 
-        if (claimDays == 13) {
+        if (claimDays == ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - 1)) {
             return "1 day remains";
         }
-        return "" + (14 - claimDays) + " days remain";
+        return "" + ((DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) - claimDays) + " days remain";
     }
     
     /* This function not only gets FixedFeeClaimDays but also sometimes add new notes
      to the claim so need to update the claim version in the session.*/
-    private Integer getFixedFeeClaimDays() {
-        Integer days = service.getFixedFeeClaimDays(claim.getId());
+    private void getFixedFeeClaimDays() {
+        claimDays = service.getFixedFeeClaimDays(claim.getId());
         updateModelInSession(Arrays.asList(claim));
-        return days;
     }
     // </editor-fold>
 

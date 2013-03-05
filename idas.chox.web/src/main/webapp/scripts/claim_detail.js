@@ -1,6 +1,9 @@
 var switchClaimWindow;
 var mappedInsurersStore;
 var switchClaimToMulInsForm;
+var daysArray = [];
+var slaExtensionWindow;
+var availableSlaExtensionDays = availableSlaExtensionDays;
 
 Ext.onReady(function(){
     Ext.QuickTips.init();
@@ -24,6 +27,89 @@ Ext.onReady(function(){
         reader : mappedInsurersJsonReader
     });
     
+    for (var i=1; i<=availableSlaExtensionDays; i++) {
+        daysArray.push([i,i]);
+    }
+        
+    var slaExtStore = new Ext.data.SimpleStore({
+        fields: ['field1', 'field2'],
+        data : daysArray
+    });
+        
+    var slaExtensionForm = new Ext.FormPanel({
+        id: 'slaExtensionForm-form',
+        height : 150,
+        frame:true,
+        buttonAlign : 'center',
+        labelAlign : 'right',
+        labelWidth : 200,
+        labelSeparator : '',
+                
+        items : [
+        {
+            xtype : 'combo',
+            store: slaExtStore,
+            width: 40,
+            fieldLabel : 'How many days extension do you wish to offer to the Insurer?',
+            valueField: 'field1',
+            value : 1,
+            id: 'maxAllowedSlaExtComboId',
+//            hiddenName: 'slaExtDays',
+            displayField:'field2',
+            mode: 'local',
+            triggerAction: 'all',
+            forceSelection: true,
+            listWidth: 40,
+            selectOnFocus: true,
+            editable : false
+        }],
+        buttons:[{
+            text:'Apply',
+            handler:function(){
+                if(slaExtensionForm.getForm().isValid()){
+//                    Ext.getCmp('extNonceId').setValue(nonce);
+                    slaExtensionForm.getEl().mask();
+                    slaExtensionForm.getForm().submit({
+                        method:'POST',
+                        url : contextPath + "/prv/p/updateSlaExtensionDays.action",
+                        params:{slaExtDays : parseInt(appliedSlaExtDays) + parseInt(Ext.get('maxAllowedSlaExtComboId').getValue()), nonce : nonce, name:'slaExtensionDaysUpdate'},
+                        success : function(f, a) {
+                            
+                            if ( a.result.success ){
+                                slaExtensionWindow.hide();
+                                Ext.get('claimDetailScreenDiv').mask("Refreshing claim details...");
+                                window.location = contextPath+"/prv/openClaimDetail.action" ; 
+                            }
+                        },
+                        failure : function(f, a) {
+                            var msg='Unexpected error occured. Please contact Chox support.';
+                            if(a.result.errors){
+                                msg = a.result.errors;
+                            }
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: msg,
+                                width:300,
+                                closable : false,
+                                buttons: Ext.MessageBox.OK,
+                                icon : Ext.MessageBox.ERROR,
+                                fn : function(){
+                                    slaExtensionWindow.hide();
+                                    window.location = contextPath+"/prv/openClaimDetail.action" ;  
+                                }
+                            }); 
+                        }
+                    });
+                }
+            }
+        },{
+            text:'Cancel',
+            handler:function(){
+                slaExtensionForm.getForm().reset();
+                slaExtensionWindow.hide();
+            }
+        }]
+    });
     
     switchClaimToMulInsForm = new Ext.FormPanel({
         id: 'switchClaimForm-form',
@@ -133,7 +219,23 @@ Ext.onReady(function(){
         ]
     });
     
+    slaExtensionWindow = new Ext.Window({
+        layout:'fit',
+        width:300,
+        height : 100,
+        closable:false,
+        resizable : false,
+        items : [
+        slaExtensionForm
+        ]
+    });
+    
 });
+
 function switchClaimToMultipleInsurer(){
     switchClaimWindow.show(document.body);
+}
+
+function setSlaExtension() {
+    slaExtensionWindow.show(document.body);
 }

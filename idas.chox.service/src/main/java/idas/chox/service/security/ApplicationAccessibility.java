@@ -49,6 +49,9 @@ public class ApplicationAccessibility {
     public static final String REOPEN_CLAIM = "ReopenClaim";
     public static final String SWITCH_CLAIM_MULTIPLE_INS = "SwitchClaimToMultipleInsurer";
     public static final String PAYMENT_NOT_RECEIVED = "PaymentNotReceived";
+    public static final String CLAIM_REJECTION = "ClaimRejection";
+    public static final String SLA_EXTENSION = "SlaExtension";
+    
     // ***************************************
     // NOTIFICATION
     // ***************************************

@@ -28,6 +28,7 @@
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
+    <property column="sla_ext_days" name="slaExtDays" not-null="true"/>
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>

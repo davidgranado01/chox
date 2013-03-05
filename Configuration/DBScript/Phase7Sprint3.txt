@@ -5463,4 +5463,206 @@ $BODY$
 --  End of 7.3.6    --
 ----------------------
 
+-------------------------------------------------------------------------------------
+-- 7.3.7  Day Extension For Subscriber Claims                                      --
+-------------------------------------------------------------------------------------
 
+ALTER TABLE claim ADD COLUMN sla_ext_days integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_allowed_sla_ext_for_subscriber integer not null default 0;
+ALTER TABLE chorganisation ADD COLUMN max_allowed_sla_ext_for_fixed_fee integer not null default 0;
+
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimReferredToFNOL', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimReferredToFNOL', false, false, false, false, false, 11;
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimReferredToEngineer', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimReferredToEngineer', false, false, false, false, false, 11;
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.SubscriberClaimRejected', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.SubscriberClaimRejected', false, false, false, false, false, 11;
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimPending', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimPending', false, false, false, false, false, 11;
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimRejectionContested', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimRejectionContested', false, false, false, false, false, 11;
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedRouted', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedRouted', false, false, false, false, false, 11;
+
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedUnassigned', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedUnassigned', false, false, false, false, false, 11;
+
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUnacknowledgedUnrouted', false, false, false, false, false, 11;
+
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUpdatedByEngineer', false, false, false, false, false, 7;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.SlaExtension.ClaimUpdatedByEngineer', false, false, false, false, false, 11;
+
+
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToFNOL';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToEngineer';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.SubscriberClaimRejected';
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimPending';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimRejectionContested';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedRouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnassigned';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnrouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUpdatedByEngineer';
+
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToFNOL';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToEngineer';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.SubscriberClaimRejected';
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimPending';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimRejectionContested';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedRouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnassigned';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnrouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUpdatedByEngineer';
+
+
+----------------------
+--  END OF 7.3.7    --
+----------------------

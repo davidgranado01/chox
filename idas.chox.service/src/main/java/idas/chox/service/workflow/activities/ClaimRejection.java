@@ -126,8 +126,12 @@ public class ClaimRejection extends BaseActivity {
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Verify Rejected with the 5 day SLA with 5 minute leeway
             int subscriberClaimDays = claimService.getSubscriberClaimDays(claim.getId());
-            if (subscriberClaimDays > 5 || (subscriberClaimDays == 5 && !DateHelper.isBefore3pm(5))) {
-                throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
+            if (subscriberClaimDays > (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) || (subscriberClaimDays == (DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm(5))) {
+                if (claim.getSlaExtDays() > 0) {
+                    throw new Exception("Cannot reject subscriber claim as the 5 day SLA + "+claim.getSlaExtDays()+" day extension limit has now been reached.");
+                } else {
+                    throw new Exception("Cannot reject subscriber claim as the 5 day SLA limit has now been reached.");
+                }
             }
             // Validate Liability Status
             // TODO
@@ -135,8 +139,12 @@ public class ClaimRejection extends BaseActivity {
         else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Verify Rejected with the 14 day SLA with 5 minute leeway
             int fixedFeeClaimDays = claimService.getFixedFeeClaimDays(claim.getId());
-            if (fixedFeeClaimDays > 14 || (fixedFeeClaimDays == 14 && !DateHelper.isBefore3pm(5))) {
-                throw new Exception("Cannot reject fixed fee claim as the 14 day SLA limit has now been reached.");
+            if (fixedFeeClaimDays > (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) || (fixedFeeClaimDays == (DateHelper.FIXED_FEE_SLA_DAYS + claim.getSlaExtDays()) && !DateHelper.isBefore3pm(5))) {
+                if (claim.getSlaExtDays() > 0) {
+                    throw new Exception("Cannot reject fixed fee claim as the 14 day SLA + "+claim.getSlaExtDays()+" day extension limit has now been reached.");
+                } else {
+                    throw new Exception("Cannot reject fixed fee claim as the 14 day SLA limit has now been reached.");
+                }
             }
             // Validate Liability Status
             // TODO
