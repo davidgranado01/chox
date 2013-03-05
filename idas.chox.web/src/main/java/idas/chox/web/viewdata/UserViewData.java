@@ -30,10 +30,11 @@ public class UserViewData {
         this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
-        if (object.getLastLoginDate() != null)
+        if (object.getLastLoginDate() != null) {
             this.lastLoginDate = DateHelper.getLocalDateTimeFormat().format(object.getLastLoginDate());
-        else
+        } else {
             this.lastLoginDate = "";
+        }
         this.status = object.getStatus() && !object.isBlocked();
         this.isExpired = object.getIsExpired() ? "Yes" : "No";
 

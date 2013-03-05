@@ -84,7 +84,7 @@ public class AdminUserServiceTest extends BaseTest {
     @Transactional
     public void testUser_TriggerPasswordExpiredStatus() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
         List<WebUser> userData = searchResult.getResult();
         WebUser webUser = userData.get(0);
         webUser.setStatus(true);
@@ -100,7 +100,7 @@ public class AdminUserServiceTest extends BaseTest {
     public void testUser_TriggerUserStatusToFalseWithOpenClaim() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
         List<WebUser> userData = searchResult.getResult();
         WebUser webUser = userData.get(0);
         webUser.setStatus(true);
@@ -131,14 +131,14 @@ public class AdminUserServiceTest extends BaseTest {
     public void testUser_TriggerUserStatusToFalseWithoutOpenClaim() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
         List<WebUser> userData = searchResult.getResult();
         WebUser webUser = userData.get(0);
         webUser.setStatus(true);
         ActionResponse response = adminUserService.updateUser(webUser);
         Assert.assertTrue(response.getIsValid());
 
-        SearchResult searchResult2 = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        SearchResult searchResult2 = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
         List<WebUser> userData2= searchResult.getResult();
         WebUser webUser2 = userData.get(2);
         Claim claim = new Claim();

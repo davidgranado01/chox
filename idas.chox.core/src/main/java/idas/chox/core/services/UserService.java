@@ -35,7 +35,7 @@ public interface UserService {
 
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId);
 
-    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir);
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly);
 
     public List<WebUser> getUsers();
 
