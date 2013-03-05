@@ -232,6 +232,24 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal repairInsurerDiscountCalculated = BigDecimal.ZERO;
     private BigDecimal totalInsurerDiscountCalculated = BigDecimal.ZERO;
     private int penaltyBand;
+    private BigDecimal repairAdminFee;
+    private BigDecimal repairAcquisitionFee;
+
+    public BigDecimal getRepairAdminFee() {
+        return repairAdminFee;
+    }
+
+    public void setRepairAdminFee(BigDecimal repairAdminFee) {
+        this.repairAdminFee = repairAdminFee;
+    }
+
+    public BigDecimal getRepairAcquisitionFee() {
+        return repairAcquisitionFee;
+    }
+
+    public void setRepairAcquisitionFee(BigDecimal repairAcquisitionFee) {
+        this.repairAcquisitionFee = repairAcquisitionFee;
+    }
 
     public int getPenaltyBand() {
         return penaltyBand;

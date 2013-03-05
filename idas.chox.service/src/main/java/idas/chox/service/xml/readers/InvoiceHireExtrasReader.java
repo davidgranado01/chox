@@ -15,8 +15,8 @@ import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 
 
-public class InvoiceExtraReader extends BaseEntityReader {
-    private static final Logger LOG = LoggerFactory.getLogger(InvoiceExtraReader.class);
+public class InvoiceHireExtrasReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceHireExtrasReader.class);
 
     protected static String sectionName = "Invoice Extra";
 
@@ -25,6 +25,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "extras");
+
         List<Element> elements = null;
         
         if (element != null) {
@@ -32,7 +33,6 @@ public class InvoiceExtraReader extends BaseEntityReader {
         }
 
         boolean isAllowToReadData = false;
-        boolean isAdminFeeExist = false;
 
         if (((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE) 
@@ -57,10 +57,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
                 claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
                 claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 LOG.debug("......claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
-                if (strExtraName.equalsIgnoreCase("Admin")) {
-                    isAdminFeeExist = true;
-                }
-
+                
             }
 
             LOG.debug("Returning claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());

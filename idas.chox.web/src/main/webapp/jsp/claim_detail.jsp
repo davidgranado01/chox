@@ -742,6 +742,8 @@
                 $("#engineerReportRId").css("display", "inline");
                 $("#engineerReportWId").css("display", "inline");
                 $("#formPaymentDetailsRId").css("display", "inline");
+                $("#formRepairExtrasRId").css("display", "inline");
+                $("#formRepairExtrasWId").css("display", "inline");
                 $("#formSubmitButtons").css("display", "inline");
                 document.getElementById('hideAndShow').value=1;
             } else {
@@ -757,6 +759,8 @@
                 $("#engineerReportRId").css("display", "none");
                 $("#engineerReportWId").css("display", "none");
                 $("#formPaymentDetailsRId").css("display", "none");
+                $("#formRepairExtrasRId").css("display", "none");
+                $("#formRepairExtrasWId").css("display", "none");
                 $("#formSubmitButtons").css("display", "none");
                 document.getElementById('hideAndShow').value=0;
             }

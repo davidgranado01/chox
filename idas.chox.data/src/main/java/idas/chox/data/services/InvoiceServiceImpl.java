@@ -97,6 +97,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setTowBarsFeeOriginal(inv.getTowBarsFee());
             invOriginal.setNonStandardInsurancePremiumFeeOriginal(inv.getNonStandardInsurancePremiumFee());
             invOriginal.setAdminFeeOriginal(inv.getAdminFee());
+            invOriginal.setRepairAdminFeeOriginal(inv.getRepairAdminFee());
+            invOriginal.setRepairAcquisitionFeeOriginal(inv.getRepairAcquisitionFee());
             invOriginal.setRoofRackFeeOriginal(inv.getRoofRackFee());
             invOriginal.setDualControlFeeOriginal(inv.getDualControlFee());
             invOriginal.setDeliveryCollectionFeeOriginal(inv.getDeliveryCollectionFee());

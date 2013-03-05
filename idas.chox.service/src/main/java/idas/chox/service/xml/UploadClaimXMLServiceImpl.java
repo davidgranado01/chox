@@ -455,7 +455,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return true;
         }
         bordereau.setValid(true);
-        bordereauSchemaValidation.validate(document, bordereau,getCurrentUser());
+        bordereauSchemaValidation.validate(document, bordereau, getCurrentUser());
         if (!bordereau.isValid()) {
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");

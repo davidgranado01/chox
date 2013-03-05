@@ -27,8 +27,7 @@ public abstract class BaseEntityReader implements Reader {
         if (validate(claimResult)) {
             LOG.debug("Validated - processing claim");
             process(claimResult);
-        }
-        else if (LOG.isDebugEnabled()) {
+        } else {
             LOG.debug("Validation failed: {}", claimResult.getProcessStatus());
         }
     }

@@ -69,6 +69,8 @@
         <property column="repair_penalty_percentage" name="repairPenaltyPercentageOriginal"/>
         <property column="total_penalty_charge" name="totalPenaltyChargeOriginal"/>
         <property column="interim_payment_amount" name="interimPaymentOriginal"/>
+        <property column="repair_admin_fee" name="repairAdminFeeOriginal"/>
+        <property column="repair_acquisition_fee" name="repairAcquisitionFeeOriginal"/>
         
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

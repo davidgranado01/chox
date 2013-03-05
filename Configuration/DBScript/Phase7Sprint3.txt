@@ -5081,6 +5081,20 @@ UPDATE accessibility SET claim_type=17 WHERE claim_type=10;
 ----------------------
 --  END OF 7.3.2    --
 ----------------------
+
+-------------------------------------------------------------------------------------
+-- 7.3.5 New Subscriber Data Fields & Macro Update                                 --
+-------------------------------------------------------------------------------------
+
+ALTER TABLE invoice ADD COLUMN repair_admin_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN repair_acquisition_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_admin_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN repair_acquisition_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+----------------------
+--  END OF 7.3.5    --
+----------------------
+
 --------------------------------------------------------------------------------
 -- 7.3.6 - Claim Type On/Off Penalty Charges In BRE Band                      --
 --------------------------------------------------------------------------------
@@ -5448,4 +5462,5 @@ $BODY$
 ----------------------
 --  End of 7.3.6    --
 ----------------------
+
 

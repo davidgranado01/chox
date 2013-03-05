@@ -631,7 +631,12 @@
             <div>
                 <div id="formUpdateExtrasFORM" class="XXentity-form">
                     <fieldset class="x-fieldset">
-                        <legend>Extras</legend>
+                        <s:if test="isSubscriberClaim">
+                           <legend>Hire Extras</legend> 
+                        </s:if>
+                        <s:else>
+                            <legend>Extras</legend>
+                        </s:else>
                         <div style="display:none" class="form-container"  id="extrasRId">
                             <table class="chox-table-form">
                                 <tr>
@@ -947,6 +952,41 @@
                     </fieldset>
                 </div>
             </div>
+        <s:if test="isSubscriberClaim">
+            <div id="formRepairExtras" class="XXentity-form">
+                <fieldset class="x-fieldset">
+                    <legend>Repair Extras</legend>
+                    <div style="display:none" class="form-container"  id="formRepairExtrasRId">
+                        <table class="chox-table-form">
+                            <tr>
+                                <td><label class="std-label-ro">
+                                        Admin Fee</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairAdminFee" /></label></td>
+                                <td>
+                                    <s:if test="repairAdminFee.compareTo(repairAdminFeeOriginal)!=0&&(repairAdminFeeOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairAdminFeeOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="std-label-ro">
+                                        Acquisition Fee</label></td>
+                                <td>&nbsp;</td>
+                                <td><label class="std-data-ro">£<s:property value="repairAcquisitionFee" /></label></td>
+                                <td>
+                                    <s:if test="repairAcquisitionFee.compareTo(repairAcquisitionFeeOriginal)!=0&&(repairAcquisitionFeeOriginal!=null)">
+                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="repairAcquisitionFeeOriginal" />)</label>
+                                    </s:if>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </s:if>
             <div>
                 <div id="formEngRptAction" class="XXentity-form">
                     <fieldset class="x-fieldset">

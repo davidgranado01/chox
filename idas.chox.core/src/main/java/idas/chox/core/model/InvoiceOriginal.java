@@ -68,6 +68,24 @@ public class InvoiceOriginal extends Entity implements Serializable {
     private BigDecimal totalLossFeeVatOriginal;
     private BigDecimal totalLossFeeGrossOriginal;
     private BigDecimal interimPaymentOriginal;
+    private BigDecimal repairAdminFeeOriginal;
+    private BigDecimal repairAcquisitionFeeOriginal;
+
+    public BigDecimal getRepairAdminFeeOriginal() {
+        return repairAdminFeeOriginal;
+    }
+
+    public void setRepairAdminFeeOriginal(BigDecimal repairAdminFeeOriginal) {
+        this.repairAdminFeeOriginal = repairAdminFeeOriginal;
+    }
+
+    public BigDecimal getRepairAcquisitionFeeOriginal() {
+        return repairAcquisitionFeeOriginal;
+    }
+
+    public void setRepairAcquisitionFeeOriginal(BigDecimal repairAcquisitionFeeOriginal) {
+        this.repairAcquisitionFeeOriginal = repairAcquisitionFeeOriginal;
+    }
 
     public Date getDateInvoicedOriginal() {
         return dateInvoicedOriginal;

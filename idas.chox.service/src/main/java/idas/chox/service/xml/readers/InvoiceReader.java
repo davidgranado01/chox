@@ -85,6 +85,8 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setSatNavQty(0);
         invoice.setTowBarsFee(BigDecimal.ZERO);
         invoice.setTowBarsQty(0);
+        invoice.setRepairAdminFee(BigDecimal.ZERO);
+        invoice.setRepairAcquisitionFee(BigDecimal.ZERO);
 
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
