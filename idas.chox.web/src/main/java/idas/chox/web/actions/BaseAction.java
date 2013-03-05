@@ -118,8 +118,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
             LOG.debug("returning insurerIsUploadEnabled: true (not insurer)");
             return true;
         } else {
-            LOG.debug("returning insurerIsUploadEnabled: {}", getAuthenticatedUser().getInsurer().isUploadEnabled());
-            return getAuthenticatedUser().getInsurer().isUploadEnabled();
+            LOG.debug("returning insurerIsUploadEnabled: {}", getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled());
+            return getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled();
         }
     }
 

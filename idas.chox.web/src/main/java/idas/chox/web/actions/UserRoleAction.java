@@ -142,7 +142,7 @@ public class UserRoleAction extends BaseAction {
       if (insurer != null) {
             return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
                 insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
         }
 
       return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
@@ -160,7 +160,7 @@ public class UserRoleAction extends BaseAction {
         if (insurer != null) {
               webUserRoles = adminUserService.getAllAvailableUserRoles(2,
                 insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin());
           }
         else {
               webUserRoles = adminUserService.getAllAvailableUserRoles(3,
@@ -194,7 +194,7 @@ public class UserRoleAction extends BaseAction {
         if (insurer != null) {
               webUserRoles = adminUserService.getAllAvailableUserRoles(2,
                 insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
-                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
+                insurer.isFnolEnable(), insurer.isEngineersEnable(), insurer.isInvoiceUploadEnabled(), insurer.isSupervisorEnable(), getIsChoxAdmin(), true);
           }
         else {
               webUserRoles = adminUserService.getAllAvailableUserRoles(3,

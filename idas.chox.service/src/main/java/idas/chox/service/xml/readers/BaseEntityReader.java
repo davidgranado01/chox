@@ -1,12 +1,14 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.BordereauReaderContext;
-import idas.chox.service.xml.validations.DataValidationParameter;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
+
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.service.xml.BordereauReaderContext;
+import idas.chox.service.xml.validations.DataValidationParameter;
 
 /**
  *
@@ -23,11 +25,12 @@ public abstract class BaseEntityReader implements Reader {
 
         LOG.debug("Validating claimResult");
         if (validate(claimResult)) {
-                LOG.debug("Validated - processing claim");
+            LOG.debug("Validated - processing claim");
             process(claimResult);
         }
-        else
+        else if (LOG.isDebugEnabled()) {
             LOG.debug("Validation failed: {}", claimResult.getProcessStatus());
+        }
     }
 
     protected abstract boolean validate(ClaimResult claimResult) throws Exception;

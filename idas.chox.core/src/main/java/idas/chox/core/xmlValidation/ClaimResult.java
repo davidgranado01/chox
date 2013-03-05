@@ -9,7 +9,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
-import idas.chox.core.model.Witness;
 
 public class ClaimResult {
 
@@ -24,7 +23,6 @@ public class ClaimResult {
     private boolean checkForTotalLossAnomalies;
     private List<String> message = new ArrayList<String>();
     private boolean duplicateClaimInSameXmlFile;
-    private List<Witness> witnesses;
     private List<Injury> injuries;
     private List<Solicitor> solicitors;
 
@@ -58,14 +56,6 @@ public class ClaimResult {
 
     public void setSolicitors(List<Solicitor> solicitors) {
         this.solicitors = solicitors;
-    }
-
-    public List<Witness> getWitnesses() {
-        return witnesses;
-    }
-
-    public void setWitnesses(List<Witness> witnesses) {
-        this.witnesses = witnesses;
     }
 
     public boolean isCheckDataValid() {

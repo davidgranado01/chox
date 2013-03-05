@@ -410,6 +410,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return ClaimStatus.CLAIM_UPDATE_BY_ENG.equals(claim.getStatus());
     }
 
+    public boolean isInsurerClaim() {
+        return ClaimType.isInsurerUpload(claim.getClaimType());
+    }
+
     /*
      * New functionality for Phase 7 Sprint 1:
      *   7.1.4 Updates to Subscriber Process Model
@@ -1190,12 +1194,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                          * not have to be over say 30 days in order to be able
                          * to apply the penalty charges
                          */
-                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && claim.getClaimType() != ClaimType.INSURER_INVOICE) {
+                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
 //                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                        else if (invoice.getPenaltyBand() > -1 && claim.getClaimType() != ClaimType.INSURER_INVOICE) { // Check if not removed from penalty queue
+                        else if (invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() 
@@ -1539,9 +1543,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return ClaimType.isFixedFee(claim.getClaimType());
     }
     
-    public boolean getIsInsurerUploadClaim() {
-        return ClaimType.isInsurerUpload(claim.getClaimType());
-    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Subscriber Process Utility Functions">
@@ -2346,7 +2347,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCalculatedHirePenaltyPercentage() {
-        if (getIsInsurerUploadClaim()) {
+        if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getHirePenaltyPercentage();
             return (percentage != null && !percentage.isEmpty()) ? percentage : "0%";
         }
@@ -2354,7 +2355,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCalculatedRepairPenaltyPercentage() {
-        if (getIsInsurerUploadClaim()) {
+        if (isInsurerClaim()) {
             String percentage = claim.getInvoice().getRepairPenaltyPercentage();
             return (percentage != null && !percentage.isEmpty()) ? percentage : "0%";
         }
@@ -2362,14 +2363,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public BigDecimal getCalculatedHirePenaltyChargeAmount() {
-        if (getIsInsurerUploadClaim()) {
+        if (isInsurerClaim()) {
             return penaltyChargeService.calculatePenaltyChargeVal(claim, getCalculatedHirePenaltyPercentage(), PenaltyName.HIRE);
         }
         return penaltyChargeService.calculatePenaltyChargeVal(claim, PenaltyName.HIRE);
     }
 
     public BigDecimal getCalculatedRepairPenaltyChargeAmount() {
-        if (getIsInsurerUploadClaim()) {
+        if (isInsurerClaim()) {
             return penaltyChargeService.calculatePenaltyChargeVal(claim, getCalculatedRepairPenaltyPercentage(), PenaltyName.REPAIR);
         }
         return penaltyChargeService.calculatePenaltyChargeVal(claim, PenaltyName.REPAIR);
@@ -2558,9 +2559,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    private boolean isEscalatedToSupervisor(int daysBeforeEscaltedRestriction, int timesInStatusContestedRestionction) {
-        if (service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction
-                || service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction) {
+    private boolean isEscalatedToSupervisor(Integer daysBeforeEscaltedRestriction, Integer timesInStatusContestedRestionction) {
+        if ((daysBeforeEscaltedRestriction != null && service.getDaysSinceInvoiceUploadToEscalate(claim.getId()) >= daysBeforeEscaltedRestriction)
+                || (timesInStatusContestedRestionction != null && service.getNumberOfTimesContestedWithCHOtoEscalate(claim.getId()) >= timesInStatusContestedRestionction)) {
             LOG.debug("Claim has been escalated to supervisor");
             return true;
         }

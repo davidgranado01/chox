@@ -21,10 +21,12 @@ public class InvoiceEscalatedToSupervisor extends BaseFilter {
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
-        if (insurerId > -1)
+        if (insurerId > -1) {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-        if (choId > -1)
+        }
+        if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
         if (claimTypeId > -1) {
             Set<ClaimType> claimTypes = new HashSet<ClaimType>();
             claimTypes.add(ClaimType.values()[claimTypeId]);

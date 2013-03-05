@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Customer;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -29,7 +30,8 @@ public class CustomerReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                || (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE) && claimResult.getClaim().getClaimType() == ClaimType.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {

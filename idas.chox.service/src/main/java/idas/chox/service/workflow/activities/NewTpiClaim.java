@@ -33,12 +33,11 @@ public class NewTpiClaim extends BaseActivity {
 
         String claimNumber = claim.getThirdParty().getClaimReference();
 
-        NodeHelper nodeHelper = new NodeHelper();
         if (ClaimType.isTPI(claim.getClaimType())
                     && claim.getInsurer().isTpiAutoRoutingEnable() 
                     && (claimNumber == null || claim.getInsurer().getTpiRegexExpression() == null
                         || claim.getInsurer().getTpiRegexExpression().isEmpty()
-                        || !nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase()))) {
+                        || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase()))) {
                 autoRoutedInvoice = true;
             }
     }

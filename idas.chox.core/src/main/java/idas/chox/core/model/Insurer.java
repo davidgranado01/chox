@@ -61,7 +61,8 @@ public class Insurer extends Entity implements Serializable {
     private int uniquePasswordHistory;
     private boolean insurerDiscountEnable;
     private int minimumPasswordLength;
-    private boolean uploadEnabled;
+    private boolean invoiceUploadEnabled;
+    private boolean claimUploadEnabled;
     private boolean allowSubscriberClaims;
     private boolean allowFixedFeeClaims;
     private Integer timesInStatusContested;
@@ -481,12 +482,20 @@ public class Insurer extends Entity implements Serializable {
 
     }
 
-    public boolean isUploadEnabled() {
-        return uploadEnabled;
+    public boolean isInvoiceUploadEnabled() {
+        return invoiceUploadEnabled;
     }
 
-    public void setUploadEnabled(boolean uploadEnabled) {
-        this.uploadEnabled = uploadEnabled;
+    public void setInvoiceUploadEnabled(boolean invoiceUploadEnabled) {
+        this.invoiceUploadEnabled = invoiceUploadEnabled;
+    }
+
+    public boolean isClaimUploadEnabled() {
+        return claimUploadEnabled;
+    }
+
+    public void setClaimUploadEnabled(boolean claimUploadEnabled) {
+        this.claimUploadEnabled = claimUploadEnabled;
     }
 
     public boolean isAllowSubscriberClaims() {

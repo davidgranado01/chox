@@ -21,11 +21,17 @@ public enum ClaimParseStatus {
     HIRE_MONITORING                             (16, "Hire Monitoring"),
     INVALID_CLAIM_STATUS                        (17, "Invalid Claim Status"),
     INSURER_VS_INSURER_INVOICE                  (18, "New Invoice (Insurer vs Insurer)"),
-    INSURER_UPLOAD                              (19, "New Claim/Invoice (Insurer Upload)"),
+    INSURER_INVOICE                             (19, "New Insurer Invoice"),
     NEW_FIXEDFEE_CLAIM                          (20, "New Claim (Fixed Fee)"),
     FIXEDFEE_NOT_ACCEPTED_BY_INSURER            (21, "Insurer is not accepting Fixed Fee Claims"),
-    EXIST_FIXEDFEE_CLAIM                        (22, "Claim Already Exists (Fixed Fee)");
-    
+    EXIST_FIXEDFEE_CLAIM                        (22, "Claim Already Exists (Fixed Fee)"),
+    INSURER_CLAIM                               (23, "New Insurer Claim"),
+    EXISTS_INSURER_CLAIM                        (24, "Insurer Claim Already Exists"),
+    INSURER_HIRE_MONITORING_AND_NEW_INVOICE     (25, "Insurer Hire Monitoring and New Invoice"),
+    INSURER_HIRE_MONITORING                     (26, "Insurer Hire Monitoring"),
+    INSURER_EXIST_INVOICE                       (27, "Insurer Invoice Already Exists"),
+    INSURER_NEW_SUPPLEMENTARY_INVOICE           (28, "New Insurer Supplementary Invoice");
+
     private final String description;
     private final int ClaimParseStatusValue;
 

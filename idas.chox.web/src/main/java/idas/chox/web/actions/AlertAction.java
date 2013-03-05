@@ -48,15 +48,24 @@ public class AlertAction extends BaseAction {
         int sessionClaimId =  (Integer) sessionClaim.get("id");
         Insurer insurer = claimService.getClaim(sessionClaimId).getInsurer();
         if (insurer.isSupervisorEnable()){
-            int daysBeforeEscalatedRetriction = insurer.getDaysBeforeEscalated();
-            int timesInStatusContestedRetriction = insurer.getTimesInStatusContested();
+            Integer daysBeforeEscalatedRetriction = insurer.getDaysBeforeEscalated();
+            Integer timesInStatusContestedRetriction = insurer.getTimesInStatusContested();
             
-            daysSinceInvoiceUploadToEscalate = claimService.getDaysSinceInvoiceUploadToEscalate(sessionClaimId);
-            numberOfTimesContestedWithCHOtoEscalate = claimService.getNumberOfTimesContestedWithCHOtoEscalate(sessionClaimId);
             
+            
+            if (daysBeforeEscalatedRetriction != null) {
+                daysSinceInvoiceUploadToEscalate = claimService.getDaysSinceInvoiceUploadToEscalate(sessionClaimId);
+                daysSinceInvoiceUploadToEscalate = daysSinceInvoiceUploadToEscalate >= daysBeforeEscalatedRetriction ? daysSinceInvoiceUploadToEscalate : 0;
+            } else {
+                daysSinceInvoiceUploadToEscalate = 0;
+            }
+            if (timesInStatusContestedRetriction != null) {
+                numberOfTimesContestedWithCHOtoEscalate = claimService.getNumberOfTimesContestedWithCHOtoEscalate(sessionClaimId);
+                numberOfTimesContestedWithCHOtoEscalate = numberOfTimesContestedWithCHOtoEscalate >= timesInStatusContestedRetriction ? numberOfTimesContestedWithCHOtoEscalate : 0;
+            } else {
+                numberOfTimesContestedWithCHOtoEscalate = 0;
+            }
             //if claim does not match the insurers restriction in that case we set it to 0 and don't display it in alert panel
-            numberOfTimesContestedWithCHOtoEscalate = numberOfTimesContestedWithCHOtoEscalate >= timesInStatusContestedRetriction ? numberOfTimesContestedWithCHOtoEscalate : 0;
-            daysSinceInvoiceUploadToEscalate = daysSinceInvoiceUploadToEscalate >= daysBeforeEscalatedRetriction ? daysSinceInvoiceUploadToEscalate : 0;
             
             if (numberOfTimesContestedWithCHOtoEscalate > 0 || daysSinceInvoiceUploadToEscalate > 0) {
                 return SUCCESS;

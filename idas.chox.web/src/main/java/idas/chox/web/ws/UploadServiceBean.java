@@ -141,7 +141,7 @@ public class UploadServiceBean {
                 result.setUploadStatus(ClaimUploadStatus.NEW_TPI_CLAIM);
             }
             else if (uploadResult.getRemark().equals("Insurer is not accepting TPI invoices")) {
-                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICE);
+                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_TPI_INVOICES);
             }
             else if (uploadResult.getRemark().equals("Insurer is not accepting Subscriber Claims")) {
                 result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_SUBSCRIBER_CLAIMS);
@@ -164,8 +164,26 @@ public class UploadServiceBean {
             else if (uploadResult.getRemark().equals("New Invoice (Insurer vs Insurer)")) {
                 result.setUploadStatus(ClaimUploadStatus.NEW_INVOICE_INSURER_VS_INSURER);
             }
-            else if (uploadResult.getRemark().equals("New Claim/Invoice (Insurer Upload)")) {
-                result.setUploadStatus(ClaimUploadStatus.NEW_CLAIM_INVOICE_INSURER_UPLOAD);
+            else if (uploadResult.getRemark().equals("New Insurer Invoice")) {
+                result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_INVOICE);
+            }
+            else if (uploadResult.getRemark().equals("New Insurer Claim")) {
+                result.setUploadStatus(ClaimUploadStatus.NEW_INSURER_CLAIM);
+            }
+            else if (uploadResult.getRemark().equals("Insurer Claim Already Exists")) {
+                result.setUploadStatus(ClaimUploadStatus.INSURER_CLAIM_ALREADY_EXISTS);
+            }
+            else if (uploadResult.getRemark().equals("Insurer Hire Monitoring and New Invoice")) {
+                result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE);
+            }
+            else if (uploadResult.getRemark().equals("Insurer Hire Monitoring")) {
+                result.setUploadStatus(ClaimUploadStatus.INSURER_HIRE_MONITORING);
+            }
+            else if (uploadResult.getRemark().equals("Insurer Invoice Already Exists")) {
+                result.setUploadStatus(ClaimUploadStatus.INSURER_INVOICE_ALREADY_EXISTS);
+            }
+            else if (uploadResult.getRemark().equals("New Insurer Supplementary Invoice")) {
+                result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
             }
             else if (uploadResult.getRemark().equals("New Claim (Fixed Fee)")) {
                 result.setUploadStatus(ClaimUploadStatus.NEW_FIXED_FEE_CLAIM);

@@ -16,7 +16,7 @@ import idas.chox.core.services.AccessibilityService;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
     private static final int BATCH_UPDATE_ACCESSIBILITY_MAP_SIZE = 10;
-    private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 14000;
+    private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 6500;
     private static final int ACCESSIBILITY_MAP_SIZE = 100;
     private static final Logger LOG = LoggerFactory.getLogger(AccessibilityServiceImpl.class);
 
@@ -29,6 +29,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         List<Accessibility> accessibilities = findByCriteria(c);
         // Now split into a map with the key on 'batch.<action name>'
         for (Accessibility a : accessibilities) {
+            this.evict(a);
             String key = a.getName().substring(0, a.getName().lastIndexOf('.'));
             if (batchUpdateAccessibilityMap.containsKey(key)) {
                 List<Accessibility> access = batchUpdateAccessibilityMap.remove(key);
@@ -41,9 +42,6 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             }
         }
 
-        if (batchUpdateAccessibilityMap.size() > BATCH_UPDATE_ACCESSIBILITY_MAP_SIZE) {
-            LOG.error("Please update initial batchUpdateAccessibilityMap size: current size={}, should be {}", BATCH_UPDATE_ACCESSIBILITY_MAP_SIZE, batchUpdateAccessibilityMap.size());
-        }
         return batchUpdateAccessibilityMap;
     }
 
@@ -64,7 +62,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         String key;
         for (Accessibility a : accessibilities) {
-
+            this.evict(a);
             if (a.getClaimType() == null) {
                 // Valid for all claim types
                 key = a.getName() + "." + ClaimType.GTA.name();
@@ -97,7 +95,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                 } else {
                     map.put(key, a);
                 }
-                key = a.getName() + "." + ClaimType.INSURER_INVOICE.name();
+                key = a.getName() + "." + ClaimType.INSURER_UPLOAD.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
@@ -113,10 +111,6 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             }
         }
 
-        if (map.size() > ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE) {
-            LOG.error("Please update initial AccessibilityByClaimTypeMap size: current init size={}, should be {}",
-                    ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE, map.size());
-        }
         return map;
     }
 
@@ -141,13 +135,10 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         List<Accessibility> accessibilities = findByCriteria(c);
 
         for (Accessibility a : accessibilities) {
+            this.evict(a);
             map.put(a.getName(), a);
         }
 
-        if (map.size() > ACCESSIBILITY_MAP_SIZE) {
-            LOG.error("Please update initial AccessibilityMap size: current init size={}, should be {}",
-                    ACCESSIBILITY_MAP_SIZE, map.size());
-        }
         return map;
     }
 

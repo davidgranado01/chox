@@ -158,7 +158,7 @@ public class XmlUploadAction extends BaseAction {
             int chorgId = getAuthenticatedUser().getChorganisation().getId();
             uploadFlag = chorganisationService.isCreditHireWithBreBand(chorgId);
         } else if (this.getIsInsurer()) {
-            uploadFlag = getAuthenticatedUser().getInsurer().isUploadEnabled();
+            uploadFlag = getAuthenticatedUser().getInsurer().isInvoiceUploadEnabled();
         }
         return uploadFlag;
     }

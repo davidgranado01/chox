@@ -106,8 +106,7 @@ public class WorkgroupRouting extends BaseActivity {
 
                 for (AutomaticRouting automaticRouting : automaticRoutingMapping) {
 
-                    NodeHelper nodeHelper = new NodeHelper();
-                    if (nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
+                    if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
                         LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
                         return true;

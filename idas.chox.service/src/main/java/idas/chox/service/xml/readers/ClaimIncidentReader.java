@@ -1,14 +1,16 @@
 package idas.chox.service.xml.readers;
 
+import org.w3c.dom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Incident;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimIncidentReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimIncidentReader.class);
@@ -23,12 +25,12 @@ public class ClaimIncidentReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_UPLOAD)) {
+                || (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE) && claimResult.getClaim().getClaimType() == ClaimType.INSURER_INVOICE)) {
 
-            isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
             // INCIDENT
             claimResult = NodeHelper.nodeValidate(sectionName, "date", element, claimResult, getDataValidationParameter());
