@@ -78,7 +78,10 @@
                 <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceExtraReader" scope="prototype">
+                <bean class="idas.chox.service.xml.readers.InvoiceHireExtrasReader" scope="prototype">
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceRepairExtrasReader" scope="prototype">
                     <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
             </list>

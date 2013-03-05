@@ -15,13 +15,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.util.XMLUtils;
+import java.util.Arrays;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class BordereauSchemaValidation {
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String CURRENT_MACROVERSION = "2.8";
-
+    private static final String[] VALID_MACROVERSIONS = {"2.8","2.9"};
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
     public static String V_MACRO_VERSION_ERROR = "Incorrect macro version";
@@ -40,9 +40,9 @@ public class BordereauSchemaValidation {
                   bordereau.setValid(false);
                   bordereau.setMessage(V_MACRO_VERSION_ERROR + ": no macro version defined. ");
               }
-              else if (!macroversion.equals(CURRENT_MACROVERSION)) {
+              else if (!Arrays.asList(VALID_MACROVERSIONS).contains(macroversion)) {
                   bordereau.setValid(false);
-                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_MACROVERSION + " but found " + macroversion + ". Please contact support.");
+                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": valid versions are : " + Arrays.toString(VALID_MACROVERSIONS) + " but found " + macroversion + ". Please contact support.");
               }
               else {
                 List<Element> elements = XMLUtils.getElements(document, root, "rental");
@@ -82,7 +82,7 @@ public class BordereauSchemaValidation {
             Validator validator = schema.newValidator();
             validator.validate(new DOMSource(element));
         } catch (Exception ex) {
-            LOG.debug("Exception thrown validating schema: {}", ex.getMessage());
+            LOG.error("Exception thrown validating schema: {}", ex.getMessage());
             bFlag = false;
         }
         return bFlag;

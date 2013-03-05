@@ -164,9 +164,9 @@
                 </xsd:restriction>
             </xsd:simpleType>
 
-            <xsd:simpleType name="ExtraType">
+            <xsd:simpleType name="HireExtraType">
                 <xsd:annotation>
-                    <xsd:documentation>The extras type is used for invoice extras.</xsd:documentation>
+                    <xsd:documentation>The extras type is used for the invoice hire extras.</xsd:documentation>
                 </xsd:annotation>
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Admin"/>
@@ -182,6 +182,16 @@
                     <xsd:enumeration value="Roof Rack"/>
                     <xsd:enumeration value="Sat Nav"/>
                     <xsd:enumeration value="Tow Bars"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            
+            <xsd:simpleType name="RepairExtraType">
+                <xsd:annotation>
+                    <xsd:documentation>The extras type is used for the invoice repair extras.</xsd:documentation>
+                </xsd:annotation>
+                <xsd:restriction base="xsd:token">
+                    <xsd:enumeration value="Repair Admin"/>
+                    <xsd:enumeration value="Repair Acquisition"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -546,18 +556,31 @@
                 </xsd:sequence>
             </xsd:complexType>
 
-            <xsd:complexType name="Extra">
+            <xsd:complexType name="HireExtra">
                 <xsd:sequence>
-                    <xsd:element name="name" type="chx:ExtraType"/>
+                    <xsd:element name="name" type="chx:HireExtraType"/>
                     <xsd:element name="quantity" type="chx:Integer-or-empty"/>
                     <xsd:element name="item-cost" type="chx:Money-or-empty"/>
                 </xsd:sequence>
             </xsd:complexType>
 
+            <xsd:complexType name="RepairExtra">
+                <xsd:sequence>
+                    <xsd:element name="name" minOccurs="0" maxOccurs="unbounded" type="chx:RepairExtraType"/>
+                    <xsd:element name="item-cost" minOccurs="0" maxOccurs="unbounded" type="chx:Money-or-empty"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
             <xsd:complexType name="Extras">
                 <xsd:sequence>
                     <xsd:element name="cover-note-required" type="chx:Char"/>
-                    <xsd:element name="extra" minOccurs="0" maxOccurs="unbounded" type="chx:Extra"/>
+                    <xsd:element name="extra" minOccurs="0" maxOccurs="unbounded" type="chx:HireExtra"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="RepairExtras">
+                <xsd:sequence>
+                    <xsd:element name="extra" minOccurs="0" maxOccurs="unbounded" type="chx:RepairExtra"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -581,6 +604,7 @@
                     <xsd:element name="date-invoiced" type="chx:DateTime-or-empty"/>
                     <xsd:element name="vehicles" type="chx:Vehicles"/>
                     <xsd:element name="extras" minOccurs="0" type="chx:Extras"/>
+                    <xsd:element name="repairExtras" minOccurs="0" type="chx:RepairExtras"/>
                     <xsd:element name="supplier" type="chx:Supplier"/>
                     <xsd:element name="repair" type="chx:Costs"/>
                     <xsd:element name="storage-recovery" type="chx:Costs"/>
