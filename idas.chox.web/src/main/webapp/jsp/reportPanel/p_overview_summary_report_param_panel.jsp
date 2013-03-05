@@ -172,7 +172,7 @@
                     <s:if test="isCHO">
                         This report shows a high level summary of claims across all Insurers and per Insurer. Displaying information such as average invoice values, average hire durations and average cycle times.
                     </s:if>
-                    <s:elseif test="insurerIsUploadEnabled">
+                    <s:elseif test="insurerUploadEnabled">
                         This report shows a high level summary of claims across all CHOs and per CHO. Displaying information such as average invoice values, average hire durations and average cycle times.<br /><br />
                         Please note CHOs setup for Insurer uploaded claims and invoices are excluded from this report.
                     </s:elseif>

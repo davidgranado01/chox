@@ -147,7 +147,7 @@ public class UserRoleAction extends BaseAction {
 
       return adminUserService.getAvailableUserRoles(organisationTypeId, webUserId,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin());
     }
 
     public String getAllAvailableUserRoles() {
@@ -165,7 +165,7 @@ public class UserRoleAction extends BaseAction {
         else {
               webUserRoles = adminUserService.getAllAvailableUserRoles(3,
                 getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin());
+                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin());
           }
 
         userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
@@ -199,7 +199,7 @@ public class UserRoleAction extends BaseAction {
         else {
               webUserRoles = adminUserService.getAllAvailableUserRoles(3,
                 getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getInsurerIsUploadEnabled(), false, getIsChoxAdmin(), true);
+                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), isInsurerUploadEnabled(), false, getIsChoxAdmin(), true);
           }
 
         userroles = new ArrayList<UserroleViewData>(webUserRoles.size());
