@@ -28,12 +28,12 @@
         new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received by Credit Hire Organisation(s) (using Total To Pay amount)'});
         new Ext.ToolTip({target: 'tip22',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});
         new Ext.ToolTip({target: 'tip23',html: 'Average invoice payment time (In days)'});
-        new Ext.ToolTip({target: 'tip24',html: 'New manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
-        new Ext.ToolTip({target: 'tip25',html: 'Full original value of manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
-        new Ext.ToolTip({target: 'tip26',html: 'Number of manual invoices that the Insurer has paid outside of the CHOX system/process for the selected Credit Hire Organisation(s) in this period'});
-        new Ext.ToolTip({target: 'tip27',html: 'Final value of manual invoices that have been paid by the Insurer for the selected Credit Hire Organisation(s) in this period'});
-        new Ext.ToolTip({target: 'tip28',html: 'Number of manual invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
-        new Ext.ToolTip({target: 'tip29',html: 'Value of manual invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip24',html: 'New Insurer Upload invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip25',html: 'Full original value of Insurer Upload invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip26',html: 'Number of Insurer Upload invoices that the Insurer has paid outside of the CHOX system/process for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip27',html: 'Final value of Insurer Upload invoices that have been paid by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip28',html: 'Number of Insurer Upload invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip29',html: 'Value of Insurer Upload invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
         new Ext.ToolTip({target: 'tip30',html: 'Number of invoices awaiting litigation outcome by CHO'});
         new Ext.ToolTip({target: 'tip31',html: 'Value of invoices awaiting litigation outcome (using Total To Pay amount)'});
         new Ext.ToolTip({target: 'tip32',html: 'Value of penalty charges paid'});
