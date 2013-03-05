@@ -36,4 +36,6 @@ public interface WebUserUserRoleService {
     public boolean isWorkgroupRelatedRolesByCode(String roleCode);
 
     public boolean isClaimOwnerRelatedRolesByCode(String roleCode);
+    
+    public WebUserRole getWebUserRole(String roleName);
 }

@@ -95,7 +95,8 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         delete(object);
     }
 
-    private WebUserRole getWebUserRole(String roleName) {
+    @Override
+    public WebUserRole getWebUserRole(String roleName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("name", roleName));
         return (WebUserRole) getByCriteria(criteria);

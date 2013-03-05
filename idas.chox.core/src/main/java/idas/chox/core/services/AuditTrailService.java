@@ -3,6 +3,7 @@ package idas.chox.core.services;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
+import java.util.Date;
 import java.util.List;
 
 public interface AuditTrailService {
@@ -53,5 +54,7 @@ public interface AuditTrailService {
     public void deleteAllAuditEntriesByClaimId(int claimId);
     
     public void revertAllAuditEntriesByClaimId(int claimId);
+    
+    public AuditTrail getAuditTrailByTaskCreatedDate(int claimId, Date taskCreatedDate);
 
 }
