@@ -69,7 +69,7 @@ public enum ClaimType {
         if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType)) {
             return true;
         }
-        
+
         return false;
     }
 

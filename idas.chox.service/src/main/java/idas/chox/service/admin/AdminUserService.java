@@ -167,8 +167,8 @@ public class AdminUserService extends SecureDataService {
         return this.userService.getWebUser(userId);
     }
 
-    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir) {
-        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
+        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly);
     }
     
 

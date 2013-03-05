@@ -1215,7 +1215,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                                 claim.setBreBand(choBand);
                             }
-                            if (!claim.getBreBand().isAllowPenaltyCharges() && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0) ) {
+                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0) ) {
                                 accessRight = 0;
 //                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
                             }
@@ -1235,7 +1235,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             claim.setBreBand(choBand);
                         }
 
-                        if (!claim.getBreBand().isAllowPenaltyCharges()) {
+                        if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
 //                            LOG.debug("BRE Band does not allow penalty charges");
                             accessRight = 0;
                         }

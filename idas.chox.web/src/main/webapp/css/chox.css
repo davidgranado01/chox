@@ -1652,3 +1652,7 @@ br.smallBr
     color: #15428B;
     font: 12px tahoma,arial,verdana,sans-serif;
 }
+
+.paperClip {
+    background:url(../images/paperclip.gif); 
+}

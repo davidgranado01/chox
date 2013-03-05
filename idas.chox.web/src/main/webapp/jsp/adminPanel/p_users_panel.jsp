@@ -6,6 +6,7 @@
     var gridviewDataStore;
     var userManagementGrid;
     var userManagementgridStore;
+    var activeUsersOnly = true;
     
     var selectedUserRoleId = -1;
     var selectedOrganisationTypeId = -1;
@@ -45,7 +46,8 @@
                     userManagementgridStore.baseParams= {
                         organisationTypeId : $("#selectedOrganisationTypeId").val(),
                         organisationId : $("#selectedOrganisationId").val(),
-                        userRoleId : $("#selectedUserRolesId").val()
+                        userRoleId : $("#selectedUserRolesId").val(),
+                        activeUsersOnly : activeUsersOnly
                     };
                 }
             }
@@ -294,6 +296,11 @@
         }
 
     }
+    
+    function toggleActiveUsers(el) {
+        activeUsersOnly = !activeUsersOnly;
+        loadGridViewList();
+    }
 
 </script>
 
@@ -305,7 +312,7 @@
         <input name="currentUserOrganisationType" id="currentUserOrganisationType" type="hidden" value="<s:property value="currentUserOrganisationType" />">
         <input name="currentUserOrganisationId" id="currentUserOrganisationId" type="hidden" value="<s:property value="currentUserOrganisationId" />">
 
-        <div class="admin-gridview-header">
+        <div>
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td id="label">
@@ -325,6 +332,9 @@
                 <tr>
                     <td id="label">
                         <div id="organisationDropDownDiv" class="label-block" style="width:600px;"></div>
+                    </td>
+                    <td class="chox-form-item">
+                        <input type="checkbox" id="hideInactiveUsersToggleId" name="activeUsersOnly" checked="true" onClick="toggleActiveUsers(this)" />&nbsp;Hide Inactive Users 
                     </td>
                 </tr>
                 <tr>

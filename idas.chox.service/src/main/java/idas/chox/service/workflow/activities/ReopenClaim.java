@@ -39,7 +39,7 @@ public class ReopenClaim extends BaseActivity {
                     && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             }
-            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges() 
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) 
                     && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
                             claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) || claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)

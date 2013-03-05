@@ -159,4 +159,20 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
+    
+    public boolean isSubscriberClaimsEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isAllowSubscriberClaims();
+    }
+    
+    public boolean isFixedFeeClaimsEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isAllowFixedFeeClaims();
+    }
+    
+    public boolean isTpiClaimsEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isThirdPartyInterventionActivated();
+    }
+    
+    public boolean isManualClaimsEnabled() {
+        return adminInsurerService.getInsurer(insurerId).isUploadEnabled();
+    }
 }

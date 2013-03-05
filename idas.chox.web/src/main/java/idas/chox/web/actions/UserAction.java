@@ -46,6 +46,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private String dir;
     private int totalCount;
     private String userPasswordFormatMessage;
+    private boolean activeUsersOnly;
 
     public String getDir() {
         return dir;
@@ -128,6 +129,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public void setStart(int start) {
         this.start = start;
+    }
+
+    public boolean isActiveUsersOnly() {
+        return activeUsersOnly;
+    }
+
+    public void setActiveUsersOnly(boolean activeUsersOnly) {
+        this.activeUsersOnly = activeUsersOnly;
     }
 
     public boolean getIsNew() {
@@ -275,7 +284,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         }
         try {
 
-            SearchResult searchResult = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
+            SearchResult searchResult = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly);
             List<WebUser> userData = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
             for (WebUser h : userData) {

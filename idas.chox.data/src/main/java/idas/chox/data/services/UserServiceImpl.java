@@ -199,10 +199,14 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Override
-    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir) {
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
         List<WebUser> users = new ArrayList<WebUser>();
 
         Criteria criteria = getSession().createCriteria(WebUser.class);
+        if (activeUsersOnly) {
+            criteria.add(Restrictions.eq("status", true))
+                    .add(Restrictions.eq("blocked", false));
+        }
         if (organisationTypeId > 0) {
             if (organisationTypeId == 2) {
                 if (organisationId > 0) {
