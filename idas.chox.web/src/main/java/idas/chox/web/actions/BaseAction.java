@@ -489,8 +489,4 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
     }
-//    
-//    public Entity getModel(Class model, int id) {
-//        return (Entity)baseDataService.get(model, id);
-//    }
 }
