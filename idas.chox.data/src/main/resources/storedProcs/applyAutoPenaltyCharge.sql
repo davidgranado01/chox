@@ -42,7 +42,7 @@ WHERE
      AND breorg.chorganisation_id = cho.id
      AND breorg.band_id = bre.id
      AND vc.id = c.vehicle_hire_id
-     AND bre.allow_penalty_charges = TRUE
+     AND ((bre.allow_gta_penalty_charges = TRUE AND c.claim_type in (0,1,2)) OR (bre.allow_subscriber_penalty_charges = TRUE AND c.claim_type in (7,8,9)) OR (bre.allow_fixed_fee_penalty_charges = TRUE AND c.claim_type in (11,12,13)))
      AND c.auto_penalty_charges = TRUE
      AND cho.auto_penalty_charges = TRUE
      AND ct.claim_type = c.claim_type

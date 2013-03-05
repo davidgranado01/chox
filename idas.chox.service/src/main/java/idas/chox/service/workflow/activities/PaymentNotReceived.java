@@ -73,7 +73,7 @@ public class PaymentNotReceived extends BaseActivity {
                 claim.setBreBand(choBand);
             }
 
-            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges()
+            if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())
                     && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && ((originalStatus.equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT))
                     || (originalStatus.equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && claim.getStatus().equals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO))

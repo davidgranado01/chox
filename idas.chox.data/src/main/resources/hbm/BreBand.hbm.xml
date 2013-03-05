@@ -119,7 +119,12 @@
         <property column="repair_vat_tolerance" name="repairVatTolerance"/>
         <property column="total_vat_tolerance" name="totalVatTolerance"/>
         <property column="non_standard_insurance_tolerance" name="nonStandardInsurancePremiumCeilingTolerance"/>
-        <property column="allow_penalty_charges" name="allowPenaltyCharges"/>
+        <property column="allow_gta_penalty_charges" name="allowGTAPenaltyCharges"/>
+        <property column="allow_subscriber_penalty_charges" name="allowSubscriberPenaltyCharges"/>
+        <property column="allow_fixed_fee_penalty_charges" name="allowFixedFeePenaltyCharges"/>
+        <property column="allow_tpi_penalty_charges" name="allowTPIPenaltyCharges"/>
+        <property column="allow_ins_vs_ins_penalty_charges" name="allowInsurervsInsurerPenaltyCharges"/>
+        <property column="allow_manual_inv_penalty_charges" name="allowManualInvoicePenaltyCharges"/>
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>
