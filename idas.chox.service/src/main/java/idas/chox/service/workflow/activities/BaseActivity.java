@@ -133,7 +133,9 @@ public abstract class BaseActivity implements Activity {
         
         if (applicationAccessibility.checkActivityAccessibility(getClass().getSimpleName(),
                 securityInfoProvider.getCurrentUser(), claim) < 1) {
-            LOG.error("No access to activity '{}' for claim '{}'", getClass().getSimpleName(), claim.getChoReference());
+            LOG.error("No access to activity '{}' for claim '{}' of type {} in status '{}'",
+                    new Object[]{getClass().getSimpleName(), claim.getChoReference(),
+                                 claim.getClaimType().name(), claim.getStatus()});
             throw new AccessDeniedException("No access to activity " + getClass().getSimpleName());
         }
         

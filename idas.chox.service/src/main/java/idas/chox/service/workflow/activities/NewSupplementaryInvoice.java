@@ -43,7 +43,7 @@ public class NewSupplementaryInvoice extends BaseActivity {
                 claim.addComment(comment);
             }
         }
-
+        LOG.debug("Finished NewSupplementaryInvoice activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
     }
 
     @Override

@@ -38,7 +38,9 @@ public interface ClaimService extends DataService {
 
     public Boolean revertClaim(int claimId);
 
-    public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId);
+    public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId);
+    
+    public List getInsurerClaimsByCustomerClaimRef(String customerClaimRef, int insId);
 
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
 

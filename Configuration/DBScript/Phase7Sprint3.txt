@@ -4568,7 +4568,7 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_fnol_enabled, claim_type)
 	SELECT 'activity.NewSupplementaryInvoice.null', false, false, false, false, false, 10;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_INS_UPLOAd', 1
+	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.NewSupplementaryInvoice.null' and claim_type=10;
 
@@ -5071,6 +5071,92 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'filter.ClaimsAwaitingHireMonitoringInformation';
 
+--
+-- ExtraAction Accessibility
+--
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.InvoiceUnassigned', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceUnassigned';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceUnassigned';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBREApproved', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBRERejected', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.ManualInvoicePaid', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoicePaid';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoicePaid';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceContested', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceContested';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceContested';
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceUnassigned', false, false, false, false, false, 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceUnassigned';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 2
+	FROM accessibility
+	WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ManualInvoiceUnassigned';
 
 
 ALTER TABLE insurer RENAME COLUMN is_upload_enabled TO is_invoice_upload_enabled;

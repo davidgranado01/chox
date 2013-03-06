@@ -79,7 +79,7 @@ public class ClaimObjectService {
         newClaim.setHireMonitoringDetail(null);
         if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
-        } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE) {
+        } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE || claim.getClaimType() == ClaimType.INSURER_INVOICE) {
             newClaim.setClaimType(ClaimType.INSURER_SUPPLEMENTARY_INVOICE);
         } else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
