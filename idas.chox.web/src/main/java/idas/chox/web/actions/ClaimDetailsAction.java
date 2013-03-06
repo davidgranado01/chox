@@ -2,7 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -17,7 +17,7 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+        return TabAccessibility.TAB_CLAIM_DETAIL;
     }
 
     public String getGtaNoticeDate() {

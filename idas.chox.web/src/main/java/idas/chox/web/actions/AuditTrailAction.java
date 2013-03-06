@@ -10,7 +10,7 @@ import net.sf.json.JSONArray;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.services.AuditTrailService;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.AuditTrailViewData;
 
 public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
@@ -60,7 +60,7 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_AUDIT_TRAIL;
+        return TabAccessibility.TAB_AUDIT_TRAIL;
     }
     
     @Override

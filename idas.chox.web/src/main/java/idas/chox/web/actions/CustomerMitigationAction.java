@@ -1,10 +1,11 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Customer;
-import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.Customer;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -46,7 +47,7 @@ public class CustomerMitigationAction extends ClaimModelAction<Customer> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+        return TabAccessibility.TAB_CLAIM_DETAIL;
     }
 
 }

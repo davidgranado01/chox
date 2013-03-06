@@ -1,10 +1,11 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Invoice;
-import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.Invoice;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -70,7 +71,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
   
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
+        return TabAccessibility.TAB_INVOICE_DETAIL;
     }
 
     public Integer getEstateQty() {

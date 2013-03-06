@@ -3,6 +3,11 @@ package idas.chox.service.security;
 import idas.chox.core.model.WebUser;
 
 public class AdminAccessibility {
+    private static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
+    private static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
+    private static final String ADMIN_USER_MANAGEMENT = "UserManagement";
+    private static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
+    private static final String ADMIN_BILLING = "Billing";
 
     private boolean insurerCompaniesAdminAccessibility;
     private boolean creditHireOrgAdminAccessibility;
@@ -11,11 +16,11 @@ public class AdminAccessibility {
     private boolean billingAdminAccessibility;
 
     public AdminAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
-        insurerCompaniesAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_COMPANIES, user) > 0;
-        creditHireOrgAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_CREDIT_HIRE_ORG, user) > 0;
-        userManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_USER_MANAGEMENT, user) > 0;
-        isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_BRE_MANAGEMENT, user) > 0;
-        billingAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_BILLING, user) > 0;
+        insurerCompaniesAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_INSURER_COMPANIES, user) > 0;
+        creditHireOrgAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_CREDIT_HIRE_ORG, user) > 0;
+        userManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_USER_MANAGEMENT, user) > 0;
+        isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_INSURER_BRE_MANAGEMENT, user) > 0;
+        billingAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_BILLING, user) > 0;
     }
 
     public boolean getIsCreditHireOrgAdminAccessibility() {

@@ -1,12 +1,14 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.History;
-import idas.chox.web.viewdata.HistoryViewData;
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONArray;
-import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Collections;
+
+import net.sf.json.JSONArray;
+
+import idas.chox.core.model.History;
+import idas.chox.service.security.TabAccessibility;
+import idas.chox.web.viewdata.HistoryViewData;
 
 public class HistoryAction extends ClaimModelAction<History> {
 
@@ -48,7 +50,7 @@ public class HistoryAction extends ClaimModelAction<History> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_HISTORY;
+        return TabAccessibility.TAB_HISTORY;
     }
 
     @Override

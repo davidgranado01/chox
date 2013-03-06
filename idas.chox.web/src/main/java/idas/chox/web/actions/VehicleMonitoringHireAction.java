@@ -2,13 +2,15 @@ package idas.chox.web.actions;
 
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 
 /**
  *
@@ -40,10 +42,11 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
         VehicleClass vehicleClass = this.model.getVehicleClass();
         if (vehicleClassMonitoringId > 0 && (vehicleClass == null || vehicleClass.getId() != vehicleClassMonitoringId)) {
             List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses)
+            for (VehicleClass vClass : vehicleClasses) {
                 if (vClass.getId() == vehicleClassMonitoringId) {
                     vehicleClass = vClass;
                     break;
+                }
             }
             model.setVehicleClass(vehicleClass);
         }
@@ -65,7 +68,7 @@ public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_HIRE_MONITORING;
+        return TabAccessibility.TAB_HIRE_MONITORING;
     }
 
     public String getRentalStartTime() {

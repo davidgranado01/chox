@@ -10,6 +10,29 @@ import idas.chox.core.model.WebUser;
  */
 public class ReportAccessibility {
     private static final Logger LOG = LoggerFactory.getLogger(ReportAccessibility.class);
+    private static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
+    private static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
+    private static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
+    private static final String REPORT_INSURER_PAYMENT = "InsurerPayment";
+    private static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
+    private static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
+    private static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
+    private static final String REPORT_INVOICE_REPORT = "InvoiceReport";
+    private static final String REPORT_BILLING_CHO_REPORT = "BillingCHOReport";
+    private static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
+    private static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
+    private static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
+    private static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
+    private static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
+    private static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
+    private static final String REPORT_INSURER_WORKFLOW_REPORT = "ClaimStatusWorkflowReport";
+    private static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
+    private static final String REPORT_HANDLER_PERFORMANCE_REPORT = "HandlerPerformanceReport";
+    private static final String REPORT_HANDLER_ACTIONS_REPORT = "IncomingHandlerActionsReport";
+    //BRE Invoice Approval Report
+    private static final String REPORT_BRE_INVOICE_APPROVAL_DISPUTE = "BreInvoiceApprovalDisputeReport";
+    private static final String REPORT_TEAM_SITE_BRE_REPORT = "TeamSiteBreWorkflowReport";
+    private static final String REPORT_WORKGROUP_OWNER_BRE_REPORT = "WorkgroupOwnerBreInvoiceReport";
 
     private short invoiceSummaryAccessibility;
     private short insurerWeeklySummaryAccessibility;
@@ -44,28 +67,28 @@ public class ReportAccessibility {
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
-        invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, user);
-        insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY, user);
-        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, user);
-        insurerPaymentReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_PAYMENT, user);
-        overviewSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OVERVIEW_SUMMARY, user);
-        insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_AVERAGE_SETTLEMENT, user);
-        invoiceSavingSummaryReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SAVING_SUMMARY, user);
-        invoiceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_REPORT, user);
-        billingChoReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_CHO_REPORT, user);
-        billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
-        claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
-        ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
-        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
-        teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
-        teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
-        claimStatusWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
-        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
-        invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
-        handlerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_PERFORMANCE_REPORT, user);
-        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
-        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
-        newIncomingHandlerActionsAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_HANDLER_ACTIONS_REPORT, user);
+        invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INVOICE_SUMMARY, user);
+        insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INS_WEEKLY_SUMMARY, user);
+        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_CLAIM_REJECTION, user);
+        insurerPaymentReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INSURER_PAYMENT, user);
+        overviewSummaryAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_OVERVIEW_SUMMARY, user);
+        insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_AVERAGE_SETTLEMENT, user);
+        invoiceSavingSummaryReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INVOICE_SAVING_SUMMARY, user);
+        invoiceReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INVOICE_REPORT, user);
+        billingChoReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_BILLING_CHO_REPORT, user);
+        billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_BILLING_INS_REPORT, user);
+        claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_CLAIM_FILE_REPORT, user);
+        ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_OWNER_WORKFLOW_REPORT, user);
+        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_OWNER_PERFORMANCE_REPORT, user);
+        teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_TEAM_WORKFLOW_REPORT, user);
+        teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_TEAM_PERFORMANCE_REPORT, user);
+        claimStatusWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INSURER_WORKFLOW_REPORT, user);
+        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
+        invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_INVOICE_STATUS_REPORT, user);
+        handlerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_HANDLER_PERFORMANCE_REPORT, user);
+        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_TEAM_SITE_BRE_REPORT, user);
+        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
+        newIncomingHandlerActionsAccessibility = applicationAccessibility.checkReportAccessibility(REPORT_HANDLER_ACTIONS_REPORT, user);
         
     }
 

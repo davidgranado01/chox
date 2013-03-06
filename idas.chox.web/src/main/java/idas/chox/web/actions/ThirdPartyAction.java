@@ -5,7 +5,7 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.TabAccessibility;
 import java.util.List;
 
 /**
@@ -45,7 +45,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+        return TabAccessibility.TAB_CLAIM_DETAIL;
     }
 
     public void setVehicleClassId(int vehicleClassId) {
