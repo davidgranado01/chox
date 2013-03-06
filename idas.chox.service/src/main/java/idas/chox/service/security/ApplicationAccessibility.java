@@ -30,7 +30,7 @@ public class ApplicationAccessibility {
     private AccessibilityService accessibilityService;
 
     // ***************************************
-    // Activities via buttons
+    // Activities via buttons (other activities defined in ActionPanel.java
     // ***************************************
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaim";
@@ -42,7 +42,7 @@ public class ApplicationAccessibility {
     public static final String SLA_EXTENSION = "SlaExtension";
     
     // ***************************************
-    // FILTER
+    // FILTERS
     // ***************************************
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_REJECTED_SUBSCRIBER_CLAIMS = "RejectedSubscriberClaims";
