@@ -16,20 +16,20 @@ function doUpdateManualInvoice(action){
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
-            <fieldset class="x-fieldset"><legend>Manual Invoice - Action Required</legend>
+            <fieldset class="x-fieldset"><legend>Insurer Invoice - Action Required</legend>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
                 <div class="status-control-set">
                     <s:if test="!status.equalsIgnoreCase('ManualInvoiceContested') && !pcOnly">
                         <div class="status-info">
                             If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system. 
-                            Once the payment has been made please click on the 'Manual Invoice Paid' button.  
+                            Once the payment has been made please click on the 'Insurer Invoice Paid' button.  
                             However if the invoice has been contested with the CHO then click on the 'Invoice Contested With CHO' button to move the claim to a holding status until an agreement has been reached.
                         </div>
                     </s:if>
                     <s:else>
                         <div class="status-info">
-                            If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Manual Invoice Paid' button.
+                            If applicable please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Insurer Invoice Paid' button.
                         </div>
                     </s:else>
                     <div class="status-info-submit">

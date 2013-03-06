@@ -239,7 +239,7 @@
 //                 gtaRegexExpression: {checkGtaRegexField: "You must supply a value for 'GTA Auto-routing Regex Expression'"},
 //                 subscriberRegexExpression: {checkSubscriberRegexField: "You must supply a value for 'Subscriber Auto-routing Regex Expression'"},
 //                 insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: "You must supply a value for 'Insurer Vs Insurer Auto-routing Regex Expression'"},
-//                 insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Manual Auto-routing Regex Expression'"},
+//                 insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Invoice Auto-routing Regex Expression'"},
 //                 fixedFeeRegexExpression: {checkFixedFeeRegexField: "You must supply a value for 'Fixed Fee Auto-routing Regex Expression'"}
             }
         });
