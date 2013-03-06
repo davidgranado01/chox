@@ -5091,6 +5091,10 @@ ALTER TABLE invoice ADD COLUMN repair_acquisition_fee numeric(10, 2) NOT NULL DE
 ALTER TABLE invoice_original ADD COLUMN repair_admin_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
 ALTER TABLE invoice_original ADD COLUMN repair_acquisition_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
 
+
+ALTER TABLE bordereau ADD COLUMN macro_version VARCHAR(6);
+ALTER TABLE bordereau ADD COLUMN xml_version VARCHAR(6);
+
 ----------------------
 --  END OF 7.3.5    --
 ----------------------

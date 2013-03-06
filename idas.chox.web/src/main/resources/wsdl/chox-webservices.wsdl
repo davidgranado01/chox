@@ -618,6 +618,7 @@
             <xsd:complexType name="Chox">
                 <xsd:sequence>
                     <xsd:element name="macroversion" minOccurs="0" type="xsd:decimal"/>
+                    <xsd:element name="xmlversion" minOccurs="0" type="xsd:decimal"/>
                     <xsd:element name="rental" minOccurs="1" maxOccurs="1" > <!-- N.B. maxOccurs="unbounded" for bordereau upload -->
                         <xsd:complexType>
                             <xsd:sequence>

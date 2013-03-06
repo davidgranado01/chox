@@ -15,6 +15,8 @@ public class Bordereau extends Entity implements Serializable {
     private boolean processed;
     private boolean beingProcessed;
     private boolean valid;
+    private String macroVersion;
+    private String xmlVersion;
 
     public boolean isBeingProcessed() {
         return beingProcessed;
@@ -102,5 +104,21 @@ public class Bordereau extends Entity implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getMacroVersion() {
+        return macroVersion;
+    }
+
+    public void setMacroVersion(String macroVersion) {
+        this.macroVersion = macroVersion;
+    }
+
+    public String getXmlVersion() {
+        return xmlVersion;
+    }
+
+    public void setXmlVersion(String xmlVersion) {
+        this.xmlVersion = xmlVersion;
     }
 }

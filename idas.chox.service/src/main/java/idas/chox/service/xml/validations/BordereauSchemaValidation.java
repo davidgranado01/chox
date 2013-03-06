@@ -2,7 +2,6 @@ package idas.chox.service.xml.validations;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.transform.dom.DOMSource;
@@ -23,45 +22,56 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.util.XMLUtils;
 
 public class BordereauSchemaValidation {
+
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String[] VALID_MACROVERSIONS = {"2.8","2.9"};
+    private static final String VALID_XMLVERSIONS = "2.9";
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
-    public static String V_MACRO_VERSION_ERROR = "Incorrect macro version";
-
+    public static String V_XML_VERSION_ERROR = "Incorrect xml version";
     private String schemaFile;
 
     public void validate(Document document, Bordereau bordereau, WebUser currentUser) {
         try {
-           
+
             Element root = document.getDocumentElement();
 
             if (root != null && root.getTagName().equals("chox")) {
 
-              String macroversion = XMLUtils.getElementValue(root, "macroversion");
-              if (macroversion == null) {
-                  bordereau.setValid(false);
-                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": no macro version defined. ");
-              }
-              else if (!Arrays.asList(VALID_MACROVERSIONS).contains(macroversion)) {
-                  bordereau.setValid(false);
-                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": valid versions are : " + Arrays.toString(VALID_MACROVERSIONS) + " but found " + macroversion + ". Please contact support.");
-              }
-              else {
-                List<Element> elements = XMLUtils.getElements(document, root, "rental");
+                String macroVersion = XMLUtils.getElementValue(root, "macroversion");
+                String xmlVersion = XMLUtils.getElementValue(root, "xmlversion");
 
-                if (elements != null && elements.size() > 0) {
-                    for (Element e : elements) {
-                        LOG.debug("Validating schema element: {}", e.getNodeName());
-                        if (!isValidSchema(e)) {
-                            LOG.debug("Element not valid: {}={}", e.getNodeName(), e.getNodeValue());
-                            bordereau.setValid(false);
-                            bordereau.setMessage(V_SCHEMA_ERROR);
-                            return;
+                if (macroVersion != null && xmlVersion == null) {
+                    if (macroVersion.equals("2.8")) {
+                        xmlVersion = VALID_XMLVERSIONS;
+                    } else {
+                        xmlVersion = macroVersion;
+                    }
+                }
+                
+                bordereau.setMacroVersion(macroVersion);
+                bordereau.setXmlVersion(xmlVersion);
+                
+                if (macroVersion == null) {
+                    bordereau.setValid(false);
+                    bordereau.setMessage(V_XML_VERSION_ERROR + ": no macro version defined. ");
+                } else if (!VALID_XMLVERSIONS.equals(xmlVersion)) {
+                    bordereau.setValid(false);
+                    bordereau.setMessage(V_XML_VERSION_ERROR + ": valid versions is : " + VALID_XMLVERSIONS + " but found " + macroVersion + ". Please contact support.");
+                } else {
+                    List<Element> elements = XMLUtils.getElements(document, root, "rental");
+
+                    if (elements != null && elements.size() > 0) {
+                        for (Element e : elements) {
+                            LOG.debug("Validating schema element: {}", e.getNodeName());
+                            if (!isValidSchema(e)) {
+                                LOG.debug("Element not valid: {}={}", e.getNodeName(), e.getNodeValue());
+                                bordereau.setValid(false);
+                                bordereau.setMessage(V_SCHEMA_ERROR);
+                                return;
+                            }
                         }
                     }
                 }
-              }
             } else {
                 bordereau.setValid(false);
                 bordereau.setMessage(V_SCHEMA_ERROR);

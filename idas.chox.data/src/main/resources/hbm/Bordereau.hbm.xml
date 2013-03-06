@@ -21,6 +21,8 @@
         <property column="created_date" name="createdDate"/>
         <property column="total_claims" name="totalClaims"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
+        <property column="macro_version" name="macroVersion"/>
+        <property column="xml_version" name="xmlVersion"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     </class>

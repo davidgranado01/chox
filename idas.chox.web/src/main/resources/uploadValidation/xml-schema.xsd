@@ -9,6 +9,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="macroversion" type="xs:string" minOccurs="1" />
+                <xs:element name="xmlversion" type="xs:string" minOccurs="0" />
                 <xs:element ref="rental" />
             </xs:sequence>
         </xs:complexType>
