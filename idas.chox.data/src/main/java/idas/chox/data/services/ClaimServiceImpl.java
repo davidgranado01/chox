@@ -266,11 +266,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
+    public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.eq("chorganisation.id", choId));
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
+    }
+
+    @Override
+    public List getInsurerClaimsByCustomerClaimRef(String customerClaimRef, int insId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("insurer.id", insId));
         criteria.addOrder(Order.asc("createdDate"));
         return findByCriteria(criteria);
     }

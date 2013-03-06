@@ -986,7 +986,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String markSupplementaryInvoicedClaim() {
         boolean canMark = true;
         if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
-            List<Claim> claims = service.getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
+            List<Claim> claims = service.getCHOClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
             if (claims.size() > 1) {
                 for (Claim claim1 : claims) {
                     if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())
@@ -1003,6 +1003,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
                     } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
+                    } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.INSURER_ORIGINAL_INVOICE);
                     } else {
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
                     }
@@ -1256,7 +1258,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     String customerClaimRef = claim.getCustomer().getClaimReference();
 
                     if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
-                        List<Claim> claims = service.getClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
+                        List<Claim> claims = service.getCHOClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
                         if (claims.size() > 1) {
                             for (Claim claim1 : claims) {
                                 if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {

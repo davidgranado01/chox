@@ -708,7 +708,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE);
                 }
-                List<Claim> claimsWithSameCusClaimRef = claimService.getClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                
+                List<Claim> claimsWithSameCusClaimRef;
+                
+                if (isInsurerUpload) {
+                   claimsWithSameCusClaimRef = claimService.getInsurerClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getInsurer().getId());
+                } else {
+                   claimsWithSameCusClaimRef = claimService.getCHOClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                }
                 if (claimsWithSameCusClaimRef.size() > 0) {
 
                     Claim oldClaim = null;

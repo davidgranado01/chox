@@ -21,7 +21,6 @@ import org.w3c.dom.Element;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
@@ -104,12 +103,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
 
         validate(claimResult, choReferences);
-//                                   (23, "New Insurer Claim"),
-//    EXISTS_INSURER_CLAIM                        (24, "Insurer Claim Already Exists"),
-//         (25, "Insurer Hire Monitoring and New Invoice"),
-//                         (26, "Insurer Hire Monitoring"),
-//    INSURER_EXIST_INVOICE                       (27, "Insurer Invoice Already Exists"),
-//               (28, "New Insurer Supplementary Invoice");
 
         if (claimResult.isValid() && claimResult.isDataValid()) {
             LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
@@ -133,13 +126,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
-                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
-                    LOG.debug("Processing newInvoice activity.");
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
+                    LOG.debug("Processing supplementaryInvoice (activities NewSupplementaryInvoice followed by NewInvoice).");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
+                    LOG.debug("Processing supplementaryInsurerInvoice (activities NewSupplementaryInvoice followed by InsurerUpload).");
+                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    LOG.debug("Invoice set for claim '{}': {}", claimResult.getClaim().getChoReference(), claimResult.getClaim().getInvoice());
+                    Activity activity = activityFactory.getActivity("supplementaryInsurerInvoice");
+                    activity.processInBatch(claimResult.getClaim());
+                    LOG.debug("supplementaryInsurerInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
                     LOG.debug("Processing hire monitoring and newInvoice activity.");

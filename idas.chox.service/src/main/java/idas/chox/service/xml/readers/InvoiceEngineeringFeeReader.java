@@ -27,6 +27,7 @@ public class InvoiceEngineeringFeeReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)) {
 
             isAllowToReadData = true;

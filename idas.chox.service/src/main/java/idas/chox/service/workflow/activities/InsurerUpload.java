@@ -57,7 +57,7 @@ public class InsurerUpload extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        LOG.debug("Processing Insurer Upload activity...");
+        LOG.debug("Processing Insurer Upload activity with invoice '{}'...", claim.getInvoice());
 
         // Set Claim BRE band
         BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
@@ -112,8 +112,8 @@ public class InsurerUpload extends BaseActivity {
                 LOG.warn("Error getting HPI info: no vehicle hire available.");
             } else {
                 LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getVehicleHire().getVehicleRegistration(), ex.getMessage());
+                claim.getVehicleHire().setHpiError(ex.getMessage());
             }
-            claim.getVehicleHire().setHpiError(ex.getMessage());
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
@@ -183,6 +183,7 @@ public class InsurerUpload extends BaseActivity {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_REJECTED);
             }
         }
+        LOG.debug("Finished InsurerUpload activity for claim '{}': invoice is {}", claim.getChoReference(), claim.getInvoice());
 
     }
 
