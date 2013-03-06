@@ -568,8 +568,8 @@
 
             <xsd:complexType name="RepairExtra">
                 <xsd:sequence>
-                    <xsd:element name="name" minOccurs="0" maxOccurs="unbounded" type="chx:RepairExtraType"/>
-                    <xsd:element name="item-cost" minOccurs="0" maxOccurs="unbounded" type="chx:Money-or-empty"/>
+                    <xsd:element name="name"  type="chx:RepairExtraType"/>
+                    <xsd:element name="item-cost" type="chx:Money-or-empty"/>
                 </xsd:sequence>
             </xsd:complexType>
             
@@ -582,7 +582,7 @@
             
             <xsd:complexType name="RepairExtras">
                 <xsd:sequence>
-                    <xsd:element name="extra" minOccurs="0" maxOccurs="unbounded" type="chx:RepairExtra"/>
+                    <xsd:element name="extra" minOccurs="1" maxOccurs="2" type="chx:RepairExtra"/>
                 </xsd:sequence>
             </xsd:complexType>
 
