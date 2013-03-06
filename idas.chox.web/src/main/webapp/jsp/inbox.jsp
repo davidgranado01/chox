@@ -1424,6 +1424,7 @@
                     ds: ds,
                     listeners:  {cellclick: maskInboxScreen },
                     width: 1000,
+                    enableColumnMove: false,
                     columns: [
                         sm2,
                         {header: "Supplier Ref", width: 100, sortable: true, dataIndex: 'supplierReference',
@@ -1438,13 +1439,13 @@
                         {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
                         {header: "Ins Owner", width: 50, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
                         {header: "CHO Owner", width: 50, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
-                        {header: "Status Modified Date", width: 50, sortable: true, dataIndex: 'statusModifiedDate'},
-                        {header: "Review Date", width: 50, sortable: true, dataIndex: 'reviewDate'},
+                        {header: "Status Modified Date", width: 40, sortable: true, dataIndex: 'statusModifiedDate'},
+                        {header: "Review Date", width: 40, sortable: true, dataIndex: 'reviewDate'},
                         {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
                         {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                         {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                                 return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}},
-                        {header: "", width : 20, sortable : true, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
+                        {header: "", width : 40, sortable : true, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
                                 if(value){metaData.css = 'paperClip';} 
                             }}
                     ],
