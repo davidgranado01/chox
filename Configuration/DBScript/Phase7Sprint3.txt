@@ -5573,51 +5573,97 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimReferredToFNOL';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimReferredToEngineer';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.SubscriberClaimRejected';
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimPending';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimRejectionContested';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedRouted';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnassigned';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnrouted';
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO', 1
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.SlaExtension.ClaimUpdatedByEngineer';
 
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToFNOL';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimReferredToEngineer';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.SubscriberClaimRejected';
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimPending';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimRejectionContested';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedRouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnassigned';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUnacknowledgedUnrouted';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.SlaExtension.ClaimUpdatedByEngineer';
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)

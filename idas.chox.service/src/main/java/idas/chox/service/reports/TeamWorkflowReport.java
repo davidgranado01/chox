@@ -313,7 +313,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam and c.id = a.claim_id ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
                       /*
@@ -329,7 +329,7 @@ public class TeamWorkflowReport implements Report {
                       sb.append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                       sb.append(" union all select EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and c.id=a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and c.id=a.claim_id and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
 
                       /*
@@ -339,7 +339,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
 
                       /*
@@ -349,7 +349,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
 
                       /*
@@ -359,7 +359,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
 
                       /*
@@ -369,7 +369,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
 
                       /*
@@ -379,7 +379,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
 
                       /*
@@ -389,7 +389,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
 
                       /*
@@ -399,7 +399,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
                       /*
@@ -409,7 +409,7 @@ public class TeamWorkflowReport implements Report {
                        */
                       sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                       sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");;
+                      sb.append("and a.id = (select id from audit_trail at where at.claim_id=c.id and at.reverted=false and at.created_date = (select max(created_date) as max_created_date from audit_trail a3 where a3.claim_id = c.id and a3.reverted=false and a3.created_date <= :pEndDate) order by id desc limit 1) ");
                       sb.append("and a.reverted=false and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                       /*
