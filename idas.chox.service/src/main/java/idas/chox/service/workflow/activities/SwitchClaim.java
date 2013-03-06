@@ -70,6 +70,10 @@ public class SwitchClaim extends BaseActivity {
         claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setCreatedDate(new Date());
 
+        if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+            claim.setSlaExtDays(0);
+        }
+        
         LOG.debug("Switching Claim : Claim details has been updated");
 
         notificationService.removeAllNotifications(claim.getId());
