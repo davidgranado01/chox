@@ -20,9 +20,9 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error (Training)</Subject>
+        <Subject>CHOX Application Error \(Training\)</Subject>
         <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk,Patrik.Bego@sherwoodcompliance.co.uk</To>
+        <To>John.Dowson@SherwoodCompliance.co.uk,Seeni.Shanmugam@SherwoodCompliance.co.uk</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
