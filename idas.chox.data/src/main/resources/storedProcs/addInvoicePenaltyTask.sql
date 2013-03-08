@@ -18,7 +18,7 @@ from claim c, invoice i, insurer ins
 where c.invoice_id = i.id
   and i.penalty_band = 90
   and c.insurer_id = ins.id
-  and c.claim_type NOT IN (3,4,5,6,10)
+  and c.claim_type NOT IN (3,4,5,6,10,14,15,16,17)
   and ins.is_task_management_enable = true
   and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 75
@@ -33,7 +33,7 @@ from claim c, invoice i, insurer ins
 where c.invoice_id = i.id
   and i.penalty_band != -1 and i.penalty_band < 90
   and c.insurer_id = ins.id
-  and c.claim_type NOT IN (3,4,5,6,10)
+  and c.claim_type NOT IN (3,4,5,6,10,14,15,16,17)
   and ins.is_task_management_enable = true
   and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= (i.penalty_band - 5)

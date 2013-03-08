@@ -1,3 +1,5 @@
+DROP FUNCTION measuring_success_report(IN insurerid integer, IN startdate text, IN enddate text);
+
 CREATE OR REPLACE FUNCTION measuring_success_report(IN insurerid integer, IN startdate text, IN enddate text)
   RETURNS TABLE("Month" text, "Invoice Rejections" bigint, "Claim Rejections" bigint, "Claim Accepted Cycle Time" numeric, 
                 "Insurer Actions" numeric, "Insurer and CHO Actions" numeric, "Penalty Amount" numeric, "Uploaded Claims" bigint, "Uploaded Invoices" bigint) AS
@@ -38,7 +40,7 @@ RETURN QUERY
       AND a.new_status = 'ContestedInvoiceReferredToCHO'
       AND c.insurer_id = insurerid
       AND a.created_date BETWEEN start_date AND end_date
-      AND c.claim_type != 10),
+      AND c.claim_type NOT IN (10,14,15,16,17)),
   
   --------------------   SELECT "Claim Rejections" -----------------     
   (SELECT 
@@ -56,7 +58,7 @@ RETURN QUERY
       AND a.new_status = 'ClaimRejected'
       AND c.insurer_id = insurerid
       AND a.created_date BETWEEN start_date AND end_date
-      AND c.claim_type != 10),
+      AND c.claim_type NOT IN (10,14,15,16,17)),
 
   --------------------   SELECT "Claim Accepted Cycle Time" -----------------
   (SELECT 
@@ -72,7 +74,7 @@ RETURN QUERY
       AND a1.reverted = FALSE
       AND c.insurer_id = insurerid
       AND a1.created_date BETWEEN start_date AND end_date
-      AND c.claim_type != 10),
+      AND c.claim_type NOT IN (10,14,15,16,17)),
      
   --------------------   SELECT "Insurer Actions" -----------------             
   (SELECT 
@@ -109,7 +111,7 @@ RETURN QUERY
       AND a2.new_status = 'PaymentReceived'
       AND a2.reverted = FALSE
       AND a2.created_date BETWEEN start_date AND end_date
-      AND c.claim_type != 10),
+      AND c.claim_type NOT IN (10,14,15,16,17)),
      
   --------------------   SELECT "Insurer and CHO Actions" -----------------  
   (SELECT 
@@ -129,7 +131,7 @@ RETURN QUERY
 	AND a2.new_status = 'PaymentReceived'
 	AND a2.reverted = FALSE
 	AND a2.created_date BETWEEN start_date AND end_date
-        AND c.claim_type != 10),
+        AND c.claim_type NOT IN (10,14,15,16,17)),
        
    --------------------   SELECT "Penalty Amount" -----------------               
    (SELECT
@@ -145,7 +147,7 @@ RETURN QUERY
         AND a.new_status = 'PaymentReceived'
         AND a.reverted = FALSE
         AND a.created_date BETWEEN start_date AND end_date
-        AND c.claim_type != 10),
+        AND c.claim_type NOT IN (10,14,15,16,17)),
       
    --------------------   SELECT "Uploaded Claims" -----------------        
    (SELECT 
@@ -155,7 +157,7 @@ RETURN QUERY
     WHERE
        c.created_date BETWEEN start_date AND end_date 
        AND c.insurer_id = insurerid
-       AND c.claim_type != 10),
+       AND c.claim_type NOT IN (10,14,15,16,17)),
    
    --------------------   SELECT "Uploaded Invoices" -----------------
    (SELECT 
@@ -166,7 +168,7 @@ RETURN QUERY
     WHERE
        i.created_date BETWEEN start_date AND end_date 
        AND c.insurer_id = insurerid
-       AND c.claim_type != 10);
+       AND c.claim_type NOT IN (10,14,15,16,17));
        
 start_date = end_date;
 end_date = end_date + interval '1 month';

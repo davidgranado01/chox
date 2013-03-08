@@ -1,3 +1,5 @@
+DROP FUNCTION updatedashboard(integer);
+
 CREATE OR REPLACE FUNCTION updatedashboard(integer)
   RETURNS boolean AS
 $BODY$
@@ -37,7 +39,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumWeek
 from claim c
-where created_date >= SqlGetDayOfWeek() and (claim_type not in (2,6,9,10))
+where created_date >= SqlGetDayOfWeek() and (claim_type not in (2,6,9,10,14,15,16,17))
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id ) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -53,7 +55,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumMon
 from claim c 
-where created_date >= SqlGetDayOfMonth() and (claim_type not in (2,6,9,10))
+where created_date >= SqlGetDayOfMonth() and (claim_type not in (2,6,9,10,14,15,16,17))
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -69,7 +71,7 @@ update dashboard
 from (
 select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(*) as claimSubNumCum
 from claim c
-where claim_type not in (2,6,9,10)
+where claim_type not in (2,6,9,10,14,15,16,17)
 group by  c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -226,7 +228,7 @@ update dashboard
 from(
 select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
 from claim c, audit_trail a
-where c.id = a.claim_id and a.reverted = false and claim_type != 10
+where c.id = a.claim_id and a.reverted = false and claim_type NOT IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfWeek()
 and a.new_status = 'ClaimClosed' and c.invoice_id is null
 and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
@@ -246,7 +248,7 @@ update dashboard
 from(
 select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(distinct c.id) as num
 from claim c, audit_trail a
-where c.id = a.claim_id and a.reverted = false and claim_type != 10
+where c.id = a.claim_id and a.reverted = false and claim_type NOT IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfMonth()
 and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted = false and a2.original_status=a.new_status and a2.update_date > a.update_date)
 and a.new_status = 'ClaimClosed' and c.invoice_id is null
@@ -267,7 +269,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(distinct c.id) as num
 from claim c
-  where status = 'ClaimClosed' and invoice_id is null and claim_type != 10
+  where status = 'ClaimClosed' and invoice_id is null and claim_type NOT IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -784,7 +786,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c, audit_trail a
-where c.id = a.claim_id and c.invoice_id is not null and claim_type != 10
+where c.id = a.claim_id and c.invoice_id is not null and claim_type NOT IN (10,14,15,16,17)
 and c.status='ClaimClosed' and a.new_status = 'ClaimClosed'
 and a.update_date >= SqlGetDayOfWeek() and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -804,7 +806,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c, audit_trail a
-where c.id = a.claim_id and c.invoice_id is not null and claim_type != 10
+where c.id = a.claim_id and c.invoice_id is not null and claim_type NOT IN (10,14,15,16,17)
 and a.update_date >= SqlGetDayOfMonth() and a.new_status = 'ClaimClosed'
 and c.status='ClaimClosed' and a.reverted = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -824,7 +826,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c
-  where c.status = 'ClaimClosed' and invoice_id is not null and claim_type != 10
+  where c.status = 'ClaimClosed' and invoice_id is not null and claim_type NOT IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -846,7 +848,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
 from claim c, audit_trail a, invoice i
-where c.id = a.claim_id and claim_type != 10
+where c.id = a.claim_id and claim_type NOT IN (10,14,15,16,17)
 and c.invoice_id = i.id and a.reverted = false
 and c.status='ClaimClosed' and a.new_status='ClaimClosed'
 and a.update_date >= SqlGetDayOfWeek()
@@ -869,7 +871,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, audit_trail a, invoice i
 where c.id = a.claim_id
 and c.invoice_id = i.id
-  and c.status = 'ClaimClosed' and claim_type != 10
+  and c.status = 'ClaimClosed' and claim_type NOT IN (10,14,15,16,17)
   and a.new_status = 'ClaimClosed' and a.reverted = false
 and a.update_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -889,7 +891,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.total_to_pay) as val
 from claim c, invoice i
 where c.invoice_id = i.id
-  and c.status='ClaimClosed' and claim_type != 10
+  and c.status='ClaimClosed' and claim_type NOT IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1351,7 +1353,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -1368,7 +1370,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
@@ -1384,7 +1386,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1401,7 +1403,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -1419,7 +1421,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -1436,7 +1438,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1451,7 +1453,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1467,7 +1469,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -1484,7 +1486,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -1502,7 +1504,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1521,7 +1523,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ManualInvoicePaid'
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1540,7 +1542,7 @@ from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.status = 'ManualInvoicePaid'
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
@@ -1555,7 +1557,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1571,7 +1573,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
@@ -1588,7 +1590,7 @@ from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
 where c.invoice_id=i.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -1606,7 +1608,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1625,7 +1627,7 @@ select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_
 from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 and c.status = 'ClaimClosed'
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
@@ -1644,7 +1646,7 @@ from claim c, invoice i, invoice_original io
 where c.invoice_id=i.id
 and i.invoice_original_id = io.id
 and c.status = 'ClaimClosed'
-and c.claim_type = 10
+and c.claim_type IN (10,14,15,16,17)
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id
