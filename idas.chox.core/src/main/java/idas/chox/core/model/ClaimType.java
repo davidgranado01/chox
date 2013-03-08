@@ -69,7 +69,7 @@ public enum ClaimType {
         if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType)) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -143,6 +143,14 @@ public enum ClaimType {
                    + ClaimType.INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
+    }
+    
+    public static String getInsurerUploadTypeOrdinals() {
+        return "(" + ClaimType.INSURER_CLAIM.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_ORIGINAL_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_UPLOAD.getClaimTypeValue() + ")";
     }
     
     public static ClaimType[] getOriginalSupplementaryInvoiceTypes() {
