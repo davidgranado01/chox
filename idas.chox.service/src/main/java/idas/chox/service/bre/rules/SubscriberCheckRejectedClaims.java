@@ -1,5 +1,8 @@
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -7,8 +10,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SubscriberCheckRejectedClaims implements IBusinessRule {
 
@@ -26,7 +27,7 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         boolean success = true;
 
@@ -78,7 +79,10 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
+        if (ClaimType.isSubscriber(claimType)) {
+            return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+        }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

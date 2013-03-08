@@ -60,7 +60,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
     
@@ -73,7 +73,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
     
@@ -99,7 +99,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
 
@@ -125,7 +125,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an Acquisition Fee however the Subscriber rejection was accepted and therefore this charge should not be made."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
 

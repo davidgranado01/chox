@@ -1,8 +1,10 @@
 package idas.chox.core.bre;
 
 import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.ClaimStatus;
 
 public class RulesEngineResponse {
@@ -31,12 +33,12 @@ public class RulesEngineResponse {
                 LOG.debug("Processing response from: {}", rev.toString());
                 if (rev.getResult() == RuleEvaluationResult.RULE_FAILED) {
                     foundFailedRule = true;
-                    LOG.debug("Rule failed: related rule=[]], statusAfterFailure={}", rev.getRelatedRule().getRuleId(), rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()));
-                    if (ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()))) {
+                    LOG.debug("Rule failed: related rule=[]], statusAfterFailure={}", rev.getRelatedRule().getRuleId(), rev.getRelatedRule().getStatusAfterFailure(rev.getClaimType()));
+                    if (ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getClaimType()))) {
                         foundInvoiceDataCalculationIncorrect = true;
                     }
 
-                    if (ClaimStatus.INVOICE_ESCALATED.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()))) {
+                    if (ClaimStatus.INVOICE_ESCALATED.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getClaimType()))) {
                         foundInvoiceInvoiceEscalated = true;
                     }
                 }

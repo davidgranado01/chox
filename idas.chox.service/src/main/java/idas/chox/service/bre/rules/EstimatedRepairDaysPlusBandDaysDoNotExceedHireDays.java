@@ -25,7 +25,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
@@ -106,11 +106,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
-        if (isTpiClaim) {
-            return ClaimStatus.INVOICE_ESCALATED_TO_CH;
-        }
-        
-        return ClaimStatus.INVOICE_ESCALATED;
+    public String getStatusAfterFailure(ClaimType claimType) {
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

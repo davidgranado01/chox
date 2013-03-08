@@ -1,14 +1,16 @@
 package idas.chox.service.bre.rules;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Rajareddy Dodda
@@ -26,7 +28,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
@@ -82,7 +84,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
 

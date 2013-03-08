@@ -25,7 +25,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
@@ -105,11 +105,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
-        if (isTpiClaim) {
-            return ClaimStatus.INVOICE_ESCALATED_TO_CH;
-        }
-
-        return ClaimStatus.INVOICE_ESCALATED;
+    public String getStatusAfterFailure(ClaimType claimType) {
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

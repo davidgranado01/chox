@@ -96,7 +96,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -123,7 +123,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -161,7 +161,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -198,7 +198,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -234,7 +234,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
          */
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The daily rate billed of £80.23 for the replacement vehicle class SP1 exceeds the allowed ABI rate of £73.52."));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

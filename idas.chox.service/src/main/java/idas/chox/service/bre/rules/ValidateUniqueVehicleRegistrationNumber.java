@@ -18,7 +18,7 @@ public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isValidateUniqueVehicleRegistrationNumber()) {
 
@@ -54,7 +54,7 @@ public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

@@ -1,5 +1,8 @@
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -7,8 +10,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class OverlappingHireCheck implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(OverlappingHireCheck.class);
@@ -22,7 +23,7 @@ public class OverlappingHireCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isOverlappingHireCheck() && claim.getVehicleHire() != null) {
             LOG.debug("In rule OverlappingHireCheck for claim {}....", claim.getChoReference());
@@ -71,7 +72,7 @@ public class OverlappingHireCheck implements IBusinessRule {
 
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 

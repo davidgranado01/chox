@@ -1,7 +1,10 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -11,7 +14,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
 import idas.chox.service.bre.util.InvoiceCalcHelper;
-import java.math.BigDecimal;
 
 
 /**
@@ -29,7 +31,7 @@ public class EngineerFeeVatLimitCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isEngineerFeeVatLimitCheck()) {
 
@@ -75,7 +77,7 @@ public class EngineerFeeVatLimitCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

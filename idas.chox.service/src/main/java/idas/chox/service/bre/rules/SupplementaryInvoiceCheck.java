@@ -2,6 +2,7 @@ package idas.chox.service.bre.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -29,7 +30,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'SupplementaryInvoiceCheck' to claim {}.", claim.getChoReference());
 
         if (ClaimType.isSupplementaryInvoice(claim.getClaimType())
@@ -65,7 +66,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

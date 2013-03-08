@@ -1,15 +1,16 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EstateChargeCheckHpi implements IBusinessRule {
 
@@ -23,7 +24,7 @@ public class EstateChargeCheckHpi implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isEstateChargeCheckHpi() && claim.getInvoice().getEstateFee() != null
                 && claim.getInvoice().getEstateFee().compareTo(BigDecimal.ZERO) != 0) {
@@ -55,7 +56,7 @@ public class EstateChargeCheckHpi implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

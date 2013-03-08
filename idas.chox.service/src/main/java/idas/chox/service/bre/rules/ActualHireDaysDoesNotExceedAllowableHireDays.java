@@ -2,6 +2,7 @@ package idas.chox.service.bre.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -21,7 +22,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
@@ -69,7 +70,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
     

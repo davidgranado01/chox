@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import java.io.IOException;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
@@ -61,7 +62,7 @@ public class RulesEngineResponseTest extends TestCase {
         RuleEvaluation rev = response.getResults().get(5);
         rev.setResult(RuleEvaluationResult.RULE_FAILED);
         rev.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        rev.setIsTPIClaim(Boolean.TRUE);
+        rev.setClaimType(ClaimType.TPI);
 
         System.out.println(response.getStatus(true));
 
@@ -77,12 +78,12 @@ public class RulesEngineResponseTest extends TestCase {
         RuleEvaluation rev_5 = response.getResults().get(5);
         rev_5.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_5.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        rev_5.setIsTPIClaim(Boolean.TRUE);
+        rev_5.setClaimType(ClaimType.TPI);
 
         RuleEvaluation rev_6 = response.getResults().get(6);
         rev_6.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_6.setRelatedRule(new EngineRuleMock("6", ClaimStatus.INVOICE_ESCALATED));
-        rev_6.setIsTPIClaim(Boolean.TRUE);
+        rev_6.setClaimType(ClaimType.TPI);
         
         assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_ESCALATED));
 
@@ -96,17 +97,17 @@ public class RulesEngineResponseTest extends TestCase {
         RuleEvaluation rev_5 = response.getResults().get(5);
         rev_5.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_5.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        rev_5.setIsTPIClaim(Boolean.TRUE);
+        rev_5.setClaimType(ClaimType.TPI);
 
         RuleEvaluation rev_6 = response.getResults().get(6);
         rev_6.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_6.setRelatedRule(new EngineRuleMock("6", ClaimStatus.INVOICE_ESCALATED));
-        rev_6.setIsTPIClaim(Boolean.TRUE);
+        rev_6.setClaimType(ClaimType.TPI);
 
         RuleEvaluation rev_7 = response.getResults().get(7);
         rev_7.setResult(RuleEvaluationResult.RULE_FAILED);
         rev_7.setRelatedRule(new EngineRuleMock("7", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-        rev_7.setIsTPIClaim(Boolean.TRUE);
+        rev_7.setClaimType(ClaimType.TPI);
         
         assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
 

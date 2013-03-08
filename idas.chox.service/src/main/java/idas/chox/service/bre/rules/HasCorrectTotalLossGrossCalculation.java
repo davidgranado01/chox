@@ -22,7 +22,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isHasCorrectTotalLossGrossCalculation()) {
 
@@ -59,7 +59,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 

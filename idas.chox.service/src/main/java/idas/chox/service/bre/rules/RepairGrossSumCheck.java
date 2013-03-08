@@ -2,6 +2,7 @@ package idas.chox.service.bre.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -26,7 +27,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         if (claim.getBreBand().isHasRepairGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
@@ -60,7 +61,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

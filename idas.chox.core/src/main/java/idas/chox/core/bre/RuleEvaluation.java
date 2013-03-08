@@ -3,12 +3,14 @@ package idas.chox.core.bre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import idas.chox.core.model.ClaimType;
+
 public class RuleEvaluation {
     private static final Logger LOG = LoggerFactory.getLogger(RuleEvaluation.class);
 
     private RuleEvaluationResult result;
     private Boolean isVisibleToCHO;
-    private Boolean isTPIClaim;
+    private ClaimType claimType;
     private IBusinessRule relatedRule;
 
 
@@ -36,14 +38,14 @@ public class RuleEvaluation {
         this.relatedRule = relatedRule;
     }
 
-    public Boolean getIsTPIClaim() {
-        return isTPIClaim;
+    public ClaimType getClaimType() {
+        return claimType;
     }
 
-    public void setIsTPIClaim(Boolean isTPIClaim) {
-        this.isTPIClaim = isTPIClaim;
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
     }
-    
+
     @Override
     public String toString(){
         if(result != null && relatedRule != null){
@@ -51,15 +53,12 @@ public class RuleEvaluation {
             String rtnVal = "";
             if(result == RuleEvaluationResult.RULE_FAILED){
                 rtnVal+= "BRE Rule Failed - " + relatedRule.getNarrative();
-//                LOG.info("Rule failed : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             else if(result == RuleEvaluationResult.RULE_SKIPPED){
                 rtnVal+= "BRE Rule Skipped - " + relatedRule.getNarrative();
-//                LOG.info("Rule Skipped : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             else{
                 rtnVal+= "BRE Rule Passed";
-//                LOG.info("Rule Passed : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             return rtnVal;
         }

@@ -55,7 +55,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -73,7 +73,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair"));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -91,7 +91,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair"));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -109,7 +109,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair"));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -162,7 +162,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -215,7 +215,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -268,7 +268,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Number of hire days billed by the CHO exceeds the allowable days threshold (non total loss), taking into account the ECD(s) provided by the CHO and the additional days allowed through delay variables."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

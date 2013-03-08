@@ -1,14 +1,16 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import java.math.BigDecimal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /*
@@ -26,7 +28,7 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isSupplierAdminstrationFee()) {
 
@@ -36,10 +38,12 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
 
             BigDecimal adminFeeCeiling;
             
-            if (claim.isManagingRepair())
+            if (claim.isManagingRepair()) {
                 adminFeeCeiling = claim.getBreBand().getAdminFeeCeilingManagingRepair();
-            else
+            }
+            else {
                 adminFeeCeiling = claim.getBreBand().getAdminFeeCeiling();
+            }
             BigDecimal supplierAdminFee = claim.getInvoice().getAdminFee();
 
             LOG.debug(" 'adminFeeCeiling'  {}. ", adminFeeCeiling);
@@ -75,7 +79,7 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
 
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
 

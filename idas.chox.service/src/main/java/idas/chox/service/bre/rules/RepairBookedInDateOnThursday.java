@@ -23,7 +23,7 @@ public class RepairBookedInDateOnThursday implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         boolean isExcluded = false;
         /*
          * Phase 6 Sprint 9 todo item 6.9.6 excludes commercial, private hire and taxi vehicles
@@ -62,7 +62,7 @@ public class RepairBookedInDateOnThursday implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

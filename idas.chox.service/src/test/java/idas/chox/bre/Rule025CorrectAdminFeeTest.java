@@ -65,7 +65,7 @@ public class Rule025CorrectAdminFeeTest extends BaseTest {
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType())));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
