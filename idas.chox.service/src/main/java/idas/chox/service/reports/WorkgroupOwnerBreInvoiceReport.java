@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ReportDataService;
@@ -211,8 +212,9 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                     if(selectedCHOId>0) {
                         sb.append("and c.chorganisation_id = :pChoId ");
                     }
-                    sb.append("and c.claim_owner_id = :pOwnerId and c.claim_type != 10 ");
-                    sb.append("and c.insurer_id = :pInsurerId and i.created_date between :pStartDate and :pEndDate ) as no_invoices_uploaded, ");
+                    sb.append("and c.claim_owner_id = :pOwnerId and c.claim_type not in ")
+                        .append(ClaimType.getInsurerUploadTypeOrdinals())
+                        .append("and c.insurer_id = :pInsurerId and i.created_date between :pStartDate and :pEndDate ) as no_invoices_uploaded, ");
 
                     /*
                      * No of invoices Approved by BRE

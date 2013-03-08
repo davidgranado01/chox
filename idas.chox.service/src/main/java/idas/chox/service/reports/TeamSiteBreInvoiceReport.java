@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.ReportDataService;
@@ -183,8 +184,9 @@ public class TeamSiteBreInvoiceReport implements Report {
                          * No of Invoices uploaded
                          */
                         sb.append("(select count(*) from claim c, invoice i, workgroup w ")
-                                .append("where c.invoice_id=i.id and c.workgroup_id=w.id and c.claim_type != 10 ")
-                                .append("and w.status=true and w.site = :pSite ")
+                                .append("where c.invoice_id=i.id and c.workgroup_id=w.id and c.claim_type not in ")
+                                .append(ClaimType.getInsurerUploadTypeOrdinals())
+                                .append(" and w.status=true and w.site = :pSite ")
                                 .append("and w.team = :pTeam and w.insurer_id = :pInsurerId ");
                         if (selectedCHOId > 0) {
                             sb.append("and c.chorganisation_id = :pChoId ");

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
@@ -182,12 +183,12 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
         sb.append("(select TEXT(\'Last 12 Months\'))as month_header, ");
-        sb.append("(select count(*) from claim c, invoice i "
-                + "where c.invoice_id = i.id and c.claim_type != 10 "
-                + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
-                + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
-                + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as invoice_uploaded_total, ");
+        sb.append("(select count(*) from claim c, invoice i " + "where c.invoice_id = i.id and c.claim_type not in ")
+                .append(ClaimType.getInsurerUploadTypeOrdinals())
+                .append(" and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+                .append("and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+                .append("and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
+                .append("and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as invoice_uploaded_total, ");
 
         sb.append("(select count(*) from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
@@ -349,12 +350,12 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
             }
 
-            sb1.append("(select count(*) from claim c, invoice i "
-                    + "where c.invoice_id = i.id and c.claim_type != 10  "
-                    + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
-                    + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
-                    + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
+            sb1.append("(select count(*) from claim c, invoice i where c.invoice_id = i.id and c.claim_type not in ")
+                .append(ClaimType.getInsurerUploadTypeOrdinals())
+                .append("and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+                .append("and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+                .append("and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
+                .append("|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
 
             if (x == 1) {
                 sb1.append(" - interval ' ").append(x).append("  month' ");

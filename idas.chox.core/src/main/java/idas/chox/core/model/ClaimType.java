@@ -145,6 +145,14 @@ public enum ClaimType {
                    + ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
     }
     
+    public static String getInsurerUploadTypeOrdinals() {
+        return "(" + ClaimType.INSURER_CLAIM.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_ORIGINAL_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.INSURER_UPLOAD.getClaimTypeValue() + ")";
+    }
+    
     public static ClaimType[] getOriginalSupplementaryInvoiceTypes() {
         return new ClaimType[] {ClaimType.GTA_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
