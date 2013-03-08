@@ -89,7 +89,7 @@ public class LookupItemTest {
     }
 
     @Test
-    public void testCanGetAllUserRoless() {
+    public void testCanGetAllUserRoles() {
 
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(webUserUserRoleService);
