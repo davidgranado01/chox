@@ -19,7 +19,7 @@ public class TowBarsChargeCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isTowBarsChargeCheck()) {
@@ -54,7 +54,10 @@ public class TowBarsChargeCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
+        if (ClaimType.isSubscriber(claimType)) {
+            return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+        }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

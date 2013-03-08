@@ -19,7 +19,7 @@ public class DeliveryOrCollectionChargeCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isDeliveryOrCollectionChargeCheck()) {
@@ -54,8 +54,11 @@ public class DeliveryOrCollectionChargeCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
-        return ClaimStatus.INVOICE_ESCALATED_TO_CH; 
+    public String getStatusAfterFailure(ClaimType claimType) {
+        if (ClaimType.isSubscriber(claimType)) {
+            return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+        }
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }
 

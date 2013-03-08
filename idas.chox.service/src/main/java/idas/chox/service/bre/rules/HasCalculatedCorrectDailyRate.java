@@ -42,7 +42,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
         InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(claim.getInsurer().getId(), claim.getChorganisation().getId());
 
         LOG.debug("Applying HasCalculatedCorrectDailyRate rule to claim '{}'.", claim.getChoReference());
@@ -167,7 +167,10 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
+        if (ClaimType.isSubscriber(claimType)) {
+            return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+        }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

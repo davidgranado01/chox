@@ -98,7 +98,7 @@ public class Rule030HasCorrectTotalLossVatCalculation extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Loss Fee VAT calculation is incorrect."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType())).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }

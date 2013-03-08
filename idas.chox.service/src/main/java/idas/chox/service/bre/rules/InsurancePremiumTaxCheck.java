@@ -28,7 +28,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isInsurancePremiumTaxCheck()&& claim.getInvoice().getNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) > 0 &&
@@ -87,9 +87,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
-
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
-
     }
 }

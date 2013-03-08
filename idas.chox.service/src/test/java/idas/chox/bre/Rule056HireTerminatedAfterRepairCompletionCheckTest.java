@@ -110,7 +110,7 @@ public class Rule056HireTerminatedAfterRepairCompletionCheckTest extends BaseTes
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
 
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire was terminated 2 days after the repairs were completed (allowed 1 day), please review."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
     }
 }

@@ -1,5 +1,7 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -9,7 +11,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
 import idas.chox.service.bre.util.InvoiceCalcHelper;
-import java.math.BigDecimal;
 
 /**
  * rule 9, order 3
@@ -25,7 +26,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
+        res.setClaimType(claim.getClaimType());
 
         if (claim.getBreBand().isHasCorrectHireVatCalculation()) {
 
@@ -70,7 +71,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimType) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

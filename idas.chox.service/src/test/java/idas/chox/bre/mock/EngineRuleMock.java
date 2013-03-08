@@ -3,6 +3,7 @@ package idas.chox.bre.mock;
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 
 
 public class EngineRuleMock implements IBusinessRule {
@@ -35,7 +36,7 @@ public class EngineRuleMock implements IBusinessRule {
     }  
 
     @Override
-    public String getStatusAfterFailure(boolean isTpiClaim) {
+    public String getStatusAfterFailure(ClaimType claimtype) {
         return statusAfterFailure;
     }
 
