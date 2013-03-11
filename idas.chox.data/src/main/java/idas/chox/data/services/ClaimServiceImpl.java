@@ -174,7 +174,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
     
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+
     @Override
     public Boolean revertClaim(int id) {
         Boolean result = false;
@@ -267,7 +267,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.eq("chorganisation.id", choId));
@@ -296,13 +295,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
         criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
-
-//        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         criteria.add(Restrictions.ne("id", claimId));
+
         if (getSecurityInfoProvider().getIsCHO()) {
             criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
         } else if (getSecurityInfoProvider().getIsINS()) {
@@ -315,7 +312,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
@@ -331,7 +327,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
     @Override
     public Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
@@ -368,7 +363,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
-
         Boolean bFlag = false;
 
         if (!strClaimNumber.equalsIgnoreCase("")) {
@@ -390,7 +384,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
-
         Boolean bFlag = false;
 
         if (!strClaimNumber.equalsIgnoreCase("")) {
@@ -411,7 +404,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
-        //return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
         return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "created", "desc");
     }
 
@@ -509,7 +501,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
@@ -522,7 +513,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isObjectExist(int WorkgroupId) {
-
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -538,7 +528,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
-
         boolean isExist = false;
 
         if (WorkgroupIds.size() > 0) {
@@ -558,7 +547,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer WorkgroupId, String status) {
-
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -575,7 +563,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
@@ -593,7 +580,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
-
         boolean isExist = false;
 
         if (WorkgroupIds.size() > 0) {
@@ -615,7 +601,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
-
         boolean isExist = false;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
@@ -639,7 +624,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public boolean isUserHasOpenClaim(int userId) {
-
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -765,14 +749,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getIsAnomalies()) {
-
-
-//            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
             DetachedCriteria inSubclause = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).add(Restrictions.eq("deleted", false)).setProjection(Projections.property("claim"));
             DetachedCriteria in = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("acknowledged", false)).setProjection(Property.forName("claim"));
             criteria.add(Subqueries.propertyIn("id", inSubclause));
             criteria.add(Restrictions.in("status", anomaliesStatus));
-// criteria.add(Restrictions.sqlRestriction("exists (select * from notification notific where notific.claim_id=this.id and type in ('','','','','') "));
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
@@ -790,12 +770,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_CONTESTED));
-// The below statuses can be removed as they are covered by the the 'showOpenClaimsOnly' flag
-// However, we'll keep them in for now as this will be faster
-            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
             criteria.add(Restrictions.ge("iv.penaltyBand", 0));
             criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.auto_penalty_start::Date) >= (iv1_.penalty_band)"));
             criteria.add(Restrictions.disjunction()
@@ -966,7 +940,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
-
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
 
                 Calendar cal = Calendar.getInstance();
@@ -979,7 +952,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
 
             if (searchCriteria.getReviewRequiredDateTo() != null) {
-
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(searchCriteria.getReviewRequiredDateTo());
                 cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -992,7 +964,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
-
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(searchCriteria.getInvoiceUploadDateFrom());
@@ -1014,7 +985,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getRentalStartDate() != null || searchCriteria.getRentalEndDate() != null) {
-
             if (searchCriteria.getRentalStartDate() != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(searchCriteria.getRentalStartDate());
@@ -1035,7 +1005,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
-
             if (searchCriteria.getLastModifiedDateFrom() != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(searchCriteria.getLastModifiedDateFrom());

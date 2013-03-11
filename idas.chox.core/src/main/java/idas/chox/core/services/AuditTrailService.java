@@ -8,53 +8,54 @@ import java.util.List;
 
 public interface AuditTrailService {
 
-    public AuditTrail getAuditTrail(int auditTrailId);
+    AuditTrail getAuditTrail(int auditTrailId);
 
-    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim);
+    Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim);
 
-    public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim);
+    Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim);
 
-    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval);
+    Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval);
 
-    public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection);
+    Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection);
 
-    public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval);
+    Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval);
 
-    public List<AuditTrail> getAuditTrailByClaim(int claimId);
+    List<AuditTrail> getAuditTrailByClaim(int claimId);
 
-    public List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending);
+    List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending);
 
-    public AuditTrail getLastChange(int claimId);
+    AuditTrail getLastChange(int claimId);
 
-    public double getTimeInvoiceWithCHO(int claimId);
+    double getTimeInvoiceWithCHO(int claimId);
 
-    public int getSubscriberClaimDays(int claimId);
+    int getSubscriberClaimDays(int claimId);
 
-    public int getSubscriberClaimRejectedDays(int claimId);
+    int getSubscriberClaimRejectedDays(int claimId);
 
-    public int getSubscriberClaimRejectedTimes(int claimId);
-    public int getClaimRejectedTimes(int claimId);
-
-    public String getStateBeforeRejection(int claimId);
-
-    public int getFixedFeeClaimDays(int claimId);
-
-    public int getFixedFeeClaimRejectedDays(int claimId);
-
-    public double getTimeInvoiceWithInsurer(int claimId);
-
-    public double getTimeAwaitingLiabilityResolution(int claimId);
+    int getSubscriberClaimRejectedTimes(int claimId);
     
-    public Boolean revertAuditEntry(int auditTrailId);
+    int getClaimRejectedTimes(int claimId);
 
-    public Boolean hasRevertedEntries(int claimId);
+    String getStateBeforeRejection(int claimId);
+
+    int getFixedFeeClaimDays(int claimId);
+
+    int getFixedFeeClaimRejectedDays(int claimId);
+
+    double getTimeInvoiceWithInsurer(int claimId);
+
+    double getTimeAwaitingLiabilityResolution(int claimId);
     
-    public boolean isSubscriberClaimRejectedAndAgreed(int claimId);
+    Boolean revertAuditEntry(int auditTrailId);
+
+    Boolean hasRevertedEntries(int claimId);
+    
+    boolean isSubscriberClaimRejectedAndAgreed(int claimId);
         
-    public void deleteAllAuditEntriesByClaimId(int claimId);
+    void deleteAllAuditEntriesByClaimId(int claimId);
     
-    public void revertAllAuditEntriesByClaimId(int claimId);
+    void revertAllAuditEntriesByClaimId(int claimId);
     
-    public AuditTrail getAuditTrailByTaskCreatedDate(int claimId, Date taskCreatedDate);
+    AuditTrail getAuditTrailByTaskCreatedDate(int claimId, Date taskCreatedDate);
 
 }

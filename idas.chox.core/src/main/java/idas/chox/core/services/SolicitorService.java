@@ -6,11 +6,11 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public interface SolicitorService {
 
-    public void saveSolicitorForXMLUploader(final ClaimResult claimResult);
+    void saveSolicitorForXMLUploader(final ClaimResult claimResult);
 
-    public Solicitor getSolicitor(int solicitorId);
+    Solicitor getSolicitor(int solicitorId);
 
-    public void saveSolicitor(Solicitor solicitor);
+    void saveSolicitor(Solicitor solicitor);
 
-    public Solicitor getSolicitorByInjury(Injury injury);
+    Solicitor getSolicitorByInjury(Injury injury);
 }

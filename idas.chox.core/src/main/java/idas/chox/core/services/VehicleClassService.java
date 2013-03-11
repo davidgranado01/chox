@@ -1,16 +1,16 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.VehicleClass;
 import java.util.List;
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
+import idas.chox.core.model.VehicleClass;
 
 public interface VehicleClassService {
 
-    public VehicleClass getVehicleClassByName(String vehicleClassName);
+    VehicleClass getVehicleClassByName(String vehicleClassName);
 
-    public List getAllVehicleClass();
+    List getAllVehicleClass();
 
-    public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName);
+    VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName);
 
-    public VehicleClass getVehicleClass(int vehicleClassId);
+    VehicleClass getVehicleClass(int vehicleClassId);
 }

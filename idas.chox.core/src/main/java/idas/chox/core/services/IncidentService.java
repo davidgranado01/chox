@@ -5,9 +5,9 @@ import idas.chox.core.model.Incident;
 
 public interface IncidentService {
 
-    public void saveIncidentForXMLUploader(final ClaimResult claimResult);
+    void saveIncidentForXMLUploader(final ClaimResult claimResult);
 
-    public void saveIncident(Incident incident);
+    void saveIncident(Incident incident);
 
-    public Incident getIncident(int incidentId);
+    Incident getIncident(int incidentId);
 }

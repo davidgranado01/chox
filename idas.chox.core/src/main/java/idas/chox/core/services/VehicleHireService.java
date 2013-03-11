@@ -5,9 +5,9 @@ import idas.chox.core.model.VehicleHire;
 
 public interface VehicleHireService {
 
-    public void saveVehicleHireForXMLUploader(final ClaimResult claimResult);
+    void saveVehicleHireForXMLUploader(final ClaimResult claimResult);
 
-    public VehicleHire getVehicleHire(int vehicleHireId);
+    VehicleHire getVehicleHire(int vehicleHireId);
 
-    public void saveVehicleHire(VehicleHire vehicleHire);
+    void saveVehicleHire(VehicleHire vehicleHire);
 }

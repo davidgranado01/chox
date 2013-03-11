@@ -1,24 +1,25 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.BreBandOrganisation;
 import java.util.List;
+
+import idas.chox.core.model.BreBandOrganisation;
 
 public interface BreBandOrganisationService {
 
-    public boolean isBreBandOccupied(int bandId);
+    boolean isBreBandOccupied(int bandId);
 
-    public BreBandOrganisation getBreBandOrganisation(int breBandOrganisationId);
+    BreBandOrganisation getBreBandOrganisation(int breBandOrganisationId);
 
-    public void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation);
+    void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation);
 
-    public boolean deleteBreBandOrganisationByBandId(int bandId);
+    boolean deleteBreBandOrganisationByBandId(int bandId);
 
-    public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId);
+    void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId);
 
-    public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation);
+    void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation);
 
-    public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId);
+    List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId);
 
-    public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid);
+    List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid);
 
 }

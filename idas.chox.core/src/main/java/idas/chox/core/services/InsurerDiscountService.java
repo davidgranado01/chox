@@ -15,17 +15,17 @@ import idas.chox.core.model.WebUser;
  */
 public interface InsurerDiscountService {
 
-    public Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount);
+    Map addOrUpdateDiscount(int insId, int choId, InsurerDiscount insurerDiscount);
 
-    public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId);
+    List<InsurerDiscount> getInsurerDiscount(int choId, int InsId);
 
-    public Map deleteInsurerDiscount(InsurerDiscount insurerDiscount);
+    Map deleteInsurerDiscount(InsurerDiscount insurerDiscount);
 
-    public InsurerDiscount getInsurerDiscount(int insurerDiscountId);
+    InsurerDiscount getInsurerDiscount(int insurerDiscountId);
 
-    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue);
+    BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate, int insurerDiscountTypeValue);
 
-    public void applyInsurerDiscounts(Claim claim, WebUser user, boolean canAddComment);
+    void applyInsurerDiscounts(Claim claim, WebUser user, boolean canAddComment);
 
-    public void addInsurerDiscountComment(Claim claim, BigDecimal insurerDiscountAmount, BigDecimal insurerDiscountPercentage, String insurerDiscountType, WebUser user);
+    void addInsurerDiscountComment(Claim claim, BigDecimal insurerDiscountAmount, BigDecimal insurerDiscountPercentage, String insurerDiscountType, WebUser user);
 }

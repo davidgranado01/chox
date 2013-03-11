@@ -7,13 +7,13 @@ import idas.chox.core.model.VehicleClassCeiling;
 
 public interface VehicleClassCeilingService {
 
-    public List<VehicleClass> getAvailableVehicleClassCeilingByInsurer(int insurerId);
+    List<VehicleClass> getAvailableVehicleClassCeilingByInsurer(int insurerId);
 
-    public List<VehicleClassCeiling> getSelectedVehicleClassCeilingByInsurer(int insurerId);
+    List<VehicleClassCeiling> getSelectedVehicleClassCeilingByInsurer(int insurerId);
 
-    public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
+    void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
 
-    public void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
+    void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
 
-    public VehicleClassCeiling getVehicleClassCeiling(int vehicleClassCeilingId);
+    VehicleClassCeiling getVehicleClassCeiling(int vehicleClassCeilingId);
 }

@@ -8,12 +8,12 @@ import java.util.Map;
  * @author seeni
  */
 public class ExcelHistory {
-    String choReference;
-    Date processDate;
-    String ruleId;
-    String type;
-    String narrative;
-    Boolean visibleToCHO;
+    private String choReference;
+    private Date processDate;
+    private String ruleId;
+    private String type;
+    private String narrative;
+    private Boolean visibleToCHO;
 
     public ExcelHistory(Map data) {
         choReference = (String) data.get("choreference");

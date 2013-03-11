@@ -1,20 +1,21 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.InsurerIntelligentNote;
-
 import java.util.List;
 import java.util.Map;
 
+import idas.chox.core.model.InsurerIntelligentNote;
+
+
 public interface InsurerIntelligentNoteService {
 
-    public Map<Integer, InsurerIntelligentNote> getInsurerIntelligentNotesMap(int insurerId, Boolean status);
+    Map<Integer, InsurerIntelligentNote> getInsurerIntelligentNotesMap(int insurerId, Boolean status);
 
-    public void updateInsurerIntelligentNote(InsurerIntelligentNote insurerIntelligentNote);
+    void updateInsurerIntelligentNote(InsurerIntelligentNote insurerIntelligentNote);
     
-    public InsurerIntelligentNote getInsurerIntelligentNote(int insurerIntelligentNoteId);
+    InsurerIntelligentNote getInsurerIntelligentNote(int insurerIntelligentNoteId);
 
-    public List<InsurerIntelligentNote> getInsurerIntelligeintNoteByNoteId(int intelligentNoteId);
+    List<InsurerIntelligentNote> getInsurerIntelligeintNoteByNoteId(int intelligentNoteId);
 
-    public void createInsurerIntelligentNote(int intelligentNoteId, int insurerId, boolean status);
+    void createInsurerIntelligentNote(int intelligentNoteId, int insurerId, boolean status);
 
 }

@@ -8,18 +8,18 @@ import idas.chox.core.model.ReasonOfRejection;
 
 public interface ReasonOfRejectionService {
 
-    public ReasonOfRejection getReasonOfRejection(int reasonOfRejectionId);
+    ReasonOfRejection getReasonOfRejection(int reasonOfRejectionId);
 
-    public List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, ClaimType activeType ,  Boolean status, Boolean restricted);
+    List<ReasonOfRejection> getInsurerReasonsOfRejection(int insurerId, String type, ClaimType activeType ,  Boolean status, Boolean restricted);
 
-    public int getInvoiceLiabilityDisputeReasonId(int insurerId);
+    int getInvoiceLiabilityDisputeReasonId(int insurerId);
 
-    public void createDefaultRecord(Insurer insurer);
+    void createDefaultRecord(Insurer insurer);
     
-    public void saveReasonOfRejection(ReasonOfRejection reasonOfRejection);
+    void saveReasonOfRejection(ReasonOfRejection reasonOfRejection);
     
-    public void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection);
+    void deleteReasonOfRejection(ReasonOfRejection reasonOfRejection);
     
-    public boolean isSubscriberClaimRejected (ReasonOfRejection reasonOfRejection);
+    boolean isSubscriberClaimRejected (ReasonOfRejection reasonOfRejection);
 
 }

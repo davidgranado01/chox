@@ -1,79 +1,66 @@
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.service.reports.ReportHelper;
 import java.math.BigDecimal;
 import java.util.Map;
+
+import idas.chox.service.reports.ReportHelper;
 
 public class OverviewSummaryReportByOrg {
 
     private int orgId;
     private String orgName;
     private boolean isIns = true;
-    private Integer total_no_claims_num;
-    private BigDecimal total_no_claims_val;
-    private Integer total_no_invoice_num;
-    private BigDecimal total_no_invoice_val;
-    private Integer total_no_accepted_claims_num;
-    private BigDecimal total_no_accepted_claims_val;
-    private BigDecimal total_no_accepted_claims_per;
-    private Integer total_no_rejected_claims_num;
-    private BigDecimal total_no_rejected_claims_val;
-    private BigDecimal total_no_rejected_claims_per;
-    private Integer total_no_approved_invoice_num;
-    private BigDecimal total_no_approved_invoice_val;
-    private BigDecimal total_no_approved_invoice_per;
-    private Integer total_no_rejected_invoice_num;
-    private BigDecimal total_no_rejected_invoice_val;
-    private BigDecimal total_no_rejected_invoice_per;
-    private Integer average_claim_cycle_day;
-    private Integer average_hire_duration_day;
-    private BigDecimal average_invoice_val;
-    private BigDecimal average_hire_val;
-    private BigDecimal average_penalty_val;
-    private Integer average_invoice_cycle_day;
-    private BigDecimal amount_saved_val;
-    private BigDecimal credit_repair_no_invoice_val;
-//    private BigDecimal credit_repair_no_invoice_per;
-    private Integer credit_repair_no_invoice_num;
-    private BigDecimal credit_repair_no_paid_invoice_val;
-//    private BigDecimal credit_repair_no_paid_invoice_per;
-    private Integer credit_repair_no_paid_invoice_num;
-    private BigDecimal s_class_no_invoice_val;
-//    private BigDecimal s_class_no_invoice_per;
-    private Integer s_class_no_invoice_num;
-    private BigDecimal s_class_no_paid_invoice_val;
-//    private BigDecimal s_class_no_paid_invoice_per;
-    private Integer s_class_no_paid_invoice_num;
-    private BigDecimal p_class_no_invoice_val;
-//    private BigDecimal p_class_no_invoice_per;
-    private Integer p_class_no_invoice_num;
-    private BigDecimal p_class_no_paid_invoice_val;
-//    private BigDecimal p_class_no_paid_invoice_per;
-    private Integer p_class_no_paid_invoice_num;
-    private BigDecimal mv_class_no_invoice_val;
-//    private BigDecimal mv_class_no_invoice_per;
-    private Integer mv_class_no_invoice_num;
-    private BigDecimal mv_class_no_paid_invoice_val;
-//    private BigDecimal mv_class_no_paid_invoice_per;
-    private Integer mv_class_no_paid_invoice_num;
-    private BigDecimal m_class_no_invoice_val;
-//    private BigDecimal m_class_no_invoice_per;
-    private Integer m_class_no_invoice_num;
-    private BigDecimal m_class_no_paid_invoice_val;
-//    private BigDecimal m_class_no_paid_invoice_per;
-    private Integer m_class_no_paid_invoice_num;
-    private BigDecimal sp_class_no_invoice_val;
-//    private BigDecimal sp_class_no_invoice_per;
-    private Integer sp_class_no_invoice_num;
-    private BigDecimal sp_class_no_paid_invoice_val;
-//    private BigDecimal sp_class_no_paid_invoice_per;
-    private Integer sp_class_no_paid_invoice_num;
-    private BigDecimal other_class_no_invoice_val;
-//    private BigDecimal other_class_no_invoice_per;
-    private Integer other_class_no_invoice_num;
-    private BigDecimal other_class_no_paid_invoice_val;
-//    private BigDecimal other_class_no_paid_invoice_per;
-    private Integer other_class_no_paid_invoice_num;
+    private Integer totalClaims;
+    private BigDecimal totalClaimsValue;
+    private Integer totalInvoices;
+    private BigDecimal totalnvoicesValue;
+    private Integer totalAcceptedClaims;
+    private BigDecimal totalAcceptedClaimsValue;
+    private BigDecimal totalAcceptedClaimsPer;
+    private Integer totalRejectedClaims;
+    private BigDecimal totalRejectedClaimsValue;
+    private BigDecimal totalRejectedClaimsPer;
+    private Integer totalApprovedInvoices;
+    private BigDecimal totalApprovedInvoicesValue;
+    private BigDecimal totalApprovedInvoicesPer;
+    private Integer totalRejectedInvoices;
+    private BigDecimal totalRejectedInvoicesValue;
+    private BigDecimal totalRejectedInvoicesPer;
+    private Integer averageClaimCycleDay;
+    private Integer averageHireDurationDay;
+    private BigDecimal averageInvoiceValue;
+    private BigDecimal averageHireValue;
+    private BigDecimal averagePenaltyValue;
+    private Integer averageInvoicesCycleDay;
+    private BigDecimal amountSavedValue;
+    private BigDecimal creditRepairInvoicesValue;
+    private Integer creditRepairInvoices;
+    private BigDecimal creditRepairPaidInvoicesValue;
+    private Integer creditRepairPaidInvoices;
+    private BigDecimal sClassInvoicesValue;
+    private Integer sClassInvoices;
+    private BigDecimal sClassPaidInvoicesValue;
+    private Integer sClassPaidInvoices;
+    private BigDecimal pClassInvoicesValue;
+    private Integer pClassInvoices;
+    private BigDecimal pClassPaidInvoicesValue;
+    private Integer pClassPaidInvoices;
+    private BigDecimal mvClassInvoicesValue;
+    private Integer mvClassInvoices;
+    private BigDecimal mvClassPaidInvoicesValue;
+    private Integer mvClassPaidInvoices;
+    private BigDecimal mClassInvoicesValue;
+    private Integer mClassInvoices;
+    private BigDecimal mClassPaidInvoicesValue;
+    private Integer mClassPaidInvoices;
+    private BigDecimal spClassInvoicesValue;
+    private Integer spClassInvoices;
+    private BigDecimal spClassPaidInvoicesValue;
+    private Integer spClassPaidInvoices;
+    private BigDecimal otherClassInvoicesValue;
+    private Integer otherClassInvoices;
+    private BigDecimal otherClassPaidInvoicesValue;
+    private Integer otherClassPaidInvoices;
 
     public static OverviewSummaryReportByOrg getObject(Map data, boolean isIns) {
 
@@ -84,134 +71,120 @@ public class OverviewSummaryReportByOrg {
         result.setOrgName(data.get("org_name").toString());
 
         // TOTAL NO. CLAIMS
-        result.setTotal_no_claims_num(ReportHelper.getIntegerValue(data.get("total_no_claims_num".toLowerCase())));
-        result.setTotal_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_invoice_num".toLowerCase())));
-        result.setTotal_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_invoice_val".toLowerCase())));
+        result.setTotalClaims(ReportHelper.getIntegerValue(data.get("total_no_claims_num".toLowerCase())));
+        result.setTotalInvoices(ReportHelper.getIntegerValue(data.get("total_no_invoice_num".toLowerCase())));
+        result.setTotalnvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_no_invoice_val".toLowerCase())));
 
-        result.setTotal_no_claims_val(ReportHelper.getBigDecimalValue(data.get("total_no_claims_val".toLowerCase())));
+        result.setTotalClaimsValue(ReportHelper.getBigDecimalValue(data.get("total_no_claims_val".toLowerCase())));
 
         // TOTAL NO. ACCPETED CLAIMS
-        result.setTotal_no_accepted_claims_num(ReportHelper.getIntegerValue(data.get("total_no_accepted_claims_num".toLowerCase())));
-        result.setTotal_no_accepted_claims_per(ReportHelper.getBigDecimalValue(data.get("total_no_accepted_claims_per".toLowerCase())));
-        result.setTotal_no_accepted_claims_val(ReportHelper.getBigDecimalValue(data.get("total_no_accepted_claims_val".toLowerCase())));
+        result.setTotalAcceptedClaims(ReportHelper.getIntegerValue(data.get("total_no_accepted_claims_num".toLowerCase())));
+        result.setTotalAcceptedClaimsPer(ReportHelper.getBigDecimalValue(data.get("total_no_accepted_claims_per".toLowerCase())));
+        result.setTotalAcceptedClaimsValue(ReportHelper.getBigDecimalValue(data.get("total_no_accepted_claims_val".toLowerCase())));
 
         // TOTAL NO. REJECTED CLAIMS
-        result.setTotal_no_rejected_claims_num(ReportHelper.getIntegerValue(data.get("total_no_rejected_claims_num".toLowerCase())));
-        result.setTotal_no_rejected_claims_per(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_claims_per".toLowerCase())));
-        result.setTotal_no_rejected_claims_val(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_claims_val".toLowerCase())));
+        result.setTotalRejectedClaims(ReportHelper.getIntegerValue(data.get("total_no_rejected_claims_num".toLowerCase())));
+        result.setTotalRejectedClaimsPer(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_claims_per".toLowerCase())));
+        result.setTotalRejectedClaimsValue(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_claims_val".toLowerCase())));
 
         // TOTAL NO. APPRIVED INVOICES
-        result.setTotal_no_approved_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_approved_invoice_num".toLowerCase())));
-        result.setTotal_no_approved_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_no_approved_invoice_per".toLowerCase())));
-        result.setTotal_no_approved_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_approved_invoice_val".toLowerCase())));
+        result.setTotalApprovedInvoices(ReportHelper.getIntegerValue(data.get("total_no_approved_invoice_num".toLowerCase())));
+        result.setTotalApprovedInvoicesPer(ReportHelper.getBigDecimalValue(data.get("total_no_approved_invoice_per".toLowerCase())));
+        result.setTotalApprovedInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_no_approved_invoice_val".toLowerCase())));
 
         // TOTAL NO. REJECTED INVOICES
-        result.setTotal_no_rejected_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_rejected_invoice_num".toLowerCase())));
-        result.setTotal_no_rejected_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_invoice_per".toLowerCase())));
-        result.setTotal_no_rejected_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_invoice_val".toLowerCase())));
+        result.setTotalRejectedInvoices(ReportHelper.getIntegerValue(data.get("total_no_rejected_invoice_num".toLowerCase())));
+        result.setTotalRejectedInvoicesPer(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_invoice_per".toLowerCase())));
+        result.setTotalRejectedInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_no_rejected_invoice_val".toLowerCase())));
 
         // AVERAGE INFORMATION
-        result.setAverage_claim_cycle_day(ReportHelper.getIntegerValue(data.get("average_claim_cycle_day".toLowerCase())));
-        result.setAverage_hire_duration_day(ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
-        result.setAverage_hire_val(ReportHelper.getBigDecimalValue(data.get("average_hire_val".toLowerCase())));
-        result.setAverage_invoice_val(ReportHelper.getBigDecimalValue(data.get("average_invoice_val".toLowerCase())));
-        result.setAverage_penalty_val(ReportHelper.getBigDecimalValue(data.get("average_penalty_val".toLowerCase())));
-        result.setAverage_invoice_cycle_day(ReportHelper.getIntegerValue(data.get("average_invoice_cycle_day".toLowerCase())));
+        result.setAverageClaimCycleDay(ReportHelper.getIntegerValue(data.get("average_claim_cycle_day".toLowerCase())));
+        result.setAverageHireDurationDay(ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
+        result.setAverageHireValue(ReportHelper.getBigDecimalValue(data.get("average_hire_val".toLowerCase())));
+        result.setAverageInvoiceValue(ReportHelper.getBigDecimalValue(data.get("average_invoice_val".toLowerCase())));
+        result.setAveragePenaltyValue(ReportHelper.getBigDecimalValue(data.get("average_penalty_val".toLowerCase())));
+        result.setAverageInvoicesCycleDay(ReportHelper.getIntegerValue(data.get("average_invoice_cycle_day".toLowerCase())));
 
         // Amount Saved
-        result.setAmount_saved_val(ReportHelper.getBigDecimalValue(data.get("amount_saved_val".toLowerCase())));
+        result.setAmountSavedValue(ReportHelper.getBigDecimalValue(data.get("amount_saved_val".toLowerCase())));
 
         // Credir Repair
-        result.setCredit_repair_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_creditrepair_invoice_num".toLowerCase())));
-        result.setCredit_repair_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_invoice_val".toLowerCase())));
-//        result.setCredit_repair_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_invoice_per".toLowerCase())));
+        result.setCreditRepairInvoices(ReportHelper.getIntegerValue(data.get("total_no_creditrepair_invoice_num".toLowerCase())));
+        result.setCreditRepairInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_invoice_val".toLowerCase())));
 
-        result.setCredit_repair_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_creditrepair_paid_invoice_num".toLowerCase())));
-        result.setCredit_repair_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_paid_invoice_val".toLowerCase())));
-//        result.setCredit_repair_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_paid_invoice_per".toLowerCase())));
+        result.setCreditRepairPaidInvoices(ReportHelper.getIntegerValue(data.get("total_no_creditrepair_paid_invoice_num".toLowerCase())));
+        result.setCreditRepairPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_no_creditrepair_paid_invoice_val".toLowerCase())));
 
         // Totals by Vehicle Class
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_s_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_s_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_s_class_invoice_per".toLowerCase())));
+        result.setSClassInvoices(ReportHelper.getIntegerValue(data.get("total_s_class_invoice_num".toLowerCase())));
+        result.setSClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_s_class_invoice_val".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_s_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_s_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_s_class_paid_invoice_per".toLowerCase())));
+        result.setSClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_s_class_paid_invoice_num".toLowerCase())));
+        result.setSClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_s_class_paid_invoice_val".toLowerCase())));
 
-        result.setP_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_invoice_num".toLowerCase())));
-        result.setP_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_per".toLowerCase())));
+        result.setPClassInvoices(ReportHelper.getIntegerValue(data.get("total_p_class_invoice_num".toLowerCase())));
+        result.setPClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_val".toLowerCase())));
 
-        result.setP_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_paid_invoice_num".toLowerCase())));
-        result.setP_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_per".toLowerCase())));
+        result.setPClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_p_class_paid_invoice_num".toLowerCase())));
+        result.setPClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_val".toLowerCase())));
 
-        result.setMv_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_invoice_num".toLowerCase())));
-        result.setMv_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_per".toLowerCase())));
+        result.setMvClassInvoices(ReportHelper.getIntegerValue(data.get("total_mv_class_invoice_num".toLowerCase())));
+        result.setMvClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_val".toLowerCase())));
 
-        result.setMv_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_paid_invoice_num".toLowerCase())));
-        result.setMv_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_per".toLowerCase())));
+        result.setMvClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_mv_class_paid_invoice_num".toLowerCase())));
+        result.setMvClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_val".toLowerCase())));
 
-        result.setM_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_paid_invoice_num".toLowerCase())));
-        result.setM_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_per".toLowerCase())));
+        result.setMClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_m_class_paid_invoice_num".toLowerCase())));
+        result.setMClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_val".toLowerCase())));
 
-        result.setM_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_invoice_num".toLowerCase())));
-        result.setM_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_per".toLowerCase())));
+        result.setMClassInvoices(ReportHelper.getIntegerValue(data.get("total_m_class_invoice_num".toLowerCase())));
+        result.setMClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_val".toLowerCase())));
 
-        result.setSp_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_paid_invoice_num".toLowerCase())));
-        result.setSp_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_per".toLowerCase())));
+        result.setSpClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_sp_class_paid_invoice_num".toLowerCase())));
+        result.setSpClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_val".toLowerCase())));
 
-        result.setSp_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_invoice_num".toLowerCase())));
-        result.setSp_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_per".toLowerCase())));
+        result.setSpClassInvoices(ReportHelper.getIntegerValue(data.get("total_sp_class_invoice_num".toLowerCase())));
+        result.setSpClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_val".toLowerCase())));
 
-        result.setOther_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_paid_invoice_num".toLowerCase())));
-        result.setOther_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_val".toLowerCase())));
-//        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_per".toLowerCase())));
+        result.setOtherClassPaidInvoices(ReportHelper.getIntegerValue(data.get("total_other_class_paid_invoice_num".toLowerCase())));
+        result.setOtherClassPaidInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_val".toLowerCase())));
 
-        result.setOther_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_invoice_num".toLowerCase())));
-        result.setOther_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_val".toLowerCase())));
-//        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_per".toLowerCase())));
+        result.setOtherClassInvoices(ReportHelper.getIntegerValue(data.get("total_other_class_invoice_num".toLowerCase())));
+        result.setOtherClassInvoicesValue(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_val".toLowerCase())));
 
         return result;
     }
 
-    public Integer getAverage_claim_cycle_day() {
-        return average_claim_cycle_day;
+    public Integer getAverageClaimCycleDay() {
+        return averageClaimCycleDay;
     }
 
-    public void setAverage_claim_cycle_day(Integer average_claim_cycle_day) {
-        this.average_claim_cycle_day = average_claim_cycle_day;
+    public void setAverageClaimCycleDay(Integer averageClaimCycleDay) {
+        this.averageClaimCycleDay = averageClaimCycleDay;
     }
 
-    public Integer getAverage_hire_duration_day() {
-        return average_hire_duration_day;
+    public Integer getAverageHireDurationDay() {
+        return averageHireDurationDay;
     }
 
-    public void setAverage_hire_duration_day(Integer average_hire_duration_day) {
-        this.average_hire_duration_day = average_hire_duration_day;
+    public void setAverageHireDurationDay(Integer average_hire_duration_day) {
+        this.averageHireDurationDay = average_hire_duration_day;
     }
 
-    public BigDecimal getAverage_invoice_val() {
-        return average_invoice_val;
+    public BigDecimal getAverageInvoiceValue() {
+        return averageInvoiceValue;
     }
 
-    public void setAverage_invoice_val(BigDecimal average_invoice_val) {
-        this.average_invoice_val = average_invoice_val;
+    public void setAverageInvoiceValue(BigDecimal averageInvoiceValue) {
+        this.averageInvoiceValue = averageInvoiceValue;
     }
 
-    public BigDecimal getAverage_penalty_val() {
-        return average_penalty_val;
+    public BigDecimal getAveragePenaltyValue() {
+        return averagePenaltyValue;
     }
 
-    public void setAverage_penalty_val(BigDecimal average_penalty_val) {
-        this.average_penalty_val = average_penalty_val;
+    public void setAveragePenaltyValue(BigDecimal averagePenaltyValue) {
+        this.averagePenaltyValue = averagePenaltyValue;
     }
 
     public boolean isIsIns() {
@@ -238,380 +211,379 @@ public class OverviewSummaryReportByOrg {
         this.orgName = orgName;
     }
 
-    public Integer getTotal_no_accepted_claims_num() {
-        return total_no_accepted_claims_num;
+    public Integer getTotalAcceptedClaims() {
+        return totalAcceptedClaims;
     }
 
-    public void setTotal_no_accepted_claims_num(Integer total_no_accepted_claims_num) {
-        this.total_no_accepted_claims_num = total_no_accepted_claims_num;
+    public void setTotalAcceptedClaims(Integer totalAcceptedClaims) {
+        this.totalAcceptedClaims = totalAcceptedClaims;
     }
 
-    public BigDecimal getTotal_no_accepted_claims_per() {
-        return total_no_accepted_claims_per;
+    public BigDecimal getTotalAcceptedClaimsPer() {
+        return totalAcceptedClaimsPer;
     }
 
-    public void setTotal_no_accepted_claims_per(BigDecimal total_no_accepted_claims_per) {
-        this.total_no_accepted_claims_per = total_no_accepted_claims_per;
+    public void setTotalAcceptedClaimsPer(BigDecimal totalAcceptedClaimsPer) {
+        this.totalAcceptedClaimsPer = totalAcceptedClaimsPer;
     }
 
-    public BigDecimal getTotal_no_accepted_claims_val() {
-        return total_no_accepted_claims_val;
+    public BigDecimal getTotalAcceptedClaimsValue() {
+        return totalAcceptedClaimsValue;
     }
 
-    public void setTotal_no_accepted_claims_val(BigDecimal total_no_accepted_claims_val) {
-        this.total_no_accepted_claims_val = total_no_accepted_claims_val;
+    public void setTotalAcceptedClaimsValue(BigDecimal totalAcceptedClaimsValue) {
+        this.totalAcceptedClaimsValue = totalAcceptedClaimsValue;
     }
 
-    public Integer getTotal_no_approved_invoice_num() {
-        return total_no_approved_invoice_num;
+    public Integer getTotalApprovedInvoices() {
+        return totalApprovedInvoices;
     }
 
-    public void setTotal_no_approved_invoice_num(Integer total_no_approved_invoice_num) {
-        this.total_no_approved_invoice_num = total_no_approved_invoice_num;
+    public void setTotalApprovedInvoices(Integer totalApprovedInvoices) {
+        this.totalApprovedInvoices = totalApprovedInvoices;
     }
 
-    public BigDecimal getTotal_no_approved_invoice_per() {
-        return total_no_approved_invoice_per;
+    public BigDecimal getTotalApprovedInvoicesPer() {
+        return totalApprovedInvoicesPer;
     }
 
-    public void setTotal_no_approved_invoice_per(BigDecimal total_no_approved_invoice_per) {
-        this.total_no_approved_invoice_per = total_no_approved_invoice_per;
+    public void setTotalApprovedInvoicesPer(BigDecimal totalApprovedInvoicesPer) {
+        this.totalApprovedInvoicesPer = totalApprovedInvoicesPer;
     }
 
-    public BigDecimal getTotal_no_approved_invoice_val() {
-        return total_no_approved_invoice_val;
+    public BigDecimal getTotalApprovedInvoicesValue() {
+        return totalApprovedInvoicesValue;
     }
 
-    public void setTotal_no_approved_invoice_val(BigDecimal total_no_approved_invoice_val) {
-        this.total_no_approved_invoice_val = total_no_approved_invoice_val;
+    public void setTotalApprovedInvoicesValue(BigDecimal totalApprovedInvoicesValue) {
+        this.totalApprovedInvoicesValue = totalApprovedInvoicesValue;
     }
 
-    public Integer getTotal_no_claims_num() {
-        return total_no_claims_num;
+    public Integer getTotalClaims() {
+        return totalClaims;
     }
 
-    public void setTotal_no_claims_num(Integer total_no_claims_num) {
-        this.total_no_claims_num = total_no_claims_num;
+    public void setTotalClaims(Integer totalClaims) {
+        this.totalClaims = totalClaims;
     }
 
-    public BigDecimal getTotal_no_claims_val() {
-        return total_no_claims_val;
+    public BigDecimal getTotalClaimsValue() {
+        return totalClaimsValue;
     }
 
-    public void setTotal_no_claims_val(BigDecimal total_no_claims_val) {
-        this.total_no_claims_val = total_no_claims_val;
+    public void setTotalClaimsValue(BigDecimal totalClaimsValue) {
+        this.totalClaimsValue = totalClaimsValue;
     }
 
-    public Integer getTotal_no_rejected_claims_num() {
-        return total_no_rejected_claims_num;
+    public Integer getTotalRejectedClaims() {
+        return totalRejectedClaims;
     }
 
-    public void setTotal_no_rejected_claims_num(Integer total_no_rejected_claims_num) {
-        this.total_no_rejected_claims_num = total_no_rejected_claims_num;
+    public void setTotalRejectedClaims(Integer totalRejectedClaims) {
+        this.totalRejectedClaims = totalRejectedClaims;
     }
 
-    public BigDecimal getTotal_no_rejected_claims_per() {
-        return total_no_rejected_claims_per;
+    public BigDecimal getTotalRejectedClaimsPer() {
+        return totalRejectedClaimsPer;
     }
 
-    public void setTotal_no_rejected_claims_per(BigDecimal total_no_rejected_claims_per) {
-        this.total_no_rejected_claims_per = total_no_rejected_claims_per;
+    public void setTotalRejectedClaimsPer(BigDecimal totalRejectedClaimsPer) {
+        this.totalRejectedClaimsPer = totalRejectedClaimsPer;
     }
 
-    public BigDecimal getTotal_no_rejected_claims_val() {
-        return total_no_rejected_claims_val;
+    public BigDecimal getTotalRejectedClaimsValue() {
+        return totalRejectedClaimsValue;
     }
 
-    public void setTotal_no_rejected_claims_val(BigDecimal total_no_rejected_claims_val) {
-        this.total_no_rejected_claims_val = total_no_rejected_claims_val;
+    public void setTotalRejectedClaimsValue(BigDecimal totalRejectedClaimsValue) {
+        this.totalRejectedClaimsValue = totalRejectedClaimsValue;
     }
 
-    public Integer getTotal_no_rejected_invoice_num() {
-        return total_no_rejected_invoice_num;
+    public Integer getTotalRejectedInvoices() {
+        return totalRejectedInvoices;
     }
 
-    public void setTotal_no_rejected_invoice_num(Integer total_no_rejected_invoice_num) {
-        this.total_no_rejected_invoice_num = total_no_rejected_invoice_num;
+    public void setTotalRejectedInvoices(Integer totalRejectedInvoices) {
+        this.totalRejectedInvoices = totalRejectedInvoices;
     }
 
-    public BigDecimal getTotal_no_rejected_invoice_per() {
-        return total_no_rejected_invoice_per;
+    public BigDecimal getTotalRejectedInvoicesPer() {
+        return totalRejectedInvoicesPer;
     }
 
-    public void setTotal_no_rejected_invoice_per(BigDecimal total_no_rejected_invoice_per) {
-        this.total_no_rejected_invoice_per = total_no_rejected_invoice_per;
+    public void setTotalRejectedInvoicesPer(BigDecimal totalRejectedInvoicesPer) {
+        this.totalRejectedInvoicesPer = totalRejectedInvoicesPer;
     }
 
-    public BigDecimal getTotal_no_rejected_invoice_val() {
-        return total_no_rejected_invoice_val;
+    public BigDecimal getTotalRejectedInvoicesValue() {
+        return totalRejectedInvoicesValue;
     }
 
-    public void setTotal_no_rejected_invoice_val(BigDecimal total_no_rejected_invoice_val) {
-        this.total_no_rejected_invoice_val = total_no_rejected_invoice_val;
+    public void setTotalRejectedInvoicesValue(BigDecimal totalRejectedInvoicesValue) {
+        this.totalRejectedInvoicesValue = totalRejectedInvoicesValue;
     }
 
-    public Integer getTotal_no_invoice_num() {
-        return total_no_invoice_num;
+    public Integer getTotalInvoices() {
+        return totalInvoices;
     }
 
-    public void setTotal_no_invoice_num(Integer total_no_invoice_num) {
-        this.total_no_invoice_num = total_no_invoice_num;
+    public void setTotalInvoices(Integer totalInvoices) {
+        this.totalInvoices = totalInvoices;
     }
 
-    public Integer getAverage_invoice_cycle_day() {
-        return average_invoice_cycle_day;
+    public Integer getAverageInvoicesCycleDay() {
+        return averageInvoicesCycleDay;
     }
 
-    public void setAverage_invoice_cycle_day(Integer average_invoice_cycle_day) {
-        this.average_invoice_cycle_day = average_invoice_cycle_day;
+    public void setAverageInvoicesCycleDay(Integer averageInvoicesCycleDay) {
+        this.averageInvoicesCycleDay = averageInvoicesCycleDay;
     }
 
-    public BigDecimal getTotal_no_invoice_val() {
-        return total_no_invoice_val;
+    public BigDecimal getTotalnvoicesValue() {
+        return totalnvoicesValue;
     }
 
-    public void setTotal_no_invoice_val(BigDecimal total_no_invoice_val) {
-        this.total_no_invoice_val = total_no_invoice_val;
+    public void setTotalnvoicesValue(BigDecimal totalnvoicesValue) {
+        this.totalnvoicesValue = totalnvoicesValue;
     }
 
-    public BigDecimal getAmount_saved_val() {
-        return amount_saved_val;
+    public BigDecimal getAmountSavedValue() {
+        return amountSavedValue;
     }
 
-    public void setAmount_saved_val(BigDecimal amount_saved_val) {
-        this.amount_saved_val = amount_saved_val;
+    public void setAmountSavedValue(BigDecimal amountSavedValue) {
+        this.amountSavedValue = amountSavedValue;
     }
 
-    public Integer getCredit_repair_no_invoice_num() {
-        return credit_repair_no_invoice_num;
+    public Integer getCreditRepairInvoices() {
+        return creditRepairInvoices;
     }
 
-    public void setCredit_repair_no_invoice_num(Integer credit_repair_no_invoice_num) {
-        this.credit_repair_no_invoice_num = credit_repair_no_invoice_num;
+    public void setCreditRepairInvoices(Integer creditRepairInvoices) {
+        this.creditRepairInvoices = creditRepairInvoices;
     }
 
-    public BigDecimal getCredit_repair_no_invoice_val() {
-        return credit_repair_no_invoice_val;
+    public BigDecimal getCreditRepairInvoicesValue() {
+        return creditRepairInvoicesValue;
     }
 
-    public void setCredit_repair_no_invoice_val(BigDecimal credit_repair_no_invoice_val) {
-        this.credit_repair_no_invoice_val = credit_repair_no_invoice_val;
+    public void setCreditRepairInvoicesValue(BigDecimal creditRepairInvoicesValue) {
+        this.creditRepairInvoicesValue = creditRepairInvoicesValue;
     }
 
-    public Integer getCredit_repair_no_paid_invoice_num() {
-        return credit_repair_no_paid_invoice_num;
+    public Integer getCreditRepairPaidInvoices() {
+        return creditRepairPaidInvoices;
     }
 
-    public void setCredit_repair_no_paid_invoice_num(Integer credit_repair_no_paid_invoice_num) {
-        this.credit_repair_no_paid_invoice_num = credit_repair_no_paid_invoice_num;
+    public void setCreditRepairPaidInvoices(Integer creditRepairPaidInvoices) {
+        this.creditRepairPaidInvoices = creditRepairPaidInvoices;
     }
 
-    public BigDecimal getCredit_repair_no_paid_invoice_val() {
-        return credit_repair_no_paid_invoice_val;
+    public BigDecimal getCreditRepairPaidInvoicesValue() {
+        return creditRepairPaidInvoicesValue;
     }
 
-    public void setCredit_repair_no_paid_invoice_val(BigDecimal credit_repair_no_paid_invoice_val) {
-        this.credit_repair_no_paid_invoice_val = credit_repair_no_paid_invoice_val;
+    public void setCreditRepairPaidInvoicesValue(BigDecimal creditRepairPaidInvoicesValue) {
+        this.creditRepairPaidInvoicesValue = creditRepairPaidInvoicesValue;
     }
 
-    public Integer getM_class_no_invoice_num() {
-        return m_class_no_invoice_num;
+    public Integer getMClassInvoices() {
+        return mClassInvoices;
     }
 
-    public void setM_class_no_invoice_num(Integer m_class_no_invoice_num) {
-        this.m_class_no_invoice_num = m_class_no_invoice_num;
+    public void setMClassInvoices(Integer mClassInvoices) {
+        this.mClassInvoices = mClassInvoices;
     }
 
-    public BigDecimal getM_class_no_invoice_val() {
-        return m_class_no_invoice_val;
+    public BigDecimal getMClassInvoicesValue() {
+        return mClassInvoicesValue;
     }
 
-    public void setM_class_no_invoice_val(BigDecimal m_class_no_invoice_val) {
-        this.m_class_no_invoice_val = m_class_no_invoice_val;
+    public void setMClassInvoicesValue(BigDecimal mClassInvoicesValue) {
+        this.mClassInvoicesValue = mClassInvoicesValue;
     }
 
-    public Integer getM_class_no_paid_invoice_num() {
-        return m_class_no_paid_invoice_num;
+    public Integer getMClassPaidInvoices() {
+        return mClassPaidInvoices;
     }
 
-    public void setM_class_no_paid_invoice_num(Integer m_class_no_paid_invoice_num) {
-        this.m_class_no_paid_invoice_num = m_class_no_paid_invoice_num;
+    public void setMClassPaidInvoices(Integer mClassPaidInvoices) {
+        this.mClassPaidInvoices = mClassPaidInvoices;
     }
 
-    public BigDecimal getM_class_no_paid_invoice_val() {
-        return m_class_no_paid_invoice_val;
+    public BigDecimal getMClassPaidInvoicesValue() {
+        return mClassPaidInvoicesValue;
     }
 
-    public void setM_class_no_paid_invoice_val(BigDecimal m_class_no_paid_invoice_val) {
-        this.m_class_no_paid_invoice_val = m_class_no_paid_invoice_val;
+    public void setMClassPaidInvoicesValue(BigDecimal mClassPaidInvoicesValue) {
+        this.mClassPaidInvoicesValue = mClassPaidInvoicesValue;
     }
 
-    public Integer getMv_class_no_invoice_num() {
-        return mv_class_no_invoice_num;
+    public Integer getMvClassInvoices() {
+        return mvClassInvoices;
     }
 
-    public void setMv_class_no_invoice_num(Integer mv_class_no_invoice_num) {
-        this.mv_class_no_invoice_num = mv_class_no_invoice_num;
+    public void setMvClassInvoices(Integer mvClassInvoices) {
+        this.mvClassInvoices = mvClassInvoices;
     }
 
-
-    public BigDecimal getMv_class_no_invoice_val() {
-        return mv_class_no_invoice_val;
+    public BigDecimal getMvClassInvoicesValue() {
+        return mvClassInvoicesValue;
     }
 
-    public void setMv_class_no_invoice_val(BigDecimal mv_class_no_invoice_val) {
-        this.mv_class_no_invoice_val = mv_class_no_invoice_val;
+    public void setMvClassInvoicesValue(BigDecimal mvClassInvoicesValue) {
+        this.mvClassInvoicesValue = mvClassInvoicesValue;
     }
 
-    public Integer getMv_class_no_paid_invoice_num() {
-        return mv_class_no_paid_invoice_num;
+    public Integer getMvClassPaidInvoices() {
+        return mvClassPaidInvoices;
     }
 
-    public void setMv_class_no_paid_invoice_num(Integer mv_class_no_paid_invoice_num) {
-        this.mv_class_no_paid_invoice_num = mv_class_no_paid_invoice_num;
+    public void setMvClassPaidInvoices(Integer mvClassPaidInvoices) {
+        this.mvClassPaidInvoices = mvClassPaidInvoices;
     }
 
-    public BigDecimal getMv_class_no_paid_invoice_val() {
-        return mv_class_no_paid_invoice_val;
+    public BigDecimal getMvClassPaidInvoicesValue() {
+        return mvClassPaidInvoicesValue;
     }
 
-    public void setMv_class_no_paid_invoice_val(BigDecimal mv_class_no_paid_invoice_val) {
-        this.mv_class_no_paid_invoice_val = mv_class_no_paid_invoice_val;
+    public void setMvClassPaidInvoicesValue(BigDecimal mvClassPaidInvoicesValue) {
+        this.mvClassPaidInvoicesValue = mvClassPaidInvoicesValue;
     }
 
-    public Integer getOther_class_no_invoice_num() {
-        return other_class_no_invoice_num;
+    public Integer getOtherClassInvoices() {
+        return otherClassInvoices;
     }
 
-    public void setOther_class_no_invoice_num(Integer other_class_no_invoice_num) {
-        this.other_class_no_invoice_num = other_class_no_invoice_num;
+    public void setOtherClassInvoices(Integer otherClassInvoices) {
+        this.otherClassInvoices = otherClassInvoices;
     }
 
-    public BigDecimal getOther_class_no_invoice_val() {
-        return other_class_no_invoice_val;
+    public BigDecimal getOtherClassInvoicesValue() {
+        return otherClassInvoicesValue;
     }
 
-    public void setOther_class_no_invoice_val(BigDecimal other_class_no_invoice_val) {
-        this.other_class_no_invoice_val = other_class_no_invoice_val;
+    public void setOtherClassInvoicesValue(BigDecimal otherClassInvoicesValue) {
+        this.otherClassInvoicesValue = otherClassInvoicesValue;
     }
 
-    public Integer getOther_class_no_paid_invoice_num() {
-        return other_class_no_paid_invoice_num;
+    public Integer getOtherClassPaidInvoices() {
+        return otherClassPaidInvoices;
     }
 
-    public void setOther_class_no_paid_invoice_num(Integer other_class_no_paid_invoice_num) {
-        this.other_class_no_paid_invoice_num = other_class_no_paid_invoice_num;
+    public void setOtherClassPaidInvoices(Integer otherClassPaidInvoices) {
+        this.otherClassPaidInvoices = otherClassPaidInvoices;
     }
 
-    public BigDecimal getOther_class_no_paid_invoice_val() {
-        return other_class_no_paid_invoice_val;
+    public BigDecimal getOtherClassPaidInvoicesValue() {
+        return otherClassPaidInvoicesValue;
     }
 
-    public void setOther_class_no_paid_invoice_val(BigDecimal other_class_no_paid_invoice_val) {
-        this.other_class_no_paid_invoice_val = other_class_no_paid_invoice_val;
+    public void setOtherClassPaidInvoicesValue(BigDecimal otherClassPaidInvoicesValue) {
+        this.otherClassPaidInvoicesValue = otherClassPaidInvoicesValue;
     }
 
-    public Integer getP_class_no_invoice_num() {
-        return p_class_no_invoice_num;
+    public Integer getPClassInvoices() {
+        return pClassInvoices;
     }
 
-    public void setP_class_no_invoice_num(Integer p_class_no_invoice_num) {
-        this.p_class_no_invoice_num = p_class_no_invoice_num;
+    public void setPClassInvoices(Integer pClassInvoices) {
+        this.pClassInvoices = pClassInvoices;
     }
 
-    public BigDecimal getP_class_no_invoice_val() {
-        return p_class_no_invoice_val;
+    public BigDecimal getPClassInvoicesValue() {
+        return pClassInvoicesValue;
     }
 
-    public void setP_class_no_invoice_val(BigDecimal p_class_no_invoice_val) {
-        this.p_class_no_invoice_val = p_class_no_invoice_val;
+    public void setPClassInvoicesValue(BigDecimal pClassInvoicesValue) {
+        this.pClassInvoicesValue = pClassInvoicesValue;
     }
 
-    public Integer getP_class_no_paid_invoice_num() {
-        return p_class_no_paid_invoice_num;
+    public Integer getPClassPaidInvoices() {
+        return pClassPaidInvoices;
     }
 
-    public void setP_class_no_paid_invoice_num(Integer p_class_no_paid_invoice_num) {
-        this.p_class_no_paid_invoice_num = p_class_no_paid_invoice_num;
+    public void setPClassPaidInvoices(Integer pClassPaidInvoices) {
+        this.pClassPaidInvoices = pClassPaidInvoices;
     }
 
-    public BigDecimal getP_class_no_paid_invoice_val() {
-        return p_class_no_paid_invoice_val;
+    public BigDecimal getPClassPaidInvoicesValue() {
+        return pClassPaidInvoicesValue;
     }
 
-    public void setP_class_no_paid_invoice_val(BigDecimal p_class_no_paid_invoice_val) {
-        this.p_class_no_paid_invoice_val = p_class_no_paid_invoice_val;
+    public void setPClassPaidInvoicesValue(BigDecimal pClassPaidInvoicesValue) {
+        this.pClassPaidInvoicesValue = pClassPaidInvoicesValue;
     }
 
-    public Integer getS_class_no_invoice_num() {
-        return s_class_no_invoice_num;
+    public Integer getSClassInvoices() {
+        return sClassInvoices;
     }
 
-    public void setS_class_no_invoice_num(Integer s_class_no_invoice_num) {
-        this.s_class_no_invoice_num = s_class_no_invoice_num;
+    public void setSClassInvoices(Integer sClassInvoices) {
+        this.sClassInvoices = sClassInvoices;
     }
 
-    public BigDecimal getS_class_no_invoice_val() {
-        return s_class_no_invoice_val;
+    public BigDecimal getSClassInvoicesValue() {
+        return sClassInvoicesValue;
     }
 
-    public void setS_class_no_invoice_val(BigDecimal s_class_no_invoice_val) {
-        this.s_class_no_invoice_val = s_class_no_invoice_val;
+    public void setSClassInvoicesValue(BigDecimal sClassInvoicesValue) {
+        this.sClassInvoicesValue = sClassInvoicesValue;
     }
 
     public Integer getS_class_no_paid_invoice_num() {
-        return s_class_no_paid_invoice_num;
+        return sClassPaidInvoices;
     }
 
-    public void setS_class_no_paid_invoice_num(Integer s_class_no_paid_invoice_num) {
-        this.s_class_no_paid_invoice_num = s_class_no_paid_invoice_num;
+    public void setSClassPaidInvoices(Integer sClassPaidInvoices) {
+        this.sClassPaidInvoices = sClassPaidInvoices;
     }
 
-    public BigDecimal getS_class_no_paid_invoice_val() {
-        return s_class_no_paid_invoice_val;
+    public BigDecimal getSClassPaidInvoicesValue() {
+        return sClassPaidInvoicesValue;
     }
 
-    public void setS_class_no_paid_invoice_val(BigDecimal s_class_no_paid_invoice_val) {
-        this.s_class_no_paid_invoice_val = s_class_no_paid_invoice_val;
+    public void setSClassPaidInvoicesValue(BigDecimal sClassPaidInvoicesValue) {
+        this.sClassPaidInvoicesValue = sClassPaidInvoicesValue;
     }
 
-    public Integer getSp_class_no_invoice_num() {
-        return sp_class_no_invoice_num;
+    public Integer getSpClassInvoices() {
+        return spClassInvoices;
     }
 
-    public void setSp_class_no_invoice_num(Integer sp_class_no_invoice_num) {
-        this.sp_class_no_invoice_num = sp_class_no_invoice_num;
+    public void setSpClassInvoices(Integer spClassInvoices) {
+        this.spClassInvoices = spClassInvoices;
     }
 
-    public BigDecimal getSp_class_no_invoice_val() {
-        return sp_class_no_invoice_val;
+    public BigDecimal getSpClassInvoicesValue() {
+        return spClassInvoicesValue;
     }
 
-    public void setSp_class_no_invoice_val(BigDecimal sp_class_no_invoice_val) {
-        this.sp_class_no_invoice_val = sp_class_no_invoice_val;
+    public void setSpClassInvoicesValue(BigDecimal spClassInvoicesValue) {
+        this.spClassInvoicesValue = spClassInvoicesValue;
     }
 
-    public Integer getSp_class_no_paid_invoice_num() {
-        return sp_class_no_paid_invoice_num;
+    public Integer getSpClassPaidInvoices() {
+        return spClassPaidInvoices;
     }
 
-    public void setSp_class_no_paid_invoice_num(Integer sp_class_no_paid_invoice_num) {
-        this.sp_class_no_paid_invoice_num = sp_class_no_paid_invoice_num;
+    public void setSpClassPaidInvoices(Integer spClassPaidInvoices) {
+        this.spClassPaidInvoices = spClassPaidInvoices;
     }
 
-    public BigDecimal getSp_class_no_paid_invoice_val() {
-        return sp_class_no_paid_invoice_val;
+    public BigDecimal getSpClassPaidInvoicesValue() {
+        return spClassPaidInvoicesValue;
     }
 
-    public void setSp_class_no_paid_invoice_val(BigDecimal sp_class_no_paid_invoice_val) {
-        this.sp_class_no_paid_invoice_val = sp_class_no_paid_invoice_val;
+    public void setSpClassPaidInvoicesValue(BigDecimal spClassPaidInvoicesValue) {
+        this.spClassPaidInvoicesValue = spClassPaidInvoicesValue;
     }
 
-    public BigDecimal getAverage_hire_val() {
-        return average_hire_val;
+    public BigDecimal getAverageHireValue() {
+        return averageHireValue;
     }
 
-    public void setAverage_hire_val(BigDecimal average_hire_val) {
-        this.average_hire_val = average_hire_val;
+    public void setAverageHireValue(BigDecimal averageHireValue) {
+        this.averageHireValue = averageHireValue;
     }
 }

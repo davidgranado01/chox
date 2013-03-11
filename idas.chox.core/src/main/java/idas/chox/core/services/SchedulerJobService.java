@@ -6,5 +6,5 @@ import idas.chox.core.model.SchedulerJob;
 
 public interface SchedulerJobService {
 
-    public List<SchedulerJob> getSchedulerJobs(String jobName);
+    List<SchedulerJob> getSchedulerJobs(String jobName);
 }

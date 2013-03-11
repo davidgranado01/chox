@@ -1,25 +1,26 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.Task;
 import idas.chox.core.search.SearchResult;
-import java.util.List;
 
 /**
  *
  * @author John
  */
 public interface TaskService {
-    public SearchResult getAllTasks(int start, int limit, String sort, String dir);
-    public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir);
-    public SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
-    public SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
-    public List<Task> getAllTasksByClaim(int claimId);
-    public List<Task> getIncompleteTasksByClaim(int claimId);
-    public List<Task> getIncompleteTasksByClaim(int webUserId, int claimId);
-    public List<Task> getAllTasksByClaim(int webUserId, int claimId);
-    public void markTaskAsComplete(int webUserId, int taskId);
-    public void autoCompleteTasksForClaim(int claimId);
-    public void autoUndoCompleteTasksForClaim(int claimId);
-    public void createNewTask(Task task);
-    public void deleteAllTasksByClaimId(int claimId);
+    SearchResult getAllTasks(int start, int limit, String sort, String dir);
+    SearchResult getIncompleteTasks(int start, int limit, String sort, String dir);
+    SearchResult getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
+    SearchResult getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
+    List<Task> getAllTasksByClaim(int claimId);
+    List<Task> getIncompleteTasksByClaim(int claimId);
+    List<Task> getIncompleteTasksByClaim(int webUserId, int claimId);
+    List<Task> getAllTasksByClaim(int webUserId, int claimId);
+    void markTaskAsComplete(int webUserId, int taskId);
+    void autoCompleteTasksForClaim(int claimId);
+    void autoUndoCompleteTasksForClaim(int claimId);
+    void createNewTask(Task task);
+    void deleteAllTasksByClaimId(int claimId);
 }

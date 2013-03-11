@@ -9,50 +9,50 @@ import idas.chox.core.model.WebUser;
 
 public interface LookupService {
 
-    public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
+    List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
                             boolean isFnolEnabled, boolean isEngineersEnabled,
                             boolean isTpiEnabled, boolean isManualInvoiceAllowed,
                             boolean isSubscriberActivated);
     
-    public List<LookupItem> getLiabilityStatuses(boolean withNull);
+    List<LookupItem> getLiabilityStatuses(boolean withNull);
     
-    public List<LookupItem> getClaimTypes();
+    List<LookupItem> getClaimTypes();
 
-    public List getVehicleClasses();
+    List getVehicleClasses();
 
-    public String getVehicleClassName(int id);
+    String getVehicleClassName(int id);
     
-    public List getClaimRejectionReason(int insurerId, ClaimType claimType);
+    List getClaimRejectionReason(int insurerId, ClaimType claimType);
 
-    public List getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
+    List getClaimRejectionRestrictedReason(int insurerId, ClaimType claimType);
     
-    public List getInvoiceRejectionReason(int insurerId, ClaimType claimType);
+    List getInvoiceRejectionReason(int insurerId, ClaimType claimType);
 
-    public List getNonProvisionReason();
+    List getNonProvisionReason();
 
-    public List getAllSuppliers();
+    List getAllSuppliers();
 
-    public List getSuppliers(Integer insurerId, boolean excludeManualCHO);
+    List getSuppliers(Integer insurerId, boolean excludeManualCHO);
 
-    public List<Chorganisation> getSuppliers(boolean excludeManualCHO);
+    List<Chorganisation> getSuppliers(boolean excludeManualCHO);
 
-    public List getInsurers();
+    List getInsurers();
 
-    public List getInsurers(Integer choId);
+    List getInsurers(Integer choId);
 
-    public List getAllInsurers();
+    List getAllInsurers();
 
-    public List getInsurerChoBand(int insurerId);
+    List getInsurerChoBand(int insurerId);
 
-    public List getReasonOfDelay();
+    List getReasonOfDelay();
 
-    public List getWorkgroups(WebUser user, boolean isActiveOnly);
+    List getWorkgroups(WebUser user, boolean isActiveOnly);
 
-    public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly);
+    List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly);
     
-    public List getWorkgroupsByClaimId(int claimId, boolean isActiveOnly);
+    List getWorkgroupsByClaimId(int claimId, boolean isActiveOnly);
 
-    public List getSitesByInsurerId(int insurerId, boolean isActiveOnly);
+    List getSitesByInsurerId(int insurerId, boolean isActiveOnly);
 
-    public List getTeamsBySite(int insurerId, String site, boolean isActiveOnly);
+    List getTeamsBySite(int insurerId, String site, boolean isActiveOnly);
 }

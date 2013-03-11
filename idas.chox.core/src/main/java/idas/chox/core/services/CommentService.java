@@ -1,7 +1,8 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Comment;
 import java.util.List;
+
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.Claim;
 
 public interface CommentService {

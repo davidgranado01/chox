@@ -10,9 +10,9 @@ import idas.chox.core.model.UploadedXMLClaimsDetail;
  */
 public interface UploadedXMLClaimsDetailService {
 
-    public List<UploadedXMLClaimsDetail> getUploadedXMLClaimsDetailByBordereauId(int bordereauId);
+    List<UploadedXMLClaimsDetail> getUploadedXMLClaimsDetailByBordereauId(int bordereauId);
 
-    public void saveUploadedXMLClaimsDetail(UploadedXMLClaimsDetail claimsDetail);
+    void saveUploadedXMLClaimsDetail(UploadedXMLClaimsDetail claimsDetail);
     
-    public void saveUploadedXMLClaimsDetails(List<UploadedXMLClaimsDetail> objects);
+    void saveUploadedXMLClaimsDetails(List<UploadedXMLClaimsDetail> objects);
 }

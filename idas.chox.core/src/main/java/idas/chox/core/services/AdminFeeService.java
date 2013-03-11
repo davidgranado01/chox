@@ -8,5 +8,5 @@ import java.util.Date;
  * @author John
  */
 public interface AdminFeeService {
-   public BigDecimal getAdminFee(Date startDate, boolean coverNoteRequired, boolean managingRepair) throws Exception;
+   BigDecimal getAdminFee(Date startDate, boolean coverNoteRequired, boolean managingRepair) throws Exception;
 }

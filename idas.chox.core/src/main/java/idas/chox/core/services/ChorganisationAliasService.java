@@ -1,22 +1,23 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
-import java.util.List;
 
 public interface ChorganisationAliasService {
 
-    public ChorganisationAlias getChorganisationByAliasName(String aliasName);
+    ChorganisationAlias getChorganisationByAliasName(String aliasName);
 
-    public List<ChorganisationAlias> getChorganisationAliasesByChorganisation(int chorganisationId);
+    List<ChorganisationAlias> getChorganisationAliasesByChorganisation(int chorganisationId);
 
-    public ChorganisationAlias getChorganisationAlias(int chorganisationAliasId);
+    ChorganisationAlias getChorganisationAlias(int chorganisationAliasId);
 
-    public void deleteChorganisationAlias(ChorganisationAlias chorganisationAlias);
+    void deleteChorganisationAlias(ChorganisationAlias chorganisationAlias);
 
-    public void saveChorganisationAlias(ChorganisationAlias chorganisationAlias);
+    void saveChorganisationAlias(ChorganisationAlias chorganisationAlias);
 
-    public boolean isChorganisationAliasExist(int chorganisationId, String aliasName);
+    boolean isChorganisationAliasExist(int chorganisationId, String aliasName);
 
-    public void createDefaultRecord(Chorganisation chorganisation);
+    void createDefaultRecord(Chorganisation chorganisation);
 }

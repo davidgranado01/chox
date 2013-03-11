@@ -10,14 +10,14 @@ import idas.chox.core.model.IPWhitelist;
  */
 public interface  IPWhitelistService {
     
-    public boolean validateUserIPAddress(int orgId, String ipAddress, boolean isChoUser, boolean isInsurerUser);
+    boolean validateUserIPAddress(int orgId, String ipAddress, boolean isChoUser, boolean isInsurerUser);
    
-    public List<IPWhitelist> getIPWhitelistsByOrgId(int orgId, boolean cho, boolean ins);
+    List<IPWhitelist> getIPWhitelistsByOrgId(int orgId, boolean cho, boolean ins);
     
-    public IPWhitelist getIPWhitelistById(int ipWhitelistId);
+    IPWhitelist getIPWhitelistById(int ipWhitelistId);
+   
+    void saveIPWhitelist(IPWhitelist iPWhitelist);
     
-    public void saveIPWhitelist(IPWhitelist iPWhitelist);
-    
-    public void deleteIPWhitelist(IPWhitelist iPWhitelist);
+    void deleteIPWhitelist(IPWhitelist iPWhitelist);
     
 }

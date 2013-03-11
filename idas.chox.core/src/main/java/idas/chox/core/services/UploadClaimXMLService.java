@@ -13,24 +13,22 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public interface UploadClaimXMLService {
 
-   // public BordereauResult processClaimXMLFile(File file, String fileName);
+    List<ClaimResult> formClaimResults(Document document)throws Exception;
 
-    public List<ClaimResult> formClaimResults(Document document)throws Exception;
+    boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences);
 
-    public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences);
+    void evictClaim(Claim claim);
 
-    public void evictClaim(Claim claim);
+    boolean validateFile(File uploadedFile);
 
-    public boolean validateFile(File uploadedFile);
-
-    public boolean processFile(int bordereauId, Map session);
+    boolean processFile(int bordereauId, Map session);
     
-    public String getSuccessMessage();
+    String getSuccessMessage();
     
-    public String getErrorMessage();
+    String getErrorMessage();
     
-    public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName);
+    boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName);
     
-    public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream);
+    UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream);
     
 }

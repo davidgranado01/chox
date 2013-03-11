@@ -1,16 +1,17 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.ReasonOfRejectionTemplate;
 
-import java.util.List;
 
 public interface ReasonOfRejectionTemplateService {
 
-    public ReasonOfRejectionTemplate getReasonOfRejectionTemplate(int reasonOfRejectionId);
+    ReasonOfRejectionTemplate getReasonOfRejectionTemplate(int reasonOfRejectionId);
 
-    public List<ReasonOfRejectionTemplate> getAllReasonOfRejectionTemplate(String type, Boolean status, Boolean restricted);
+    List<ReasonOfRejectionTemplate> getAllReasonOfRejectionTemplate(String type, Boolean status, Boolean restricted);
 
-    public int getDefaultInvoiceLiabilityDisputeReasonId();
+    int getDefaultInvoiceLiabilityDisputeReasonId();
 
-    public List<ReasonOfRejectionTemplate> getReasonOfRejectionTemplates();
+    List<ReasonOfRejectionTemplate> getReasonOfRejectionTemplates();
 }

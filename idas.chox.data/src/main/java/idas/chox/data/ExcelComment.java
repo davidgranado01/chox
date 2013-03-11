@@ -11,11 +11,11 @@ import org.apache.commons.lang.StringEscapeUtils;
  */
 public class ExcelComment {
 
-    String choReference;
-    String createdBy;
-    Date createdDate;
-    String comment;
-    int visibilityType;
+    private String choReference;
+    private String createdBy;
+    private Date createdDate;
+    private String comment;
+    private int visibilityType;
     
     public ExcelComment(Map data) {
         choReference = (String) data.get("choreference");

@@ -1,15 +1,15 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Billing;
-import idas.chox.core.model.BillingInsurer;
-import idas.chox.core.model.BillingInsurerDetail;
-import idas.chox.core.model.Claim;
-
-import idas.chox.core.model.Insurer;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import idas.chox.core.model.Billing;
+import idas.chox.core.model.BillingInsurer;
+import idas.chox.core.model.BillingInsurerDetail;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Insurer;
 
 public interface BillingInsurerService {
 
@@ -24,13 +24,10 @@ public interface BillingInsurerService {
 
 	void deteteObject(BillingInsurer object);
 
-//	List findClaimsBetween(Date from, Date to);
 
-        List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer, boolean excludeSupplmntInv);
+    List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer, boolean excludeSupplmntInv);
 
 	Set<BillingInsurerDetail> getScheduleDetailList(final int id);
 
-        List searchBills(String choReference, String claimNumber);
-
-
+    List searchBills(String choReference, String claimNumber);
 }

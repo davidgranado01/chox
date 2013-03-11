@@ -1,26 +1,27 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Insurer;
-import java.util.List;
 
 public interface BreBandService {
 
-    public BreBand getBreBand(int breBandId);
+    BreBand getBreBand(int breBandId);
 
-    public void saveBreBand(BreBand breBand);
+    void saveBreBand(BreBand breBand);
 
-    public List<BreBand> getInsurerBreBandsByInsurer(int insurerId);
+    List<BreBand> getInsurerBreBandsByInsurer(int insurerId);
 
     BreBand getBreBand(int orgId, int insurerId);
 
-    public boolean isBreBandOccupied(BreBand breBand);
+    boolean isBreBandOccupied(BreBand breBand);
 
-    public boolean isBreBandNameExist(BreBand breBand);
+    boolean isBreBandNameExist(BreBand breBand);
 
-    public void createDefaultRecord(Insurer insurer);
+    void createDefaultRecord(Insurer insurer);
 
-    public void deleteBreBand(BreBand breBand);
+    void deleteBreBand(BreBand breBand);
 
-    public boolean isSupplierRatesActivated(int orgId, int insurerId);
+    boolean isSupplierRatesActivated(int orgId, int insurerId);
 }

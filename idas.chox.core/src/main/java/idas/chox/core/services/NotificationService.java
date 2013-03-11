@@ -6,18 +6,18 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Notification;
 
 public interface NotificationService {
-    public void addNotification(Claim claim, Notification notification);
-    public void checkForAnomalies(Claim claim, String type)  throws Exception;
+    void addNotification(Claim claim, Notification notification);
+    void checkForAnomalies(Claim claim, String type)  throws Exception;
 
-    public void removeAllNotifications(Integer claimId);
-    public void removeAllInsurerNotifications(Integer claimId);
-    public void removeAllCHONotifications(Integer claimId);
-    public void removeNotificationById(Integer notificationId);
+    void removeAllNotifications(Integer claimId);
+    void removeAllInsurerNotifications(Integer claimId);
+    void removeAllCHONotifications(Integer claimId);
+    void removeNotificationById(Integer notificationId);
 
-    public List<Notification> getNotifications(Integer claimId);
+    List<Notification> getNotifications(Integer claimId);
 
-    public void acknowledgeAllInsurerNotifications(Integer claimId);
-    public void acknowledgeAllCHONotifications(Integer claimId);
-    public void acknowledgeNotificationById(Integer notificationId);
+    void acknowledgeAllInsurerNotifications(Integer claimId);
+    void acknowledgeAllCHONotifications(Integer claimId);
+    void acknowledgeNotificationById(Integer notificationId);
 
 }

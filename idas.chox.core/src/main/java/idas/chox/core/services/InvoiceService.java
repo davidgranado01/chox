@@ -7,16 +7,16 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public interface InvoiceService {
 
-    public void saveInvoiceForXMLUploader(final ClaimResult claimResult);
+    void saveInvoiceForXMLUploader(final ClaimResult claimResult);
 
-    public Invoice getInvoice(int invoiceId);
+    Invoice getInvoice(int invoiceId);
 
-    public void saveInvoice(Invoice invoice);
+    void saveInvoice(Invoice invoice);
     
-    public InvoiceOriginal saveOriginalInvoice(Invoice invoice);
+    InvoiceOriginal saveOriginalInvoice(Invoice invoice);
     
-    public void deleteOriginalInvoice(Invoice invoice);
+    void deleteOriginalInvoice(Invoice invoice);
 
-    public int getNoOfRejectedInvoices(Integer reasonOfRejectionId);
+    int getNoOfRejectedInvoices(Integer reasonOfRejectionId);
  
 }

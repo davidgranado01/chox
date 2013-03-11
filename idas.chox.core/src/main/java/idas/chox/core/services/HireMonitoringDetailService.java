@@ -7,9 +7,9 @@ public interface HireMonitoringDetailService {
 
     HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int vehicleHireId);
 
-    public HireMonitoringDetail getHireMonitoringDetail(int hireMonitoringDetailId);
+    HireMonitoringDetail getHireMonitoringDetail(int hireMonitoringDetailId);
 
-    public void saveHireMonitoringDetail(HireMonitoringDetail engineerReport);
+    void saveHireMonitoringDetail(HireMonitoringDetail engineerReport);
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult);
+    void saveObjectForXMLUploader(final ClaimResult claimResult);
 }

@@ -1,34 +1,34 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
-import java.util.List;
 
 public interface AutomaticRoutingService {
 
-    public List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId);
+    List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId);
 
-    public List<AutomaticRouting> getAutomaticRoutings(int insurerId);
+    List<AutomaticRouting> getAutomaticRoutings(int insurerId);
 
-    public boolean isWorkgroupInUseByAutomaticRouting(int workgroupId);
+    boolean isWorkgroupInUseByAutomaticRouting(int workgroupId);
 
-    public AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId);
+    AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId);
 
-    public AutomaticRouting getAutomaticRouting(int automaticRoutingId);
+    AutomaticRouting getAutomaticRouting(int automaticRoutingId);
 
-    public void saveAutomaticRouting(AutomaticRouting automaticRouting);
+    void saveAutomaticRouting(AutomaticRouting automaticRouting);
 
-    public void deleteAutomaticRouting(AutomaticRouting automaticRouting);
+    void deleteAutomaticRouting(AutomaticRouting automaticRouting);
 
+    List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId);
 
-    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId);
+    List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId);
 
-    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId);
+    AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId);
 
-    public AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId);
+    void deleteAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
 
-    public void deleteAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
-
-     public void saveAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+    void saveAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
 
 }

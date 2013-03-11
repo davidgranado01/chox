@@ -5,9 +5,9 @@ import idas.chox.core.model.Customer;
 
 public interface CustomerService {
 
-    public void saveCustomerForXMLUploader(final ClaimResult claimResult);
+    void saveCustomerForXMLUploader(final ClaimResult claimResult);
 
-    public Customer getCustomer(int customerId);
+    Customer getCustomer(int customerId);
 
-    public void saveCustomer(Customer customer);
+    void saveCustomer(Customer customer);
 }

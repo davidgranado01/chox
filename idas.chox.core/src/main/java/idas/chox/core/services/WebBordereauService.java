@@ -4,12 +4,12 @@ import idas.chox.core.model.WebBordereau;
 
 public interface WebBordereauService {
 
-    public void saveBordereau(WebBordereau bordereau);
+    void saveBordereau(WebBordereau bordereau);
 
-    public WebBordereau getBordereauById(int webBordereauId);
+    WebBordereau getBordereauById(int webBordereauId);
 
-    public boolean deleteBordereau(WebBordereau webBordereau);
+    boolean deleteBordereau(WebBordereau webBordereau);
     
-    public boolean deleteBordereau(int webBordereauId);
+    boolean deleteBordereau(int webBordereauId);
 
 }

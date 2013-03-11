@@ -3,110 +3,112 @@ package idas.chox.core.services;
 import java.util.List;
 import java.util.Set;
 
-import idas.chox.core.model.*;
-import idas.chox.core.search.*;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.QueuedTicket;
+import idas.chox.core.search.ClaimSearchCriteria;
+import idas.chox.core.search.SearchResult;
 
 public interface ClaimService extends DataService {
 
-    public Claim getClaim(int id);
+    Claim getClaim(int id);
 
-    public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
+    Long getClaimCountByClaimNumber(String claimNumber, int claimId);
 
-    public List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
+    List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
 
-    public Long getECDCountByClaimId(int claimId);
+    Long getECDCountByClaimId(int claimId);
 
-    public Integer getCountOfClaimByVRN(String strVRN, int claimId);
+    Integer getCountOfClaimByVRN(String strVRN, int claimId);
 
-    public Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim);
+    Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim);
 
-    public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
+    Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
 
-    public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
+    Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
 
-    public Integer countClaims(ClaimSearchCriteria searchCriteria);
+    Integer countClaims(ClaimSearchCriteria searchCriteria);
 
-    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria);
+    SearchResult searchClaims(ClaimSearchCriteria searchCriteria);
 
-    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir);
+    SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir);
 
-    public void updateClaim(Claim claim);
+    void updateClaim(Claim claim);
     
-    public void checkRepairBookedInDateAnomaly(Claim claim);
+    void checkRepairBookedInDateAnomaly(Claim claim);
 
-    public void checkTotalLossAnomaly(Claim claim);
+    void checkTotalLossAnomaly(Claim claim);
 
-    public Boolean revertClaim(int claimId);
+    Boolean revertClaim(int claimId);
 
-    public List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId);
+    List getCHOClaimsByCustomerClaimRef(String customerClaimRef, int choId);
     
-    public List getInsurerClaimsByCustomerClaimRef(String customerClaimRef, int insId);
+    List getInsurerClaimsByCustomerClaimRef(String customerClaimRef, int insId);
 
-    public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
+    Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
 
-    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
+    Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 
-    public Boolean isObjectExist(int WorkgroupId);
+    Boolean isObjectExist(int WorkgroupId);
 
-    public boolean isUserHasOpenClaim(int UserId);
+    boolean isUserHasOpenClaim(int UserId);
 
-    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status);
+    boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status);
 
-    public boolean isSubscriberClaimRejectedAndAgreed(int claimId);
+    boolean isSubscriberClaimRejectedAndAgreed(int claimId);
         
-    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
+    boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
 
-    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
+    boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
 
-    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
+    boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
 
-    public void updateSaveLiabilityStatus(Claim claim);
+    void updateSaveLiabilityStatus(Claim claim);
 
-    public String getDaysWithCHOForReview(int id);
+    String getDaysWithCHOForReview(int id);
 
-    public String getDaysWithInsurerForReview(int id);
+    String getDaysWithInsurerForReview(int id);
 
-    public int getSubscriberClaimDays(int id);
+    int getSubscriberClaimDays(int id);
 
-    public int getSubscriberClaimRejects(int id);
+    int getSubscriberClaimRejects(int id);
     
-    public int getFixedFeeClaimDays(int id);
+    int getFixedFeeClaimDays(int id);
 
-    public int getClaimRejects(int id);
+    int getClaimRejects(int id);
     
-    public String getDaysAwaitingLiabilityResolution(int id);
+    String getDaysAwaitingLiabilityResolution(int id);
 
-    public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
+    void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
 
-    public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
+    List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
     
-    public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef);
+    Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef);
     
-    public int getSubscriberClaimRejectedDays(int claimId);
+    int getSubscriberClaimRejectedDays(int claimId);
     
-    public int getFixedFeeClaimRejectedDays(int claimId);
+    int getFixedFeeClaimRejectedDays(int claimId);
     
-    public int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender);
+    int updateReservationToTicket(String oldReference, String newReference, Integer choId, String sender);
     
-    public int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId);
+    int updateQueuedTicket(QueuedTicket queuedTicket, Integer choId);
     
-    public List<QueuedTicket> getQueuedTicket();
+    List<QueuedTicket> getQueuedTicket();
  
-    public Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
+    Claim getClaimByChoIdAndCHOReferenceNumber(Integer choId, String sClaimReferenceNumber);
     
-    public Claim updateClaimWithInvalidSessionVersion(Claim claim);
+    Claim updateClaimWithInvalidSessionVersion(Claim claim);
     
-    public void updateLiabilityPayment(Claim claim);
+    void updateLiabilityPayment(Claim claim);
 
-    public int getDaysSinceInvoiceUploadToEscalate(Integer claimId);
+    int getDaysSinceInvoiceUploadToEscalate(Integer claimId);
 
-    public int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId);
+    int getNumberOfTimesContestedWithCHOtoEscalate(Integer claimId);
     
-    public int getNoOfRejectedClaims(Integer reasonOfRejectionId);
+    int getNoOfRejectedClaims(Integer reasonOfRejectionId);
 
-    public String getOverlappingHire(Claim claim);
+    String getOverlappingHire(Claim claim);
     
-    public int getActivityMonitorRequestInterval();
+    int getActivityMonitorRequestInterval();
     
-    public boolean isEnableActivityMonitor();
+    boolean isEnableActivityMonitor();
 }

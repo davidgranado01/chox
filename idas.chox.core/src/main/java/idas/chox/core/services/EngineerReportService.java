@@ -5,11 +5,11 @@ import idas.chox.core.model.EngineerReport;
 
 public interface EngineerReportService {
 
-    public void saveEngineerReportForXMLUploader(final ClaimResult claimResult);
+    void saveEngineerReportForXMLUploader(final ClaimResult claimResult);
 
-    public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
+    EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 
-    public EngineerReport getEngineerReport(int engineerReportId);
+    EngineerReport getEngineerReport(int engineerReportId);
 
-    public void saveEngineerReport(EngineerReport engineerReport);
+    void saveEngineerReport(EngineerReport engineerReport);
 }

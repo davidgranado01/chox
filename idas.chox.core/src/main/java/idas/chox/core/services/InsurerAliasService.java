@@ -1,22 +1,23 @@
 package idas.chox.core.services;
 
+import java.util.List;
+
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
-import java.util.List;
 
 public interface InsurerAliasService {
 
-    public InsurerAlias getInsurerByAliasName(String aliasName);
+    InsurerAlias getInsurerByAliasName(String aliasName);
 
-    public List<InsurerAlias> getInsurerAliasesByInsurer(int insurerId);
+    List<InsurerAlias> getInsurerAliasesByInsurer(int insurerId);
 
-    public InsurerAlias getInsurerAlias(int insurerAliasId);
+    InsurerAlias getInsurerAlias(int insurerAliasId);
 
-    public void deleteInsurerAlias(InsurerAlias insurerAlias);
+    void deleteInsurerAlias(InsurerAlias insurerAlias);
 
-    public void saveInsurerAlias(InsurerAlias insurerAlias);
+    void saveInsurerAlias(InsurerAlias insurerAlias);
 
-    public boolean isInsurerAliasExist(int insurerId, String AliasName);
+    boolean isInsurerAliasExist(int insurerId, String AliasName);
 
-    public void createDefaultRecord(Insurer insurer);
+    void createDefaultRecord(Insurer insurer);
 }

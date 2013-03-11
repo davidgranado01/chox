@@ -7,8 +7,8 @@ import idas.chox.core.model.Accessibility;
 
 public interface AccessibilityService {
 
-    public Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap();
-    public Map<String, Accessibility> getAccessibilityByClaimTypeMap();
-    public Map<String, Accessibility> getAccessibilityMap();
+    Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap();
+    Map<String, Accessibility> getAccessibilityByClaimTypeMap();
+    Map<String, Accessibility> getAccessibilityMap();
 
 }

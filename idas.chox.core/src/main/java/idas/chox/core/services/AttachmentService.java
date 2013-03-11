@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface AttachmentService {
 
-    public List<Attachment> getAttachmentsByClaim(int claimId);
+    List<Attachment> getAttachmentsByClaim(int claimId);
 
     Attachment getAttachment(int attachmentId);
 
-    public boolean deleteAtatchment(int webUserId, int AttachmentId);
+    boolean deleteAtatchment(int webUserId, int AttachmentId);
 }

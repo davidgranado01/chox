@@ -1,15 +1,15 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.WebUserWorkgroup;
 import java.util.List;
+import idas.chox.core.model.WebUserWorkgroup;
 
 public interface UserWorkgroupService {
 
-    public List<WebUserWorkgroup> getUserWorkgroupsByUser(int userId);
+    List<WebUserWorkgroup> getUserWorkgroupsByUser(int userId);
 
-    public WebUserWorkgroup getUserWorkgroup(int userWorkgroupId);
+    WebUserWorkgroup getUserWorkgroup(int userWorkgroupId);
 
-    public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId);
+    boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId);
 
-    public void saveUserWorkgroup(WebUserWorkgroup userWorkgroup);
+    void saveUserWorkgroup(WebUserWorkgroup userWorkgroup);
 }

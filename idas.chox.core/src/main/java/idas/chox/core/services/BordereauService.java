@@ -1,22 +1,19 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Bordereau;
-import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 
 public interface BordereauService {
 
-    public void saveBordereau(Bordereau bordereau);
+    void saveBordereau(Bordereau bordereau);
 
-    public Bordereau getBordereauByFileName(String fileName);
+    Bordereau getBordereauByFileName(String fileName);
 
-    //public List<Bordereau> getBordereauByUserIdUploadedToday(WebUser webUser);
+    Bordereau getBordereauById(int bordereauId);
 
-    public Bordereau getBordereauById(int bordereauId);
+    boolean deleteBordereau(Bordereau bordereau);
 
-    public boolean deleteBordereau(Bordereau bordereau);
-
-    public SearchResult getUploadedFiles(WebUser webUser,int defaultDays,String sort,String dir, int start, int limit);
+    SearchResult getUploadedFiles(WebUser webUser,int defaultDays,String sort,String dir, int start, int limit);
 
 }

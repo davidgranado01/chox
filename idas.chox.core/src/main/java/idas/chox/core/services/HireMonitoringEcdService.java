@@ -8,15 +8,15 @@ import idas.chox.core.model.HireMonitoringEcd;
 
 public interface HireMonitoringEcdService {
 
-    public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdFilter(int claimId, boolean isAsc, String orderByField);
+    List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdFilter(int claimId, boolean isAsc, String orderByField);
 
-    public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId);
+    List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId);
 
-    public HireMonitoringEcd getHireMonitoringEcd(int hireMonitoringEcdId);
+    HireMonitoringEcd getHireMonitoringEcd(int hireMonitoringEcdId);
 
-    public void saveHireMonitoringEcd(HireMonitoringEcd engineerReport);
+    void saveHireMonitoringEcd(HireMonitoringEcd engineerReport);
 
-    public Date getLatestHireMonitoringECDDate(Claim claim);
+    Date getLatestHireMonitoringECDDate(Claim claim);
     
-    public void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd);
+    void addNewHireMonitoringEcd(Claim claim, HireMonitoringEcd ecd);
 }

@@ -1,11 +1,13 @@
 package idas.chox.data;
 
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,87 +16,87 @@ import org.slf4j.LoggerFactory;
 public class ExcelInvoice {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelInvoice.class);
 
-    String claimStatus;
-    String choReference;
-    String claimnumber;
-    Date createdDate;
-    Date autoPenaltyStart;
-    BigDecimal miscellaneousFee;
-    BigDecimal automaticFee;
-    Short automaticQty;
-    BigDecimal additionalDriverFee;
-    Short additionalDriverQty;
-    BigDecimal satNavFee;
-    Short satNavQty;
-    BigDecimal estateFee;
-    Short estateQty;
-    BigDecimal babySeatFee;
-    Short babySeatQty;
-    BigDecimal towBarsFee;
-    Short towBarsQty;
-    BigDecimal nonStandardInsurancePremiumFee;
-    Short nonStandardInsurancePremiumQty;
-    Boolean coverNoteRequired;
-    String coverNoteRequiredDesc;
-    BigDecimal adminFee;
-    Short adminQty;
-    BigDecimal roofRackFee;
-    Short roofRackQty;
-    BigDecimal dualControlFee;
-    Short dualControlQty;
-    BigDecimal deliveryCollectionFee;
-    Short deliveryCollectionQty;
-    BigDecimal excessAmountCollected;
-    BigDecimal vatAmountCollected;
-    String handlingInvoiceNo;
-    BigDecimal claimsHandlingInvoiceAmount;
-    String claimInvoiceNo;
-    BigDecimal hireRateChargedPerDay;
-    BigDecimal hireNet;
-    BigDecimal hireVat;
-    BigDecimal hireGross;
-    BigDecimal repairNet;
-    BigDecimal repairVat;
-    BigDecimal repairGross;
-    BigDecimal engineerFeeNet;
-    BigDecimal engineerFeeVat;
-    BigDecimal engineerFeeGross;
-    BigDecimal totalLossFeeNet;
-    BigDecimal totalLossFeeVat;
-    BigDecimal totalLossFeeGross;
-    BigDecimal storageRecoveryNet;
-    BigDecimal storageRecoveryVat;
-    BigDecimal storageRecoveryGross;
-    BigDecimal deductionForClaimsHandlingFee;
-    BigDecimal hirePenaltyCharge;
-    String hirePenaltyPercentageString;
-    BigDecimal repairPenaltyCharge;
-    String repairPenaltyPercentageString;
-    BigDecimal totalPenaltyCharge;
-    BigDecimal totalNet;
-    BigDecimal totalVat;
-    BigDecimal totalGross;
-    BigDecimal discount;
-    BigDecimal insurerDiscount;
-    BigDecimal fullTotalToPay;
-    BigDecimal fullTotalToPayOriginal;
-    BigDecimal totalToPay;
-    BigDecimal totalToPayOriginal;
-    BigDecimal interimPaymentMade;
-    BigDecimal interimPaymentReceived;
-    Date dateInvoiced;
-    BigDecimal hireGrossPaid;
-    BigDecimal repairGrossPaid;
-    BigDecimal engineerFeeGrossPaid;
-    BigDecimal totalLossFeeGrossPaid;
-    BigDecimal storageRecoveryGrossPaid;
-    BigDecimal hirePenaltyChargePaid;
-    BigDecimal repairPenaltyChargePaid;
-    BigDecimal claimHandlerChargePaid;
-    BigDecimal deductionClaimHandlerFeePaid;
-    BigDecimal choDiscountFeePaid;
-    BigDecimal insurerDiscountFeePaid;
-    BigDecimal finalPayment;
+    private String claimStatus;
+    private String choReference;
+    private String claimnumber;
+    private Date createdDate;
+    private Date autoPenaltyStart;
+    private BigDecimal miscellaneousFee;
+    private BigDecimal automaticFee;
+    private Short automaticQty;
+    private BigDecimal additionalDriverFee;
+    private Short additionalDriverQty;
+    private BigDecimal satNavFee;
+    private Short satNavQty;
+    private BigDecimal estateFee;
+    private Short estateQty;
+    private BigDecimal babySeatFee;
+    private Short babySeatQty;
+    private BigDecimal towBarsFee;
+    private Short towBarsQty;
+    private BigDecimal nonStandardInsurancePremiumFee;
+    private Short nonStandardInsurancePremiumQty;
+    private Boolean coverNoteRequired;
+    private String coverNoteRequiredDesc;
+    private BigDecimal adminFee;
+    private Short adminQty;
+    private BigDecimal roofRackFee;
+    private Short roofRackQty;
+    private BigDecimal dualControlFee;
+    private Short dualControlQty;
+    private BigDecimal deliveryCollectionFee;
+    private Short deliveryCollectionQty;
+    private BigDecimal excessAmountCollected;
+    private BigDecimal vatAmountCollected;
+    private String handlingInvoiceNo;
+    private BigDecimal claimsHandlingInvoiceAmount;
+    private String claimInvoiceNo;
+    private BigDecimal hireRateChargedPerDay;
+    private BigDecimal hireNet;
+    private BigDecimal hireVat;
+    private BigDecimal hireGross;
+    private BigDecimal repairNet;
+    private BigDecimal repairVat;
+    private BigDecimal repairGross;
+    private BigDecimal engineerFeeNet;
+    private BigDecimal engineerFeeVat;
+    private BigDecimal engineerFeeGross;
+    private BigDecimal totalLossFeeNet;
+    private BigDecimal totalLossFeeVat;
+    private BigDecimal totalLossFeeGross;
+    private BigDecimal storageRecoveryNet;
+    private BigDecimal storageRecoveryVat;
+    private BigDecimal storageRecoveryGross;
+    private BigDecimal deductionForClaimsHandlingFee;
+    private BigDecimal hirePenaltyCharge;
+    private String hirePenaltyPercentageString;
+    private BigDecimal repairPenaltyCharge;
+    private String repairPenaltyPercentageString;
+    private BigDecimal totalPenaltyCharge;
+    private BigDecimal totalNet;
+    private BigDecimal totalVat;
+    private BigDecimal totalGross;
+    private BigDecimal discount;
+    private BigDecimal insurerDiscount;
+    private BigDecimal fullTotalToPay;
+    private BigDecimal fullTotalToPayOriginal;
+    private BigDecimal totalToPay;
+    private BigDecimal totalToPayOriginal;
+    private BigDecimal interimPaymentMade;
+    private BigDecimal interimPaymentReceived;
+    private Date dateInvoiced;
+    private BigDecimal hireGrossPaid;
+    private BigDecimal repairGrossPaid;
+    private BigDecimal engineerFeeGrossPaid;
+    private BigDecimal totalLossFeeGrossPaid;
+    private BigDecimal storageRecoveryGrossPaid;
+    private BigDecimal hirePenaltyChargePaid;
+    private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal claimHandlerChargePaid;
+    private BigDecimal deductionClaimHandlerFeePaid;
+    private BigDecimal choDiscountFeePaid;
+    private BigDecimal insurerDiscountFeePaid;
+    private BigDecimal finalPayment;
 
     public ExcelInvoice(Map data, boolean isCHO) {
         claimStatus = (String) data.get("claimstatus");
@@ -118,10 +120,12 @@ public class ExcelInvoice {
         nonStandardInsurancePremiumFee = (BigDecimal) data.get("nonstandardinsurancepremiumfee");
         nonStandardInsurancePremiumQty = (Short) data.get("nonstandardinsurancepremiumqty");
         coverNoteRequired = (Boolean) data.get("covernoterequired");
-        if (coverNoteRequired == null)
+        if (coverNoteRequired == null) {
             coverNoteRequiredDesc = "";
-        else
+        }
+        else {
             coverNoteRequiredDesc = coverNoteRequired ? "Yes" : "No";
+        }
         adminFee = (BigDecimal) data.get("adminfee");
         adminQty = (Short) data.get("adminqty");
         roofRackFee = (BigDecimal) data.get("roofrackfee");
@@ -160,8 +164,9 @@ public class ExcelInvoice {
           try {
             BigDecimal givenPercentage = new BigDecimal(hirePenaltyPercentageString.replaceAll("%", ""));
             BigDecimal actualPercentage = hirePenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((hireGross), 2, RoundingMode.HALF_UP);
-            if (actualPercentage.compareTo(givenPercentage) != 0)
-                hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+            if (actualPercentage.compareTo(givenPercentage) != 0) {
+                  hirePenaltyPercentageString = hirePenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+              }
           } catch (Exception ex) {
               LOG.error("Error determining actual hire penalty % for string {}: ", hirePenaltyPercentageString, ex);
           }
@@ -171,8 +176,9 @@ public class ExcelInvoice {
           try {
             BigDecimal givenPercentage = new BigDecimal(repairPenaltyPercentageString.replaceAll("%", ""));
             BigDecimal actualPercentage = repairPenaltyCharge.multiply(BigDecimal.valueOf(100)).divide((repairGross), 2, RoundingMode.HALF_UP);
-            if (actualPercentage.compareTo(givenPercentage) != 0)
-                repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+            if (actualPercentage.compareTo(givenPercentage) != 0) {
+                  repairPenaltyPercentageString = repairPenaltyPercentageString.concat(" [actual:" + actualPercentage.toString() + "%]");
+              }
           } catch (Exception ex) {
               LOG.error("Error determining actual repair penalty % for string {}: ", repairPenaltyPercentageString, ex);
           }
@@ -205,46 +211,6 @@ public class ExcelInvoice {
         finalPayment = (BigDecimal) data.get("finalpayment");
     }
 
-    /*
-     * private String claimStatus; private String choReference; private String
-     * thirdPartyClaimReference; private Invoice invoice; private String
-     * hirePenaltyPercentageString; private String
-     * repairPenaltyPercentageString;
-     *
-     * public String getChoReference() { return choReference; }
-     *
-     * public void setChoReference(String choReference) { this.choReference =
-     * choReference; }
-     *
-     * public String getClaimStatus() { return claimStatus; }
-     *
-     * public void setClaimStatus(String claimStatus) { this.claimStatus =
-     * claimStatus; }
-     *
-     * public Invoice getInvoice() { return invoice; }
-     *
-     * public void setInvoice(Invoice invoice) { this.invoice = invoice; }
-     *
-     * public String getThirdPartyClaimReference() { return
-     * thirdPartyClaimReference; }
-     *
-     * public void setThirdPartyClaimReference(String thirdPartyClaimReference)
-     * { this.thirdPartyClaimReference = thirdPartyClaimReference; }
-     *
-     * public String getHirePenaltyPercentageString() { return
-     * hirePenaltyPercentageString; }
-     *
-     * public void setHirePenaltyPercentageString(String
-     * hirePenaltyPercentageString) { this.hirePenaltyPercentageString =
-     * hirePenaltyPercentageString; }
-     *
-     * public String getRepairPenaltyPercentageString() { return
-     * repairPenaltyPercentageString; }
-     *
-     * public void setRepairPenaltyPercentageString(String
-     * repairPenaltyPercentageString) { this.repairPenaltyPercentageString =
-     * repairPenaltyPercentageString; }
-     */
     public BigDecimal getAdditionalDriverFee() {
         return additionalDriverFee;
     }

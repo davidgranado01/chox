@@ -1,16 +1,17 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.BillingChoDetail;
 import java.util.List;
+
+import idas.chox.core.model.BillingChoDetail;
 
 /**
  *
  * @author abrar
  */
 public interface BillingChoDetailService {
-    public BillingChoDetail getObject(int id);
-    public BillingChoDetail updateObject(BillingChoDetail object);
-    public void deleteObject(BillingChoDetail object);
-    public List<BillingChoDetail> getBillingChoDetails(int billingChoId);
-    public List sumPaymentAmount(int billingChoId);
+    BillingChoDetail getObject(int id);
+    BillingChoDetail updateObject(BillingChoDetail object);
+    void deleteObject(BillingChoDetail object);
+    List<BillingChoDetail> getBillingChoDetails(int billingChoId);
+    List sumPaymentAmount(int billingChoId);
 }

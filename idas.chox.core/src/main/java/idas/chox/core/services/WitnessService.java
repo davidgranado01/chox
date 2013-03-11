@@ -5,9 +5,9 @@ import idas.chox.core.model.Witness;
 
 public interface WitnessService {
 
-    public Witness getWitness(int witnessId);
+    Witness getWitness(int witnessId);
 
-    public void saveWitness(Witness Witness);
+    void saveWitness(Witness Witness);
 
-    public Witness getWitnessByIncident(Incident incident);
+    Witness getWitnessByIncident(Incident incident);
 }

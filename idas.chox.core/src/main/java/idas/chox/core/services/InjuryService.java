@@ -5,9 +5,9 @@ import idas.chox.core.model.Injury;
 
 public interface InjuryService {
 
-    public void saveInjuryForXMLUploader(final ClaimResult claimResult);
+    void saveInjuryForXMLUploader(final ClaimResult claimResult);
 
-    public Injury getInjury(int injuryId);
+    Injury getInjury(int injuryId);
 
-    public void saveInjury(Injury injury);
+    void saveInjury(Injury injury);
 }
