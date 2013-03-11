@@ -4311,6 +4311,13 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.WorkgroupRouting.ClaimUnacknowledgedUnrouted';
 
+UPDATE claim_type SET claim_type_string = 'Insurer Invoice' WHERE claim_type = 10;
+
+INSERT INTO claim_type VALUES (14, 'Insurer Claim', 'DEFAULT');
+INSERT INTO claim_type VALUES (15, 'Insurer Claim (Orig. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (16, 'Insurer Claim (Supp. Invoice)', 'DEFAULT');
+INSERT INTO claim_type VALUES (17, 'Insurer Upload', 'DEFAULT');
+
 ----------------------
 --  END OF 7.3.1    --
 ----------------------
