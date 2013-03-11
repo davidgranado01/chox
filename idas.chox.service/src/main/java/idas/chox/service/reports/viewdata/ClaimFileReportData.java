@@ -1,7 +1,6 @@
 package idas.chox.service.reports.viewdata;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
 
 

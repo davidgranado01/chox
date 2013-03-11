@@ -15,13 +15,10 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
 
     @Override
     public boolean check(Claim claim) {
-
         return isClaimAnomalies(claim);
-
     }
 
     private Boolean isClaimAnomalies(Claim c) {
-        Boolean result = false;
         Date policyHolderDate = c.getPolicyHolderContactDate();
         Date firstECD = c.getCustomer().getInitialECD();
         Date lastECD = c.getCustomer().getInitialECD();

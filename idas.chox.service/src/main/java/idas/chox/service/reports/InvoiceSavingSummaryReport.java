@@ -48,9 +48,9 @@ public class InvoiceSavingSummaryReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
+    public Map<String, Object> getReportParameters() throws Exception {
 
-        HashMap reportParameters = new HashMap();
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         try {
 

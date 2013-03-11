@@ -4,18 +4,18 @@ import java.util.Date;
 
 public class ExcelTask {
     
-    String supplierReference;
-    Date taskDueDate;
-    String taskType;
-    String taskDescription;
-    Date taskCreatedDate;
-    String taskCreatedBy;
-    String taskCreatedByOrg;
-    String taskOwner = "N/A";
-    String taskRoleAssignedTo = "N/A";
-    String taskWrokgroup;
-    String taskCurrentClaimStatus;
-    String taskStatusOfClaimWhenTaskCreated;
+    private String supplierReference;
+    private Date taskDueDate;
+    private String taskType;
+    private String taskDescription;
+    private Date taskCreatedDate;
+    private String taskCreatedBy;
+    private String taskCreatedByOrg;
+    private String taskOwner = "N/A";
+    private String taskRoleAssignedTo = "N/A";
+    private String taskWrokgroup;
+    private String taskCurrentClaimStatus;
+    private String taskStatusOfClaimWhenTaskCreated;
 
     public String getSupplierReference() {
         return supplierReference;

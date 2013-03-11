@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -130,8 +129,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
         report.setExternalParameter(parametersMap);
         report.setBaseDataService(baseDataService);
         report.setReportDataService(reportDataService);
-
-        Calendar cal = Calendar.getInstance();
 
         File reportFile = null;
         FileOutputStream fos = null;

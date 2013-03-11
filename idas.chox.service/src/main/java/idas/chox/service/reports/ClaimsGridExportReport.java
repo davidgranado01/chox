@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.reports;
 
 import java.util.ArrayList;
@@ -46,13 +42,13 @@ public class ClaimsGridExportReport {
             .append(" left outer join web_user wu on (a.created_by = wu.id)")
             .append(" left outer join insurer ins on (wu.insurer_id = ins.id)")
             .append(" left outer join chorganisation cho on (wu.chorganisation_id = cho.id)")
-//            .append(" where c.id in ( :claimIds )");
             .append(" where c.id in (");
 
         boolean first = true;
         for (Integer id : ids) {
-            if (!first)
+            if (!first) {
                 sb.append(", ").append(id.toString());
+            }
             else {
                 sb.append(id.toString());
                 first = false;
@@ -61,17 +57,14 @@ public class ClaimsGridExportReport {
         sb.append(") ");
         sb.append(" order by  choreference, modifieddate");
 
-//        Map paramMap = new HashMap();
-//        paramMap.put("claimIds", ids);
-
         LOG.debug("Querying for claim cycle details...\n{}", sb.toString());
-//        List result = this.externalQuery(sb.toString(), paramMap);
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got claim cycle details - building data objects");
 
         List<ExcelClaimCycle> results = new ArrayList<ExcelClaimCycle>(result.size());
-        for(Object obj : result)
+        for(Object obj : result) {
             results.add(new ExcelClaimCycle((Map)obj));
+        }
 
         return results;
     }
@@ -96,8 +89,9 @@ public class ClaimsGridExportReport {
 
         boolean first = true;
         for (Integer id : ids) {
-            if (!first)
+            if (!first) {
                 sb.append(", ").append(id.toString());
+            }
             else {
                 sb.append(id.toString());
                 first = false;
@@ -106,11 +100,8 @@ public class ClaimsGridExportReport {
         sb.append(") ");
         sb.append(" order by  choreference, createddate");
 
-//        Map paramMap = new HashMap();
-//        paramMap.put("claimIds", ids);
 
         LOG.debug("Querying for BRE history details...\n{}", sb.toString());
-//        List result = this.externalQuery(sb.toString(), paramMap);
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
@@ -118,8 +109,9 @@ public class ClaimsGridExportReport {
         for(Object obj : result) {
             ExcelComment comment = new ExcelComment((Map)obj);
             if ((dataService.getCurrentUser().isCHO() && comment.getVisibilityType() == 1)
-                    || (dataService.getCurrentUser().isAnInsurer() && comment.getVisibilityType() == 2))
+                    || (dataService.getCurrentUser().isAnInsurer() && comment.getVisibilityType() == 2)) {
                 continue;
+            }
 
             results.add(new ExcelComment((Map)obj));
         }
@@ -144,8 +136,9 @@ public class ClaimsGridExportReport {
 
         boolean first = true;
         for (Integer id : ids) {
-            if (!first)
+            if (!first) {
                 sb.append(", ").append(id.toString());
+            }
             else {
                 sb.append(id.toString());
                 first = false;
@@ -154,19 +147,17 @@ public class ClaimsGridExportReport {
         sb.append(") ");
         sb.append(" order by choreference, processdate, ruleid");
 
-//        Map paramMap = new HashMap();
-//        paramMap.put("claimIds", ids);
 
         LOG.debug("Querying for BRE history details...\n{}", sb.toString());
-//        List result = this.externalQuery(sb.toString(), paramMap);
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got BRE history details - building data objects");
 
         List<ExcelHistory> results = new ArrayList<ExcelHistory>(result.size());
         for(Object obj : result) {
             ExcelHistory history = new ExcelHistory((Map)obj);
-            if (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO())
+            if (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO()) {
                 results.add(history);
+            }
         }
 
         return results;
@@ -209,8 +200,6 @@ public class ClaimsGridExportReport {
             .append(" left outer join third_party tp on (c.third_party_id = tp.id)")
             .append(" join invoice i on (c.invoice_id = i.id)")
             .append(" join invoice_original io on (i.invoice_original_id = io.id)")
-
-//            .append(" where c.id in ( :claimIds )");
             .append(" where c.id in (");
 
         boolean first = true;
@@ -225,11 +214,8 @@ public class ClaimsGridExportReport {
         sb.append(") ");
         sb.append(" order by createddate");
 
-//        Map paramMap = new HashMap();
-//        paramMap.put("claimIds", ids);
 
         LOG.debug("Querying for invoice details...\n{}", sb.toString());
-//        List result = this.externalQuery(sb.toString(), paramMap);
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got invoice details - building data objects");
 
@@ -315,31 +301,27 @@ public class ClaimsGridExportReport {
             .append("     left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)")
             .append("     left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)")
             .append("     left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)")
-//            .append(" where c.id in ( :claimIds ) ");
             .append(" where c.id in (");
 
         boolean first = true;
         for (Integer id : ids) {
-            if (!first)
+            if (!first) {
                 sb.append(", ").append(id.toString());
+            }
             else {
                 sb.append(id.toString());
                 first = false;
             }
         }            
         sb.append(") ");
-//        sb.append(" order by ?");
-
-//        Map paramMap = new HashMap();
-//        paramMap.put("claimIds", ids);
 
         LOG.debug("Querying for claim details...\n{}", sb.toString());
-//        List result = this.externalQuery(sb.toString(), paramMap);
         List result = reportDataService.getReportData(sb.toString());
         LOG.debug("Got details - building data objects");
 
-        for(Object obj : result)
+        for(Object obj : result) {
             results.add(new ExcelClaim((Map)obj, isIns));
+        }
 
         LOG.debug("Returning results.");
         return results;

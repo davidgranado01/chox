@@ -54,11 +54,11 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
+    public Map<String, Object> getReportParameters() throws Exception {
 
         LOG.debug("getReportParameters '{}' ");
-        HashMap reportParameters = new HashMap();
-        Map paramMap = new HashMap();
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
+
         try {
             String supplierId;
             Integer selectedCHOId = -1;

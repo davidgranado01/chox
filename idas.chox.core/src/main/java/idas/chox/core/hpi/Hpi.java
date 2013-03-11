@@ -6,20 +6,19 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -45,7 +44,7 @@ public final class Hpi {
     private String passwordParam;
     private String initialsParam;
     private boolean active = false;
-    private static final Integer lock = new Integer(0);
+    private static final Integer lock =  Integer.valueOf(0);
     
     private Hpi() {
         if (INSTANCE != null) {
@@ -159,8 +158,6 @@ public final class Hpi {
 
         LOG.info("Executing HPI request with sessionId={} : {} ", getSession(), httpget.getURI());
 
-        // Create a response handler
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
         String responseBody = null;
         HpiResponse hpiResponse = null;
         try {

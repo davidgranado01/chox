@@ -145,7 +145,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
     public String listDiscountGridData() {
         List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
-        List<InsurerDiscount> discountList = new ArrayList();
+        List<InsurerDiscount> discountList;
         if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
@@ -157,9 +157,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
             LOG.debug(dvd.toString());
             viewList.add(dvd);
         }
-        Map<String, Object> context = new HashMap<String, Object>();
 
-        //String count = "totalCount:"+ viewList.size()+ ",";
         setJsonData("{totalCount:" + viewList.size() + ", results:" + JSONArray.fromObject(viewList).toString() + "}");
         return SUCCESS;
     }

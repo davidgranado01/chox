@@ -8,16 +8,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.InsurerChorganisation;
-import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 
 public class InsurerChorganisationServiceImpl extends SecureDataService implements InsurerChorganisationService {
 
-    private BreBandOrganisationService choBandOrganisationService;
-
-    public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
-    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override

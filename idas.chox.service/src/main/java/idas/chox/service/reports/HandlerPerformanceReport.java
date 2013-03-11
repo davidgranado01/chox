@@ -23,7 +23,7 @@ import idas.chox.service.reports.viewdata.HandlerPerformanceReportObject;
 public class HandlerPerformanceReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(HandlerPerformanceReport.class);
-    private Map externalParameter;
+    private Map<String, Object> externalParameter;
     private BaseDataService baseDataService;
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
@@ -44,8 +44,8 @@ public class HandlerPerformanceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap reportParameters = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
         try {
             Integer insurerId = -1;
             Integer selectedOwnerId = -1;

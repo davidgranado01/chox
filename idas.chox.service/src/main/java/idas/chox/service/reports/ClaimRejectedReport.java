@@ -83,8 +83,8 @@ public class ClaimRejectedReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap reportParameters = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
         currentUser = ((WebUser) externalParameter.get("CurrentUser"));
         try {
 
@@ -249,7 +249,7 @@ public class ClaimRejectedReport implements Report {
             iClaimRejectedTotalCount += MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase()));
             //loops trough reasons of rejection and sets count for each reason of rejection per specific group
             if(result1 != null){
-                getOrgRorClaimCountsAndPercentages(isInsReport, iOrgId, dataStart, dataEnd, data.get("id").toString());
+                getOrgRorClaimCountsAndPercentages(data.get("id").toString());
                 claimRejectionOrg.setOrgClaimCounts(orgClaimCounts);
                 //loops trough reasons of rejection and sets percentages for each reason of rejection per specific group
                 claimRejectionOrg.setOrgClaimCountPercs(orgClaimPercs);
@@ -268,7 +268,7 @@ public class ClaimRejectedReport implements Report {
     }
 
     
-    private void getOrgRorClaimCountsAndPercentages (boolean isIns, Integer iOrgId, Date dataStart, Date dataEnd, String id) {
+    private void getOrgRorClaimCountsAndPercentages (String id) {
         
         orgClaimCounts = new ArrayList<Integer>();
         orgClaimPercs = new ArrayList<String>();

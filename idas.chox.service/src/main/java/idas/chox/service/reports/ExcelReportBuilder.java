@@ -4,9 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import net.sf.jxls.transformer.XLSTransformer;
+
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -21,10 +24,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     @Override
     public ByteArrayOutputStream buildReport(Report report) throws Exception {
         LOG.info("Building report '{}'", report.getReportCode());
-//        if (!report.canAcess()) {
-//            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());
-//            throw new AccessDeniedException("Trying to access report '" + report.getReportCode() + "' (ILLEGAL ACCESS ATTEMPT)");
-//        }
+
         boolean addLogo = true;
 
         if (report.getReportCode().equals("RPT100")) {

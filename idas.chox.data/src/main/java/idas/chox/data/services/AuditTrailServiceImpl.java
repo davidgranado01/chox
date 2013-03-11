@@ -277,7 +277,6 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     private int daysInStatuses(int claimId, Collection<String> statuses) {
         LOG.debug("Calculating days claim {} in statuses '{}'", claimId, statuses);
         int days = 0;
-        Collection daysCounted = new ArrayList<Integer>();
         
         List<AuditTrail> auditTrail = getReconstructedAuditTrailByClaim(claimId);
 

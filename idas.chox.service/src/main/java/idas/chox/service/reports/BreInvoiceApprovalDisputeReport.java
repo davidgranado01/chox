@@ -94,8 +94,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
     
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap reportParameters = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         reportParameters.put("date", new Date());
 
@@ -108,9 +108,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         Integer choId = -1;
         Integer insurerId = -1;
-        Integer userOrgId = -1;
-        String insurerName = "";
-        String choOrgName = "";
         String selectedOrgLabel;
         String reportColumnHeader;
         String userOrgLabel;
@@ -134,7 +131,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             Insurer ins = currentUser.getInsurer();
             insurerId = ins.getId();
-            userOrgId = insurerId;
 
             reportColumnHeader = "Credit Hire Organisation";
             selectedOrgLabel = "Credit Hire Organisation";
@@ -156,7 +152,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             chorg = currentUser.getChorganisation();
             choId = chorg.getId();
-            userOrgId = choId;
 
             reportColumnHeader = "Insurer";
             selectedOrgLabel = "Insurer";

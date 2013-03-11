@@ -18,8 +18,8 @@ import idas.chox.service.xml.util.NodeHelper;
 public class InvoiceRepairExtrasReader extends BaseEntityReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRepairExtrasReader.class);
-    protected static String sectionName = "Invoice Extra";
-    private static String INCORRECT_CLAIM_STATUS_FOR_REPAIR_EXTRA = "Value present in the 'Repair Extra' filed for 'non-subscriber' claim.";
+    private static final String sectionName = "Invoice Extra";
+    private static final String INCORRECT_CLAIM_STATUS_FOR_REPAIR_EXTRA = "Value present in the 'Repair Extra' filed for 'non-subscriber' claim.";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {

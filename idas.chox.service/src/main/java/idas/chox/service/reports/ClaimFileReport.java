@@ -45,10 +45,10 @@ public class ClaimFileReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public Map<String, Object> getReportParameters() {
         boolean showInsurer = false;
         boolean showCHO = false;
-        HashMap reportParameters = new HashMap();
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         int claimId = Integer.parseInt(((String[]) externalParameter.get("claimId"))[0]);
 

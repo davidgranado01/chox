@@ -52,22 +52,18 @@ public class TeamWorkflowLineItem {
 
     public static TeamWorkflowLineItem getObject(Map data) {
         TeamWorkflowLineItem result = new TeamWorkflowLineItem();
-        if (data.get("site") == null)
+        if (data.get("site") == null) {
             result.setSite("");
-        else
+        }
+        else {
             result.setSite(data.get("site").toString());
+        }
         result.setTeam(data.get("team").toString());
         LOG.debug("Creating stats for: {}", result.getTeam());
         return result;
     }
 
     public void updateObject(Map data) {
-        Iterator it = data.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pairs = (Map.Entry)it.next();
-//            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
-//        }
-
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));

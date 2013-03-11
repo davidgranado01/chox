@@ -78,16 +78,13 @@ public class InvoiceStatusReport implements Report {
 
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap map = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
         Date dataStart = null;
         String supplierId;
         String insrId;
         Integer choId = -1;
         Integer insurerId = -1;
-        Integer userOrgId = -1;
-        String insurerName = "";
-        String choOrgName = "";
         String selectedOrgLabel = "";
         String reportColumnHeader = "";
         String userOrgLabel = "";
@@ -111,7 +108,6 @@ public class InvoiceStatusReport implements Report {
         if (currentUser.getInsurer() != null) {
             Insurer ins = currentUser.getInsurer();
             insurerId = ins.getId();
-            userOrgId = insurerId;
             reportColumnHeader = "Credit Hire Organisation";
             selectedOrgLabel = "Credit Hire Organisation";
             userOrgLabel = "Insurer";
@@ -129,7 +125,6 @@ public class InvoiceStatusReport implements Report {
             LOG.debug("selectedOrgName :" + selectedOrgName);
         } else {
             choId = currentUser.getChorganisation().getId();
-            userOrgId = choId;
 
             reportColumnHeader = "Insurer";
             selectedOrgLabel = "Insurer";

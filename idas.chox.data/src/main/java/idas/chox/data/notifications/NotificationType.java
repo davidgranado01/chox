@@ -36,9 +36,9 @@ public enum NotificationType {
 
         choNotifications = new HashSet();
         for (int i = 0; i < values().length; i++) {
-            NotificationType array_element = values()[i];
-            if (!array_element.isInsurerType()) {
-                choNotifications.add(array_element.toString());
+            NotificationType arrayElement = values()[i];
+            if (!arrayElement.isInsurerType()) {
+                choNotifications.add(arrayElement.toString());
             }
         }
     }

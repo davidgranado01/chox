@@ -2,12 +2,14 @@ package idas.chox.data.services;
 
 import java.util.List;
 
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.DetachedCriteria;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.services.BreBandOrganisationService;
@@ -15,6 +17,7 @@ import idas.chox.core.services.BreBandOrganisationService;
 public class BreBandOrganisationServiceImpl extends SecureDataService implements BreBandOrganisationService {
     private static final Logger LOG = LoggerFactory.getLogger(BreBandOrganisationServiceImpl.class);
 
+    
     @Override
     public boolean isBreBandOccupied(int breBandId) {
 
@@ -30,6 +33,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return isExist;
     }
 
+    
     @Override
     public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
@@ -37,6 +41,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return findByCriteria(criteria);
     }
 
+    
     @Override
     public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
@@ -44,6 +49,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return findByCriteria(criteria);
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
@@ -53,22 +59,20 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         objects = findByCriteria(criteria);
 
-        int iCount = 0;
         for (BreBandOrganisation object : objects) {
             if (object.getBreBand().getInsurer().getId() == insurerId) {
-                iCount++;
                 delete(object);
             }
         }
     }
 
+    
     @Override
     public boolean deleteBreBandOrganisationByBandId(int bandId) {
 
         boolean bFlag = false;
 
         try {
-
             List<BreBandOrganisation> objects;
             DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
             criteria.add(Restrictions.eq("breBand.id", bandId));
@@ -87,17 +91,20 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return bFlag;
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
         delete(breBandOrganisation);
     }
 
+    
     @Override
     public BreBandOrganisation getBreBandOrganisation(int id) {
         return (BreBandOrganisation) get(BreBandOrganisation.class, id);
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation) {

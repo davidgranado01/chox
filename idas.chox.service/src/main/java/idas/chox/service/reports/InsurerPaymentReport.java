@@ -68,9 +68,9 @@ public class InsurerPaymentReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() {
+    public Map<String, Object> getReportParameters() {
 
-        HashMap reportParameters = new HashMap();
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         try {
 
@@ -82,9 +82,6 @@ public class InsurerPaymentReport implements Report {
             Integer iInsurerId = -1;
             Integer iWorkgroupId = -1;
 
-            boolean isWorkgroupEnabled = false;
-            boolean isOrwnerEnabled = false;
-
             Chorganisation chorg = new Chorganisation();
 
             if (currentUser.getInsurer()!=null) {
@@ -92,9 +89,6 @@ public class InsurerPaymentReport implements Report {
                 Insurer ins = currentUser.getInsurer();
                 iInsurerId = ins.getId();
                 insurerName = ins.getName();
-
-                isWorkgroupEnabled = ins.isWorkgroupEnable();
-                isOrwnerEnabled = ins.isClaimOwnershipEnable();
 
                 if((externalParameter.get("supplierId"))!=null){
                     String supplierId = ((String[]) externalParameter.get("supplierId"))[0];

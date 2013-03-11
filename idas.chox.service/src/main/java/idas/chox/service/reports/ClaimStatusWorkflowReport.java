@@ -27,15 +27,13 @@ public class ClaimStatusWorkflowReport implements Report {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimStatusWorkflowReport.class);
     private Map externalParameter;
-    private BaseDataService baseDataService;
+//    private BaseDataService baseDataService; -- not used
     private WebUser user = new WebUser();
     private ReportDataService reportDataService;
     private boolean workgroupBreakdown;
     
     @Override
-    public void setBaseDataService(BaseDataService baseDataService) {
-        this.baseDataService = baseDataService;
-    }
+    public void setBaseDataService(BaseDataService baseDataService) {}
     
     @Override
     public void setExternalParameter(Map parameters) {
@@ -48,9 +46,8 @@ public class ClaimStatusWorkflowReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap reportParameters = new HashMap();
-        Map paramMap = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
         boolean isWorkgroupEnabled = true;
         
         try {
