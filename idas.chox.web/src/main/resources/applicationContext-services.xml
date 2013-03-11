@@ -287,7 +287,6 @@
     
     <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="claimService" ref="claimService"/>
         <property name="notificationService" ref="notificationService"/>
     </bean>
     
