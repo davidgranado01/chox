@@ -47,8 +47,8 @@ public class TeamPerformanceReport implements Report{
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap reportParameters = new HashMap();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
         try {
             Integer insurerId = -1;
             String selectedSite = "";

@@ -1,22 +1,24 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.text.ParseException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import idas.chox.core.model.Billing;
+import idas.chox.core.model.BillingDetail;
 import idas.chox.service.admin.BillingService;
 import idas.chox.web.viewdata.BillingViewData;
-import idas.chox.core.model.BillingDetail;
 import idas.chox.web.viewdata.BillingDetailViewData;
-import org.springframework.security.access.annotation.Secured;
 
 /**
  *
@@ -62,9 +64,7 @@ public class BillingAction extends BaseAction {
             LOG.debug(bvd.toString());
             viewList.add(bvd);
         }
-        Map<String, Object> context = new HashMap<String, Object>();
 
-        //String count = "totalCount:"+ viewList.size()+ ",";
         setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
         return SUCCESS;
     }

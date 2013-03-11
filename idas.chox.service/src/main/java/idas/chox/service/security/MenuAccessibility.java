@@ -17,10 +17,6 @@ public class MenuAccessibility {
     private boolean searchMenuAccessibility;
     private boolean uploadMenuAccessibility;
 
-    private String getMenuAccessibilityKey(String menuName) {
-        return String.format("menu.%1$s", menuName);
-    }
-
     public MenuAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
         dashBoardMenuAccessibility = applicationAccessibility.checkMenuAccessibility(MENU_DASHBOARD, user) > 0;

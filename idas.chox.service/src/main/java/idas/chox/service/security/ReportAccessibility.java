@@ -60,10 +60,6 @@ public class ReportAccessibility {
     private short teamSiteBreReportAccessibility;
     private short workgroupOwnerBreReportAccessibility;
 
-    private String getReportAccessibilityKey(String reportName) {
-        return String.format("report.%1$s", reportName);
-    }
-
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 

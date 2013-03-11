@@ -2,7 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public abstract class BaseActivity implements Activity {
     @Autowired
     private UserWorkgroupService userWorkgroupService;
     @Autowired
-    protected ApplicationAccessibility applicationAccessibility;
+    private ApplicationAccessibility applicationAccessibility;
 
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.

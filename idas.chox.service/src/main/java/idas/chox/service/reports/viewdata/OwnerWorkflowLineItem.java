@@ -1,14 +1,15 @@
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.util.DateHelper;
 
 /**
  *
@@ -55,10 +56,12 @@ public class OwnerWorkflowLineItem {
 
     public static OwnerWorkflowLineItem getObject(Map data) {
         OwnerWorkflowLineItem result = new OwnerWorkflowLineItem();
-        if (data.get("workgroup") == null)
+        if (data.get("workgroup") == null) {
             result.setWorkgroup("");
-        else
+        }
+        else {
             result.setWorkgroup(data.get("workgroup").toString());
+        }
         result.setName(data.get("name").toString());
         result.setId((Integer)data.get("id"));
         LOG.debug("Creating stats for: {}", result.getName());
@@ -67,12 +70,6 @@ public class OwnerWorkflowLineItem {
 
     public void updateObject(Map data) {
       try {
-        Iterator it = data.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pairs = (Map.Entry)it.next();
-//            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
-//        }
-
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
         this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
@@ -119,11 +116,13 @@ public class OwnerWorkflowLineItem {
             this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase())));
         }
         LOG.debug("oldestDays set: {}", this.getOldestDays());
-        if (data.get("averageOutstanding".toLowerCase()) != null)
-            this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
+        if (data.get("averageOutstanding".toLowerCase()) != null) {
+              this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
+          }
         LOG.debug("averageOutstanding set: {}", this.getAverageOutstanding());
-        if (data.get("historicAverage".toLowerCase()) != null)
-            this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
+        if (data.get("historicAverage".toLowerCase()) != null) {
+              this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
+          }
         LOG.debug("set historicAverage: {}", this.getHistoricAverage());
         this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase())));
         this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase())));

@@ -301,7 +301,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private void processTpiInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
-        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
+
         /*
          * getting insurer from xml to check TPI is Activated
          */
@@ -326,7 +326,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             LOG.debug("Claim supplier reference already exists: {}", choReferenceNumber);
             claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
-            //claimResult.setClaim(claimService.getClaimByCHOReferenceNumber(choReferenceNumber));
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
             claimResult.setValid(false);
         } else {

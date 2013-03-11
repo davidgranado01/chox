@@ -48,10 +48,10 @@ public class InvoiceReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
+    public Map<String, Object> getReportParameters() throws Exception {
 
-        HashMap reportParameters = new HashMap();
-        Map paramMap = new HashMap();
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> paramMap = new HashMap<String, Object>();
 
         try {
 

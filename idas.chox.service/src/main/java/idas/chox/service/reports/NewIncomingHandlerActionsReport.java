@@ -48,8 +48,8 @@ public class NewIncomingHandlerActionsReport implements Report {
     }
 
     @Override
-    public HashMap getReportParameters() throws Exception {
-        HashMap<String, Object> reportParameters = new HashMap<String, Object>();
+    public Map<String, Object> getReportParameters() throws Exception {
+        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         try {
             WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));

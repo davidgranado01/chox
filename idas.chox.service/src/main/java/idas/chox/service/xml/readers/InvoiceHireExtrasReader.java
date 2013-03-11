@@ -18,7 +18,7 @@ import idas.chox.core.util.XmlHelper;
 public class InvoiceHireExtrasReader extends BaseEntityReader {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceHireExtrasReader.class);
 
-    protected static String sectionName = "Invoice Extra";
+    private static String sectionName = "Invoice Extra";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {

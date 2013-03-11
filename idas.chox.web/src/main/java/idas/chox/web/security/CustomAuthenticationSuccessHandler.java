@@ -4,22 +4,25 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
-import java.net.URLEncoder;
 
 /**
  *
@@ -34,6 +37,13 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private String failureUrl;
     private String blockedUrl;
     private Authentication currentAuthentication;
+
+    public static class BrowserUtil {
+        public static enum BrowserType {
+
+            INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
+        }
+    }
 
     public void setBrowserWarningParam(String browserWarningParam) {
         this.browserWarningParam = browserWarningParam;
@@ -76,13 +86,15 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         int orgId = -1;
         if (user.isAnInsurer()) {
             blockMinutes = user.getInsurer().getBlockTime();
-            if (user.getInsurer().isEnableIPWhitelist())
+            if (user.getInsurer().isEnableIPWhitelist()) {
                 orgId = user.getInsurer().getId();
+            }
         }
         else if (user.isCHO()) {
             blockMinutes = user.getChorganisation().getBlockTime();
-            if (user.getChorganisation().isEnableIPWhitelist())
+            if (user.getChorganisation().isEnableIPWhitelist()) {
                 orgId = user.getChorganisation().getId();
+            }
         }
 
         if (orgId >= 0) {
@@ -96,10 +108,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             // what we want.
             String ipAddress = request.getRemoteAddr();
             if (!ipAddress.isEmpty()) {
-                if (user.isAnInsurer())
+                if (user.isAnInsurer()) {
                     isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, false, true);
-                else
+                }
+                else {
                     isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, true, false);
+                }
                 LOG.debug("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
             }
             
@@ -144,10 +158,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             if (blocked) {
                 LOG.error("User '{}' denied access as account is currently blocked.", user.getFullName());
                 String blockedMessage = null;
-                if (user.isCHO())
+                if (user.isCHO()) {
                     blockedMessage = URLEncoder.encode(user.getChorganisation().getBlockedMessage(),  "UTF-8");
-                else if (user.isAnInsurer())
+                }
+                else if (user.isAnInsurer()) {
                     blockedMessage = URLEncoder.encode(user.getInsurer().getBlockedMessage(),  "UTF-8");
+                }
                 HttpServletResponse httpResponse = response;
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 request.getSession().invalidate();
@@ -183,6 +199,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
+    
     private void checkBrowserWarning(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
@@ -192,6 +209,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
     }
 
+    
     private BrowserType checkBrowserType(HttpServletRequest req) {
         String userAgent = req.getHeader("user-agent");
         BrowserType type = BrowserType.UNKNOWN;
@@ -218,11 +236,5 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         return type;
     }
 
-    public static class BrowserUtil {
-
-        public static enum BrowserType {
-
-            INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
-        }
-    }
+    
 }

@@ -54,14 +54,12 @@ import idas.chox.core.model.Witness;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.NotificationService;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.AuditTrailService;
-import idas.chox.core.services.CommentService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.util.DateHelper;
@@ -73,7 +71,6 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.ExtraAction;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.service.workflow.activities.ClaimRejection;
 import idas.chox.web.ListUtils;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 
@@ -136,7 +133,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ClaimObjectService claimObjectService;
     private ClaimService service;
     private NotificationService notificationService;
-    private InvoiceService invoiceService;
     private LookupService lookupService;
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
@@ -161,17 +157,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean showErrorMessage = false;
     private boolean finalReviewRequired;
     private String finalReviewReason;
-    private CommentService commentService;
 
     // <editor-fold defaultstate="collapsed" desc="Service Setters">
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
     
-
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
         this.penaltyChargeService = penaltyChargeService;
@@ -203,10 +194,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setClaimService(ClaimService service) {
         this.service = service;
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
     }
 
     public void setLookupService(LookupService service) {
@@ -1237,7 +1224,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     }
 //                    LOG.debug("Access right for Update Penalty Charges is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
-                    Invoice invoice = claim.getInvoice();
                     if (claim.getInvoice() != null) {
                         if (claim.getBreBand() == null) {
                             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());

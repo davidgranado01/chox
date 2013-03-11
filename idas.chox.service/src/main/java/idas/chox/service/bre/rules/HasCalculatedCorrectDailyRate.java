@@ -13,9 +13,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClass;
-import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
@@ -25,12 +23,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(HasCalculatedCorrectDailyRate.class);
     private VehicleClassPriceService vehicleClassPriceService;
-    private InsurerChorganisationService insurerChorganisationService;
 
-    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
-        this.insurerChorganisationService = insurerChorganisationService;
-    }
-
+    
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
         this.vehicleClassPriceService = vehicleClassPriceService;
     }
@@ -43,7 +37,6 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
-        InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(claim.getInsurer().getId(), claim.getChorganisation().getId());
 
         LOG.debug("Applying HasCalculatedCorrectDailyRate rule to claim '{}'.", claim.getChoReference());
 

@@ -9,8 +9,7 @@ import idas.chox.core.model.Claim;
 public class InvalidClaimStatusException extends Exception {
 
     public InvalidClaimStatusException(Claim claim) {
-        // 16 Bug Id:79
-        // super(String.format("Attemp to process claim with id : %d, but claim status : '%s' is invalid.",claim.getId(),claim.getStatus()));
-        super(String.format("Unable to process claim. The claim has been processed by another user. Please see the 'Claim Cycle' tab for further details"));
+        super(String.format("Unable to process claim '%s'. This claim may have been processed by another user. Please see the 'Claim Cycle' tab for further details",
+                claim.getChoReference()));
     }
 }

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.data.notifications.NotificationType;
@@ -25,12 +24,7 @@ import idas.chox.data.notifications.NotificationType;
 public class HireMonitoringEcdServiceImpl extends SecureDataService implements HireMonitoringEcdService {
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringEcdServiceImpl.class);
 
-    private ClaimService claimService;
     private NotificationService notificationService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;

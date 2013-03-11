@@ -22,7 +22,7 @@ import idas.chox.core.xmlValidation.NodeRuleModel;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.service.xml.validations.DataValidationParameter;
 
-public class NodeHelper {
+public final class NodeHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
     private static String mandatoryDataErrorMsg

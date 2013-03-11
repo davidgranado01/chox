@@ -10,7 +10,6 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.util.AccessibilityHelper;
@@ -48,7 +47,6 @@ public class ClaimGridViewData {
         Insurer i = claim.getInsurer();
         Workgroup wg = claim.getWorkgroup();
         Invoice ivc = claim.getInvoice();
-        ThirdParty thirdParty = claim.getThirdParty();
         Invoice invoice = claim.getInvoice();
 
         this.id = claim.getId();

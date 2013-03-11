@@ -11,7 +11,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.CalcHelper;
-import idas.chox.service.bre.util.InvoiceCalcHelper;
 
 /**
  *
@@ -31,7 +30,6 @@ public class HireGrossSumCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
         if (claim.getBreBand().isHasHireGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
-            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
             boolean success = CalcHelper.EqualTo(invoice.getHireGross(), invoice.getHireNet().add(invoice.getHireVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

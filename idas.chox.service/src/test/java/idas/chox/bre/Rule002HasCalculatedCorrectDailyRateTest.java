@@ -1,6 +1,15 @@
 package idas.chox.bre;
 
-import idas.chox.core.model.ClaimType;
+import java.io.IOException;
+import java.math.BigDecimal;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.*;
+
 import idas.chox.test.BaseTest;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
@@ -10,13 +19,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.bre.rules.HasCalculatedCorrectDailyRate;
-import java.io.IOException;
-import java.math.BigDecimal;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
-import static org.junit.Assert.*;
 
 public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
@@ -91,7 +93,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
-        rule.setInsurerChorganisationService(insurerChorganisationService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
@@ -117,7 +118,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
-        rule.setInsurerChorganisationService(insurerChorganisationService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
@@ -149,7 +149,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
-        rule.setInsurerChorganisationService(insurerChorganisationService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         /*
@@ -185,7 +184,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
-        rule.setInsurerChorganisationService(insurerChorganisationService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
 
@@ -223,7 +221,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends BaseTest {
 
         HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
         rule.setVehicleClassPriceService(vehicleClassPriceService);
-        rule.setInsurerChorganisationService(insurerChorganisationService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         /*

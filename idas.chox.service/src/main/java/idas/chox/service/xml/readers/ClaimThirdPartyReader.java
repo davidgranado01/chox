@@ -9,7 +9,6 @@ import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClass;
-import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassService;
@@ -77,7 +76,6 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
-        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "third-party");
@@ -105,10 +103,6 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
             if (getBordereauReaderContext().getSecurityInfoProvider().getIsCHO()) {
                 claimResult.getClaim().setInsurer(insurer);
             }
-//            if(claimResult.getClaim().isTpiClaim()){
-//                BreBand choBand = breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
-//                claimResult.getClaim().setBreBand(choBand);
-//            }
         }
 
         String claimNumber = XmlHelper.getNodeValue(element, "claim-number");

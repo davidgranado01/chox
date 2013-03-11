@@ -1,7 +1,5 @@
 package idas.chox.service.xml.readers;
 
-import java.util.List;
-
 import org.w3c.dom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

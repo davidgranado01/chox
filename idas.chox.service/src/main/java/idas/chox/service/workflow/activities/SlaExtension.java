@@ -1,21 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.util.DateHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SlaExtension extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SlaExtension.class);
     private int slaExtDays;
 
-
-    @Override
-    protected void validate(Claim claim) throws Exception {
-        super.validate(claim);
-    }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {

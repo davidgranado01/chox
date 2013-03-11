@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +19,6 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
     @Secured({"ROLE_CHOX_ADMIN"})
     @Override
     protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
-        String referenceNumber = null;
         Set<Integer> rowNumbers = xlsDataMap.keySet();
         // This is specific for the excel file with two columns and
         // first row is a header.
@@ -40,7 +38,6 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends EmailSchedulerJob {
                 String choReference = cells.get(0).trim();
 
                 if (choReference != null && !choReference.isEmpty()) {
-                    referenceNumber = choReference;
                     boolean isUpdateSuccessful = getPenaltyChargeService().setPenaltyStartToDateInvoiced(choReference);
                     if (isUpdateSuccessful) {
                         LOG.debug("Penalty Start Date updated for CHO reference '{}'", choReference);
