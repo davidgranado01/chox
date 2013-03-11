@@ -3,6 +3,10 @@ package idas.chox.service;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -16,11 +20,18 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
 
     public FakeSecurityInfoProvider()
     {
+        WebUserRole webUserRole = new WebUserRole();
+        webUserRole.setName(WebUserRole.ROLE_CH_OPR);
+        Set roles = new HashSet();
+        roles.add(webUserRole);
+        
         currentUser = new WebUser();
         currentUser.setId(999);
         currentUser.setFirstName("UnitTest");
         currentUser.setLastName("User");
-
+        currentUser.setVersion(1);
+        currentUser.setRoles(roles);
+        
         // SET CHORGANISATION
         Chorganisation chorganisation = new Chorganisation();
         chorganisation.setId(1006);
