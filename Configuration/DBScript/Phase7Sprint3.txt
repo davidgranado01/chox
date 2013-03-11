@@ -338,6 +338,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_COM', 1
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.InvoiceUnassigned' and claim_type=3;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.AssignOwner.InvoiceUnassigned' and claim_type=3;
 
 
 -- AssignSupplierOwner
@@ -3316,7 +3320,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 
 -- SubscriberClaimRejectionAccept
 UPDATE accessibility
-  SET claim_type = 10
+  SET claim_type = 7
 WHERE name='activity.SubscriberClaimRejectionAccept.SubscriberClaimRejected';
 
 -- SubscriberClaimToGta
@@ -8277,5 +8281,15 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 
 ---------------------------------------------------
---- END Stroed Procedure and Reports update -------
+--- END Stored Procedure and Reports update -------
+---------------------------------------------------
+
+-------------------------------------------------------------------------------------
+-- bug#2491 - Workgroup ID shown instead of name                                   --
+-------------------------------------------------------------------------------------
+
+UPDATE  web_user_role set is_workgroup_related = false where name='ROLE_INS_COM';
+
+---------------------------------------------------
+--- END of bug#2491                         -------
 ---------------------------------------------------

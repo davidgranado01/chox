@@ -11,11 +11,13 @@ public class RoleHelper {
     public static final int ORGANISATION_INS = 2;
     public static final int ORGANISATION_CHO = 3;
 
-    /*****************************************************
+    /**
+     * ***************************************************
      * WORKGROUP
-     *****************************************************/
+     ****************************************************
+     */
     public static boolean isWorkgroupRelatedUserOnly(WebUser user) {
-        if(isWorkgroupValidationEnabledUser(user) && !hasNoneWorkgroupEnableRole(user.getRoles())){
+        if (isWorkgroupValidationEnabledUser(user) && !hasNoneWorkgroupEnableRole(user.getRoles())) {
             return true;
         }
         return false;
@@ -69,9 +71,11 @@ public class RoleHelper {
         return false;
     }
 
-    /*****************************************************
+    /**
+     * ***************************************************
      * OWNERSHIP
-     *****************************************************/
+     ****************************************************
+     */
     public static boolean isOwnershipValidationEnabledUser(WebUser user) {
 
         if (isInsurerUser(user)) {
@@ -88,8 +92,7 @@ public class RoleHelper {
                     }
                 }
             }
-        }
-        else if (isCreditHireUser(user)) {
+        } else if (isCreditHireUser(user)) {
             if (user.getChorganisation().isClaimOwnershipEnable()) {
                 if (user.getRoles() != null) {
                     if (user.getRoles().size() > 0) {
@@ -101,8 +104,9 @@ public class RoleHelper {
                             if (webUserrole.isOwnershipRelated()) {
                                 isEnabled = true;
                             }
-                            if (webUserrole.getName().equals(WebUserRole.ROLE_CH_MNG))
+                            if (webUserrole.getName().equals(WebUserRole.ROLE_CH_MNG)) {
                                 isManager = true;
+                            }
                         }
                         return isEnabled && !isManager;
                     }
@@ -134,9 +138,11 @@ public class RoleHelper {
         return false;
     }
 
-    /*****************************************************
+    /**
+     * ***************************************************
      * OTHER
-     *****************************************************/
+     ****************************************************
+     */
     public static boolean isChoxAdmin(WebUser user) {
         if (isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHOX)) {
             return true;
@@ -160,19 +166,15 @@ public class RoleHelper {
 
     public static boolean hasNoneWorkgroupEnableRole(Set roles) {
 
-        if (roles != null) {
+        if (roles != null && !roles.isEmpty()) {
 
-            if (roles.size() > 0) {
+            Iterator itr = roles.iterator();
 
-                Iterator itr = roles.iterator();
+            while (itr.hasNext()) {
 
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-                    //if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
-                    if(!webUserrole.isWorkgroupRelated() && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)){
-                        return true;
-                    }
+                WebUserRole webUserrole = (WebUserRole) itr.next();
+                if (!webUserrole.isWorkgroupRelated() && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
+                    return true;
                 }
             }
         }

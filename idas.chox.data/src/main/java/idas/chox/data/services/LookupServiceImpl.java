@@ -1,11 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.*;
-import idas.chox.core.services.LookupService;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.util.LookupItemTextComparator;
-import idas.chox.core.util.RoleHelper;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +12,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.*;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.ReasonOfRejectionService;
+import idas.chox.core.util.LookupItemTextComparator;
+import idas.chox.core.util.RoleHelper;
+
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
@@ -148,20 +149,19 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List getWorkgroups(WebUser user, boolean isActiveOnly) {
 
-        List workgroups = new ArrayList();
+        List workgroups;
 
         if (RoleHelper.isChoxAdmin(user)) {
             workgroups = getAllWorkgroup(isActiveOnly);
-        } else {
-
-            if (RoleHelper.isInsurerUser(user)) {
+        } else if (RoleHelper.isInsurerUser(user)) {
 
                 if (RoleHelper.isWorkgroupRelatedUserOnly(user)) {
                     workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
                 } else {
                     workgroups = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
                 }
-            }
+        } else {
+            workgroups = new ArrayList();
         }
 
         return workgroups;
