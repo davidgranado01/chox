@@ -22,9 +22,9 @@ public class ActionPanel {
     public static final String UPDATE_MANUAL_INVOICE_WG_AND_OWNER = "AssignManualInvoiceOwner";
     public static final String APPROVE_CONTESTED_INVOICE_TO_ENG = "InvoiceReferToCH";
     public static final String REVIEW_BY_ENGINEER = "ClaimReviewByEng";
-    
+    public static final String CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM = "SubscriberClaimRejectionAccept";
+
     // Non-Activity Based panels - no unique activity to assign, therefore the following panels are assocuated to 'fake' activities
-    public static final String CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM = "contestOrAcceptRejectedSubscriberClaim";
     public static final String UPLOAD_INVOICE_DATA = "uploadInvoiceData";
     public static final String APPROVE_ESCALATED_INVOICE = "approveEscalatedInvoice";
     public static final String APPROVE_CONTESTED_INVOICE = "approveContestedInvoice";

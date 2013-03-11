@@ -2078,15 +2078,15 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_fnol_enabled, claim_type)
 	SELECT 'activity.ClaimRejectionContest.SubscriberClaimRejected', false, false, false, false, false, 7;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHOX_ADMIN', 2
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
 	FROM accessibility
 	WHERE name = 'activity.ClaimRejectionContest.SubscriberClaimRejected' and claim_type=7;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_MNG', 2
+	SELECT id, 'ROLE_CHO_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.ClaimRejectionContest.SubscriberClaimRejected' and claim_type=7;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-	SELECT id, 'ROLE_CHO_OPR', 2
+	SELECT id, 'ROLE_CHO_OPR', 1
 	FROM accessibility
 	WHERE name = 'activity.ClaimRejectionContest.SubscriberClaimRejected' and claim_type=7;
 
