@@ -1,10 +1,10 @@
 package idas.chox.service.workflow;
 
 import java.math.BigDecimal;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -12,12 +12,11 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.test.BaseTest;
 
 public class FullInvoicePaymentReceivedTest extends BaseTest {
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testInvalidStatus() throws Exception {
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);

@@ -1,22 +1,23 @@
 package idas.chox.service.workflow;
 
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.test.BaseTest;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.RevertClaim;
+import idas.chox.test.BaseTest;
+import org.springframework.security.access.AccessDeniedException;
 
 public class RevertClaimTest extends BaseTest{
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testRevertClaimWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();

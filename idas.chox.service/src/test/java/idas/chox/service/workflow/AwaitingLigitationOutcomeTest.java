@@ -3,6 +3,7 @@ package idas.chox.service.workflow;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -10,13 +11,12 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.AwaitingLitigationOutcome;
 import idas.chox.test.BaseTest;
 
 public class AwaitingLigitationOutcomeTest extends BaseTest {
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testInvalidStatus() throws Exception {
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);

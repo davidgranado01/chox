@@ -49,7 +49,7 @@ public class NewInvoiceTest extends BaseTest{
                 activity.processInBatch(claim);
             }
 
-            Assert.assertEquals(ClaimStatus.INVOICE_ESCALATED, claim.getStatus());
+            Assert.assertEquals(ClaimStatus.INVOICE_ESCALATED_TO_CH, claim.getStatus());
 
         }
 

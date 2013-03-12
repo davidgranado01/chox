@@ -1,16 +1,16 @@
 package idas.chox.service.workflow;
 
+import junit.framework.Assert;
+
+import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.test.BaseTest;
-import junit.framework.Assert;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class SubscriberClaimToGtaTest extends BaseTest {
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testSubscriberClaimRejectionContestWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
@@ -29,7 +29,7 @@ public class SubscriberClaimToGtaTest extends BaseTest {
         activity.process(claim);
     }
     
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testAttemptToSwichToGtaStatus() throws Exception {
 
         Claim claim = new Claim();
@@ -63,7 +63,7 @@ public class SubscriberClaimToGtaTest extends BaseTest {
         claim.setClaimType(ClaimType.FIXED_FEE);
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
-        claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         Activity activity = activityFactory.getActivity("sendClaimGTA");
 
         activity.process(claim);
@@ -80,7 +80,7 @@ public class SubscriberClaimToGtaTest extends BaseTest {
         claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
-        claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         Activity activity = activityFactory.getActivity("sendClaimGTA");
 
         activity.process(claim);
@@ -97,7 +97,7 @@ public class SubscriberClaimToGtaTest extends BaseTest {
         claim.setClaimType(ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE);
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
-        claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         Activity activity = activityFactory.getActivity("sendClaimGTA");
 
         activity.process(claim);

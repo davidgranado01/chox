@@ -1,16 +1,18 @@
 package idas.chox.service.workflow;
 
+import junit.framework.Assert;
+
+import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.test.BaseTest;
-import junit.framework.Assert;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class SubscriberClaimRejectionContestTest extends BaseTest {
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testSubscriberClaimRejectionContestWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();

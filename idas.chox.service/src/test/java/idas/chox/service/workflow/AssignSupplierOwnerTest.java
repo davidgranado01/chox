@@ -19,7 +19,7 @@ public class AssignSupplierOwnerTest extends BaseTest {
     
         Claim claim = new Claim();
         claim.setId(997);
-        claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         Chorganisation cho = chorganisationService.getChorganisation(1006);
         claim.setChorganisation(cho);
         Invoice invoice = invoiceService.getInvoice(999);

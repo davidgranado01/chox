@@ -1,6 +1,12 @@
 package idas.chox.service.workflow;
 
-import idas.chox.test.BaseTest;
+import java.math.BigDecimal;
+import java.util.Date;
+import junit.framework.Assert;
+
+import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Customer;
@@ -8,16 +14,12 @@ import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo;
-import java.math.BigDecimal;
-import java.util.Date;
-import junit.framework.Assert;
-import org.junit.Test;
+import idas.chox.test.BaseTest;
 
 public class ClaimAwaitingCarHireInfoTest extends BaseTest{
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testClaimAwaitingCarHireInfoWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();

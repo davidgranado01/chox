@@ -1,21 +1,21 @@
 package idas.chox.service.workflow;
 
-import idas.chox.test.BaseTest;
+import junit.framework.Assert;
+
+import org.junit.Test;
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.InvoiceRejection;
-import java.math.BigDecimal;
-import java.util.Date;
-import junit.framework.Assert;
-import org.junit.Test;
+import idas.chox.test.BaseTest;
 
 public class InvoiceRejectionTest  extends BaseTest{
 
-    @Test(expected = InvalidClaimStatusException.class)
+    @Test(expected = AccessDeniedException.class)
     public void testInvoiceRejectionWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
@@ -34,6 +34,7 @@ public class InvoiceRejectionTest  extends BaseTest{
         Invoice invoice = invoiceService.getInvoice(999);
         claim.setInvoice(invoice);
         InvoiceRejection activity = (InvoiceRejection) activityFactory.getActivity("rejectInvoice");
+        activity.setReasonOfRejectionId(1);
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, claim.getStatus());
     }
