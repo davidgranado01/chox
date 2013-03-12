@@ -409,6 +409,7 @@
             bbar: pagingBar,
             title:'Files Uploaded Today',
             deferRowRender:false,
+            enableColumnMove: false,
             columns: [
                 
                 sm,

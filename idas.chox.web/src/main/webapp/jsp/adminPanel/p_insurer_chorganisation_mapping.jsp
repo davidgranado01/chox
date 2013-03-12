@@ -38,6 +38,7 @@
             store: insChoAvailable_gridviewData,
             renderTo:'insChoAvailable_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
@@ -75,6 +76,7 @@
             store: insChoSelected_gridviewData,
             renderTo:'ins_cho_s_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

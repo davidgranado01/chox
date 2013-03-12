@@ -38,6 +38,7 @@
                 store: breband_gridviewData,
                 renderTo:'breband_gridviewGrid',
                 enableHdMenu:false,
+                enableColumnMove: false,
                 layout:'fit',
                 viewConfig:{forceFit:true},
                 columns: [

@@ -121,6 +121,7 @@
             store: insChoTpi_gridviewData,
             renderTo:'insChoTpi_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             sm:sm,

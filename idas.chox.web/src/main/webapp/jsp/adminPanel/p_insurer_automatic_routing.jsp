@@ -73,6 +73,7 @@
                 store: routing_gridviewData,
                 renderTo:'automaticRouting_gridviewGrid',
                 enableHdMenu:false,
+                enableColumnMove: false,
                 layout:'fit',
                 viewConfig:{forceFit:true},
                 columns: [
@@ -181,6 +182,7 @@
                 store: routing_gridviewDataPrice,
                 renderTo:'automaticRouting_gridviewGridPrice',
                 enableHdMenu:false,
+                enableColumnMove: false,
                 layout:'fit',
                 viewConfig:{forceFit:true},
                 columns: [

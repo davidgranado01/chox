@@ -38,6 +38,7 @@
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

@@ -33,6 +33,7 @@
             listeners:  {cellclick:cho_alias_recordOnclick },
             store: cho_alias_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

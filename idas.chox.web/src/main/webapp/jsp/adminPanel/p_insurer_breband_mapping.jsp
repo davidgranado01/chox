@@ -70,6 +70,7 @@
             store: breband_a_gridviewData,
             renderTo:'breband_a_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
@@ -86,6 +87,7 @@
             store: breband_s_gridviewData,
             renderTo:'breband_s_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

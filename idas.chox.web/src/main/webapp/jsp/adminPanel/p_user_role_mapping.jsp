@@ -36,6 +36,7 @@
             listeners:  {cellclick:userrole_recordOnclick },
             store: userrole_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

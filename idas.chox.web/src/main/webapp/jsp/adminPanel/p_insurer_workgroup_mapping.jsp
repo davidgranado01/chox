@@ -38,6 +38,7 @@
             listeners:  {cellclick:workgroup_recordOnclick },
             store: workgroup_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
