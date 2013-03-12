@@ -269,6 +269,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_COM', 2
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=4;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 2
+	FROM accessibility
+	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=4;
 
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
@@ -284,6 +288,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=7;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_COM', 2
+	FROM accessibility
+	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=7;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 2
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=7;
 
@@ -303,6 +311,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_COM', 2
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=11;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 2
+	FROM accessibility
+	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=11;
 
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
@@ -318,6 +330,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=10;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_COM', 2
+	FROM accessibility
+	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=10;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 2
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=10;
 
@@ -342,6 +358,12 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_CR', 1
 	FROM accessibility
 	WHERE name = 'activity.AssignOwner.InvoiceUnassigned' and claim_type=3;
+
+-- Give visibility of 'Assign Invoice' panel to CR
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 2
+	FROM accessibility
+	WHERE name = 'activity.assignInvoiceOwnership.InvoiceUnassigned' and claim_type=3;
 
 
 -- AssignSupplierOwner
@@ -3318,6 +3340,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.AwaitingCarHireInfo';
 
+-- Remove 'Revert' from status ClaimUnacknowledgedUnrouted
+DELETE FROM accessibility WHERE name = 'activity.RevertClaim.ClaimUnacknowledgedUnrouted';
+
+
 -- SubscriberClaimRejectionAccept
 UPDATE accessibility
   SET claim_type = 7
@@ -5067,6 +5093,15 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'filter.ClaimsAwaitingHireMonitoringInformation';
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'filter.InvoiceUnassigned';
+
+DELETE FROM accessibility_item
+WHERE role='ROLE_INS_MI'
+  AND accessibility_id=(SELECT id FROM accessibility WHERE name = 'filter.InvoiceUnassigned');
 
 --
 -- ExtraAction Accessibility
