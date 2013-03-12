@@ -1,6 +1,7 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Accessibility implements Serializable {
@@ -19,7 +20,21 @@ public class Accessibility implements Serializable {
     private boolean checkManualInvoiceWrokgroupEnabled;
     private boolean checkManualInvoiceClaimOwnershipEnabled;
 
-    public Accessibility() {
+    public Accessibility() {}
+    public Accessibility(Accessibility a) {
+        this.name = a.getName();
+        this.claimType = a.getClaimType();
+        this.workgroupCheck = a.workgroupCheck;
+        this.ownershipCheck = a.ownershipCheck;
+        this.checkWorkgroupEnabled = a.checkWorkgroupEnabled;
+        this.checkClaimOwnershipEnabled = a.checkClaimOwnershipEnabled;
+        this.checkSupplierClaimOwnershipEnabled = a.checkSupplierClaimOwnershipEnabled;
+        this.checkFnolEnabled = a.checkFnolEnabled;
+        this.checkEngineerEnabled = a.checkEngineerEnabled;
+        this.checkManualInvoiceWrokgroupEnabled = a.checkManualInvoiceWrokgroupEnabled;
+        this.checkManualInvoiceClaimOwnershipEnabled = a.checkManualInvoiceClaimOwnershipEnabled;
+        this.accessibilityRoleMap = new HashMap(a.getAccessibilityRoleMap().size());
+        accessibilityRoleMap.putAll(a.getAccessibilityRoleMap());
     }
 
     public boolean isCheckManualInvoiceClaimOwnershipEnabled() {

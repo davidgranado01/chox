@@ -228,7 +228,7 @@ public class ApplicationAccessibility {
         return claimTypeString;
     }
 
-    private Map<String, Accessibility> getAccessibilityMap() {
+    private synchronized Map<String, Accessibility> getAccessibilityMap() {
 
         if (accessibilityMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
@@ -238,7 +238,7 @@ public class ApplicationAccessibility {
         return accessibilityMap;
     }
 
-    private Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
+    private synchronized Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
 
         if (accessibilityByClaimTypeMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
@@ -248,7 +248,7 @@ public class ApplicationAccessibility {
         return accessibilityByClaimTypeMap;
     }
 
-    private Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
+    private synchronized Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
 
         if (batchUpdateAccessibilityMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
