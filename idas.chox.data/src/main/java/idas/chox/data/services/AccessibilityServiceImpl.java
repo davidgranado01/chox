@@ -17,6 +17,12 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
     private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 6500;
     private static final int ACCESSIBILITY_MAP_SIZE = 100;
 
+    
+    private void addRolesToAccessibility(Accessibility a1, Accessibility a2) {
+        Map<String, Short> roleMap = a1.getAccessibilityRoleMap();
+        roleMap.putAll(a2.getAccessibilityRoleMap());
+    }
+
 
     @Override
     public Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
@@ -67,36 +73,43 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
+                    // Accessibility has been used - we now need to duplicate
+                    a = new Accessibility(a);
                 }
                 key = a.getName() + "." + ClaimType.SUBSCRIBER.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
+                    a = new Accessibility(a);
                 }
                 key = a.getName() + "." + ClaimType.FIXED_FEE.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
+                    a = new Accessibility(a);
                 }
                 key = a.getName() + "." + ClaimType.INSURER_VS_INSURER.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
+                    a = new Accessibility(a);
                 }
                 key = a.getName() + "." + ClaimType.TPI.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
-                }
+                    a = new Accessibility(a);
+               }
                 key = a.getName() + "." + ClaimType.INSURER_UPLOAD.name();
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
+                    a = new Accessibility(a);
                 }
             } else {
                 key = a.getName() + "." + a.getClaimType().name();
@@ -104,6 +117,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                     addRolesToAccessibility(map.get(key), a);
                 } else {
                     map.put(key, a);
+                    a = new Accessibility(a);
                 }
             }
         }
@@ -111,10 +125,6 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         return map;
     }
 
-    private void addRolesToAccessibility(Accessibility a1, Accessibility a2) {
-        Map<String, Short> roleMap = a1.getAccessibilityRoleMap();
-        roleMap.putAll(a2.getAccessibilityRoleMap());
-    }
 
     @Override
     public Map<String, Accessibility> getAccessibilityMap() {
