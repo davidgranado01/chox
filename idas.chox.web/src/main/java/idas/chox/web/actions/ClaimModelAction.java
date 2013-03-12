@@ -11,7 +11,6 @@ import com.opensymphony.xwork2.Preparable;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
