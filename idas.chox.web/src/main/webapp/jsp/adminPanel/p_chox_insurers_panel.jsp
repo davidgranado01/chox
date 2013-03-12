@@ -36,6 +36,7 @@
             listeners:  {cellclick:insurer_recordOnclick },
             store: insurer_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

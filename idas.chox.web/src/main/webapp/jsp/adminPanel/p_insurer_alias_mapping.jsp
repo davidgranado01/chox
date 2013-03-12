@@ -34,6 +34,7 @@
             listeners:  {cellclick:alias_recordOnclick },
             store: alias_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

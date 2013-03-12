@@ -133,6 +133,7 @@
             store: vehicleClassCeiling_gridviewData,
             renderTo:'vehicleClassCeiling_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

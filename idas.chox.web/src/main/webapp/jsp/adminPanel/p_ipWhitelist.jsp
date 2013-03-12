@@ -89,6 +89,7 @@
             listeners:  {cellclick:ipWhitelist_recordOnclick },
             store: ipWhitelist_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             plugins: [ipWhitelistRowEditor],
             viewConfig:{forceFit:true},

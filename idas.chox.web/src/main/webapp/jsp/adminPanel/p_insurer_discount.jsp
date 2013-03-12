@@ -301,6 +301,7 @@
             listeners:  {cellclick:insurerDiscount_recordOnclick },
             store: insurerDiscount_gridviewData,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},

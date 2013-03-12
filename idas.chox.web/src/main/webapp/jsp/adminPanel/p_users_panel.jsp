@@ -68,6 +68,7 @@
             listeners:  {cellclick:recordOnclick },
             store: userManagementgridStore,
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             loadMask:true,
             viewConfig:{forceFit:true},

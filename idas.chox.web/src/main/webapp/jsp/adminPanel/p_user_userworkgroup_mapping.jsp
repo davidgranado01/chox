@@ -34,6 +34,7 @@
             store: userworkgroup_gridviewData,
             renderTo:'userworkgroup_gridviewGrid',
             enableHdMenu:false,
+            enableColumnMove: false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
