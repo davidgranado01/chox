@@ -15,6 +15,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.CommentService;
+import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.TaskService;
@@ -30,6 +31,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     private TaskService taskService;
     private NotificationService notificationService;
     private Insurer newInsurer;
+    private InsurerChorganisationService insurerChorganisationService;
 
     public String getPolicyNumber() {
         return policyNumber;
@@ -80,13 +82,23 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
                 LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
-        }
-        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+        } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
             if (!newInsurer.isAllowFixedFeeClaims()) {
                 LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
             }
+        } else if (ClaimType.isTPI(claim.getClaimType())) {
+            // Make sure the new Insurer accepts tpi claims
+            if (!newInsurer.isThirdPartyInterventionActivated()) {
+                LOG.error("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow TPI claims.");
+            }
+        }
+
+        if (insurerChorganisationService.getInsurerChorganisations(newInsurer.getId(), claim.getChorganisation().getId()).size() <= 0) {
+            LOG.error("The selected Insurer '{}' is not mapped to the CHO '{}'.", newInsurer.getName(), claim.getChorganisation().getName());
+            throw new Exception("The selected Insurer '"+newInsurer.getName()+"' is not mapped with '"+claim.getChorganisation().getName()+"'.");
         }
     }
     
@@ -154,7 +166,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         }
     }
 
-    
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
+    }
+
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }

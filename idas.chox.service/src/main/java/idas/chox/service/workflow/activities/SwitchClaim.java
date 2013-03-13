@@ -14,6 +14,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.NotificationService;
 
 public class SwitchClaim extends BaseActivity {
@@ -21,6 +22,7 @@ public class SwitchClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaim.class);
     private AuditTrailService auditTrailService;
     private NotificationService notificationService;
+    private InsurerChorganisationService insurerChorganisationService;
     
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -40,14 +42,25 @@ public class SwitchClaim extends BaseActivity {
                 LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
-        }
-        else if (ClaimType.isFixedFee(claim.getClaimType())) {
+        } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
             Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
             if (!newInsurer.isAllowFixedFeeClaims()) {
                 LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
             }
+        } else if (ClaimType.isTPI(claim.getClaimType())) {
+            // Make sure the new Insurer accepts tpi claims
+            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
+            if (!newInsurer.isThirdPartyInterventionActivated()) {
+                LOG.error("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow TPI claims.");
+            }
+        }
+        
+        if (insurerChorganisationService.getInsurerChorganisations(claim.getInsurer().getRelatedInsurer().getId(), claim.getChorganisation().getId()).size() <= 0) {
+            LOG.error("The selected Insurer '{}' is not mapped to the CHO '{}'.", claim.getInsurer().getRelatedInsurer().getName(), claim.getChorganisation().getName());
+            throw new Exception("The selected Insurer '" + claim.getInsurer().getRelatedInsurer().getName() + "' is not mapped with '" + claim.getChorganisation().getName() + "'.");
         }
     }
 
@@ -112,6 +125,9 @@ public class SwitchClaim extends BaseActivity {
         this.auditTrailService = auditTrailService;
     }
 
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
+    }
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
