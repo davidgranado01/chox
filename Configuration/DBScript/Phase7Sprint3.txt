@@ -2987,6 +2987,21 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.NewClaim.null' and claim_type is null;
 
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.NewClaim.null' and claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_COM', 1
+	FROM accessibility
+	WHERE name = 'activity.NewClaim.null' and claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CR', 1
+	FROM accessibility
+	WHERE name = 'activity.NewClaim.null' and claim_type is null;
+
 -- NewInvoice
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
                           check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
