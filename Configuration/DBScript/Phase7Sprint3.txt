@@ -8329,3 +8329,17 @@ UPDATE  web_user_role set is_workgroup_related = false where name='ROLE_INS_COM'
 ---------------------------------------------------
 --- END of bug#2491                         -------
 ---------------------------------------------------
+
+
+-------------------------------------------------------------------------------------
+-- bug#2498 - Production - CHO Manager - no action panel for Awaiting Invoice Data --
+-------------------------------------------------------------------------------------
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'activity.uploadInvoiceData.AwaitingInvoiceData';
+
+
+---------------------------------------------------
+--- END of bug#2498                         -------
+---------------------------------------------------
