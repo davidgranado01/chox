@@ -1,14 +1,15 @@
 package idas.chox.core.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.util.DateHelper;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class History extends Entity implements Serializable {
 
@@ -24,7 +25,7 @@ public class History extends Entity implements Serializable {
     public History() {
     }
 
-    public java.lang.String getNarrative() {
+    public String getNarrative() {
         return narrative;
     }
 
@@ -56,7 +57,7 @@ public class History extends Entity implements Serializable {
         this.isOld = isOld;
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
@@ -86,19 +87,6 @@ public class History extends Entity implements Serializable {
 
     public void setClaim(Claim claim) {
         this.claim = claim;
-    }
-
-    public static History New(Attachment attachment) {
-        String strNarrative = String.format("New file is uploaded. [Claim id : %s][Category id : %s][File Name : %s][Attachment id : %s]", attachment.getClaim().getId(), attachment.getCategory(), attachment.getFileName(), attachment.getId());
-        History his = new History();
-        his.setClaim(attachment.getClaim());
-        his.setIsPublic(true);
-        his.setIsSystem(false);
-        his.setNarrative(strNarrative);
-        his.setProcessDate(DateHelper.getCurrentDateTime());
-        his.setRuleId("H01");
-        his.setType("INFO");
-        return his;
     }
 
     public static History New(RuleEvaluation rv) {

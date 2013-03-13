@@ -1,9 +1,11 @@
 package idas.chox.core.bre;
 
-import idas.chox.core.model.Claim;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
 
 public class RulesEngine {
     public static final Logger LOG = LoggerFactory.getLogger(RulesEngine.class);
@@ -14,7 +16,7 @@ public class RulesEngine {
         LOG.debug("Validating claim '{}'", claim.getChoReference());
         LOG.debug("Applying {} rules to claim", businessRules.size());
         RulesEngineResponse response = new RulesEngineResponse();
-        RuleEvaluation ev = null;
+        RuleEvaluation ev;
         for (IBusinessRule businessRule : businessRules) {
             LOG.debug("Applying rule '{}' = {}", businessRule.getRuleId(), businessRule);
             try {
