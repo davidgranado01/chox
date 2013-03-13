@@ -139,7 +139,9 @@
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report produces a list of claims that require payment. The report results are per CHO and allow an Insurer to make payments in a more efficient manner.</div>
+                <div class="instruction-message">This report produces a list of claims that require payment. The report results are per CHO and allow an Insurer to make payments in a more efficient manner.<br/>
+                                                 Please note CHOs setup for Insurer uploaded claims and invoices are excluded from this report.
+                </div>
 
                 <table class="report-form">
 
