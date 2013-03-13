@@ -48,11 +48,14 @@ function refreshDesc(id){
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled">
-                            Please enter details of the claim and decide whether to acknowledge or refer to an engineer. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge or refer to an engineer.
                         </s:if>
                         <s:else>
-                            Please enter details of the claim and  acknowledge the claim. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and  acknowledge the claim.
                         </s:else>
+                        <s:if test="!insurerClaim">
+                            You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                        </s:if>
                         <s:if test="rejectButtonEnabled">
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                         </s:if>
