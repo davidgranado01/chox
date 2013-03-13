@@ -25,7 +25,11 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(false);
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            res.setIsVisibleToCHO(true);
+        } else {
+            res.setIsVisibleToCHO(false);
+        }
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 

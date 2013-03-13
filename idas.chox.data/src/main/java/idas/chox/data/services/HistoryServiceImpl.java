@@ -1,14 +1,16 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.History;
-import idas.chox.core.services.HistoryService;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.History;
+import idas.chox.core.services.HistoryService;
 
 public class HistoryServiceImpl extends SecureDataService implements HistoryService {
 
