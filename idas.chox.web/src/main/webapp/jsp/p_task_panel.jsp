@@ -144,9 +144,9 @@
                             toggleShowAssignedTasksOnly(this);
                             if (this.pressed) 
                             {
-                                this.setText('Show my assigned tasks only');
+                                this.setText('Show My Assigned Tasks Only');
                             } else {
-                                this.setText('Show all tasks');
+                                this.setText('Show All Tasks');
                             }
                         },
                         pressed: false,

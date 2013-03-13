@@ -1182,6 +1182,27 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     Invoice invoice = claim.getInvoice();
                     if (invoice != null) {
                         int days = invoice.getInvoicedDays();
+                        // Penalty charge has been applied to this claim but penalty charge(for this claim type) switched off in the bre band later.
+                        boolean pcExistsBeforeSwithedOffInBreBand = false;
+                        
+                        // Check Penalty Charges disallowed and no current charges
+                        if (accessRight != 0) {
+                            if (claim.getBreBand() == null) {
+                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                claim.setBreBand(choBand);
+                            }
+                            
+                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && !(invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                                pcExistsBeforeSwithedOffInBreBand = true;
+//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
+                            }
+                            
+                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
+                                accessRight = 0;
+//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
+                            }
+                        }
+                        
                         /*
                          * For manual invoices always show 'Adjust Penalty
                          * Charges' more action. 
@@ -1190,12 +1211,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                          * not have to be over say 30 days in order to be able
                          * to apply the penalty charges
                          */
-                        if (days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
+                        if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
 //                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
-                        else if (invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
+                        else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1 && !ClaimType.isInsurerUpload(claim.getClaimType())) { // Check if not removed from penalty queue
                             if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() 
                                         && (!claim.isAutoPenaltyChargeEnabled() 
@@ -1205,17 +1226,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                 accessRight = 0;
                             }
                         }
-                        // Check Penalty Charges disallowed and no current charges
-                        if (accessRight != 0) {
-                            if (claim.getBreBand() == null) {
-                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                                claim.setBreBand(choBand);
-                            }
-                            if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0) ) {
-                                accessRight = 0;
-//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
-                            }
-                        }
+                        
                         
                     } else {
                         // No invoice!
@@ -1325,6 +1336,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
+    // check whether penalty charge for this claim type enabled in bre band.
+    public boolean isPenaltyChargeEnabledInBreBand() {
+
+        if (claim.getInvoice() != null) {
+            if (claim.getBreBand() == null) {
+                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
+
+            if (claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
+//                            LOG.debug("BRE Band does not allow penalty charges");
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void setNotificationId(Integer notificationId) {
         this.notificationId = notificationId;
     }

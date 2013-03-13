@@ -41,17 +41,22 @@ public class ReferenceUpdateEmailSchedulerJob extends EmailSchedulerJob {
 
                 if (oldReference != null && !oldReference.isEmpty() && newReference != null && !newReference.isEmpty()) {
                     int status = getClaimService().updateReservationToTicket(oldReference, newReference, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(),sender);
-                    String statusString = null;
-                    if (status == 0)
+                    String statusString;
+                    if (status == 0) {
                         statusString = "Updated";
-                    else if (status == 1)
+                    }
+                    else if (status == 1) {
                         statusString = "Failed - Ticket number already exists";
-                    else if (status == 2)
+                    }
+                    else if (status == 2) {
                         statusString = "Failed - Reservation number doesn't exist";
-                    else if (status == 3)
+                    }
+                    else if (status == 3) {
                         statusString = "Failed - Reservation number doesn't exist (but Ticket number does)";
-                    else 
+                    }
+                    else {
                         statusString = "Failed - an internal error occurred";
+                    }
                     
                 
                     LOG.debug("CHO reference updated: {} -> {} : {} [{}]", new Object[]{oldReference, newReference, statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
