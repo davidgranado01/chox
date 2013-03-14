@@ -37,6 +37,7 @@ public class DashBoardViewData {
     private BigDecimal totalValueOfPenaltyChargesApplied;
     private BigDecimal totalValueOfPenaltyChargesPaid;
     private BigDecimal avgInvoicePaymentTime;
+    private Integer noOfInsurerClaimsSubmitted;
     private Integer noOfManualInvoicesSubmitted;
     private BigDecimal valueOfManualInvoicesSubmitted;
     private Integer noOfManualInvoicesPaid;
@@ -83,6 +84,7 @@ public class DashBoardViewData {
         viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
         viewData.setTotalValueOfPenaltyChargesPaid(getDecimalValue(data.get("v_PenaltyChargesPaid".toLowerCase())));
         viewData.setAvgInvoicePaymentTime(getDecimalValue(data.get("Avg_InvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
+        viewData.setNoOfInsurerClaimsSubmitted(getIntegerValue(data.get("n_insurer_ClaimsSubmitted".toLowerCase())));
         viewData.setNoOfManualInvoicesSubmitted(getIntegerValue(data.get("n_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesPaid".toLowerCase())));
@@ -466,6 +468,14 @@ public class DashBoardViewData {
 
     public void setNoOfManualInvoicesSubmitted(Integer noOfManualInvoicesSubmitted) {
         this.noOfManualInvoicesSubmitted = noOfManualInvoicesSubmitted;
+    }
+
+    public Integer getNoOfInsurerClaimsSubmitted() {
+        return noOfInsurerClaimsSubmitted;
+    }
+
+    public void setNoOfInsurerClaimsSubmitted(Integer noOfInsurerClaimsSubmitted) {
+        this.noOfInsurerClaimsSubmitted = noOfInsurerClaimsSubmitted;
     }
 
     public BigDecimal getValueOfManualInvoicesPaid() {
