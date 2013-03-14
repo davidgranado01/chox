@@ -99,7 +99,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-        assertFalse(rv.getIsVisibleToCHO());
+        assertTrue(rv.getIsVisibleToCHO());
     }
     
     @Test
@@ -114,7 +114,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-        assertFalse(rv.getIsVisibleToCHO());
+        assertTrue(rv.getIsVisibleToCHO());
     }
         
 
@@ -138,7 +138,7 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-        assertFalse(rv.getIsVisibleToCHO());
+        assertTrue(rv.getIsVisibleToCHO());
     }
 
     
@@ -163,6 +163,6 @@ public class Rule071SubscriberCheckRejectedClaimsTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().startsWith("The cumulative number of days prior to the claim rejection was"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-        assertFalse(rv.getIsVisibleToCHO());
+        assertTrue(rv.getIsVisibleToCHO());
     }
 }
