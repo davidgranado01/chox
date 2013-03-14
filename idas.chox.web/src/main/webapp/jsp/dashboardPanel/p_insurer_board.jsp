@@ -37,6 +37,7 @@
         new Ext.ToolTip({target: 'tip30',html: 'Number of invoices awaiting litigation outcome by CHO'});
         new Ext.ToolTip({target: 'tip31',html: 'Value of invoices awaiting litigation outcome (using Total To Pay amount)'});
         new Ext.ToolTip({target: 'tip32',html: 'Value of penalty charges paid'});
+        new Ext.ToolTip({target: 'tip33',html: 'New Insurer claims uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
            
         Ext.QuickTips.init();
     });
@@ -91,6 +92,7 @@
     <tr><th nowrap><label id="tip23">Average Invoice Payment Time (Days)</label></th>               <td nowrap><label ><s:property value="w2DData.avgInvoicePaymentTime"/></label></td>              <td nowrap><label><s:property value="m2DData.avgInvoicePaymentTime"/></label></td>          <td nowrap><label><s:property value="cData.avgInvoicePaymentTime"/></label></td></tr>
     <s:if test="uploadEnabled">
         <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><th nowrap><label id="tip33">Number of Insurer Claims Submitted</label></th>                       <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInsurerClaimsSubmitted"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInsurerClaimsSubmitted"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.noOfInsurerClaimsSubmitted"/></label></td></tr>
         <tr><th nowrap><label id="tip24">Number of Insurer Invoices Submitted</label></th>                       <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesSubmitted"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesSubmitted"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesSubmitted"/></label></td></tr>
         <tr><th nowrap><label id="tip25">Value of Insurer Invoices Submitted</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesSubmitted"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesSubmitted"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesSubmitted"/></label></td></tr>
         <tr><th nowrap><label id="tip26">Number of Insurer Invoices Paid</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesPaid"/></label></td>                           <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesPaid"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesPaid"/></label></td></tr>
