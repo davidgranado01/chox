@@ -100,7 +100,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         if (orgId >= 0) {
             boolean isValid = false;
             
-            LOG.debug("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
+            LOG.trace("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
             // Get client's IP address
             // First try with the clients remote address - this will return an 
             // empty string if not defined. If a proxy server is being used, the
@@ -114,7 +114,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 else {
                     isValid = ipWhitelistService.validateUserIPAddress(orgId, ipAddress, true, false);
                 }
-                LOG.debug("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
+                LOG.trace("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
             }
             
             // If we are still not validated, check the x-forward-for header
@@ -186,7 +186,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         String nonceStr = Base64.encodeBytes(nonce);
 
         session.setAttribute("SessionNonce", nonceStr);
-        LOG.debug("Nonce added to session: {}", nonceStr);
+        LOG.debug("Nonce added to session for user '{}' (id={}): {}", new Object[]{user.getDisplayName(), user.getId(), nonceStr});
 
         // Update users last login time
         try {
@@ -203,8 +203,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private void checkBrowserWarning(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
-        LOG.debug("checking Browser warning...with targetUrl: {}", targetUrl);
+        LOG.trace("checking Browser warning...with targetUrl: {}", targetUrl);
         if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
+            LOG.debug("Browser warning activated with targetUrl='{}'", targetUrl);
             getRedirectStrategy().sendRedirect(request, response, targetUrl.concat(browserWarningParam));
         }
     }
