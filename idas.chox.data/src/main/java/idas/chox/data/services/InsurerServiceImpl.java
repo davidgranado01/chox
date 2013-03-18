@@ -22,6 +22,7 @@ import idas.chox.core.util.XmlHelper;
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
     private static final Logger LOG = LoggerFactory.getLogger(InsurerServiceImpl.class);
 
+    @Override
     public boolean isInsurerNameExist(String s) {
         if (getInsurerByName(s) != null || getInsurerByAliasName(s) != null) {
             return true;
@@ -29,6 +30,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return false;
     }
 
+    @Override
     public Insurer getInsurerByName(String s) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         criteria.add(Restrictions.eq("name", s));
@@ -41,6 +43,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return (InsurerAlias) getByCriteria(criteria);
     }
 
+    @Override
     public Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
         Insurer insurer = new Insurer();
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))) {
@@ -49,10 +52,12 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return insurer;
     }
 
+    @Override
     public Insurer getInsurer(int id) {
         return (Insurer) get(Insurer.class, id);
     }
 
+    @Override
     public List<Insurer> getInsurers() {
         List<Insurer> insurers = new ArrayList<Insurer>();
 
@@ -64,10 +69,12 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveInsurer(Insurer insurer) {
         save(insurer);
     }
 
+    @Override
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim) {
         LOG.debug("Getting vehicle class ceilinf for claim '{}' with vehicle class '{}'", claim.getChoReference(), claim.getCustomer().getVehicleClass());
         VehicleClassCeiling vehicleClassCeiling = null;

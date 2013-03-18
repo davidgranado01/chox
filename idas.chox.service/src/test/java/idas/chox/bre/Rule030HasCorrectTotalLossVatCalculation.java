@@ -9,7 +9,6 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.model.ClaimType;
 import java.io.IOException;
 import java.math.BigDecimal;
 import org.junit.AfterClass;

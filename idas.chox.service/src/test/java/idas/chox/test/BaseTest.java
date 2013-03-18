@@ -1,5 +1,12 @@
 package idas.chox.test;
 
+
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import idas.chox.core.bre.RulesEngine;
 import idas.chox.core.services.*;
 import idas.chox.service.admin.AdminChorganisationService;
@@ -8,11 +15,6 @@ import idas.chox.service.admin.AdminUserService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.xml.readers.BordereauReader;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  *
@@ -97,4 +99,6 @@ public abstract class BaseTest {
     protected HireMonitoringDetailService hireMonitoringDetailService;
     @Autowired
     protected CustomerService customerService;
+    @Autowired
+    protected ThirdPartyService thirdPartyService;
 }

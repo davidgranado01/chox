@@ -11,10 +11,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.BreBandService;
 
-/**
- *
- * @author seeni
- */
+
 public class NewSupplementaryInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);

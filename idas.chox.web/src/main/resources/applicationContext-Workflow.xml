@@ -63,7 +63,6 @@
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
     </bean>
     <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
-        <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
         <property name="breBandService" ref="breBandService" />
     </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" scope="prototype"/>
