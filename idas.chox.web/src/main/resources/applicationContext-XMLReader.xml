@@ -6,7 +6,7 @@
     <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter" scope="singleton">
          <property name="validateFile" value="/uploadValidation/DataValidationTemplate.xml"/>
     </bean>
-    <bean id="bordereauReaderContext" class="idas.chox.service.xml.BordereauReaderContext">
+    <bean id="bordereauReaderContext" class="idas.chox.service.xml.BordereauReaderContext" scope="prototype">
         <property name="claimService" ref="claimService"/>
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="breBandService" ref="breBandService"/>
