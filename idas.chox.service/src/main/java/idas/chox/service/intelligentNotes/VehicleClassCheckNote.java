@@ -1,10 +1,11 @@
 package idas.chox.service.intelligentNotes;
 
+import java.util.Date;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.DateHelper;
-import java.util.Date;
 
 /**
  *

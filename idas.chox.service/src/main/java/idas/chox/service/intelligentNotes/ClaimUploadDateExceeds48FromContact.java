@@ -46,8 +46,9 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
         Calendar start = Calendar.getInstance(); start.setTime(startDate);
         Calendar end = Calendar.getInstance(); end.setTime(endDate);
         boolean swapped = false;
-        if (start.equals(end))
+        if (start.equals(end)) {
             return 0;
+        }
         else if (start.after(end)) {  // swap dates so that start is before end
             Calendar swap = start;
             start = end;
@@ -59,8 +60,9 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
         long daysBetweenExcludingWeekends = -1;
         while (start.before(end)) {
             daysBetween++;
-            if (start.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+            if (start.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                 daysBetweenExcludingWeekends++;
+            }
             start.add(Calendar.DAY_OF_MONTH, 1);
         }
         if (swapped) {

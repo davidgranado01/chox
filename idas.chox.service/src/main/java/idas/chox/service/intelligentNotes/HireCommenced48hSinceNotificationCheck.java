@@ -22,8 +22,9 @@ public class HireCommenced48hSinceNotificationCheck implements IntelligentNote {
 
         if (c.getVehicleHire() != null && c.getVehicleHire().getHireStart() != null) {
             long diffInMillis = c.getCreatedDate().getTime() - c.getVehicleHire().getHireStart().getTime();
-            if (diffInMillis / (1000*60*60.0) > 48.0)
+            if (diffInMillis / (1000*60*60.0) > 48.0) {
                 showing = true;
+            }
         }
 
         return showing;
