@@ -1,11 +1,12 @@
 package idas.chox.service.filters;
 
-import idas.chox.core.model.ClaimType;
-import idas.chox.core.search.ClaimSearchCriteria;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.search.ClaimSearchCriteria;
+
 
 public class InvoiceEscalatedToSupervisor extends BaseFilter {
 

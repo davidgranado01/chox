@@ -27,26 +27,28 @@ public class ExtraAction {
     public static final String ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER = "updateManualInvClaimOwner";
     public static final String UPDATE_CLAIM_WORKGROUP = "updateClaimWorkgroup";
     public static final String FINAL_REVIEW = "finalReview";
-
+    private static final List<String> extraActionList = new ArrayList<String>(16);
+    {
+        extraActionList.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
+        extraActionList.add(ESCALATE_UNASSIGNED_CLAIM);
+        extraActionList.add(FINAL_REVIEW);
+        extraActionList.add(INVOICE_REVIEW_REQUIRED);
+        extraActionList.add(MAKE_INTERIM_PAYMENT);
+        extraActionList.add(MARK_SUPPLEMENTARY_INVOICED_CLAIM);
+        extraActionList.add(PAYMENT_RECEIVED);
+        extraActionList.add(PENALTY_CHARGE_CONFIGURATION);
+        extraActionList.add(UPDATE_CLAIM_SUPPLIER_OWNER);
+        extraActionList.add(UPDATE_CLAIM_WORKGROUP);
+        extraActionList.add(UPDATE_CLAIM_WORKGROUP_AND_OWNER);
+        extraActionList.add(UPDATE_INSURER_CLAIM_NUMBER);
+        extraActionList.add(UPDATE_INSURER_CLAIM_OWNER);
+        extraActionList.add(UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL);
+        extraActionList.add(UPDATE_LIABILITY);
+        extraActionList.add(UPDATE_PENALTY_CHARGES);
+    }
+    
     public static List<String> getExtraActions() {
-        List<String> action = new ArrayList<String>();
-        action.add(MAKE_INTERIM_PAYMENT);
-        action.add(ESCALATE_UNASSIGNED_CLAIM);
-        action.add(UPDATE_CLAIM_SUPPLIER_OWNER);
-        action.add(UPDATE_INSURER_CLAIM_NUMBER);
-        action.add(UPDATE_LIABILITY);
-        action.add(UPDATE_CLAIM_WORKGROUP_AND_OWNER);
-        action.add(UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL);
-        action.add(PAYMENT_RECEIVED);
-        action.add(UPDATE_INSURER_CLAIM_OWNER);
-        action.add(UPDATE_PENALTY_CHARGES);
-        action.add(MARK_SUPPLEMENTARY_INVOICED_CLAIM);
-        action.add(PENALTY_CHARGE_CONFIGURATION);
-        action.add(INVOICE_REVIEW_REQUIRED);
-        action.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
-        action.add(UPDATE_CLAIM_WORKGROUP);
-        action.add(FINAL_REVIEW);
-        return action;
+        return extraActionList;
     }
 
     public static String getExtraActionName(String extraAction) {

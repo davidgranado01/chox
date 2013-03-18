@@ -1,12 +1,13 @@
 package idas.chox.core.model;
 
-import idas.chox.core.util.RoleHelper;
-import idas.chox.core.common.OrganisationType;
 import java.util.Set;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import idas.chox.core.util.RoleHelper;
+import idas.chox.core.common.OrganisationType;
 
 public class WebUser extends Entity implements Serializable {
 
@@ -211,17 +212,19 @@ public class WebUser extends Entity implements Serializable {
     }
 
     public int getMaxFailedLoginAttempts() {
-        if (getOrganisationType().equals(OrganisationType.INS))
+        if (getOrganisationType().equals(OrganisationType.INS)) {
             return insurer.getMaxLoginAttempts();
-        else if (getOrganisationType().equals(OrganisationType.CHO))
+        }
+        else if (getOrganisationType().equals(OrganisationType.CHO)) {
             return chorganisation.getMaxLoginAttempts();
+        }
         
         return 0;
     }
 
 
     public String getDisplayName() {
-        return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
+        return String.format("%1$s, %2$s", this.getLastName(), this.getFirstName());
     }
 
     public String getFullName() {

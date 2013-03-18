@@ -1,9 +1,12 @@
 package idas.chox.service.filters;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.search.ClaimSearchCriteria;
-import java.util.*;
 
 public class FilterLiabilityStatusUpdated extends BaseFilter {
     private static Set<String> excludeList = new HashSet<String>();
@@ -29,10 +32,12 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
 
         claimSearchCriteria.setStatusExcludeList(excludeList);
-        if (insurerId > -1)
+        if (insurerId > -1) {
             claimSearchCriteria.setInsurerIds(new HashSet<Integer>(Arrays.asList(insurerId)));
-        if (choId > -1)
+        }
+        if (choId > -1) {
             claimSearchCriteria.setSupplierIds(new HashSet<Integer>(Arrays.asList(choId)));
+        }
         if (claimTypeId > -1) {
             Set<ClaimType> claimTypes = new HashSet<ClaimType>();
             claimTypes.add(ClaimType.values()[claimTypeId]);
