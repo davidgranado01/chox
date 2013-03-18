@@ -1,13 +1,15 @@
 package idas.chox.service.security;
 
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Set;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 
 public class PermissionedUser implements UserDetails {
 
