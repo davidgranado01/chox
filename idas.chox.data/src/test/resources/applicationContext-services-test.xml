@@ -141,4 +141,8 @@
         <property name="insurerService" ref="insurerService"/>
     </bean>
 
+    <bean id="thirdPartyService" class="idas.chox.data.services.ThirdPartyServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
 </beans>

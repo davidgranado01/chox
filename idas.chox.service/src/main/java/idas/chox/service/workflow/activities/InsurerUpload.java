@@ -14,22 +14,16 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class InsurerUpload extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsurerUpload.class);
     private BreBandService breBandService;
-    private VehicleClassPriceService vehicleClassPriceService;
     private boolean autoRoutedInvoice = false;
 
     public void setBreBandService(BreBandService breBandService) {
         this.breBandService = breBandService;
-    }
-
-    public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
-        this.vehicleClassPriceService = vehicleClassPriceService;
     }
 
     @Override

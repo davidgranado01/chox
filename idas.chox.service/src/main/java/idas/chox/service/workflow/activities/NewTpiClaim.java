@@ -151,4 +151,8 @@ public class NewTpiClaim extends BaseActivity {
         return "";
     }
 
+    public void setAutoRoutedInvoice(boolean autoRoutedInvoice) {
+        this.autoRoutedInvoice = autoRoutedInvoice;
+    }
+
 }
