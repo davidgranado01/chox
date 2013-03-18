@@ -39,10 +39,12 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
         showing &= !c.isManagingRepair();
                 
         // 5. If 'Non-Fault Insurer Managing Repair?' field is 'N' (No)  [todo item 6.17.1]
-        if (c.getHireMonitoringDetail() != null)
+        if (c.getHireMonitoringDetail() != null) {
             showing &= !c.getHireMonitoringDetail().isIsNFInsurerManagingRepair();
-        else
+        }
+        else {
             showing = false;
+        }
 
         return showing;
     }
