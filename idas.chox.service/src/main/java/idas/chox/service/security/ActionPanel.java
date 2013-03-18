@@ -34,33 +34,36 @@ public class ActionPanel {
     public static final String APPROVE_BRE_PASSED_BY_CLAIM_HANDLER = "approveBREPassedByClaimHandler";
     public static final String ASSIGN_INVOICE_OWNERSHIP = "assignInvoiceOwnership";
 
+    private static final List<String> actionPanelList = new ArrayList<String>(25);
+    {
+        actionPanelList.add(ACKNOWLEDGE_CLAIM);
+        actionPanelList.add(APPROVE_BRE_PASSED_CLAIM);
+        actionPanelList.add(APPROVE_BRE_PASSED_BY_CLAIM_HANDLER);
+        actionPanelList.add(APPROVE_CONTESTED_INVOICE);
+        actionPanelList.add(APPROVE_CONTESTED_INVOICE_TO_ENG);
+        actionPanelList.add(APPROVE_ESCALATED_INVOICE);
+        actionPanelList.add(ASSIGN_CLAIM_OWNERSHIP);
+        actionPanelList.add(ASSIGN_INVOICE_OWNERSHIP);
+        actionPanelList.add(AWAITING_CAR_HIRE_INFO);
+        actionPanelList.add(CLAIM_PENDING);
+        actionPanelList.add(CONTEST_OR_ACCEPT_REJECTED_CLAIM);
+        actionPanelList.add(CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM);
+        actionPanelList.add(INVOICE_REFERRED_TO_CLAIMS_HANDLER);
+        actionPanelList.add(INVOICE_RESUBMIT);
+        actionPanelList.add(LOG_INVOICE_PAYMENT);
+        actionPanelList.add(REGISTERED_CLAIM_BY_FNOL);
+        actionPanelList.add(RESUBMIT_OR_ACCEPT_CONTESTED_INVOICE);
+        actionPanelList.add(REVIEW_BY_ENGINEER);
+        actionPanelList.add(ROUTE_CLAIM);
+        actionPanelList.add(UPDATE_CLAIM_UPDATED_BY_ENG);
+        actionPanelList.add(UPLOAD_INVOICE_DATA);
+        actionPanelList.add(UPDATE_LIABILITY);
+        actionPanelList.add(UPDATE_MANUAL_INVOICE_WG_AND_OWNER);
+        actionPanelList.add(UPDATE_MANUAL_INVOICE);
+        actionPanelList.add(UPDATE_PAYMENT_RECEIVED);
+    }
+
     public static List<String> getPanelActions() {
-        List<String> action = new ArrayList<String>();
-        action.add(ROUTE_CLAIM);
-        action.add(ACKNOWLEDGE_CLAIM);
-        action.add(CONTEST_OR_ACCEPT_REJECTED_CLAIM);
-        action.add(CONTEST_OR_ACCEPT_REJECTED_SUBSCRIBER_CLAIM);
-        action.add(AWAITING_CAR_HIRE_INFO);
-        action.add(UPLOAD_INVOICE_DATA);
-        action.add(INVOICE_RESUBMIT);
-        action.add(APPROVE_BRE_PASSED_CLAIM);
-        action.add(APPROVE_ESCALATED_INVOICE);
-        action.add(APPROVE_CONTESTED_INVOICE);
-        action.add(RESUBMIT_OR_ACCEPT_CONTESTED_INVOICE);
-        action.add(LOG_INVOICE_PAYMENT);
-        action.add(REVIEW_BY_ENGINEER);
-        action.add(REGISTERED_CLAIM_BY_FNOL);
-        action.add(CLAIM_PENDING);
-        action.add(INVOICE_REFERRED_TO_CLAIMS_HANDLER);
-        action.add(UPDATE_PAYMENT_RECEIVED);
-        action.add(UPDATE_CLAIM_UPDATED_BY_ENG);
-        action.add(APPROVE_CONTESTED_INVOICE_TO_ENG);
-        action.add(APPROVE_BRE_PASSED_BY_CLAIM_HANDLER);
-        action.add(ASSIGN_CLAIM_OWNERSHIP);
-        action.add(UPDATE_LIABILITY);
-        action.add(ASSIGN_INVOICE_OWNERSHIP);
-        action.add(UPDATE_MANUAL_INVOICE_WG_AND_OWNER);
-        action.add(UPDATE_MANUAL_INVOICE);
-        return action;
+        return actionPanelList;
     }
 }
