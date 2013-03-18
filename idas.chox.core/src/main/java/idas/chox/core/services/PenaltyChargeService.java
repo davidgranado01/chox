@@ -35,7 +35,7 @@ public interface PenaltyChargeService {
     
     boolean setPenaltyStartToDateInvoiced(String choReference);
     
-    Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart);
+    Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart, boolean isCHO);
             
     Map applyPenaltyCharge(Claim claim, Boolean isPenaltyAlertNotUsed, BigDecimal hirePenaltyChargeAmount, 
             String hirePenaltyPercentage, BigDecimal repairPenaltyChargeAmount, String repairPenaltyPercentage);

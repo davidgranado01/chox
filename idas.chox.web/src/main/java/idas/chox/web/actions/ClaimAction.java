@@ -2466,7 +2466,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String adjustAutoPenaltyCharge() {
 
-        Map resultMap = penaltyChargeService.adjustAutoPenaltyCharge(claim, autoPenaltyStart);
+        Map resultMap = penaltyChargeService.adjustAutoPenaltyCharge(claim, autoPenaltyStart, getIsCHO());
 
         if (resultMap.containsKey("error")) {
             this.setActionError((String) resultMap.get("error"));

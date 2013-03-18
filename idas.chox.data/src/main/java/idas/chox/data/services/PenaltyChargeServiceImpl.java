@@ -476,7 +476,6 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
             invoice.setRepairPenaltyCharge(repairPenaltyChargeAmount);
             invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
-//            totalPenaltyChargeAmount = hirePenaltyChargeAmount.add(repairPenaltyChargeAmount);
             invoice.setTotalPenaltyCharge(hirePenaltyChargeAmount.add(repairPenaltyChargeAmount));
 
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
@@ -500,7 +499,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
     }
 
     @Override
-    public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart) {
+    public Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart, boolean isCHO) {
         Map resultMap = new HashMap();
         if (autoPenaltyStart != null) {
 
@@ -515,11 +514,9 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
             }
             // For CHO, the autoPenaltyStartDate must be AFTER the invoice creation date
             LOG.debug("autoPenaltyStart={}, penaltyStartDate={}, invoiceCreationDate={}", new Object[]{autoPenaltyStart, penaltyStartDate, invoiceCreationDate});
-            if (autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
+            if (isCHO && autoPenaltyStart.compareTo(penaltyStartDate) != 0 && autoPenaltyStart.compareTo(invoiceCreationDate) < 0) {
                 LOG.warn("Attempt (by CHO) to set penalty-start date ({}) to before invoice upload date ({}).", autoPenaltyStart, invoiceCreationDate);
                 resultMap.put("error", "The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
-//                this.setActionError("The 'Penalty Charge Start Date' cannot be set to before the invoice was uploaded and has not been saved.");
-//                setActionResult("The 'Penalty Charge Calculation Date' cannot be set to before the invoice was uploaded. Your changes have not been saved.");
                 return resultMap;
             }
             claimService.updateClaim(claim);
