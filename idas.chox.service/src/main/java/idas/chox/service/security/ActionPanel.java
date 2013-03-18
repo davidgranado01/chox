@@ -35,7 +35,7 @@ public class ActionPanel {
     public static final String ASSIGN_INVOICE_OWNERSHIP = "assignInvoiceOwnership";
 
     private static final List<String> actionPanelList = new ArrayList<String>(25);
-    {
+    static {
         actionPanelList.add(ACKNOWLEDGE_CLAIM);
         actionPanelList.add(APPROVE_BRE_PASSED_CLAIM);
         actionPanelList.add(APPROVE_BRE_PASSED_BY_CLAIM_HANDLER);

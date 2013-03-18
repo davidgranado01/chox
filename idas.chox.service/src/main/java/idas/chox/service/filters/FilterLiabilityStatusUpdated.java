@@ -9,8 +9,8 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.search.ClaimSearchCriteria;
 
 public class FilterLiabilityStatusUpdated extends BaseFilter {
-    private static Set<String> excludeList = new HashSet<String>();
-    {
+    private static final Set<String> excludeList = new HashSet<String>(4);
+    static {
         excludeList.add(ClaimStatus.CLAIM_CLOSED);
         excludeList.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         excludeList.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);

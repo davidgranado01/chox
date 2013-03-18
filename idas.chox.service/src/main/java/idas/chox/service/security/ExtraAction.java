@@ -28,7 +28,7 @@ public class ExtraAction {
     public static final String UPDATE_CLAIM_WORKGROUP = "updateClaimWorkgroup";
     public static final String FINAL_REVIEW = "finalReview";
     private static final List<String> extraActionList = new ArrayList<String>(16);
-    {
+    static {
         extraActionList.add(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER);
         extraActionList.add(ESCALATE_UNASSIGNED_CLAIM);
         extraActionList.add(FINAL_REVIEW);
