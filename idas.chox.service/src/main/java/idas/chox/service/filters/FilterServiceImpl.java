@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.Filter;
 import idas.chox.core.services.FilterService;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.core.model.Filter;
 
 public class FilterServiceImpl implements FilterService, BeanFactoryAware {
 
