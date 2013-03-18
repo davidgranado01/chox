@@ -40,7 +40,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
 
             } else {
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                narrative = "Rule only applies when the clam is a total loss";
+                narrative = "Rule only applies when the claim is a total loss";
             }
 
         } else {
