@@ -1,6 +1,7 @@
 package idas.chox.service.xml.readers;
 
 
+import idas.chox.core.model.ClaimType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -82,7 +83,7 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
              * should be left blank. (TO-DO-ITEM 7.1.2)
              */
             Boolean canAccessOtherVehicle = XmlHelper.getBooleanFromNode(element, "access-another-vehicle");
-            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)) {
+            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE) && claimResult.getClaim().getClaimType() == ClaimType.INSURER_INVOICE) {
                 claimResult.getClaim().setIsInvoiceReviewRequired((canAccessOtherVehicle != null && canAccessOtherVehicle == true) ? true : false);
             }
             else {
