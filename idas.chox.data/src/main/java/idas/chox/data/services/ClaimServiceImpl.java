@@ -34,11 +34,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.History;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
-import idas.chox.data.notifications.NotificationType;
 import idas.chox.core.model.QueuedTicket;
+import idas.chox.data.notifications.NotificationType;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -193,7 +194,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     claim.setInvoice(null);
                     LOG.debug("claim invoice set to null");
                     delete(oldInvoice);
-                    LOG.debug("claim invoice deleted");
+                    List<History> histories = claim.getHistories();
+                    for(History history : histories) {
+                        delete(history);
+                    }
+                    histories.clear();
+                    LOG.debug("claim invoice and BRE history deleted");
                 }
                 /*
                  *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status

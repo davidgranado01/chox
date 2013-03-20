@@ -1445,7 +1445,7 @@
                         {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                         {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                                 return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}},
-                        {header: "", width : 40, sortable : true, sortType: function(value){if(value) return 0; else return 1;}, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
+                        {header: "", width : 40, sortable : true, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
                                 if(value){metaData.css = 'paperClip';} 
                             }}
                     ],
