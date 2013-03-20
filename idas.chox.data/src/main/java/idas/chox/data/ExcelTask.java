@@ -16,6 +16,15 @@ public class ExcelTask {
     private String taskWrokgroup;
     private String taskCurrentClaimStatus;
     private String taskStatusOfClaimWhenTaskCreated;
+    private boolean taskComplete;
+
+    public boolean isTaskComplete() {
+        return taskComplete;
+    }
+
+    public void setTaskComplete(boolean taskComplete) {
+        this.taskComplete = taskComplete;
+    }
 
     public String getSupplierReference() {
         return supplierReference;

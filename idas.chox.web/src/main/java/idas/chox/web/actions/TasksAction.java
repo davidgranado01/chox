@@ -476,6 +476,7 @@ public class TasksAction extends BaseAction {
             excelTask.setTaskDescription(task.getDescription());
             excelTask.setTaskCreatedDate(task.getCreatedDate());
             excelTask.setTaskCreatedBy(task.getCreatedBy().getDisplayName());
+            excelTask.setTaskComplete(task.getComplete());
 
             if (task.getClaim() != null) {
 
