@@ -960,7 +960,7 @@
                         <table class="chox-table-form">
                             <tr>
                                 <td><label class="std-label-ro">
-                                        Admin Fee</label></td>
+                                        Repair Admin Fee</label></td>
                                 <td>&nbsp;</td>
                                 <td><label class="std-data-ro">£<s:property value="repairAdminFee" /></label></td>
                                 <td>
@@ -972,7 +972,7 @@
                             </tr>
                             <tr>
                                 <td><label class="std-label-ro">
-                                        Acquisition Fee</label></td>
+                                        Repair Acquisition Fee</label></td>
                                 <td>&nbsp;</td>
                                 <td><label class="std-data-ro">£<s:property value="repairAcquisitionFee" /></label></td>
                                 <td>

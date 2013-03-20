@@ -1973,7 +1973,7 @@
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item">
-                                                    <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
+                                                    <label class="chox-form-std-label">Repair Admin Fee<span class="mandatory">*</span></label>
                                                     <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairAdminFee" value="<s:property value="repairAdminFee" />"   onkeyup="extractNumber(this,2,true);" />
                                                 </div>
                                             </td>
@@ -1989,7 +1989,7 @@
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item">
-                                                    <label class="chox-form-std-label">Acquisition Fee<span class="mandatory">*</span></label>
+                                                    <label class="chox-form-std-label">Repair Acquisition Fee<span class="mandatory">*</span></label>
                                                     <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="repairAcquisitionFee" value="<s:property value="repairAcquisitionFee" />"   onkeyup="extractNumber(this,2,true);" />
                                                 </div>
                                             </td>

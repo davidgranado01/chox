@@ -20,11 +20,11 @@
             <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
             <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
+                <interceptor-ref name="paramsPrepareParamsStack"/>
+                <interceptor-ref name="exception"/>
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
                 <interceptor-ref name="timeoutInterceptor"/>
-                <interceptor-ref name="exception"/>
-                <interceptor-ref name="paramsPrepareParamsStack"/>
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
                 <interceptor-ref name="contactDetailsInterceptor"/>

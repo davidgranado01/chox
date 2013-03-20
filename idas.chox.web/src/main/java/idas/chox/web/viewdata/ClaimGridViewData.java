@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
@@ -84,7 +85,12 @@ public class ClaimGridViewData {
         }
         
         if (claim.getAttachments() != null && claim.getAttachments().size() > 0) {
-            this.claimHasAttachment = true;
+            for (Attachment a : claim.getAttachments()) {
+                if (!a.isDeleted()) {
+                    this.claimHasAttachment = true;
+                    break;
+                }
+            }
         }
     }
 
