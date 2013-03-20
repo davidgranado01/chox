@@ -1057,6 +1057,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || auditTrail.getOriginalStatus().isEmpty()) {
                 access = false;
             }
+            // disable revert if CHO and status is 'InvoicePaymentLogged'
+            //      - CHO has access to this activity as this is needed for when marking
+            //        as 'Payment Received But Not Full Amount'
+            if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && this.getIsCHO()) {
+                access = false;
+            }
         }
         return access;
     }
