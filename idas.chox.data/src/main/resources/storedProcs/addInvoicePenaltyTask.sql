@@ -37,8 +37,9 @@ where c.invoice_id = i.id
   and ins.is_task_management_enable = true
   and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= (i.penalty_band - 5)
+  and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < i.penalty_band
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
-  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days')
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '6 days')
   and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) > i.penalty_band - 5));
 
 
