@@ -1971,6 +1971,10 @@
                                 <div class="inv-form-container" id="formRepairExtrasWId">
                                     <table>
                                         <tr>
+                                            <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span> Please note that the below figures are not used as part of <br/>the ’Re-Calculate’ function and serve the purposes of information only.
+                                            </div> 
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Repair Admin Fee<span class="mandatory">*</span></label>

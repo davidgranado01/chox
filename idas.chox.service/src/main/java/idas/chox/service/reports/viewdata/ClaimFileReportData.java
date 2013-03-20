@@ -278,6 +278,8 @@ public class ClaimFileReportData {
     private BigDecimal paymentDetailsFinalPayment;
     private String claimType;
     private String finalReview;
+    private BigDecimal extrasRepairAdminFee;
+    private BigDecimal extrasRepairAcquisitionFee;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
@@ -676,6 +678,9 @@ public class ClaimFileReportData {
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
             extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
 
+            extrasRepairAdminFee = invoice.getRepairAdminFee();
+            extrasRepairAcquisitionFee = invoice.getRepairAcquisitionFee();
+            
             paymentDetailsHirePaid = invoice.getHireGrossPaid();
             paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
             paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
@@ -2703,6 +2708,22 @@ public class ClaimFileReportData {
     
     public String getFinalReview() {
         return finalReview;
+    }
+
+    public BigDecimal getExtrasRepairAdminFee() {
+        return extrasRepairAdminFee;
+    }
+
+    public void setExtrasRepairAdminFee(BigDecimal extrasRepairAdminFee) {
+        this.extrasRepairAdminFee = extrasRepairAdminFee;
+    }
+
+    public BigDecimal getExtrasRepairAcquisitionFee() {
+        return extrasRepairAcquisitionFee;
+    }
+
+    public void setExtrasRepairAcquisitionFee(BigDecimal extrasRepairAcquisitionFee) {
+        this.extrasRepairAcquisitionFee = extrasRepairAcquisitionFee;
     }
 
 }
