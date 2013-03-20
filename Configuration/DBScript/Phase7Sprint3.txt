@@ -9523,8 +9523,6 @@ DELETE FROM history WHERE claim_id IN
 -- bug#2515 Production - multiple 'Invoice Approaching <x> Days' tasks created                --
 ------------------------------------------------------------------------------------------------
 
-DROP FUNCTION addInvoicePenaltyTask(integer);
-
 CREATE OR REPLACE FUNCTION addInvoicePenaltyTask(integer)
   RETURNS boolean AS
 $BODY$
@@ -9548,7 +9546,7 @@ where c.invoice_id = i.id
   and c.status NOT IN ('ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoicePaymentLogged', 'InvoiceDataCalculationIncorrect')
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) >= 75
   and extract(epoch from now() - i.auto_penalty_start)/(3600*24.0) < 90
-  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '15 days')
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching 90 Days%')
   and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) >= 75));
 
 insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
@@ -9583,7 +9581,6 @@ $BODY$
   COST 100;
 
 GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
-
 
 
 ---------------------------------------------------
