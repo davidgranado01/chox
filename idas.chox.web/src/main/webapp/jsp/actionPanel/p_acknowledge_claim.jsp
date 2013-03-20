@@ -223,15 +223,15 @@ function refreshDesc(id){
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="ACRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="ACRejectButtonId" value="Reject" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="return doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="return doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                        <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="return doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>
                                     <s:if test="insurerIsFnolEnabled && !updatedByEng">
-                                        <input type="button" id="ACReferToFnolButtonId" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
+                                        <input type="button" id="ACReferToFnolButtonId" value="Refer to FNOL" onclick="return doAcknowledgeFormSubmit('referFNOL');" />
                                     </s:if>
-                                    <input type="button" id="ACClaimPendingButtonId" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                    <input type="button" id="ACClaimPendingButtonId" value="Claim Pending" onclick="return doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>

@@ -46,8 +46,8 @@
         <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>
         <property name="status" value="AwaitingCarHireInfo"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
         <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
@@ -60,8 +60,8 @@
         <property name="key" value= "AwaitingInvoiceData"/>
         <property name="status" value= "AwaitingInvoiceData"/>
         <property name="isFilterSupplierOwnership" value="true"/>
-        <property name="isFilterWorkGroup" value="false"/>
-        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>

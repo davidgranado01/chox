@@ -65,11 +65,17 @@ public class FilterByStatus extends BaseFilter {
         
         if (isCHO != null && !isCHO
                 && (ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO.equals(getStatus())
-                    || ClaimStatus.CLAIM_AWAITING_INVOICE_DATA.equals(getStatus())) ) {
-            // Insurer should only see Insurer Uploaded Claims in these queue
-            Set<ClaimType> claimTypes = new HashSet<ClaimType>();
-            claimTypes.add(ClaimType.INSURER_UPLOAD);
-            claimSearchCriteria.setClaimTypes(claimTypes);
+                    || ClaimStatus.CLAIM_AWAITING_INVOICE_DATA.equals(getStatus()))) {
+            
+            if (claimTypeId == -1 || ClaimType.INSURER_UPLOAD.getClaimTypeValue() == claimTypeId) {
+                // Insurer should only see Insurer Uploaded Claims in these queue
+                Set<ClaimType> claimTypes = new HashSet<ClaimType>();
+                claimTypes.add(ClaimType.INSURER_UPLOAD);
+                claimSearchCriteria.setClaimTypes(claimTypes);
+            } else {
+                // insurer should see empty queue
+                claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList("nosuchstatus")));
+            }
         }
 
         return claimSearchCriteria;

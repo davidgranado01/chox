@@ -75,7 +75,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the clam is a total loss"));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the claim is a total loss"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 

@@ -1068,9 +1068,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getCanShowSwitchClaimButton() {
-
-        return applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
-                getAuthenticatedUser(), claim) > 0;
+        boolean canShowButton = false;
+        // Only check accessibility if insurer of claim has a 'related' insurer'
+        if (claim.getInsurer().getRelatedInsurer() != null) {
+            canShowButton =  applicationAccessibility.checkActivityAccessibility(ApplicationAccessibility.SWITCH_CLAIM,
+                    getAuthenticatedUser(), claim) > 0;
+        }        return canShowButton;
     }
 
 
