@@ -280,10 +280,12 @@ public class ClaimFileReportData {
     private String finalReview;
     private BigDecimal extrasRepairAdminFee;
     private BigDecimal extrasRepairAcquisitionFee;
+    private boolean subscriberClaim;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
+        subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
         if (claim.getChorganisation() != null) {
             choName = claim.getChorganisation().getName();
         }
@@ -2724,6 +2726,10 @@ public class ClaimFileReportData {
 
     public void setExtrasRepairAcquisitionFee(BigDecimal extrasRepairAcquisitionFee) {
         this.extrasRepairAcquisitionFee = extrasRepairAcquisitionFee;
+    }
+
+    public boolean isSubscriberClaim() {
+        return subscriberClaim;
     }
 
 }
