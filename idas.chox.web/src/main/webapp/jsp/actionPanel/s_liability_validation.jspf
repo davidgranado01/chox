@@ -2,7 +2,7 @@
 <script type="text/javascript">
 
     $(function(){
-        createHelpNote();
+        createHelpNote(); 
 
         var liabilityAgreedDatePicker = ui.unvalidatedDateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
         
@@ -379,15 +379,31 @@
                     addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
                 }
             }
-        }else if(action=='referEng' && liabilityStatusModified){
-            addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
-        }else if(action=='referFNOL'){
-            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
+        }else if(action=='referEng'){
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                range:[1,6],
+                messages: {range: "You must select a liability status"}
+                });
             if (liabilityStatusModified){
                 addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
             }
-        }else if(action=='pending' && liabilityStatusModified){
-            addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+        }else if(action=='referFNOL'){
+            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                range:[1,6],
+                messages: {range: "You must select a liability status"}
+                });
+            if (liabilityStatusModified){
+                addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+            }
+        }else if(action=='pending'){
+            $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
+                range:[1,6],
+                messages: {range: "You must select a liability status"}
+                });
+            if (liabilityStatusModified){
+                addSupportingLiabilityNotesCheck(selectedLiabilityStatusValue);
+            }
         }else if (action=='resolveLiability' || action=='updateLiability'){
             $("form#formAcknowledgeAction #liabilityStatus").rules("add", {
                     range:[1,6],
