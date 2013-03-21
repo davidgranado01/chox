@@ -241,7 +241,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 if (securityInfoProvider.getCurrentUser().isCHO()) {
                     String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
                     if (securityInfoProvider.getCurrentUser().isCHO()
-                    && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
+                            && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
                         message = message + ", ‘Subscriber’";
                     }
                     if (securityInfoProvider.getCurrentUser().isCHO()
