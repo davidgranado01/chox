@@ -959,10 +959,6 @@
                     <div style="display:none" class="form-container"  id="formRepairExtrasRId">
                         <table class="chox-table-form">
                             <tr>
-                                <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span> Please note that the below figures are not used as part of <br/>the ’Re-Calculate’ function and serve the purposes of information only.
-                                </div> 
-                            </tr>
-                            <tr>
                                 <td><label class="std-label-ro">
                                         Repair Admin Fee</label></td>
                                 <td>&nbsp;</td>

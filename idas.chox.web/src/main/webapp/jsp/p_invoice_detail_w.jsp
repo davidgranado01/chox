@@ -1970,10 +1970,12 @@
 
                                 <div class="inv-form-container" id="formRepairExtrasWId">
                                     <table>
-                                        <tr>
-                                            <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span> Please note that the below figures are not used as part of <br/>the ’Re-Calculate’ function and serve the purposes of information only.
-                                            </div> 
-                                        </tr>
+                                        <s:if test="!isInsurer">
+                                            <tr>
+                                                <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span> Please note that the below figures are not used as part of <br/>the ’Re-Calculate’ function and serve the purposes of information only.
+                                                </div> 
+                                            </tr>
+                                        </s:if>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item">
