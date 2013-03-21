@@ -321,7 +321,19 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setClaimParseStatus(ClaimParseStatus.TPI_NOT_RECOGNIZED);
             claimResult.setValid(false);
             LOG.warn("CHO is trying to upload a TPI invoice with an invalid hire-state field: {}", getTPIidentificationStringForInsurer(insurerAliasNames));
-            claimResult.getMessage().add("The value provided for the 'hire state' is incorrect, it must be '" + getTPIidentificationStringForInsurer(insurerAliasNames) + "' for third party intervention claims against this Insurer");
+            String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
+            if (securityInfoProvider.getCurrentUser().isCHO()
+                    && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
+                message = message + ", ‘Subscriber’";
+            }
+            if (securityInfoProvider.getCurrentUser().isCHO()
+                    && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
+                message = message + ", ‘Fixed Fee’";
+            }
+            message = message + " or 'Insurer vs Insurer’. Alternatively if this is a TPI claim, it must be '"
+                              + getTPIidentificationStringForInsurer(insurerAliasNames) + "'  against this Insurer.";
+            
+            claimResult.getMessage().add(message);
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             LOG.debug("Claim supplier reference already exists: {}", choReferenceNumber);
