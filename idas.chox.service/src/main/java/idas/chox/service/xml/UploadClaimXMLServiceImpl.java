@@ -613,7 +613,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             for (History h : claimResult.getClaim().getHistories()) {
 
                 if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
-                    historiesMessage += h.getNarrative() + ".,";
+                    String narrative = h.getNarrative().trim();
+                    if (!narrative.substring(narrative.length() - 1).equals(".")) {
+                        narrative = narrative + ".";
+                    }
+                    historiesMessage += narrative;
                 }
             }
             xmlClaimsDetail.setBreFailureMessages(historiesMessage);
