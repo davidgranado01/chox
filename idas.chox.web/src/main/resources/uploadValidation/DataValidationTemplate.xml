@@ -20,7 +20,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </claimheader-first-contact>
 
     <claimheader-managing-repair>
@@ -125,7 +125,7 @@
         <data-mandatory-existingFixedFeeClaim></data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-supplier-name>
 
     <claimheader-supplier-reference>
@@ -740,7 +740,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-comprehensive>
 
     <customerdetail-vehicle-registration>
@@ -1291,7 +1291,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim>y</data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </customerdetail-damage>
 
     <customerdetail-usable>
@@ -1377,7 +1377,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </incident-date>
 
     <incident-location>
@@ -1398,7 +1398,7 @@
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length></data-length>
         <reg-exp></reg-exp>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
+        <data-mandatory-newInsurerClaim></data-mandatory-newInsurerClaim>
     </incident-location>
 
     <incident-police-involved>

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<head>
 <s:if test="#parameters.devp || getText('development')">
     <%@ include file="/includes/scripts.jsp"%>
 </s:if>
@@ -11,7 +12,7 @@
 	<script type="text/javascript">
 		var generalChoxVersion = '<s:property value="getText('version.number')" />';
 	</script>
-    </head>
+</head>
 
 <div id="userDetailsScreenId" class="chox-claim-header x-panel-bwrap chox-form-container">
     <s:if test="isShowMessage">
