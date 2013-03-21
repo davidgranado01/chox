@@ -1,14 +1,16 @@
 package idas.chox.web.viewdata;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Task;
 import idas.chox.core.model.WebUser;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -73,6 +75,14 @@ public class TaskViewData {
                     toBeCompletedBy = "Claim Router";
                 } else if (toBeCompletedBy.equals("ROLE_INS_SCR")) {
                     toBeCompletedBy = "Engineer";
+                } else if (toBeCompletedBy.equals("ROLE_INS_SUP")) {
+                    toBeCompletedBy = "Supervisor";
+                } else if (toBeCompletedBy.equals("ROLE_CHO_MI")) {
+                    toBeCompletedBy = "MI User";
+                } else if (toBeCompletedBy.equals("ROLE_INS_ADMIN")) {
+                    toBeCompletedBy = "Admin Manager";
+                } else if (toBeCompletedBy.equals("ROLE_INS_USER")) {
+                    toBeCompletedBy = "User Manager";
                 } else if (toBeCompletedBy.equals("ROLE_INS_MNG")) {
                     toBeCompletedBy = "Manager";
                 } else if (toBeCompletedBy.equals("ROLE_INS_UPLOAD")) {
