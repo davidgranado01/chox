@@ -16,13 +16,13 @@ public class ExcelTask {
     private String taskWrokgroup;
     private String taskCurrentClaimStatus;
     private String taskStatusOfClaimWhenTaskCreated;
-    private boolean taskComplete;
+    private String taskComplete;
 
-    public boolean isTaskComplete() {
+    public String getTaskComplete() {
         return taskComplete;
     }
 
-    public void setTaskComplete(boolean taskComplete) {
+    public void setTaskComplete(String taskComplete) {
         this.taskComplete = taskComplete;
     }
 
