@@ -97,6 +97,8 @@ public class ExcelInvoice {
     private BigDecimal choDiscountFeePaid;
     private BigDecimal insurerDiscountFeePaid;
     private BigDecimal finalPayment;
+    private BigDecimal repairAdminFee;
+    private BigDecimal repairAcquisitionFee;
 
     public ExcelInvoice(Map data, boolean isCHO) {
         claimStatus = (String) data.get("claimstatus");
@@ -126,6 +128,8 @@ public class ExcelInvoice {
         else {
             coverNoteRequiredDesc = coverNoteRequired ? "Yes" : "No";
         }
+        repairAdminFee = (BigDecimal) data.get("repairadminfee");
+        repairAcquisitionFee = (BigDecimal) data.get("repairacquisitionfee");
         adminFee = (BigDecimal) data.get("adminfee");
         adminQty = (Short) data.get("adminqty");
         roofRackFee = (BigDecimal) data.get("roofrackfee");
@@ -529,5 +533,13 @@ public class ExcelInvoice {
 
     public BigDecimal getVatAmountCollected() {
         return vatAmountCollected;
+    }
+
+    public BigDecimal getRepairAdminFee() {
+        return repairAdminFee;
+    }
+
+    public BigDecimal getRepairAcquisitionFee() {
+        return repairAcquisitionFee;
     }
 }
