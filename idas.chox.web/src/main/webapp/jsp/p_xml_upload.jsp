@@ -742,7 +742,7 @@
             msg += "<br/><b>Process Status</b>: " + task.get("processStatus");
             msg += "<br/><b>Remark</b>: " + task.get("remark");
             msg += "<br/><b>Error Message</b>:" + getFormatedErrorMessage(task.get("message"));
-            msg += "<br/><b>BRE Failure Message</b>:" + getFormatedErrorMessage(task.get("breFailureMessages"));
+            msg += "<br/><b>BRE Failure Message</b>:" + task.get("breFailureMessages").replace(/BRE Rule Failed/g,"<br />BRE Rule Failed");
             Ext.MessageBox.show({
                 title: title,
                 msg: msg,
