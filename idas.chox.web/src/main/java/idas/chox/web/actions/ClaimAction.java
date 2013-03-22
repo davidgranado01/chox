@@ -1613,7 +1613,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         int maxDays = 0;
         int maxAllowedSlaExtDays = 0;
 
-        if (slaExtensionEnabled) {
+        if (slaExtensionEnabled && !isSubscriberClaimRejectedMoreThanOnce()) {
             if (ClaimType.isSubscriber(claim.getClaimType())) {
                 maxAllowedSlaExtDays = claim.getChorganisation().getMaxAllowedSlaExtForSubscriber();
                 maxDays = DateHelper.SUBSCRIBER_SLA_DAYS + claim.getSlaExtDays();
