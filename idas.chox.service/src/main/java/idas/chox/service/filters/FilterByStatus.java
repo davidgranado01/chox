@@ -45,8 +45,8 @@ public class FilterByStatus extends BaseFilter {
             // Set filter on Claim Type
             if(ClaimType.FIXED_FEE.getClaimTypeValue() == claimTypeId && getStatus().equals(ClaimStatus.CLAIM_REJECTED)) {
                 // FixedFee rejected claims have their own queue/filter so we don't want to return anything in this filter.
-                // Therefore give an empty set for the claim types
-                claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>());
+                // Therefore add a criteria that will return nothing
+                claimSearchCriteria.setStatuses(new HashSet<String>(Arrays.asList("nosuchstatus")));
             } else {
                 claimSearchCriteria.setClaimTypes(new HashSet<ClaimType>(Arrays.asList(ClaimType.values()[claimTypeId])));
             }

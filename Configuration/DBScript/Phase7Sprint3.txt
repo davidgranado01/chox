@@ -9593,3 +9593,14 @@ GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
 --- END of bug#2515                         -------
 ---------------------------------------------------
 
+------------------------------------------------------------------------------------------------
+-- bug#2536 Dev - 7.3.7 - hide grant extension button after second claim rejection for        --
+--                        subscriber and fixed fee claims                                     --
+------------------------------------------------------------------------------------------------
+UPDATE accessibility
+	SET name='activity.SlaExtension.ClaimRejected'
+WHERE name='activity.SlaExtension.SubscriberClaimRejected
+  AND claim_type=11;
+---------------------------------------------------
+--- END of bug#2536                         -------
+---------------------------------------------------
