@@ -9,11 +9,11 @@
         <title><decorator:title default="CHOX"/></title>
         <s:if test="#parameters.devp || getText('development')">
             <%@ include file="/includes/styles.jsp"%>
-<script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
+            <%@ include file="/includes/scripts.jsp"%>
         </s:if>
         <s:else>
             <%@ include file="/includes/styles-min.jsp"%>
-<script src="<%= request.getContextPath()%>/scripts/general-min.js" type="text/javascript"></script>
+            <%@ include file="/includes/scripts-min.jsp"%>
         </s:else>
         <decorator:head />
 

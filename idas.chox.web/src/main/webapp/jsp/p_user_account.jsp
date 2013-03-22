@@ -1,24 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-    <head>
-        <s:if test="#parameters.devp || getText('development')">
-            <%@ include file="/includes/scripts.jsp"%>
-        </s:if>
-        <s:else>
-            <%@ include file="/includes/scripts-min.jsp"%>
-        </s:else>
-
-        <script type="text/javascript">
-            var generalChoxVersion = '<s:property value="getText('version.number')" />';
-        </script>
-    </head>
 
 <div id="userDetailsScreenId" class="chox-claim-header x-panel-bwrap chox-form-container">
     <s:if test="isShowMessage">
         <div class="status-info"><s:property value="message" /></div>
     </s:if>
 
+    
     <fieldset class="x-fieldset">
         <legend>User Details</legend>
         <div class="form-container">

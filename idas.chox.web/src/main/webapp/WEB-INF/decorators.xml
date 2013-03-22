@@ -18,6 +18,9 @@
 
     <decorator name="simple" page="simple.jsp">
         <pattern>/prv/openUserAccountRedirect.action</pattern>
+    </decorator>
+    
+    <decorator name="bare" page="bare.jsp">
         <pattern>/*.html</pattern>
     </decorator>
     
