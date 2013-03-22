@@ -9484,6 +9484,12 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.InvoicePaymentLogged';
 
+DELETE FROM accessibility_item WHERE accessibility_id = (select id from accessibility where name='activity.SwitchClaim.SubscriberClaimRejected')
+AND role = 'ROLE_CHO_OPR';
+DELETE FROM accessibility_item WHERE accessibility_id = (select id from accessibility where name='activity.SwitchClaim.SubscriberClaimRejected')
+AND role = 'ROLE_CHO_MNG';
+
+
 ---------------------------------------------------
 --- END of bug#2508                         -------
 ---------------------------------------------------
@@ -9586,6 +9592,4 @@ GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
 ---------------------------------------------------
 --- END of bug#2515                         -------
 ---------------------------------------------------
-
-
 
