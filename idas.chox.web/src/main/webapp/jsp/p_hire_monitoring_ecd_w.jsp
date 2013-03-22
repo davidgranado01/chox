@@ -95,8 +95,13 @@
                 </div>
                 <div class="chox-form-item-button">
                     <input type="submit" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" />&nbsp;&nbsp;&nbsp;
+            <s:if test="isInsurer">
+                    <s:checkbox disabled='true' id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+            </s:if>
+            <s:else>
                     <s:checkbox id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
-                </div>
+            </s:else>
+               </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
                 <div id="ECDMessageBox" class="action-error-msg"></div>
             </s:if>
