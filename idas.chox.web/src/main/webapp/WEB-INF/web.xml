@@ -15,6 +15,9 @@
     <listener> 
         <listener-class> de.huxhorn.lilith.logback.servlet.LogbackShutdownServletContextListener </listener-class> 
     </listener>
+    <listener>
+        <listener-class>clime.messadmin.core.MessAdminListener</listener-class>
+    </listener>
 
     <!-- Filters -->
     <filter>
