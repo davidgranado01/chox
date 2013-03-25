@@ -9648,7 +9648,7 @@ GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
 ------------------------------------------------------------------------------------------------
 UPDATE accessibility
 	SET name='activity.SlaExtension.ClaimRejected'
-WHERE name='activity.SlaExtension.SubscriberClaimRejected
+WHERE name='activity.SlaExtension.SubscriberClaimRejected'
   AND claim_type=11;
 ---------------------------------------------------
 --- END of bug#2536                         -------
