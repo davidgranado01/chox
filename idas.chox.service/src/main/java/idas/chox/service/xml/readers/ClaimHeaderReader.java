@@ -209,6 +209,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     }
                     break;
                 case INVOICEONLY:
+                case INSURERUPLOAD:
                     if (isInsurerUpload && securityInfoProvider.getCurrentUser().getInsurer().isInvoiceUploadEnabled()) {
                         LOG.debug("Insurer Invoice upload found");
                         processInsurerInvoice(claimResult, claim);

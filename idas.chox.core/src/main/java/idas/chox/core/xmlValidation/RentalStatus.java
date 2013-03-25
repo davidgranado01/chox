@@ -12,6 +12,7 @@ public enum RentalStatus {
     SUPPLEMENTARYINVOICE("supplementaryinvoice"),
     INSURERVSINSURER("insurervsinsurer"),
     INVOICEONLY("invoiceonly"),
+    INSURERUPLOAD("insurerupload"),
     SUBSCRIBER("subscriber"),
     FIXEDFEE("fixedfee");
 
@@ -79,6 +80,7 @@ public enum RentalStatus {
 
     public static boolean isInsurerUploadRentalStatus(String rentalStatus) {
         if (RentalStatus.INVOICEONLY.getDescription().equals(rentalStatus)
+                || RentalStatus.INSURERUPLOAD.getDescription().equals(rentalStatus)
                 || RentalStatus.INPROGRESS.getDescription().equals(rentalStatus)
                 || RentalStatus.COMPLETE.getDescription().equals(rentalStatus)
                 || RentalStatus.OFFHIRED.getDescription().equals(rentalStatus)
