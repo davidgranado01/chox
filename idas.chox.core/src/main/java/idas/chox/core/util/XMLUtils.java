@@ -1,8 +1,6 @@
 package idas.chox.core.util;
 
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +9,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.zip.GZIPOutputStream;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,6 +23,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,6 +31,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+
 
 /**
  * Misc XML utilities
@@ -62,8 +66,9 @@ public final class XMLUtils {
         for(int i=0;i<nodes;i++)    {
             Node n=nl.item(i);
             short nt=n.getNodeType();
-            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE)
+            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE) {
                 sb.append(n.getNodeValue());
+            }
         }
         return sb.toString().trim();
     }
@@ -78,8 +83,9 @@ public final class XMLUtils {
         for(int i=0;i<nodes;i++)    {
             Node n=nl.item(i);
             short nt=n.getNodeType();
-            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE)
+            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE) {
                 sb.append(n.getNodeValue());
+            }
         }
         return sb.toString();
     }
@@ -102,7 +108,9 @@ public final class XMLUtils {
     throws DOMException
     {
         NodeList nl=root.getElementsByTagName(tag);
-        if(nl.getLength()==0) return null;
+        if(nl.getLength()==0) {
+            return null;
+        }
         return getElementText((Element)nl.item(0));
     }
 
@@ -111,8 +119,9 @@ public final class XMLUtils {
     throws DOMException
     {
         Element e=doc.createElement(tag);
-        if(value!=null)
+        if(value!=null) {
             e.appendChild(doc.createCDATASection(value));
+        }
         return e;
     }
 
@@ -120,8 +129,9 @@ public final class XMLUtils {
     throws DOMException
     {
         Element e=doc.createElement(tag);
-        if(value!=null)
+        if(value!=null) {
             e.appendChild(doc.createCDATASection(value));
+        }
         parent.appendChild(e);
         return e;
     }
@@ -130,8 +140,9 @@ public final class XMLUtils {
     throws DOMException
     {
         Element e=doc.createElement(tag);
-        if(value!=null)
+        if(value!=null) {
             e.appendChild(doc.createTextNode(value));
+        }
         parent.appendChild(e);
         return e;
     }
@@ -237,7 +248,9 @@ public final class XMLUtils {
     public static Document toDocument(String xmlText)
     throws DOMException, ParserConfigurationException, SAXException, IOException
     {
-        if(xmlText==null) return null;
+        if(xmlText==null) {
+            return null;
+        }
         DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
         DocumentBuilder db=dbf.newDocumentBuilder();
         Document doc=db.parse(new InputSource(new StringReader(xmlText)));
@@ -247,7 +260,9 @@ public final class XMLUtils {
     public static Document toDocument(File xmlFile)
     throws DOMException, ParserConfigurationException, SAXException, IOException
     {
-        if(xmlFile==null || !xmlFile.canRead()) return null;
+        if(xmlFile==null || !xmlFile.canRead()) {
+            return null;
+        }
         DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
         DocumentBuilder db=dbf.newDocumentBuilder();
         Document doc=db.parse(xmlFile);
@@ -272,7 +287,9 @@ public final class XMLUtils {
     public static Document toDocument(byte [] xmlData)
     throws Exception
     {
-        if(xmlData==null) return null;
+        if(xmlData==null) {
+            return null;
+        }
         StringBuilder sb=new StringBuilder(xmlData.length);
         for(int i=0;i<xmlData.length;i++)   {
             sb.setCharAt(i,(char)xmlData[i]);
@@ -284,7 +301,9 @@ public final class XMLUtils {
     throws DOMException
     {
         NodeList nl=start.getElementsByTagName(tag);
-        if(nl.getLength()==0) return null;
+        if(nl.getLength()==0) {
+            return null;
+        }
         return (Element)nl.item(0);
     }
 
@@ -293,8 +312,9 @@ public final class XMLUtils {
     {
         XPath xpath=XPathFactory.newInstance().newXPath();
         Element e=(Element)xpath.evaluate(path,doc,XPathConstants.NODE);
-        if(e==null)
+        if(e==null) {
             return defaultValue;
+        }
         return getElementText(e);
     }
 
@@ -310,8 +330,9 @@ public final class XMLUtils {
     throws DOMException,XPathExpressionException
     {
         Element parent=getElement(doc,parentPath);
-        if(parent==null)
+        if(parent==null) {
             return null;
+        }
         NodeList nl=parent.getElementsByTagName(tag);
         ArrayList<Element> nodes=new ArrayList<Element>();
         for(int i=0;i<nl.getLength();i++)   {

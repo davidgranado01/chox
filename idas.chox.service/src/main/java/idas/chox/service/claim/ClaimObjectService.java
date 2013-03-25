@@ -17,11 +17,10 @@ import idas.chox.core.model.LiabilityStatus;
  * @author abrar
  */
 public class ClaimObjectService {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimObjectService.class);
 
     private Map<Integer,String> dropDownMapWithNulls;
     private Map<Integer,String> dropDownMap;
-//    private Map dropDownMapSearch;
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimObjectService.class);
 
     /**
      * @return the dropDownList

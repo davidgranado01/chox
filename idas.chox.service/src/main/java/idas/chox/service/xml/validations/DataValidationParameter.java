@@ -12,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.util.DocumentHelper;
+import idas.chox.core.util.XMLUtils;
+import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.NodeRuleModel;
+import org.w3c.dom.Element;
 
 
 public class DataValidationParameter {
@@ -46,30 +49,83 @@ public class DataValidationParameter {
             }
         }
         
-        Node fieldNode = doc.getDocumentElement().getElementsByTagName(nodeName).item(0);
+        Element fieldElement = XMLUtils.getElement(doc.getDocumentElement(), nodeName);
         
-        if (fieldNode != null) {
+        if (fieldElement != null) {
             ruleModel = new NodeRuleModel();
             ruleModel.setNodeName(nodeName);
-            ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
-            ruleModel.setDataType(fieldNode.getChildNodes().item(3).getTextContent());
-            ruleModel.setNewClaimDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
-            ruleModel.setInsurerInvoiceDataMandatory(fieldNode.getChildNodes().item(7).getTextContent());
-            ruleModel.setExistingClaimDataMandatory(fieldNode.getChildNodes().item(9).getTextContent());
-            ruleModel.setNewInvoiceDataMandatory(fieldNode.getChildNodes().item(11).getTextContent());
-            ruleModel.setExistingInvoiceDataMandatory(fieldNode.getChildNodes().item(13).getTextContent());
-            ruleModel.setTpiInterventionDataMandatory(fieldNode.getChildNodes().item(15).getTextContent());
-            ruleModel.setOffHiredDataMandatory(fieldNode.getChildNodes().item(17).getTextContent());
-            ruleModel.setHireMonitoringDataMandatory(fieldNode.getChildNodes().item(19).getTextContent());
-            ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(21).getTextContent());
-            ruleModel.setNewSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(23).getTextContent());
-            ruleModel.setExistingSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(25).getTextContent());
-            ruleModel.setNewFixedFeeClaimDataMandatory(fieldNode.getChildNodes().item(27).getTextContent());
-            ruleModel.setExistingFixedFeeClaimDataMandatory(fieldNode.getChildNodes().item(29).getTextContent());
-            ruleModel.setLength(fieldNode.getChildNodes().item(31).getTextContent());
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(33).getTextContent());
-            ruleModel.setInsurerClaimDataMandatory(fieldNode.getChildNodes().item(35).getTextContent());
-
+            if (fieldElement.getElementsByTagName("data-description") != null) {
+                ruleModel.setNodeDesc(XmlHelper.getNodeValue(fieldElement, "data-description"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-type") != null) {
+                ruleModel.setDataType(XmlHelper.getNodeValue(fieldElement, "data-type"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-length") != null) {
+                ruleModel.setLength(XmlHelper.getNodeValue(fieldElement, "data-length"));
+            }
+            
+            if (fieldElement.getElementsByTagName("reg-exp") != null) {
+                ruleModel.setRegExp(XmlHelper.getNodeValue(fieldElement, "reg-exp"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newClaim") != null) {
+                ruleModel.setNewClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newInsurerInvoice") != null) {
+                ruleModel.setInsurerInvoiceDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newInsurerInvoice"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-existingClaim") != null) {
+                ruleModel.setExistingClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newInvoice") != null) {
+                ruleModel.setNewInvoiceDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newInvoice"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-existingInvoice") != null) {
+                ruleModel.setExistingInvoiceDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingInvoice"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-tpiIntervention") != null) {
+                ruleModel.setTpiInterventionDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-tpiIntervention"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-offHired") != null) {
+                ruleModel.setOffHiredDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-offHired"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-hireMonitoring") != null) {
+                ruleModel.setHireMonitoringDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-hireMonitoring"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newSupplementaryInvoice") != null) {
+                ruleModel.setNewSupplementaryInvoiceMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newSupplementaryInvoice"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newSubscriberClaim") != null) {
+                ruleModel.setNewSubscriberClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newSubscriberClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-existingSubscriberClaim") != null) {
+                ruleModel.setExistingSubscriberClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingSubscriberClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newFixedFeeClaim") != null) {
+                ruleModel.setNewFixedFeeClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newFixedFeeClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-existingFixedFeeClaim") != null) {
+                ruleModel.setExistingFixedFeeClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingFixedFeeClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-newInsurerClaim") != null) {
+                ruleModel.setInsurerClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newInsurerClaim"));
+            }
+            
             validationMap.put(nodeName, ruleModel);
             LOG.debug("Added validation for field: {}", nodeName);
         }
