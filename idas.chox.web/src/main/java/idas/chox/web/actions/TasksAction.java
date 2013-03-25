@@ -525,6 +525,7 @@ public class TasksAction extends BaseAction {
 
         final Map excelMap = new HashMap();
         excelMap.put("excelTasks", excelTasks);
+        excelMap.put("isCho", getIsCHO());
 
         final String templateFilePath = getReportTemplatePath("taskExportTemplate.xls");
         final File reportFile = File.createTempFile("task_export_excel_report", ".xls");
