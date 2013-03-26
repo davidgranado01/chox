@@ -525,18 +525,20 @@ public class TasksAction extends BaseAction {
 
         final Map excelMap = new HashMap();
         excelMap.put("excelTasks", excelTasks);
-        excelMap.put("isCho", getIsCHO());
 
         final String templateFilePath = getReportTemplatePath("taskExportTemplate.xls");
         final File reportFile = File.createTempFile("task_export_excel_report", ".xls");
         reportFile.deleteOnExit();
         LOG.info("'Task Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
-
+        final boolean isCho = getIsCHO();
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 try {
-                    final XLSTransformer transformer = new XLSTransformer();
+                    XLSTransformer transformer = new XLSTransformer();
+                    if (isCho) {
+                        transformer.setColumnsToHide(new short[]{(short) 7, (short) 8});
+                    }
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
                     InputStream is = new FileInputStream(templateFilePath);
                     HSSFWorkbook workbook = transformer.transformXLS(is, excelMap);
@@ -548,7 +550,7 @@ public class TasksAction extends BaseAction {
                     LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
                     os.close();
                 } catch (Exception ex) {
-                    LOG.error("Exception thrown transforming report: {}", ex.getMessage());
+                    LOG.error("Exception thrown transforming report:", ex);
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                     getSession().put("exceptionThrown", true);
                 }
