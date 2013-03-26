@@ -89,7 +89,11 @@ public class CustomerReader extends BaseEntityReader {
         claimResult.getClaim().getCustomer().setTelephoneEvening(XmlHelper.getNodeValue(element, "telephone-evening"));
         claimResult.getClaim().getCustomer().setEmail(XmlHelper.getEmailAddressFromNode(element, "email"));
         claimResult.getClaim().getCustomer().setIsPrimaryDriver(true);
-        claimResult.getClaim().getCustomer().setAge(XmlHelper.getIntegerFromNode(element, "age"));
+        if (XmlHelper.getIntegerFromNode(element, "age") != 0) {
+            claimResult.getClaim().getCustomer().setAge(XmlHelper.getIntegerFromNode(element, "age"));
+        } else {
+            claimResult.getClaim().getCustomer().setAge(null);
+        }
         claimResult.getClaim().getCustomer().setOccupation(XmlHelper.getNodeValue(element, "occupation"));
         claimResult.getClaim().getCustomer().setPolicyUsage(XmlHelper.getNodeValue(element, "policy-usage"));
 

@@ -16,6 +16,7 @@
         {
             errorLabelContainer: "#CDmessageBox",
             rules: {
+<s:if test="!isInsurer">
                 title:{
                     required:true
                 },
@@ -31,6 +32,13 @@
                 insurerName:{
                     required:true
                 },
+                policyNumber:{
+                    required:true
+                },
+                location:{
+                    required:true
+                },
+</s:if>
                 vehicleClassId:{
                     min:1
                 },
@@ -40,13 +48,7 @@
                 vehicleModel:{
                     required:true
                 },
-                policyNumber:{
-                    required:true
-                },
                 vehicleRegistration:{
-                    required:true
-                },
-                location:{
                     required:true
                 },
                 age:{
@@ -57,6 +59,7 @@
                 }
             },
             messages: {
+<s:if test="!isInsurer">
                 title: {
                     required:"You must supply a value for 'Title'"
                 },
@@ -69,11 +72,18 @@
                 postcode: {
                     required:"You must supply a value for 'Postcode'"
                 },
-                vehicleClassId:{
-                    min: "You must select a Vehicle Class"
-                },
                 insurerName:{
                     required:"You must supply a value for 'Insurer'"
+                },
+                policyNumber: {
+                    required:"You must supply a value for 'Policy Number'"
+                },
+                location: {
+                    required:"You must supply a value for 'Vehicle Location'"
+                },
+</s:if>
+                vehicleClassId:{
+                    min: "You must select a Vehicle Class"
                 },
                 vehicleManufacturer: {
                     required:"You must supply a value for 'Vehicle Manufacturer'"
@@ -81,15 +91,10 @@
                 vehicleModel: {
                     required:"You must supply a value for 'Vehicle Model'"
                 },
-                policyNumber: {
-                    required:"You must supply a value for 'Policy Number'"
-                },
                 vehicleRegistration: {
                     required:"You must supply a value for 'Vehicle Registration'"
                 },
-                location: {
-                    required:"You must supply a value for 'Vehicle Location'"
-                }, age:{
+                age:{
                     number:"You must supply a numeric value for 'Age'"
                 },
                 email :{
@@ -114,7 +119,7 @@
         <legend>Customer Details</legend>
         <div class="form-container" id="customerDetailsWId">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Title<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>
             </div>
             <div class="chox-form-item">
@@ -123,11 +128,11 @@
                 <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Surname<span class="mandatory">*</span></label>
+                    Surname<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDSurname" name="lastName"  value="<s:property value="lastName" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Address 1<span class="mandatory">*</span></label>
+                    Address 1<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDAddress1"  name="address1" value="<s:property value="address1" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -147,7 +152,7 @@
                 <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Postcode<span class="mandatory">*</span></label>
+                    Postcode<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -179,12 +184,12 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Insurer<span class="mandatory">*</span></label>
+                    Insurer<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDInsurerName" name="insurerName" value="<s:property value="insurerName" />" /></div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Policy Number<span class="mandatory">*</span></label>
+                    Policy Number<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDPolicyNumber" name="policyNumber" value="<s:property value="policyNumber" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -224,7 +229,7 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Vehicle Location<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Vehicle Location<s:if test="!isInsurer"><span class="mandatory">*</span></s:if></label>
                 <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value="<s:property value="location" />" />
             </div>
 
