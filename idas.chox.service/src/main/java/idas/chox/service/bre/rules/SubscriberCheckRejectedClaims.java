@@ -44,11 +44,6 @@ public class SubscriberCheckRejectedClaims implements IBusinessRule {
                 int hireDays = claim.getVehicleHire().getDays();
                 int numDays = claimService.getSubscriberClaimRejectedDays(claim.getId());
 
-                if (numDays > 5) { // This should not happen!!
-                    LOG.error("The number of days before the subscriber claim was rejected is {}  - setting to 5", numDays);
-                    numDays = 5;
-                }
-
                 if (hireDays > numDays) {
                     success = false;
                     narrative = "The cumulative number of days prior to the claim rejection was " + numDays
