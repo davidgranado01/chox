@@ -39,21 +39,21 @@ public class CustomerReader extends BaseEntityReader {
 
             claimResult.setCheckDataValid(true);
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "title", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "firstnames", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "lastname", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address1", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address2", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address3", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address4", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address5", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "postcode", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "telephone-day", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "telephone-evening", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "email", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "age", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "occupation", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "policy-usage", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "title", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "firstnames", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "lastname", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address1", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address2", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address3", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address4", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address5", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "postcode", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "telephone-day", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "telephone-evening", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "email", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "age", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "occupation", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "policy-usage", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
             LOG.debug("Validated new claim: {}", isAllowToReadData);

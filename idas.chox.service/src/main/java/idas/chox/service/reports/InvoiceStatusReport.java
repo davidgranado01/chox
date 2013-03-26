@@ -99,7 +99,7 @@ public class InvoiceStatusReport implements Report {
         try {
         userOrgName = currentUser.getOrganisationName();
         if (((String[]) externalParameter.get("DateStart")) != null) {
-            dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+            dataStart = DateHelper.parse(((String[]) externalParameter.get("DateStart"))[0]);
             LOG.debug("dataStart :" + dataStart);
         } else {
             throw new Exception("Start date cannot be empty.");

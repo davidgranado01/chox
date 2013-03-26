@@ -31,7 +31,7 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
         claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
         claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPaymentMade());
-        claim.addComment(Comment.New(0, "An interim payment of £" + claim.getInvoice().getInterimPaymentMade().toString()
+        claim.addComment(Comment.newComment(0, "An interim payment of £" + claim.getInvoice().getInterimPaymentMade().toString()
                 + " has been received and accepted as a full and final payment."));
 
         if (claim.getStatus().equals(ClaimStatus.CLAIM_CLOSED)) {

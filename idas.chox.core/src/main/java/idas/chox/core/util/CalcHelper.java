@@ -12,7 +12,7 @@ public class CalcHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcHelper.class);
 
-    public static boolean EqualTo(BigDecimal a, BigDecimal b) {
+    public static boolean equalTo(BigDecimal a, BigDecimal b) {
 
         boolean bFlag = false;
 
@@ -30,7 +30,7 @@ public class CalcHelper {
 
     }
 
-    public static boolean LessThanOrEqualTo(BigDecimal a, BigDecimal b) {
+    public static boolean lessThanOrEqualTo(BigDecimal a, BigDecimal b) {
 
         boolean bFlag = false;
 

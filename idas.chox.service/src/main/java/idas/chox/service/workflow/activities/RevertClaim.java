@@ -80,12 +80,12 @@ public class RevertClaim extends BaseActivity {
                 // CHO has reverted back from InvoicePaymentLogged - add a note
                 Comment comment;
                 if (amountReceived == null) {
-                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
+                    comment = Comment.newComment(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the payment. Please check the payment details in your claim system and if available add the cheque/BACS reference, date cashed, amount raised and reference the payment was sent under.");
                 }
                 else {
-                    comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on "
+                    comment = Comment.newComment(0, "The claim was marked as 'Invoice Payment Logged' on "
                             + DateHelper.getLocalDateTimeFormat().format(originalStatusModifiedDate)
                             + ", however the CHO has not received the full amount and has marked the payment as an Interim Payment of £"
                             + amountReceived + " as there is an amount outstanding. Please check " 

@@ -52,7 +52,7 @@ public class AssignSupplierOwner extends BaseActivity {
         LOG.debug("Assign supplier owner ('{}) to claim {}.", supplierClaimOwner.getFullName(), claim.getChoReference());
         claim.setSupplierClaimOwner(supplierClaimOwner);
         if (supplierClaimOwner.getTelephone() != null && supplierClaimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.New(0, "Supplier Claims Handler is '" + supplierClaimOwner.getFullName() + "' (contact number: " + supplierClaimOwner.getTelephone() +")");
+            Comment comment = Comment.newComment(0, "Supplier Claims Handler is '" + supplierClaimOwner.getFullName() + "' (contact number: " + supplierClaimOwner.getTelephone() +")");
             claim.addComment(comment);
         }
     }

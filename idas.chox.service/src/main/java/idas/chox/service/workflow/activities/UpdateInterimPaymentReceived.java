@@ -17,7 +17,7 @@ public class UpdateInterimPaymentReceived extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
 		if (claim.getInvoice().getInterimPaymentMade().compareTo(BigDecimal.ZERO) > 0) {
-			claim.addComment(Comment.New(0, "An interim payment of £" + partialInterimPayment.toString() + " has been received."));
+			claim.addComment(Comment.newComment(0, "An interim payment of £" + partialInterimPayment.toString() + " has been received."));
 			claim.getInvoice().setInterimPaymentReceived(partialInterimPayment);
 		} else {
 			LOG.error("Trying to update interim payment received when there is no interim payment amount for this claim: {} by {}",

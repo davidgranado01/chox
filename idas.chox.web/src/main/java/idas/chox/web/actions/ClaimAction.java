@@ -409,7 +409,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     /*
-     * New functionality for Phase 7 Sprint 1:
+     * newComment functionality for Phase 7 Sprint 1:
      *   7.1.4 Updates to Subscriber Process Model
      * Check for the following condition being satisfied:
      *      1.  When a Subscriber claim is in the status 'ClaimUnacknowledgedRouted' or 'ClaimUpdatedByEngineer'
@@ -739,18 +739,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
 
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
+                        comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName()
                                 + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                     } else {
-                        comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
+                        comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName() + "'");
                     }
                 } else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                    comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
+                    comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
                             + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                 } else {
-                    comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
+                    comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
                 }
                 claim.addComment(comment);
                 claim.setSupplierClaimOwner(newClaimOwner);
@@ -784,7 +784,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (getAuthenticatedUser().isCHO()) {
                 claim.setFinalReviewCho(finalReviewRequired);
                 if (finalReviewRequired) {
-                    claim.addComment(Comment.New(2, "Final Review Reason: " + finalReviewReason));
+                    claim.addComment(Comment.newComment(2, "Final Review Reason: " + finalReviewReason));
                     claim.setFinalReviewByCho(getAuthenticatedUser());
                     claim.setFinalReviewDateCho(new Date());
                 } else {
@@ -794,7 +794,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else if (getAuthenticatedUser().isAnInsurer()) {
                 claim.setFinalReviewIns(finalReviewRequired);
                 if (finalReviewRequired) {
-                    claim.addComment(Comment.New(1, "Final Review Reason: " + finalReviewReason));
+                    claim.addComment(Comment.newComment(1, "Final Review Reason: " + finalReviewReason));
                     claim.setFinalReviewByIns(getAuthenticatedUser());
                     claim.setFinalReviewDateIns(new Date());
                 } else {
@@ -832,10 +832,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment = Comment.New(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                         claim.addComment(comment);
                     } else {
-                        Comment comment = Comment.New(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                        Comment comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                         claim.addComment(comment);
                     }
                     Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
@@ -876,10 +876,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     if (claim.getClaimOwner() != null) {
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
-                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    Comment comment = Comment.newComment(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.newComment(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                         claim.addComment(comment2);
                     }
 
@@ -927,7 +927,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     throw new Exception("Total liability is not 100%");
                 }
 
-                Comment comment = Comment.New(0, note);
+                Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
                 claim.setPercentageLiabilityAccepted(fPercentageLiabilityAccepted);
@@ -1149,20 +1149,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     && (!(claim.getInsurer().isEnableManualInvoiceWorkgroups() || claim.getInsurer().isEnableManualInvoiceOwnership()) 
                     || (!(claim.getInsurer().isWorkgroupEnable() || claim.getInsurer().isClaimOwnershipEnable())))) {
                 accessRight = 0;
-//                LOG.debug("accessRight made to 0 in MANUAL INVOICE WORKGROUP/OWNERSHIP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
             // Remove 'Update Claim Owner' and 'Update Workgroup' if both workgroups and Ownership activated
             if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP)
                     && claim.getInsurer().isClaimOwnershipEnable()) {
                 accessRight = 0;
-//                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
             if (accessRight > 0 && actionName.equals(ExtraAction.UPDATE_INSURER_CLAIM_OWNER)
                     && claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
-//                LOG.debug("accessRight made to 0 in WORKGROUP UPDATE CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
             
 
@@ -1179,11 +1176,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         }
 
                     } catch (Exception e) {
-//                        LOG.debug("thrown exception is {}", e.getMessage());
                         b = false;
                     }
                     if (!b) {
-//                        LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
                         accessRight = 0;
                     }
                 } else if (actionName.equals(ExtraAction.UPDATE_PENALTY_CHARGES)) {
@@ -1203,12 +1198,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             
                             if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && !(invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
                                 pcExistsBeforeSwithedOffInBreBand = true;
-//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
                             }
                             
                             if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) && (invoice.getTotalPenaltyCharge() == null || invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) == 0)) {
                                 accessRight = 0;
-//                                LOG.debug("Penalty Charges not allowed by BRE band and no existing penalty charges - no access to More Action 'updatePenaltyCharges'");
                             }
                         }
                         
@@ -1221,7 +1214,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                          * to apply the penalty charges
                          */
                         if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && days <= penaltyChargeService.getFirstPenaltyBand(claim) && !ClaimType.isInsurerUpload(claim.getClaimType())) {
-//                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
                             accessRight = 0;
                         }
                         // Check the 'Adjust Penalty Charges' Panel is not already displayed and not insurer upload claim.
@@ -1231,7 +1223,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                                         && (!claim.isAutoPenaltyChargeEnabled() 
                                             || penaltyChargeService.calculateCurrentPenaltyBand(claim) >= penaltyChargeService.getLastPenaltyBand(claim)))) 
                                     && days > invoice.getPenaltyBand()) {
-//                                LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
                                 accessRight = 0;
                             }
                         }
@@ -1239,10 +1230,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         
                     } else {
                         // No invoice!
-//                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
                         accessRight = 0;
                     }
-//                    LOG.debug("Access right for Update Penalty Charges is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.PENALTY_CHARGE_CONFIGURATION)) {
                     if (claim.getInvoice() != null) {
                         if (claim.getBreBand() == null) {
@@ -1251,14 +1240,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         }
 
                         if (!claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
-//                            LOG.debug("BRE Band does not allow penalty charges");
                             accessRight = 0;
                         }
                     } else { // No invoice! or wrong claim type
-//                        LOG.debug("No invoice or wrong claim type - no access to Penalty Charge Config");
                         accessRight = 0;
                     }
-//                    LOG.debug("Access right for Penalty Charges Configuration is {}", accessRight);
                 } else if (actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
 
                     String customerClaimRef = claim.getCustomer().getClaimReference();
@@ -1355,7 +1341,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
             if (claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType())) {
-//                            LOG.debug("BRE Band does not allow penalty charges");
                 return true;
             }
         }

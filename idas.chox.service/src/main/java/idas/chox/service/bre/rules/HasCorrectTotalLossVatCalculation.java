@@ -35,7 +35,7 @@ public class HasCorrectTotalLossVatCalculation implements IBusinessRule {
             BigDecimal actual = invoice.getTotalLossFeeVat();
             BigDecimal expected = iCalc.getCalculatedTotalLossVat();
 
-            boolean success = CalcHelper.EqualTo(actual, expected);
+            boolean success = CalcHelper.equalTo(actual, expected);
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

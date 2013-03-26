@@ -95,11 +95,11 @@ public class AdminWeeklyOverviewReport implements Report {
             }
 
             if(((String[]) externalParameter.get("DateStart"))!=null){
-                startDate = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+                startDate = DateHelper.parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
 
             if(((String[]) externalParameter.get("DateStart"))!=null){
-                endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+                endDate = DateHelper.parse(((String[]) externalParameter.get("DateEnd"))[0]);
             } 
 
             if(endDate == null || startDate == null) {

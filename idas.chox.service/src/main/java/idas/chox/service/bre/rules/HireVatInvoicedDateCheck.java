@@ -41,7 +41,7 @@ public class HireVatInvoicedDateCheck implements IBusinessRule {
             BigDecimal actual = invoice.getHireVat();
             BigDecimal expected = iCalc.getCalculatedHireVat(invoice.getDateInvoiced());
 
-//            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+//            boolean success = CalcHelper.lessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

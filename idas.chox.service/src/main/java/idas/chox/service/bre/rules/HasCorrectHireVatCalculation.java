@@ -36,7 +36,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
             BigDecimal actual = invoice.getHireVat();
             BigDecimal expected = iCalc.getCalculatedHireVat();
 
-            boolean success = CalcHelper.EqualTo(actual, expected);
+            boolean success = CalcHelper.equalTo(actual, expected);
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

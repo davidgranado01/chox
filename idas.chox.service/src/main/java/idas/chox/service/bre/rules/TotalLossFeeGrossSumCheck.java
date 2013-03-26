@@ -31,7 +31,7 @@ public class TotalLossFeeGrossSumCheck implements IBusinessRule {
         if (claim.getBreBand().isHasTotalLossFeeGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
 
-            boolean success = CalcHelper.EqualTo(invoice.getTotalLossFeeGross(), invoice.getTotalLossFeeNet().add(invoice.getTotalLossFeeVat()));
+            boolean success = CalcHelper.equalTo(invoice.getTotalLossFeeGross(), invoice.getTotalLossFeeNet().add(invoice.getTotalLossFeeVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

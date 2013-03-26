@@ -130,11 +130,11 @@ public class InvoiceSummaryReport implements Report {
             Date dataEnd = null;
 
             if (((String[]) externalParameter.get("DateStart")) != null) {
-                dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+                dataStart = DateHelper.parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
 
             if (((String[]) externalParameter.get("DateStart")) != null) {
-                dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+                dataEnd = DateHelper.parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
             

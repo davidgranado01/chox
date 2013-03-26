@@ -65,7 +65,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         Date firstRegistration = claim.getVehicleHire().getHpiFirstRegistration();
                         Date hireStart = claim.getVehicleHire().getHireStart();
                         if (firstRegistration != null && hireStart != null) {
-                            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+                            age = new BigDecimal(DateHelper.differenceInYears(hireStart, firstRegistration));
                             vehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                             LOG.debug("Got vehicle class price {} for vehicle of {} years old", vehicleClassPrice, age);
                         } else {

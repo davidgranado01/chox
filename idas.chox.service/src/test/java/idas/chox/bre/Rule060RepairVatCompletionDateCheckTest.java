@@ -103,7 +103,7 @@ public class Rule060RepairVatCompletionDateCheckTest extends BaseTest {
 
         claim.getInvoice().setRepairVat(new BigDecimal(177.67).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         claim.getInvoice().setRepairNet(new BigDecimal(888.38));
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("09/05/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("09/05/2011"));
 
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -121,7 +121,7 @@ public class Rule060RepairVatCompletionDateCheckTest extends BaseTest {
 
         claim.getInvoice().setRepairVat(new BigDecimal(178.67).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         claim.getInvoice().setRepairNet(new BigDecimal(888.38));
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("09/05/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("09/05/2011"));
 
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
 

@@ -40,7 +40,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
         claim.setInvoice(testClaim.getTestInvoice());
         claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
 
-        claim.getVehicleHire().setRentalStart(DateHelper.Parse("01/10/2009"));
+        claim.getVehicleHire().setRentalStart(DateHelper.parse("01/10/2009"));
         claim.getVehicleHire().setDays(10);
 
         return claim;
@@ -66,7 +66,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
-        claim.getVehicleHire().setRentalEnd(DateHelper.Parse("11/10/2009"));
+        claim.getVehicleHire().setRentalEnd(DateHelper.parse("11/10/2009"));
 
         RuleEvaluation rv = new NumberOfHireDaysReconcile().applyToClaim(claim);
 
@@ -81,7 +81,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
-        claim.getVehicleHire().setRentalEnd(DateHelper.Parse("10/10/2009"));
+        claim.getVehicleHire().setRentalEnd(DateHelper.parse("10/10/2009"));
 
         RuleEvaluation rv = new NumberOfHireDaysReconcile().applyToClaim(claim);
 
@@ -96,7 +96,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
-        claim.getVehicleHire().setRentalEnd(DateHelper.Parse("09/10/2009"));
+        claim.getVehicleHire().setRentalEnd(DateHelper.parse("09/10/2009"));
 
         RuleEvaluation rv = new NumberOfHireDaysReconcile().applyToClaim(claim);
 

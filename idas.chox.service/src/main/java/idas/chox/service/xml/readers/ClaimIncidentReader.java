@@ -33,10 +33,10 @@ public class ClaimIncidentReader extends BaseEntityReader {
 
             claimResult.setCheckDataValid(true);
             // INCIDENT
-            claimResult = NodeHelper.nodeValidate(sectionName, "date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "location", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "police-involved", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "description", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "location", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "police-involved", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "description", element, claimResult, getDataValidationParameter());
 
             LOG.debug("Incident section validated with claimResult: {}", claimResult);
             LOG.debug("Incident section validated with isAllowToReadData: {}", claimResult.isCheckDataValid());

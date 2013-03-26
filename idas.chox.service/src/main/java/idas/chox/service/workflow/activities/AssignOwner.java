@@ -63,7 +63,7 @@ public class AssignOwner extends BaseActivity {
             claim.setStatus(claim.getTpiClaimStatus());
         }
         if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
+            Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
         }
     }

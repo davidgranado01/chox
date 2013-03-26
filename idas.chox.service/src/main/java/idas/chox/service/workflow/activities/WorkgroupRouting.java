@@ -154,7 +154,7 @@ public class WorkgroupRouting extends BaseActivity {
         }
 
         if (firstRegistration != null && hireStart != null) {
-            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+            age = new BigDecimal(DateHelper.differenceInYears(hireStart, firstRegistration));
         }
         LOG.debug("vehicle class age : {}", age.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 

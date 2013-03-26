@@ -117,7 +117,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
                         || ((getAuthenticatedUser().getId().compareTo(user.getId())==0 
                              || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())   
                              || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
-                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
+                            && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) <= 5)) {
 
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
@@ -126,7 +126,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
                 } else {
                     
                     if (getAuthenticatedUser().getId().compareTo(user.getId()) == 0
-                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) >= 5) {
+                            && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), model.getCreatedDate()) >= 5) {
                         LOG.warn("User trying to delete Comment which they created more than 5 mins ago.");
                         this.getActionResponse().AssignMessageResult("Sorry, 5 minutes have elapsed since the creation of this note and therefore the note cannot be deleted.");
                         return ERROR;

@@ -333,7 +333,7 @@ public class Insurer extends Entity implements Serializable {
         this.vehicleClassCeilings = vehicleClassCeilings;
     }
 
-    public void AddVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
+    public void addVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         if (!this.vehicleClassCeilings.contains(vehicleClassCeiling)) {
             this.vehicleClassCeilings.add(vehicleClassCeiling);
         }

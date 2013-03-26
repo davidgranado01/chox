@@ -25,11 +25,11 @@ public class VehicleClassCheckNoteTest {
         Customer customer = new Customer();
         VehicleClass vclass = new VehicleClass();
         
-        ecd.setEcdDate(DateHelper.Parse("09/12/2012"));
+        ecd.setEcdDate(DateHelper.parse("09/12/2012"));
         ecds.add(ecd);
         vclass.setName("p");
         
-        c.setPolicyHolderContactDate(DateHelper.Parse("07/12/2012"));
+        c.setPolicyHolderContactDate(DateHelper.parse("07/12/2012"));
         c.setHireMonitoringEcds(ecds);
         customer.setVehicleClass(vclass);
         c.setCustomer(customer);
@@ -46,11 +46,11 @@ public class VehicleClassCheckNoteTest {
         Customer customer = new Customer();
         VehicleClass vclass = new VehicleClass();
         
-        ecd.setEcdDate(DateHelper.Parse("09/12/2012"));
+        ecd.setEcdDate(DateHelper.parse("09/12/2012"));
         ecds.add(ecd);
         vclass.setName("p");
         
-        c.setPolicyHolderContactDate(DateHelper.Parse("01/12/2012"));
+        c.setPolicyHolderContactDate(DateHelper.parse("01/12/2012"));
         c.setHireMonitoringEcds(ecds);
         customer.setVehicleClass(vclass);
         c.setCustomer(customer);

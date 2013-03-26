@@ -152,21 +152,21 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "repairer", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "inspection-booked-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "inspection-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "repair-book-in-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "repair-authorised-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "repair-started-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "repair-complete-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "name-ime", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "labour-rate", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "labour-hours", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "labour-cost", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "repairer", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "inspection-booked-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "inspection-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "repair-book-in-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "repair-authorised-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "repair-started-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "repair-complete-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "name-ime", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "labour-rate", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "labour-hours", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "labour-cost", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
 
 
 

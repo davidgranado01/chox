@@ -69,7 +69,7 @@ public class ClaimReferToEng extends BaseActivity {
             }
 
             claim.setLiabilityStatus(liabilityStatus);
-            Comment comment = Comment.New(0, note);
+            Comment comment = Comment.newComment(0, note);
             comment.setClaim(claim);
             claim.addComment(comment);
         }
@@ -89,10 +89,10 @@ public class ClaimReferToEng extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);

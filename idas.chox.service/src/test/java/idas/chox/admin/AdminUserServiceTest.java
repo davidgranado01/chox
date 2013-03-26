@@ -286,7 +286,7 @@ public class AdminUserServiceTest extends BaseTest {
         //webUser.getWorkgroups().add(workgroupService.getActiveWorkgroupsByInsurer(webUser.getInsurer().getId()).get(0));
         //webUser.getWorkgroups().add(workgroupService.getActiveWorkgroupsByInsurer(webUser.getInsurer().getId()).get(1));
         // userService.saveUser(webUser);
-        //ActionResponse response = adminUserService.ValidateRoleToBeDeleted(webUser.getId(), WebUserRole.ROLE_CH);
+        //ActionResponse response = adminUserService.validateRoleToBeDeleted(webUser.getId(), WebUserRole.ROLE_CH);
         //Assert.assertFalse(response.getIsValid());
         //Assert.assertEquals(response.getErrors().get(0), "It is not possible to remove this role against a user who has workgroup(s). Please remove the workgroup(s) from this user.");
     }

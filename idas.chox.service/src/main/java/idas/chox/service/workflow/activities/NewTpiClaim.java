@@ -58,7 +58,7 @@ public class NewTpiClaim extends BaseActivity {
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
             claim.setStatusModifiedDate(new Date());
             if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
-                Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+                Comment comment = Comment.newComment(0, "CHO contact number is " + claim.getChorganisation().getPhone());
                 claim.addComment(comment);
             }
             try {
@@ -103,7 +103,7 @@ public class NewTpiClaim extends BaseActivity {
                     claim.setClaimOwner(claim.getInsurer().getInvoiceOwner());
                     if (claim.getInsurer().getInvoiceOwner().getTelephone() != null
                             && claim.getInsurer().getInvoiceOwner().getTelephone().length() > 0) {
-                        Comment comment = Comment.New(0, "Insurer Claims Handler is '"
+                        Comment comment = Comment.newComment(0, "Insurer Claims Handler is '"
                                             + claim.getInsurer().getInvoiceOwner().getFullName() + "' (contact number: "
                                                         + claim.getInsurer().getInvoiceOwner().getTelephone() + ").");
                         claim.addComment(comment);

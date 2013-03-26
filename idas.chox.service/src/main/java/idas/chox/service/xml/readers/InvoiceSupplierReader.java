@@ -31,11 +31,11 @@ public class InvoiceSupplierReader extends BaseEntityReader {
 
             isAllowToReadData = true;
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "excess-collected", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vat-collected", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "handling-invoice-no", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "handling-invoice-amount", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "claim-invoice-no", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "excess-collected", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vat-collected", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "handling-invoice-no", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "handling-invoice-amount", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "claim-invoice-no", element, claimResult, getDataValidationParameter());
 
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;

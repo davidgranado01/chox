@@ -46,8 +46,8 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
         
         claim.setVehicleHire(testClaim.getTestHireDetail());
         claim.getVehicleHire().setVehicleClass(null);
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/03/2013"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("14/03/2013"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/03/2013"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("14/03/2013"));
         claim.getVehicleHire().setVehicleRegistration("LC59YOY");
         
         claim.setCustomer(customerService.getCustomer(999));
@@ -92,8 +92,8 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
         claim.getInsurer().setId(4);
         
         claim.setVehicleHire(testClaim.getTestHireDetail());
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/03/2013"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("14/03/2013"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/03/2013"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("14/03/2013"));
         claim.getVehicleHire().setVehicleRegistration("LC59YOY");
         
         claim.setClaimNumber("01234567891");
@@ -128,8 +128,8 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
         claim.getInsurer().setId(3);
         
         claim.setVehicleHire(testClaim.getTestHireDetail());
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/03/2013"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("14/03/2013"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/03/2013"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("14/03/2013"));
         claim.getVehicleHire().setVehicleRegistration("LC59YOY");
         
         claim.setClaimNumber("01234567891");

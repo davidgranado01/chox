@@ -68,7 +68,7 @@ public class Rule026RepairBookedInDateOnFridayTest extends TestCase {
         claim.getBreBand().setRepairBookedInDateOnFriday(true);
 
         // SET TO NOT FRIDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("08/10/2009"));
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.parse("08/10/2009"));
 
         RuleEvaluation rv = new RepairBookedInDateOnFriday().applyToClaim(claim);
 
@@ -86,7 +86,7 @@ public class Rule026RepairBookedInDateOnFridayTest extends TestCase {
         claim.getBreBand().setRepairBookedInDateOnFriday(true);
 
         // SET TO FRIDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("09/10/2009"));
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.parse("09/10/2009"));
 
         RuleEvaluation rv = new RepairBookedInDateOnFriday().applyToClaim(claim);
 

@@ -55,7 +55,6 @@ public class OverviewSummaryReport implements Report {
         String userOrgLabel;
         String userOrgName;
 
-        // currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
         currentUser = ((WebUser) externalParameter.get("CurrentUser"));
         userOrgName = currentUser.getOrganisationName();
 
@@ -100,11 +99,11 @@ public class OverviewSummaryReport implements Report {
         try {
 
             if (((String[]) externalParameter.get("DateStart")) != null) {
-                dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+                dataStart = DateHelper.parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
 
             if (((String[]) externalParameter.get("DateStart")) != null) {
-                dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+                dataEnd = DateHelper.parse(((String[]) externalParameter.get("DateEnd"))[0]);
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
 
@@ -137,7 +136,6 @@ public class OverviewSummaryReport implements Report {
                     .append("and (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as total_no_claims_num, ");
 
 
-
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
                     .append("where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id ");
@@ -148,7 +146,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
@@ -175,7 +172,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_val, ");
 
 
-
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a,")
                     .append(" (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id ").append("and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.claim_type=")
                     .append(ClaimType.TPI.getClaimTypeValue())
@@ -189,7 +185,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo) as total_no_accepted_claims_num, ");
-
 
 
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count ")
@@ -207,8 +202,6 @@ public class OverviewSummaryReport implements Report {
                     .append("and :pUploadDateTo) as total_no_accepted_claims_val, ");
 
 
-
-
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a ")
                     .append("where chorganisation_id=insurer_chorganisation.chorganisation_id ")
                     .append("and insurer_id=insurer_chorganisation.insurer_id and (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected'))");
@@ -221,7 +214,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_num, ");
 
 
-
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a ")
                     .append("where (status='ClaimRejectionAccepted' or exists (select * from audit_trail at where at.claim_id = a.claim_id and at.reverted=false and at.new_status = 'AwaitingCarHireInfo' and at.original_status='SubscriberClaimRejected')) and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if (isWorkgroupEnabled && selectedWorkgroupId > 0) {
@@ -232,7 +224,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo) as total_no_rejected_claims_val, ");
-
 
 
             //Changed to correct discrepency with invoice summary report
@@ -248,7 +239,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_num, ");
 
 
-
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
                     .append("where status in ('InvoicePaymentLogged','PaymentReceived', 'ManualInvoicePaid') and date(claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
@@ -261,9 +251,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_val, ");
 
 
-
-            //sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status in ('PaymentReceived','InvoicePaymentLogged')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_num, ");
-            //sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status in ('PaymentReceived','InvoicePaymentLogged')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_val, ");            
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, ")
                     .append("(select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b ")
                     .append("where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
@@ -275,7 +262,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
                     .append("and :pUploadDateTo) as total_no_rejected_invoice_num, ");
-
 
 
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, ")
@@ -291,7 +277,6 @@ public class OverviewSummaryReport implements Report {
                     .append("and :pUploadDateTo) as total_no_rejected_invoice_val, ");
 
 
-
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*))")
                     .append(" as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit ")
                     .append("on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' ")
@@ -304,7 +289,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
-
 
 
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
@@ -322,7 +306,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
 
 
-
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
                     .append("cast(round(sum(COALESCE(vehicle_hire.days, 0))/count(*)) as bigint) end as no_count ")
                     .append("from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire ")
@@ -335,7 +318,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
-
 
 
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
@@ -351,7 +333,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_val, ");
 
 
-
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
                     .append("cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
                     .append("where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
@@ -363,7 +344,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
-
 
 
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
@@ -379,7 +359,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val, ");
 
 
-
             sb.append("(select case when sum(original_full_total_to_pay - total_to_pay) is null then 0 ")
                     .append("else sum(original_full_total_to_pay - total_to_pay) end as no_count from rpt_claim_invoice ")
                     .append("where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
@@ -391,7 +370,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and total_to_pay < original_full_total_to_pay) as amount_saved_val, ");
-
 
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
@@ -406,7 +384,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and repair_gross > 0.0) as total_no_creditrepair_invoice_num, ");
 
 
-
             sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
                     .append("where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id ");
@@ -419,8 +396,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0) as total_no_creditrepair_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_no_creditrepair_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
                     .append("where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
                     .append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
@@ -431,7 +406,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
@@ -446,8 +420,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_no_creditrepair_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
@@ -459,7 +431,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
@@ -475,8 +446,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_s_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
@@ -489,7 +458,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
                     .append("as total_s_class_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
@@ -506,8 +474,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_s_class_paid_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_s_class_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
@@ -536,8 +502,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_p_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_p_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
@@ -550,7 +514,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_p_class_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
@@ -568,8 +531,6 @@ public class OverviewSummaryReport implements Report {
                     .append("as total_p_class_paid_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_p_class_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
@@ -581,7 +542,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
@@ -597,8 +557,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_mv_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id ")
                     .append("and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') ")
@@ -611,7 +569,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_mv_class_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
@@ -628,7 +585,6 @@ public class OverviewSummaryReport implements Report {
                     .append("as total_mv_class_paid_invoice_val, ");
 
 
-//            sb.append("(select ) as total_mv_class_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
@@ -656,8 +612,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_m_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
@@ -687,8 +641,6 @@ public class OverviewSummaryReport implements Report {
                     .append("as total_m_class_paid_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_m_class_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
                     .append("vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
@@ -701,7 +653,6 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and owner = :pOwnerId ");
             }
             sb.append("and insurer_id=insurer_chorganisation.insurer_id) as total_sp_class_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
@@ -718,8 +669,6 @@ public class OverviewSummaryReport implements Report {
                     .append("as total_sp_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_sp_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
@@ -732,7 +681,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
                     .append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
@@ -749,8 +697,6 @@ public class OverviewSummaryReport implements Report {
                     .append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_sp_class_paid_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
@@ -780,8 +726,6 @@ public class OverviewSummaryReport implements Report {
                     .append("as total_other_class_invoice_val, ");
 
 
-
-//            sb.append("(select ) as total_other_class_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
                     .append("vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
                     .append("and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
@@ -794,7 +738,6 @@ public class OverviewSummaryReport implements Report {
             }
             sb.append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
                     .append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_num, ");
-
 
 
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
@@ -810,8 +753,6 @@ public class OverviewSummaryReport implements Report {
             sb.append("and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
                     .append("and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_val ");
 
-
-//            sb.append("(select ) as total_other_class_paid_invoice_per ");
 
             if (currentUser.getInsurer() != null) {
 
@@ -880,7 +821,6 @@ public class OverviewSummaryReport implements Report {
             LOG.error("Exception thrown generating Overview Summary Report: [user={}]", currentUser.getId(), ex);
             LOG.error("Report params were: startDate={}, endDate={}", dataStart, dataEnd);
             throw ex;
-//            ex.printStackTrace();
         }
 
         return reportParameters;

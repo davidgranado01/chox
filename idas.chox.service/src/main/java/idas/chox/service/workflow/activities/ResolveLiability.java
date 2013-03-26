@@ -68,7 +68,7 @@ public class ResolveLiability extends BaseActivity {
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
                 claim.setLiabilityStatus(liabilityStatus);
-                Comment comment = Comment.New(0, note);
+                Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
         }
@@ -83,7 +83,7 @@ public class ResolveLiability extends BaseActivity {
     protected void doProcess(Claim claim) {
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
         }
         if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL
                 && !ClaimType.isInsurerVsInsurer(claim.getClaimType())

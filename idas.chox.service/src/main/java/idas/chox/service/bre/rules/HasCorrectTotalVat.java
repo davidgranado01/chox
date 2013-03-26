@@ -26,7 +26,7 @@ public class HasCorrectTotalVat implements IBusinessRule {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-            boolean success = CalcHelper.EqualTo(invoice.getTotalVat(), iCalc.getCalculatedTotalVat());
+            boolean success = CalcHelper.equalTo(invoice.getTotalVat(), iCalc.getCalculatedTotalVat());
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

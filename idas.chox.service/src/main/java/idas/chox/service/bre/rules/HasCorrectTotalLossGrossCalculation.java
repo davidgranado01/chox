@@ -27,7 +27,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
         if (claim.getBreBand().isHasCorrectTotalLossGrossCalculation()) {
 
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-            boolean success = CalcHelper.EqualTo(claim.getInvoice().getTotalLossFeeGross(), iCalc.getCalculatedTotalLossGross());
+            boolean success = CalcHelper.equalTo(claim.getInvoice().getTotalLossFeeGross(), iCalc.getCalculatedTotalLossGross());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

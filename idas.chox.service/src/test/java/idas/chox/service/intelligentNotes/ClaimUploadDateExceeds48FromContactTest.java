@@ -14,8 +14,8 @@ public class ClaimUploadDateExceeds48FromContactTest {
     public void testClaimUploadDateExceeds48FromContactPass() {
         Claim c = new Claim();
         
-        c.setCreatedDate(DateHelper.Parse("07/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
-        c.setPolicyHolderContactDate(DateHelper.Parse("05/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
+        c.setCreatedDate(DateHelper.parse("07/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
+        c.setPolicyHolderContactDate(DateHelper.parse("05/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
         
         Assert.assertTrue((new ClaimUploadDateExceeds48FromContact()).isShowingFor(c));
     }
@@ -24,8 +24,8 @@ public class ClaimUploadDateExceeds48FromContactTest {
     public void testClaimUploadDateExceeds48FromContactFail() {
         Claim c = new Claim();
         
-        c.setCreatedDate(DateHelper.Parse("06/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
-        c.setPolicyHolderContactDate(DateHelper.Parse("05/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
+        c.setCreatedDate(DateHelper.parse("06/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
+        c.setPolicyHolderContactDate(DateHelper.parse("05/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
         
         Assert.assertFalse((new ClaimUploadDateExceeds48FromContact()).isShowingFor(c));
     }

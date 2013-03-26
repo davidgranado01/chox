@@ -48,20 +48,17 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
             isAllowToReadData = true;
 
             claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
-            LOG.debug("************Parsing extra elements**************");
             for (Element ee : elements) {
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
                 String strExtraFee = strExtraName + " Fee";
                 String strExtraQty = strExtraName + " Quantity";
-                LOG.debug("...parsing '{}' element", strExtraName);
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
-                LOG.debug("......claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
+                
+                NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
+                NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
+                NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 
             }
 
-            LOG.debug("Returning claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;
                 claimResult.setValid(false);

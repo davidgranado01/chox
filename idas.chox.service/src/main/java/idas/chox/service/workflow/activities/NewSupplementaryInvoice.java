@@ -28,15 +28,15 @@ public class NewSupplementaryInvoice extends BaseActivity {
             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
             if (originalSupplementaryInvoicedClaim!=null) {
-                Comment comment = Comment.New(0, "This is a supplementary Invoice. The original claim's supplier reference is "+originalSupplementaryInvoicedClaim.getChoReference()+".");
+                Comment comment = Comment.newComment(0, "This is a supplementary Invoice. The original claim's supplier reference is "+originalSupplementaryInvoicedClaim.getChoReference()+".");
                 claim.addComment(comment);
             } else {
-                Comment comment = Comment.New(0, "This is a supplementary Invoice.");
+                Comment comment = Comment.newComment(0, "This is a supplementary Invoice.");
                 claim.addComment(comment);
             }
             if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
 
-                Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+                Comment comment = Comment.newComment(0, "CHO contact number is " + claim.getChorganisation().getPhone());
                 claim.addComment(comment);
             }
         }

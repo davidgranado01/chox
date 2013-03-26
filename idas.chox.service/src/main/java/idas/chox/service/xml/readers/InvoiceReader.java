@@ -37,13 +37,13 @@ public class InvoiceReader extends BaseEntityReader {
 
 
             claimResult.setCheckDataValid(true);
-            claimResult = NodeHelper.nodeValidate(sectionName, "less-handling-fee", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "net", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vat", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "gross", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "less-discount", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "total-to-pay", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "date-invoiced", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "less-handling-fee", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "net", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vat", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "gross", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "less-discount", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "total-to-pay", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "date-invoiced", element, claimResult, getDataValidationParameter());
             isAllowToReadData = claimResult.isCheckDataValid();
 
         }

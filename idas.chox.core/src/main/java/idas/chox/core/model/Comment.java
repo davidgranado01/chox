@@ -52,7 +52,7 @@ public class Comment extends Entity implements Serializable {
         this.reverted = reverted;
     }
 
-    public static Comment New(int visibilityType, String msg) {
+    public static Comment newComment(int visibilityType, String msg) {
         Comment comment = new Comment();
         comment.setVisibilityType(visibilityType);
         comment.setComment(msg);

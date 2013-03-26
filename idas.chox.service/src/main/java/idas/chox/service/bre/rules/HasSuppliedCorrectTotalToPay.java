@@ -26,7 +26,7 @@ public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-            boolean success = CalcHelper.LessThanOrEqualTo(invoice.getFullTotalToPay(), iCalc.getCalculatedTotalToPay());
+            boolean success = CalcHelper.lessThanOrEqualTo(invoice.getFullTotalToPay(), iCalc.getCalculatedTotalToPay());
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

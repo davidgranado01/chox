@@ -300,7 +300,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    public ActionResponse ValidateRoleToBeDeleted(int webUserId, String webUserRoleCode) {
+    public ActionResponse validateRoleToBeDeleted(int webUserId, String webUserRoleCode) {
 
         this.actionResponse = new ActionResponse();
 

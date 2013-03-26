@@ -65,8 +65,8 @@ public class Rule056HireTerminatedAfterRepairCompletionCheckTest extends BaseTes
     public void testPassed_1() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setHireTerminatedAfterRepairCompletionCheck(true);
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("09/10/2011"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("09/10/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("09/10/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("09/10/2011"));
 
         HireTerminatedAfterRepairCompletionCheck rule = new HireTerminatedAfterRepairCompletionCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -77,8 +77,8 @@ public class Rule056HireTerminatedAfterRepairCompletionCheckTest extends BaseTes
     public void testPassed_2() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setHireTerminatedAfterRepairCompletionCheck(true);
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("08/10/2011"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("09/10/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("08/10/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("09/10/2011"));
         HireTerminatedAfterRepairCompletionCheck rule = new HireTerminatedAfterRepairCompletionCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
@@ -88,8 +88,8 @@ public class Rule056HireTerminatedAfterRepairCompletionCheckTest extends BaseTes
     public void testPassed_3() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setHireTerminatedAfterRepairCompletionCheck(true);
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("08/10/2011"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("05/10/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("08/10/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("05/10/2011"));
 
         HireTerminatedAfterRepairCompletionCheck rule = new HireTerminatedAfterRepairCompletionCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -101,8 +101,8 @@ public class Rule056HireTerminatedAfterRepairCompletionCheckTest extends BaseTes
     public void testFailed() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setHireTerminatedAfterRepairCompletionCheck(true);
-        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("08/10/2011"));
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("10/10/2011"));
+        claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.parse("08/10/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("10/10/2011"));
 
 
         HireTerminatedAfterRepairCompletionCheck rule = new HireTerminatedAfterRepairCompletionCheck();

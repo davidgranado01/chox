@@ -32,7 +32,7 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-            boolean success = CalcHelper.EqualTo(invoice.getTotalGross(), iCalc.getCalculatedTotalGross());
+            boolean success = CalcHelper.equalTo(invoice.getTotalGross(), iCalc.getCalculatedTotalGross());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

@@ -26,7 +26,7 @@ public class HasCorrectTotalNet implements IBusinessRule {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-            boolean success = CalcHelper.EqualTo(invoice.getTotalNet(), iCalc.getCalculatedTotalNet());
+            boolean success = CalcHelper.equalTo(invoice.getTotalNet(), iCalc.getCalculatedTotalNet());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

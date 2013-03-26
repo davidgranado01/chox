@@ -17,9 +17,9 @@ public class HireCommenced48hSinceNotificationCheckTest {
         Claim c = new Claim();
         VehicleHire vehicleHire = new VehicleHire();
         
-        vehicleHire.setHireStart(DateHelper.Parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
+        vehicleHire.setHireStart(DateHelper.parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
         c.setVehicleHire(vehicleHire);
-        c.setCreatedDate(DateHelper.Parse("09/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
+        c.setCreatedDate(DateHelper.parse("09/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
         
         Assert.assertTrue((new HireCommenced48hSinceNotificationCheck()).isShowingFor(c));
     }
@@ -29,9 +29,9 @@ public class HireCommenced48hSinceNotificationCheckTest {
         Claim c = new Claim();
         VehicleHire vehicleHire = new VehicleHire();
         
-        vehicleHire.setHireStart(DateHelper.Parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
+        vehicleHire.setHireStart(DateHelper.parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
         c.setVehicleHire(vehicleHire);
-        c.setCreatedDate(DateHelper.Parse("08/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
+        c.setCreatedDate(DateHelper.parse("08/12/2012 05:01",DateHelper.getLocalDateTimeFormat()));
         
         Assert.assertFalse((new HireCommenced48hSinceNotificationCheck()).isShowingFor(c));
     }

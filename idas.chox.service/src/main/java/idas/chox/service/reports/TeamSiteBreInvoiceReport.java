@@ -104,12 +104,12 @@ public class TeamSiteBreInvoiceReport implements Report {
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
 
             if (((String[]) externalParameter.get("startDate")) != null) {
-                startDate = DateHelper.Parse(((String[]) externalParameter.get("startDate"))[0]);
+                startDate = DateHelper.parse(((String[]) externalParameter.get("startDate"))[0]);
                 LOG.debug("startDate={}", startDate.toString());
             }
 
             if (((String[]) externalParameter.get("endDate")) != null) {
-                endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
+                endDate = DateHelper.parse(((String[]) externalParameter.get("endDate"))[0]);
                 endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
             }

@@ -115,8 +115,8 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest extends Base
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(false);
-        claim.getHireMonitoringDetail().setRepairCommencedDate(DateHelper.Parse("27/02/2011"));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("22/02/2011"));
+        claim.getHireMonitoringDetail().setRepairCommencedDate(DateHelper.parse("27/02/2011"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("22/02/2011"));
 
         DateRepairsCommencedFollowingHireStartCheck rule = new DateRepairsCommencedFollowingHireStartCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -132,8 +132,8 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest extends Base
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(false);
-        claim.getHireMonitoringDetail().setRepairCommencedDate(DateHelper.Parse("28/02/2011"));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("22/02/2011"));
+        claim.getHireMonitoringDetail().setRepairCommencedDate(DateHelper.parse("28/02/2011"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("22/02/2011"));
 
         DateRepairsCommencedFollowingHireStartCheck rule = new DateRepairsCommencedFollowingHireStartCheck();
 

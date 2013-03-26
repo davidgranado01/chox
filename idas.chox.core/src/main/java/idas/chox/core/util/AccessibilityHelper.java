@@ -5,7 +5,7 @@ import idas.chox.core.model.WebUser;
 
 public class AccessibilityHelper {
 
-    public static short IsClaimEditable(boolean accessibilityWorkgroupCheck, boolean accessibilityClaimOwnerCheck, Claim claim, WebUser user) {
+    public static short isClaimEditable(boolean accessibilityWorkgroupCheck, boolean accessibilityClaimOwnerCheck, Claim claim, WebUser user) {
 
         boolean bWorkGroupFlag = true;
         boolean bOwnershipFlag = true;

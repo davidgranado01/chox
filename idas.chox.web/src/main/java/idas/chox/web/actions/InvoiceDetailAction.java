@@ -2429,7 +2429,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         BigDecimal age = BigDecimal.ZERO;
 
         if (hireStart != null & firstRegistration != null) {
-            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+            age = new BigDecimal(DateHelper.differenceInYears(hireStart, firstRegistration));
         }
 
         while (itr.hasNext()) {

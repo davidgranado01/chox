@@ -31,10 +31,10 @@ public class InvoiceVehiclesReader extends BaseEntityReader {
 
             isAllowToReadData = true;
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "day-rate", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "net", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vat", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "gross", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "day-rate", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "net", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vat", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "gross", element, claimResult, getDataValidationParameter());
 
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;

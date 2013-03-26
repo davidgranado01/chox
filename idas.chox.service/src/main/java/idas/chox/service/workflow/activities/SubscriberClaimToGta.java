@@ -32,7 +32,7 @@ public class SubscriberClaimToGta extends BaseActivity {
             LOG.error("Attempt to switch a non-subcriber claim to GTA: {}", claim.getChoReference());
             throw new IllegalStateException("Claim not a Subscriber or Fixed-Fee claim.");
         }
-        claim.addComment(Comment.New(0, comment));
+        claim.addComment(Comment.newComment(0, comment));
     }
 
     public AuditTrailService getAuditTrailService() {

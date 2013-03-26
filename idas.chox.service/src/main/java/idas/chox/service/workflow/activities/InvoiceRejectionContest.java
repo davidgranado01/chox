@@ -52,7 +52,7 @@ public class InvoiceRejectionContest extends BaseActivity {
         } else {
 
             if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-                claim.addComment(Comment.New(0, "Supporting Notes: " + supportingLiabilityNotes));
+                claim.addComment(Comment.newComment(0, "Supporting Notes: " + supportingLiabilityNotes));
             }
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
         }

@@ -339,7 +339,7 @@
         <action name="generateTaskExportFile" class="idas.chox.web.actions.TasksAction" method="doTaskExportToExcel">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="userBrowserWarning" class="idas.chox.web.actions.UserAccountAction" method="UserBrowserWarning">
+        <action name="userBrowserWarning" class="idas.chox.web.actions.UserAccountAction" method="userBrowserWarning">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>

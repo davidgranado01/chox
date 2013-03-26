@@ -1,11 +1,11 @@
 package idas.chox.service.xml.readers;
 
 
-import idas.chox.core.model.ClaimType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -48,15 +48,15 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
             claimResult.setCheckDataValid(true);
 
             // MITIGATION - moved to separate reader
-            claimResult = NodeHelper.nodeValidate(sectionName, "access-another-vehicle", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "other-vehicle", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "other-vehicle-regular-user", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "entitled-courtesy-car", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "specific-required", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "why-specific", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "type-required", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "special-requirements", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "ave-daily-mileage", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "access-another-vehicle", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "other-vehicle", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "other-vehicle-regular-user", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "entitled-courtesy-car", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "specific-required", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "why-specific", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "type-required", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "special-requirements", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "ave-daily-mileage", element, claimResult, getDataValidationParameter());
 
             // CHECK VEHICLE CLASS            
             isAllowToReadData = claimResult.isCheckDataValid();

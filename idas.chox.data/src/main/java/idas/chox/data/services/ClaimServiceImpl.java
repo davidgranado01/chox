@@ -1150,9 +1150,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
                 }
                 claim.addComment(comment);
                 save(claim);
@@ -1186,9 +1186,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
+                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
+                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
                 }
                 claim.addComment(comment);
                 save(claim);
@@ -1270,7 +1270,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (newClaim == null) {
                 try {
                     claim.setChoReference(newReference);
-                    claim.addComment(Comment.New(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
+                    claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
                     updateClaim(claim);
                     LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
                     return 0;

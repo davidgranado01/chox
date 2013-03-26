@@ -59,7 +59,7 @@ public class InsurerUpload extends BaseActivity {
 
         // Add General Note (specified in BRE band)
         if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
-            Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
+            Comment comment = Comment.newComment(0, claim.getBreBand().getClaimUploadNote());
             claim.addComment(comment);
         }
 

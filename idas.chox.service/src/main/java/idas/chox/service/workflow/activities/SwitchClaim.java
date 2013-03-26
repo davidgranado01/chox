@@ -98,7 +98,7 @@ public class SwitchClaim extends BaseActivity {
         LOG.debug("Switching Claim: ThirdParty has been updated");
 
         String newComment = "Claim switched from '" + oldInsurer.getName() + "' to '" + newInsurer.getName() +"'";
-        Comment comment = Comment.New(0, newComment);
+        Comment comment = Comment.newComment(0, newComment);
         claim.addComment(comment);
         setMessage(newComment);
         LOG.debug("Switching Claim: Comment has been updated");

@@ -30,7 +30,7 @@ public class HireGrossSumCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
         if (claim.getBreBand().isHasHireGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
-            boolean success = CalcHelper.EqualTo(invoice.getHireGross(), invoice.getHireNet().add(invoice.getHireVat()));
+            boolean success = CalcHelper.equalTo(invoice.getHireGross(), invoice.getHireNet().add(invoice.getHireVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

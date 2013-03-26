@@ -138,24 +138,24 @@ public class DateHelper {
     }
 
     //format: dd/MM/yyyy
-    public static Date Parse(String source) {
-        return Parse(source, getLocalDateFormat());
+    public static Date parse(String source) {
+        return parse(source, getLocalDateFormat());
     }
 
-    public static Date ParseDateTime(String source) {
-        return Parse(source, getLocalDateTimeFormat());
+    public static Date parseDateTime(String source) {
+        return parse(source, getLocalDateTimeFormat());
     }
 
-    public static Date ParseDBDateTime(String source) {
-        return Parse(source, getDBDateTimeFormat());
+    public static Date parseDBDateTime(String source) {
+        return parse(source, getDBDateTimeFormat());
     }
 
-    public static Date Parse(String source, String format) {
+    public static Date parse(String source, String format) {
 
-        return Parse(source, new SimpleDateFormat(format));
+        return parse(source, new SimpleDateFormat(format));
     }
 
-    public static Date Parse(String source, SimpleDateFormat dateFormat) {
+    public static Date parse(String source, SimpleDateFormat dateFormat) {
 
         if ((source.trim()).length() > 0 && source != null && !source.equalsIgnoreCase("")) {
 
@@ -172,7 +172,7 @@ public class DateHelper {
         return null;
     }
 
-    public static boolean DateCompare(Date date1, Date date2) {
+    public static boolean dateCompare(Date date1, Date date2) {
         boolean bFlag = false;
 
         try {
@@ -277,36 +277,36 @@ public class DateHelper {
         return calendar.getTime();
     }
 
-    public static double DifferenceInMonths(Date date1, Date date2) {
-        return DifferenceInYears(date1, date2) * 12;
+    public static double differenceInMonths(Date date1, Date date2) {
+        return differenceInYears(date1, date2) * 12;
     }
 
-    public static double DifferenceInYears(Date date1, Date date2) {
-        double days = DifferenceInDays(date1, date2);
+    public static double differenceInYears(Date date1, Date date2) {
+        double days = differenceInDays(date1, date2);
         return days / 365.2425;
     }
 
-    public static double DifferenceInDays(Date date1, Date date2) {
-        return DifferenceInHours(date1, date2) / 24.0;
+    public static double differenceInDays(Date date1, Date date2) {
+        return differenceInHours(date1, date2) / 24.0;
     }
 
-    public static double DifferenceInHours(Date date1, Date date2) {
-        return DifferenceInMinutes(date1, date2) / 60.0;
+    public static double differenceInHours(Date date1, Date date2) {
+        return differenceInMinutes(date1, date2) / 60.0;
     }
 
-    public static double DifferenceInMinutes(Date date1, Date date2) {
-        return DifferenceInSeconds(date1, date2) / 60.0;
+    public static double differenceInMinutes(Date date1, Date date2) {
+        return differenceInSeconds(date1, date2) / 60.0;
     }
 
-    public static double DifferenceInSeconds(Date date1, Date date2) {
-        return DifferenceInMilliseconds(date1, date2) / 1000.0;
+    public static double differenceInSeconds(Date date1, Date date2) {
+        return differenceInMilliseconds(date1, date2) / 1000.0;
     }
 
-    private static double DifferenceInMilliseconds(Date date1, Date date2) {
-        return Math.abs(GetTimeInMilliseconds(date1) - GetTimeInMilliseconds(date2));
+    private static double differenceInMilliseconds(Date date1, Date date2) {
+        return Math.abs(getTimeInMilliseconds(date1) - getTimeInMilliseconds(date2));
     }
 
-    private static long GetTimeInMilliseconds(Date date) {
+    private static long getTimeInMilliseconds(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());

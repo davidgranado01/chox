@@ -174,7 +174,7 @@ public class ApplicationAccessibility {
         LOG.debug("Access right is: {} - checking claim editable.....", accessRight);
         if (accessRight >= 2) {
             Accessibility accessibility = (Accessibility)getAccessibilityByClaimTypeMap().get(accessibilityKey);
-            accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            accessRight = AccessibilityHelper.isClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
         }
         LOG.debug("AccessibilityEditable access for '{}'={}", accessibilityKey, accessRight);
         return accessRight;

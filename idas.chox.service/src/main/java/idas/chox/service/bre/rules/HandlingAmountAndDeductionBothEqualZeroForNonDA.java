@@ -29,8 +29,8 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
                 && !claim.getChorganisation().isDelegatedAuthority()) {
 
                 Invoice invoice = claim.getInvoice();
-                boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
-                success = success && CalcHelper.EqualTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);
+                boolean success = CalcHelper.equalTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
+                success = success && CalcHelper.equalTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
                 if (success) {
                     narrative = "";

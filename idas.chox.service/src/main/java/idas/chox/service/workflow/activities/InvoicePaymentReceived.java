@@ -18,7 +18,7 @@ public class InvoicePaymentReceived extends BaseActivity {
         if (claim.getInvoice().getInterimPaymentMade() != null && (claim.getInvoice().getInterimPaymentReceived() == null
                 || claim.getInvoice().getInterimPaymentMade().compareTo(claim.getInvoice().getInterimPaymentReceived()) != 0)) {
             claim.getInvoice().setInterimPaymentReceived(claim.getInvoice().getInterimPaymentMade());
-            claim.addComment(Comment.New(0, "Updating interim payments received to £" + claim.getInvoice().getInterimPaymentReceived()
+            claim.addComment(Comment.newComment(0, "Updating interim payments received to £" + claim.getInvoice().getInterimPaymentReceived()
                     + " (as full payment has been marked as received)."));
         }
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_RECEIVED);

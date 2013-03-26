@@ -31,7 +31,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
             if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getChorganisation().isDelegatedAuthority()) {
 
-                boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
+                boolean success = CalcHelper.equalTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
                 if (success) {

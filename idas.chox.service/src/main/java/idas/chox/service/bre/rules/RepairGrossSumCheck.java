@@ -29,7 +29,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
         if (claim.getBreBand().isHasRepairGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
-            boolean success = CalcHelper.EqualTo(invoice.getRepairGross(), invoice.getRepairNet().add(invoice.getRepairVat()));
+            boolean success = CalcHelper.equalTo(invoice.getRepairGross(), invoice.getRepairNet().add(invoice.getRepairVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

@@ -30,7 +30,7 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
         if (claim.getBreBand().isHasCorrectHireGrossCalculation()) {
 
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-            boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+            boolean success = CalcHelper.equalTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

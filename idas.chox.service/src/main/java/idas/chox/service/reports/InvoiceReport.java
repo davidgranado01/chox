@@ -57,8 +57,8 @@ public class InvoiceReport implements Report {
 
             user = ((WebUser) externalParameter.get("CurrentUser"));
 
-            final Date dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
-            Date dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            final Date dataStart = DateHelper.parse(((String[]) externalParameter.get("DateStart"))[0]);
+            Date dataEnd = DateHelper.parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             
             if (dataEnd == null || dataStart == null) {

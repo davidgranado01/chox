@@ -49,7 +49,7 @@ public class NeedForSPandPClassCheckWithoutECDNoteTest {
         
         vclass.setName("p");
         
-        customer.setInitialECD(DateHelper.Parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
+        customer.setInitialECD(DateHelper.parse("07/12/2012 05:00",DateHelper.getLocalDateTimeFormat()));
         customer.setIsUsable(true);
         customer.setVehicleClass(vclass);
         

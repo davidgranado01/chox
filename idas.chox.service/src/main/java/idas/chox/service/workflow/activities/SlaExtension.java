@@ -27,7 +27,7 @@ public class SlaExtension extends BaseActivity {
             if (claim.getSlaExtDays() > 1) {
                 newComment = claim.getSlaExtDays() + " days extension granted.";
             }
-            Comment comment = Comment.New(0, newComment);
+            Comment comment = Comment.newComment(0, newComment);
             claim.addComment(comment);
         }
     }

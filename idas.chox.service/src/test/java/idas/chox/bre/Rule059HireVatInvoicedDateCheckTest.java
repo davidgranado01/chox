@@ -85,7 +85,7 @@ public class Rule059HireVatInvoicedDateCheckTest extends BaseTest {
 
         claim.getInvoice().setHireNet(new BigDecimal(1064.06));
         claim.getInvoice().setHireVat(new BigDecimal(212.81).setScale(2, BigDecimal.ROUND_HALF_DOWN));
-        claim.getInvoice().setDateInvoiced(DateHelper.Parse("14/03/2011"));
+        claim.getInvoice().setDateInvoiced(DateHelper.parse("14/03/2011"));
 
         //claim.getInvoice().setAutomaticFee(new BigDecimal(0.00));
 
@@ -105,7 +105,7 @@ public class Rule059HireVatInvoicedDateCheckTest extends BaseTest {
 
         claim.getInvoice().setHireNet(new BigDecimal(1064.06));
         claim.getInvoice().setHireVat(new BigDecimal(213.81).setScale(2, BigDecimal.ROUND_HALF_DOWN));
-        claim.getInvoice().setDateInvoiced(DateHelper.Parse("14/03/2011"));
+        claim.getInvoice().setDateInvoiced(DateHelper.parse("14/03/2011"));
 
         HireVatInvoicedDateCheck rule = new HireVatInvoicedDateCheck();
 

@@ -319,7 +319,7 @@ public class UserRoleAction extends BaseAction {
         try {
             WebUserUserRole webUserUserRole = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
             if (webUserUserRole != null) {
-                ActionResponse response = adminUserService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
+                ActionResponse response = adminUserService.validateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
                 setActionResponse(response);
             }
         } catch (Exception ex) {

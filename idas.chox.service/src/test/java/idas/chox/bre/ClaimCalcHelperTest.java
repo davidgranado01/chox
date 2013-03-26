@@ -213,7 +213,7 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET ECD
-        claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
+        claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
 
         // SET CUSTOMER DAMAGA
         claim.getCustomer().setIsUsable(true);
@@ -260,7 +260,7 @@ public class ClaimCalcHelperTest extends TestCase {
         Claim claim = getTestClaim();
 
         // SET ECD
-        claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
+        claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
 
         // SET CUSTOMER DAMAGA
         claim.getCustomer().setIsUsable(true);
@@ -308,7 +308,7 @@ public class ClaimCalcHelperTest extends TestCase {
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // SET ECD
-        claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
+        claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
 
         // SET CUSTOMER DAMAGA
         claim.getCustomer().setIsUsable(true);

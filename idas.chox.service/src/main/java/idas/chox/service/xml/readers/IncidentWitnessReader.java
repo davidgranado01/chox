@@ -37,16 +37,16 @@ public class IncidentWitnessReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
 
             claimResult.setCheckDataValid(true);
-            claimResult = NodeHelper.nodeValidate(sectionName, "name", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address1", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address2", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address3", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address4", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "address5", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "postcode", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "telephone-day", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "telephone-evening", witnessElement, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "email", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "name", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address1", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address2", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address3", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address4", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "address5", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "postcode", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "telephone-day", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "telephone-evening", witnessElement, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "email", witnessElement, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
         }

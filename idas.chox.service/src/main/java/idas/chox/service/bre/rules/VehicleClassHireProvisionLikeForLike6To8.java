@@ -43,7 +43,7 @@ public class VehicleClassHireProvisionLikeForLike6To8 implements IBusinessRule {
                         if (VehicleClass.isPOrSClass(hireVehicleClass.getName())) {
                             Date hireStart = claim.getVehicleHire().getHireStart();
                             if (firstRegistration != null) {
-                                double difference = DateHelper.DifferenceInYears(hireStart, firstRegistration);
+                                double difference = DateHelper.differenceInYears(hireStart, firstRegistration);
                                 LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
                                 if (difference >= 6.0 && difference < 8.0) {
 

@@ -75,7 +75,7 @@ public class ClaimStatusWorkflowLineItem {
         }
 
         if (data.get("oldestDate".toLowerCase()) != null) {
-            this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
+            this.setOldestDate(DateHelper.parseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
         }
         if (data.get("oldestDays".toLowerCase()) != null) {
             this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase())));

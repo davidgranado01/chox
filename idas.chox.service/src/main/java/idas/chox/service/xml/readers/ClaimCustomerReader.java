@@ -47,22 +47,22 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult.setCheckDataValid(true);
 
             // INSURER            
-            claimResult = NodeHelper.nodeValidate(sectionName, "name", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "claim-number", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "comprehensive", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "name", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "policy-number", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "claim-number", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "comprehensive", element, claimResult, getDataValidationParameter());
 
             // VEHICLE
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "year-of-manufacture", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), getBordereauReaderContext().getVehicleClassService());
-            claimResult = NodeHelper.nodeValidate(sectionName, "location", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "damage", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "usable", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "total-loss", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "initial-ecd", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "year-of-manufacture", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), getBordereauReaderContext().getVehicleClassService());
+            NodeHelper.nodeValidate(sectionName, "location", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "damage", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "usable", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "total-loss", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "initial-ecd", element, claimResult, getDataValidationParameter());
 
             // MITIGATION - moved to separate reader
 

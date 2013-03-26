@@ -38,7 +38,7 @@ public class CommentViewData {
                         || ((authenticatedUser.getId().compareTo(user.getId())==0 
                              || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())   
                              || (authenticatedUser.isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer()))
-                            && DateHelper.DifferenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {
+                            && DateHelper.differenceInMinutes(DateHelper.getCurrentDateTime(), comment.getCreatedDate()) <= 5)) {
             this.delete = "Delete";
         }
     }

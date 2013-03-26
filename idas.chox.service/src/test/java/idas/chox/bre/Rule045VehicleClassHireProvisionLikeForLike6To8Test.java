@@ -172,9 +172,9 @@ public class Rule045VehicleClassHireProvisionLikeForLike6To8Test extends BaseTes
         claim.getCustomer().getVehicleClass().setName("P2");
         claim.getVehicleHire().getVehicleClass().setName("P1");
 
-        // claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
-        claim.getCustomer().setHpiFirstRegistration(DateHelper.Parse("01/10/2005"));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/10/2011"));
+        // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
+        claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2005"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2011"));
 
         VehicleClassHireProvisionLikeForLike6To8 rule = new VehicleClassHireProvisionLikeForLike6To8();
 
@@ -201,9 +201,9 @@ public class Rule045VehicleClassHireProvisionLikeForLike6To8Test extends BaseTes
         claim.getCustomer().getVehicleClass().setName("P2");
         claim.getVehicleHire().getVehicleClass().setName("P1");
 
-        // claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
-        claim.getCustomer().setHpiFirstRegistration(DateHelper.Parse("01/10/2004"));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/10/2011"));
+        // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
+        claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2004"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2011"));
 
         VehicleClassHireProvisionLikeForLike6To8 rule = new VehicleClassHireProvisionLikeForLike6To8();
         
@@ -228,9 +228,9 @@ public class Rule045VehicleClassHireProvisionLikeForLike6To8Test extends BaseTes
         claim.getCustomer().getVehicleClass().setName("P1");
         claim.getVehicleHire().getVehicleClass().setName("P1");
 
-        // claim.getCustomer().setInitialECD(DateHelper.Parse("01/10/2009"));
-        claim.getCustomer().setHpiFirstRegistration(DateHelper.Parse("01/10/2004"));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("01/10/2011"));
+        // claim.getCustomer().setInitialECD(DateHelper.parse("01/10/2009"));
+        claim.getCustomer().setHpiFirstRegistration(DateHelper.parse("01/10/2004"));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("01/10/2011"));
 
         VehicleClassHireProvisionLikeForLike6To8 rule = new VehicleClassHireProvisionLikeForLike6To8();
         

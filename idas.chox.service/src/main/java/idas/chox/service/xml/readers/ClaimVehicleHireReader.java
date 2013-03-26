@@ -54,14 +54,14 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
             claimResult.setCheckDataValid(true);
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), vehicleClassService);
-            claimResult = NodeHelper.nodeValidate(sectionName, "rental-start", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "rental-end", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "collection-reason", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "rental-days", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), vehicleClassService);
+            NodeHelper.nodeValidate(sectionName, "rental-start", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "rental-end", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "collection-reason", element, claimResult, getDataValidationParameter());
+            NodeHelper.nodeValidate(sectionName, "rental-days", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
         } 

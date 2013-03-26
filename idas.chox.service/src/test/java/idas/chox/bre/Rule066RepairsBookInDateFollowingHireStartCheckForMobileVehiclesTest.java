@@ -116,8 +116,8 @@ public class Rule066RepairsBookInDateFollowingHireStartCheckForMobileVehiclesTes
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairBookInDateChkForMobileVehicle(true);
         claim.getCustomer().setIsUsable(true);
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("22/02/2011 "));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("22/02/2011"));
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.parse("22/02/2011 "));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("22/02/2011"));
 
         RepairsBookInDateFollowingHireStartCheckForMobileVehicles rule = new RepairsBookInDateFollowingHireStartCheckForMobileVehicles();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -133,8 +133,8 @@ public class Rule066RepairsBookInDateFollowingHireStartCheckForMobileVehiclesTes
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairBookInDateChkForMobileVehicle(true);
         claim.getCustomer().setIsUsable(true);
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.Parse("26/02/2011 "));
-        claim.getVehicleHire().setHireStart(DateHelper.Parse("22/02/2011"));
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.parse("26/02/2011 "));
+        claim.getVehicleHire().setHireStart(DateHelper.parse("22/02/2011"));
 
         RepairsBookInDateFollowingHireStartCheckForMobileVehicles rule = new RepairsBookInDateFollowingHireStartCheckForMobileVehicles();
 

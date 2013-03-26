@@ -53,14 +53,11 @@ public class InvoiceRepairExtrasReader extends BaseEntityReader {
                     claimResult.setCheckDataValid(false);
                     break;
                 } else {
-                    LOG.debug("...parsing '{}' element", strExtraName);
-                    claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
-                    claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
-                    LOG.debug("......claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
+                    NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
+                    NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 }
             }
 
-            LOG.debug("Returning claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;
                 claimResult.setValid(false);

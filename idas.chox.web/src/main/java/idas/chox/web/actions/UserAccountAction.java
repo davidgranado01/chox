@@ -66,7 +66,7 @@ public class UserAccountAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String UserBrowserWarning() {
+    public String userBrowserWarning() {
         try {
             LOG.info("Browser warning for user: '{}' user Id : '{}' will not be shown in future.", getAuthenticatedUser().getFullName(), getAuthenticatedUser().getId());
             ActionResponse response = adminUserService.updateUserBrowserWarning(getAuthenticatedUser().getId(),showSplash);

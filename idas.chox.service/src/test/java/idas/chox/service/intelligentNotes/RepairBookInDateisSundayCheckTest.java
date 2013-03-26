@@ -21,7 +21,7 @@ public class RepairBookInDateisSundayCheckTest {
         Customer customer = new Customer();
         
         customer.setIsUsable(true);
-        hireMonitoringDetail.setOriginalRepairBookInDate(DateHelper.Parse("28/10/2012"));
+        hireMonitoringDetail.setOriginalRepairBookInDate(DateHelper.parse("28/10/2012"));
         c.setStatus(ClaimStatus.CLAIM_PENDING);
         c.setHireMonitoringDetail(hireMonitoringDetail);
         c.setCustomer(customer);
@@ -37,7 +37,7 @@ public class RepairBookInDateisSundayCheckTest {
         Customer customer = new Customer();
         
         customer.setIsUsable(true);
-        hireMonitoringDetail.setOriginalRepairBookInDate(DateHelper.Parse("26/10/2012"));
+        hireMonitoringDetail.setOriginalRepairBookInDate(DateHelper.parse("26/10/2012"));
         c.setStatus(ClaimStatus.CLAIM_PENDING);
         c.setHireMonitoringDetail(hireMonitoringDetail);
         c.setCustomer(customer);

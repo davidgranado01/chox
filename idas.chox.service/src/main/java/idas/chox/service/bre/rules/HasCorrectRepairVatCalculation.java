@@ -32,7 +32,7 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-            boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
+            boolean success = CalcHelper.equalTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

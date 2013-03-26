@@ -88,7 +88,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
         claim.getInvoice().setHireVat(new BigDecimal(43.49).setScale(2, BigDecimal.ROUND_HALF_UP));
         claim.getInvoice().setHireNet(new BigDecimal(217.43));
 
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("01/04/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("01/04/2011"));
 
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -107,7 +107,7 @@ public class Rule058HireVatHireEndCheckTest extends BaseTest {
         claim.getInvoice().setHireVat(new BigDecimal(45.49).setScale(2, BigDecimal.ROUND_HALF_UP));
         claim.getInvoice().setHireNet(new BigDecimal(217.43));
 
-        claim.getVehicleHire().setHireEnd(DateHelper.Parse("01/04/2011"));
+        claim.getVehicleHire().setHireEnd(DateHelper.parse("01/04/2011"));
 
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);

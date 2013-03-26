@@ -31,7 +31,7 @@ public class TotalGrossSumCheck implements IBusinessRule {
         if (claim.getBreBand().isHasTotalGrossSumCheck()) {
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-            boolean success = CalcHelper.EqualTo(invoice.getTotalGross(), invoice.getTotalNet().add(invoice.getTotalVat()));
+            boolean success = CalcHelper.equalTo(invoice.getTotalGross(), invoice.getTotalNet().add(invoice.getTotalVat()));
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
             if (success) {

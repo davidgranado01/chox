@@ -47,15 +47,15 @@ public class InjurySolicitorReader {
 
             claimResult.setCheckDataValid(true);
 
-            claimResult = NodeHelper.nodeValidate(sectionName, "name", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "address1", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "address2", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "address3", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "address4", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "address5", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "postcode", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "telephone", element, claimResult, dataValidationParameter);
-            claimResult = NodeHelper.nodeValidate(sectionName, "email", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "name", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "address1", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "address2", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "address3", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "address4", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "address5", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "postcode", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "telephone", element, claimResult, dataValidationParameter);
+            NodeHelper.nodeValidate(sectionName, "email", element, claimResult, dataValidationParameter);
 
             isAllowToReadData = claimResult.isDataValid();
 

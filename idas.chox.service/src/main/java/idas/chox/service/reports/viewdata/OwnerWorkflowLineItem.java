@@ -108,7 +108,7 @@ public class OwnerWorkflowLineItem {
         }
         if (data.get("oldestDate".toLowerCase()) != null) {
             LOG.debug("Getting oldest date from '{}'", data.get("oldestDate".toLowerCase()));
-            this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
+            this.setOldestDate(DateHelper.parseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
         }
         LOG.debug("oldestDate={}", this.getOldestDate());
         if (data.get("oldestDays".toLowerCase()) != null) {
@@ -136,7 +136,7 @@ public class OwnerWorkflowLineItem {
         if (lastLogin != null && lastLogin.toString().length() > 0) {
             try {
                 // NB. Rstrict date to 19 characters (i.e. remove milliseconds)
-                this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString().substring(0, 19)));
+                this.setLastLoginDate(DateHelper.parseDBDateTime(lastLogin.toString().substring(0, 19)));
             } catch (Exception ex) {
                 LOG.warn("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
             }

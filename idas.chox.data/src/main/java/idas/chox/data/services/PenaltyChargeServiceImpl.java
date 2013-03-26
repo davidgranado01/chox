@@ -426,7 +426,7 @@ public class PenaltyChargeServiceImpl extends SecureDataService implements Penal
         inv.setHirePenaltyChargeAppliedDate(null);
         inv.setRepairPenaltyChargeAppliedDate(null);
         if (inv.getTotalPenaltyCharge() != null && inv.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-            Comment comment = Comment.New(0, "Penalty charges have been removed from the invoice as the date from which penalty charges are calculated has been manually updated.");
+            Comment comment = Comment.newComment(0, "Penalty charges have been removed from the invoice as the date from which penalty charges are calculated has been manually updated.");
             claim.addComment(comment);
         }
         inv.setTotalPenaltyCharge(BigDecimal.ZERO);

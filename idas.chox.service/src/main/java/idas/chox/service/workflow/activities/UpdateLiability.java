@@ -62,13 +62,13 @@ public class UpdateLiability extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
-                Comment comment = Comment.New(0, note);
+                Comment comment = Comment.newComment(0, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
                 claim.setLiabilityStatus(liabilityStatus);
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + claimReviewNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes));
         }
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
