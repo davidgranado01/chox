@@ -451,7 +451,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.getMessage().add("This Insurer does not allow claim upload. Please contact CHOX support.");
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
-            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+          claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+          // Check its the same claim-type
+          if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
+                  || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()))) {
+                claimResult.setValid(false);
+                claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
+          } else {
             if (claim.getInvoice() != null) {
                 if (isInsurerUpload) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_EXIST_INVOICE);
@@ -486,6 +492,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     }
                 }
             }
+          }
         } else {
             if (isInsurerUpload) {
                 LOG.debug("New Insurer Claim Found");
@@ -558,6 +565,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
                 claimResult.setValid(false);
+            } else if (!ClaimType.isSubscriber(claim.getClaimType())) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
+                claimResult.setValid(false);
             } else {
                 if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_INVOICE);
@@ -621,6 +631,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
                 claimResult.setValid(false);
+            } else if (!ClaimType.isFixedFee(claim.getClaimType())) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
+                claimResult.setValid(false);
             } else {
                 if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.NEW_INVOICE);
@@ -668,6 +681,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
+                claimResult.setValid(false);
+            } else if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
                 claimResult.setValid(false);
             } else {
                 if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {

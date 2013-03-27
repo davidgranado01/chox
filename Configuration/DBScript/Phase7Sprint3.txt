@@ -9661,6 +9661,9 @@ WHERE name='activity.SlaExtension.SubscriberClaimRejected'
 UPDATE claim
   SET claim_number = trim(claim_number)
 WHERE claim_number like '% ';
+UPDATE claim
+  SET claim_number = trim(claim_number)
+WHERE claim_number like ' %';
 
 ---------------------------------------------------
 --- END of bug#2551                         -------

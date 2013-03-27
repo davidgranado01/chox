@@ -138,7 +138,12 @@ public class ClaimResult {
 
             processStatus = "Uploaded";
 
-            if (this.claimParseStatus.equals(ClaimParseStatus.EXIST_CLAIM)) {
+            if (this.claimParseStatus.equals(ClaimParseStatus.EXIST_CLAIM)
+                    || this.claimParseStatus.equals(ClaimParseStatus.EXISTS_INSURER_CLAIM)
+                    || this.claimParseStatus.equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
+                    || this.claimParseStatus.equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
+                    || this.claimParseStatus.equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
+                    || this.claimParseStatus.equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)) {
                 processStatus = "Updated";
             }
 

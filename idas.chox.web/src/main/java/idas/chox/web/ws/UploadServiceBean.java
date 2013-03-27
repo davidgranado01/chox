@@ -194,6 +194,9 @@ public class UploadServiceBean {
             else if (uploadResult.getRemark().equals("Claim Already Exists (Fixed Fee)")) {
                 result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_FIXED_FEE);
             }
+            else if (uploadResult.getRemark().equals("Claim Already Exists But As A Different Claim Type")) {
+                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS); // To Be Updated
+            }
             else if (uploadResult.getRemark().equals("Error")) {
                 result.setUploadStatus(ClaimUploadStatus.ERROR);
             }

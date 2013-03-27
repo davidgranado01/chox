@@ -712,6 +712,7 @@
                     <xsd:enumeration value="Insurer Hire Monitoring"/>
                     <xsd:enumeration value="Insurer Invoice Already Exists"/>
                     <xsd:enumeration value="New Insurer Supplementary Invoice"/>
+                    <xsd:enumeration value="Claim Already Exists But As A Different Claim Type"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
