@@ -48,7 +48,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private String hireState;
     private boolean isUpdateManagingRepair = false;
     private boolean isInsurerUpload = false;
-
+    Chorganisation chorganisation;
 
     @Override
     public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
@@ -94,6 +94,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 supplierAliasName = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-name");
             }
             isInsurerUpload = true;
+            ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
+            chorganisation = alias != null ? alias.getChorganisation() : null;
         }
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
@@ -265,7 +267,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
 
-        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
+        if (claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId)) {
             LOG.debug("Insurer trying to upload an invoice that already exists: '{}'.", choReferenceNumber);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_CLAIM_STATUS);
             claimResult.setValid(false);
@@ -287,11 +290,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setPercentageLiabilityCho(BigDecimal.ZERO.setScale(2));
             claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
             claim.setClaimType(ClaimType.INSURER_INVOICE);
-            ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
-                ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
-                Chorganisation chorganisation = alias != null ? alias.getChorganisation() : null;
-                // Check CHO allows insurer upload
+               // Check CHO allows insurer upload
                 if (chorganisation!= null && chorganisation.isInsurerUploadOnly()) {
                     //Set claim Insurer equal to third party insurer
                     claim.setChorganisation(chorganisation);
@@ -376,13 +376,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
         if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
             LOG.warn("Invalid new claim rental status: '{}' - Insurer does not have Claim upload enabled", hireState);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
             claimResult.setValid(false);
             claimResult.getMessage().add("This Insurer does not allow claim upload. Please contact CHOX support..");
             claim.setChoReference(choReferenceNumber);
-        } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) 
+                || (isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
 
             if (claim.getInvoice() != null) {
@@ -444,13 +446,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         ClaimService claimService = getBordereauReaderContext().getClaimService();
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
 
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
         if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
             LOG.warn("Invalid new claim rental status: '{}' - Insurer does not have Claim upload enabled", hireState);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
             claimResult.setValid(false);
             claimResult.getMessage().add("This Insurer does not allow claim upload. Please contact CHOX support.");
             claim.setChoReference(choReferenceNumber);
-        } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        } else if ((isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))
+                || (!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))) {
           claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
           // Check its the same claim-type
           if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
@@ -499,12 +503,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_CLAIM);
                 claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
                 claim.setClaimType(ClaimType.INSURER_CLAIM);
-                ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
                 if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
-                    LOG.debug("Getting CHO fromalias name '{}'", supplierAliasName);
-                    ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
-                    Chorganisation chorganisation = alias != null ? alias.getChorganisation() : null;
-                    // Check CHO allows insurer upload
                     if (chorganisation != null && chorganisation.isInsurerUploadOnly()) {
                         //Set claim Insurer equal to third party insurer
                         LOG.debug("CHO set for insurer claim: {}", chorganisation.getName());
@@ -677,7 +676,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         ClaimService claimService = getBordereauReaderContext().getClaimService();
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
 
-        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
+        if (claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
@@ -738,9 +738,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimElement, "customer");
         String customerClaimRef = XmlHelper.getNodeValue(element, "claim-number");
 
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
         if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
 
-            if (!claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            if ((!isInsurerUpload && !claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))
+                    || (isInsurerUpload && !claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
                 if (isInsurerUpload) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE);
                 } else {
@@ -878,13 +880,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
 
+        int choId = chorganisation == null ? -1 : chorganisation.getId();
         if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
             LOG.warn("Invalid new claim rental status: '{}' - Insurer does not have Claim upload enabled", hireState);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
             claimResult.setValid(false);
             claimResult.getMessage().add("This Insurer does not allow claim upload. Please contact CHOX support.");
             claim.setChoReference(choReferenceNumber);
-        } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))
+                || (!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
 
             if (claim.getInvoice() != null) {
