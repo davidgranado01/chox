@@ -8466,16 +8466,6 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 --- END Stored Procedure and Reports update -------
 ---------------------------------------------------
 
--------------------------------------------------------------------------------------
--- bug#2491 - Workgroup ID shown instead of name                                   --
--------------------------------------------------------------------------------------
-
-UPDATE  web_user_role set is_workgroup_related = false where name='ROLE_INS_COM';
-
----------------------------------------------------
---- END of bug#2491                         -------
----------------------------------------------------
-
 
 -------------------------------------------------------------------------------------
 -- bug#2498 - Production - CHO Manager - no action panel for Awaiting Invoice Data --
