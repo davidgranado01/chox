@@ -9653,3 +9653,18 @@ WHERE name='activity.SlaExtension.SubscriberClaimRejected'
 ---------------------------------------------------
 --- END of bug#2536                         -------
 ---------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+-- bug#2551 Production - White space following claim number to be removed                     --
+------------------------------------------------------------------------------------------------
+UPDATE claim
+  SET claim_number = trim(claim_number)
+WHERE claim_number like '% ';
+UPDATE claim
+  SET claim_number = trim(claim_number)
+WHERE claim_number like ' %';
+
+---------------------------------------------------
+--- END of bug#2551                         -------
+---------------------------------------------------

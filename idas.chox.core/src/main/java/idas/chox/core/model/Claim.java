@@ -225,7 +225,11 @@ public class Claim extends Entity implements Serializable {
     }
 
     public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
+        if (claimNumber != null) {
+            this.claimNumber = claimNumber.trim();
+        } else {
+            this.claimNumber = claimNumber;
+        }
     }
 
     public java.util.Date getCreditAgreementDate() {
