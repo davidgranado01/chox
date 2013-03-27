@@ -30,7 +30,8 @@ public enum ClaimParseStatus {
     INSURER_HIRE_MONITORING_AND_NEW_INVOICE     (25, "Insurer Hire Monitoring and New Invoice"),
     INSURER_HIRE_MONITORING                     (26, "Insurer Hire Monitoring"),
     INSURER_EXIST_INVOICE                       (27, "Insurer Invoice Already Exists"),
-    INSURER_NEW_SUPPLEMENTARY_INVOICE           (28, "New Insurer Supplementary Invoice");
+    INSURER_NEW_SUPPLEMENTARY_INVOICE           (28, "New Insurer Supplementary Invoice"),
+    EXISTS_DIFFERENT_CLAIM_TYPE                 (29, "Claim Already Exists But As A Different Claim Type");
 
     private final String description;
     private final int ClaimParseStatusValue;
