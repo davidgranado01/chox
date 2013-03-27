@@ -94,7 +94,7 @@
 
             workgroupStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":claimId}}),
+                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"claimId":claimId}}),
                 reader: wgrpJsonReader
             });
 
