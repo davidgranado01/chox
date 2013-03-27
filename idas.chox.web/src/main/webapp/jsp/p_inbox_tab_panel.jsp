@@ -165,7 +165,8 @@
         var selectedOrg = <s:property value="filterOrgId" />;
         if (orgCombo) {
             selectedOrg = orgCombo.getValue();
-        }
+            Ext.state.Manager.set("filter_org_id",orgCombo.getValue());
+        } 
 
         if (!selectedOrg)
             selectedOrg = -1;
@@ -174,7 +175,10 @@
         var selectedClaimType = <s:property value="filterClaimTypeId" />;
         if (ctCombo) {
             selectedClaimType = ctCombo.getValue();
-        }
+            Ext.state.Manager.set("filter_claim_type_id",ctCombo.getValue());
+        } 
+        var filterName = Ext.state.Manager.get("grid_filterName");
+        var title = Ext.state.Manager.get("grid_main_title").replace("Queue: ","");
         refreshFilterPanelByOrgOrClaimType(filterName, title, selectedOrg, selectedClaimType);
     }
     
@@ -191,9 +195,11 @@
             selectedClaimType = ctCombo.getValue();
         }
         
+        Ext.state.Manager.set("grid_filterName",key);
+        Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
         filterName = key;
         title = gridTitle;
-        return refreshFilterPanelByOrgOrClaimType(key, gridTitle, selectedOrg, selectedClaimType);
+        return executeFilterByOrgAndClaimType(key, gridTitle, selectedOrg, selectedClaimType);
     }
     
     function refreshFilterPanelByOrgOrClaimType(filterName, title, orgId, claimTypeId) {
