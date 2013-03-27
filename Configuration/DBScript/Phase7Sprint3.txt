@@ -9658,3 +9658,30 @@ WHERE claim_number like ' %';
 ---------------------------------------------------
 --- END of bug#2551                         -------
 ---------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+-- bug#2559 - Dev - 7.3.1 'Update To payment Received' Does Not Work In                       --
+--            Status 'ContestedInvoiceReferredToCHO'                                          --
+------------------------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled)
+	SELECT 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO', false, false, false, false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OP', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+
+---------------------------------------------------
+--- END of bug#25559                         -------
+---------------------------------------------------
