@@ -167,7 +167,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 case INSURERVSINSURER:
                     if (!isInsurerUpload) {
                         LOG.debug("PROCESSING Insurer vs Insurer Chox Claim");
-                        processInsurerChoxClaim(claimResult, claim);
+                        processInsurerVsInsurerClaim(claimResult, claim);
                     } else {
                         claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
                         claimResult.setValid(false);
@@ -676,13 +676,12 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    private void processInsurerChoxClaim(ClaimResult claimResult, Claim claim) {
+    private void processInsurerVsInsurerClaim(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
 
-        int choId = chorganisation == null ? -1 : chorganisation.getId();
-        if (claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId)) {
+        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
             if (claim.getInvoice() != null) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_INVOICE);
