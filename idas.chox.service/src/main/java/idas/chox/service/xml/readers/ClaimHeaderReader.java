@@ -92,10 +92,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     insurerId);
             if (claimResult.isValid()) {
                 supplierAliasName = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-name");
+                ChorganisationAlias alias;
+                try {
+                    alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
+                } catch (Exception ex) {
+                    alias = null;
+                }
+                chorganisation = alias != null ? alias.getChorganisation() : null;
             }
             isInsurerUpload = true;
-            ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
-            chorganisation = alias != null ? alias.getChorganisation() : null;
         }
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
