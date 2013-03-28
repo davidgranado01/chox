@@ -390,7 +390,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) 
                 || (isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
-            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            if (isInsurerUpload) {
+                claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
+            } else {
+                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            }
 
             if (claim.getInvoice() != null) {
                 if (isInsurerUpload) {
@@ -460,7 +464,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         } else if ((isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))
                 || (!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))) {
-          claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+          if (isInsurerUpload) {
+              claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
+          } else {
+              claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+          }
           // Check its the same claim-type
           if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
                   || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()))) {
@@ -851,7 +859,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     claim.setChoReference(choReferenceNumber);
                 }
             } else {
-                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+                if (isInsurerUpload) {
+                    claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
+                } else {
+                    claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+                }
                 if (claim.getInvoice() != null) {
                     if (ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
                         claimResult.setClaimParseStatus(ClaimParseStatus.EXISTING_SUPPLEMENTARY_INVOICE);
@@ -893,7 +905,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         } else if ((!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber))
                 || (!isInsurerUpload && claimService.isClaimSupplierReferenceNumberExistForCho(choReferenceNumber, choId))) {
-            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            if (isInsurerUpload) {
+                claim = claimService.getClaimByChoIdAndCHOReferenceNumber(chorganisation.getId(), choReferenceNumber);
+            } else {
+                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            }
 
             if (claim.getInvoice() != null) {
                 if (isInsurerUpload) {
