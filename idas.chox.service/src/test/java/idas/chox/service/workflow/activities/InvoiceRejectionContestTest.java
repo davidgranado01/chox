@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Assert;
@@ -21,7 +22,6 @@ import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.test.BaseTest;
-import java.math.BigDecimal;
 
 public class InvoiceRejectionContestTest extends BaseTest {
     
@@ -37,7 +37,7 @@ public class InvoiceRejectionContestTest extends BaseTest {
 
     @Test
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void testInvoiceRejectionAccept() throws Throwable {
+    public void testInvoiceRejectionContest() throws Throwable {
 
         Invoice invoice = invoiceService.getInvoice(999);
         

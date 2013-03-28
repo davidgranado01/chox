@@ -24,6 +24,7 @@ public class SwitchClaimTest extends BaseTest {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
     public void testSwitchClaim() throws Throwable {
 
         Claim claim = claimService.getClaim(999);
@@ -32,7 +33,7 @@ public class SwitchClaimTest extends BaseTest {
         Assert.assertEquals("RSA", claim.getInsurer().getName());
         SwitchClaim activity = (SwitchClaim) activityFactory.getActivity("switchClaim");
         activity.process(claim);
-        Assert.assertEquals("Motability", claim.getInsurer().getName());
+        Assert.assertEquals("RBS", claim.getInsurer().getName());
 
     }
 }

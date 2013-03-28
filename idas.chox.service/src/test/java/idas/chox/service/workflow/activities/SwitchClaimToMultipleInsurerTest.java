@@ -23,16 +23,18 @@ public class SwitchClaimToMultipleInsurerTest extends BaseTest {
         activity.process(claim);
     }
 
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-//    public void testwitchClaimToMultipleInsurer() throws Throwable {
-//
-//        Claim claim = claimService.getClaim(999);
-//        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//
-//        Assert.assertEquals("RSA", claim.getInsurer().getName());
-//        SwitchClaimToMultipleInsurer activity = (SwitchClaimToMultipleInsurer) activityFactory.getActivity("switchClaimToMulIns");
-//        activity.process(claim);
-//        Assert.assertEquals("Motability", claim.getInsurer().getName());
-//
-//    }
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Test
+    public void testSwitchClaimToMultipleInsurer() throws Exception {
+
+        Claim claim = claimService.getClaim(999);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+
+        Assert.assertEquals("RSA", claim.getInsurer().getName());
+        SwitchClaimToMultipleInsurer activity = (SwitchClaimToMultipleInsurer) activityFactory.getActivity("switchClaimToMulIns");
+        activity.setInsId(6);
+        activity.process(claim);
+        Assert.assertEquals("RBS", claim.getInsurer().getName());
+
+    }
 }
