@@ -1,7 +1,13 @@
 package idas.chox.service.workflow.activities;
 
+
+import java.math.BigDecimal;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -17,5 +23,25 @@ public class UpdateInterimPaymentReceivedTest extends BaseTest {
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         Activity activity = activityFactory.getActivity("updateInterimPaymentReceived");
         activity.process(claim);
+    }
+    
+    @Test
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void testUpdateInterimPaymentReceived() throws Throwable {
+
+        Claim claim = new Claim();
+        claim.setInsurer(insurerService.getInsurer(3));
+        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        claim.setInvoice(invoiceService.getInvoice(999));
+        claim.setChorganisation(chorganisationService.getChorganisation(1006));
+        claim.setThirdParty(thirdPartyService.getThirdParty(999));
+        claim.setCustomer(customerService.getCustomer(999));
+        claim.getInvoice().setInterimPaymentReceived(BigDecimal.ZERO);
+        
+        UpdateInterimPaymentReceived activity = (UpdateInterimPaymentReceived) activityFactory.getActivity("updateInterimPaymentReceived");
+        activity.setPartialInterimPayment(BigDecimal.TEN);
+        activity.process(claim);
+
+        Assert.assertEquals(claim.getInvoice().getInterimPaymentReceived(), BigDecimal.TEN);
     }
 }
