@@ -32,6 +32,7 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements
                 && !request.getServletPath().contains("downloadExcelReport")
                 && !request.getServletPath().contains("doExportAttachment")
                 && !request.getServletPath().contains("doExportExcel")
+                && !request.getServletPath().contains("doTaskExportExcel")
                 && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
             // This action is never cached and is always downloaded; even with
             // back/forward buttons.
