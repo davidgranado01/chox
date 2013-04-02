@@ -419,7 +419,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());
 
-        if (!sort.isEmpty() && !dir.isEmpty()) {
+        if (sort != null && !sort.isEmpty() && dir != null && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("supplierReference")) {
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
@@ -473,9 +473,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("claimHasAttachment")) {
-                addSort(criteria, "at.id", dir);
-                addSort(criteria, "choReference", dir);
+//            } else if (sort.equalsIgnoreCase("claimHasAttachment")) {
+//                addSort(criteria, "at.id", dir);
+//                addSort(criteria, "choReference", dir);
             }else {
                 addSort(criteria, "lastModifiedDate", dir);
                 addSort(criteria, "choReference", dir);
@@ -675,8 +675,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.attachments", "at", CriteriaSpecification.LEFT_JOIN, Restrictions.eq("at.deleted", Boolean.FALSE));
+            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+//            .createAlias("this.attachments", "at", CriteriaSpecification.LEFT_JOIN, Restrictions.eq("at.deleted", Boolean.FALSE));
         
         if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
