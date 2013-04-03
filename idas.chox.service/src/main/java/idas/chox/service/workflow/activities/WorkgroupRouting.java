@@ -106,10 +106,14 @@ public class WorkgroupRouting extends BaseActivity {
 
                 for (AutomaticRouting automaticRouting : automaticRoutingMapping) {
 
-                    if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
-                        LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
-                        claim.setWorkgroup(automaticRouting.getWorkgroup());
-                        return true;
+                    try {
+                        if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
+                            LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
+                            claim.setWorkgroup(automaticRouting.getWorkgroup());
+                            return true;
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Exception thrown validating policy number '{}' against regex '{}'", new Object[]{policyNumber.toUpperCase(), automaticRouting.getExpression(), ex});
                     }
                 }
             }
