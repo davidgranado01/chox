@@ -282,7 +282,7 @@ public class XmlUploadAction extends BaseAction {
                         LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                     } else {
                         LOG.debug("Synchronizing on session");
-                        synchronized (getSession()) {
+                        synchronized (getSessionLock()) {
                             if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
                                 claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
                             }

@@ -153,7 +153,7 @@ public class ExcelGeneratorAction extends BaseAction {
             LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
             throw new AccessDeniedException("Illegal attempt to generate Export file.");
         }
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("isExportFinished", false);
             getSession().put("cancelExportOperation", false);
             getSession().put("writingToFile", false);
@@ -165,7 +165,6 @@ public class ExcelGeneratorAction extends BaseAction {
         String rtnStr = ERROR;
         claimSizeError = null;
         ClaimSearchCriteria c;
-//        ByteArrayOutputStream buf = null;
 
         if (getSession() != null) {
 
@@ -234,12 +233,12 @@ public class ExcelGeneratorAction extends BaseAction {
 
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
         } else if (excelClaims.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("tooManyRows", true);
             }
@@ -247,82 +246,82 @@ public class ExcelGeneratorAction extends BaseAction {
         }
 
         
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
         List<ExcelHistory> histories = gridExportReport.getExcelHistory(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
         } else if (histories.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("tooManyRows", true);
             }
             return false; 
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
         List<ExcelComment> comments = gridExportReport.getExcelComments(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
         } else if (comments.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("tooManyRows", true);
             }
             return false; 
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
         List<ExcelClaimCycle> claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
         } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("tooManyRows", true);
             }
             return false; 
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
         List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
             }
             return false;
         } else if (invoices.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("tooManyRows", true);
             }
             return false; 
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
 
@@ -368,7 +367,7 @@ public class ExcelGeneratorAction extends BaseAction {
         t.setDaemon(true);
         t.start();
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);
         }
 
@@ -398,7 +397,7 @@ public class ExcelGeneratorAction extends BaseAction {
             getSession().put("exceptionThrown", true);
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().get("exceptionThrown") != null) {
                 getSession().put("numberOfClaimsProcessed", null);
                 getSession().put("cancelExportOperation", false);
@@ -415,7 +414,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     public String getExportedClaimsCount() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().containsKey("numberOfClaimsProcessed") && getSession().get("numberOfClaimsProcessed") != null) {
                 setExportedClaimCount((Integer) getSession().get("numberOfClaimsProcessed"));
                 setExportFinished((Boolean) getSession().get("isExportFinished"));
@@ -449,7 +448,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     public String cancelExportOperation() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             LOG.debug("export operation cancellation called ...");
             getSession().put("cancelExportOperation", true);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
@@ -461,7 +460,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private boolean isExportClaimOperationCancelled() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");
         }
     }
@@ -483,11 +482,10 @@ public class ExcelGeneratorAction extends BaseAction {
                 LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage(), ex);
                 LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                 getSession().put("exceptionThrown", true);
-//                result = ERROR;
             }
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
