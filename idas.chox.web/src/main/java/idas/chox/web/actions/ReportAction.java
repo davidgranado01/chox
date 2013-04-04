@@ -199,6 +199,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 }
                 getSession().put("reportFileLocation", null);
             } else {
+                LOG.error("reportFileLocation not in session");
                 createEmptyReport();
             }
 
