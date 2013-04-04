@@ -18,6 +18,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class WorkgroupRouting extends BaseActivity {
+
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupRouting.class);
     private VehicleClassPriceService vehicleClassPriceService;
 
@@ -88,7 +89,6 @@ public class WorkgroupRouting extends BaseActivity {
         }
 
     }
-    
 
     protected boolean autoWorkgroupRouting(Claim claim) throws Exception {
         LOG.debug("Auto-routing claim: {}", claim.getChoReference());
@@ -106,14 +106,10 @@ public class WorkgroupRouting extends BaseActivity {
 
                 for (AutomaticRouting automaticRouting : automaticRoutingMapping) {
 
-                    try {
-                        if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
-                            LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
-                            claim.setWorkgroup(automaticRouting.getWorkgroup());
-                            return true;
-                        }
-                    } catch (Exception ex) {
-                        LOG.warn("Exception thrown validating policy number '{}' against regex '{}'", new Object[]{policyNumber.toUpperCase(), automaticRouting.getExpression(), ex});
+                    if (NodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
+                        LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
+                        claim.setWorkgroup(automaticRouting.getWorkgroup());
+                        return true;
                     }
                 }
             }
@@ -139,19 +135,18 @@ public class WorkgroupRouting extends BaseActivity {
         BigDecimal vehicleClassPrice;
         VehicleClass vehicleClass;
         Date firstRegistration;
-        
+
         if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null) {
             hireStart = claim.getVehicleHire().getHireStart();
             vehicleClass = claim.getVehicleHire().getVehicleClass();
             firstRegistration = claim.getVehicleHire().getHpiFirstRegistration();
-        }
-        else {
+        } else {
             LOG.debug("No vehicle hire available for claim {} - using customer's vehicle price for routing", claim.getChoReference());
             vehicleClass = claim.getCustomer().getVehicleClass();
             firstRegistration = claim.getCustomer().getHpiFirstRegistration();
         }
 
-        
+
         if (hireStart == null) {
             LOG.debug("Hire Start is null - using todays date");
             hireStart = new Date();
@@ -177,11 +172,11 @@ public class WorkgroupRouting extends BaseActivity {
 
             LOG.debug("automaticRoutingMappingPrice found");
 
-            if (vehicleClassPrice != null ) {
+            if (vehicleClassPrice != null) {
 
                 for (AutomaticRoutingPrice automaticRouting : automaticRoutingMappingPrice) {
 
-                    if (vehicleClassPrice.compareTo(automaticRouting.getPrice())==-1) {
+                    if (vehicleClassPrice.compareTo(automaticRouting.getPrice()) == -1) {
                         LOG.debug("Found price match: {} -> {}", automaticRouting.getPrice(), automaticRouting.getWorkgroup());
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
                         return true;
