@@ -300,6 +300,13 @@
                     callback:function(){
                         Ext.state.Manager.set("grid_main_title", titleMessage);
                         grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
+                        if (tabs && tabs.getActiveTab().title == 'Inbox') {
+                            var title = Ext.state.Manager.get("grid_main_title");
+                            if (title.indexOf("Queue: ") != -1) {
+                                title = title.replace("Queue: ","");
+                                $("a:contains('" + title + " ("+"')").html(title+" ("+ds.getTotalCount()+")");
+                            }
+                        }
                     }
                 });
             }
@@ -315,6 +322,8 @@
                 Ext.state.Manager.set("inbox_grid_limit", 0);
                 Ext.state.Manager.set("search_grid_start", 0);
                 Ext.state.Manager.set("search_grid_limit", 0);
+                Ext.state.Manager.set("filter_claim_type_id",-1);
+                Ext.state.Manager.set("filter_org_id",-1);
                 isInboxShowHistory = false;
                 isSearchShowHistory = false;
                 manualInvoiceFilter = false;
@@ -1573,7 +1582,7 @@
                     
                     if(tab.title == 'Inbox' && isInboxShowHistory){
 
-                        ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName"), "inbox": true};
+                        ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName"), "filterOrgId" : Ext.state.Manager.get("filter_org_id"), "filterClaimTypeId": Ext.state.Manager.get("filter_claim_type_id")};
                         doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
 
                     }else if(tab.title == 'Search' && isSearchShowHistory){
