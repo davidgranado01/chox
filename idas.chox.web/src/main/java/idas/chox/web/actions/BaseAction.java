@@ -39,9 +39,8 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public Map<String, Object> getSession() {
         if (session == null) {
-            LOG.error("No session found");
-//            throw new Exception("Session not found");
-//    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
+            LOG.error("No session found - creating new empty session");
+    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
         }
         return session;
     }
