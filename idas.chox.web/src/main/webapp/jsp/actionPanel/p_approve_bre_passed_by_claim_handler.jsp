@@ -62,14 +62,37 @@
         if($("form#invoiceEscalatedToCh").valid()){
             if (action=='rejectInvoice') {
                 var reasonOfRejection = $("#appBrePassCHReasonOfRejectionId").val();
-                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceEscalatedToCh").submit();}else{return false;}})) {
-                    return;
+                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && 
+                    !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \n\
+                                            \'Liability Status\' is up to date and click on the \'Agree Quantum\' button, the invoice will be allocated to a holding status \n\
+                                            until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',
+                                            function(btn){ 
+                                                  if(btn=='yes'){ 
+                                                      Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                                                      $("form#invoiceEscalatedToCh").submit();
+                                                  }else{ 
+                                                      return false;
+                                                  }
+                                              })) 
+                {
+                    return false;
                 }
-                else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this invoice?',function(btn){if(btn=='yes'){$("form#invoiceEscalatedToCh").submit();}else{return false;}})){
-                    return;
+                else if(reasonOfRejection != <s:property value="invoiceLiabilityDisputeReasonId" /> && 
+                         !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this invoice?',
+                                                  function(btn){
+                                                      if(btn=='yes'){
+                                                          Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                                                          $("form#invoiceEscalatedToCh").submit();
+                                                      }else{
+                                                          return false;
+                                                      }
+                                                  }))
+                {
+                    return false;
                 }
             }
            else{
+               Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                $("form#invoiceEscalatedToCh").submit(); 
            }
         }
@@ -97,7 +120,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action"
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action"
           method="post" id="invoiceEscalatedToCh" name="invoiceEscalatedToCh">
         <fieldset class="x-fieldset">
             <legend>Invoice Escalated To Claim Handler - Action Required</legend>

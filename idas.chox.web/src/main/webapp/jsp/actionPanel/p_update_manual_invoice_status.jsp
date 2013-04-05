@@ -6,7 +6,7 @@ function doUpdateManualInvoice(action){
     
     $('form#updateManualInvoicePaymentForm input[id="name"]').val(action)
     
-    Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+    Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
     $("form#updateManualInvoicePaymentForm").submit();
     
 }
@@ -15,7 +15,7 @@ function doUpdateManualInvoice(action){
 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+    <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
             <fieldset class="x-fieldset"><legend>Insurer Invoice - Action Required</legend>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />

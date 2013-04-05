@@ -26,6 +26,10 @@
     function resubmitOrAcceptContestedInvoiceSubmit(action){
         if($("form#resubmitOrAcceptContestedInvoice").valid()){
             $("#resubmitOrAcceptContestedInvoiceFormNameId").val(action);
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+            return true;
+        } else {
+            return false;
         }
     }
     

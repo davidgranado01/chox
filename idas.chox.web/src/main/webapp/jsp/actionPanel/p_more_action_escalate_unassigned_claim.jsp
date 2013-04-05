@@ -59,7 +59,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/escalatedUnassignedClaim.action" method="post" id="formEscalateClaimAction" name="formEscalateClaimAction">
+    <form action="<%=request.getContextPath()%>/prv/escalatedUnassignedClaim.action" method="post" id="formEscalateClaimAction" name="formEscalateClaimAction">
         <fieldset class="x-fieldset">
             <legend>Re-assign Workgroup - Action Required</legend>
             <div>

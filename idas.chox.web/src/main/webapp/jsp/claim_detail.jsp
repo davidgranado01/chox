@@ -193,6 +193,7 @@
         
       Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this claim?',function(btn){  
         if(btn=='yes'){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=closeClaim&nonce=" + nonce;
 //            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
 //            var param = {"name":"closeClaim"};
@@ -224,6 +225,7 @@
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
         if(btn=='yes'){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=revertClaim&nonce=" + nonce;
 //            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
 //            var param = {"name":"revertClaim"};
@@ -237,6 +239,7 @@
     function reopenClaimStatus(){
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to re-open this claim?',function(btn){
         if(btn=='yes'){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=reopenClaim&nonce=" + nonce;
 //            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
 //            var param = {"name":"reopenClaim"};

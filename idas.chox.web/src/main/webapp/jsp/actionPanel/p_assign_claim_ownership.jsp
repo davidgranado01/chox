@@ -249,7 +249,7 @@
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
         if (validateComboBox()) {
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             $("#formOwnershipAssignmentAction").submit();
         }
     }
@@ -276,7 +276,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" onsubmit="return true;">
+    <form id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" >
         <div class="form-container">
             <fieldset class="x-fieldset">
                 <legend>Claim Ownership - Action Required</legend>

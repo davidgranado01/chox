@@ -56,11 +56,12 @@
         if($("#invoiceExcalatedForm").valid()){
 
             if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){$("form#invoiceExcalatedForm").submit();}else{return false;}})){
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");$("form#invoiceExcalatedForm").submit();}else{return false;}})){
                     return;
                 }
             }
             else{
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 $("form#invoiceExcalatedForm").submit();
             }
             
@@ -89,7 +90,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post"
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post"
           id="invoiceExcalatedForm" name="invoiceExcalatedForm">
         <fieldset class="x-fieldset">
             <legend>Escalated Invoice - Action Required</legend>

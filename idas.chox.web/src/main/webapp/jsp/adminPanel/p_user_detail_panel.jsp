@@ -223,7 +223,7 @@
     <div id="userDetailTab" class="x-hide-display">
         <div class="sub-admin-tab-css">
 
-            <form autocomplete="off" id="formUpdateUserDetail" name="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" onsubmit="return true;" class="XXentity-form" method="post">
+            <form autocomplete="off" id="formUpdateUserDetail" name="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" class="XXentity-form" method="post">
                 <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
                 <div class="form-container">
@@ -368,7 +368,7 @@
                     Must contain at least one lower case letter, one upper case letter, and one number.
                 </div>
                 <div style="padding-top:20px;">
-                    <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
+                    <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                         <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
                        <input type="hidden" id="updatePasswordFormNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>

@@ -27,6 +27,7 @@
         actionPanel.registerAction(action);
 
         if($("#formClaimReviewByEngAction").valid()){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             $("form#formClaimReviewByEngAction").submit();
         }
     }

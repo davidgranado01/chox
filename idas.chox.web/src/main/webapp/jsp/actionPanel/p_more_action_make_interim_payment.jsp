@@ -105,8 +105,10 @@
             });
 
         }
-    	if($("form#formMakeInterimPayment").valid())
-    		$('#formMakeInterimPayment').submit();
+    	if($("form#formMakeInterimPayment").valid()) {
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+    	    $('#formMakeInterimPayment').submit();
+        }
     }
     
 </script>

@@ -452,7 +452,7 @@
         </div>
     </form>
         <div class="chox-form-item">
-        <input type="submit" value="Mark As Complete" id="claimTaskMarkId" onclick="return markAsComplete()"/>
+        <input type="button" value="Mark As Complete" id="claimTaskMarkId" onclick="return markAsComplete()"/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     <div class="chox-form-item">

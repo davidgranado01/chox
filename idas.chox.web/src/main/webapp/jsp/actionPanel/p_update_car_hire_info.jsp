@@ -7,11 +7,16 @@
         openTab(1);
         expandHireMonitoringDetails(true);
         });
+        
+    function doMaskClaimDetailPage() {
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        return true;
+    }
 </script>
 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form  id="awaitingcarHireInfoForm" name="awaitingcarHireInfoForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+    <form  id="awaitingcarHireInfoForm" name="awaitingcarHireInfoForm" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
         <fieldset class="x-fieldset"><legend>Hire Monitoring - Action Required</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
@@ -29,7 +34,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed"  /></td>
+                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed" onclick="return doMaskClaimDetailPage()" /></td>
                         </tr>
                     </table>
                 </div>

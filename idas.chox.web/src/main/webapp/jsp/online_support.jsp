@@ -147,7 +147,7 @@
 <div class="chox-form-container">
     <fieldset class="x-fieldset">
         <legend>Online Support Form</legend>
-        <form onsubmit="return true;" action="<%= request.getContextPath()%>/prv/p/submitSupportMessage.action" class="XXentity-form" method="post" id="supportMessageForm">
+        <form action="<%= request.getContextPath()%>/prv/p/submitSupportMessage.action" class="XXentity-form" method="post" id="supportMessageForm">
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Supplier Reference</label>

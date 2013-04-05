@@ -8,10 +8,15 @@
         openTab(4);
         
         });
+        
+    function doMaskClaimDetailPage() {
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+        return true;
+    }
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form id="resubmitInvoiceForm" name="resubmitInvoiceForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post">
+    <form id="resubmitInvoiceForm" name="resubmitInvoiceForm" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post">
         <fieldset class="x-fieldset"><legend>Claim Data - Action Required</legend>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="name" name="name" value="resubmitInvoice"/>
@@ -29,7 +34,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" id="RIDRe-SubmitClaimInvoiceButtonId"value="Re-Submit Claim/Invoice" /></td>
+                            <td><input type="submit" id="RIDRe-SubmitClaimInvoiceButtonId"value="Re-Submit Claim/Invoice" onclick="return doMaskClaimDetailPage()"/></td>
                         </tr>
                     </table>
                 </div>

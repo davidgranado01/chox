@@ -26,6 +26,7 @@
                         function(btn) {
                             if (btn=='yes') {
                                 actionPanel.registerAction(action);
+                                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                                 $("form#contestOrAcceptRejectedClaim").submit();
                             }
                         }

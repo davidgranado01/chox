@@ -35,7 +35,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateFinalReview.action" method="post" id="formUpdateFinalReview" name="formUpdateFinalReview">
+    <form action="<%=request.getContextPath()%>/prv/updateFinalReview.action" method="post" id="formUpdateFinalReview" name="formUpdateFinalReview">
         <fieldset class="x-fieldset">
             <legend>Final Review</legend>
             <s:hidden id="claimId" name="id" />

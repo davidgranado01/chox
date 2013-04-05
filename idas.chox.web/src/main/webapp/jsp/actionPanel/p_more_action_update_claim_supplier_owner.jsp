@@ -127,7 +127,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateClaimSupplier.action" method="post" id="formSupplierOwnershipAction" name="formSupplierOwnershipAction">
+    <form action="<%=request.getContextPath()%>/prv/updateClaimSupplier.action" method="post" id="formSupplierOwnershipAction" name="formSupplierOwnershipAction">
         <fieldset class="x-fieldset">
             <legend>Update Claim Owner - Action Required</legend>
             <div>

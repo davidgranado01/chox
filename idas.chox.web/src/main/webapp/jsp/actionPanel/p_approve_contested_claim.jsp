@@ -58,6 +58,7 @@
                     if(claimNumber && claimNumber.length > 0){
                         checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
                     }else{
+                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                         form.submit();
                     }
                 }else{return false;}})){
@@ -72,6 +73,7 @@
                 if(claimNumber && claimNumber.length > 0){
                     checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
                 }else{
+                    Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                     form.submit();
                 }
             
@@ -155,11 +157,15 @@
                 Ext.MessageBox.confirm('Confirm', data.result,function(btn){
                     if(btn=='yes')
                     {
+                        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                         form.submit();
                     }
                 }); 
             }
-            else form.submit();
+            else {
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                form.submit();
+            }
         });
     }
     

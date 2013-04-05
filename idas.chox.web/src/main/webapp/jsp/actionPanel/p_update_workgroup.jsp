@@ -71,7 +71,7 @@ function validateComboBox(){
 function assignClaimOwnershipSubmit(){
     actionPanel.registerAction("assignWorkgroup");
     if (validateComboBox()) {
-        Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         $("#updateWorkgroupForm").submit();
     }
 }
@@ -80,7 +80,7 @@ function assignClaimOwnershipSubmit(){
 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form  id="updateWorkgroupForm" name="updateWorkgroupForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action?" method="POST">
+    <form  id="updateWorkgroupForm" name="updateWorkgroupForm" action="<%=request.getContextPath()%>/prv/processClaim.action?" method="POST">
         <fieldset class="x-fieldset"><legend>Update Workgroup - Action Required</legend>
             <div>
                 <div class="status-info">Please select a Workgroup for this claim and click on the ’Update Workgroup’ button.

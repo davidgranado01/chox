@@ -94,14 +94,14 @@
         if(action === 'rejectClaim' && validateRejectionComboBox()){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
         }else if(action === 'assignWorkgroup' && validateWorkgroupComboBox()){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
     }
 
     function rejectClaim(btn) {
         if (btn == 'yes')    {
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
         return false;

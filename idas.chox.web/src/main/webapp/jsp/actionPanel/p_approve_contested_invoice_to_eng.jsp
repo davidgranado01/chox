@@ -59,11 +59,12 @@
         if($("#invoiceReferredByEngForm").valid()){
 
             if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){$("form#invoiceReferredByEngForm").submit();}else{return false;}})){
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");$("form#invoiceReferredByEngForm").submit();}else{return false;}})){
                     return;
                 }
             }
             else{
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 $("form#invoiceReferredByEngForm").submit();
             }
             

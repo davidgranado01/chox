@@ -59,11 +59,12 @@
         if($("form#invoiceReferredToClaimsHandler").valid()){
 
             if (action=='rejectInvoice') {
-                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})){
+                if(!Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})){
                     return;
                 }
             }
             else{
+               Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                $("form#invoiceReferredToClaimsHandler").submit(); 
             }
         }
@@ -92,7 +93,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action"
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action"
           method="post" id="invoiceReferredToClaimsHandler" name="invoiceReferredToClaimsHandler">
         <fieldset class="x-fieldset">
             <legend>Invoice Referred By Engineer - Action Required</legend>

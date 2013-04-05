@@ -14,7 +14,7 @@
             $("form#formRegisterFNOL #registerByFnolMessageBox").html("Both of the above fields cannot be blank. If there is no claim number for this claim, please enter the reason why in the 'FNOL Review Note' field");
             return false;
         }
-
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         return true;
     }
 

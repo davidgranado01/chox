@@ -66,7 +66,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateClaimWorkgroupAndOwner.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
+    <form action="<%=request.getContextPath()%>/prv/updateClaimWorkgroupAndOwner.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
         <fieldset class="x-fieldset">
             <s:if test="insurer.workgroupEnable">
             <legend>Update Workgroup/Claim Owner - Action Required</legend>

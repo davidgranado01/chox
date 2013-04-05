@@ -165,7 +165,7 @@ function validateComboBox(){
 function assignManualInvoiceSubmit(){
     $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner")
     if (validateComboBox()) {
-        Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+        Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
         $("#updateManualInvoicePaymentForm").submit();
     }
 }
@@ -174,7 +174,7 @@ function assignManualInvoiceSubmit(){
 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+    <form  id="updateManualInvoicePaymentForm" name="updateManualInvoicePaymentForm" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
             <fieldset class="x-fieldset"><legend>Insurer Invoice Ownership - Action Required</legend>
                 <div>
                     <s:hidden id="claimId" name="id" />
