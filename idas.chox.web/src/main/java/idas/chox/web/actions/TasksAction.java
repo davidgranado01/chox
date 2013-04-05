@@ -374,7 +374,7 @@ public class TasksAction extends BaseAction {
             }
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 try {
                     File reportFile = new File((String) getSession().get("reportFileLocation"));
@@ -398,7 +398,7 @@ public class TasksAction extends BaseAction {
 
     public String doTaskExportToExcel() throws IOException {
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("isExportFinished", false);
             getSession().put("cancelExportOperation", false);
             getSession().put("writingToFile", false);
@@ -513,7 +513,7 @@ public class TasksAction extends BaseAction {
 
             excelTasks.add(excelTask);
 
-            synchronized (getSession()) {
+            synchronized (getSessionLock()) {
                 if (isExportTaskOperationCancelled()) {
                     getSession().put("numberOfTasksProcessed", null);
                     return false;
@@ -561,7 +561,7 @@ public class TasksAction extends BaseAction {
         t.setDaemon(true);
         t.start();
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);
         }
 
@@ -591,7 +591,7 @@ public class TasksAction extends BaseAction {
             getSession().put("exceptionThrown", true);
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().get("exceptionThrown") != null) {
                 getSession().put("numberOfTasksProcessed", null);
                 getSession().put("cancelExportOperation", false);
@@ -607,7 +607,7 @@ public class TasksAction extends BaseAction {
     }
 
     public String cancelTaskExportOperation() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             LOG.debug("export operation cancellation called ...");
             getSession().put("cancelExportOperation", true);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
@@ -619,7 +619,7 @@ public class TasksAction extends BaseAction {
     }
 
     public String getExportedTasksCount() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().containsKey("numberOfTasksProcessed") && getSession().get("numberOfTasksProcessed") != null) {
                 setExportedTaskCount((Integer) getSession().get("numberOfTasksProcessed"));
                 setExportFinished((Boolean) getSession().get("isExportFinished"));
@@ -745,7 +745,7 @@ public class TasksAction extends BaseAction {
     }
 
     private boolean isExportTaskOperationCancelled() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");
         }
     }

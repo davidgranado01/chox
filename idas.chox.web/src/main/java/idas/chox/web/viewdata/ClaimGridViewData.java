@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import idas.chox.core.model.Attachment;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
@@ -36,7 +35,7 @@ public class ClaimGridViewData {
     private boolean isWorkgroupEditable;
     private String ownerName;
     private String choOwnerName;
-    private boolean claimHasAttachment;
+    private int noAttachments;
 
     public ClaimGridViewData(Claim claim, WebUser user) {
 
@@ -44,16 +43,15 @@ public class ClaimGridViewData {
         Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 
-        Chorganisation c = claim.getChorganisation();
-        Insurer i = claim.getInsurer();
+        Chorganisation chorg = claim.getChorganisation();
+        Insurer ins = claim.getInsurer();
         Workgroup wg = claim.getWorkgroup();
-        Invoice ivc = claim.getInvoice();
         Invoice invoice = claim.getInvoice();
 
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.claimType = claim.getClaimType().toString();
-        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
+        this.invoiceAmount = invoice == null ? "" : currentcyFormat.format(invoice.getTotalToPay());
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
@@ -62,8 +60,8 @@ public class ClaimGridViewData {
         }
 
         this.status = claim.getStatus();
-        this.cho = c == null ? "" : c.getName();
-        this.insurer = i == null ? "" : i.getName();
+        this.cho = chorg == null ? "" : chorg.getName();
+        this.insurer = ins == null ? "" : ins.getName();
         this.policyNumber = claim.getThirdParty().getPolicyNumber();
 
         this.invoiceUploadDate = invoice == null ? "" : dateTimeFormat.format(invoice.getCreatedDate());
@@ -84,14 +82,7 @@ public class ClaimGridViewData {
             this.choOwnerName = claim.getSupplierClaimOwner().getDisplayName();
         }
         
-        if (claim.getAttachments() != null && claim.getAttachments().size() > 0) {
-            for (Attachment a : claim.getAttachments()) {
-                if (!a.isDeleted()) {
-                    this.claimHasAttachment = true;
-                    break;
-                }
-            }
-        }
+        this.noAttachments = claim.getNoAttachments();
     }
 
     public boolean isIsOwnershipEditable() {
@@ -206,12 +197,12 @@ public class ClaimGridViewData {
         this.claimType = claimType;
     }
 
-    public boolean isClaimHasAttachment() {
-        return claimHasAttachment;
+    public int getNoAttachments() {
+        return noAttachments;
     }
 
-    public void setClaimHasAttachment(boolean claimHasAttachment) {
-        this.claimHasAttachment = claimHasAttachment;
+    public void setNoAttachments(int noAttachments) {
+        this.noAttachments = noAttachments;
     }
 
 }

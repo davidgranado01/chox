@@ -1,0 +1,4 @@
+ALTER TABLE claim ADD COLUMN no_attachments integer not null default 0;
+
+UPDATE claim
+    SET no_attachments = (select count(*) from attachment where attachment.claim_id = claim.id);

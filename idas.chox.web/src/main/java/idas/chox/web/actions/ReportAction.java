@@ -107,7 +107,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public String exportReport() {
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("isExportFinished", false);
             getSession().put("exceptionThrown", false);
             getSession().put("cancelExportOperation", false);
@@ -162,7 +162,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             getSession().put("exceptionThrown", true); 
         }
 
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (!(Boolean) getSession().get("exceptionThrown")) {
                 getSession().put("reportFileLocation", reportFile.getAbsolutePath());
                 getSession().put("cancelExportOperation", false);
@@ -173,7 +173,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String getReportGenerationStatus() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             setExportFinished((Boolean) getSession().get("isExportFinished"));
             setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
             setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
@@ -187,7 +187,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
             LOG.debug("Request to direct download report file ");
             exportReport();
         }
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
                 try {
@@ -224,14 +224,14 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     private boolean isExportClaimOperationCancelled() {
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");
         }
     }
 
     public String cancelExportOperation() {
         LOG.info("Report being written to '{}' has been cancelled ...", getSession().get("reportFileLocation"));
-        synchronized (getSession()) {
+        synchronized (getSessionLock()) {
             getSession().put("cancelExportOperation", true);
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 getSession().put("reportFileLocation", null);
@@ -246,7 +246,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Chorganisation supplier : suppliers) {
             luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
         }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
@@ -255,7 +254,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
         for (Insurer insurer : insurers) {
             luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
         }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 

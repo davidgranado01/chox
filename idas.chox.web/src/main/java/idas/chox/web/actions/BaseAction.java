@@ -25,27 +25,46 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.ActionResponse;
 
-
 public class BaseAction extends ActionSupport implements SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
+    private static final Object LOCK = new Object();
     protected ActionResponse actionResponse;
     private String actionResult;
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
-    private Map<String,Object> session;
+    private Map<String, Object> session;
     private String VALID_SESSION = "validSession";
     private BaseDataService baseDataService;
 
-    public Map<String,Object> getSession() {
-    	if(session == null) {
-    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
+    public Map<String, Object> getSession() {
+        if (session == null) {
+            LOG.error("No session found");
+//            throw new Exception("Session not found");
+//    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
         }
         return session;
     }
 
+    public Object getSessionLock() {
+        Object result = getSession().get("SESSION_LOCK");
+        if (result == null) {
+            // only if there is no session-lock object in the session we apply the global lock
+            synchronized (LOCK) {
+                // as it can be that another thread has updated the session-lock object in the meantime, we have to read it again from the session and create it only if it is not there yet!
+                result = getSession().get("SESSION_LOCK");
+                if (result == null) {
+                    result = new Object();
+                    getSession().put("SESSION_LOCK", result);
+                }
+            }
+        }
+        LOG.debug("Returning session lock '{}'", result);
+        return result;
+    }
+
     @Override
-    public void setSession(Map<String,Object> session) {
+    public void setSession(Map<String, Object> session) {
         this.session = session;
     }
 
@@ -54,7 +73,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public void setSearchHistory(boolean searchHistory) {
-        if (session !=null && !session.containsKey("searchHistory") && searchHistory) {
+        if (session != null && !session.containsKey("searchHistory") && searchHistory) {
             session.put("searchHistory", searchHistory);
         }
     }
@@ -85,13 +104,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR);
     }
 
-    public boolean isPcOnly() {        
+    public boolean isPcOnly() {
         boolean isPc = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_PC);
         boolean isMng = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
         boolean isCH = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
         boolean isUpload = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD);
 //        boolean isAdmin = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN);
-        
+
         return isPc && !isMng && !isCH && !isUpload;
     }
 
@@ -123,7 +142,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
-
     public boolean getIsTpiEnabledEnabled() {
         if (getIsCHO()) {
             LOG.debug("returning isTpiEnabled: {}", getAuthenticatedUser().getChorganisation().isThirdPartyInterventionActivated());
@@ -149,14 +167,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public boolean getIsSubscriberEnabled() {
         if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isEnableSubscriberClaims();
-        }
-        else if (getIsInsurer()) {
+        } else if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isAllowSubscriberClaims();
         }
-        
+
         return true;
     }
-    
+
     public boolean getInsurerIsClaimOwnershipEnabled() {
         if (!getIsInsurer()) {
             return true;
@@ -190,11 +207,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return getAuthenticatedUser().getInsurer().isFnolEnable();
         }
     }
-    
+
     public boolean getInsurerIsSupervisorEnabled() {
         if (getIsCHO()) {
             return false;
-        } else if (getIsInsurer()){
+        } else if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isSupervisorEnable();
         } else {
             return true; //for CHOX admin we return true
@@ -226,8 +243,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
         boolean result = true;
         if (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_USER)) {
             result = !getAuthenticatedUser().getInsurer().isRestrictExport();
-        }
-        else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR)) {
+        } else if (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR)) {
             result = !getAuthenticatedUser().getChorganisation().isRestrictExport();
         }
         return result;
@@ -311,10 +327,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public Integer getRoleTypeForHelpFile() {
 
         /*
-        1: // NORMAL INSURER ROLE
-        2: // INSURER MANAGER ROLE
-        3: // NORMAL CREDIT HIRE ROLE
-        4: // CREDIT HIRE MANAGER ROLE
+         1: // NORMAL INSURER ROLE
+         2: // INSURER MANAGER ROLE
+         3: // NORMAL CREDIT HIRE ROLE
+         4: // CREDIT HIRE MANAGER ROLE
          */
 
         Integer iRoleType = null;
@@ -382,10 +398,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public boolean getIsUserHasManagerRole() {
-        return (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) ? true 
+        return (getIsInsurer() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) ? true
                 : (getIsCHO() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG)) ? true : false;
     }
-    
+
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException
                 || (ex.getCause() != null && ex.getCause() instanceof StaleObjectStateException)) {
@@ -427,7 +443,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     public String getDevelopment() {
         return ServletActionContext.getServletContext().getInitParameter("development");
     }
-    
+
     public void checkVersion(List<? extends Entity> models) throws Exception {
         for (Entity model : models) {
             if (model != null && getSession().containsKey(model.getClass().getSimpleName())) {
@@ -440,9 +456,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
                     if (model.getId().compareTo(sessionModelId) == 0 && model.getVersion().compareTo(sessionModelVersion) != 0) {
                         LOG.info("{} model is updated by another user. session version={}, database version={}. Throwing staleObject Exception.",
                                 new Object[]{model.getClass().getSimpleName(), sessionModelVersion, model.getVersion()});
-//                        StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId());
-                        Exception ex = new Exception("Record was updated by another transaction/user, please try again."
-                                , new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId()));
+                        Exception ex = new Exception("Record was updated by another transaction/user, please try again.", new StaleObjectStateException(model.getClass().getSimpleName().concat("Version"), model.getId()));
                         // before throwing exception update model so that next time when the user save the model they will not get stale object exception.
                         updateModelInSession(models);
                         throw ex;
@@ -455,7 +469,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     /* This will do force update the model in session*/
     public void updateModelInSession(List<? extends Entity> models) {
         for (Entity model : models) {
-            if (model != null &&  model.getVersion() != null && model.getId() != null) {
+            if (model != null && model.getVersion() != null && model.getId() != null) {
                 HashMap<String, Integer> map = new HashMap<String, Integer>();
                 map.put("version", model.getVersion());
                 map.put("id", model.getId());
@@ -465,7 +479,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             }
         }
     }
-    
+
     /* This will put the model in session if it does not already exists or having differnt id than the one already in the session
      in case of different id in the session for the same class it will replace with the new model*/
     public void addModelToSession(List<? extends Entity> models) {
@@ -473,7 +487,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             if (model != null && !getSession().containsKey(model.getClass().getSimpleName())) {
                 LOG.debug("model is not in session and will be added to session");
                 updateModelInSession(Arrays.asList(model));
-            } else if (model != null){
+            } else if (model != null) {
                 HashMap<String, Integer> map = (HashMap) getSession().get(model.getClass().getSimpleName());
 
                 if (model.getId() != null && map.get("id").compareTo(model.getId()) != 0) {
@@ -483,7 +497,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
             }
         }
     }
-
 
     public Integer getModelIdFromSession(Class model) {
         if (getSession().containsKey(model.getSimpleName())) {

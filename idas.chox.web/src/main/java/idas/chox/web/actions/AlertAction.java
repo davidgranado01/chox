@@ -3,14 +3,18 @@ package idas.chox.web.actions;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.ActionResponse;
 
-import com.idaschox.services.chox.Claim;
 
 public class AlertAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(AlertAction.class);
 
     private ClaimService claimService;
     private Integer claimId;
@@ -77,7 +81,12 @@ public class AlertAction extends BaseAction {
     public String isClaimNumberDuplicated() {
 
         if (!claimNumber.isEmpty()) {
-            if (claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0) {
+            if (claimService == null) {
+                LOG.error("No Claim Service in AlertAction.isClaimNumberDuplicated: claimId={}, claimNumber='{}', userId={}",
+                        new Object[]{claimId, claimNumber});
+                this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether claim number is already associated with another claim(s). Do you wish to continue?");
+            }
+            else if (claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0) {
                 this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
             }
         }

@@ -41,6 +41,10 @@ import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
+    private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
+    private static final Object LOCK = new Object();
+    private static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
+    private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
 
     private BordereauService bordereauService;
     private BordereauReader bordereauReader;
@@ -50,9 +54,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private UploadedXMLClaimsDetailService uploadedXMLClaimsDetailService;
     private ClaimService claimService;
     private BordereauSchemaValidation bordereauSchemaValidation;
-    private static String NEW_UPLOADED_XML_FILE_STATUS = "Waiting to be Processed";
-    private static String NEW_UPLOADED_XML_FILE_DESCRIPTION = "File is waiting to be processed";
-    private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
 
         
     @Override
@@ -286,6 +287,24 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
 
+    private Object getSessionLock(Map session) {
+        Object result = session.get("SESSION_LOCK");
+        if (result == null) {
+            // only if there is no session-lock object in the session we apply the global lock
+            synchronized (LOCK) {
+                // as it can be that another thread has updated the session-lock object in the meantime, we have to read it again from the session and create it only if it is not there yet!
+                result = session.get("SESSION_LOCK");
+                if (result == null) {
+                    result = new Object();
+                    session.put("SESSION_LOCK", result);
+                }
+            }
+        }
+        LOG.debug("Returning session lock '{}'", result);
+        return result;
+        
+    }
+    
     @Override
     public boolean processFile(int bordereauId, Map session) {
         int noClaims = 0;
@@ -374,7 +393,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 setXmlClaimDetailsProperties(xmlClaimsDetail,bordereau,claimResult);
                 claimsDetails.add(0, xmlClaimsDetail);
                 LOG.debug("Synchronizing on session");
-                synchronized (session) {
+                synchronized (getSessionLock(session)) {
                     session.put("claimsDetails", claimsDetails);
                 }
                 LOG.debug("Finished synchronizing on session");

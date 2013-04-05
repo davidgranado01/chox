@@ -1,10 +1,11 @@
 package idas.chox.web.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.ExceptionHolder;
 import com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,15 +25,15 @@ public class ChoxExceptionInterceptor extends ExceptionMappingInterceptor {
                     || (exceptionHolder.getException() != null
                         && (exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException)
                             || exceptionHolder.getExceptionStack().contains("getOutputStream() has already been called for this response")
-                            || exceptionHolder.getExceptionStack().contains("getAttribute: Session already invalidated")))
+                            || exceptionHolder.getExceptionStack().contains("getAttribute: Session already invalidated"))) {
                 LOG.warn("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
-            else
+            }
+            else {
                 LOG.error("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
+            }
         } catch (Exception e) {
             LOG.error("Exception logging exception: {}", e.getMessage(), e);
         }
-
-//        HibUtil.rollback();
 
         super.publishException(invocation, exceptionHolder);
     }

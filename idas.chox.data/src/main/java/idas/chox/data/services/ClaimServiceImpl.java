@@ -473,10 +473,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
                 addSort(criteria, "choReference", dir);
-//            } else if (sort.equalsIgnoreCase("claimHasAttachment")) {
-//                addSort(criteria, "at.id", dir);
-//                addSort(criteria, "choReference", dir);
-            }else {
+            } else if (sort.equalsIgnoreCase("noAttachments")) {
+                addSort(criteria, "noAttachments", dir);
+                addSort(criteria, "choReference", dir);
+            } else {
                 addSort(criteria, "lastModifiedDate", dir);
                 addSort(criteria, "choReference", dir);
             }
@@ -676,7 +676,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
-//            .createAlias("this.attachments", "at", CriteriaSpecification.LEFT_JOIN, Restrictions.eq("at.deleted", Boolean.FALSE));
         
         if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
