@@ -16,12 +16,12 @@
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
             <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
-            <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
+            <interceptor name="choxException" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
             <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="paramsPrepareParamsStack"/>
-                <interceptor-ref name="exception"/>
+                <interceptor-ref name="choxException"/>
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
                 <interceptor-ref name="timeoutInterceptor"/>

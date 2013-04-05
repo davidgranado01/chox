@@ -414,6 +414,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         model.setFileType(strFileType);
         model.setFileBuffer(obj);
         claim.addAttachment(model);
+        claim.setNoAttachments(claim.getNoAttachments()+1);
         claimService.updateClaim(claim);
         updateModelInSession(Arrays.asList(claim));
     }

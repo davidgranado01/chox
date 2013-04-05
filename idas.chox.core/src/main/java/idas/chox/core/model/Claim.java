@@ -62,11 +62,21 @@ public class Claim extends Entity implements Serializable {
     private List<History> histories;
     private List<Comment> comments;
     private int slaExtDays;
+    private int noAttachments;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
         this.claimType = ClaimType.GTA;
         this.autoPenaltyChargeEnabled = true;
+        this.noAttachments = 0;
+    }
+
+    public int getNoAttachments() {
+        return noAttachments;
+    }
+
+    public void setNoAttachments(int noAttachments) {
+        this.noAttachments = noAttachments;
     }
 
     public int getSlaExtDays() {

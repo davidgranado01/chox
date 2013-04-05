@@ -79,9 +79,6 @@
                 activityMonitor.setup(pingServerUrl, checkStatusIUrl,  <s:property value="activityMonitorRequestInterval"/>);
             </s:if>
             
-                //        else
-                //            document.getElementById('queueOrgFilter').innerHTML  = '';
-
         <s:if test="showSplash" >
                 onShowBrowserWarning();
         </s:if>
@@ -91,7 +88,6 @@
             var rd = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
-                //            idProperty: 'threadid',
                 fields:[
                     {name:'id'},
                     {name:'status'},
@@ -111,7 +107,7 @@
                     {name:'isOwnershipEditable', type:'boolean'},
                     {name:'ownerName'},
                     {name:'choOwnerName'},
-                    {name:'claimHasAttachment'}
+                    {name:'noAttachments'}
                 ]
             });
             
@@ -347,8 +343,6 @@
                 doClaimRoutedAction = new Ext.Action({
                     text: 'Route Claim(s)',
                     hidden:<s:property value="isCHO"/>,
-//                                || !(<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/>),
-//                             || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && <s:property value="enableManualInvoiceWorkgroups"/> && (!<s:property value="enableManualInvoiceOwnership"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>))),
                     handler: function(){
 
                         if(!claimRoutedSelectionDlg)
@@ -481,16 +475,9 @@
                                     //                                errorContainer: '#routeClaimFormMessageBox',
                                     errorLabelContainer: '#routeClaimFormMessageBox'
                                 });
-                                //                            console.log("Loading store.");
                                 workgroupStore.load({ params : {claimId : sm2.getSelected().get('id')}});
-                                //                            console.log("Resetting combo");
                                 workgroupCombo.reset();
 
-                                //                            var target = "div#claimRoutedSelectionHolder";
-                                //                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
-                                //                            ajax.loadHtml2(url, null, function(data){
-                                //                                $(target).html(data);
-                                //                            });
 
                             });
                         }
@@ -1445,8 +1432,8 @@
                         {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                         {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                                 return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}},
-                        {header: "", width : 40, sortable : false, dataIndex: 'claimHasAttachment', renderer : function(value, metaData, record, rowIndex, colIndex, store){
-                                if(value){metaData.css = 'paperClip';} 
+                        {header: "", width : 40, sortable : true, dataIndex: 'noAttachments', renderer : function(value, metaData, record, rowIndex, colIndex, store){
+                                if(value > 0){metaData.css = 'paperClip';} 
                             }}
                     ],
                     stateId:'chox_claim_grid',

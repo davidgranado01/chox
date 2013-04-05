@@ -1,12 +1,7 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Attachment;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.model.WebUserUserRole;
-import idas.chox.core.services.AttachmentService;
-import idas.chox.core.services.WebUserUserRoleService;
 import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -14,6 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import idas.chox.core.model.Attachment;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.model.WebUserUserRole;
+import idas.chox.core.services.AttachmentService;
+import idas.chox.core.services.WebUserUserRoleService;
 
 public class AttachmentServiceImpl extends SecureDataService implements AttachmentService {
     private static final Logger LOG = LoggerFactory.getLogger(AttachmentServiceImpl.class);
@@ -31,18 +34,15 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         criteria.addOrder(Order.desc("id"));
         List<Attachment> attachmentList = findByCriteria(criteria);
         return attachmentList;
-        
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("select id, version, file_name, remarks, category, file_type, last_modified_date, claim_id, created_date from attachment ");
-//        sb.append("where claim_id=:pClaimId and deleted=false");
-//        Map extParameters = new HashMap();
-//        extParameters.put("pClaimId", claimId);
-//        return externalQuery(sb.toString(), extParameters);
     }
 
     @Override
     public Attachment getAttachment(int attachmentId) {
         return (Attachment) get(Attachment.class, attachmentId);
+    }
+
+    private Claim getClaim(int claimId) {
+        return (Claim) get(Claim.class, claimId);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -86,8 +86,11 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
         LOG.debug("canDelete: {}", canDelete);
         if (canDelete) {
             attachment.setDeleted(true);
+            
+            Claim claim = attachment.getClaim();
+            claim.setNoAttachments(claim.getNoAttachments() -1);
             save(attachment);
-//            delete(attachment);
+            save(claim);
         }
         
         return canDelete;
