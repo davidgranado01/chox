@@ -304,7 +304,7 @@
                             var title = Ext.state.Manager.get("grid_main_title");
                             if (title.indexOf("Queue: ") != -1) {
                                 title = title.replace("Queue: ","");
-                                $("a:contains('" + title + " ("+"')").html(title+" ("+ds.getTotalCount()+")");
+                                $("a:contains(" + title +")").html(title+" ("+ds.getTotalCount()+")");
                             }
                         }
                     }
