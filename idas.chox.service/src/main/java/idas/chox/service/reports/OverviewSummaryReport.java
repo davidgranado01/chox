@@ -1032,8 +1032,6 @@ public class OverviewSummaryReport implements Report {
                     lineItemDetails,
                     reportLine.getLineId(),
                     noCountAll,
-                    totalDayAll,
-                    totalPercentageAll,
                     totalValueAll,
                     noCountClaimAll,
                     noCountInvoiceAll);
@@ -1145,8 +1143,6 @@ public class OverviewSummaryReport implements Report {
             List<OverviewSummaryLineItemDetail> lineItemDetails,
             Integer reportLineId,
             Integer noCount,
-            Integer totalDay,
-            BigDecimal totalPercentage,
             BigDecimal totalValue,
             Integer noCountClaimAll,
             Integer noCountInvoiceAll) {

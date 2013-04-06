@@ -86,7 +86,7 @@ Ext.onReady(function(){
 
         var workgroupStore = new Ext.data.Store({
             proxy : new Ext.data.HttpProxy
-            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"claimId":<s:property value="id"/>}}),
+            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"claimId":<s:property value="id"/>}}),
             reader: wgrpJsonReader,
              listeners: {load : function() {workgroupCombo.setValue(selectedWorkgroupId);}}
         });

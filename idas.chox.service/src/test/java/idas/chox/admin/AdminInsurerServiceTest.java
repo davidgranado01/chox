@@ -1,15 +1,14 @@
 package idas.chox.admin;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import idas.chox.test.BaseTest;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
@@ -23,6 +22,7 @@ import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.UserService;
 import idas.chox.service.ActionResponse;
+import idas.chox.test.BaseTest;
 
 public class AdminInsurerServiceTest extends BaseTest {
 
@@ -606,17 +606,17 @@ public class AdminInsurerServiceTest extends BaseTest {
     public void testInsurerCHO_AddNew() {
         Insurer insurer = insurerService.getInsurerByName("RBS");
         List<Chorganisation> insAvlChorganisations = adminInsurerService.getAvailableChorganisationsByInsurer(insurer.getId());
+        List<InsurerChorganisation> insSelChorganisations = adminInsurerService.getInsurerChorganisations(insurer.getId());
 
-        int iCount = 0;
+        int iCount = insSelChorganisations.size();
         for (Chorganisation cho : insAvlChorganisations) {
             ActionResponse response = adminInsurerService.addNewInsurerChorganisation(insurer.getId(), cho.getId());
             Assert.assertTrue(response.getIsValid());
             iCount++;
         }
 
-        List<InsurerChorganisation> insSelChorganisations = adminInsurerService.getInsurerChorganisations(insurer.getId());
+        insSelChorganisations = adminInsurerService.getInsurerChorganisations(insurer.getId());
         Assert.assertEquals(iCount, insSelChorganisations.size());
-
     }
 
     @Test

@@ -8466,16 +8466,6 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 --- END Stored Procedure and Reports update -------
 ---------------------------------------------------
 
--------------------------------------------------------------------------------------
--- bug#2491 - Workgroup ID shown instead of name                                   --
--------------------------------------------------------------------------------------
-
-UPDATE  web_user_role set is_workgroup_related = false where name='ROLE_INS_COM';
-
----------------------------------------------------
---- END of bug#2491                         -------
----------------------------------------------------
-
 
 -------------------------------------------------------------------------------------
 -- bug#2498 - Production - CHO Manager - no action panel for Awaiting Invoice Data --
@@ -9661,7 +9651,37 @@ WHERE name='activity.SlaExtension.SubscriberClaimRejected'
 UPDATE claim
   SET claim_number = trim(claim_number)
 WHERE claim_number like '% ';
+UPDATE claim
+  SET claim_number = trim(claim_number)
+WHERE claim_number like ' %';
 
 ---------------------------------------------------
 --- END of bug#2551                         -------
+---------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+-- bug#2559 - Dev - 7.3.1 'Update To payment Received' Does Not Work In                       --
+--            Status 'ContestedInvoiceReferredToCHO'                                          --
+------------------------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled)
+	SELECT 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO', false, false, false, false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 1
+	FROM accessibility
+	WHERE name = 'activity.MoveToInvoicePaymentLogged.ContestedInvoiceReferredToCHO';
+
+---------------------------------------------------
+--- END of bug#25559                         -------
 ---------------------------------------------------

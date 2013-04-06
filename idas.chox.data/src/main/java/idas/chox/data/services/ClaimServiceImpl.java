@@ -419,7 +419,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Integer totalCount = totalCount(criteria);
         LOG.debug("Searching with criteria: {}", searchCriteria.toString());
 
-        if (!sort.isEmpty() && !dir.isEmpty()) {
+        if (sort != null && !sort.isEmpty() && dir != null && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("supplierReference")) {
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
@@ -473,9 +473,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("claimHasAttachment")) {
-                addSort(criteria, "at.id", dir);
-                addSort(criteria, "choReference", dir);
+//            } else if (sort.equalsIgnoreCase("claimHasAttachment")) {
+//                addSort(criteria, "at.id", dir);
+//                addSort(criteria, "choReference", dir);
             }else {
                 addSort(criteria, "lastModifiedDate", dir);
                 addSort(criteria, "choReference", dir);
@@ -521,12 +521,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public Boolean isObjectExist(int WorkgroupId) {
+    public Boolean isClaimSupplierReferenceNumberExistForCho(String sClaimReferenceNumber, int choId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        criteria.add(Restrictions.eq("chorganisation.id", choId));
+        List result = findByCriteria(criteria);
+
+        Integer totalCount = ((Long) result.get(0)).intValue();
+
+        return totalCount > 0;
+    }
+
+    @Override
+    public Boolean isObjectExist(int workgroupId) {
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
 
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
@@ -536,11 +549,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
+    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set workgroupIds, String status) {
         boolean isExist = false;
 
-        if (WorkgroupIds.size() > 0) {
-            Iterator itr = WorkgroupIds.iterator();
+        if (workgroupIds.size() > 0) {
+            Iterator itr = workgroupIds.iterator();
             while (itr.hasNext()) {
 
                 int workgroupId = (Integer) itr.next();
@@ -555,12 +568,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
-    private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer WorkgroupId, String status) {
+    private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer workgroupId, String status) {
         boolean isExist = false;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
         criteria.add(Restrictions.eq("status", status));
 
         if (findByCriteria(criteria).size() > 0) {
@@ -571,9 +584,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
+    public boolean isOpenClaimByWorkgroupExist(int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
 
         for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
@@ -588,11 +601,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
+    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set workgroupIds, int userId) {
         boolean isExist = false;
 
-        if (WorkgroupIds.size() > 0) {
-            Iterator itr = WorkgroupIds.iterator();
+        if (workgroupIds.size() > 0) {
+            Iterator itr = workgroupIds.iterator();
             while (itr.hasNext()) {
 
                 int workgroupId = (Integer) itr.next();
@@ -609,10 +622,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
+    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int workgroupId, int UserId) {
         boolean isExist = false;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
 
         if (UserId > 0) {
@@ -662,8 +675,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.attachments", "at", CriteriaSpecification.LEFT_JOIN, Restrictions.eq("at.deleted", Boolean.FALSE));
+            .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+//            .createAlias("this.attachments", "at", CriteriaSpecification.LEFT_JOIN, Restrictions.eq("at.deleted", Boolean.FALSE));
         
         if (searchCriteria.getIsWorkgroupCheck() && !searchCriteria.isIsManual()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
