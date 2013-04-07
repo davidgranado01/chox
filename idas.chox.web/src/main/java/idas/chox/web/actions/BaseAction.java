@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
 
     public Map<String, Object> getSession() {
         if (session == null) {
-            LOG.error("No session found - creating new empty session");
-    		session = new HashMap<String, Object>();//TODO session is sometimes null ?!?
+            // Occasionally no session is injected (don't know why!), so
+            // we need to retrieve from the ActionContext
+            session = ActionContext.getContext().getSession();
+            if (session == null) {
+                LOG.error("No session found.");
+                throw new RuntimeException("No session found.");
+            }
         }
         return session;
     }

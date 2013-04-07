@@ -13,6 +13,7 @@
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
+            <interceptor name="sessionAwareInterceptor" class="idas.chox.web.security.SessionAwareInterceptor" />
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
             <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
@@ -20,8 +21,6 @@
             <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
             <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
-                <interceptor-ref name="paramsPrepareParamsStack"/>
-                <interceptor-ref name="choxException"/>
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
                 <interceptor-ref name="timeoutInterceptor"/>
@@ -29,13 +28,14 @@
                 <interceptor-ref name="cachingHeadersInterceptor"/>
                 <interceptor-ref name="contactDetailsInterceptor"/>
                 <interceptor-ref name="passwordExpiredInterceptor"/>
-                    <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
+                <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
+                <interceptor-ref name="paramsPrepareParamsStack"/>
+                <interceptor-ref name="choxException"/>
             </interceptor-stack>
             <interceptor-stack name="authenticatedNonce">
                 <!-- Add nonce interceptor to prevent CSRF attacks -->
-                <interceptor-ref name="authenticated"/>
                 <interceptor-ref name="nonceInterceptor"/>
-                <!-- Add interceptor to prevent CSRF attacks in AJAX calls -->
+                <interceptor-ref name="authenticated"/>
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="authenticated" />
