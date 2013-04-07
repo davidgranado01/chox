@@ -17,10 +17,11 @@
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
             <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
-            <interceptor name="choxException" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
+            <interceptor name="choxExceptionLogger" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
             <interceptor name="passwordExpiredInterceptor" class="idas.chox.web.security.PasswordExpiredInterceptor"/>
             <interceptor-stack name="authenticated">
+                <interceptor-ref name="exception"/>
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
                 <interceptor-ref name="timeoutInterceptor"/>
@@ -29,8 +30,31 @@
                 <interceptor-ref name="contactDetailsInterceptor"/>
                 <interceptor-ref name="passwordExpiredInterceptor"/>
                 <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
-                <interceptor-ref name="paramsPrepareParamsStack"/>
-                <interceptor-ref name="choxException"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
             <interceptor-stack name="authenticatedNonce">
                 <!-- Add nonce interceptor to prevent CSRF attacks -->
