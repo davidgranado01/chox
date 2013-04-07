@@ -23,7 +23,7 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility">
+    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" scope="singleton">
         <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">

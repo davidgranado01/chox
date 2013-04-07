@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.AccessibilityService;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
+    private static final Logger LOG = LoggerFactory.getLogger(AccessibilityServiceImpl.class);
     private static final int BATCH_UPDATE_ACCESSIBILITY_MAP_SIZE = 10;
     private static final int ACCESSIBILITY_BY_CLAIMTYPE_MAP_SIZE = 6500;
     private static final int ACCESSIBILITY_MAP_SIZE = 100;
@@ -44,6 +47,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                 batchUpdateAccessibilityMap.put(key, access);
             }
         }
+        LOG.info("BatchUpdateAccessibilityMap loaded: {} entries", batchUpdateAccessibilityMap.size());
 
         return batchUpdateAccessibilityMap;
     }
@@ -122,6 +126,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             }
         }
 
+        LOG.info("AccessibilityByClaimTypeMap loaded: {} entries", map.size());
         return map;
     }
 
@@ -146,6 +151,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             map.put(a.getName(), a);
         }
 
+        LOG.info("AccessibilityMap loaded: {} entries", map.size());
         return map;
     }
 

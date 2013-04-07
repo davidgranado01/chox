@@ -21,12 +21,13 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
+    private static final Object LOCK = new Object();
     public static final Short DECLINED = 0;
     public static final Short READ_ONLY = 1;
     public static final Short EDITABLE = 2;
-    private Map<String, Accessibility> accessibilityMap;
-    private Map<String, Accessibility> accessibilityByClaimTypeMap;
-    private Map<String, List<Accessibility>> batchUpdateAccessibilityMap;
+    private volatile Map<String, Accessibility> accessibilityMap;
+    private volatile Map<String, Accessibility> accessibilityByClaimTypeMap;
+    private volatile Map<String, List<Accessibility>> batchUpdateAccessibilityMap;
     private AccessibilityService accessibilityService;
     // ***************************************
     // Activities via buttons (other activities defined in ActionPanel.java
@@ -215,32 +216,44 @@ public class ApplicationAccessibility {
         return claimTypeString;
     }
 
-    private synchronized Map<String, Accessibility> getAccessibilityMap() {
+    private Map<String, Accessibility> getAccessibilityMap() {
 
         if (accessibilityMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
 //            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
-            accessibilityMap = accessibilityService.getAccessibilityMap();
+            synchronized(LOCK) {
+                if (accessibilityMap == null) {
+                    accessibilityMap = accessibilityService.getAccessibilityMap();
+                }
+            }
         }
         return accessibilityMap;
     }
 
-    private synchronized Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
+    private Map<String, Accessibility> getAccessibilityByClaimTypeMap() {
 
         if (accessibilityByClaimTypeMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
 //            accessibilityMap = Collections.synchronizedMap(accessibilityService.getAccessibilityMap());
-            accessibilityByClaimTypeMap = accessibilityService.getAccessibilityByClaimTypeMap();
+            synchronized(LOCK) {
+                if (accessibilityByClaimTypeMap == null) {
+                    accessibilityByClaimTypeMap = accessibilityService.getAccessibilityByClaimTypeMap();
+                }
+            }
         }
         return accessibilityByClaimTypeMap;
     }
 
-    private synchronized Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
+    private Map<String, List<Accessibility>> getBatchUpdateAccessibilityMap() {
 
         if (batchUpdateAccessibilityMap == null) {
 // We shouldn't need to synchronize this map as it will be read only
 //            batchUpdateAccessibilityMap = Collections.synchronizedMap(accessibilityService.getBatchUpdateAccessibilityMap());
-            batchUpdateAccessibilityMap = accessibilityService.getBatchUpdateAccessibilityMap();
+            synchronized(LOCK) {
+                if (batchUpdateAccessibilityMap == null) {
+                    batchUpdateAccessibilityMap = accessibilityService.getBatchUpdateAccessibilityMap();
+                }
+            }
         }
         return batchUpdateAccessibilityMap;
     }
