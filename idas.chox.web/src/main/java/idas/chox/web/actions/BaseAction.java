@@ -114,7 +114,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
         boolean isMng = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
         boolean isCH = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
         boolean isUpload = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD);
-//        boolean isAdmin = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN);
 
         return isPc && !isMng && !isCH && !isUpload;
     }

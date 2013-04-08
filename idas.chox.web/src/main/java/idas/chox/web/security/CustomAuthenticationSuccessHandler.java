@@ -176,10 +176,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         // Add nonce
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        session = request.getSession(true);
         byte[] nonce = new byte[16];
         SecureRandom rand;
         try {
