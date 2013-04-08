@@ -146,15 +146,17 @@ public class ApplicationAccessibility {
             LOG.error("Error retrieving allowed statuses for batch-update action '{}'", actionName);
         } else {
             for (Accessibility accessibility : accessibilities) {
-
-                Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
-                roleMap = restrictAccess(roleMap, accessibility, user);
-                if (checkAccessibility(roleMap, user) > 0) {
-                    String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1),
-                            (accessibility.getName()).length());
-                    statuses.add(status);
+                if (accessibility != null) { // Added to track null pointer exception thrown in line below
+                    Map<String, Short> roleMap = accessibility.getAccessibilityRoleMap();
+                    roleMap = restrictAccess(roleMap, accessibility, user);
+                    if (checkAccessibility(roleMap, user) > 0) {
+                        String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1),
+                                (accessibility.getName()).length());
+                        statuses.add(status);
+                    }
+                } else {
+                    LOG.error("Accessibility in BatchUpdateAccessibilityMap is null - contains {} entries for action '{}'.", accessibilities.size(), actionName);
                 }
-
             }
         }
         return statuses;
