@@ -112,7 +112,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
     @Override
     public BreBand getBreBand(int orgId, int insurerId) {
 
-        BreBand band = new BreBand();
+        BreBand band = null;
 
         List<BreBandOrganisation> bandChorgs = breBandOrganisationService.getBreBandChorganisationsByChoOrgId(orgId);
 
