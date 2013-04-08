@@ -577,7 +577,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
         List<AuditTrail> auditTrails = findByCriteria(criteria);
         if (auditTrails == null || auditTrails.isEmpty()) {
-            LOG.error("No auditTrail entry returned when retriving AuditTrail By Task CreatedDate: claimId='{}', task created date='{}'", claimId, taskCreatedDate);
+            LOG.warn("No auditTrail entry returned when retriving AuditTrail By Task CreatedDate: claimId='{}', task created date='{}'", claimId, taskCreatedDate);
             return null;
         }
         return auditTrails.get(0);
