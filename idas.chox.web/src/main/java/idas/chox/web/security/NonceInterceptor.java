@@ -2,9 +2,12 @@ package idas.chox.web.security;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.struts2.StrutsStatics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -20,10 +23,14 @@ public class NonceInterceptor extends AbstractInterceptor {
     public String intercept(ActionInvocation invocation) throws Exception {
 	final ActionContext context = invocation.getInvocationContext();
 
+        final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            LOG.error("No session in nonce interceptor for request '{}'", request.getRequestURL());
+        }
         Map<String, Object> sessionMap = context.getSession();
         if (sessionMap != null) {
 
-            final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
             if (request != null && (("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
                     && !request.getServletPath().contains("checkViewingStatus") && !request.getServletPath().contains("activityMonitoringAction"))
                     || !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
@@ -37,7 +44,8 @@ public class NonceInterceptor extends AbstractInterceptor {
 
                 // Get request nonce
                 if (request.getParameter("nonce") == null) {
-                    LOG.error("No nonce found in request: {}", request.getRequestURL());
+                    LOG.error("No nonce found in request '{}' with sessionNonce='{}' and sessionId='{}'",
+                            new Object[]{request.getRequestURL(), sessionNonce, session.getId()});
                     return "invalid.token";
                 }
                 String requestNonce = request.getParameter("nonce");
