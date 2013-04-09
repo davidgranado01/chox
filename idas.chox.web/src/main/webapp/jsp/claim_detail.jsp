@@ -194,14 +194,15 @@
       Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this claim?',function(btn){  
         if(btn=='yes'){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=closeClaim&nonce=" + nonce;
-//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-//            var param = {"name":"closeClaim"};
-//            ajax.loadHtml2(url, param, pageRefresh);
-            return false;
+            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+            var form = $('<form action="' + url + '" method="post">' +
+                '<s:hidden name="name" value="closeClaim" />' +
+                '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
+                '</form>');
+            $('body').append(form);
+            $(form).submit();
          }
         });
-        return false;
     }
 
     /***********************************************************************************
@@ -224,30 +225,32 @@
             warningMessage = 'This Claim has an Invoice. If you revert the status of this Claim, the Invoice will be deleted. Are you sure you want to continue?';
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
-        if(btn=='yes'){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=revertClaim&nonce=" + nonce;
-//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-//            var param = {"name":"revertClaim"};
-//            ajax.loadHtml2(url, param, pageRefresh);
-            return false;
-        }
+            if(btn=='yes'){
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+                var form = $('<form action="' + url + '" method="post">' +
+                    '<s:hidden name="name" value="revertClaim" />' +
+                    '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
+                    '</form>');
+                $('body').append(form);
+                $(form).submit();
+            }
         });
-        return false;
     }
 
     function reopenClaimStatus(){
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to re-open this claim?',function(btn){
-        if(btn=='yes'){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            document.location = "<%= request.getContextPath()%>/prv/processClaim.action?name=reopenClaim&nonce=" + nonce;
-//            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-//            var param = {"name":"reopenClaim"};
-//            ajax.loadHtml2(url, param, pageRefresh);
-            return false;
-        }
+            if(btn=='yes'){
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
+                var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+                var form = $('<form action="' + url + '" method="post">' +
+                    '<s:hidden name="name" value="reopenClaim" />' +
+                    '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
+                    '</form>');
+                $('body').append(form);
+                $(form).submit();
+            }
         });
-        return false;
     }
 
     function pageRefresh(){
