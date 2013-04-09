@@ -88,9 +88,9 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     public String getInsurerWorkgroup() throws Exception {
         LOG.debug("ClaimSearchCombo action called.");
-        if (getAuthenticatedUser().isCHOXAdmin()) {
+        if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) {
             workgroups = service.getWorkgroupsByClaimId(claimId, true);            
-        } else {
+        } else if (getOrgId() != null) { 
             for (Integer insId : getOrgId()) {
                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true)); 
             }
@@ -99,18 +99,20 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public String getAllInsurerWorkgroups() throws Exception {
-        if (getAuthenticatedUser().isCHOXAdmin()) {
-            workgroups = service.getWorkgroupsByClaimId(claimId, false);            
-        } else {
+        LOG.debug("ClaimSearchCombo action called.");
+        if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) { 
+            workgroups = service.getWorkgroupsByClaimId(claimId, true);            
+        } else if (getOrgId() != null) {
             for (Integer insId : getOrgId()) {
                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false)); 
             }
-        }
+        } 
         return SUCCESS;
     }
 
     @Override
     public String execute() throws Exception {
+        LOG.debug("execute called in WorkgroupDropDownAction.");
         if (getAuthenticatedUser().isCHOXAdmin()) {
             // Select workgroups from the insurer of the claim we are viewing
             LOG.debug("Need to get workgroups for current claim id={}.", claimId);
