@@ -433,7 +433,7 @@ public final class NodeHelper {
                 }
             }
         } catch (Exception ex) {
-            LOG.warn("Exception thrown checking patter '{}' against regex '{}'", new Object[]{value, regExpression, ex});
+            LOG.error("Exception thrown checking pattern '{}' against regex '{}': {}", new Object[]{value, regExpression, ex.getMessage()});
         }
 
         return bFlag;
