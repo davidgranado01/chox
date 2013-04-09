@@ -72,7 +72,7 @@ public class NewClaim extends BaseActivity {
         claim.setBreBand(choBand);
         
         // Add General Note (specified in BRE band)
-        if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
+        if (choBand != null && choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
             Comment comment = Comment.newComment(0, claim.getBreBand().getClaimUploadNote());
             claim.addComment(comment);
         }
