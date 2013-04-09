@@ -160,6 +160,7 @@
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService"/>
+        <property name="breBandService" ref="breBandService"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>

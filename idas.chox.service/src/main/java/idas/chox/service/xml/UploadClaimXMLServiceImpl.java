@@ -26,6 +26,7 @@ import idas.chox.core.model.History;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BordereauService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
@@ -48,6 +49,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     private BordereauService bordereauService;
     private BordereauReader bordereauReader;
+    private BreBandService breBandService;
     private ActivityFactory activityFactory;
     private String errorMessage;
     private String successMessage;
@@ -76,6 +78,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setBordereauService(BordereauService bordereauService) {
         this.bordereauService = bordereauService;
+    }
+
+    public BreBandService getBreBandService() {
+        return breBandService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public void setUploadedXMLClaimsDetailService(UploadedXMLClaimsDetailService claimsDetailService) {
@@ -122,18 +132,30 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION)) {
+                    // Check we have a BRE band
+                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                        throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
+                    }
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)) {
+                    // Check we have a BRE band
+                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                        throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
+                    }
                     LOG.debug("Processing supplementaryInvoice (activities NewSupplementaryInvoice followed by NewInvoice).");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)) {
+                    // Check we have a BRE band
+                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                        throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
+                    }
                     LOG.debug("Processing supplementaryInsurerInvoice (activities NewSupplementaryInvoice followed by InsurerUpload).");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     LOG.debug("Invoice set for claim '{}': {}", claimResult.getClaim().getChoReference(), claimResult.getClaim().getInvoice());
@@ -142,6 +164,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     LOG.debug("supplementaryInsurerInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
                         || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)) {
+                    // Check we have a BRE band
+                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                        throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
+                    }
                     LOG.debug("Processing hire monitoring and newInvoice activity.");
 
                     Claim claim = claimResult.getClaim();
@@ -188,6 +214,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     LOG.debug("hire monitering activity completed.");
 
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)) {
+                    // Check we have a BRE band
+                    if (breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId()) == null) {
+                        throw new Exception("No BRE Band mapping. Please contact CHOX Support.");
+                    }
                     LOG.debug("Processing insurer upload activity.");
 
 
