@@ -57,10 +57,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
             // only if there is no session-lock object in the session we apply the global lock
             synchronized (LOCK) {
                 // as it can be that another thread has updated the session-lock object in the meantime, we have to read it again from the session and create it only if it is not there yet!
-                result = getSession().get("SESSION_LOCK");
-                if (result == null) {
+                if (getSession().get("SESSION_LOCK") == null) {
                     result = new Object();
                     getSession().put("SESSION_LOCK", result);
+                } else {
+                    result = getSession().get("SESSION_LOCK");
                 }
             }
         }
