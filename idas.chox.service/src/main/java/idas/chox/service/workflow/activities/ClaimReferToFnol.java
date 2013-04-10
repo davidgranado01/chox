@@ -33,7 +33,7 @@ public class ClaimReferToFnol extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private String supportingLiabilityNotes;
-    private int reasonOfRejectionId;
+    private Integer reasonOfRejectionId;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
@@ -79,7 +79,7 @@ public class ClaimReferToFnol extends BaseActivity {
         this.engineerClaimReviewNotes = engineerClaimReviewNotes;
     }
 
-    public void setReasonOfRejectionId(int reasonOfRejectionId) {
+    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
@@ -205,7 +205,7 @@ public class ClaimReferToFnol extends BaseActivity {
 
     protected ReasonOfRejection getReasonOfRejection() {
         ReasonOfRejection reasonOfRejection = null;
-        if (reasonOfRejectionId > 0) {
+        if (reasonOfRejectionId != null && reasonOfRejectionId > 0) {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
         return reasonOfRejection;
