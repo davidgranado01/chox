@@ -175,7 +175,7 @@ public final class Hpi {
             httpget.abort();
             throw new HpiException("Error calling HPI: " + ex.getMessage(), ex);
         } catch (Exception ex) {
-            LOG.warn("Exception thrown during HPI call: {}", ex.getMessage(), ex);
+            LOG.warn("Exception thrown during HPI call: {}", ex.getMessage());
             httpget.abort();
             throw new HpiException("Error calling HPI: " + ex.getMessage(), ex);
         } finally {
