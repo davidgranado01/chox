@@ -44,7 +44,7 @@ public class NonceInterceptor extends AbstractInterceptor {
 
                 // Get request nonce
                 if (request.getParameter("nonce") == null) {
-                    LOG.error("No nonce found in request '{}' with sessionNonce='{}' and sessionId='{}' (with query string '{}'",
+                    LOG.error("No nonce found in request '{}' with sessionNonce='{}' and sessionId='{}' (with query string '{}')",
                             new Object[]{request.getRequestURL(), sessionNonce, session.getId(), request.getQueryString()});
                     return "invalid.token";
                 }
