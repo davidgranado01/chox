@@ -12,7 +12,7 @@ public class InvoiceRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejection.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
-    private int reasonOfRejectionId;
+    private Integer reasonOfRejectionId;
     private String rejectionDescription;
     // </editor-fold>
 
@@ -44,7 +44,7 @@ public class InvoiceRejection extends BaseActivity {
 
     protected ReasonOfRejection getReasonOfRejection() {
         ReasonOfRejection reasonOfRejection = null;
-        if (reasonOfRejectionId > 0) {
+        if (reasonOfRejectionId != null && reasonOfRejectionId > 0) {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
 
@@ -69,7 +69,7 @@ public class InvoiceRejection extends BaseActivity {
     }
 
     
-    public void setReasonOfRejectionId(int reasonOfRejectionId) {
+    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
