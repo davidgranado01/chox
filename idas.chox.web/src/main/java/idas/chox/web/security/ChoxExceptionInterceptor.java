@@ -26,10 +26,10 @@ public class ChoxExceptionInterceptor extends ExceptionMappingInterceptor {
                         && (exceptionHolder.getException().getCause() instanceof javax.net.ssl.SSLException)
                             || exceptionHolder.getExceptionStack().contains("getOutputStream() has already been called for this response")
                             || exceptionHolder.getExceptionStack().contains("getAttribute: Session already invalidated"))) {
-                LOG.warn("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
+                LOG.warn("Exception intercepted from action '{}': ", invocation.getAction().toString(), exceptionHolder.getException());
             }
             else {
-                LOG.error("Exception intercepted from action '{}': {}\n{}", new Object[]{invocation.getAction().toString(), exceptionHolder.getException(), exceptionHolder.getExceptionStack()});
+                LOG.error("Exception intercepted from action '{}': ", invocation.getAction().toString(), exceptionHolder.getException());
             }
         } catch (Exception e) {
             LOG.error("Exception logging exception: {}", e.getMessage(), e);
