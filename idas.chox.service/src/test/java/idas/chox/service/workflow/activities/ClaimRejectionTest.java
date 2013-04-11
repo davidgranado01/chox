@@ -30,7 +30,7 @@ public class ClaimRejectionTest extends BaseTest{
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
         ClaimRejection activity = (ClaimRejection) activityFactory.getActivity("rejectClaim");
-        activity.setReasonOfRejectionId(1);
+        activity.setReasonOfRejectionId(new Integer(1));
 
 
         activity.process(claim);

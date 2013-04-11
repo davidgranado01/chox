@@ -33,7 +33,7 @@ public class InvoiceRejectionTest  extends BaseTest{
         Invoice invoice = invoiceService.getInvoice(999);
         claim.setInvoice(invoice);
         InvoiceRejection activity = (InvoiceRejection) activityFactory.getActivity("rejectInvoice");
-        activity.setReasonOfRejectionId(1);
+        activity.setReasonOfRejectionId(new Integer(1));
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, claim.getStatus());
     }
