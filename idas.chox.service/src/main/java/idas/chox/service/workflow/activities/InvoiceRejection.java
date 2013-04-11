@@ -64,7 +64,7 @@ public class InvoiceRejection extends BaseActivity {
     }
 
 
-    public int getReasonOfRejectionId() {
+    public Integer getReasonOfRejectionId() {
         return reasonOfRejectionId;
     }
 

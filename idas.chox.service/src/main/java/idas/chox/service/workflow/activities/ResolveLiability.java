@@ -129,7 +129,7 @@ public class ResolveLiability extends BaseActivity {
     /**
      * @return the reasonOfRejectionId
      */
-    public int getReasonOfRejectionId() {
+    public Integer getReasonOfRejectionId() {
         return reasonOfRejectionId;
     }
 
