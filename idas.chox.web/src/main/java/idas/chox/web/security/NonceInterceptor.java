@@ -49,8 +49,9 @@ public class NonceInterceptor extends AbstractInterceptor {
                 if (request.getParameter("nonce") == null) {
                     LOG.error("No nonce found in request '{}' with sessionNonce='{}' and sessionId='{}' (with query string '{}') - parameters follow:\n{}",
                             new Object[]{request.getRequestURL(), sessionNonce, session.getId(), request.getQueryString(), dumpParams(request)});
-                    if (request.getQueryString() != null)
+                    if (request.getQueryString() != null) {
                         return "invalid.token";
+                    }
                     else {
                         LOG.warn("No query string - will not check nonce");
                         return invocation.invoke();
