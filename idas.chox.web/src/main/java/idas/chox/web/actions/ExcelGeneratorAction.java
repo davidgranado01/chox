@@ -36,7 +36,7 @@ public class ExcelGeneratorAction extends BaseAction {
     private static final int MAX_EXPORT_SIZE = 65535; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
-    private String claimSizeError;
+    private String errorMessage;
     private int exportedClaimCount;
     private boolean exportFinished;
     private boolean exportCanceled;
@@ -114,8 +114,8 @@ public class ExcelGeneratorAction extends BaseAction {
         this.exportedClaimCount = exportedClaimCount;
     }
 
-    public void setClaimSizeError(String claimSizeError) {
-        this.claimSizeError = claimSizeError;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public InputStream getExcelStream() {
@@ -142,9 +142,8 @@ public class ExcelGeneratorAction extends BaseAction {
 
     }
 
-    public String getClaimSizeError() {
-        LOG.debug("getClaimSizeError is called and returning the value:   '{}'", claimSizeError);
-        return claimSizeError;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
     public String doExportExcel() throws IOException {
@@ -163,7 +162,7 @@ public class ExcelGeneratorAction extends BaseAction {
         }
 
         String rtnStr = ERROR;
-        claimSizeError = null;
+        errorMessage = null;
         ClaimSearchCriteria c;
 
         if (getSession() != null) {
@@ -183,22 +182,22 @@ public class ExcelGeneratorAction extends BaseAction {
                         if (!generateXML(claimIds)) {
                             if (getSession().get("tooManyRows") != null) {
                                 LOG.info("Report cannot be generated as row-count exceeded {}", MAX_EXPORT_SIZE);
-                                setClaimSizeError("This data export will exceed the maximum number of allowable rows in Excel (65,536).");
+                                setErrorMessage("This data export will exceed the maximum number of allowable rows in Excel (65,536).");
                             }
                             else {
                                 LOG.debug("Report cancelled");
                             }
-                        }
-                        else {
+                        } else {
                             rtnStr = SUCCESS;
                         }
                     } catch (Exception ex) {
                         LOG.error("Exception thrown generating report: {}", ex.getMessage(), ex);
-                        setClaimSizeError("Error encountered generating report.");
+                        setErrorMessage("Error encountered generating report.");
+                        getSession().put("exceptionThrown", true);
                         return rtnStr;
                     }
                 } else if (claims.size() > 10000) {
-                    setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
+                    setErrorMessage("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
                 }
             }
         }

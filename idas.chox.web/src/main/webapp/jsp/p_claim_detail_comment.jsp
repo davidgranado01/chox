@@ -7,7 +7,7 @@
     var commentsDataStore;
     var commentsGrid;
 
-    $(function(){
+    Ext.onReady(function(){
 
         // SET VALIDATION
         var form = $("form#claimCommentForm");
@@ -23,7 +23,7 @@
             }
         });
 
-        ui.ajaxForm(form, loadComments);
+        ui.ajaxForm(form, onAfterFormSubmit);
 
         // LOAD RECORDS
         commentsJsonReader = new Ext.data.JsonReader({
@@ -122,13 +122,28 @@
             }
         });
     }
+    
+    function onAfterFormSubmit(responseText, statusText,form,responseType) {
+        var response = eval('(' + responseText.trim() + ')');
+        if(response && !response.isValid){
+            $.each(response.errors, function() {
+                Ext.Msg.show({
+                    title: 'Error',
+                    msg:this.toString(),
+                    icon:Ext.Msg.ERROR,
+                    buttons:Ext.Msg.OK,
+                    width : 400
+                });
+            });
+        } else {
+            $("form#claimCommentForm").each(function(){
+                this.reset();
+            });
+        }
+        loadComments();
+    }
 
     function loadComments(){
-        
-        $("form#claimCommentForm").each(function(){
-            this.reset();
-        });
-
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
         // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'
         // notesTabLoaded flag is used to find this page is loaded from p_claim_detail.jsp page.

@@ -28,7 +28,7 @@ text-align:center;
     </head>
     <body>
     <br/><br/><br/>
-    <h1>The requested data export will exceed the maximum number of allowable rows in Excel (65,536), please reduce the number of exported tasks. </h1>
+    <h1><s:property value="errorMessage"/></h1>
         
    <br/>
 

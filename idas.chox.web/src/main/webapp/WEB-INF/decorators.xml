@@ -11,6 +11,7 @@
         <pattern>/struts/*</pattern>
         <pattern>/p/*</pattern>
         <pattern>/prv/p/*</pattern>
+        <pattern>/prv/processBatchClaims.action*</pattern>
         <pattern>/login.action*</pattern>
         <pattern>/logBack/*</pattern>
         <!--pattern>/RSA_chox_support.html</pattern-->

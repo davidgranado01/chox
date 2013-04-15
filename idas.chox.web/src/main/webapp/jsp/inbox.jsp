@@ -440,6 +440,7 @@
 
                                                 var submitOption = {
                                                     clearForm: true,
+                                                    dataType: 'json',
                                                     beforeSubmit: function(formData, form, options) {
                                                         formData[1].value = workgroupCombo.getValue();
                                                         if (manualInvoiceFilter) {
@@ -448,7 +449,18 @@
                                                             formData.push({ name: 'name', value: 'assignWorkgroup' });
                                                         }
                                                     },
-                                                    success:function(){
+                                                    success:function(data){
+                                                        if(data && !data.isValid){
+                                                            $.each(data.errors, function() {
+                                                                Ext.Msg.show({
+                                                                    title: 'Error',
+                                                                    msg:this.toString(),
+                                                                    icon:Ext.Msg.ERROR,
+                                                                    buttons:Ext.Msg.OK,
+                                                                    width : 400
+                                                                });
+                                                            });
+                                                        }
                                                         sm2.clearSelections();
                                                         workgroupCombo.reset();
                                                         ds.reload();
@@ -525,6 +537,17 @@
                                     var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                     var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
                                     ajax.loadHtml2(url, param, function(data){
+                                        if(data && !data.isValid){
+                                            $.each(data.errors, function() {
+                                                Ext.Msg.show({
+                                                    title: 'Error',
+                                                    msg:this.toString(),
+                                                    icon:Ext.Msg.ERROR,
+                                                    buttons:Ext.Msg.OK,
+                                                    width : 400
+                                                });
+                                            });
+                                        }
                                         refreshFilterPanel();
                                         sm2.clearSelections();
                                         ds.reload();
@@ -559,6 +582,17 @@
                                 var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                 var param = {"name":"acceptInvoice","selectedClaimIds":idsParam};
                                 ajax.loadHtml2(url, param, function(data){
+                                    if(data && !data.isValid){
+                                        $.each(data.errors, function() {
+                                            Ext.Msg.show({
+                                                title: 'Error',
+                                                msg:this.toString(),
+                                                icon:Ext.Msg.ERROR,
+                                                buttons:Ext.Msg.OK,
+                                                width : 400
+                                            });
+                                        });
+                                    }
                                     refreshFilterPanel();
                                     sm2.clearSelections();
                                     ds.reload();
@@ -590,6 +624,17 @@
                             var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                             var param = {"name":"invoicePaymentReceived","selectedClaimIds":idsParam};
                             ajax.loadHtml2(url, param, function(data){
+                                if(data && !data.isValid){
+                                    $.each(data.errors, function() {
+                                        Ext.Msg.show({
+                                            title: 'Error',
+                                            msg:this.toString(),
+                                            icon:Ext.Msg.ERROR,
+                                            buttons:Ext.Msg.OK,
+                                            width : 400
+                                        });
+                                    });
+                                }
                                 refreshFilterPanel();
                                 sm2.clearSelections();
                                 ds.reload();
@@ -672,10 +717,22 @@
 
                                                 var submitOption = {
                                                     clearForm: true,
+                                                    dataType: 'json',
                                                     beforeSubmit: function(formData, form, options) {
                                                         formData[1].value = supplierClaimOwnerCombo.getValue();
                                                     },
-                                                    success:function(){
+                                                    success:function(data){
+                                                        if(data && !data.isValid){
+                                                            $.each(data.errors, function() {
+                                                                Ext.Msg.show({
+                                                                    title: 'Error',
+                                                                    msg:this.toString(),
+                                                                    icon:Ext.Msg.ERROR,
+                                                                    buttons:Ext.Msg.OK,
+                                                                    width : 400
+                                                                });
+                                                            });
+                                                        }
                                                         sm2.clearSelections();
                                                         supplierClaimOwnerCombo.reset();
                                                         ds.reload();
@@ -1086,6 +1143,7 @@
                                                 
                                                 var submitOption = {
                                                     clearForm: true,
+                                                    dataType: 'json',
                                                     beforeSubmit: function(formData, form, options) {
 
                                                         formData[1].value = claimOwnerCombo.getValue();
@@ -1098,12 +1156,23 @@
                                                         
 
                                                     },
-                                                    success:function(){
+                                                    success:function(data){
+                                                        if(data && !data.isValid){
+                                                            $.each(data.errors, function() {
+                                                                Ext.Msg.show({
+                                                                    title: 'Error',
+                                                                    msg:this.toString(),
+                                                                    icon:Ext.Msg.ERROR,
+                                                                    buttons:Ext.Msg.OK,
+                                                                    width : 400
+                                                                });
+                                                            });
+                                                        }
                                                         sm2.clearSelections();
                                                         claimOwnerCombo.reset();
                                                         ds.reload();
                                                         refreshFilterPanel();
-                                                        insurerClaimOwnerSelectionDlg.hide();
+                                                        insurerClaimOwnerSelectionDlg.hide(); 
                                                     }
                                                 };
 

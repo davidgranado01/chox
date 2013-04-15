@@ -757,7 +757,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.service.updateClaim(claim);
 
             } catch (Exception ex) {
-                LOG.error("Error updating supplier claim owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                LOG.error("Error updating supplier claim owner for claim {}: ", claim.getChoReference(), ex);
                 handleException(ex);
                 return ERROR;
             }

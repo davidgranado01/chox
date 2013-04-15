@@ -159,7 +159,8 @@
 
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="inbox" class="idas.chox.web.actions.InboxAction">
             <result>/jsp/inbox.jsp</result>
@@ -172,7 +173,7 @@
                 <param name="bufferSize">65536</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
-            <result name="error">/jsp/excel_generation_overlimit.jsp</result>
+            <result name="error">/jsp/excel_report_generation_error.jsp</result>
         </action>
         
         <action name="doTaskExportExcel" method="exportTask" class="idas.chox.web.actions.TasksAction">
@@ -193,7 +194,7 @@
                 <param name="contentDisposition">attachment;filename="processed_claims_excel_report.xls"</param>
                 <param name="bufferSize">65536</param>
             </result>
-            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/excel_report_generation_error.jsp</result>
         </action>
         
        <!-- Start Claim Detail -->
@@ -393,6 +394,7 @@
         </action>
         <action name="generateExportFile" class="idas.chox.web.actions.ExcelGeneratorAction" method="doExportExcel">
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="generateTaskExportFile" class="idas.chox.web.actions.TasksAction" method="doTaskExportToExcel">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -502,6 +504,7 @@
         </action>
         <action name="getTaskTypes" class="idas.chox.web.actions.TaskTypesAction" method="getTaskTypes">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
+            <result name="error">/jsp/p_jsonArrayData.jsp</result>
         </action>
 
        <!-- ACTION PANEL VALIDATION !-->
@@ -1029,29 +1032,32 @@
         <!--Start User ROLE Details-->
         <action name="getUserRoles" class="idas.chox.web.actions.UserRoleAction" method="getUserRoles">
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getAllAvailableUserRoles" class="idas.chox.web.actions.UserRoleAction" method="getAllAvailableUserRoles">
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getAvailableUserRolesForTask" class="idas.chox.web.actions.UserRoleAction" method="getAvailableUserRolesForTask">
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>
         <action name="removeWebUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="removeWebUserRoleMapping">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewWebUserRoleMapping" class="idas.chox.web.actions.UserRoleAction" method="addNewWebUserRoleMapping">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="isWebUserRoleAllowToDelete" class="idas.chox.web.actions.UserRoleAction" method="checkRoleAllowToDelete">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End User Details-->
@@ -1315,7 +1321,8 @@
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         
         <action name="doDeleteComment" class="idas.chox.web.actions.CommentAction" method="deleteComment">
