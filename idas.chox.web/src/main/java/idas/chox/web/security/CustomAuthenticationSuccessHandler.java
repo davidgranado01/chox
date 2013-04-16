@@ -117,21 +117,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 LOG.trace("IP address from request.getRemoteAddr() is '{}': isValid={}", ipAddress, isValid);
             }
             
-            // If we are still not validated, check the x-forward-for header
-// We'll leave this out for now (not required)
-//            if (!isValid) {
-//                ipAddress = request.getHeader("x-forwarded-for");
-//                if (ipAddress == null)
-//                    ipAddress = request.getHeader("X_FORWARDED_FOR");
-//                if (ipAddress != null) {
-//                    LOG.debug("IP address from request.getHeader(\"x-forwarded-for\") is '{}'", ipAddress);
-//                    if (user.isAnInsurer())
-//                        isValid = ipWhitelistService.validateInsurerIP(orgId, ipAddress);
-//                    else
-//                        isValid = ipWhitelistService.validateChoIP(orgId, ipAddress);
-//                }
-//            }
-
             if (!isValid) {
                 LOG.error("User '{}' denied access as IP address {} is not white-listed.", user.getFullName(), ipAddress);
                 HttpServletResponse httpResponse = response;
@@ -174,8 +159,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             }
         }
 
+        
         // Add nonce
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         byte[] nonce = new byte[16];
         SecureRandom rand;
         try {
@@ -195,7 +181,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             LOG.warn("Error updating users last login time: {}", ex.getMessage());
             LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
         }
-        LOG.info("User '{}' logged-in successfully.", user.toString());
+        LOG.info("User '{}' logged-in successfully from IP address {}.", user.toString(), request.getRemoteAddr());
         checkBrowserWarning(request, response, getDefaultTargetUrl());
         super.onAuthenticationSuccess(request, response, authentication);
     }

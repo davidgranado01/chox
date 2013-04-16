@@ -1,0 +1,32 @@
+CREATE TABLE attachment_file (
+	id serial NOT NULL,
+	attachment_id integer NOT NULL,
+	file_buffer bytea,
+  	created_by integer,
+  	last_modified_by integer,
+  	last_modified_date timestamp without time zone,
+  	created_date timestamp without time zone,
+  	version integer,
+  	CONSTRAINT attachment_file_pkey PRIMARY KEY (id),
+	CONSTRAINT attachment_id_fkey FOREIGN KEY (attachment_id)
+		REFERENCES attachment (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+) WITH (OIDS=FALSE);
+grant select, update, insert on attachment_file to chox_user;
+grant select, update on attachment_file_id_seq to chox_user;
+
+
+ALTER TABLE attachment ADD COLUMN attachment_file_id integer;
+ALTER TABLE attachment ADD CONSTRAINT attachment_file_id_fkey FOREIGN KEY (attachment_file_id)
+    REFERENCES attachment_file(id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+insert into attachment_file(attachment_id, file_buffer, created_by, last_modified_by, last_modified_date, created_date, version)
+select id, file_buffer,  created_by, last_modified_by, last_modified_date, created_date, version from attachment;
+
+UPDATE attachment set attachment_file_id = attachment_file.id
+from attachment_file where attachment_file.attachment_id = attachment.id;
+
+ALTER TABLE attachment DROP COLUMN file_buffer;
