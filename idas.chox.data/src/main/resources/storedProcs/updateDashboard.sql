@@ -1782,6 +1782,9 @@ where t1.insurer_id = dashboard.insurer_id
   and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
 
 
+-- RAISE NOTICE 'Re-indexing';
+reindex table dashboard;
+
 -- RAISE NOTICE 'Finished';
 
 return true;
