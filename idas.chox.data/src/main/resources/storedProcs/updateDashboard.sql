@@ -26,6 +26,8 @@ truncate table dashboard;
 insert into dashboard(process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, complete)
 select distinct currentDate, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, true from claim;
 
+reindex table dashboard;
+
 --RAISE NOTICE 'Finished insert: %1', timeofday();
 --RAISE NOTICE 'Total Number of Claim Notifications Submitted: %1', timeofday();
 
