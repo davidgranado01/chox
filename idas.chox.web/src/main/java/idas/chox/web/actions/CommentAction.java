@@ -37,20 +37,26 @@ public class CommentAction extends ClaimModelAction<Comment> {
     }
 
     public String createNewComment() {
-        boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer() ? 
-                        getAuthenticatedUser().getInsurer().isDisablePrivateNotes() : 
-                            getAuthenticatedUser().isCHO() ?
-                        getAuthenticatedUser().getChorganisation().isDisablePrivateNotes() :
-                            claim.getInsurer().isDisablePrivateNotes();
+        try {
+            boolean disablePrivateNotes = getAuthenticatedUser().isAnInsurer()
+                    ? getAuthenticatedUser().getInsurer().isDisablePrivateNotes()
+                    : getAuthenticatedUser().isCHO()
+                    ? getAuthenticatedUser().getChorganisation().isDisablePrivateNotes()
+                    : claim.getInsurer().isDisablePrivateNotes();
 
-        if(disablePrivateNotes && model.getVisibilityType() != 0){
-            LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
-            this.getActionResponse().AssignMessageResult("Note can't be added. Insufficient priviliges!");
+            if (disablePrivateNotes && model.getVisibilityType() != 0) {
+                LOG.warn("User without priviliges is trying to add private note. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+                this.getActionResponse().AddError("Note can't be added. Insufficient priviliges!");
+                return ERROR;
+            }
+            model.setComment(getComment());
+            claim.addComment(model);
+            return super.updateModel();
+        } catch (Exception ex) {
+            LOG.warn("Error creating attachment for claim {}", claim.getChoReference(), ex);
+            handleException(ex);
             return ERROR;
         }
-        model.setComment(getComment());
-        claim.addComment(model);
-        return super.updateModel();
     }
 
     public String getJsonArrayData() {

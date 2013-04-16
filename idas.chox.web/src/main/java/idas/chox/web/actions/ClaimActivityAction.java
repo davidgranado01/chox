@@ -127,7 +127,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             } catch(AccessDeniedException ex) {
                 throw(ex);
             } catch (Exception ex) {
-                LOG.error("Error processing multiple claims: {}", ex);
+                LOG.error("Error processing batch update. Error on cho-ref: {} : ", claim.getChoReference(), ex);
                 handleException(ex);
                 return ERROR;
             }

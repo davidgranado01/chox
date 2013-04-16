@@ -54,6 +54,15 @@ public class XmlUploadAction extends BaseAction {
     private String jsonData;
     private InputStream excelStream;
     private List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
+    private String errorMessage;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -344,26 +353,34 @@ public class XmlUploadAction extends BaseAction {
     }
 
     public String generateExcelReport() throws IOException {
-        byte[] b;
-        InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        if (bordereauId > 0 /*session.get("uploadedClaimsDetails") != null */) {
-            if (getUploadedClaimsDetails().equals(SUCCESS)) {
-                List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = claimsDetailsViewData; //(List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
-                Map excelMap = new HashMap();
-                excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
-                XLSTransformer transformer = new XLSTransformer();
-                transformer.transformXLS(templateIS, excelMap).write(out);
-                excelMap.clear();
-                b = out.toByteArray();
-                excelStream = new ByteArrayInputStream(b);
-                return SUCCESS;
+        try {
+            byte[] b;
+            InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            if (bordereauId > 0 /*session.get("uploadedClaimsDetails") != null */) {
+                if (getUploadedClaimsDetails().equals(SUCCESS)) {
+                    List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = claimsDetailsViewData; //(List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
+                    Map excelMap = new HashMap();
+                    excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
+                    XLSTransformer transformer = new XLSTransformer();
+                    transformer.transformXLS(templateIS, excelMap).write(out);
+                    excelMap.clear();
+                    b = out.toByteArray();
+                    excelStream = new ByteArrayInputStream(b);
+                    return SUCCESS;
+                } else {
+                    LOG.warn("Error response received from the getUploadedClaimsDetails method.");
+                    setErrorMessage("An unexpected error occured while generating the report. Please report to chox support.");
+                    return ERROR;
+                }
             } else {
-                this.getActionResponse().AddError("An unexpected error occured while deleting the file. Please report to chox admin.");
+                LOG.error("No file(bordereauId) has been selected/provided while trying to export 'uploaded claims details'.");
+                setErrorMessage("No record have been selected.");
                 return ERROR;
             }
-        } else {
-            this.getActionResponse().AddError("No record have been selected.");
+        } catch (Exception ex) {
+            LOG.error("Error Generating Report : ", ex);
+            setErrorMessage("Error Generating Report. Please report to chox support.");
             return ERROR;
         }
     }

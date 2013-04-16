@@ -39,32 +39,30 @@ public class TaskTypesAction  extends BaseAction {
     }
 
     public String getTaskTypes() {
-            taskTypesLI = new ArrayList<LookupItem>();
-            Map<String, String> taskTypes = null;
-            boolean isCHO = getIsCHO();
-            LOG.debug("Getting task types for visibility={} and isCHO={}", visibility, isCHO);
-            if (visibility == 1)
-                taskTypes = TaskType.getPrivateTaskTypes();
-            else if (visibility == 2 && isCHO)
-                taskTypes = TaskType.getChoInternalTaskTypes();
-            else if (visibility == 2 && !isCHO)
-                taskTypes = TaskType.getInsurerInternalTaskTypes();
-            else if (visibility == 3 && isCHO)
-                taskTypes = TaskType.getChoExternalTaskTypes();
-            else if (visibility == 3 && !isCHO)
-                taskTypes = TaskType.getInsurerExternalTaskTypes();
-            else {
-                LOG.warn("Cannot determine which tasks to return for visibility={}", visibility);
-                return ERROR;
-            }
-            for (Map.Entry<String, String> entry : taskTypes.entrySet()) {
-                taskTypesLI.add(new LookupItem(entry.getKey(), entry.getValue()));
-            }
+        taskTypesLI = new ArrayList<LookupItem>();
+        Map<String, String> taskTypes;
+        boolean isCHO = getIsCHO();
+        LOG.debug("Getting task types for visibility={} and isCHO={}", visibility, isCHO);
+        if (visibility == 1) {
+            taskTypes = TaskType.getPrivateTaskTypes();
+        } else if (visibility == 2 && isCHO) {
+            taskTypes = TaskType.getChoInternalTaskTypes();
+        } else if (visibility == 2 && !isCHO) {
+            taskTypes = TaskType.getInsurerInternalTaskTypes();
+        } else if (visibility == 3 && isCHO) {
+            taskTypes = TaskType.getChoExternalTaskTypes();
+        } else if (visibility == 3 && !isCHO) {
+            taskTypes = TaskType.getInsurerExternalTaskTypes();
+        } else {
+            LOG.warn("Cannot determine which tasks to return for visibility={}", visibility);
+            return ERROR;
+        }
+        for (Map.Entry<String, String> entry : taskTypes.entrySet()) {
+            taskTypesLI.add(new LookupItem(entry.getKey(), entry.getValue()));
+        }
 
-            this.jObject = JSONArray.fromObject(taskTypesLI);
+        this.jObject = JSONArray.fromObject(taskTypesLI);
 
-        
         return SUCCESS;
     }
-
 }

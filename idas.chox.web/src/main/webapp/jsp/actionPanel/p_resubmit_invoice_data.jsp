@@ -22,7 +22,7 @@
             <s:hidden id="name" name="name" value="resubmitInvoice"/>
             <div>
                 <div class="status-info">
-                    Please review the 'History' tab for details on the why the claim has been rejected, amend details accordingly and re-submit.
+                    Please review the 'History' tab for details on why the claim has been rejected, amend details accordingly and re-submit.
                 </div>
                 <div class="status-info-submit">
                     <table>
