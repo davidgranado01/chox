@@ -1,14 +1,15 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Attachment;
-import idas.chox.core.model.AttachmentType;
-import idas.chox.core.services.AttachmentService;
-import idas.chox.core.services.AttachmentTypeService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import idas.chox.core.model.Attachment;
+import idas.chox.core.model.AttachmentType;
+import idas.chox.core.services.AttachmentService;
+import idas.chox.core.services.AttachmentTypeService;
 
 public class AttachmentGeneratorAction extends BaseAction {
     
@@ -82,7 +83,7 @@ public class AttachmentGeneratorAction extends BaseAction {
             return "error";
         }
         
-        fileStream = new ByteArrayInputStream(att.getFileBuffer());
+        fileStream = new ByteArrayInputStream(att.getAttachment().getFileBuffer());
         String strContentDisposition = "filename="+att.getFileName();
         this.setContentDisposition(strContentDisposition);
         AttachmentType attachmentType = attachmentTypeService.getAttachmentType(att.getFileType());

@@ -18,6 +18,7 @@ import net.sf.json.JSONArray;
 
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
+import idas.chox.core.model.AttachmentFile;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Task;
@@ -207,7 +208,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 return ERROR;
             }
 
-            fileStream = new ByteArrayInputStream(model.getFileBuffer());
+            fileStream = new ByteArrayInputStream(model.getAttachment().getFileBuffer());
             this.contentDisposition = "filename=" + model.getFileName();
             AttachmentType attachmentType = attachmentTypeService.getAttachmentType(model.getFileType());
 
@@ -412,9 +413,15 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         model.setRemarks(strRemark);
         model.setCategory(strCategory);
         model.setFileType(strFileType);
-        model.setFileBuffer(obj);
         claim.addAttachment(model);
         claim.setNoAttachments(claim.getNoAttachments()+1);
+        LOG.debug("Saving claim for the 1st time...");
+        claimService.updateClaim(claim);
+        AttachmentFile aFile = new AttachmentFile();
+        aFile.setFileBuffer(obj);
+        aFile.setAttachment(model);
+        model.setAttachment(aFile);
+        LOG.debug("Saving claim for the 2nd time...");
         claimService.updateClaim(claim);
         updateModelInSession(Arrays.asList(claim));
     }
@@ -453,7 +460,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             LOG.debug("AttachmentAction validate success");
         }
         else {
-            LOG.debug(" AttachmentAction validation is not done as claim is null");
+            LOG.debug(" AttachmentAction validation not done as claim is null");
         }
     }
 }

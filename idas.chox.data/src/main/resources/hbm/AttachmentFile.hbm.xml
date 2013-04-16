@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="idas.chox.core.model.Attachment" table="attachment">
+    <class name="idas.chox.core.model.AttachmentFile" table="attachment_file">
         <cache usage="nonstrict-read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">attachment_id_seq</param>
+                <param name="sequence">attachment_file_id_seq</param>
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
-        <property column="file_name" name="fileName" not-null="true"/>
-        <property column="remarks" name="remarks"/>
-        <property column="category" name="category" not-null="true"/>
-        <property column="file_type" name="fileType"/>
+        <property column="file_buffer" name="fileBuffer"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
-        <property column="deleted" name="deleted" not-null="true"/>
-        <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim" not-null="true"/>
-        <many-to-one cascade="save-update,delete" class="idas.chox.core.model.AttachmentFile" column="attachment_file_id" name="attachment" not-null="true"/>
+        <many-to-one class="idas.chox.core.model.Attachment" column="attachment_id" name="attachment" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     </class>
