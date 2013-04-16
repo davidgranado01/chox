@@ -15,12 +15,16 @@ userId=$1;
 timeMarker=now();
 
 
+--RAISE NOTICE 'Truncating tabe: %1', timeofday();
+truncate table dashboard;
+
+
 --RAISE NOTICE 'Starting insert: %1', timeofday();
 
 
 -- INSERT ALL RECORD PER INSURER / CHO / Workgroup / Claim Owner / CHO Claim Owner
-insert into dashboard(process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id)
-select distinct currentDate, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id from claim;
+insert into dashboard(process_date, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, complete)
+select distinct currentDate, insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, true from claim;
 
 --RAISE NOTICE 'Finished insert: %1', timeofday();
 --RAISE NOTICE 'Total Number of Claim Notifications Submitted: %1', timeofday();
@@ -1774,16 +1778,6 @@ where t1.insurer_id = dashboard.insurer_id
   and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
   and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
   and (t1.cho_claim_owner_id = dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  dashboard.cho_claim_owner_id is null));
-
-  
--- RAISE NOTICE 'Deleting Previous entries';
-
---
--- DELETE previous entries
---
-delete from dashboard where process_date < currentDate;
-
-update dashboard set complete=true;
 
 
 -- RAISE NOTICE 'Finished';
