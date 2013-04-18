@@ -14,11 +14,11 @@ public class OrganisationDropDownAction extends BaseAction {
     @Override
     public String execute() throws Exception {
 
-        if ((getIsCHO() && ! "3".equals(selectedOrganisationTypeId)) || (getIsInsurer() && ! "2".equals(selectedOrganisationTypeId))) {
-            throw new AccessDeniedException("You do not have the correct access role to view the requested data. You will now be logged out.");
-        }
 
-        if (getSelectedOrganisationTypeId() != null && !getSelectedOrganisationTypeId().equals("")) {
+        if (selectedOrganisationTypeId != null && !selectedOrganisationTypeId.equals("")) {
+            if ((getIsCHO() && ! "3".equals(selectedOrganisationTypeId)) || (getIsInsurer() && ! "2".equals(selectedOrganisationTypeId))) {
+                throw new AccessDeniedException("You do not have the correct access role to view the requested data. You will now be logged out.");
+            }
             getOrganisationList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
