@@ -215,7 +215,7 @@
     </bean> 
     <bean id="updateDashboardTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateDashboardJobDetail" /> 
-        <property name="cronExpression" value="0 30 6,10,12,14,16,18 ? * 1-7" /> 
+        <property name="cronExpression" value="0 15,45 7,9,11,13,15,17 ? * 1-7" /> 
     </bean>
     <bean id="cronECDMailUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
