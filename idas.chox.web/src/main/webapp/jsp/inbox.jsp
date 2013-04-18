@@ -343,8 +343,8 @@
                     store: ds,
                     displayInfo: true,
                     displayMsg: 'Displaying claims {0} - {1} of {2}',
-                    emptyMsg: "No claims to display"
-                    ,plugins: new Ext.ux.ProgressBarPager()
+                    emptyMsg: "No claims to display",
+                    plugins: new Ext.ux.ProgressBarPager()
                 });
 
 
@@ -386,9 +386,7 @@
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
-                                //                                selectOnFocus: true,
                                 forceSelection: true,
-                                //                                allowBlank: false
                                 listeners: {blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
@@ -402,12 +400,9 @@
                             //                      console.log("Adding validator method.");
                             $.validator.addMethod("workgroupSelected",
                             function(value) {
-                                //console.log("Validating: " + value);
                                 if(value === "--- Please Select ---") {
-                                    //                                   console.log("Returning false for value:" + value);
                                     return false;
                                 }
-                                //                                console.log("Returning true for value:" + value);
                                 return true;
                             }, "You must select a 'Workgroup'");
 
@@ -427,10 +422,7 @@
                                 buttons: [{
                                         text:'Ok',
                                         handler:function(){
-                                            //console.log("Ok clicked - validating");
-
                                             if($("form#routeClaimForm").valid()){
-                                                //console.log("Passed validation...");
                                                 var selectedRecords =  sm2.getSelections();
                                                 var selectedIDs = $.map(selectedRecords, function(n){
                                                     return n.json.id;
@@ -481,7 +473,6 @@
                                     }]
                             });
 
-                            //                        console.log("Adding 'beforeshow' listener");
                             claimRoutedSelectionDlg.addListener('beforeshow', function(dialog){
                                 $("form#routeClaimForm").validate(
                                 {
@@ -842,12 +833,9 @@
                                 displayField :'name',
                                 typeAhead : true,
                                 forceSelection: true,
-                                //                            fieldLabel: 'Claim Owner',
                                 mode : 'local',
                                 triggerAction : 'all',
                                 emptyText : '--- Please Select ---',
-                                //                            selectOnFocus : true,
-                                //                            allowBlank : true,
                                 listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
@@ -881,14 +869,11 @@
                                     valueField: 'text',
                                     id: 'oasWorkgroupId',
                                     displayField:'value',
-                                    //                                fieldLabel: 'Workgroup',
                                     typeAhead: true,
                                     mode: 'local',
                                     triggerAction: 'all',
                                     emptyText: '--- Please Select ---',
-                                    //                                selectOnFocus: true,
                                     forceSelection: true,
-                                    //                                allowBlank: false
                                     listeners: {select: function () {
                                             var workgroupId = -1;
                                             if (workgroupCombo.getValue() != null) {
@@ -1073,7 +1058,6 @@
                 doInsurerClaimOwnerAction = new Ext.Action({
                     text: 'Assign Claim(s) Owner',
                     hidden:<s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (!manualInvoiceFilter && !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
-//                                || (manualInvoiceFilter && !(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) && <s:property value="enableManualInvoiceOwnership"/>)),
                     handler: function(){
 
                         if(!insurerClaimOwnerSelectionDlg)
@@ -1105,12 +1089,9 @@
                                 displayField :'name',
                                 typeAhead : true,
                                 forceSelection: true,
-                                //                            fieldLabel: 'Claim Owner',
                                 mode : 'local',
                                 triggerAction : 'all',
                                 emptyText : '--- Please Select ---',
-                                //                            selectOnFocus : true,
-                                //                            allowBlank : true,
                                 listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
@@ -1745,7 +1726,7 @@
 
     <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
         <div id="claimRoutedSelectionPanel">
-            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
+            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
                 <input name="selectedClaimIds" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1766,7 +1747,7 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
+                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1793,7 +1774,7 @@
             
     <div id="claimOwnerSelectionDlgHolder1" class="x-hidden">
         <div id="claimOwnerSelectionPanel1">
-                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form">
+                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1814,7 +1795,7 @@
 
     <div id="supplierClaimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="supplierClaimOwnerSelectionPanel">
-            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form">
+            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1835,7 +1816,7 @@
 
     <div id="couSelectionDlgHolder" class="x-hidden">
         <div id="couSelectionPanel">
-            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form">
+            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden" />
                 <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
