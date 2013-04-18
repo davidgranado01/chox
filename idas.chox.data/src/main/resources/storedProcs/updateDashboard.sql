@@ -1874,10 +1874,6 @@ from tmp_dashboard;
 truncate table tmp_dashboard;
 drop table tmp_dashboard;
 
--- RAISE NOTICE 'Re-indexing dashboard: %1', timeofday();
-
-reindex table dashboard;
-
 -- RAISE NOTICE 'Finished: %1', timeofday();
 
 return true;
