@@ -35,8 +35,7 @@ public class InvoiceRepairExtrasReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (((claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE))
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE))
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE))
                 && element != null && XMLUtils.getElement(element, "extra") != null
                 && ((XMLUtils.getElement(element, "extra").getTextContent()).trim().length() > 0)) {
 
@@ -52,7 +51,7 @@ public class InvoiceRepairExtrasReader extends BaseEntityReader {
                     claimResult.getMessage().add(INCORRECT_CLAIM_STATUS_FOR_REPAIR_EXTRA);
                     claimResult.setCheckDataValid(false);
                     break;
-                } else {
+                } else if (ClaimType.isSubscriber(claimResult.getClaim().getClaimType())) {
                     NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
                     NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 }
