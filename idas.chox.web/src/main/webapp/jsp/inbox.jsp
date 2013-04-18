@@ -537,6 +537,7 @@
                                     var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                     var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
                                     ajax.loadHtml2(url, param, function(data){
+                                        data = $.parseJSON(data);
                                         if(data && !data.isValid){
                                             $.each(data.errors, function() {
                                                 Ext.Msg.show({
@@ -582,6 +583,7 @@
                                 var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                 var param = {"name":"acceptInvoice","selectedClaimIds":idsParam};
                                 ajax.loadHtml2(url, param, function(data){
+                                    data = $.parseJSON(data);
                                     if(data && !data.isValid){
                                         $.each(data.errors, function() {
                                             Ext.Msg.show({
@@ -624,6 +626,7 @@
                             var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                             var param = {"name":"invoicePaymentReceived","selectedClaimIds":idsParam};
                             ajax.loadHtml2(url, param, function(data){
+                                data = $.parseJSON(data);
                                 if(data && !data.isValid){
                                     $.each(data.errors, function() {
                                         Ext.Msg.show({
