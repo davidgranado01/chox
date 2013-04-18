@@ -53,7 +53,7 @@
                  this.value = v;
              }});
 
-        new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
+        new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH users to only be able to edit claims that belong to them'});
 
             wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
