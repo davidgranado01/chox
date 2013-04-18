@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chox>
 	<!-- ### CLAIM HEADER ##################################### !-->
-
+        <!-- Claim header section alwas validate against <data-mandatory-newClaim> as 
+             validate method in claimHeaderReader class is called before ClaimParseStatus 
+             set to claimResult by the process method in the same claimHeaderReader class.-->
     <claimheader-first-contact>
         <data-description>First contact</data-description>
         <data-type>date</data-type>
@@ -18,6 +20,7 @@
         <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
         <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
+        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-first-contact>
 
     <claimheader-managing-repair>
