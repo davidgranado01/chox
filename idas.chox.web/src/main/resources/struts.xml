@@ -56,12 +56,10 @@
                 </interceptor-ref>
                 <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
-            <!-- same as authenticated stack but with nonce interceptor added after acegi -->
+            <!-- same as authenticated stack but with nonce interceptor added near end of stack -->
             <interceptor-stack name="authenticatedNonce">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="acegi"/>
-                <!-- Add nonce interceptor to prevent CSRF attacks -->
-                <interceptor-ref name="nonceInterceptor"/>
                 <!-- Add interceptor to handle session timeout -->
                 <interceptor-ref name="timeoutInterceptor"/>
                 <!-- Add interceptor to prevent caching -->
@@ -93,6 +91,8 @@
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
+                <!-- Add nonce interceptor to prevent CSRF attacks -->
+                <interceptor-ref name="nonceInterceptor"/>
                 <interceptor-ref name="choxExceptionLogger"/>
             </interceptor-stack>
         </interceptors>
