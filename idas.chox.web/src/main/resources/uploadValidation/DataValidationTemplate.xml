@@ -1,45 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chox>
-	<!-- ### CLAIM HEADER ##################################### !-->
-        <!-- Claim header section alwas validate against <data-mandatory-newClaim> as 
-             validate method in claimHeaderReader class is called before ClaimParseStatus 
-             set to claimResult by the process method in the same claimHeaderReader class.-->
+	<!-- ### CLAIM HEADER ##################################### 
+         Claim header section alwas validate against <data-mandatory-newClaim> as 
+         validation is performed before the 'hire-state' is processed -->
     <claimheader-first-contact>
         <data-description>First contact</data-description>
         <data-type>date</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
-        <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>t</data-mandatory-offHired>
-        <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
-        <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-first-contact>
 
     <claimheader-managing-repair>
         <data-description>Managing repair</data-description>
         <data-type>char</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
-        <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>t</data-mandatory-offHired>
-        <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
-        <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-managing-repair>
 
     <claimheader-agreement-signed>
@@ -56,19 +29,6 @@
         <data-description>Hire State</data-description>
         <data-type></data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
-        <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>t</data-mandatory-offHired>
-        <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
-        <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-hire-state>
 
     <claimheader-supplier-name>
@@ -79,21 +39,7 @@
 
     <claimheader-supplier-reference>
         <data-description>Supplier reference</data-description>
-        <data-mandatory-newClaim>t</data-mandatory-newClaim>
-        <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-        <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-        <data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
-        <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-        <data-mandatory-offHired>t</data-mandatory-offHired>
-        <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
-        <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
-        <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
-        <data-mandatory-existingSubscriberClaim>t</data-mandatory-existingSubscriberClaim>
-        <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
-        <data-mandatory-existingFixedFeeClaim>t</data-mandatory-existingFixedFeeClaim>
         <data-length>128</data-length>
-        <data-mandatory-newInsurerClaim>t</data-mandatory-newInsurerClaim>
     </claimheader-supplier-reference>
 
 	<!-- ### DRIVER / CUSTOMER ##################################### !-->
