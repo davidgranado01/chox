@@ -387,11 +387,18 @@
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
                                 forceSelection: true,
-                                listeners: {blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue(); this.reset();
-                                        }
-                                    }}
+                                listeners: {
+                                    blur: function () {
+                                            if(this.getRawValue() == "" ) {
+                                                this.clearValue(); this.reset();
+                                            }
+                                    },
+                                    specialkey:function (el, e) {
+                                                if(e.keyCode == e.ENTER) {
+                                                    e.preventDefault();
+                                                }
+                                    }
+                                }
                             });
 
                             // Add a validator to validate that a workgroup is selected.
@@ -676,11 +683,18 @@
                                 forceSelection: true,
                                 mode : 'local',
                                 emptyText : '--- Please Select ---',
-                                listeners: { blur: function () {
+                                listeners: {
+                                    blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
                                         }
-                                    }}
+                                    },
+                                    specialkey:function (el, e) {
+                                                if(e.keyCode == e.ENTER) {
+                                                    e.preventDefault();
+                                                }
+                                    }
+                                }
                             });
 
                             supplierClaimOwnerSelectionDlg =  new Ext.Window({
@@ -836,11 +850,18 @@
                                 mode : 'local',
                                 triggerAction : 'all',
                                 emptyText : '--- Please Select ---',
-                                listeners: { blur: function () {
+                                listeners: { 
+                                    blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
                                         }
-                                    }}
+                                    },
+                                    specialkey:function (el, e) {
+                                                if(e.keyCode == e.ENTER) {
+                                                    e.preventDefault();
+                                                }
+                                    }
+                                }
                             });
 
 
@@ -1092,11 +1113,18 @@
                                 mode : 'local',
                                 triggerAction : 'all',
                                 emptyText : '--- Please Select ---',
-                                listeners: { blur: function () {
+                                listeners: {
+                                    blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
                                         }
-                                    }}
+                                    },
+                                    specialkey:function (el, e) {
+                                                if(e.keyCode == e.ENTER) {
+                                                    e.preventDefault();
+                                                }
+                                    }
+                                }
                             });
 
                             insurerClaimOwnerSelectionDlg =  new Ext.Window({
@@ -1726,7 +1754,7 @@
 
     <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
         <div id="claimRoutedSelectionPanel">
-            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
+            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1747,7 +1775,7 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
+                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1774,7 +1802,7 @@
             
     <div id="claimOwnerSelectionDlgHolder1" class="x-hidden">
         <div id="claimOwnerSelectionPanel1">
-                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
+                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -1795,7 +1823,7 @@
 
     <div id="supplierClaimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="supplierClaimOwnerSelectionPanel">
-            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form" onkeypress="return event.keyCode != 13;" method="POST">
+            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>

@@ -42,9 +42,14 @@
             //                                allowBlank: false
             listeners: {
                 blur: function () {
-                    if(this.getRawValue() == "") {
-                        this.clearValue(); this.reset();
-                    }
+                        if(this.getRawValue() == "") {
+                            this.clearValue(); this.reset();
+                        }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                e.preventDefault();
+                            }
                 }
             }
         });

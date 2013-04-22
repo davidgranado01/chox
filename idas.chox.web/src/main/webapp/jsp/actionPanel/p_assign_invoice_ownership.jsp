@@ -66,6 +66,11 @@
                         claimOwnerId = this.value;
                         claimOwnerIdField=claimOwnerId;
                     }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                e.preventDefault();
+                            }
                 }
             }
         });

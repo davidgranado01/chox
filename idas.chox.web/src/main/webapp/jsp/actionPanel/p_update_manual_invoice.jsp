@@ -65,6 +65,11 @@ Ext.onReady(function(){
                         claimOwnerId = -1;
                         validateComboBox()
                     }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                e.preventDefault();
+                            }
                 }
             }
         });
@@ -121,6 +126,11 @@ Ext.onReady(function(){
                            doRenderClaimHandlerDropDown(selectedWorkgroupId); 
                         }
                     }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                e.preventDefault();
+                            }
                 }
             }
         });

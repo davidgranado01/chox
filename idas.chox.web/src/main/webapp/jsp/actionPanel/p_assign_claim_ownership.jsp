@@ -86,6 +86,11 @@
                         this.clearValue(); this.reset();
                         claimOwnerId = -1;
                     }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                e.preventDefault();
+                            }
                 }
             }
         });

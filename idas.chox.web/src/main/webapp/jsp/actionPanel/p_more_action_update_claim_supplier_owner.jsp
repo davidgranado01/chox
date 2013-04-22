@@ -76,7 +76,12 @@
                                    if(this.getRawValue() == "" ) {
                                        this.clearValue(); this.reset();
                                        }
-                                   }
+                                   },
+                                specialkey:function (el, e) {
+                                            if(e.keyCode == e.ENTER) {
+                                                e.preventDefault();
+                                            }
+                                }
                             }
         });
         $.validator.addMethod("claimOwnerSelection",
