@@ -31,7 +31,7 @@ public class InboxAction extends BaseAction {
     private LookupService lookupService;
     private ClaimService claimService;
     private String batchUpdateAction;
-    private List<Integer> selectedClaimIdList;
+    private List<Integer> selectedClaimIdList = new ArrayList<Integer>();;
     private int showHistory;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
@@ -253,8 +253,6 @@ public class InboxAction extends BaseAction {
 
     public void setSelectedClaimIds(String ids) {
         String[] list = ids.split(",");
-
-        selectedClaimIdList = new ArrayList<Integer>();
 
         for (String s : list) {
             Integer id = Integer.parseInt(s.trim());
