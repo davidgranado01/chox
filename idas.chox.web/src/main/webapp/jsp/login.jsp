@@ -21,7 +21,7 @@
     </head>
     <body class="modal login">
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.jpg"/>
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.png"/>
         </div>
 
         <div class="modal-container">
