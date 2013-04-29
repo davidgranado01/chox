@@ -66,7 +66,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
 
         Integer totalCount = totalCount(criteria);
 
-        if (!sort.isEmpty() && !dir.isEmpty()) {
+        if (sort != null && !sort.isEmpty() && dir != null && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("fileName")) {
                 addSort(criteria, "fileName", dir);
             } else if (sort.equalsIgnoreCase("fileSize")) {
