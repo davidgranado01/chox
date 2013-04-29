@@ -80,15 +80,20 @@ public class AlertAction extends BaseAction {
 
     public String isClaimNumberDuplicated() {
 
-        if (!claimNumber.isEmpty()) {
-            if (claimService == null) {
-                LOG.error("No Claim Service in AlertAction.isClaimNumberDuplicated: claimId={}, claimNumber='{}', userId={}",
-                        new Object[]{claimId, claimNumber});
-                this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether claim number is already associated with another claim(s). Do you wish to continue?");
+        try {
+            if (!claimNumber.isEmpty()) {
+                if (claimService == null) {
+                    LOG.error("No Claim Service in AlertAction.isClaimNumberDuplicated: claimId={}, claimNumber='{}'",
+                            new Object[]{claimId, claimNumber});
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether claim number is already associated with another claim(s). Do you wish to continue?");
+                } else if (claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0) {
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
+                }
             }
-            else if (claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0) {
-                this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
-            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown: claimId={}, claimNumber='{}', claimService={}",
+                    new Object[]{claimId, claimNumber, claimService, ex});
+            this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "Unable to validate whether claim number is already associated with another claim(s). Do you wish to continue?");
         }
 
         return SUCCESS;
