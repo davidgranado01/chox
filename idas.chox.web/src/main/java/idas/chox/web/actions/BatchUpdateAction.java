@@ -1,17 +1,18 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.access.AccessDeniedException;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
-import java.util.ArrayList;
-import java.util.List;
 import idas.chox.core.model.Comment;
-import org.springframework.security.access.AccessDeniedException;
 
 public class BatchUpdateAction extends BaseAction {
 
