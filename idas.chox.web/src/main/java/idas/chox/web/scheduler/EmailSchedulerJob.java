@@ -15,6 +15,9 @@ import org.hibernate.SessionFactory;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,8 +26,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.InvoiceService;
+import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.EmailHelper;
 
@@ -32,11 +35,10 @@ import idas.chox.core.util.EmailHelper;
  *
  * @author John
  */
-public abstract class EmailSchedulerJob implements Scheduler{
+public abstract class EmailSchedulerJob implements Scheduler, ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailSchedulerJob.class);
     protected static final String email_date_format = "dd MMMM yyyy";
-    private ImapMailReceiver imapMailReceiver;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private XlsFileParser xlsFileParser;
     private MailUtil mailUtil;
@@ -55,6 +57,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
     private ClaimService claimService;
     private String hostName;
     private ServerConfig serverConfig;
+    private ApplicationContext applicationContext;
     
     protected abstract Map<Integer, List<String>> doJob(Map<Integer, List<String>> jobInput, String sender);
     
@@ -69,6 +72,7 @@ public abstract class EmailSchedulerJob implements Scheduler{
         String loginUsername = null;
         String loginPassword = null;
         String emailSubject;
+        ImapMailReceiver imapMailReceiver = getImapMailReceiver();
         
         try {
             handleHibernateTransactionIntricacies();
@@ -167,11 +171,11 @@ public abstract class EmailSchedulerJob implements Scheduler{
                     new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
         }
     }
-
-    public void setImapMailReceiver(ImapMailReceiver imapMailReceiver) {
-        this.imapMailReceiver = imapMailReceiver;
+    
+    public ImapMailReceiver getImapMailReceiver() {
+        return this.applicationContext.getBean("imapMailReceiver", ImapMailReceiver.class);
     }
-
+    
     public void setXlsFileParser(XlsFileParser xlsFileParser) {
         this.xlsFileParser = xlsFileParser;
     }
@@ -251,21 +255,12 @@ public abstract class EmailSchedulerJob implements Scheduler{
   
     public void handleHibernateTransactionIntricacies() {
         session = SessionFactoryUtils.getSession(sessionFactory, true);
-//        existingTransaction = SessionFactoryUtils.isSessionTransactional(session, sessionFactory);
-//        if (existingTransaction) {
-//            LOG.info("Found thread-bound Session for Quartz job");
-//        } else {
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-//        }
     }
 
     public void releaseHibernateSessionConditionally() {
-//        if (existingTransaction) {
-//            LOG.info("Not closing pre-bound Hibernate Session after TransactionalQuartzTask");
-//        } else {
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         SessionFactoryUtils.releaseSession(session, sessionFactory);
-//        }
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -278,5 +273,10 @@ public abstract class EmailSchedulerJob implements Scheduler{
 
     public void setServerConfig(ServerConfig serverConfig) {
         this.serverConfig = serverConfig;
+    }
+    
+    @Override
+    public void setApplicationContext(ApplicationContext ac) throws BeansException {
+        this.applicationContext = ac;
     }
 }
