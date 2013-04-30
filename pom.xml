@@ -18,6 +18,7 @@
         <slf4j.version>1.6.6</slf4j.version>
         <jcl-over-slf4j.version>1.6.4</jcl-over-slf4j.version>
         <commons-logging.version>1.1.1</commons-logging.version>
+        <aspectj.version>1.7.2</aspectj.version>
         
         <junit.version>4.10</junit.version>
         
@@ -50,7 +51,9 @@
         <spring-web.version>3.1.1.RELEASE</spring-web.version>
         <spring-security-config.version>3.1.0.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.1.0.RELEASE</spring-security-web.version>
-        
+
+        <struts.version>2.3.1</struts.version>
+       
         <quartz-scheduler.version>2.1.6</quartz-scheduler.version>
     </properties>
 
