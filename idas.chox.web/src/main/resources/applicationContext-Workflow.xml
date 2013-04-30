@@ -116,5 +116,9 @@
     <bean id="fullPaymentNotReceived" class="idas.chox.service.workflow.activities.FullPaymentNotReceived" scope="prototype">
         <property name="chainActivity" ref="revertClaim" />
     </bean>
+    <bean id="ecdUpdate" class="idas.chox.service.workflow.activities.EcdUpdate" scope="prototype">
+        <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
+        <property name="reasonOfDelayService" ref="reasonOfDelayService" />
+    </bean>
     
 </beans>

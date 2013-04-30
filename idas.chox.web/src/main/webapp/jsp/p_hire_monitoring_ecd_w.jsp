@@ -2,10 +2,10 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-        
+    var ecdDateDateField;
     $(function(){
 
-        var ecdDateDatePicker = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
+        ecdDateDateField = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
 
         var form = $("#formAddNewHireMonitoringEcd");
 
@@ -38,10 +38,9 @@
         
         $("#hireMonitorModalClose").click(function(){ $("#hireMonitoringDetails").unblock();});
 
-        ui.ajaxForm(form,onAfterEcdSubmit);
     });
 
-    function onAfterEcdSubmit(responseText, statusText)  {    
+    function onAfterEcdSubmit(responseText, statusText)  {  
         loadEcds();
         doResetForm();
     }
@@ -68,10 +67,42 @@
 
         }
     
+    function addNewHireMonitoringEcd(){
+
+        if($("#formAddNewHireMonitoringEcd").valid()){
+
+            Ext.Ajax.request({
+                url:contextPath+'/prv/p/addNewHireMonitoringEcd.action',
+                params: {
+                            ecdDate : ecdDateDateField.getRawValue(),
+                            reasonOfDelayId : $('#reasonOfDelayId :selected').val(),
+                            supportingNote : $("#ECDSupportingNote").val(),
+                            nonce : $("#EcdNonceId").val(),
+                            name : $("#ecdActivityNameId").val(),
+                            updateInsurer : $('form #hireMonitoringEcdisUpdateInsurerId').is(':checked') 
+                        },
+                callback : function(options,success,response  ){
+                    var response = Ext.util.JSON.decode(response.responseText);
+                    if (!response.success) {
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: response.errors,
+                            width:300,
+                            closable : false,
+                            buttons: Ext.MessageBox.OK,
+                            icon : Ext.MessageBox.ERROR
+                        });
+                    }
+                    onAfterEcdSubmit();
+                }
+            });
+        
+        }
+    }
 </script>
 
-<form id="formAddNewHireMonitoringEcd" action="<%=request.getContextPath()%>/prv/p/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
-    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+<form id="formAddNewHireMonitoringEcd" name="formAddNewHireMonitoringEcd" class="XXentity-form">
+    <s:hidden id="ecdActivityNameId" name="name" value="ecdUpdate"/>
     <fieldset class="x-fieldset partial">
         <legend>New/Revised ECD</legend>
         <div class="form-container" id="newRevisedECDWId">
@@ -94,16 +125,14 @@
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
                 <div class="chox-form-item-button">
-                    <input type="submit" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" />&nbsp;&nbsp;&nbsp;
-            <s:if test="isInsurer">
-                    <s:checkbox disabled='true' id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
-            </s:if>
-            <s:else>
-                    <s:checkbox id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
-            </s:else>
-               </div>
-                <div class="chox-form-submit-result">&nbsp;</div>
-                <div id="ECDMessageBox" class="action-error-msg"></div>
+                    <input type="button" id="hireMonitoringEcdSubmitButtonId" value="Save Changes" onclick="return addNewHireMonitoringEcd()"/>&nbsp;&nbsp;&nbsp;
+                    <s:if test="isInsurer">
+                        <s:checkbox disabled='true' id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                    </s:if>
+                    <s:else>
+                        <s:checkbox id="hireMonitoringEcdisUpdateInsurerId" name="updateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                    </s:else>
+                </div>
             </s:if>
             <s:else>
                 <span id="ecdDatePH" style="visibility:hidden;"></span>
@@ -113,6 +142,5 @@
             <div id="ecdGridHolder"></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+    <input type="hidden" id="EcdNonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
 </form>

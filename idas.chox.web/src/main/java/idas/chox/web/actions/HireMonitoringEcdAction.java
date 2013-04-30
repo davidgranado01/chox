@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfDelayService;
@@ -37,29 +35,6 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
     @Override
     public HireMonitoringEcd loadModel() {
         return new HireMonitoringEcd();
-    }
-
-    public String addNewHireMonitoringEcd() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-        try {
-            checkVersion(Arrays.asList(claim, model));
-            if (reasonOfDelayId > 0) {
-                ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
-                model.setReason(reasonOfDelayObject.getName());
-                hireMonitoringEcdService.addNewHireMonitoringEcd(claim, model);
-                // update claim in session before calling super.updateModel as claim version
-                // has been increased when ECD added
-                updateModelInSession(Arrays.asList(claim));
-                super.updateModel();
-            }
-        } catch (Exception ex) {
-            handleException(ex);
-            return ERROR;
-        }
-        return SUCCESS;
     }
 
     public List getReasonOfDelay() {

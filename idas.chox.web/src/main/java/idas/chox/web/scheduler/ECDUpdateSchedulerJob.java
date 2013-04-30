@@ -15,17 +15,17 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.EcdUpdate;
 
 
 public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ECDUpdateSchedulerJob.class);
     
-    private HireMonitoringEcdService hireMonitoringEcdService;
+    private ActivityFactory activityFactory;
     private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     public static final String JOB_NAME = "ECD_UPDATE";
         
@@ -66,13 +66,13 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                 /* If validation passed add the new hire monitoring ECD.*/
                 if (statusString.toString().isEmpty()) {
                     try {
-                        HireMonitoringEcd ecd = new HireMonitoringEcd();
-                        ecd.setEcdDate(ecdDate);
-                        ecd.setReason(ecdDelayReason);
-                        ecd.setSupportingNote(ecdDelaySuppNote);
-                        ecd.setUpdateInsurer(true);
-                        LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecd.getEcdDate().toString(), ecd.getReason(), ecd.getSupportingNote()});
-                        hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
+                        LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecdDate.toString(), ecdDelayReason, ecdDelaySuppNote});
+                        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+                        activity.setEcdDate(ecdDate);
+                        activity.setReason(ecdDelayReason);
+                        activity.setSupportingNote(ecdDelaySuppNote);
+                        activity.setUpdateInsurer(true);
+                        activity.process(claim);
                         statusString.append("Success: Updated.");
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");
@@ -188,9 +188,9 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
             statusString.append(" No Supporting Note Provided.");
         }
     }
-    
-    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
-        this.hireMonitoringEcdService = hireMonitoringEcdService;
+
+    public void setActivityFactory(ActivityFactory activityFactory) {
+        this.activityFactory = activityFactory;
     }
     
     private boolean regexExpressionChecker(String regex, String dataValue) {
