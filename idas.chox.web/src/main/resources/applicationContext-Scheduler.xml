@@ -84,10 +84,10 @@
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="xlsFileParser" ref="xlsFileParser"/>
         <property name="claimService" ref="claimService" />
+        <property name="activityFactory" ref="activityFactory" />
         <property name="mailUtil" ref="mailUtil" />
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="schedulerJobService" ref="schedulerJobService" />
-        <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
