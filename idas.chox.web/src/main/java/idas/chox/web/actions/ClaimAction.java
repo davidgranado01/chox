@@ -1162,7 +1162,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 accessRight = 0;
             }
             
-
+            // Remove 'Mark Claim For Supplementary Invoice(s)' for Insure (Manual) invoices (bug#2586)
+            if (accessRight > 0 && actionName.equals(ExtraAction.MARK_SUPPLEMENTARY_INVOICED_CLAIM)
+                    && claim.getClaimType() == ClaimType.INSURER_INVOICE) {
+                accessRight = 0;
+            }
+            
             if (accessRight >= 2) {
                 if (actionName.equals(ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL)) {
                     boolean b = true;
