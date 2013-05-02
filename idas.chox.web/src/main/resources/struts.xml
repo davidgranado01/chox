@@ -801,11 +801,6 @@
             <result name="w">/jsp/p_hire_monitoring_ecd_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
-        <action name="addNewHireMonitoringEcd" class="idas.chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
-            <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
-            <result name="error">/jsp/p_action_response_json_data.jsp</result>
-        </action>
         <action name="getHireMonitoringEcds" class="idas.chox.web.actions.ClaimAction" method="getHireMonitoringEcds">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
@@ -1449,6 +1444,11 @@
             <result name="error" >/jsp/p_jsonData.jsp</result>
         </action>
         <action name ="switchClaim" class ="idas.chox.web.actions.ClaimActivityAction">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error" >/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name ="addNewHireMonitoringEcd" class ="idas.chox.web.actions.ClaimActivityAction">
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
             <result name="error" >/jsp/p_jsonData.jsp</result>

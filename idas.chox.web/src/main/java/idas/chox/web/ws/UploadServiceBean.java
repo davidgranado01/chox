@@ -3,7 +3,6 @@ package idas.chox.web.ws;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
@@ -18,16 +17,15 @@ import com.idaschox.services.chox.*;
 import com.idaschox.services.chox.SubmissionResult.Messages;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.EcdUpdate;
 
 
 public class UploadServiceBean {
@@ -39,10 +37,7 @@ public class UploadServiceBean {
     private UploadClaimXMLService uploadClaimXMLService;
     private ClaimService claimService;
     private WebBordereauService webBordereauService;
-    private HireMonitoringEcdService hireMonitoringEcdService;
     private ActivityFactory activityFactory;
-    private SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-    private String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     
      public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
         this.uploadClaimXMLService = uploadClaimXMLService;
@@ -58,10 +53,6 @@ public class UploadServiceBean {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
-        this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
     
     public SubmissionResult uploadBordereau(Chox chox) {
@@ -476,41 +467,32 @@ public class UploadServiceBean {
     
     public Result updateECD(EcdParam ecdParam) {
 
+        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+
         Result result = new Result();
-        Claim claim;
+        Claim claim = null;
         String supplierReference = ecdParam.getSupplierReference();
         Date ecdDate = ecdParam.getEcdDate().toGregorianCalendar().getTime();
         String delayReason = ecdParam.getDelayReason();
         String supportingNote = ecdParam.getSupportingNote();
-        
+
         try {
             claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
-            boolean isValidStatus = false;
             if (claim == null) {
-                LOG.debug("{} : No Such Claim Reference.", supplierReference);
                 result.setStatus(false);
-                result.setErrorMessage(supplierReference +" : No Such Claim Reference.");
+                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
             } else {
-                for (String status : idas.chox.core.model.ClaimStatus.getPreInvoiceStatus()) {
-                    if (claim.getStatus().equals(status)) {
-                        isValidStatus = true;
-                        break;
-                    }
-                }
-                if (!isValidStatus) {
-                    result.setStatus(false);
-                    result.setErrorMessage(supplierReference + " : Invalid Claim Status '" + claim.getStatus()+"'.");
-                } else {
-                    HireMonitoringEcd ecd = new HireMonitoringEcd();
-                    ecd.setEcdDate(ecdDate);
-                    ecd.setReason(delayReason);
-                    ecd.setSupportingNote(supportingNote);
-                    ecd.setUpdateInsurer(true);
-                    LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecd.getEcdDate().toString(), ecd.getReason(), ecd.getSupportingNote()});
-                    hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
-                    result.setStatus(true);
-                }
+                LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecdDate.toString(), delayReason, supportingNote});
+                activity.setEcdDate(ecdDate);
+                activity.setReason(delayReason);
+                activity.setSupportingNote(supportingNote);
+                activity.setUpdateInsurer(true);
+                activity.process(claim);
+                result.setStatus(true);
             }
+        } catch (InvalidClaimStatusException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
             result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
