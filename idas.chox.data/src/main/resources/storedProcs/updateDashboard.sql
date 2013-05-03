@@ -1344,6 +1344,54 @@ cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as 
   and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
 
 
+-- RAISE NOTICE 'Num insurer claims submitted Start';
+
+-- RAISE NOTICE 'Weekly Start: %1', timeofday();
+update tmp_dashboard
+   set num_insurer_claims_submitted_w = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c 
+where c.claim_type IN (14,15)
+and c.created_date >= SqlGetDayOfWeek()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
+-- RAISE NOTICE 'Monthly Start: %1', timeofday();
+
+update tmp_dashboard
+   set num_insurer_claims_submitted_m = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c
+where c.claim_type IN (14,15)
+and c.created_date >= SqlGetDayOfMonth()
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+  
+-- RAISE NOTICE 'Cumulative Start: %1', timeofday();
+
+update tmp_dashboard
+   set num_insurer_claims_submitted_c = t1.num
+from (
+select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
+from claim c 
+where c.claim_type IN (14,15)
+group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
+where t1.insurer_id = tmp_dashboard.insurer_id
+  and t1.chorganisation_id = tmp_dashboard.chorganisation_id
+  and (t1.workgroup_id = tmp_dashboard.workgroup_id  or (t1.workgroup_id is null and tmp_dashboard.workgroup_id is null))
+  and (t1.claim_owner_id = tmp_dashboard.claim_owner_id or (t1.claim_owner_id is null and tmp_dashboard.claim_owner_id is null))
+  and (t1.cho_claim_owner_id = tmp_dashboard.cho_claim_owner_id or (t1.cho_claim_owner_id is null and  tmp_dashboard.cho_claim_owner_id is null));
+
 -- RAISE NOTICE 'Num manual invoices submitted Start';
 
 -- RAISE NOTICE 'Weekly Start: %1', timeofday();
