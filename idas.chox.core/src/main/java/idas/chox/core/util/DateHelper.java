@@ -354,6 +354,10 @@ public class DateHelper {
         return new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
 
+    public static SimpleDateFormat getLocalDateTimeFormatWithSecs() {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    }
+
     /**
      * @return the EXTDateTimeFormat
      */
@@ -368,3 +372,4 @@ public class DateHelper {
         return new SimpleDateFormat("dd MMM yyyy");
     }
 }
+
