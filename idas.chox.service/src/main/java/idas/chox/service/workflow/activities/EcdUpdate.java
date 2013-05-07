@@ -58,25 +58,26 @@ public class EcdUpdate extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-    }
-
-    @Override
-    protected void doProcess(Claim claim) {
         if (reasonOfDelayId > 0 && reason == null) {
             ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
             reason = reasonOfDelayObject.getName();
         }
         if (reason == null) {
-            LOG.error("ecd delay reason is {}. Can not update ecd.", reason);
-        } else {
-            HireMonitoringEcd ecd = new HireMonitoringEcd();
-            ecd.setEcdDate(ecdDate);
-            ecd.setReason(reason);
-            ecd.setSupportingNote(supportingNote);
-            ecd.setUpdateInsurer(updateInsurer);
-            ecd.setSequence(sequence);
-
-            hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
+            LOG.error("ECD delay reason is null. Can not update ECD.");
+            throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
+    }
+
+    @Override
+    protected void doProcess(Claim claim) {
+
+        HireMonitoringEcd ecd = new HireMonitoringEcd();
+        ecd.setEcdDate(ecdDate);
+        ecd.setReason(reason);
+        ecd.setSupportingNote(supportingNote);
+        ecd.setUpdateInsurer(updateInsurer);
+        ecd.setSequence(sequence);
+
+        hireMonitoringEcdService.addNewHireMonitoringEcd(claim, ecd);
     }
 }

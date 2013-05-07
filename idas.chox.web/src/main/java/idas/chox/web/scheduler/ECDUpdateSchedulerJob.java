@@ -17,6 +17,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.EcdUpdate;
 
@@ -67,11 +68,11 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                 if (statusString.toString().isEmpty()) {
                     try {
                         LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecdDate.toString(), ecdDelayReason, ecdDelaySuppNote});
-                        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
-                        activity.setEcdDate(ecdDate);
-                        activity.setReason(ecdDelayReason);
-                        activity.setSupportingNote(ecdDelaySuppNote);
-                        activity.setUpdateInsurer(true);
+                        Activity activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+                        ((EcdUpdate)activity).setEcdDate(ecdDate);
+                        ((EcdUpdate)activity).setReason(ecdDelayReason);
+                        ((EcdUpdate)activity).setSupportingNote(ecdDelaySuppNote);
+                        ((EcdUpdate)activity).setUpdateInsurer(true);
                         activity.process(claim);
                         statusString.append("Success: Updated.");
                     } catch (Exception ex) {
