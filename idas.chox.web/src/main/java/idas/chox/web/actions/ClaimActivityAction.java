@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -18,6 +19,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
+import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ActivityFactory;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
@@ -33,6 +35,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String jsonData;
     private boolean showMessage = false;
     private String message = null;
+    private ApplicationAccessibility applicationAccessibility;
     
     @Override
     public Activity getModel() {
@@ -107,25 +110,42 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public String processMultipleClaims() {
         LOG.debug("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
+            boolean updatedByAnotherTransaction = false;
+            StringBuilder actionError = new StringBuilder();
+            actionError.append("Following claims were not updated as they were updated by another transaction/user:<br />");
+            String activityName = AopUtils.getTargetClass(activity).getSimpleName();
             try {
                 for (Integer selectedClaimId : selectedClaimIdList) {
                     LOG.debug("Processing claim with id={} and activity={}", selectedClaimId, activity.getClass());
                     claim = claimService.getClaim(selectedClaimId);
 
-                    // Make sure we have a BRE Band
-                    if (claim.getBreBand() == null) {
-                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                        claim.setBreBand(choBand);
-                    }
+                    if (applicationAccessibility.checkActivityAccessibility(activityName, getAuthenticatedUser(), claim) < 1) {
+                        LOG.warn("No access to batchUpdate activity '{}' for claim '{}' of type {} in status '{}'",
+                                new Object[]{activityName, claim.getChoReference(), claim.getClaimType().name(), claim.getStatus()});
+                        updatedByAnotherTransaction = true;
+                        actionError.append(claim.getChoReference()).append("<br />");
+                    } else {
+                        // Make sure we have a BRE Band
+                        if (claim.getBreBand() == null) {
+                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                            claim.setBreBand(choBand);
+                        }
 
-                    if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                            || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                        throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+                        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+                        }
+                        activity.process(claim);
                     }
-                    activity.process(claim);
                 }
-            } catch(AccessDeniedException ex) {
-                throw(ex);
+
+                if (updatedByAnotherTransaction == true) {
+                    getActionResponse().AddError(actionError.toString());
+                    return ERROR;
+                }
+
+            } catch (AccessDeniedException ex) {
+                throw (ex);
             } catch (Exception ex) {
                 LOG.error("Error processing batch update. Error on cho-ref: {} : ", claim.getChoReference(), ex);
                 handleException(ex);
@@ -137,7 +157,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         return ERROR;
     }
 
-    
     @Override
     public String execute() {
         JSONObject jsonObject = new JSONObject();
@@ -148,10 +167,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
                 setMessage(activity.getMessage());
-            } catch(AccessDeniedException ex) {
-                throw(ex);
+            } catch (AccessDeniedException ex) {
+                throw (ex);
             } catch (Exception ex) {
-                LOG.warn("Error processing claim activity: {}",ex.getMessage());
+                LOG.warn("Error processing claim activity: {}", ex.getMessage());
                 jsonObject.put("success", Boolean.FALSE);
                 jsonObject.put("errors", ex.getMessage());
                 setJsonData(jsonObject.toString());
@@ -164,19 +183,18 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 jsonObject.put("message", getMessage());
             }
             setJsonData(jsonObject.toString());
-            
+
             return SUCCESS;
         } else {
             LOG.warn("Cannot process activity: activity is empty (null)");
             jsonObject.put("success", Boolean.FALSE);
             jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
             setJsonData(jsonObject.toString());
-            
+
         }
 
         return ERROR;
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -224,5 +242,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         } else {
             LOG.debug(" ClaimActivityAction validation is not done as claim is null");
         }
+    }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
     }
 }
