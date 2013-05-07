@@ -34,6 +34,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -45,6 +46,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -56,6 +58,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -67,6 +70,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -78,6 +82,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -89,6 +94,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -100,6 +106,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -111,6 +118,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -122,6 +130,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -133,6 +142,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -144,6 +154,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -155,6 +166,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -166,6 +178,7 @@ SELECT 'no_claims_uploaded' AS title ,
    WHERE (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -187,6 +200,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -200,6 +214,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -213,6 +228,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -226,6 +242,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -239,6 +256,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -252,6 +270,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -265,6 +284,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -278,6 +298,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -291,6 +312,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -304,6 +326,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -317,6 +340,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -330,6 +354,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -343,6 +368,7 @@ SELECT 'no_invoice_uploaded' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -579,6 +605,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -593,6 +620,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -607,6 +635,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -621,6 +650,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -635,6 +665,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -649,6 +680,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -663,6 +695,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -677,6 +710,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -691,6 +725,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -705,6 +740,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -719,6 +755,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -733,6 +770,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -747,6 +785,7 @@ SELECT 'avg_hire_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1251,6 +1290,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1265,6 +1305,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1279,6 +1320,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1293,6 +1335,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1307,6 +1350,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1321,6 +1365,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1335,6 +1380,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1349,6 +1395,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1363,6 +1410,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1377,6 +1425,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1391,6 +1440,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1405,6 +1455,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -1419,6 +1470,7 @@ SELECT 'avg_repair_value' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3382,6 +3434,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3398,6 +3451,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3414,6 +3468,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3430,6 +3485,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3446,6 +3502,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3462,6 +3519,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3478,6 +3536,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3494,6 +3553,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3510,6 +3570,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3526,6 +3587,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3542,6 +3604,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3558,6 +3621,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3574,6 +3638,7 @@ SELECT 'avg_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3598,6 +3663,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3616,6 +3682,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3634,6 +3701,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3652,6 +3720,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3670,6 +3739,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3688,6 +3758,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3706,6 +3777,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3724,6 +3796,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3742,6 +3815,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3760,6 +3834,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3778,6 +3853,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3796,6 +3872,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3814,6 +3891,7 @@ SELECT 'avg_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3838,6 +3916,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3856,6 +3935,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3874,6 +3954,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3892,6 +3973,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3910,6 +3992,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3928,6 +4011,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3946,6 +4030,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3964,6 +4049,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -3982,6 +4068,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4000,6 +4087,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4018,6 +4106,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4036,6 +4125,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4054,6 +4144,7 @@ SELECT 'avg_non_total_loss_hire_days' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4964,6 +5055,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4978,6 +5070,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -4992,6 +5085,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5006,6 +5100,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5020,6 +5115,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5034,6 +5130,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5048,6 +5145,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5062,6 +5160,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5076,6 +5175,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5090,6 +5190,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5104,6 +5205,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5118,6 +5220,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
@@ -5132,6 +5235,7 @@ SELECT 'avg_hire_rate' AS title ,
      AND (c.insurer_id = params.insurerId
           OR params.insurerId = -1)
      AND c.chorganisation_id = cho.id
+     AND c.claim_type IN (10,14,15,16,17)
      AND cho.insurer_upload_only = TRUE
      AND (params.chorgId = -1
           OR c.chorganisation_id = params.chorgId)
