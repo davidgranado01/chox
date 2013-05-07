@@ -467,7 +467,7 @@ public class UploadServiceBean {
     
     public Result updateECD(EcdParam ecdParam) {
 
-        EcdUpdate activity = (EcdUpdate) activityFactory.getActivity("ecdUpdate");
+        Activity activity = activityFactory.getActivity("ecdUpdate");
 
         Result result = new Result();
         Claim claim = null;
@@ -483,10 +483,10 @@ public class UploadServiceBean {
                 result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
             } else {
                 LOG.debug("ecd date {} ecd reason {} ecd supportnote {}", new Object[]{ecdDate.toString(), delayReason, supportingNote});
-                activity.setEcdDate(ecdDate);
-                activity.setReason(delayReason);
-                activity.setSupportingNote(supportingNote);
-                activity.setUpdateInsurer(true);
+                ((EcdUpdate)activity).setEcdDate(ecdDate);
+                ((EcdUpdate)activity).setReason(delayReason);
+                ((EcdUpdate)activity).setSupportingNote(supportingNote);
+                ((EcdUpdate)activity).setUpdateInsurer(true);
                 activity.process(claim);
                 result.setStatus(true);
             }
