@@ -25,7 +25,7 @@
         </div>
 
         <div class="modal-container">
-            <div class="app-title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px"/></div>
+            <div class="app-title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: center; width: 77px; height: 22px"/></div>
 
             <div class="login-inner">
                 <div class="content" id="loginPanel">
