@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
@@ -75,6 +76,9 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         ((EcdUpdate)activity).setUpdateInsurer(true);
                         activity.process(claim);
                         statusString.append("Success: Updated.");
+                    } catch (AccessDeniedException ex) {
+                        statusString.append("Failed: Access Denied processing request.");
+                        LOG.error("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");
                         LOG.error("Exception occured when adding new ECD via email scheduler ecd update job", ex);
@@ -141,7 +145,9 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                 LOG.debug("No Such Claim Reference {}", referenceNumber);
                 statusString.append(" No Such Claim Reference.");
             } else {
-                for (String status : ClaimStatus.getPreInvoiceStatus()) {
+                List<String> previousInvStatuses = ClaimStatus.getPreInvoiceStatus();
+                previousInvStatuses.remove(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+                for (String status : previousInvStatuses) {
                     if (claim.getStatus().equals(status)) {
                         isValidStatus = true;
                         break;
