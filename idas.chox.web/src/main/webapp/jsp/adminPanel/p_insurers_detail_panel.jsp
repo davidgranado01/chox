@@ -227,7 +227,7 @@
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
-                scsAgreedBenefitShareValue:{ number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" },
+                scsAgreedBenefitShareValue:{ number:"'STS Agreed Benefit Share' must be numeric", min:"'STS Agreed Benefit Share' cannot be less than zero", max:"'STS Agreed Benefit Share' cannot be higher than 100%" },
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
@@ -1003,7 +1003,7 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                     <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                                        <option value="false">SCS Agreed Benefit Share (%)</option>
+                                        <option value="false">STS Agreed Benefit Share (%)</option>
                                         <option value="true">Fixed Transactional Fee (£)</option>
                                     </select>
                                 </label>
