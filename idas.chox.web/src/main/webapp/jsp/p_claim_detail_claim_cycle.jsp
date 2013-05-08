@@ -17,7 +17,7 @@
             fields:
                 [
                 {name:'reverted'},
-                {name:'modifiedDate', type: 'date', dateFormat: 'd/m/Y H:i'},
+                {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
                 {name:'modifiedBy'},
                 {name:'status'}
             ]
@@ -29,7 +29,7 @@
             reader:auditTrailJsonReader
         });
 
-        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
+//        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
 
         auditGrid = new Ext.grid.GridPanel({
             id: 'audit_trail_grid_id',
@@ -44,7 +44,7 @@
  //             return (record.data.reverted ? 'gray-row' : 'black-row' );
             }},
             columns: [
-                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true, renderer: dateRenderer},
+                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true},
                 {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: false, resizable: true},
                 {header: "Status", width: 500, dataIndex: 'status', sortable: false, resizable: true }
             ],
