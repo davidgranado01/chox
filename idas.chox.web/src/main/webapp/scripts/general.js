@@ -13,25 +13,25 @@ function openHelpFile(url, helpFileRoleType, bespoke){
     switch(helpFileRoleType) {
         case 1: // NORMAL INSURER ROLE
             if (bespoke) {
-                fileName = '/download/CHOX_IUG_S_3.5.pdf';
+                fileName = '/download/CHOX_IUG_S.pdf';
             }
             else {
-                fileName = '/download/CHOX_IUG_3.5.pdf';
+                fileName = '/download/CHOX_IUG.pdf';
             }
             break;
         case 2: // INSURER MANAGER ROLE
             if (bespoke) {
-                fileName = '/download/CHOX_IUG_S_ADM_3.5.pdf';
+                fileName = '/download/CHOX_IUG_S_ADM.pdf';
             }
             else{
-                fileName = '/download/CHOX_IUG_ADM_3.5.pdf';
+                fileName = '/download/CHOX_IUG_ADM.pdf';
             }
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
-            fileName = '/download/CHOX_CHO_UG_3.6.pdf';
+            fileName = '/download/CHOX_CHO_UG.pdf';
             break;
         case 4: // CREDIT HIRE MANAGER ROLE
-            fileName = '/download/CHOX_CHO_UG_ADM_3.6.pdf';
+            fileName = '/download/CHOX_CHO_UG_ADM.pdf';
             break;
     }
 
