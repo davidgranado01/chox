@@ -32,6 +32,8 @@
         <property column="max_admin_fee_value" name="adminFeeCeiling" not-null="true"/>
         <property column="max_subscriber_admin_fee_value" name="adminFeeCeilingSubscriber" not-null="true"/>
         <property column="max_subscriber_admin_fee_managing_repair_value" name="adminFeeCeilingSubscriberManagingRepair" not-null="true"/>
+        <property column="max_fixed_fee_admin_fee_value" name="adminFeeCeilingFixedFee" not-null="true"/>
+        <property column="max_fixed_fee_admin_fee_managing_repair_value" name="adminFeeCeilingFixedFeeManagingRepair" not-null="true"/>
         <property column="max_admin_fee_managing_repair_value" name="adminFeeCeilingManagingRepair" not-null="true"/>
         <property column="standard_insurance_premium" name="standardInsurancePremium" not-null="true"/>
         <property column="non_standard_insurance_premium" name="nonStandardInsurancePremium" not-null="true"/>
@@ -128,6 +130,7 @@
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>
+        <property column="fixed_fee_admin_fee_check" name="fixedFeeAdminFeeCheck"/>
         <property column="overlapping_hire_check" name="overlappingHireCheck"/>
         <property column="hire_end_check" name="hireTerminatedAfterRepairCompletionCheck"/>
         <property column="allow_manag_repair_auto_tasks" name="allowManagingRepairAutomatedTasks" not-null="true"/>

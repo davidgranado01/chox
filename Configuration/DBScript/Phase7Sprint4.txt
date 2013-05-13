@@ -1,5 +1,3 @@
-
-
 ---------------------------------------------
 --   7.4.4 Move ECD update to activity     --
 ---------------------------------------------
@@ -320,13 +318,23 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 --- END of 7.4.4  ------
 ------------------------
 
+-------------------------------------------------------------
+--   7.4.6 Configurable Admin Fee for Fixed Fee Claims     --
+-------------------------------------------------------------
+ALTER TABLE bre_band ADD COLUMN fixed_fee_admin_fee_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN max_fixed_fee_admin_fee_value numeric(10,2) not null default 40.00;
+ALTER TABLE bre_band ADD COLUMN max_fixed_fee_admin_fee_managing_repair_value numeric(10,2) not null default 60.00;
+
+------------------------
+--- END of 7.4.4     ---
+------------------------
 
 ------------------------------------------------------------------------------------------------
 -- bug#2587 - Production - 'Assign Claim(s) Owner' batch-update option visible                --
-              in ClaimRejectionAccepted                                                       --
+--            in ClaimRejectionAccepted                                                       --
 ------------------------------------------------------------------------------------------------
 delete from accessibility_item where accessibility_id=(select id from accessibility where name='batch.supplierClaimOwnership.ClaimRejectionAccepted';
 delete from accessibility where name = 'batch.supplierClaimOwnership.ClaimRejectionAccepted';
 ---------------------------------------------------
---- END of bug#2587                         -------
+--- END of bug#2587                             ---
 ---------------------------------------------------

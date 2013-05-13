@@ -130,6 +130,9 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean overlappingHireCheck;
     private boolean maximumLabourRateCheck;
     private BigDecimal maxAllowedLabourRate = BigDecimal.ZERO;
+    private boolean fixedFeeAdminFeeCheck;
+    private BigDecimal adminFeeCeilingFixedFeeManagingRepair = new BigDecimal("60.00");
+    private BigDecimal adminFeeCeilingFixedFee = new BigDecimal("40.00");
 
     public BreBand() {
     }
@@ -1067,6 +1070,22 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.adminFeeCeilingSubscriberManagingRepair = adminFeeCeilingSubscriberManagingRepair;
     }
 
+    public BigDecimal getAdminFeeCeilingFixedFee() {
+        return adminFeeCeilingFixedFee;
+    }
+
+    public void setAdminFeeCeilingFixedFee(BigDecimal adminFeeCeilingFixedFee) {
+        this.adminFeeCeilingFixedFee = adminFeeCeilingFixedFee;
+    }
+
+    public BigDecimal getAdminFeeCeilingFixedFeeManagingRepair() {
+        return adminFeeCeilingFixedFeeManagingRepair;
+    }
+
+    public void setAdminFeeCeilingFixedFeeManagingRepair(BigDecimal adminFeeCeilingFixedFeeManagingRepair) {
+        this.adminFeeCeilingFixedFeeManagingRepair = adminFeeCeilingFixedFeeManagingRepair;
+    }
+
     public BigDecimal getAdminFeeCeilingManagingRepair() {
         return adminFeeCeilingManagingRepair;
     }
@@ -1229,6 +1248,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setSubscriberAdminFeeCheck(boolean subscriberAdminFeeCheck) {
         this.subscriberAdminFeeCheck = subscriberAdminFeeCheck;
+    }
+
+    public boolean isFixedFeeAdminFeeCheck() {
+        return fixedFeeAdminFeeCheck;
+    }
+
+    public void setFixedFeeAdminFeeCheck(boolean fixedFeeAdminFeeCheck) {
+        this.fixedFeeAdminFeeCheck = fixedFeeAdminFeeCheck;
     }
 
     public boolean isHireTerminatedAfterRepairCompletionCheck() {

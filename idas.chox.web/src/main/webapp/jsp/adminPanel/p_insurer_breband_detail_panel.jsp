@@ -693,7 +693,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingManagingRepair" value="<s:property value="adminFeeCeilingManagingRepair" />"/>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingManagingRepairId" name="adminFeeCeilingManagingRepair" value="<s:property value="adminFeeCeilingManagingRepair" />"/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -701,11 +701,24 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Subscriber Admin Fee Ceiling Not Managing Repair (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingSubscriber" value="<s:property value="adminFeeCeilingSubscriber" />"/>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingSubscriberId" name="adminFeeCeilingSubscriber" value="<s:property value="adminFeeCeilingSubscriber" />"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Subscriber Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingSubscriberManagingRepair" value="<s:property value="adminFeeCeilingSubscriberManagingRepair" />"/>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingSubscriberManagingRepairId" name="adminFeeCeilingSubscriberManagingRepair" value="<s:property value="adminFeeCeilingSubscriberManagingRepair" />"/>
+                        </div>
+                    </div>
+
+                        <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Fixed-Fee Admin Fee Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Fixed-Fee Admin Fee Ceiling Not Managing Repair (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="adminFeeFixedFeeCeilingId" name="adminFeeCeilingFixedFee" value="<s:property value="adminFeeCeilingFixedFee" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Fixed-Fee Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="adminFeeFixedFeeCeilingManagingRepairId" name="adminFeeCeilingFixedFeeManagingRepair" value="<s:property value="adminFeeCeilingFixedFeeManagingRepair" />"/>
                         </div>
                     </div>
 
@@ -1138,6 +1151,13 @@
                             <label class="chox-form-check-label">Subscriber Administration Fee Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO are not billing an administration fee when the Subscriber rejection was accepted by the CHO. Also checks that the correct Admin Fee is being charged by the CHO for Subscriber claims (that have not been rejected) as per the 'Subscriber Admin Fee' tolerance detailed above.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="fixedFeeAdminFeeCheck" value="fixedFeeAdminFeeCheck" /></div>
+                            <label class="chox-form-check-label">Fixed-Fee Administration Fee Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the correct Admin Fee is being charged by the CHO for Fixed Fee claims as per the ‘Fixed Fee Admin Fee’ tolerance detailed above.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
