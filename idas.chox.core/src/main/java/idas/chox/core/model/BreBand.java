@@ -370,8 +370,9 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     }
 
     public int getAverageLabourRate(String vehicleClass) {
-        if (VehicleClass.isPrestige(vehicleClass))
+        if (VehicleClass.isPrestige(vehicleClass)) {
             return getAverageLabourRatePrestige();
+        }
         
         return getAverageLabourRateStandard();
     }
