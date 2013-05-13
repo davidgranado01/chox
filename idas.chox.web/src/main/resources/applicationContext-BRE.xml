@@ -93,6 +93,9 @@
                 <bean class="idas.chox.service.bre.rules.SubscriberAdminFeeCheck" scope="prototype">
                     <property name="claimService" ref="claimService"/>                    
                 </bean>
+                <bean class="idas.chox.service.bre.rules.FixedFeeAdminFeeCheck" scope="prototype">
+                    <property name="claimService" ref="claimService"/>                    
+                </bean>
                 <bean class="idas.chox.service.bre.rules.HireTerminatedAfterRepairCompletionCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.OverlappingHireCheck">
                     <property name="claimService" ref="claimService"/>
