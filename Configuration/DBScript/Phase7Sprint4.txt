@@ -50,6 +50,15 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_ty
 	SELECT 'activity.EcdUpdate.ClaimRejected', false, false, 17;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
 	SELECT 'activity.EcdUpdate.ClaimPending', false, false, 17;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+	SELECT 'activity.EcdUpdate.ManualInvoiceUnassigned', false, false, 17;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+	SELECT 'activity.EcdUpdate.ManualInvoiceBREApproved', false, false, 17;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+	SELECT 'activity.EcdUpdate.ManualInvoiceBRERejected', false, false, 17;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_type)
+	SELECT 'activity.EcdUpdate.ManualInvoiceContested', false, false, 17;
+
 
 
 
@@ -71,6 +80,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnrouted' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnrouted' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnrouted' and claim_type = 17;
 
@@ -98,6 +111,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedRouted' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedRouted' and claim_type = 17;
 
 
 
@@ -123,6 +140,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnassigned' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnassigned' and claim_type = 17;
 
 
 
@@ -145,6 +166,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.EcdUpdate.ClaimReferredToFNOL' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimReferredToFNOL' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimReferredToFNOL' and claim_type = 17;
 
@@ -172,6 +197,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimReferredToEngineer' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimReferredToEngineer' and claim_type = 17;
 
 
 
@@ -195,6 +224,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.EcdUpdate.ClaimUpdatedByEngineer' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimUpdatedByEngineer' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimUpdatedByEngineer' and claim_type = 17;
 
@@ -222,6 +255,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.AwaitingCarHireInfo' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.AwaitingCarHireInfo' and claim_type = 17;
 
 
 
@@ -247,6 +284,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimRejectionContested' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimRejectionContested' and claim_type = 17;
 
 
 
@@ -269,6 +310,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.EcdUpdate.ClaimRejected' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimRejected' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimRejected' and claim_type = 17;
 
@@ -312,9 +357,187 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_MNG', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ClaimPending' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ClaimPending' and claim_type = 17;
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceUnassigned' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceUnassigned' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceUnassigned' and claim_type = 17;
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBREApproved' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBREApproved' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBREApproved' and claim_type = 17;
 
 
 
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBRERejected' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBRERejected' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBRERejected' and claim_type = 17;
+
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_CH', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_MNG', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
+
+
+DELETE FROM 
+     accessibility_item 
+WHERE
+    accessibility_id in (SELECT id FROM accessibility WHERE name ilike 'tab.HireMonitoring%') 
+    AND role = 'ROLE_CHO'
+    AND access_right = 2;
+
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+	
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimPending';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimPending';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejected';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejected';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted';
+
+	
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested';
+
+	
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_OPR', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHO_MNG', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
 
 ------------------------
 --- END of 7.4.4  ------
