@@ -430,156 +430,157 @@ WHERE
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned' AND claim_type is null;
 	
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL';
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimPending';
+	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimPending';
+	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimPending';
+	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer';
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted';
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejected';
+	WHERE name = 'tab.HireMonitoring.ClaimRejected' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejected';
+	WHERE name = 'tab.HireMonitoring.ClaimRejected' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejected';
+	WHERE name = 'tab.HireMonitoring.ClaimRejected' AND claim_type is null;
 
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted' AND claim_type is null;
 
 	
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested';
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested' AND claim_type is null;
 	
 	
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected' AND claim_type is null;
+
 
 ------------------------
 --- END of 7.4.4  ------
