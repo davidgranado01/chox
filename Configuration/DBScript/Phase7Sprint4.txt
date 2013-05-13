@@ -581,6 +581,12 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected' AND claim_type is null;
 
+UPDATE 
+    accessibility_item 
+SET 
+    access_right = 1
+WHERE 
+    accessibility_id in (select id from accessibility where name ilike 'tab.HireMonitoring.AwaitingInvoiceData' AND claim_type = 17);
 
 ------------------------
 --- END of 7.4.4  ------
