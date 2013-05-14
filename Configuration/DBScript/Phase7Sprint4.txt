@@ -418,6 +418,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
 
+-- Delete the write access on the ECD update tab for the all CHO roles, specific roles will be given the write permission -- 
 
 DELETE FROM 
      accessibility_item 
@@ -426,6 +427,7 @@ WHERE
     AND role = 'ROLE_CHO'
     AND access_right = 2;
 
+-- Restrict write access on ECD update tab only to the 'ROLE_CHO_MNG' and 'ROLE_CHO_OPR' roles. This excludes insurer claims --
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
@@ -580,6 +582,9 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected' AND claim_type is null;
+
+
+-- restrict write access to the ECD update tab when the claim is in AwaitingInvoiceData status --
 
 UPDATE 
     accessibility_item 
@@ -587,6 +592,50 @@ SET
     access_right = 1
 WHERE 
     accessibility_id in (select id from accessibility where name ilike 'tab.HireMonitoring.AwaitingInvoiceData' AND claim_type = 17);
+
+
+-- give write access on ECD update tab to the insurer uploader for the insurer claims --
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.AwaitingCarHireInfo' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimRejected' AND claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_INS_UPLOAD', 2
+	FROM accessibility
+	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type = 17;  
 
 ------------------------
 --- END of 7.4.4  ------
