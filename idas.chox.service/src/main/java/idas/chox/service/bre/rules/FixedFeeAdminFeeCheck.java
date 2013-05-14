@@ -9,18 +9,12 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
-import idas.chox.core.services.ClaimService;
 
 public class FixedFeeAdminFeeCheck implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(FixedFeeAdminFeeCheck.class);
-    private ClaimService claimService;
 
     private String narrative = "";
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -39,10 +33,10 @@ public class FixedFeeAdminFeeCheck implements IBusinessRule {
             boolean managingRepair = claim.getManagingRepair();
 
             if (!managingRepair && claim.getInvoice().getAdminFee() != null && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingFixedFee()) > 0) {
-                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Fixed-Fee claims not manahing the repair is £" + claim.getBreBand().getAdminFeeCeilingFixedFee() + ".";
+                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Fixed-Fee claims not managing the repair is £" + claim.getBreBand().getAdminFeeCeilingFixedFee() + ".";
                     res.setResult(RuleEvaluationResult.RULE_FAILED);
             } else if (managingRepair && claim.getInvoice().getAdminFee() != null && claim.getInvoice().getAdminFee().compareTo(claim.getBreBand().getAdminFeeCeilingFixedFeeManagingRepair()) > 0) {
-                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Fixed-Fee claims managing the repair is £" + claim.getBreBand().getAdminFeeCeilingFixedFee() + ".";
+                    narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee for Fixed-Fee claims managing the repair is £" + claim.getBreBand().getAdminFeeCeilingFixedFeeManagingRepair() + ".";
                     res.setResult(RuleEvaluationResult.RULE_FAILED);
             } else {
                 narrative = "";
