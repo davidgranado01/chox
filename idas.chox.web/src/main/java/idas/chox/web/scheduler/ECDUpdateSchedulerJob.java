@@ -15,7 +15,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
@@ -77,7 +76,7 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         activity.process(claim);
                         statusString.append("Success: Updated.");
                     } catch (AccessDeniedException ex) {
-                        statusString.append("Failed: Access Denied processing request.");
+                        statusString.append("Failed: Access Denied while processing request. Possibly because of invalid claim status provided.");
                         LOG.error("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
                     } catch (Exception ex) {
                         statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");
@@ -133,29 +132,16 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
     }
 
     private Claim validateClaimReferenceNumber(String referenceNumber, StringBuilder statusString) {
-        
+
         Claim claim = null;
         if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
             statusString.append(" No Claim Reference Provided.");
         } else {
             claim = getClaimService().getClaimByCHOReferenceNumber(referenceNumber);
-            boolean isValidStatus = false;
 
             if (claim == null) {
                 LOG.debug("No Such Claim Reference {}", referenceNumber);
                 statusString.append(" No Such Claim Reference.");
-            } else {
-                List<String> previousInvStatuses = ClaimStatus.getPreInvoiceStatus();
-                previousInvStatuses.remove(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-                for (String status : previousInvStatuses) {
-                    if (claim.getStatus().equals(status)) {
-                        isValidStatus = true;
-                        break;
-                    }
-                }
-                if (!isValidStatus) {
-                    statusString.append(" Invalid Claim Status '").append(claim.getStatus()).append("'.");
-                }
             }
         }
         return claim;

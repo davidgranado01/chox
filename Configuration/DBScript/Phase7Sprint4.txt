@@ -373,6 +373,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceUnassigned' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceUnassigned' and claim_type = 17;
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
@@ -387,6 +391,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceBREApproved' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBREApproved' and claim_type = 17;
 
 
 
@@ -402,7 +410,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceBRERejected' and claim_type = 17;
-
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceBRERejected' and claim_type = 17;
 
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
@@ -415,6 +426,10 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 1
+	FROM accessibility
+	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
 
