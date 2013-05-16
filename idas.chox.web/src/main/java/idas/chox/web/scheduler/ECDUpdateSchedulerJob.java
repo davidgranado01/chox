@@ -76,11 +76,11 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         activity.process(claim);
                         statusString.append("Success: Updated.");
                     } catch (AccessDeniedException ex) {
-                        statusString.append("Failed: Access Denied while processing request. Possibly because of invalid claim status provided.");
-                        LOG.error("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
+                        statusString.append("Failed: No Access to ECD Update Activity (Invalid Claim Status)");
+                        LOG.warn("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
                     } catch (Exception ex) {
-                        statusString.append("Failed: An Internal Error Occurred. Please report to Chox support.");
-                        LOG.error("Exception occured when adding new ECD via email scheduler ecd update job", ex);
+                        statusString.append("Failed: An Internal Error Occurred");
+                        LOG.warn("Exception occured when adding new ECD via email scheduler ecd update job", ex);
                     }
                 } else {
                     statusString.insert(0, "Failed:");
