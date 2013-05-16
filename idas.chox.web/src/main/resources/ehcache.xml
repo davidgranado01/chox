@@ -4,274 +4,114 @@
     <diskStore path="java.io.tmpdir"/>
 
     <defaultCache
-        maxElementsInMemory="1"
+        maxElementsInMemory="0"
         eternal="false"
         timeToIdleSeconds="5"
-        timeToLiveSeconds="5"
+        timeToLiveSeconds="10"
         overflowToDisk="false"
         diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="5"
         memoryStoreEvictionPolicy="LRU"
         />
      
     <cache name="idas.chox.core.model.Accessibility"
-        maxElementsInMemory="300"
-        eternal="true"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
         overflowToDisk="false"
         />
         
     <cache name="idas.chox.core.model.AccessibilityItem"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
+        overflowToDisk="false"
+        />
+        
+    <cache name="idas.chox.core.model.AdminFee"
+        maxElementsInMemory="15"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name ="idas.chox.core.model.Attachment"
         maxElementsInMemory="1000"
-        eternal="true"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
         overflowToDisk="false"
+        diskPersistent="false"
+        memoryStoreEvictionPolicy="LRU"
         />
-        
+
+    <cache name ="idas.chox.core.model.AttachmentFile"
+        maxElementsInMemory="100"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
     <cache name="idas.chox.core.model.AttachmentType"
-        maxElementsInMemory="30"
+        maxElementsInMemory="15"
         eternal="true"
         overflowToDisk="false"
         />
         
+    <cache name="idas.chox.core.model.AuditHistory"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
+        overflowToDisk="false"
+        />
+
+    <cache name ="idas.chox.core.model.AuditTrail"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
     <cache name="idas.chox.core.model.AutomaticRouting"
-        maxElementsInMemory="30"
+        maxElementsInMemory="20"
         eternal="true"
         overflowToDisk="false"
         />
         
     <cache name="idas.chox.core.model.AutomaticRoutingPrice"
-        maxElementsInMemory="30"
+        maxElementsInMemory="10"
         eternal="true"
         overflowToDisk="false"
         />
-        
-    <cache name="idas.chox.core.model.ReasonOfDelay"
-        maxElementsInMemory="30"
-        eternal="true"
-        overflowToDisk="false"
-        />
-        
-    <cache name="idas.chox.core.model.VehicleClass"
-        maxElementsInMemory="200"
-        eternal="true"
-        overflowToDisk="false"
-        />
-        
-    <cache name="idas.chox.core.model.VehicleClassPrice"
-        maxElementsInMemory="500"
-        eternal="true"
-        overflowToDisk="false"
-        />
-        
-    <cache name="idas.chox.core.model.VehicleClassPriceSpecialRate"
-        maxElementsInMemory="400"
-        eternal="true"
-        overflowToDisk="false"
-        />
-        
-    <cache name="idas.chox.core.model.WebUserRole"
-        maxElementsInMemory="30"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.WebUser"
-        maxElementsInMemory="3000"
-        eternal="true"
-        overflowToDisk="false"
-        /> 
-   
-    <cache name="idas.chox.core.model.WebUserUserRole"
-        maxElementsInMemory="7000"
-        eternal="true"
-        overflowToDisk="false"
-        /> 
-    
-    <cache name="idas.chox.core.model.WebUserWorkgroup"
-        maxElementsInMemory="5000"
-        eternal="true"
-        overflowToDisk="false"
-        /> 
-    
-    <cache name="idas.chox.core.model.BillingChoRate"
-        maxElementsInMemory="30"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.BreBand"
-        maxElementsInMemory="50"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.BreBandOrganisation"
-        maxElementsInMemory="100"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.Chorganisation"
-        maxElementsInMemory="100"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.Insurer"
-        maxElementsInMemory="100"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.InsurerAlias"
-        maxElementsInMemory="500"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.InsurerChorganisation"
-        maxElementsInMemory="200"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.ReasonOfRejection"
-        maxElementsInMemory="100"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.InsurerDiscount"
-        maxElementsInMemory="200"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.PasswordHistory"
-        maxElementsInMemory="200"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.VehicleClassCeiling"
-        maxElementsInMemory="600"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
-    <cache name="idas.chox.core.model.Workgroup"
-        maxElementsInMemory="200"
-        eternal="true"
-        overflowToDisk="false"
-        />
-    
+
     <cache name ="idas.chox.core.model.BillingCho"
         maxElementsInMemory="200"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
+    <cache name ="idas.chox.core.model.BillingChoDetail"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
     
-    <cache name ="idas.chox.core.model.Witness"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.Customer"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-        
-    <cache name ="idas.chox.core.model.EngineerReport"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.HireMonitoringDetail"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.HireMonitoringEcd"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.WebBordereau"
-        maxElementsInMemory="5000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.VehicleHire"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.Incident"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.Injury"
-        maxElementsInMemory="5000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
+    <cache name="idas.chox.core.model.BillingChoRate"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
         />
     
     <cache name ="idas.chox.core.model.BillingInsurer"
@@ -279,18 +119,7 @@
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />
-    
-    <cache name ="idas.chox.core.model.BillingChoDetail"
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
@@ -301,7 +130,7 @@
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
@@ -312,76 +141,263 @@
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
-    
+
     <cache name ="idas.chox.core.model.BordereauWithoutFile"
-        maxElementsInMemory="1000"
+        maxElementsInMemory="100"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
     
+
+    <cache name="idas.chox.core.model.BreBand"
+        maxElementsInMemory="80"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.BreBandOrganisation"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name="idas.chox.core.model.Chorganisation"
+        maxElementsInMemory="250"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.ChorganisationAlias"
+        maxElementsInMemory="400"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <!--
+        Claim and invoice removed from 2nd level cache because store procedure updates the claim
+        and invoice every 15 mins and that's not updated in the application as it still uses the
+        cache to retrive the claim (and invoice)
+    -->
+    <cache name ="idas.chox.core.model.Claim"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
+        overflowToDisk="false"
+        />
+
+    <cache name="idas.chox.core.model.ClaimType"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
     <cache name ="idas.chox.core.model.Comment"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
         
+    <cache name ="idas.chox.core.model.Customer"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
+    <cache name ="idas.chox.core.model.EngineerReport"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
+    <cache name ="idas.chox.core.model.HireMonitoringDetail"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+    
+    <cache name ="idas.chox.core.model.HireMonitoringEcd"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+    
     <cache name ="idas.chox.core.model.History"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+            
+    <cache name ="idas.chox.core.model.Incident"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+    
+    <cache name ="idas.chox.core.model.Injury"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+    
+    <cache name="idas.chox.core.model.Insurer"
+        maxElementsInMemory="15"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.InsurerAlias"
+        maxElementsInMemory="400"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.InsurerChorganisation"
+        maxElementsInMemory="500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.InsurerDiscount"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.InsurerIntelligentNote"
+        maxElementsInMemory="10"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+   <cache name ="idas.chox.core.model.Invoice"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
+        overflowToDisk="false"
+        />
+     
+    <cache name ="idas.chox.core.model.InvoiceOriginal"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        /> 
+     
+   <cache name ="idas.chox.core.model.IPWhitelist"
+        maxElementsInMemory="80"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name ="idas.chox.core.model.Notification"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
+        /> 
+     
+    <cache name="idas.chox.core.model.PasswordHistory"
+        maxElementsInMemory="200"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+    
+   <cache name ="idas.chox.core.model.PenaltyCharge"
+        maxElementsInMemory="15"
+        eternal="true"
+        overflowToDisk="false"
+        />
+     
+    <cache name="idas.chox.core.model.QueuedTicket"
+        maxElementsInMemory="1"
+        timeToLiveSeconds="1"
+        overflowToDisk="false"
+        />
+    
+
+    <cache name="idas.chox.core.model.ReasonOfDelay"
+        maxElementsInMemory="12"
+        eternal="true"
+        overflowToDisk="false"
         />
         
-    <cache name ="idas.chox.core.model.AuditTrail"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
+    <cache name="idas.chox.core.model.ReasonOfRejection"
+        maxElementsInMemory="200"
+        eternal="true"
+        overflowToDisk="false"
         />
     
-    <cache name ="idas.chox.core.model.ThirdParty"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
+    <cache name="idas.chox.core.model.ReasonOfRejectionTemplate"
+        maxElementsInMemory="20"
+        eternal="true"
+        overflowToDisk="false"
         />
     
-    <cache name ="idas.chox.core.model.UploadedXMLClaimsDetail"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
+    <cache name="idas.chox.core.model.SchedulerJob"
+        maxElementsInMemory="10"
+        eternal="true"
+        overflowToDisk="false"
         />
     
     <cache name ="idas.chox.core.model.Task"
@@ -389,82 +405,134 @@
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
+    <cache name ="idas.chox.core.model.ThirdParty"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+
+    <cache name ="idas.chox.core.model.UploadedXMLClaimsDetail"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="300"
+        memoryStoreEvictionPolicy="LRU"
+        />
+           
+
+    <cache name="idas.chox.core.model.VehicleClass"
+        maxElementsInMemory="100"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name="idas.chox.core.model.VehicleClassCeiling"
+        maxElementsInMemory="800"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.VehicleClassPrice"
+        maxElementsInMemory="400"
+        eternal="true"
+        overflowToDisk="false"
+        />
+
+    <cache name="idas.chox.core.model.VehicleClassPriceSpecialRate"
+        maxElementsInMemory="1500"
+        eternal="true"
+        overflowToDisk="false"
+        />
+        
+    <cache name ="idas.chox.core.model.VehicleHire"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
     
-    <cache name ="idas.chox.core.model.Attachment"
-        maxElementsInMemory="10000"
+    <cache name ="idas.chox.core.model.WebBordereau"
+        maxElementsInMemory="5000"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
         />
-        
-   <!--  Claim and invoice removed from 2nd level cache because store procedure updates the claim and invoice
-         every 15 mins and that's not updated in the application as it still uses the cache to retrive the claim  and invoice -->
-     
-<!--    <cache name ="idas.chox.core.model.Claim"
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />-->
-        
-<!--    <cache name ="idas.chox.core.model.Invoice"
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
-        />    -->
-     
-    <cache name ="idas.chox.core.model.InvoiceOriginal"
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="300"
-        overflowToDisk="true"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="300"
-        memoryStoreEvictionPolicy="LRU"
+    
+    <cache name="idas.chox.core.model.WebUser"
+        maxElementsInMemory="3000"
+        eternal="true"
+        overflowToDisk="false"
         /> 
-     
-    <cache name ="idas.chox.core.model.Notification"
+   
+    <cache name="idas.chox.core.model.WebUserRole"
+        maxElementsInMemory="25"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
+    <cache name="idas.chox.core.model.WebUserUserRole"
+        maxElementsInMemory="7000"
+        eternal="true"
+        overflowToDisk="false"
+        /> 
+    
+    <cache name="idas.chox.core.model.WebUserWorkgroup"
+        maxElementsInMemory="8000"
+        eternal="true"
+        overflowToDisk="false"
+        /> 
+    
+    <cache name ="idas.chox.core.model.Witness"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
         timeToLiveSeconds="300"
-        overflowToDisk="true"
+        overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="300"
         memoryStoreEvictionPolicy="LRU"
-        /> 
-     
+        />
+    
+    <cache name="idas.chox.core.model.Workgroup"
+        maxElementsInMemory="200"
+        eternal="true"
+        overflowToDisk="false"
+        />
+    
     <cache
         name="org.hibernate.cache.StandardQueryCache"
         maxElementsInMemory="10000"
         eternal="false"
-        timeToLiveSeconds="1000"
-        overflowToDisk="true"/>
+        timeToLiveSeconds="60"
+        overflowToDisk="false"/>
     
     <cache
         name="org.hibernate.cache.UpdateTimestampsCache"
         maxElementsInMemory="10000"
         eternal="true"
-        overflowToDisk="true"/>
+        overflowToDisk="false"/>
      
      
 </ehcache>
