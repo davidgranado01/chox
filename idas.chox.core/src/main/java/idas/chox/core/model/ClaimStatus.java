@@ -211,7 +211,6 @@ public class ClaimStatus {
             results.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
             results.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
             results.add(ClaimStatus.MANUAL_INVOICE_CONTESTED);
- //           results.add(ClaimStatus.MANUAL_INVOICE_PAID);
         }
         return results;
     }
@@ -225,7 +224,9 @@ public class ClaimStatus {
         return "'" + CLAIM_UNACKNOWLEDGED_ROUTED + "','" + CLAIM_REJECTION_CONTESTED + "','"
                 + CLAIM_UPDATE_BY_ENG + "','" + INVOICE_REF_TO_CH + "','"
                 + INVOICE_ESCALATED_TO_CH + "','" + CONTESTED_INVOICE_REF_TO_INS + "','"
-                + INVOICE_APPROVED_BY_BRE + "','" + AWAITING_INVOICE_PAYMENT + "'";
+                + INVOICE_APPROVED_BY_BRE + "','" + AWAITING_INVOICE_PAYMENT + "','" 
+                + MANUAL_INVOICE_APPROVED + "','" + MANUAL_INVOICE_CONTESTED + "','"
+                + MANUAL_INVOICE_REJECTED + "'";
     }
 
     public static List<String> getPenaltyChargeExclusionStatus() {
