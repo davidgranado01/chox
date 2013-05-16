@@ -215,7 +215,7 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="com.jolbox" level="WARN" additivity="false">
+    <logger name="com.jolbox" level="INFO" additivity="false">
         <appender-ref ref="H"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />

@@ -21,9 +21,12 @@
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
         <Subject>CHOX Application Error \(Production\)</Subject>
-        <SMTPHost>localhost</SMTPHost>
+        <smtpHost>smtp.gmail.com</smtpHost>
+        <smtpPort>465</smtpPort>
+        <SSL>true</SSL>
+        <username>chox@idaschox.com</username>
+        <password>ch0x_3m4il</password>
         <To>John.Dowson@SherwoodCompliance.co.uk,Seeni.Shanmugam@SherwoodCompliance.co.uk,SecureEmail@scsdev.net</To>
-        <From>chox@chox-uk02.idasnetwork.com</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </layout>
@@ -199,7 +202,7 @@
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="com.jolbox" level="WARN" additivity="false">
+    <logger name="com.jolbox" level="INFO" additivity="false">
         <appender-ref ref="H"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
