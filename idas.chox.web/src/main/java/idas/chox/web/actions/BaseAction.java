@@ -415,7 +415,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
             LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
             throw new AccessDeniedException(ex.getMessage());
         } else {
-            LOG.warn("handleException: exception is ", ex);
+            LOG.warn("handleException: exception is: {}", ex.getMessage());
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
