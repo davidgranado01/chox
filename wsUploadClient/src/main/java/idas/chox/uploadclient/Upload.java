@@ -1,8 +1,5 @@
 package idas.chox.uploadclient;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +21,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.idaschox.services.chox.UploadService;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
 
 import idas.chox.uploadclient.activity.CloseClaim;
 import idas.chox.uploadclient.activity.ECDUpdate;
@@ -111,7 +112,7 @@ public class Upload {
         LOG.debug("Setting password : {}", password);
 
         LOG.debug("Getting WS bean...");
-        UploadService uploadService = (UploadService) ctx.getBean("uploadBordereau");
+        UploadService uploadService = (UploadService) ctx.getBean("uploadService");
 
         if (optionsBean.isVerbose()) {
             // Add Logging Interceptors for verbose messaging
@@ -163,8 +164,9 @@ public class Upload {
             String line = input.readLine();
             input.close();
 
-            if (line != null && line.startsWith("<?xml"))
+            if (line != null && line.startsWith("<?xml")) {
                 return true;
+            }
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
         }
