@@ -16,12 +16,20 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.EmailHelper;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  *
  * @author Seeni
  */
-public abstract class DbSchedulerJob implements Scheduler {
+public abstract class DbSchedulerJob implements Scheduler, ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DbSchedulerJob.class);
     protected static final String email_date_format = "dd MMMM yyyy";
@@ -36,7 +44,10 @@ public abstract class DbSchedulerJob implements Scheduler {
     private SchedulerJobService schedulerJobService;
     private String hostName;
     private ServerConfig serverConfig;
-    
+    private Session session;
+    private SessionFactory sessionFactory;
+    private ApplicationContext applicationContext;
+
 
     public abstract Map<Integer, List<String>> doJob();
     
@@ -51,20 +62,22 @@ public abstract class DbSchedulerJob implements Scheduler {
         String loginPassword = null;
         String emailSubject;
         
-        LOG.info("Calling DB Scheduler Job : '{}'.", getClass().getSimpleName());
-// TODO: investigate why we cannot access properties directly - if we do this we get null values
-        LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}",
-                new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword});
-        LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}",
-                new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword()});
         try {
+            handleHibernateTransactionIntricacies();
+            LOG.info("Calling DB Scheduler Job : '{}'.", getClass().getSimpleName());
+            // TODO: investigate why we cannot access properties directly - if we do this we get null values
+            LOG.debug("Properties accessed directly : {}, {}, {}, {}, {}",
+                new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword});
+            LOG.debug("Properties accessed using getters :{}, {}, {}, {}, {}, {}",
+                new Object[]{getSmtpHostName(), getSmtpPort(), getSmtpEmailUser(), getSmtpEmailPassword()});
             LOG.info("{} has '{}' subjects.", getClass().getSimpleName(), getDBSchedulerJobs().size());
             for (SchedulerJob schedulerJob : getDBSchedulerJobs()) {
                 
                 if (!hostName.equalsIgnoreCase("PRODUCTION")) {
                     String emailSubjectPrefix = hostName + "-";
-                    if (!serverConfig.getServletContext().getContextPath().isEmpty())
+                    if (!serverConfig.getServletContext().getContextPath().isEmpty()) {
                         emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";
+                    }
                     emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
                 } else {
                     emailSubject = schedulerJob.getEmailSubject();
@@ -85,6 +98,8 @@ public abstract class DbSchedulerJob implements Scheduler {
             LOG.error("The user is not authorized to update {} for given user name {} and password {} \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
         } catch (Exception e) {
             LOG.error("An exception was thrown during a {} update: ", getClass().getSimpleName(), e);
+        } finally {
+            releaseHibernateSessionConditionally();
         }
     }
 
@@ -189,4 +204,23 @@ public abstract class DbSchedulerJob implements Scheduler {
     public void setServerConfig(ServerConfig serverConfig) {
         this.serverConfig = serverConfig;
     }
+    public void handleHibernateTransactionIntricacies() {
+        session = SessionFactoryUtils.getSession(sessionFactory, true);
+        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+    }
+
+    public void releaseHibernateSessionConditionally() {
+        TransactionSynchronizationManager.unbindResource(sessionFactory);
+        SessionFactoryUtils.releaseSession(session, sessionFactory);
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext ac) throws BeansException {
+        this.applicationContext = ac;
+    }
+
 }

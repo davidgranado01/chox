@@ -94,12 +94,12 @@
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
         <property name="releaseHelperThreads" value="2"/>
-        <property name="closeConnectionWatch" value="true"/>
+        <property name="closeConnectionWatch" value="false"/>
         <property name="logStatementsEnabled" value="${db.logStatements}"/>
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
         <property name="poolAvailabilityThreshold" value="0"/>
-        <property name="disableConnectionTracking" value="false"/>
+        <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
         <property name="lazyInit" value="false"/>
         <property name="poolName" value="ApplicationDataSource"/>
@@ -118,12 +118,12 @@
         <property name="idleConnectionTestPeriodInMinutes" value="0"/>
         <property name="statementsCacheSize" value="100"/>
         <property name="releaseHelperThreads" value="1"/>
-        <property name="closeConnectionWatch" value="true"/>
+        <property name="closeConnectionWatch" value="false"/>
         <property name="logStatementsEnabled" value="${db.logStatements}"/>
         <property name="transactionRecoveryEnabled" value="false"/>
         <property name="queryExecuteTimeLimitInMs" value="1000"/>
         <property name="poolAvailabilityThreshold" value="0"/>
-        <property name="disableConnectionTracking" value="false"/>
+        <property name="disableConnectionTracking" value="true"/>
         <property name="connectionTimeoutInMs" value="0"/>
         <property name="lazyInit" value="false"/>
         <property name="poolName" value="ReportDataSource"/>

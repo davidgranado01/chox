@@ -10,11 +10,14 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.quartz.JobExecutionException;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
