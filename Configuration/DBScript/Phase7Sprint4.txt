@@ -715,7 +715,7 @@ from vehicle_class
 where name='M3';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 96.67, 99.99, '2013-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 96.97, 99.99, '2013-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='M4';
 
