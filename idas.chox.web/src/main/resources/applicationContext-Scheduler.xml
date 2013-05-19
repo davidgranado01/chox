@@ -35,6 +35,7 @@
         <property name="schedulerJobService" ref="schedulerJobService" />
         <property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 	
 
