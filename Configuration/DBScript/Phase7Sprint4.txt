@@ -433,12 +433,12 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.EcdUpdate.ManualInvoiceContested' and claim_type = 17;
 
--- Delete the write access on the ECD update tab for the all CHO roles, specific roles will be given the write permission -- 
+-- Delete the write access on the ECD update tab for the all CHO roles, specific roles will be given the write permission --
 
-DELETE FROM 
-     accessibility_item 
+DELETE FROM
+     accessibility_item
 WHERE
-    accessibility_id in (SELECT id FROM accessibility WHERE name ilike 'tab.HireMonitoring%') 
+    accessibility_id in (SELECT id FROM accessibility WHERE name ilike 'tab.HireMonitoring%')
     AND role = 'ROLE_CHO'
     AND access_right = 2;
 
@@ -456,7 +456,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned' AND claim_type is null;
-	
+
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
@@ -471,7 +471,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimReferredToEngineer' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -485,7 +485,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimReferredToFNOL' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -499,7 +499,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -513,7 +513,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimUpdatedByEngineer' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -527,7 +527,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -541,7 +541,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimUnacknowledgedRouted' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -555,7 +555,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimRejected' AND claim_type is null;
 
-	
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -569,7 +569,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimRejectionAccepted' AND claim_type is null;
 
-	
+
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
@@ -583,8 +583,8 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ALL', 1
 	FROM accessibility
 	WHERE name = 'tab.HireMonitoring.ClaimRejectionContested' AND claim_type is null;
-	
-	
+
+
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_OPR', 2
 	FROM accessibility
@@ -601,11 +601,11 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 
 -- restrict write access to the ECD update tab when the claim is in AwaitingInvoiceData status --
 
-UPDATE 
-    accessibility_item 
-SET 
+UPDATE
+    accessibility_item
+SET
     access_right = 1
-WHERE 
+WHERE
     accessibility_id in (select id from accessibility where name ilike 'tab.HireMonitoring.AwaitingInvoiceData' AND claim_type = 17);
 
 
@@ -650,7 +650,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_INS_UPLOAD', 2
 	FROM accessibility
-	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type = 17;  
+	WHERE name = 'tab.HireMonitoring.ClaimPending' AND claim_type = 17;
 
 ------------------------
 --- END of 7.4.4  ------
@@ -1204,16 +1204,6 @@ where name='B6';
 -- END of 7.4.5       --
 ------------------------
 
--------------------------------------------------------------
---   7.4.6 Configurable Admin Fee for Fixed Fee Claims     --
--------------------------------------------------------------
-ALTER TABLE bre_band ADD COLUMN fixed_fee_admin_fee_check boolean not null default true;
-ALTER TABLE bre_band ADD COLUMN max_fixed_fee_admin_fee_value numeric(10,2) not null default 40.00;
-ALTER TABLE bre_band ADD COLUMN max_fixed_fee_admin_fee_managing_repair_value numeric(10,2) not null default 60.00;
-
-------------------------
--- END of 7.4.6       --
-------------------------
 
 -------------------------------------------------------------
 --   7.4.6 Configurable Admin Fee for Fixed Fee Claims     --
@@ -1226,12 +1216,3 @@ ALTER TABLE bre_band ADD COLUMN max_fixed_fee_admin_fee_managing_repair_value nu
 --  END of 7.4.6      --
 ------------------------
 
-------------------------------------------------------------------------------------------------
--- bug#2587 - Production - 'Assign Claim(s) Owner' batch-update option visible                --
---            in ClaimRejectionAccepted                                                       --
-------------------------------------------------------------------------------------------------
-delete from accessibility_item where accessibility_id=(select id from accessibility where name='batch.supplierClaimOwnership.ClaimRejectionAccepted';
-delete from accessibility where name = 'batch.supplierClaimOwnership.ClaimRejectionAccepted';
----------------------------------------------------
--- END of bug#2587                               --
----------------------------------------------------
