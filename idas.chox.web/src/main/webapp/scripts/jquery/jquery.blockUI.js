@@ -1,4 +1,4 @@
-﻿//jQuery blockUI plugin
+//jQuery blockUI plugin
 //Version 2.10 (10/22/2008)
 //@requires jQuery v1.2.3 or later
  
