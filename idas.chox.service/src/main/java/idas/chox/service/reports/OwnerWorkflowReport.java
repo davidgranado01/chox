@@ -498,7 +498,7 @@ public class OwnerWorkflowReport implements Report {
     }
 
     private String getOutstandingStatusList() {
-        return "(" + ClaimStatus.getHandlerOutstandingStatusListAsString() + ")";
+        return "(" + ClaimStatus.getHandlerOutstandingWorkflowStatusListAsString() + ")";
     }
 
     @Override

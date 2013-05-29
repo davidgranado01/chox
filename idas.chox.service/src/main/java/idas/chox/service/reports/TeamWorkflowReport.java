@@ -458,7 +458,7 @@ public class TeamWorkflowReport implements Report {
     }
 
     private String getOutstandingStatusList() {
-        return "(" + ClaimStatus.getHandlerOutstandingStatusListAsString() + ")";
+        return "(" + ClaimStatus.getHandlerOutstandingWorkflowStatusListAsString() + ")";
     }
 
     @Override
