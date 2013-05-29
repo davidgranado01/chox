@@ -105,11 +105,11 @@ public class ImapMailReceiver {
             LOG.debug("Found {} unseen messages with an attachment with subject '{}'", listOfMails.size(), emailSubject);
 
         } catch (NoSuchProviderException e) {
-            LOG.error("Given mail properties are not correct. {} ", e.getMessage(), e);
+            LOG.error("Given mail properties are not correct: {}\n", e.getMessage(), e);
         } catch (MessagingException e) {
-            LOG.error("Cannot make connecection to the given host. {} ", e.getMessage(), e);
+            LOG.error("Cannot make connecection to the given host: {}\n", e.getMessage(), e);
         } catch (Exception e) {
-            LOG.error("Cannot retrive attachemnts. {} ", e.getMessage(), e);
+            LOG.error("Cannot retrieve attachments: {}\n", e.getMessage(), e);
         }
         return listOfMails == null ? new ArrayList<Message>() : listOfMails;
     }
