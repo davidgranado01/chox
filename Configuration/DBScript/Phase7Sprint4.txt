@@ -63,7 +63,7 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, claim_ty
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHOX_ADMIN', 1
 	FROM accessibility
-	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnrouted'
+	WHERE name = 'activity.EcdUpdate.ClaimUnacknowledgedUnrouted';
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	SELECT id, 'ROLE_CHO_MNG', 1
 	FROM accessibility
