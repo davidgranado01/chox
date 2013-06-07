@@ -92,7 +92,9 @@ public class WorkgroupDropDownAction extends BaseAction {
             workgroups = service.getWorkgroupsByClaimId(claimId, true);            
         } else if (getOrgId() != null) { 
             for (Integer insId : getOrgId()) {
-               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true)); 
+               if (insId > 0) {
+                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true));
+               }
             }
         }
         return SUCCESS;
@@ -103,8 +105,11 @@ public class WorkgroupDropDownAction extends BaseAction {
         if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) { 
             workgroups = service.getWorkgroupsByClaimId(claimId, true);            
         } else if (getOrgId() != null) {
+            workgroups.clear();
             for (Integer insId : getOrgId()) {
-               workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false)); 
+               if (insId > 0) {
+                   workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false));
+               }
             }
         } 
         return SUCCESS;
