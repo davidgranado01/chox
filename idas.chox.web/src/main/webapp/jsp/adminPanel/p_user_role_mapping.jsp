@@ -230,7 +230,7 @@
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
+        Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well as the user's access/permission rights.
     </div>
     <div>
         <div class="grid-view-header">
