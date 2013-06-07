@@ -37,7 +37,7 @@ WHERE c.insurer_id = ins.id
   AND c.invoice_id = inv.id
   AND c.id = at.claim_id
   AND c.insurer_id = ANY(insIds)
-  AND c.chorganisation_id = ANY(insIds)
+  AND c.chorganisation_id = ANY(choIds)
   AND at.new_status='InvoicePaymentLogged' and at.reverted=false
   AND at.created_date >= DATE_FROM and at.created_date < DATE_TO;
 
