@@ -92,8 +92,8 @@
                                 <include>**/extjs/ext-jquery-adapter-min.js</include>
                                 <include>**/jquery/additional-methods-min.js</include>
                                 <include>**/jquery/jquery.timer-min.js</include>
-                                <include>**/extjs/ext-base-3.4.0-min.js</include>
-                                <include>**/extjs/ext-all-3.4.0-min.js</include>
+                                <include>**/extjs/ext-base-3.4.1-min.js</include>
+                                <include>**/extjs/ext-all-3.4.1-min.js</include>
                                 <include>**/extjs/SuperBoxSelect-min.js</include>
                                 <include>**/extjs/RowEditor-3.3.1-min.js</include>
                                 <include>**/extjs/ProgressBarPager-3.4.0-min.js</include>
@@ -122,7 +122,7 @@
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>false</removeIncluded>
                             <includes>
-                                <include>**/ext-all-3.4.0-min.css</include>
+                                <include>**/ext-all-3.4.1-min.css</include>
                                 <include>**/ext-roweditor-3.4.0-min.css</include>
                                 <include>**/ext-statusbar-3.4.0-min.css</include>
                                 <include>**/superboxselect-min.css</include>
