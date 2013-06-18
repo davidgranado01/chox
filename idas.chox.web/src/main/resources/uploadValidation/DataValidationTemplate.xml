@@ -40,6 +40,7 @@
     <claimheader-supplier-reference>
         <data-description>Supplier reference</data-description>
         <data-length>128</data-length>
+        <data-mandatory-newClaim>t</data-mandatory-newClaim>
     </claimheader-supplier-reference>
 
 	<!-- ### DRIVER / CUSTOMER ##################################### !-->
