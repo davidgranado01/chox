@@ -49,6 +49,7 @@ Ext.onReady(function(){
             renderTo: 'claimOwnerComboDiv',
             valueField: 'id',
             id: 'claimOwnerComboId',
+            name: 'claimOwnerId',
             hiddenName: 'claimOwnerId',
             displayField:'name',
             typeAhead: true,
@@ -57,17 +58,16 @@ Ext.onReady(function(){
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
-            forceSelection : true,
             listeners: {
                 blur: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         this.clearValue(); this.reset();
                         claimOwnerId = -1;
-                        validateComboBox()
+                        validateComboBox();
                     }
                 },
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -102,6 +102,7 @@ Ext.onReady(function(){
             renderTo: 'workgroupComboDiv',
             valueField: 'text',
             id: 'workgroupComboId',
+            name: 'oasWorkgroupId',
             hiddenName: 'oasWorkgroupId',
             displayField:'value',
             typeAhead: true,
@@ -111,14 +112,13 @@ Ext.onReady(function(){
             forceSelection: true,
             listWidth: 200,
             selectOnFocus: true,
-            forceSelection : true,
             listeners: {select: function() {
                 <s:if test="insurer.enableManualInvoiceOwnership">
                     doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                 </s:if>
                 },
                 blur: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         selectedWorkgroupId = '<s:property value="workgroup.id"/>';
                         this.clearValue(); 
                         workgroupCombo.setValue(selectedWorkgroupId);
@@ -128,7 +128,7 @@ Ext.onReady(function(){
                     }
                 },
                 specialkey:function (el, e) {
-                            if(e.keyCode == e.ENTER) {
+                            if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
                 }
@@ -154,15 +154,15 @@ function doRenderClaimHandlerDropDown(selectedWorkgroupId){
 function validateComboBox(){
     var mesBox = $("#OwnershippAssignmentMessageBox");
     mesBox.empty();
-    if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---" && 
-            isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---"){
+    if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() === "--- Please Select ---" && 
+            isWorkgroupEnable && $("#workgroupComboId").val() === "--- Please Select ---"){
         mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
         mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
         return false;
-    } else if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() == "--- Please Select ---") {
+    } else if (isInvoiceOwnershipEnable && $("#claimOwnerComboId").val() === "--- Please Select ---") {
         mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
         return false;
-    } else if (isWorkgroupEnable && $("#workgroupComboId").val() == "--- Please Select ---") {
+    } else if (isWorkgroupEnable && $("#workgroupComboId").val() === "--- Please Select ---") {
         mesBox.append("You must supply a value for 'Workgroup'\n<br/>").show();
         return false;
     } else {
@@ -173,11 +173,14 @@ function validateComboBox(){
 }
 
 function assignManualInvoiceSubmit(){
-    $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner")
+    $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner");
+    $('form#updateManualInvoicePaymentForm input[id="oasWorkgroupHiddenId"]').val(workgroupCombo.getValue());
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-        $("#updateManualInvoicePaymentForm").submit();
+//        $("#updateManualInvoicePaymentForm").submit();
+        return true;
     }
+    return false;
 }
 
 </script>
@@ -227,14 +230,14 @@ function assignManualInvoiceSubmit(){
                                   || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="button" id="miAssignButton" value="Assign Owner" onclick="return assignManualInvoiceSubmit();"/>
+                                        <input type="submit" id="miAssignButton" value="Assign Owner" onclick="return assignManualInvoiceSubmit();"/>
                                     </td>
                                 </tr>
                             </s:if>
                             <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership && insurer.workgroupEnable">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
-                                        <input type="button" id="miAssignButton" value="Assign Workgroup" onclick="return assignManualInvoiceSubmit();"/>
+                                        <input type="submit" id="miAssignButton" value="Assign Workgroup" onclick="return assignManualInvoiceSubmit();"/>
                                     </td>
                                 </tr>
                             </s:elseif>
