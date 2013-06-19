@@ -213,7 +213,7 @@ FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
           insid AS insurerId,
-          teamName as team) params
+          teamName AS team) params
           
 UNION
           
@@ -430,7 +430,7 @@ FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
           insid AS insurerId,
-          teamName as team) params
+          teamName AS team) params
 UNION
 
 SELECT 'no_invoice_paid' AS title ,
@@ -652,7 +652,7 @@ SELECT 'no_invoice_paid' AS title ,
      AND a.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT count(*)
-   FROM claim c ,
+   FROM claim c,
         audit_trail a,
         chorganisation cho,
         workgroup w
@@ -671,16 +671,17 @@ SELECT 'no_invoice_paid' AS title ,
 FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
-          insid AS insurerId) params
+          insid AS insurerId,
+          teamName AS team) params
 UNION
 
 SELECT 'avg_hire_value' AS title ,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -694,10 +695,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -711,10 +712,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -728,10 +729,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -745,10 +746,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -762,10 +763,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -779,10 +780,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -796,10 +797,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -813,10 +814,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -830,10 +831,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -847,10 +848,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -864,10 +865,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -881,10 +882,10 @@ SELECT 'avg_hire_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_gross ELSE o.hire_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -905,7 +906,7 @@ UNION
 SELECT 'avg_hire_value_paid' AS title ,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -925,7 +926,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -945,7 +946,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -965,7 +966,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -985,7 +986,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1005,7 +1006,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1025,7 +1026,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1045,7 +1046,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1065,7 +1066,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1085,7 +1086,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1105,7 +1106,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1125,7 +1126,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1145,7 +1146,7 @@ SELECT 'avg_hire_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(i.hire_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1174,7 +1175,7 @@ FROM
 SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1194,7 +1195,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1214,7 +1215,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1234,7 +1235,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1254,7 +1255,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1274,7 +1275,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1294,7 +1295,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1314,7 +1315,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1334,7 +1335,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1354,7 +1355,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1374,7 +1375,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1394,7 +1395,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1414,7 +1415,7 @@ SELECT 'avg_hire_value_paid_plus_avg_hire_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(i.hire_gross + i.hire_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1443,10 +1444,10 @@ FROM
 SELECT 'avg_repair_value' AS title ,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1460,10 +1461,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1477,10 +1478,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1494,10 +1495,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1511,10 +1512,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1528,10 +1529,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1545,10 +1546,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1562,10 +1563,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1579,10 +1580,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1596,10 +1597,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1613,10 +1614,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1630,10 +1631,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1647,10 +1648,10 @@ SELECT 'avg_repair_value' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.repair_gross ELSE o.repair_gross END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id = i.id
      AND (c.insurer_id = params.insurerId
@@ -1672,7 +1673,7 @@ UNION
 SELECT 'avg_repair_value_paid' AS title ,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1692,7 +1693,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1712,7 +1713,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1732,7 +1733,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1752,7 +1753,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1772,7 +1773,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1792,7 +1793,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1812,7 +1813,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1832,7 +1833,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1852,7 +1853,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1872,7 +1873,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1892,7 +1893,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1912,7 +1913,7 @@ SELECT 'avg_repair_value_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(i.repair_gross)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1941,7 +1942,7 @@ FROM
 SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1961,7 +1962,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -1981,7 +1982,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2001,7 +2002,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2021,7 +2022,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2041,7 +2042,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2061,7 +2062,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2081,7 +2082,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2101,7 +2102,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2121,7 +2122,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2141,7 +2142,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2161,7 +2162,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -2181,7 +2182,7 @@ SELECT 'avg_repair_value_paid_plus_avg_repair_penalty_paid' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(i.repair_gross + i.repair_penalty_charge)::numeric(8,2)
-   FROM claim c ,
+   FROM claim c,
         invoice i,
         audit_trail a,
         chorganisation cho,
@@ -3146,7 +3147,8 @@ SELECT 'avg_repair_penalty_charged' AS title ,
 FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
-          insid AS insurerId) params
+          insid AS insurerId,
+          teamName AS team) params
 UNION
 
 
@@ -3619,7 +3621,8 @@ SELECT 'avg_penalty_charged' AS title ,
 FROM
   (SELECT dat1 AS startDate,
           choid AS chorgId,
-          insid AS insurerId) params
+          insid AS insurerId,
+          teamName AS team) params
 UNION
 SELECT 'no_claims_penalty_payments_charged' AS title ,
 
@@ -4671,7 +4674,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4693,7 +4696,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4715,7 +4718,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4737,7 +4740,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4759,7 +4762,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4781,7 +4784,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4803,7 +4806,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4825,7 +4828,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4847,7 +4850,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4869,7 +4872,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4891,7 +4894,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4913,7 +4916,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -4935,7 +4938,7 @@ SELECT 'avg_hire_days_paid' AS title ,
    FROM claim c,
         invoice i,
         vehicle_hire vh,
-        customer cu,
+        audit_trail a,
         chorganisation cho,
         workgroup w
    WHERE c.invoice_id=i.id
@@ -5638,10 +5641,10 @@ UNION
 SELECT 'avg_hire_rate' AS title ,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5655,10 +5658,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '11 months' AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS last_12_months,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5672,10 +5675,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') AND to_date(to_char(params.startDate + interval '1 month', 'MM') || '-01-' || to_char(params.startDate + interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS current_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5689,10 +5692,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '1 month' AND to_date(to_char(params.startDate , 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy')) AS previous_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5706,10 +5709,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months' AND to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy')) AS previous_2_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5723,10 +5726,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months' AND to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_3_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5740,10 +5743,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months' AND to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_4_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5757,10 +5760,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '5 months' AND to_date(to_char(params.startDate - interval '4 months' , 'MM') || '-01-' || to_char(params.startDate - interval '4 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_5_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5774,10 +5777,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '6 months' AND to_date(to_char(params.startDate - interval '5 months' , 'MM') || '-01-' || to_char(params.startDate - interval '5 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_6_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5791,10 +5794,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '7 months' AND to_date(to_char(params.startDate - interval '6 months' , 'MM') || '-01-' || to_char(params.startDate - interval '6 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_7_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5808,10 +5811,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '8 months' AND to_date(to_char(params.startDate - interval '7 months' , 'MM') || '-01-' || to_char(params.startDate - interval '7 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_8_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5825,10 +5828,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '9 months' AND to_date(to_char(params.startDate - interval '8 months' , 'MM') || '-01-' || to_char(params.startDate - interval '8 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_9_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
@@ -5842,10 +5845,10 @@ SELECT 'avg_hire_rate' AS title ,
      AND i.created_date BETWEEN to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '10 months' AND to_date(to_char(params.startDate - interval '9 months' , 'MM') || '-01-' || to_char(params.startDate - interval '9 months', 'yyyy'), 'mm-dd-yyyy')) AS previous_10_month,
 
   (SELECT avg(CASE WHEN o IS NULL THEN i.hire_rate_charged_per_day ELSE o.hire_rate_charged_per_day END)::numeric(8,2)
-   FROM chorganisation cho ,
-        claim c ,
-        invoice i,
-        workgroup w
+   FROM chorganisation cho,
+        claim c,
+        workgroup w,
+        invoice i
    LEFT JOIN invoice_original o ON i.invoice_original_id = o.id
    WHERE c.invoice_id=i.id
      AND (c.insurer_id = params.insurerId
