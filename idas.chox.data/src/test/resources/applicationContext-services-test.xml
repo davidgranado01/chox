@@ -9,6 +9,8 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
         <property name="commentService" ref="commentService"/>
+        <property name="notificationService" ref="notificationService"/>
+        <property name="userService" ref="userService"/>
     </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>

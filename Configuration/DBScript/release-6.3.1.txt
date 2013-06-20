@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------------------
+--   bug#2606 - Production - Allow ECD Update in status 'ClaimRejectionAccepted'     --
+---------------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'activity.EcdUpdate.ClaimRejectionAccepted', false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_MNG', 1
+    FROM accessibility
+    WHERE name = 'activity.EcdUpdate.ClaimRejectionAccepted' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_OPR', 1
+    FROM accessibility
+    WHERE name = 'activity.EcdUpdate.ClaimRejectionAccepted' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    FROM accessibility
+    WHERE name = 'activity.EcdUpdate.ClaimRejectionAccepted' AND claim_type is null;
+
+------------------------
+--  END of bug#2606   --
+------------------------
+
+---------------------------------------------------------------------------------------
+--   bug#2618 - Production - allow Insurer Claim Number to be updated in all Manual Claims     --
+---------------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceBREApproved', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceBRERejected', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceContested', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceUnassigned', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceUnassigned', false, false;
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoicePaid', false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_CR', 1
+    FROM accessibility
+    WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_CH', 1
+    FROM accessibility
+    WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_MNG', 1
+    FROM accessibility
+    WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_COM', 1
+    FROM accessibility
+    WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    FROM accessibility
+    WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_CR', 1
+    FROM accessibility
+    WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_CH', 1
+    FROM accessibility
+    WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_MNG', 1
+    FROM accessibility
+    WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_COM', 1
+    FROM accessibility
+    WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    FROM accessibility
+    WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
+
+------------------------
+--  END of bug#2618   --
+------------------------

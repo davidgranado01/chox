@@ -46,6 +46,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.NotificationService;
+import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 
@@ -59,6 +60,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
     private AuditTrailService auditTrailService;
     private CommentService commentService;
+    private UserService userService;
     private NotificationService notificationService;
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
@@ -104,6 +106,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public ClaimServiceImpl() {
@@ -1166,6 +1172,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (claim.getSlaExtDays() > 0) {
                     comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
                 }
+                comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
                 save(claim);
                 LOG.debug("Comment added and claim saved.");
@@ -1202,6 +1209,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 if (claim.getSlaExtDays() > 0) {
                     comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
                 }
+                comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
                 save(claim);
                 LOG.debug("Comment added and claim saved.");
