@@ -7,8 +7,8 @@ var noticeDatePicker;
 var signedByDatePicker;
 
 $(document).ready(function(){
-        noticeDatePicker = ui.dateField('gtaNoticeDate','<s:date format="dd/MM/yyyy" name="gtaNoticeDate" />','noticeDatePH');
-        signedByDatePicker = ui.dateField('creditAgreementDate','<s:date format="dd/MM/yyyy" name="creditAgreementDate" />','signedByDatePH');
+        noticeDatePicker = ui.unvalidatedDateField('gtaNoticeDate','<s:date format="dd/MM/yyyy" name="gtaNoticeDate" />','noticeDatePH');
+        signedByDatePicker = ui.unvalidatedDateField('creditAgreementDate','<s:date format="dd/MM/yyyy" name="creditAgreementDate" />','signedByDatePH');
 
 
         var form = $("#formUpdateClaimDetailsForm");
@@ -23,18 +23,18 @@ $(document).ready(function(){
             errorLabelContainer: "#claimDetailsMsgBox",
             rules: {
                 gtaNoticeDate: {
-                    date:true
+                    dateITA:true
                 },
                 creditAgreementDate: {
-                    date:true
+                    dateITA:true
                 }
             },
             messages: {
-                noticeDate: {
-                    date:"Invalid date format for 'GTA 4.1 Notice Date'"
+                gtaNoticeDate: {
+                    dateITA:"Invalid date format for 'GTA 4.1 Notice Date'"
                 },
-                signedByDate: {
-                    date:"Invalid date format for 'Credit Agreement Signed by Customer Date'"
+                creditAgreementDate: {
+                    dateITA:"Invalid date format for 'Credit Agreement Signed by Customer Date'"
                 }
             }
         });

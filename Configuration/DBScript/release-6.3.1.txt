@@ -15,7 +15,7 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
     WHERE name = 'activity.EcdUpdate.ClaimRejectionAccepted' AND claim_type is null;
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_CHOX_ADMIN', 1
+   SELECT id, 'ROLE_CHOX_ADMIN', 1
     FROM accessibility
     WHERE name = 'activity.EcdUpdate.ClaimRejectionAccepted' AND claim_type is null;
 
@@ -37,28 +37,26 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceUnassigned', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
-    SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoiceUnassigned', false, false;
-INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'extraAction.updateInsurerClaimNumber.ManualInvoicePaid', false, false;
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_CR', 1
+    SELECT id, 'ROLE_INS_CR', 2
     FROM accessibility
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_CH', 1
+    SELECT id, 'ROLE_INS_CH', 2
     FROM accessibility
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_MNG', 1
+    SELECT id, 'ROLE_INS_MNG', 2
     FROM accessibility
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_COM', 1
+    SELECT id, 'ROLE_INS_COM', 2
     FROM accessibility
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    SELECT id, 'ROLE_CHOX_ADMIN', 2
     FROM accessibility
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 
