@@ -6,17 +6,17 @@
     // $(function(){
     Ext.onReady(function(){
 
-        var repairBookInDatePicker = ui.dateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
-        var repairAuthorisedDatePicker = ui.dateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','repairAuthorisedDatePH');
-        var repairCommencedDatePicker = ui.dateField('repairCommencedDate','<s:date format="dd/MM/yyyy" name="repairCommencedDate" />','repairCommencedDatePH');
-        var inspectionBookedDateDatePicker = ui.dateField('inspectionBookedDate','<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />','inspectionBookedDatePH');
-        var inspectionDateDatePicker = ui.dateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','inspectionDatePH');
-        var nextReviewDatePicker = ui.dateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
-        var repairCompletionDateDatePicker = ui.dateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
-        var totalLossOfferMadeDatePicker = ui.dateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','totalLossOfferMadeDatePH');
-        var totalLossOfferAcceptedDatePicker = ui.dateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />','totalLossOfferAcceptedDatePH');
-        var totalLossOfferCheckIssuedDatePicker = ui.dateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','totalLossOfferCheckIssuedDatePH');
-        var totalLossOfferCheckReceivedDatePicker = ui.dateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />','totalLossOfferCheckReceivedDatePH');
+        var repairBookInDatePicker = ui.unvalidatedDateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
+        var repairAuthorisedDatePicker = ui.unvalidatedDateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','repairAuthorisedDatePH');
+        var repairCommencedDatePicker = ui.unvalidatedDateField('repairCommencedDate','<s:date format="dd/MM/yyyy" name="repairCommencedDate" />','repairCommencedDatePH');
+        var inspectionBookedDateDatePicker = ui.unvalidatedDateField('inspectionBookedDate','<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />','inspectionBookedDatePH');
+        var inspectionDateDatePicker = ui.unvalidatedDateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','inspectionDatePH');
+        var nextReviewDatePicker = ui.unvalidatedDateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
+        var repairCompletionDateDatePicker = ui.unvalidatedDateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
+        var totalLossOfferMadeDatePicker = ui.unvalidatedDateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','totalLossOfferMadeDatePH');
+        var totalLossOfferAcceptedDatePicker = ui.unvalidatedDateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />','totalLossOfferAcceptedDatePH');
+        var totalLossOfferCheckIssuedDatePicker = ui.unvalidatedDateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','totalLossOfferCheckIssuedDatePH');
+        var totalLossOfferCheckReceivedDatePicker = ui.unvalidatedDateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />','totalLossOfferCheckReceivedDatePH');
 
         
         var form = $("form#formUpdateHireMonitoringDetail");
