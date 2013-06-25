@@ -9,7 +9,6 @@
     var claimHideCompleted = true;
     var dateRenderer;
     var visibilityInternal = true;
-//    var isCHO;
     var isINS;
     var visibilityRoleCombo;
 
@@ -90,7 +89,7 @@
             });
 
             visibilityRoleCombo = new Ext.form.ComboBox({
-//                    fieldLabel: 'Visibility Role',
+//                    fieldLabel: 'Role',
 //                    hideLabel: true,
 //                    hiddenName: 'visibilityRoleCombo',
                     hiddenName: 'claimVisibilityRoleCombo',
@@ -108,7 +107,7 @@
                     valueField:'webUserroleRole',
                     displayField:'webUserroleName',
 //                    value: 'ROLE_INS_CH',
-                    width: 210,
+                    width: 150,
                     forceSelection : true,
                     listeners: {
                         select: { fn:function(combo, value) {
@@ -419,33 +418,31 @@
                       </table>
         
                   </td>
-                  <td width="60%">
+                  <td width="65%">
                       <!-- Table on right side -->
                       <table width="100%" border="0" cellspacing="0" cellpadding="1">
                           <tr>
-                              <td><label style="line-height: 8px" >&nbsp;</label></td><td></td><td></td>
+                              <td colspan="3"><label style="line-height: 8px" >&nbsp;</label></td><td></td><td></td>
                           </tr>
                           <tr>
-                              <td align="right" valign="top"><div class="chox-form-item"><label>Task Description:&nbsp;</label></div></td>
-                              <td colspan="2"><s:textarea cols="57" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
+                              <td width="33%" align="right" valign="top"><div class="chox-form-item"><label>Task Description:&nbsp;</label></div></td>
+                              <td colspan="2"><s:textarea cols="60" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
                           </tr>
                           <tr><td colspan="3"><label style="line-height: 5px" >&nbsp;</label></td></tr>
                           <tr>
-                              <td width="30%" >
-                              </td>
-                              <td width="40%">
+                              <td></td>
+                              <td width="40%" >
                                 <div class="chox-form-item">
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="External" onClick="toggleVisibility()"/> External Task</span>
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
                                 </div>
                               </td>
-                              <td width="30%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
+                              <td align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
                           </tr>
                       </table>
         
                   </td>
-                  <td width="10%"></td>
-                  </tr>
+                  <td width="5%"></td></tr>
               </table>
               <div class="action-error-msg" id="claimTaskFormMsgBox"></div>
             </fieldset>
