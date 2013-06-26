@@ -18,8 +18,8 @@
             errorLabelContainer: "#CDVehicleClassCeilingMessageBox",
             rules: {
                 vehicleClassId:{min:0 },
-                hireNetCeiling:{ required:true, number:true, min:0.01 },
-                repairNetCeiling:{ required:true, number:true, min:0.01 }
+                hireNetCeiling:{ required:true, number:true, min:0 },
+                repairNetCeiling:{ required:true, number:true, min:0 }
             },
             messages: {
                 vehicleClassId: {min:"You must select a 'Vehicle Class'" },
@@ -36,9 +36,8 @@
             {
                 if(response.isValid){
 
-                    if(response.resultType && response.resultType == 'New')
+                    if(response.resultType && response.resultType === 'New')
                     {
-//                        alert("Your changes have been saved");
                         onVehicleClassPageRefresh();
                     }
                 } else {
@@ -60,8 +59,8 @@
             errorLabelContainer: "#HMmessageBox",
             rules: {
                 vehicleClassCeilingId:{min:0 },
-                hireNetCeiling:{ required:true, number:true, min:0.01 },
-                repairNetCeiling:{ required:true, number:true, min:0.01 }
+                hireNetCeiling:{ required:true, number:true, min:0 },
+                repairNetCeiling:{ required:true, number:true, min:0 }
             },
             messages: {
                 vehicleClassCeilingId: {min:"You must select a 'Vehicle Class'" },
@@ -72,7 +71,7 @@
         ui.ajaxForm($("form#editVehicleClassCeilingDetail"), onVehicleClassPageRefresh);
 
 
-        if(!vehicleCeilingEditSelectionDlg || vehicleCeilingEditSelectionDlg==null)
+        if(!vehicleCeilingEditSelectionDlg || vehicleCeilingEditSelectionDlg===null)
         {
             vehicleCeilingEditSelectionDlg =  new Ext.Window({
                 applyTo:'vccSelectionDlgHolder',
@@ -90,6 +89,7 @@
                 buttons: [{
                         text:'Ok', handler: function(){
 
+                        if($("form#editVehicleClassCeilingDetail").valid()){
                             var op = {
                                 success: doVehicleClassCeilingPageRefresh,
                                 timeout: 3000,
@@ -97,7 +97,7 @@
                             };
 
                             $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
-                        }
+                        }}
                     },{
                         text: 'Close', handler: function(){
                             vehicleCeilingEditSelectionDlg.hide();
@@ -138,7 +138,7 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Vehicle Class", width: 200, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>"+value+"</a>" }},
+                        return "<a href='#' class='high-light-item'>"+value+"</a>"; }},
                 {header: "Hire Net Ceiling", width: 160, dataIndex: 'hireNetCeiling', sortable: true, resizable: true, renderer: function(value,p,r) {
                     return '£' + value.toFixed(2);
                 }},
@@ -146,7 +146,7 @@
                     return '£' + value.toFixed(2);
                 }},
                 {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:295,
             width: 760
@@ -203,13 +203,13 @@
 
         var gridView = vehicleClassCeiling_gridviewGrid.getStore().getAt(rowIndex);
 
-        if(columnIndex==3){
+        if(columnIndex===3){
             var vehicleClassCeilingId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doRemoveVehicleClassCeilingMapping.action";
             var param = {"vehicleClassCeilingId":vehicleClassCeilingId};
             ajax.loadHtml2(url, param, onVehicleClassPageRefresh);
 
-        }else if(columnIndex==0){
+        }else if(columnIndex===0){
             showEditVehicleClassCeiling(gridView);
         }
 
@@ -217,6 +217,7 @@
 
     function showEditVehicleClassCeiling(gridView){
         vehicleCeilingEditSelectionDlg.show();
+
         $("form#editVehicleClassCeilingDetail input[name$='vehicleClassCeilingId']").val(gridView.get("id"));
         $("form#editVehicleClassCeilingDetail label#editVehicleClassName").html(gridView.get("vehicleClassName"));
         $("form#editVehicleClassCeilingDetail input[name$='hireNetCeiling']").val(gridView.get("hireNetCeiling").toFixed(2));
@@ -286,11 +287,11 @@
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-pop">Hire Net Ceiling</label>
-                        <input id="hireNetCeiling" name="hireNetCeiling"/>
+                        <input type="text" id="hireNetCeiling" name="hireNetCeiling"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-pop">Repair Net Ceiling</label>
-                        <input id="repairNetCeiling" name="repairNetCeiling"/>
+                        <input type="text" id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     <!--s:token/-->
