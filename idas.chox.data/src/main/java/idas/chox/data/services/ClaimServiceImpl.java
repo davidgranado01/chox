@@ -516,6 +516,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
+        if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
+            return false;
+        }
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
@@ -528,6 +532,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public Boolean isClaimSupplierReferenceNumberExistForCho(String sClaimReferenceNumber, int choId) {
+        if (sClaimReferenceNumber == null || sClaimReferenceNumber.isEmpty()) {
+            return false;
+        }
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());

@@ -56,7 +56,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (!validate(claimResult)) {
             LOG.debug("Validation failed: {}", claimResult.getProcessStatus());
         }
-        // If the header fails validation, we'll still process
+        // If the header fails validation and we a cho ref, we'll still process
         // We need to do this as this is the header and we need to
         // check the claim status which is needed for further processing
         process(claimResult);
@@ -66,6 +66,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
         LOG.debug("Validating Claim Header: claimResult is {}", claimResult);
+        choReferenceNumber = "";
+        hireState = "";
+        supplierAliasName = "";
 
         claimResult.setCheckDataValid(true);
         NodeHelper.nodeValidate(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter());

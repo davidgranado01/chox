@@ -331,11 +331,11 @@ public final class NodeHelper {
 
         boolean bFlag = true;
 
-        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
+        if (isDataMandatory(claimResult, val) && (value == null || value.trim().equalsIgnoreCase(""))) {
             bFlag = false;
         }
 
-        if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
+        if (!(value == null || value.trim().equalsIgnoreCase("")) && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
             bFlag = false;
         }
 
