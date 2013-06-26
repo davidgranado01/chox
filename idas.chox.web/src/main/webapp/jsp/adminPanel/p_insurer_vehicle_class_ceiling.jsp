@@ -38,6 +38,7 @@
 
                     if(response.resultType && response.resultType === 'New')
                     {
+//                        alert("Your changes have been saved");
                         onVehicleClassPageRefresh();
                     }
                 } else {
@@ -89,15 +90,16 @@
                 buttons: [{
                         text:'Ok', handler: function(){
 
-                        if($("form#editVehicleClassCeilingDetail").valid()){
-                            var op = {
+                            if($("form#editVehicleClassCeilingDetail").valid()){
+                              var op = {
                                 success: doVehicleClassCeilingPageRefresh,
                                 timeout: 3000,
                                 error: ui.onSubmitError
-                            };
+                                    };
 
-                            $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
-                        }}
+                              $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
+                            }
+                        }
                     },{
                         text: 'Close', handler: function(){
                             vehicleCeilingEditSelectionDlg.hide();
@@ -216,8 +218,8 @@
     }
 
     function showEditVehicleClassCeiling(gridView){
+        $("form#editVehicleClassCeilingDetail div#HMmessageBox").html('');
         vehicleCeilingEditSelectionDlg.show();
-
         $("form#editVehicleClassCeilingDetail input[name$='vehicleClassCeilingId']").val(gridView.get("id"));
         $("form#editVehicleClassCeilingDetail label#editVehicleClassName").html(gridView.get("vehicleClassName"));
         $("form#editVehicleClassCeilingDetail input[name$='hireNetCeiling']").val(gridView.get("hireNetCeiling").toFixed(2));
@@ -293,7 +295,8 @@
                         <label class="chox-form-pop">Repair Net Ceiling</label>
                         <input type="text" id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+                    <div id="HMmessageBox" class="action-error-msg"></div>
+                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     <!--s:token/-->
                 </form>
             </div>
