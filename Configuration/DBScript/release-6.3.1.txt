@@ -23,9 +23,9 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 --  END of bug#2606   --
 ------------------------
 
----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 --   bug#2618 - Production - allow Insurer Claim Number to be updated in all Manual Claims     --
----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     SELECT 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned', false, false;
 INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
