@@ -11,6 +11,7 @@ import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
+import java.util.List;
 
 public class EcdUpdate extends BaseActivity {
     static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);
@@ -63,8 +64,17 @@ public class EcdUpdate extends BaseActivity {
             reason = reasonOfDelayObject.getName();
         }
         if (reason == null) {
-            LOG.error("ECD delay reason is null. Can not update ECD.");
+            LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
+        }
+        
+        // Check there is no existig ECD with same date and reason (bug#2621)
+        List<HireMonitoringEcd> existingECDs = hireMonitoringEcdService.getHireMonitoringEcdsByClaimId(claim.getId());
+        for (HireMonitoringEcd existingECD : existingECDs) {
+            if (existingECD.getEcdDate().compareTo(ecdDate) == 0 && existingECD.getReason().compareTo(reason) == 0) {
+                LOG.warn("ECD Update Already Exists.");
+                throw new Exception("ECD Update Already Exists");
+            }
         }
     }
 

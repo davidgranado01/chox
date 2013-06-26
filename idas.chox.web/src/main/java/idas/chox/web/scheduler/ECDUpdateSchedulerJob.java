@@ -79,8 +79,12 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
                         statusString.append("Failed: No Access to ECD Update Activity (Invalid Claim Status)");
                         LOG.warn("AccessDenied Exception thrown when adding new ECD via email scheduler ecd update job", ex);
                     } catch (Exception ex) {
-                        statusString.append("Failed: An Internal Error Occurred");
-                        LOG.warn("Exception occured when adding new ECD via email scheduler ecd update job", ex);
+                        if (ex.getMessage().equals("ECD Update Already Exists")) {
+                            statusString.append("Failed: ECD Update Already Exists");
+                        } else {
+                            statusString.append("Failed: An Internal Error Occurred");
+                            LOG.warn("Exception occured when adding new ECD via email scheduler ecd update job", ex);
+                        }
                     }
                 } else {
                     statusString.insert(0, "Failed:");
