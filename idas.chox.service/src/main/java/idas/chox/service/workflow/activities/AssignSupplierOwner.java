@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
+import java.text.MessageFormat;
 
 /**
  *
@@ -32,7 +33,7 @@ public class AssignSupplierOwner extends BaseActivity {
         LOG.debug("Validating AssignSupplierOwner activity");
 
         if (supplierClaimOwnerId <= 0) {
-            throw new Exception("Invalid user id. supplierClaimOwnerId : "+supplierClaimOwnerId);
+            throw new Exception(MessageFormat.format("Invalid user id. supplierClaimOwnerId : {0}", supplierClaimOwnerId));
         } else {
             supplierClaimOwner = (WebUser) getDataService().get(WebUser.class, supplierClaimOwnerId);
             if (supplierClaimOwner == null) {
@@ -52,7 +53,7 @@ public class AssignSupplierOwner extends BaseActivity {
         LOG.debug("Assign supplier owner ('{}) to claim {}.", supplierClaimOwner.getFullName(), claim.getChoReference());
         claim.setSupplierClaimOwner(supplierClaimOwner);
         if (supplierClaimOwner.getTelephone() != null && supplierClaimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.newComment(0, "Supplier Claims Handler is '" + supplierClaimOwner.getFullName() + "' (contact number: " + supplierClaimOwner.getTelephone() +")");
+            Comment comment = Comment.newComment(0, new StringBuilder().append("Supplier Claims Handler is '").append(supplierClaimOwner.getFullName()).append("' (contact number: ").append(supplierClaimOwner.getTelephone()).append(")").toString());
             claim.addComment(comment);
         }
     }

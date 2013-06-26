@@ -61,26 +61,61 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
     WHERE name = 'extraAction.updateInsurerClaimNumber.InvoiceUnassigned' AND claim_type is null;
 
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_CR', 1
+    SELECT id, 'ROLE_INS_CR', 2
     FROM accessibility
     WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_CH', 1
+    SELECT id, 'ROLE_INS_CH', 2
     FROM accessibility
     WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_MNG', 1
+    SELECT id, 'ROLE_INS_MNG', 2
     FROM accessibility
     WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_INS_COM', 1
+    SELECT id, 'ROLE_INS_COM', 2
     FROM accessibility
     WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    SELECT id, 'ROLE_CHOX_ADMIN', 2
     FROM accessibility
     WHERE name like 'extraAction.updateInsurerClaimNumber.Manual%' AND claim_type is null;
 
 ------------------------
 --  END of bug#2618   --
+------------------------
+
+-----------------------------------------------------------------------------------------------
+--   bug#2623 - Production - Inconsistencies around Batch Update "Assign Claim(s) Owner"     --
+-----------------------------------------------------------------------------------------------
+delete from accessibility_item where accessibility_id in
+	(select id from accessibility where name='extraAction.updateClaimSupplierOwner.ClaimRejectionAccepted'
+			or name='extraAction.updateClaimSupplierOwner.InvoiceRejectionAccepted');
+delete from accessibility where name='extraAction.updateClaimSupplierOwner.ClaimRejectionAccepted'
+			or name='extraAction.updateClaimSupplierOwner.InvoiceRejectionAccepted';
+
+delete from accessibility_item where accessibility_id in
+	(select id from accessibility where name='batch.supplierClaimOwnership.InvoiceRejectionAccepted');
+delete from accessibility where name='batch.supplierClaimOwnership.InvoiceRejectionAccepted';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+    select 'activity.AssignSupplierOwner.ClaimClosed', false, false;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1
+    FROM accessibility
+    WHERE name like 'activity.AssignSupplierOwner.ClaimClosed' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_MNG', 1
+    FROM accessibility
+    WHERE name like 'activity.AssignSupplierOwner.ClaimClosed' AND claim_type is null;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHO_OPR', 1
+    FROM accessibility
+    WHERE name like 'activity.AssignSupplierOwner.ClaimClosed' AND claim_type is null;
+
+------------------------
+--  END of bug#2623   --
 ------------------------
