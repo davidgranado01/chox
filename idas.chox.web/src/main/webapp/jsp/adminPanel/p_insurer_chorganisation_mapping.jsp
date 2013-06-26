@@ -43,7 +43,7 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 220, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Add</a>"}}
+                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Add</a>";}}
             ],
             height:500, width: 360
         });
@@ -83,7 +83,7 @@
                 {header: "Name", width: 170, dataIndex: 'chorganisationName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>";}}
             ],
             height:500,
             width: 360
@@ -100,7 +100,7 @@
     function insCho_recordOnclickAddNewCreditHire(grid, rowIndex, columnIndex, e){
 
         var gridView = insChoAvailable_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==1){
+        if(columnIndex===1){
             var chorganisationId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doAddNewInsurerChorganisation.action";
             var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
@@ -111,88 +111,46 @@
 
     function insCho_recordOnclickRemoveCreditHire(grid, rowIndex, columnIndex, e){
 
-        if(columnIndex==2){
+        if(columnIndex===2){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this credit hire organisation?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
 
                 var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/doRemoveInsurerChorganisation.action";
                 var param = {"insurerChorganisationId":insurerChorganisationId};
 
-                ajax.loadHtml2(url, param,  function(responseText, statusText){
-
-                    var response = eval('(' + responseText.trim() + ')');
-
-                    if(response)
-                    {
-                        if(response.isValid){
-
-                            if(response.resultType && response.resultType == 'Message')
-                            {
-                                Ext.MessageBox.show({
-                                    title: '',
-                                    msg: response.result,
-                                    width:300,
-                                    buttons: Ext.MessageBox.OK
-                                });
-                                return;
-                            }
-
-                        }
-                        else
-                        {
-                            Ext.MessageBox.show({
-                                title: '',
-                                msg: response.result,
-                                width:300,
-                                buttons: Ext.MessageBox.OK
-                            });
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: 'Unknown Error Encountered, please try again.',
-                            width:300,
-                            buttons: Ext.MessageBox.OK,
-                            icon : Ext.MessageBox.ERROR
-                        });
-                    }
-                    doInsurerChorganisationPageRefresh();
-                });
+                ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);
             }
           });  
         }
     }
 
-    function doInsurerChorganisationPageRefresh(){
-
-        var tabIndex = 0;
-    <s:if test="isChoxAdmin">
-            tabIndex = 3;
-    </s:if>
-
-            var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-            ajax.loadHtml2(url,param,function(data){
-                $(target).html(data);
-    <s:if test="isChoxAdmin">
-                insAdminTabs.activate(tabIndex); 
-    </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-    </s:else>
-            });
+    function doInsurerChorganisationPageRefresh(responseText, statusText){
+       var response = eval('(' + responseText.trim() + ')');
+       
+       if(response){
+            if(!response.isValid){
+               $.each(response.errors, function() {
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }); 
+            } 
+            
         }
+        insCho_loadGridViewList();
+    }
 
 </script>
 
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        This tab dictates which CHOs can submit claims into the system against the particular Insurer.
+        This tab dictates which CHOs can submit claims into the system against this particular Insurer.
     </div>
 
     <table width="100%">
