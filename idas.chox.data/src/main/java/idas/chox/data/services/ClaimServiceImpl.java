@@ -34,6 +34,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
@@ -268,23 +269,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public int getECDCountByClaimId(int claimId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("select * from hire_monitoring_ecd where claim_id = :pId");
-        Map parameters = new HashMap();
-        parameters.put("pId", claimId);
+        DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringEcd.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List result = findByCriteria(criteria);
 
-        return externalQueryCount(sb.toString(), parameters);
+        return ((Long) result.get(0)).intValue();
     }
 
     @Override
     public int getClaimCountByClaimNumber(String claimNumber, int claimId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("select * from claim where claim_number = :pClaimNumber and id != :pId");
-        Map parameters = new HashMap(2);
-        parameters.put("pClaimNumber", claimNumber);
-        parameters.put("pId", claimId);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.add(Restrictions.eq("claimNumber", claimNumber));
+        criteria.add(Restrictions.ne("id", claimId));
 
-        return externalQueryCount(sb.toString(), parameters);
+        List result = findByCriteria(criteria);
+        
+        return ((Long) result.get(0)).intValue();
     }
 
     @Override
@@ -340,8 +342,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.ne("id", claimId));
         List result = findByCriteria(criteria);
         return ((Long) result.get(0)).intValue();
-
-
     }
 
     // this method has been implemented for TPI claim as there is no claim id already exist in the database.
