@@ -49,6 +49,7 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
+import java.util.Map;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -266,15 +267,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public Long getECDCountByClaimId(int claimId) {
-        String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
-        return getCount(q);
+    public int getECDCountByClaimId(int claimId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select count(*) from hire_monitoring_ecd where claim_id = :pId");
+        Map parameters = new HashMap();
+        parameters.put("pId", claimId);
+
+        return externalQueryCount(sb.toString(), parameters);
     }
 
     @Override
-    public Long getClaimCountByClaimNumber(String claimNumber, int claimId) {
-        String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
-        return getCount(q);
+    public int getClaimCountByClaimNumber(String claimNumber, int claimId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select count(*) from claim where claim_number = :pClaimNumber and id != :pId");
+        Map parameters = new HashMap(2);
+        parameters.put("pClaimNumber", claimNumber);
+        parameters.put("pId", claimId);
+
+        return externalQueryCount(sb.toString(), parameters);
     }
 
     @Override

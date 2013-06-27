@@ -38,6 +38,18 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
 
+    public int externalQueryCount(final String query, final Map parameters) {
+
+        SQLQuery q = this.getSession().createSQLQuery(query);
+
+        for (Object p : parameters.keySet()) {
+            String parameterName = (String) p;
+            q.setParameter(parameterName, parameters.get(parameterName));
+        }
+
+        return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list().size();
+    }
+
     public List externalQuery(final String query, final Map parameters) {
 
         SQLQuery q = this.getSession().createSQLQuery(query);
@@ -182,12 +194,15 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public Long getCount(String query) {
-        Long count = new Long(0);
+        Long count;
         List result = getHibernateTemplate().find(query);
 
         if (result != null && !result.isEmpty()) {
             count = (Long) result.get(0);
+        } else {
+            count = new Long("0");
         }
+            
         return count;
     }
 

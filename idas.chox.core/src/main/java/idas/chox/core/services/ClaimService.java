@@ -12,11 +12,11 @@ public interface ClaimService extends DataService {
 
     Claim getClaim(int id);
 
-    Long getClaimCountByClaimNumber(String claimNumber, int claimId);
+    int getClaimCountByClaimNumber(String claimNumber, int claimId);
 
     List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
 
-    Long getECDCountByClaimId(int claimId);
+    int getECDCountByClaimId(int claimId);
 
     Integer getCountOfClaimByVRN(String strVRN, int claimId);
 
