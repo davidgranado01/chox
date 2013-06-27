@@ -81,7 +81,7 @@
                 name:"supplierReference",
                 width:220,
                 allowBlank:true,
-                value:'<s:property value="supplierReference"/>',
+                value:'<s:property value="supplierReference" escapeJavaScript="true"/>',
                 renderTo: 'supplierReferenceFieldId',
                 listeners:{
                     specialkey:function (el, e) {
@@ -97,7 +97,7 @@
                 name:"claimNumber",
                 width:220,
                 allowBlank:true,
-                value:'<s:property value="claimNumber"/>',
+                value:'<s:property value="claimNumber" escapeJavaScript="true"/>',
                 renderTo:'claimNumberFieldId',
                 listeners:{
                     specialkey:function (el, e) {
@@ -113,7 +113,7 @@
                 name:"invoiceNumber",
                 width:220,
                 allowBlank:true,
-                value:'<s:property value="invoiceNumber"/>',
+                value:'<s:property value="invoiceNumber" escapeJavaScript="true"/>',
                 renderTo:'invoiceNumberFieldId',
                 listeners:{
                     specialkey:function (el, e) {
@@ -129,7 +129,7 @@
                 name:"customerVrn",
                 width:220,
                 allowBlank:true,
-                value:'<s:property value="customerVrn"/>',
+                value:'<s:property value="customerVrn" escapeJavaScript="true"/>',
                 renderTo:'customerVrnFieldId',
                 listeners:{
                     specialkey:function (el, e) {
@@ -145,7 +145,7 @@
                 name:"thirdPartyVrn",
                 width:220,
                 allowBlank:true,
-                value:'<s:property value="thirdPartyVrn"/>',
+                value:'<s:property value="thirdPartyVrn" escapeJavaScript="true"/>',
                 renderTo:'thirdPartyVrnFieldId',
                 listeners:{
                     specialkey:function (el, e) {

@@ -38,7 +38,7 @@
                 //begin patch
                 // Store not loaded yet? Set value when it *is* loaded.
                 // Defer the setValue call until after the next load.
-                if (this.store.getCount() == 0) {
+                if (this.store.getCount() === 0) {
                     this.store.on('load',
                     this.setValue.createDelegate(this, [v]), null, {single: true});
                     return;
@@ -120,10 +120,10 @@
                 listeners:{beforeload:function(scope,options){
 
                         if(tabs){
-                            if(tabs.getActiveTab().title == 'Inbox'){
+                            if(tabs.getActiveTab().title === 'Inbox'){
                                 Ext.state.Manager.set("inbox_grid_start", options.params.start);
                                 Ext.state.Manager.set("inbox_grid_limit", options.params.limit);
-                            }else if(tabs.getActiveTab().title == 'Search'){
+                            }else if(tabs.getActiveTab().title === 'Search'){
                                 Ext.state.Manager.set("search_grid_start", options.params.start);
                                 Ext.state.Manager.set("search_grid_limit", options.params.limit);
                             }
@@ -133,8 +133,8 @@
                         //we check if  grid title is already set in that case we dont need to set it again
                         //- this check only kicks in user preses on inbox list.
                           if(ds !== undefined 
-                                  && grid.title != undefined && grid.title != "" 
-                                  && grid.title.indexOf(ds.getTotalCount()) == -1)
+                                  && grid.title !== undefined && grid.title !== "" 
+                                  && grid.title.indexOf(ds.getTotalCount()) === -1)
                                grid.setTitle(Ext.state.Manager.get("grid_main_title") +" ("+ds.getTotalCount()+")");
                       }
                 }
@@ -144,16 +144,17 @@
 
             Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
+
             
             function updateManualInvoiceBatchUpdate(filterName) {
             
                 // MANUAL INVOICE BATCH UPDATE LOGIC
 
-                if (filterName == 'ManualInvoiceContested' || filterName == 'ManualInvoiceBRERejected' 
-                    || filterName == 'ManualInvoiceBREApproved' || filterName == 'ManualInvoicesToBeAssigned') {
+                if (filterName === 'ManualInvoiceContested' || filterName === 'ManualInvoiceBRERejected' 
+                    || filterName === 'ManualInvoiceBREApproved' || filterName === 'ManualInvoicesToBeAssigned') {
                    Ext.state.Manager.set("manualInvoiceFilter",true);
                    manualInvoiceFilter = true;
-                   if (filterName == 'ManualInvoicesToBeAssigned') {
+                   if (filterName === 'ManualInvoicesToBeAssigned') {
                         doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
                         doClaimRoutedAction.setText('Route Claim(s)');
                         doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
@@ -182,7 +183,7 @@
                         && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
                    
                    // Route Claim BATCH UPDATE LOGIC
-                    if (filterName != 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+                    if (filterName !== 'NewClaimsToBerouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
                         doClaimRoutedAction.setText('Re-Route Claim(s)'); 
                     } else {
                         doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
@@ -276,7 +277,7 @@
                     liabilityStatuses : liabilityStatuses,
                     claimTypes : claimTypes,
                     isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
-                }
+                };
                 if(canSearchForData){
                     Ext.state.Manager.set("grid_baseParams",ds.baseParams);
                     Ext.state.Manager.set("grid_isSearchShowHistory",true);
@@ -293,16 +294,16 @@
 
             function doDataLoad(start, recordPerPage, titleMessage)
             {
-                grid.setTitle(" ")
+                grid.setTitle(" ");
                 ds.load(
                 {
                     params:{start:start, limit:recordPerPage},
                     callback:function(){
                         Ext.state.Manager.set("grid_main_title", titleMessage);
                         grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
-                        if (tabs && tabs.getActiveTab().title == 'Inbox') {
+                        if (tabs && tabs.getActiveTab().title === 'Inbox') {
                             var title = Ext.state.Manager.get("grid_main_title");
-                            if (title.indexOf("Queue: ") != -1) {
+                            if (title.indexOf("Queue: ") !== -1) {
                                 title = title.replace("Queue: ","");
                                 var queueId = Ext.state.Manager.get("recentlyClickedInboxQueueId");
                                 $( "#"+queueId).html(title+" ("+ds.getTotalCount()+")");
@@ -389,12 +390,12 @@
                                 forceSelection: true,
                                 listeners: {
                                     blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                             }
                                     },
                                     specialkey:function (el, e) {
-                                                if(e.keyCode == e.ENTER) {
+                                                if(e.keyCode === e.ENTER) {
                                                     e.preventDefault();
                                                 }
                                     }
@@ -530,7 +531,7 @@
                         function processClaims(){
 
                             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
-                                if(btn=='yes')
+                                if(btn==='yes')
                                 {
                                     var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                     var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
@@ -576,7 +577,7 @@
                         function processClaims(){
                             
                           Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
-                            if(btn=='yes')
+                            if(btn==='yes')
                             {
                                 var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                 var param = {"name":"acceptInvoice","selectedClaimIds":idsParam};
@@ -613,7 +614,7 @@
                     hidden:<s:property value="isInsurer"/>,
                     handler: function(){
                         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
-                        if(btn=='yes')
+                        if(btn==='yes')
                         {
                             var selectedRecords =  sm2.getSelections();
                             var selectedIDs = $.map(selectedRecords, function(n){
@@ -685,12 +686,12 @@
                                 emptyText : '--- Please Select ---',
                                 listeners: {
                                     blur: function () {
-                                        if(this.getRawValue() == "" ) {
+                                        if(this.getRawValue() === "" ) {
                                             this.clearValue(); this.reset();
                                         }
                                     },
                                     specialkey:function (el, e) {
-                                                if(e.keyCode == e.ENTER) {
+                                                if(e.keyCode === e.ENTER) {
                                                     e.preventDefault();
                                                 }
                                     }
@@ -818,7 +819,7 @@
                             var workgroupCombo = -1;
                             var isInsurerWorkgroupEnable = false;
                             
-                            if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
+                            if($("#userInsurerWorkgroupEnable").val()!==null && $("#userInsurerWorkgroupEnable").val()!==""){
                                 isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                             }
 
@@ -852,12 +853,12 @@
                                 emptyText : '--- Please Select ---',
                                 listeners: { 
                                     blur: function () {
-                                        if(this.getRawValue() == "" ) {
+                                        if(this.getRawValue() === "" ) {
                                             this.clearValue(); this.reset();
                                         }
                                     },
                                     specialkey:function (el, e) {
-                                                if(e.keyCode == e.ENTER) {
+                                                if(e.keyCode === e.ENTER) {
                                                     e.preventDefault();
                                                 }
                                     }
@@ -897,7 +898,7 @@
                                     forceSelection: true,
                                     listeners: {select: function () {
                                             var workgroupId = -1;
-                                            if (workgroupCombo.getValue() != null) {
+                                            if (workgroupCombo.getValue() !== null) {
                                                 workgroupId = workgroupCombo.getValue();
                                             }
                                             var insurerId = $("#userInsurerId").val();
@@ -906,7 +907,7 @@
                                             claimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
                                         },
                                         blur: function () {
-                                            if(this.getRawValue() == "" ) {
+                                            if(this.getRawValue() === "" ) {
                                                 this.clearValue(); this.reset();
                                                 var insurerId = $("#userInsurerId").val();
                                                 claimOwnerCombo.reset();
@@ -1115,12 +1116,12 @@
                                 emptyText : '--- Please Select ---',
                                 listeners: {
                                     blur: function () {
-                                        if(this.getRawValue() == "" ) {
+                                        if(this.getRawValue() === "" ) {
                                             this.clearValue(); this.reset();
                                         }
                                     },
                                     specialkey:function (el, e) {
-                                                if(e.keyCode == e.ENTER) {
+                                                if(e.keyCode === e.ENTER) {
                                                     e.preventDefault();
                                                 }
                                     }
@@ -1145,7 +1146,7 @@
                                         handler:function(){
                                             if(document.getElementById('claimOwnerId1').value === "--- Please Select ---"){
                                                 Ext.Msg.alert("","please select Claim Owner");
-                                            }else if(document.getElementById('claimOwnerId1').value!=''){
+                                            }else if(document.getElementById('claimOwnerId1').value!==''){
                                                 var selectedRecords =  sm2.getSelections();
                                                 var selectedIDs = $.map(selectedRecords, function(n){
                                                     return n.json.id;
@@ -1401,7 +1402,7 @@
                                 var insurerId = $("#userInsurerId").val();
                                 var isInsurerWorkgroupEnable = false;
 
-                                if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
+                                if($("#userInsurerWorkgroupEnable").val()!==null && $("#userInsurerWorkgroupEnable").val()!==""){
                                     isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                                 }
 
@@ -1507,7 +1508,7 @@
                         sm2,
                         {header: "Supplier Ref", width: 100, sortable: true, dataIndex: 'supplierReference',
                             renderer:function(value,p,r){
-                                return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>'}},
+                                return '<span style="text-decoration: underline; color: #15428B; font-size:12px; cursor: pointer;">' + value + '</span>';}},
                         {header: "Claim Type", width: 50, sortable: true, dataIndex: 'claimType'},
                         {header: "Claim No", width: 60, sortable: true, dataIndex: 'claimNumber'},
                         {header: "Insurer's Policy No", width: 60, sortable: true, dataIndex: 'policyNumber'},
@@ -1522,7 +1523,7 @@
                         {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
                         {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                         {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
-                                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}},
+                                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>';}},
                         {header: "", width : 40, sortable : true, dataIndex: 'noAttachments', renderer : function(value, metaData, record, rowIndex, colIndex, store){
                                 if(value > 0){metaData.css = 'paperClip';} 
                             }}
@@ -1543,7 +1544,7 @@
             }
 
             function maskInboxScreen(grid, rowIndex, columnIndex){
-                if(columnIndex == 1){
+                if(columnIndex === 1){
                     var record = grid.getStore().getAt(rowIndex);
                     Ext.get('inboxScreenDiv').mask("loading claim details ...");
                     /*
@@ -1557,8 +1558,8 @@
                 var url = '<%= request.getContextPath()%>/prv/p/checkBatchUpdateStatus.action';
                 var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":param};
                 ajax.loadJson2(url, param, function(data){
-                    if(data.resultType=='YesNo'){
-                        if(data.result=='yes'){
+                    if(data.resultType==='YesNo'){
+                        if(data.result==='yes'){
                             batchUpdateDlg.enable();
                         }
                     }
@@ -1644,7 +1645,7 @@
                 Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
                 activityMonitor.clearViewingStatus(); 
             
-                if(tab.title == 'Inbox' || tab.title == 'Search'){
+                if(tab.title === 'Inbox' || tab.title === 'Search'){
                     <s:if test="isChoxAdmin!=true && enableActivityMonitor">
                             activityMonitor.refreshViewingStatus();
                     </s:if>
@@ -1652,22 +1653,22 @@
                     grid.show();
                     Ext.fly('gridPanel').removeClass('x-hide-display');
                     // below code is hack to clear search screen size being set up by extjs when switch between other tabs. (to-do item 6.10.5).
-                    if (tab.title == 'Search') {
+                    if (tab.title === 'Search') {
                         if(tabs) {
                             $($($('#searchPanelTabId').children()[0]).children()[0]).removeAttr("style");
                         }
                     }
                     
-                    if(tab.title == 'Search'){
+                    if(tab.title === 'Search'){
                         doClaimRoutedAction.setText('Route Claim(s)');
                     }
                     
-                    if(tab.title == 'Inbox' && isInboxShowHistory){
+                    if(tab.title === 'Inbox' && isInboxShowHistory){
 
                         ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName"), "filterOrgId" : Ext.state.Manager.get("filter_org_id"), "filterClaimTypeId": Ext.state.Manager.get("filter_claim_type_id")};
                         doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
 
-                    }else if(tab.title == 'Search' && isSearchShowHistory){
+                    }else if(tab.title === 'Search' && isSearchShowHistory){
                         
                         ds.baseParams = Ext.state.Manager.get("grid_baseParams");
                         doDataLoad(Ext.state.Manager.get("search_grid_start"), Ext.state.Manager.get("search_grid_limit"),"Search Result");
@@ -1678,7 +1679,7 @@
 
                 }
 
-                else if(tab.title == 'Claim/Invoice Upload'){
+                else if(tab.title === 'Claim/Invoice Upload'){
                     Ext.fly('xmlClaimsStatusGridDiv').removeClass('x-hide-display');
                 }
 
@@ -1694,11 +1695,11 @@
                 var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
 
                 ajax.loadJson2(url, param, function(data){
-                    if(data.resultType=='YesNo'){
-                        if(data.result=='yes'){
-                            if(processAction!=null){processAction();}
+                    if(data.resultType==='YesNo'){
+                        if(data.result==='yes'){
+                            if(processAction!==null){processAction();}
                         }
-                    }else if(data.resultType=='Message'){
+                    }else if(data.resultType==='Message'){
                         Ext.MessageBox.show({
                             title: '',
                             msg: data.result,
@@ -1715,11 +1716,11 @@
                 var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
 
                 ajax.loadJson2(url, param, function(data){
-                    if(data.resultType=='YesNo'){
-                        if(data.result=='yes'){
+                    if(data.resultType==='YesNo'){
+                        if(data.result==='yes'){
                             dialog.show();
                         }
-                    }else if(data.resultType=='Message'){
+                    }else if(data.resultType==='Message'){
                         Ext.MessageBox.show({
                             title: '',
                             msg: data.result,
