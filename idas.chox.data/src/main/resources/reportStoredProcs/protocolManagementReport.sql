@@ -31,7 +31,6 @@ DECLARE
     supergroup1 integer[];
     supergroup2 integer[];
     supergroup3 integer[];
-    supergroups integer[][];
 BEGIN
     start_date = beginDate::Date;
     insId = '3'::integer;
