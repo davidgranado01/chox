@@ -269,7 +269,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public int getECDCountByClaimId(int claimId) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select count(*) from hire_monitoring_ecd where claim_id = :pId");
+        sb.append("select * from hire_monitoring_ecd where claim_id = :pId");
         Map parameters = new HashMap();
         parameters.put("pId", claimId);
 
@@ -279,7 +279,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     @Override
     public int getClaimCountByClaimNumber(String claimNumber, int claimId) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select count(*) from claim where claim_number = :pClaimNumber and id != :pId");
+        sb.append("select * from claim where claim_number = :pClaimNumber and id != :pId");
         Map parameters = new HashMap(2);
         parameters.put("pClaimNumber", claimNumber);
         parameters.put("pId", claimId);

@@ -56,11 +56,9 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
         for (Object p : parameters.keySet()) {
             String parameterName = (String) p;
-            LOG.debug("Setting parameter: {}", parameterName);
             q.setParameter(parameterName, parameters.get(parameterName));
 
         }
-        LOG.debug("Running query...");
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
 
