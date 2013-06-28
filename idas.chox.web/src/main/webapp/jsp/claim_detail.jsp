@@ -509,11 +509,10 @@
             <div id="claim-detail-extra" >
                 <table>
                     <tr>
-                        <td align="left">
+                        <td width="80%" align="left">
                             <div>
                                 <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
-                            </div>
-                            <div>
+                                &nbsp;&nbsp;
                                 <s:if test="extraActionList.size()>0">
                                     <s:select
                                         name="extraAction"
@@ -529,7 +528,7 @@
                                 </s:if>
                             </div>
                         </td>
-                        <td align="right">
+                        <td width="20%" align="right">
                             <s:if test="canExport">
                                 <div>
                                     <a href="javascript:claimReport();">Export Claim To Excel</a>
