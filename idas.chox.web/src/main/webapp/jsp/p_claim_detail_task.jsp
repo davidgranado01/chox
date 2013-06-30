@@ -367,10 +367,9 @@
 
     function toggleVisibility() {
 
-     
-       visibilityInternal = !visibilityInternal;
+        visibilityInternal = $('input[name=visibilityType]:checked', '#claimTaskForm').val() == 1;
         if (isINS && visibilityInternal) {
-            // Show the visibility role combo
+           // Show the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').show();
             Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
             // ...and add back the validation rule
@@ -433,8 +432,8 @@
                               <td></td>
                               <td width="40%" >
                                 <div class="chox-form-item">
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="External" onClick="toggleVisibility()"/> External Task</span>
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="0" title="External" onClick="toggleVisibility()"/> External Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="1" title="Internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
                                 </div>
                               </td>
                               <td align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
