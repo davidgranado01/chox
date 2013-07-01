@@ -7,15 +7,12 @@
     var attachmentData;
     var attachmentGrid;
     
-
-    // $(function(){
-
     Ext.onReady(function(){
 
         // GENERATE HELP NOTES
         createHelpNote();
 
-        // DECLARE FOR VALIDATIOn
+        // DECLARE FOR VALIDATION
         
 
         attachmentJsonReader = new Ext.data.JsonReader({
@@ -44,16 +41,17 @@
             listeners:  {cellclick:attachmentOnClick },
             store: attachmentData,
             renderTo:'attachmentGrid',
+            enableColumnMove: false,
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
                 {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
-                {header: "Category", width: 150, dataIndex: 'category', sortable: true, resizable: true},
+                {header: "Attachment Type", width: 150, dataIndex: 'category', sortable: true, resizable: true},
                 {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
                 {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}}
+                        return "<a href='#' class='high-light-item'>" + value + "</a>";}}
             ],
             width:990,
             height:160
@@ -82,19 +80,15 @@
         var op = {
             beforeSubmit: onBeforeSubmit,
             success: attachmentUploadAfterSubmit
-//            ,timeout: 50000
-            // error: onSubmitError
         };
 
-        $("form#attachmentForm").validate(
-        {
+        $("form#attachmentForm").validate({
             errorLabelContainer: "#attachmentFormMsgBox",
             rules: {
                 remark:{ required:true },
                 attachmentFile:{ required:true }
             },
-            messages:
-                {
+            messages: {
                 remark: {required:"You must supply a value for 'Remark'"},
                 attachmentFile: {required:"You must select an Attachment"}
             },
@@ -131,6 +125,7 @@
         });
 
     }
+    
     function attachmentUploadAfterSubmit(responseText, statusText, form, responseType){
         
         onFormSubmitCompleted(responseText, statusText, form, responseType);
@@ -138,20 +133,19 @@
         loadAttachments();
         $("#formSubmitResultId").fadeOut(10000);
     }
+    
     function onFormSubmitCompleted(responseText, statusText, form, responseType)  {
 
-        if (responseText.indexOf('You have been denied access') !=-1) {
+        if (responseText.indexOf('You have been denied access') !==-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
                 window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
                 return;
             });
         }
-        if(responseText)
-        {
+        if(responseText){
             var response = eval('(' + responseText.trim() + ')');
             if(response && response.isValid){
-                if(response.resultType && response.resultType == 'Message')
-                {
+                if(response.resultType && response.resultType === 'Message'){
                     Ext.MessageBox.show({
                         title: 'Upload successful',
                         msg: response.result,
@@ -170,8 +164,7 @@
                     });
                 }
             }
-            else if(response.errors)
-            {
+            else if(response.errors){
                 Ext.MessageBox.show({
                     title: 'Upload failure',
                     msg: response.errors,
@@ -181,7 +174,6 @@
                 });
             }
             else{
-
                 Ext.MessageBox.show({
                     title: 'Upload failure',
                     msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
@@ -191,9 +183,7 @@
                 });
             }
         }
-        else
-        {
-
+        else{
             Ext.MessageBox.show({
                 title: 'Upload failure',
                 msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
@@ -204,12 +194,12 @@
         }
     }
 
-    function onBeforeSubmit() {
+    function onBeforeSubmit(){
         Ext.get('attachmentForm').mask('Please wait, file is being uploaded...');
         return true;
     }
 
-    function validateFileExtension(fileName) {
+    function validateFileExtension(fileName){
         var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML|zip|ZIP)$/;
         return exp.test(fileName);
     }
@@ -224,7 +214,7 @@
         var attachment = attachmentGrid.getStore().getAt(rowIndex);
         var fileId = attachment.get("id");
 
-        if(columnIndex!=4){
+        if(columnIndex!==4){
             var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action?fileId=" + fileId+"&claimId="+<s:property value="claimId" />;
             window.open(link,"","width=600,height=800,status=yes,menubar=no,scrollbars=1,resizable=1");
         }else{
@@ -240,7 +230,7 @@
             width      : 400,
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
-                if(btn=='ok') {
+                if(btn==='ok') {
                     var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
                     var param = {"fileId":a,"claimId":<s:property value="claimId" />};
                     ajax.loadJson2(url, param, function(data){
@@ -264,15 +254,16 @@
 
    
     function hideActionResultAfter10Seconds() {
-
         $("#actionResultId").fadeOut(10000);
-
     }
+    
+
     function resetAttachmentForm(){
         $("form#attachmentForm").each(function(){
             this.reset();
         });
     }
+
 
     function createHelpNote(){
 
@@ -358,7 +349,7 @@
                     </tr>
                     <tr>
 
-                        <td align="right" valign="top"><label class="std-label-ro">Remark&nbsp;&nbsp;</label></td>
+                        <td align="right" valign="top"><label class="std-label-ro">Description&nbsp;&nbsp;</label></td>
                         <td>
                             <div id="RemarkFieldId"/>
                             <!-- <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/> -->
