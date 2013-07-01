@@ -89,7 +89,7 @@
                 attachmentFile:{ required:true }
             },
             messages: {
-                remark: {required:"You must supply a value for 'Remark'"},
+                remark: {required:"You must supply a value for 'Description'"},
                 attachmentFile: {required:"You must select an Attachment"}
             },
 
