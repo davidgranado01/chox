@@ -22,6 +22,9 @@
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="notificationService" class="idas.chox.data.services.NotificationServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
