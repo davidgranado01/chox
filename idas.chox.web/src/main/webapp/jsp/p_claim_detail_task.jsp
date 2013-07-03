@@ -60,7 +60,6 @@
                     emptyText: 'Please select a task type...'
                 });
 
-//        isCHO = <s:property value="isCHO" />;
         isINS = <s:property value="isInsurer" />;
 
         if (isINS) {
@@ -89,15 +88,11 @@
             });
 
             visibilityRoleCombo = new Ext.form.ComboBox({
-//                    fieldLabel: 'Role',
-//                    hideLabel: true,
-//                    hiddenName: 'visibilityRoleCombo',
                     hiddenName: 'claimVisibilityRoleCombo',
                     id: 'claimVisibilityRoleComboId',
                     renderTo: 'roleVisibilityDivId',
                     mode: 'local',
                     editable: false,
-//                    value: 'ROLE_INS_CH',
                     allowBlank: false,
                     selectOnFocus: true,
                     typeAhead: true,
@@ -106,9 +101,7 @@
                     store: visibilityRoleStore,
                     valueField:'webUserroleRole',
                     displayField:'webUserroleName',
-//                    value: 'ROLE_INS_CH',
                     width: 150,
-                    forceSelection : true,
                     listeners: {
                         select: { fn:function(combo, value) {
                                         // Note: maybe we should also pass the visibility role?
@@ -195,10 +188,7 @@
             selModel : checkBoxSelMod,
             columns: [
                 checkBoxSelMod,
-//                checkColumn,
-//                {header: "Supplier Ref.", width: 70, dataIndex: 'choReference', sortable: true, resizable: true},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
-//                {header: "Completed Date", width: 75, dataIndex: 'completedDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
@@ -233,7 +223,7 @@
     }
 
     function claimTaskOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 3) {
+        if (columnIndex === 3) {
             var task = claimTasksGrid.getStore().getAt(rowIndex);
             var title="Task";
             var msg = "<b>Due Date</b>: " + dateRenderer(task.get("dueDate"));
@@ -267,7 +257,7 @@
             };
 
             ajax.loadJson2(url, param, function(data){
-                if(data.resultType=='Message'){
+                if(data.resultType==='Message'){
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
@@ -281,8 +271,8 @@
     function validTaskCombo(){
     	var msgBox = $("#claimTaskFormMsgBox");
     	var taskCombo = $("#claimTaskTypeComboId");
-    	if($("#claimTaskTypeComboId").val() == "Please select a task type..."){
-    		if($("#claimTaskFormMsgBox").html().indexOf("Please enter a 'Task Type'") == -1)
+    	if($("#claimTaskTypeComboId").val() === "Please select a task type..."){
+    		if($("#claimTaskFormMsgBox").html().indexOf("Please enter a 'Task Type'") === -1)
     			  msgBox.append("Please enter a 'Task Type'\n<br/>").show();
     		$('#claimTaskForm').valid();
     		msgBox.append(" ").show();
@@ -330,8 +320,8 @@
             }
             
             ajax.loadJson2(url, param, function(data){
-              if (data.resultType=='YesNo'){
-                if (data.result=='yes'){
+              if (data.resultType==='YesNo'){
+                if (data.result==='yes'){
                     Ext.Msg.alert('Task Created', 'A new task has been created.');
                     // Form elements will be reset, so we reset our state
                     claimHideCompleted = true;
@@ -351,7 +341,7 @@
                     loadClaimTasks();
                     Ext.getCmp('claimTaskTypeComboId').reset();
                 }
-              } else if(data.resultType=='Message'){
+              } else if(data.resultType==='Message'){
                 Ext.Msg.alert('Error creating new task',data.result);
               }
             });
@@ -430,10 +420,10 @@
                           <tr><td colspan="3"><label style="line-height: 5px" >&nbsp;</label></td></tr>
                           <tr>
                               <td></td>
-                              <td width="40%" >
+                              <td width="50%" >
                                 <div class="chox-form-item">
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="0" title="External" onClick="toggleVisibility()"/> External Task</span>
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="1" title="Internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="0" title="External" onClick="toggleVisibility();"/> External Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityTypeId" value="1" title="Internal" checked="true" onClick="toggleVisibility();"/> Internal Task</span>
                                 </div>
                               </td>
                               <td align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
@@ -448,11 +438,11 @@
         </div>
     </form>
         <div class="chox-form-item">
-        <input type="button" value="Mark As Complete" id="claimTaskMarkId" onclick="return markAsComplete()"/>
+        <input type="button" value="Mark As Complete" id="claimTaskMarkId" onclick="return markAsComplete();"/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     <div class="chox-form-item">
-    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" checked="true" onClick="return toggleComplete()"/> Hide Completed Tasks</span>
+    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" checked="true" onClick="return toggleComplete();"/> Hide Completed Tasks</span>
     </div>
     <div id="claimTasksDivId"></div>
 </div>
