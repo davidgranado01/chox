@@ -174,17 +174,17 @@ public class ECDUpdateSchedulerJob extends EmailSchedulerJob {
         if (ecdDelayReason.isEmpty()) {
             statusString.append(" No ECD Delay Reason Provided.");
         } else if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
-            statusString.append(" ECD Delay Reason Must start with an alpha-numeric character.");
-        } else {
-            if (ecdDelayReason.length() > 50) {
-                statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
-            }
+            statusString.append(" ECD Delay Reason Must Start With An Alpha-numeric Character.");
+        } else if (ecdDelayReason.length() > 50) {
+                statusString.append(" ECD Delay Reason Exceeds The Maximum Allowed Length Of 50 Characters.");
         }
     }
     
     private void validateEcdDelaySupportNote(String ecdDelaySuppNote, StringBuilder statusString) {
-        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
+        if (ecdDelaySuppNote.isEmpty()) {
             statusString.append(" No Supporting Note Provided.");
+        } else if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
+            statusString.append(" ECD Supporting Note Must Start With An Alpha-numeric Character.");
         }
     }
 

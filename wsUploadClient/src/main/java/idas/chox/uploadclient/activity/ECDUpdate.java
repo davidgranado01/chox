@@ -76,17 +76,21 @@ public class ECDUpdate {
                         }
 
                         String ecdDelayReason = cells.get(2).trim();
-                        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
-                            statusString.append(" No ECD Reason Provided.");
-                        } else {
-                            if (ecdDelayReason.length() > 50) {
-                                statusString.append(" ECD Delay Reason exceeds the maximum allowed length of 50 character.");
-                            }
+                        if (ecdDelayReason.isEmpty()) {
+                            statusString.append(" No ECD Delay Reason Provided.");
+                        }
+                        else if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelayReason)) {
+                            statusString.append(" ECD Delay Reason Must Start With An Alpha-numeric Character.");
+                        } else if (ecdDelayReason.length() > 50) {
+                                statusString.append(" ECD Delay Reason Exceeds The Maximum Allowed Length of 50 Character.");
                         }
 
                         String ecdDelaySuppNote = cells.get(3).trim();
-                        if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
-                            statusString.append(" No Supporting Note Provided.");
+                        if (ecdDelaySuppNote.isEmpty()) {
+                            statusString.append(" No Supporting Note provided.");
+                        }
+                        else if (!regexExpressionChecker(REG_ALPHANUMERIC, ecdDelaySuppNote)) {
+                            statusString.append(" Supporting Note Must Start With an Alpha-numeric Character.");
                         }
 
                         if (statusString.toString().isEmpty()) {
