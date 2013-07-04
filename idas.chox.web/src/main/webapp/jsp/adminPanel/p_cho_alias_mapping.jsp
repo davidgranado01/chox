@@ -159,7 +159,7 @@
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        This tab contains a list of all the alias’ that identify the particular CHO when a Insurer is uploading a claim into the system.  The text expression is case sensitive, the Cho name field on the claim upload looks for a match against the alias’ as held within the below table.
+        This tab contains a list of all the alias’ that identify the particular CHO when an Insurer is uploading a claim into the system.  The text expression is case sensitive, the Cho name field on the claim upload looks for a match against the alias’ as held within the below table.
     </div>
 
     <div class="grid-view-header">
