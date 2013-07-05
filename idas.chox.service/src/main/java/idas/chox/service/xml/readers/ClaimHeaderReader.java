@@ -1019,7 +1019,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
             InsurerAlias alias = getBordereauReaderContext().getInsurerAliasService().getInsurerByAliasName(insurerAliasName);
             if (alias == null) {
-                LOG.error("No insurer found with alias name '{}'", insurerAliasName);
+                LOG.warn("No insurer found with alias name '{}'", insurerAliasName);
                 return false;
             }
             insurer = alias.getInsurer();
@@ -1027,7 +1027,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 return false;
             }
         } else {
-            LOG.error("No insurer name provided.");
+            LOG.debug("No insurer name provided.");
             return false;
         }
 
@@ -1041,7 +1041,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
             InsurerAlias alias = getBordereauReaderContext().getInsurerAliasService().getInsurerByAliasName(insurerAliasName);
             if (alias == null) {
-                LOG.error("No insurer found with alias name '{}'", insurerAliasName);
+                LOG.warn("No insurer found with alias name '{}'", insurerAliasName);
                 return false;
             }
             insurer = alias.getInsurer();
@@ -1049,7 +1049,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 return false;
             }
         } else {
-            LOG.error("No insurer name provided.");
+            LOG.debug("No insurer name provided.");
             return false;
         }
 
