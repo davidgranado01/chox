@@ -1,3 +1,8 @@
+/* Added after upgrade to ExtJS 3.4.1.1 as hand/selection cursor no longer visible
+      see http://www.sencha.com/forum/showthread.php?264739-ExtJS-3.4.1.1-makes-tree-node-cursor-into-default-instead-of-pointer-hand
+*/
+.x-tree-node a span, .x-grid3-cell-inner a { cursor: pointer; }
+
 body {
     overflow:scroll;
 }
