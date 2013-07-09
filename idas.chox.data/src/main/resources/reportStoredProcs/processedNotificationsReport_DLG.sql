@@ -33,6 +33,7 @@ RETURNS TABLE("AX Unique Ref" VARCHAR,
               "Vehicle Damage" VARCHAR,
               "Injury" VARCHAR,
               "Hire Commenced On (If Applicable)" timestamp without time zone,
+              "RBS Insurance Brand" VARCHAR,
               "Liability Status" text,
               "If wrong insurer, please provide correct info" VARCHAR,
               "Fraud - Reason For Rejection" VARCHAR,
@@ -48,8 +49,8 @@ DATE_TO DATE;
 
 BEGIN
 
-DATE_FROM = $4::DATE;
-DATE_TO = $5::DATE;
+DATE_FROM = $3::DATE;
+DATE_TO = $4::DATE;
 
 RETURN QUERY
 
@@ -78,6 +79,7 @@ SELECT ''::varchar as "AX Unique Ref",
        cust.damage as "Vehicle Damage",
        ''::varchar as "Injury",
        vh.rental_start as "Hire Commenced On (If applicable)",
+       tp.insurer_brand as "RBS Insurance Brand",
        getLiabilityStatus(c.liability_status) as "Liability status",
        (select comment from comment where claim_id=c.id and comment like 'Supporting Liability Notes%' order by id desc limit 1) as "If wrong insurer, please provide correct info",
        case when exists (select * from audit_trail at where at.claim_id=c.id and at.created_date >= DATE_FROM and at.created_date < DATE_TO
