@@ -47,6 +47,8 @@
         <property column="estate_charge_check" name="estateChargeCheck"/>
         <property column="estate_charge_check_hpi" name="estateChargeCheckHpi"/>
         <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
+        <property column="acquisition_charge_check" name="acquisitionChargeCheck"/>
+        <property column="overhead_charge_check" name="overheadChargeCheck"/>
         <property column="cdw_charge_check" name="miscellaneousChargeCheck"/>
         <property column="satellite_navigation_charge_check" name="satelliteNavigationChargeCheck"/>
         <property column="baby_seat_charge_check" name="babySeatChargeCheck"/>
@@ -127,6 +129,7 @@
         <property column="allow_tpi_penalty_charges" name="allowTPIPenaltyCharges"/>
         <property column="allow_ins_vs_ins_penalty_charges" name="allowInsurervsInsurerPenaltyCharges"/>
         <property column="allow_manual_inv_penalty_charges" name="allowManualInvoicePenaltyCharges"/>
+        <property column="allow_collaboration_penalty_charges" name="allowCollaborationProtocolPenaltyCharges"/>
         <property column="subscriber_check_rejected_claims" name="subscriberCheckRejectedClaims"/>
         <property column="subscriber_acquisition_fee_check" name="subscriberAcquisitionFeeCheck"/>
         <property column="subscriber_admin_fee_check" name="subscriberAdminFeeCheck"/>

@@ -84,6 +84,8 @@ public class ClaimObjectService {
             newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
         } else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
+        } else if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL || claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE);
         } else if (claim.getClaimType() == ClaimType.FIXED_FEE || claim.getClaimType() == ClaimType.FIXED_FEE_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE);
         } else {

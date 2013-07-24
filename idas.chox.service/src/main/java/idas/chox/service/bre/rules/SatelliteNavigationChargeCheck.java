@@ -17,7 +17,7 @@ public class SatelliteNavigationChargeCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
+        if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
             res.setIsVisibleToCHO(true);
         } else {
             res.setIsVisibleToCHO(false);
@@ -25,7 +25,7 @@ public class SatelliteNavigationChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isSatelliteNavigationChargeCheck()) {
 
             boolean success = true;
@@ -59,7 +59,7 @@ public class SatelliteNavigationChargeCheck implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(ClaimType claimType) {
-        if (ClaimType.isSubscriber(claimType)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isCollaborationProtocol(claimType)) {
             return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
         }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;

@@ -30,7 +30,7 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
             isExcluded = VehicleClass.isCommercialPrivateOrTaxi(claim.getCustomer().getVehicleClass().getName());
         }
 
-        if(!isExcluded && !ClaimType.isFixedFee(claim.getClaimType())
+        if(!isExcluded && !ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isRepairBookedInDateOnSunday() && claim.getHireMonitoringDetail() != null){
             boolean success = true;
             if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null && claim.getCustomer().getIsUsable()){

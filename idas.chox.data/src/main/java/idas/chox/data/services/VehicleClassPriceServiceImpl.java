@@ -16,6 +16,7 @@ import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
 import idas.chox.core.model.ClaimType;
+import java.text.MessageFormat;
 
 /**
  *
@@ -38,7 +39,8 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(ClaimType claimType, VehicleClass vehicleClass, Date startDate, int insId, int choId) throws Exception {
 
-        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType)
+                || ClaimType.isCollaborationProtocol(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, insId, choId);
         } else {
             DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPrice.class);
@@ -68,7 +70,8 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(ClaimType claimType, VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) throws Exception {
 
-        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType)
+                || ClaimType.isCollaborationProtocol(claimType) || breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, age, insId, choId);
         } else {
 
@@ -91,8 +94,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
             if (vehicleClassPrices == null || vehicleClassPrices.isEmpty()) {
                 LOG.warn("No rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}",
                         new Object[] {vehicleClass.getName(), startDate, insId, choId});
-                throw new Exception("No rate found for vehicle class '" + vehicleClass.getName()
-                        + "' at age " + age.setScale(2, BigDecimal.ROUND_HALF_UP));
+                throw new Exception(MessageFormat.format("No rate found for vehicle class '{0}' at age {1}", vehicleClass.getName(), age.setScale(2, BigDecimal.ROUND_HALF_UP)));
             }
             BigDecimal price = ((VehicleClassPrice) vehicleClassPrices.get(0)).getPrice();
             

@@ -48,6 +48,7 @@
     <customer-title>
         <data-description>Driver title</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
@@ -62,6 +63,7 @@
     <customer-lastname>
         <data-description>Driver last name</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
@@ -71,6 +73,7 @@
     <customer-address1>
         <data-description>Driver address 1</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
@@ -100,6 +103,7 @@
     <customer-postcode>
         <data-description>Driver postcode</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
@@ -189,6 +193,7 @@
         <data-description>Customer's Insurer Name</data-description>
         <data-type></data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>        
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
@@ -210,6 +215,7 @@
         <data-description>Customer's Insurance Comprehensive</data-description>
         <data-type>char</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>      
@@ -222,6 +228,7 @@
     <customerdetail-vehicle-registration>
         <data-description>Customer's Vehicle Registration</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>     
@@ -236,6 +243,7 @@
     <customerdetail-vehicle-manufacturer>
         <data-description>vehicle-manufacturer</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>      
@@ -249,6 +257,7 @@
     <customerdetail-vehicle-model>
         <data-description>vehicle-model</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>       
@@ -262,6 +271,7 @@
     <customerdetail-vehicle-class>
         <data-description>vehicle-class</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
         <data-mandatory-newFixedFeeClaim>t</data-mandatory-newFixedFeeClaim>
@@ -276,6 +286,7 @@
     <customerdetail-location>
         <data-description>location</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>     
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
@@ -349,6 +360,7 @@
     <thirdpartydetails-name>
         <data-description>Third Party's Insurer name</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -359,6 +371,7 @@
     <thirdpartydetails-policy-number>
         <data-description>Third Party's Policy Number</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -376,6 +389,7 @@
     <thirdpartydetails-vehicle-registration>
         <data-description>Third Party's Vehicle Registration Number</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -404,6 +418,7 @@
     <customerdetail-damage>
         <data-description>damage</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-offHired>t</data-mandatory-offHired>           
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -415,6 +430,7 @@
         <data-description>usable</data-description>
         <data-type>char</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>        
@@ -428,6 +444,7 @@
         <data-description>total-loss</data-description>
         <data-type>char</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>        
@@ -448,6 +465,7 @@
         <data-description>Incident Date</data-description>
         <data-type>datetime</data-type>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -458,6 +476,7 @@
     <incident-location>
         <data-description>Incident Location</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -472,6 +491,7 @@
     <incident-description>
         <data-description>Incident Description</data-description>
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
+        <data-mandatory-newCollaborationClaim>t</data-mandatory-newCollaborationClaim>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
         <data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
         <data-mandatory-newSubscriberClaim>t</data-mandatory-newSubscriberClaim>
@@ -789,9 +809,7 @@
     <vehiclehiredetails-vehicle-registration>
         <data-description>Registration</data-description>
         <data-mandatory-newInsurerInvoice>t</data-mandatory-newInsurerInvoice>
-        <data-mandatory-existingClaim></data-mandatory-existingClaim>
         <data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-        <data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
         <data-mandatory-offHired>t</data-mandatory-offHired>               
         <data-mandatory-hireMonitoring>t</data-mandatory-hireMonitoring>
         <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>

@@ -127,6 +127,12 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Acquisition")) {
+            invoice.setAcquisitionFee(dIntemCost);
+            invoice.setAcquisitionQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Overhead and Margin")) {
+            invoice.setOverheadFee(dIntemCost);
+            invoice.setOverheadQty(iQuantity);
         }
     }
 

@@ -30,7 +30,7 @@
                  //begin patch
                  // Store not loaded yet? Set value when it *is* loaded.
                  // Defer the setValue call until after the next load.
-                 if (this.store.getCount() == 0) {
+                 if (this.store.getCount() === 0) {
                      this.store.on('load',
                      this.setValue.createDelegate(this, [v]), null, {single: true});
                      return;
@@ -87,10 +87,9 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
-                forceSelection : true,
                 listeners: {
                     select:function() {
-                        if(this.getRawValue() == "") {
+                        if(this.getRawValue() === "") {
                             this.clearValue();
                             this.reset();
                             workgroupId = -1;
@@ -137,10 +136,9 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '<s:property value="claimOwnerIdFieldName"/>',
-            forceSelection : true,
             listeners: {
                 select: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         this.clearValue();
                         this.reset();
                         claimOwnerId = -1;
@@ -156,11 +154,11 @@
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
        
         $("#formUpdateInsurerDetail").submit(function(){
-            if($("[name='claimOwnerIdField']").val() == ""){
-                $("[name='claimOwnerIdField']").val(-1)
+            if($("[name='claimOwnerIdField']").val() === ""){
+                $("[name='claimOwnerIdField']").val(-1);
                 }
-            if($("[name='workgroupIdField']").val() == ""){
-                $("[name='workgroupIdField']").val(-1)
+            if($("[name='workgroupIdField']").val() === ""){
+                $("[name='workgroupIdField']").val(-1);
                 }
         });
 
@@ -207,12 +205,6 @@
                 maxLoginAttempts:{ required:true, number:true, min:0 },
                 blockTime:{ required:true, number:true, min:0 },
                 blockedMessage:{ required:true}
-//                 tpiRegexExpression: {checkTpiRegexField: true},
-//                 gtaRegexExpression: {checkGtaRegexField: true},
-//                 subscriberRegexExpression: {checkSubscriberRegexField: true},
-//                 insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: true},
-//                 insurerManualRegexExpression: {checkInsurerManualRegexField: true},
-//                 fixedFeeRegexExpression: {checkFixedFeeRegexField: true}
             },
             messages:
                 {
@@ -235,12 +227,6 @@
                 maxLoginAttempts:{ required:"You must supply a value for 'Maximum login attempts'", number:"'Maximum login attempts' must be numeric", min:"'Maximum login attempts' cannot be less than 0"},
                 blockTime:{ required:"You must supply a value for 'Account blocked period'", number:"'Account blocked period' must be numeric", min:"'Account blocked period' cannot be less than 0"},
                 blockedMessage:{ required: "You must supply an 'Account blocked message'"}
-//                 tpiRegexExpression: {checkTpiRegexField: "You must supply a value for 'TPI Auto-routing Regex Expression'"},
-//                 gtaRegexExpression: {checkGtaRegexField: "You must supply a value for 'GTA Auto-routing Regex Expression'"},
-//                 subscriberRegexExpression: {checkSubscriberRegexField: "You must supply a value for 'Subscriber Auto-routing Regex Expression'"},
-//                 insurerVsInsurerRegexExpression: {checkInsurerVsInsurerRegexField: "You must supply a value for 'Insurer Vs Insurer Auto-routing Regex Expression'"},
-//                 insurerManualRegexExpression: {checkInsurerManualRegexField: "You must supply a value for 'Insurer Invoice Auto-routing Regex Expression'"},
-//                 fixedFeeRegexExpression: {checkFixedFeeRegexField: "You must supply a value for 'Fixed Fee Auto-routing Regex Expression'"}
             }
         });
         
@@ -287,7 +273,6 @@
                 height:615,
                 width:775,
                 enableTabScroll : true,
-//                id:"tabId",
                 border:true,
                 loadMask:false,
                 activeTab: insDetailAdminTabIndex,
@@ -343,7 +328,7 @@
             "checkGtaRegexField",
             function(value, element) {
                     if ($('form#formUpdateInsurerDetail input[id="gtaAutoRoutingEnable"]:checked').val()
-                            && $('#gtaExclusionId').val() == ""){
+                            && $('#gtaExclusionId').val() === ""){
                         return false;
                     }
                 return true;
@@ -354,7 +339,7 @@
                 "checkTpiRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="tpiAutoRoutingEnable"]:checked').val()
-                                && $('#tpiExclusionId').val() == ""){
+                                && $('#tpiExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -365,7 +350,7 @@
                 "checkInsurerManualRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="insurerManualAutoRoutingEnable"]:checked').val()
-                                && $('#insurerManualExclusionId').val() == ""){
+                                && $('#insurerManualExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -376,7 +361,7 @@
                 "checkInsurerVsInsurerRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="insurerVsInsurerAutoRoutingEnable"]:checked').val()
-                                && $('#insurerVsInsurerExclusionId').val() == ""){
+                                && $('#insurerVsInsurerExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -387,7 +372,7 @@
                 "checkSubscriberRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="subscriberAutoRoutingEnable"]:checked').val()
-                                && $('#subscriberExclusionId').val() == ""){
+                                && $('#subscriberExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -398,14 +383,25 @@
                 "checkFixedFeeRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="fixedFeeAutoRoutingEnable"]:checked').val()
-                                && $('#fixedFeeExclusionId').val() == ""){
+                                && $('#fixedFeeExclusionId').val() === ""){
                             return false;
                         }
                     return true;
                     }
             );
       
-        if($('#CCDName').val() != "")
+        $.validator.addMethod(
+                "checkCollaborationProtocolRegexField",
+                function(value, element) {
+                        if ($('form#formUpdateInsurerDetail input[id="collaborationProtocolAutoRoutingEnable"]:checked').val()
+                                && $('#collaborationProtocolExclusionId').val() === ""){
+                            return false;
+                        }
+                    return true;
+                    }
+            );
+      
+        if($('#CCDName').val() !== "")
             $('#nameField').hide();
     });
     
@@ -425,6 +421,11 @@
         else
             $("#fixedFeeTr").hide();
         
+        if($('form#formUpdateInsurerDetail input[name="allowCollaborationProtocolClaims"]:checked').val())
+            $("#collaborationProtocolTr").show();
+        else
+            $("#collaborationProtocolTr").hide();
+        
         if($('form#formUpdateInsurerDetail input[name="invoiceUploadEnabled"]:checked').val())
             $("#insurerManualTr").show();
         else
@@ -432,7 +433,7 @@
     }
     
     function getInsurerAdminTabIndex(){
-        if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
+        if($("#tabIndex").val()!==null && $("#tabIndex").val()!==''){
             insDetailAdminTabIndex = $("#tabIndex").val();
         }
     }
@@ -571,7 +572,7 @@
   
         if(response && response.isValid)
         {
-            if(response.resultType && response.resultType == 'New'){
+            if(response.resultType && response.resultType === 'New'){
 
                 Ext.Msg.minWidth = 300;
                 Ext.Msg.alert('New Insurer Created','A new Insurer has been created.');
@@ -614,7 +615,7 @@
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
 <div id="chox-admin-holder" >
-    <div id="chox-admin-col-div" style="width:780">
+    <div id="chox-admin-col-div" style="width:780px">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -799,11 +800,16 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Collaboration Protocol Claims</label>
+                                        <s:checkbox name="allowCollaborationProtocolClaims" value="allowCollaborationProtocolClaims" onclick="displayAutoRoutingTpiAndSusbscriberFields()"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this)"/>
                                     </div>
                                 </td>
-                                <td></td>
                             </tr>
                         </table>
                              <div class="chox-form-item" id="tpiIdentifierId">
@@ -939,6 +945,20 @@
                                         <div class="chox-form-item" >
                                             <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
                                             <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="fixedFeeExclusionId"  name="fixedFeeRegexExpression" value="<s:property value="fixedFeeRegexExpression" />"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="collaborationProtocolTr">
+                                    <td width="40%">
+                                        <div class="chox-form-item" id="collaborationProtocolHolder">
+                                            <label class="chox-form-std-label">Collaboration Protocol</label>
+                                            <s:checkbox name="collaborationProtocolAutoRoutingEnable" id="collaborationProtocolAutoRoutingEnable" value="collaborationProtocolAutoRoutingEnable" />
+                                        </div>
+                                    </td>
+                                    <td width="70%">
+                                        <div class="chox-form-item" >
+                                            <label class="chox-form-std-label1" >Regex Exclusion pattern : </label>
+                                            <input type="text" class="chox-ttxt" style="width: 150px; height:20px;" id="collaborationProtocolExclusionId"  name="collaborationProtocolRegexExpression" value="<s:property value="collaborationProtocolRegexExpression" />"/>
                                         </div>
                                     </td>
                                 </tr>

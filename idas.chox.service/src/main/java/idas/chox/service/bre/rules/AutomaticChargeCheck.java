@@ -28,7 +28,7 @@ public class AutomaticChargeCheck implements IBusinessRule {
 
         boolean success = true;
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isAutomaticChargeCheck()) {
 
             LOG.debug("AutomaticChargeCheck is activated");

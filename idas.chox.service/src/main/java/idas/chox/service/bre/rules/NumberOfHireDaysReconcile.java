@@ -24,7 +24,7 @@ public class NumberOfHireDaysReconcile implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isNumberOfHireDaysReconcile() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isNumberOfHireDaysReconcile() && claim.getVehicleHire() != null) {
 
             boolean success = true;
 

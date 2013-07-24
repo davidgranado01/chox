@@ -25,7 +25,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && claim.getVehicleHire() != null) {
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && claim.getVehicleHire() != null) {
 
             if (claim.getVehicleHire().getIsTotalLoss()) {
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());

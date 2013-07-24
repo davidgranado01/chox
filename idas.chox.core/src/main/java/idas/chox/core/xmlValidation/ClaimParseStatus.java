@@ -31,7 +31,10 @@ public enum ClaimParseStatus {
     INSURER_HIRE_MONITORING                     (26, "Insurer Hire Monitoring"),
     INSURER_EXIST_INVOICE                       (27, "Insurer Invoice Already Exists"),
     INSURER_NEW_SUPPLEMENTARY_INVOICE           (28, "New Insurer Supplementary Invoice"),
-    EXISTS_DIFFERENT_CLAIM_TYPE                 (29, "Claim Already Exists But As A Different Claim Type");
+    EXISTS_DIFFERENT_CLAIM_TYPE                 (29, "Claim Already Exists But As A Different Claim Type"),
+    NEW_COLLABORATION_CLAIM                     (30, "New Claim (Collaboration Protocol)"),
+    EXIST_COLLABORATION_CLAIM                   (31, "Claim Already Exists (Collaboration Protocol)"),
+    COLLABORATION_NOT_ACCEPTED_BY_INSURER       (32, "Insurer is not accepting Collaboration Protocol Claims");
 
     private final String description;
     private final int ClaimParseStatusValue;

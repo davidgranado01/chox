@@ -44,6 +44,12 @@ public class InvoiceResubmit extends BaseActivity {
                     || claim.getInsurer().getFixedFeeRegexExpression().isEmpty()
                     || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getFixedFeeRegexExpression(), claimNumber.toUpperCase()))) {
             autoRoutedInvoice = true;
+        } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())
+                && claim.getInsurer().isColaborationProtocolAutoRoutingEnable()
+                && (claimNumber == null || claim.getInsurer().getCollaborationProtocolRegexExpression() == null
+                    || claim.getInsurer().getCollaborationProtocolRegexExpression().isEmpty()
+                    || !NodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getCollaborationProtocolRegexExpression(), claimNumber.toUpperCase()))) {
+            autoRoutedInvoice = true;
         }
     }
 

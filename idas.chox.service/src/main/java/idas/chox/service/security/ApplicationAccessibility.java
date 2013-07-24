@@ -212,7 +212,9 @@ public class ApplicationAccessibility {
             claimTypeString = ClaimType.TPI.name();
         } else if (ClaimType.isInsurerUpload(claimType)) {
             claimTypeString = ClaimType.INSURER_UPLOAD.name();
-        } else {
+        } else if (ClaimType.isCollaborationProtocol(claimType)) {
+            claimTypeString = ClaimType.COLLABORATION_PROTOCOL.name();
+        }else {
             claimTypeString = "";
         }
         return claimTypeString;

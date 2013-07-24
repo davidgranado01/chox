@@ -955,6 +955,26 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+    public java.math.BigDecimal getAcquisitionFee() {
+        return invoice.getAcquisitionFee();
+    }
+
+    public void setAcquisitionFee(java.math.BigDecimal acquisitionFee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setAcquisitionFee(acquisitionFee);
+        }
+    }
+
+    public java.math.BigDecimal getOverheadFee() {
+        return invoice.getOverheadFee();
+    }
+
+    public void setOverheadFee(java.math.BigDecimal overheadFee) {
+        if (actionSelected != reset && invoice != null) {
+            invoice.setOverheadFee(overheadFee);
+        }
+    }
+
     public java.math.BigDecimal getAutomaticFee() {
         return invoice.getAutomaticFee();
     }
@@ -1751,6 +1771,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return ClaimType.isSubscriber(claim.getClaimType());
     }
 
+    public boolean getIsCollaborationProtocolClaim() {
+        return ClaimType.isCollaborationProtocol(claim.getClaimType());
+    }
+
     public boolean getIsFixedFeeClaim() {
         return ClaimType.isFixedFee(claim.getClaimType());
     }
@@ -1917,6 +1941,27 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         }
     }
 
+/****
+    public boolean isVHAcquisitionFee() {
+        return vehicleHire.isAcquisitionFee();
+    }
+
+    public void setVHAcquisitionFee(boolean acquisitionFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setAcquisitionFee(acquisitionFee);
+        }
+    }
+
+    public boolean isVHOverheadFee() {
+        return vehicleHire.isOverheadFee();
+    }
+
+    public void setVHOverheadFee(boolean overheadFee) {
+        if (actionSelected != reset && vehicleHire != null) {
+            vehicleHire.setOverheadFee(overheadFee);
+        }
+    }
+
     public boolean isVHMiscellaneousFee() {
         return vehicleHire.isMiscellaneousFee();
     }
@@ -2026,6 +2071,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
             vehicleHire.setDeliveryCollectionFee(deliveryCollectionFee);
         }
     }
+****/
 
     public VehicleClass getVehicleClass() {
         return vehicleHire.getVehicleClass();

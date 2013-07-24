@@ -152,6 +152,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             switch(rentalStatus) {
                 case INPROGRESS:
                 case COMPLETE:
+                case COLLABORATION:
                     LOG.debug("PROCESSING Normal Chox Claim");
                     processNormalChoxClaim(claimResult, claim);
                     break;
@@ -474,7 +475,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
           }
           // Check its the same claim-type
           if ((isInsurerUpload && !ClaimType.isInsurerUpload(claim.getClaimType()))
-                  || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()))) {
+                  || (!isInsurerUpload && !ClaimType.isGTA(claim.getClaimType()) && !ClaimType.isCollaborationProtocol(claim.getClaimType()))) {
                 claimResult.setValid(false);
                 claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_DIFFERENT_CLAIM_TYPE);
           } else {
@@ -507,6 +508,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     // EDITABLE CLAIM
                     if (isInsurerUpload) {
                         claimResult.setClaimParseStatus(ClaimParseStatus.EXISTS_INSURER_CLAIM);
+                    } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                        claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_COLLABORATION_CLAIM);
                     } else {
                         claimResult.setClaimParseStatus(ClaimParseStatus.EXIST_CLAIM);
                     }
@@ -536,7 +539,11 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 }
             }
             else {
-                claimResult.setClaimParseStatus(ClaimParseStatus.NEW_CLAIM);
+                if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.NEW_COLLABORATION_CLAIM);
+                } else {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.NEW_CLAIM);
+                }
                 claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             }
 

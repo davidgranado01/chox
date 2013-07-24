@@ -34,7 +34,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        if (ClaimType.isSubscriber(claim.getClaimType())) {
+        if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
             res.setIsVisibleToCHO(true);
         } else {
             res.setIsVisibleToCHO(false);
@@ -109,7 +109,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         narrative = "BRE Rule Failed : The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
                             }
                     else if (isTclass) {
-                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                             if (age == null) {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + "." ;
                             }
@@ -125,7 +125,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                             }
                         }
                     } else {
-                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {
+                        if (claim.getBreBand().isUseSupplierRates() || ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate + ".";
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate + ".";
@@ -165,7 +165,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(ClaimType claimType) {
-        if (ClaimType.isSubscriber(claimType)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isCollaborationProtocol(claimType)) {
             return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
         }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;

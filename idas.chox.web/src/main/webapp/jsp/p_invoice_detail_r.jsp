@@ -639,6 +639,34 @@
                         </s:else>
                         <div style="display:none" class="form-container"  id="extrasRId">
                             <table class="chox-table-form">
+<s:if test="isCollaborationProtocolClaim">
+                                <tr>
+                                    <td>
+                                        <label class="std-label-ro">Acquisition Fee</label>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="acquisitionFee" /></label></td>
+                                    <td>
+                                        <s:if test="acquisitionFee!=acquisitionFeeOriginal&&(acquisitionFeeOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="acquisitionFeeOriginal" />)</label>&nbsp;
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        </s:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="std-label-ro">Overhead and Margin Fee</label>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="overheadFee" /></label></td>
+                                    <td>
+                                        <s:if test="overheadFee!=overheadFeeOriginal&&(overheadFeeOriginal!=null)">
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="overheadFeeOriginal" />)</label>&nbsp;
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        </s:if>
+                                    </td>
+                                </tr>
+</s:if>
                                 <tr>
                                     <td>
                                         <s:if test="isSubscriberClaim">

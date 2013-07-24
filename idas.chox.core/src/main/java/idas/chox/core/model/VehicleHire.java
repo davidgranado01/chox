@@ -16,17 +16,19 @@ public class VehicleHire extends Entity implements Serializable {
     private String collectionReason;
     private int days;
     private Integer daysOriginal;
-    private boolean miscellaneousFee;
-    private boolean automaticFee;
-    private boolean satNavFee;
-    private boolean estateFee;
-    private boolean babySeatFee;
-    private boolean towBarsFee;
-    private boolean nonStandardInsurancePremiumFee;
-    private boolean adminFee;
-    private boolean roofRackFee;
-    private boolean dualControlFee;
-    private boolean deliveryCollectionFee;
+//    private boolean acquisitionFee;
+//    private boolean overheadFee;
+//    private boolean miscellaneousFee;
+//    private boolean automaticFee;
+//    private boolean satNavFee;
+//    private boolean estateFee;
+//    private boolean babySeatFee;
+//    private boolean towBarsFee;
+//    private boolean nonStandardInsurancePremiumFee;
+//    private boolean adminFee;
+//    private boolean roofRackFee;
+//    private boolean dualControlFee;
+//    private boolean deliveryCollectionFee;
     private VehicleClass vehicleClass;
     private VehicleClass vehicleClassOriginal;
     /**
@@ -200,6 +202,7 @@ public class VehicleHire extends Entity implements Serializable {
         this.days = days;
     }
 
+/******
     public boolean isMiscellaneousFee() {
         return miscellaneousFee;
     }
@@ -208,92 +211,59 @@ public class VehicleHire extends Entity implements Serializable {
         this.miscellaneousFee = miscellaneousFee;
     }
 
-    /**
-     * Method 'isAutomaticFee'
-     *
-     * @return boolean
-     */
+    public boolean isAcquisitionFee() {
+        return acquisitionFee;
+    }
+
+    public void setAcquisitionFee(boolean acquisitionFee) {
+        this.acquisitionFee = acquisitionFee;
+    }
+
+    public boolean isOverheadFee() {
+        return overheadFee;
+    }
+
+    public void setOverheadFee(boolean overheadFee) {
+        this.overheadFee = overheadFee;
+    }
+
+
     public boolean isAutomaticFee() {
         return automaticFee;
     }
 
-    /**
-     * Method 'setAutomaticFee'
-     *
-     * @param automaticFee
-     */
     public void setAutomaticFee(boolean automaticFee) {
         this.automaticFee = automaticFee;
     }
 
-    /**
-     * Method 'isSatNavFee'
-     *
-     * @return boolean
-     */
     public boolean isSatNavFee() {
         return satNavFee;
     }
 
-    /**
-     * Method 'setSatNavFee'
-     *
-     * @param satNavFee
-     */
     public void setSatNavFee(boolean satNavFee) {
         this.satNavFee = satNavFee;
     }
 
-    /**
-     * Method 'isEstateFee'
-     *
-     * @return boolean
-     */
     public boolean isEstateFee() {
         return estateFee;
     }
 
-    /**
-     * Method 'setEstateFee'
-     *
-     * @param estateFee
-     */
     public void setEstateFee(boolean estateFee) {
         this.estateFee = estateFee;
     }
 
-    /**
-     * Method 'isBabySeatFee'
-     *
-     * @return boolean
-     */
     public boolean isBabySeatFee() {
         return babySeatFee;
     }
 
-    /**
-     * Method 'setBabySeatFee'
-     *
-     * @param babySeatFee
-     */
     public void setBabySeatFee(boolean babySeatFee) {
         this.babySeatFee = babySeatFee;
     }
 
-    /**
-     * Method 'isTowBarsFee'
-     *
-     * @return boolean
-     */
     public boolean isTowBarsFee() {
         return towBarsFee;
     }
 
-    /**
-     * Method 'setTowBarsFee'
-     *
-     * @param towBarsFee
-     */
     public void setTowBarsFee(boolean towBarsFee) {
         this.towBarsFee = towBarsFee;
     }
@@ -302,38 +272,18 @@ public class VehicleHire extends Entity implements Serializable {
         return nonStandardInsurancePremiumFee;
     }
 
-    /**
-     * Method 'setNonStandardInsurancePremiumFee'
-     *
-     * @param nonStandardInsurancePremiumFee
-     */
     public void setNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
         this.nonStandardInsurancePremiumFee = nonStandardInsurancePremiumFee;
     }
 
-    /**
-     * Method 'isAdminFee'
-     *
-     * @return boolean
-     */
-    public boolean isAdminFee() {
+   public boolean isAdminFee() {
         return adminFee;
     }
 
-    /**
-     * Method 'setAdminFee'
-     *
-     * @param adminFee
-     */
-    public void setAdminFee(boolean adminFee) {
+     public void setAdminFee(boolean adminFee) {
         this.adminFee = adminFee;
     }
 
-    /**
-     * Method 'isRoofRackFee'
-     *
-     * @return boolean
-     */
     public boolean isRoofRackFee() {
         return roofRackFee;
     }
@@ -357,6 +307,7 @@ public class VehicleHire extends Entity implements Serializable {
     public void setDeliveryCollectionFee(boolean deliveryCollectionFee) {
         this.deliveryCollectionFee = deliveryCollectionFee;
     }
+*****/
 
     public VehicleClass getVehicleClass() {
         return vehicleClass;

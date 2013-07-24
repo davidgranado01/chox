@@ -64,6 +64,10 @@ public class InvoiceReader extends BaseEntityReader {
         LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
         invoice.setMiscellaneousFee(BigDecimal.ZERO);
         invoice.setMiscellaneousQty(0);
+        invoice.setAcquisitionFee(BigDecimal.ZERO);
+        invoice.setAcquisitionQty(0);
+        invoice.setOverheadFee(BigDecimal.ZERO);
+        invoice.setOverheadQty(0);
         invoice.setAdminFee(BigDecimal.ZERO);
         invoice.setAdminQty(0);
         invoice.setAdditionalDriverFee(BigDecimal.ZERO);

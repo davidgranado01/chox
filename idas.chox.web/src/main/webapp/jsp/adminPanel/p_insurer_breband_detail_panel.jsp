@@ -378,7 +378,7 @@
                     
 
                   <div class="admin-bre-band-detail-section">                 
-                    <div class="section-heading">Insurer/CHO Configuration</div>
+                    <div class="section-heading">Insurer/CHO Configuration Parameters</div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Claim Upload Note</div>
                         <div class="status-info">
@@ -410,6 +410,10 @@
                             <s:if test="fixedFeeClaimsEnabled">
                                 <div class="chox-form-checkbox"><s:checkbox name="allowFixedFeePenaltyCharges" value="allowFixedFeePenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Fixed Fee Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Fixed Fee invoices.</div>
+                            </s:if>
+                            <s:if test="collaborationProtocolClaimsEnabled">
+                                <div class="chox-form-checkbox"><s:checkbox name="allowCollaborationProtocolPenaltyCharges" value="allowCollaboration ProtocolPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
+                                <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Collaboration Protocol invoices.</div>
                             </s:if>
                             <s:if test="tpiClaimsEnabled">
                                 <div class="chox-form-checkbox"><s:checkbox name="allowTPIPenaltyCharges" value="allowTPIPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on TPI Invoices (Automatic Penalty Charges Do Not Apply)</b></label>
@@ -1087,6 +1091,16 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="miscellaneousChargeCheck" value="miscellaneousChargeCheck" /></div>
                             <label class="chox-form-check-label">Miscellaneous Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="acquisitionChargeCheck" value="acquisitionChargeCheck" /></div>
+                            <label class="chox-form-check-label">Acquisition Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="overheadChargeCheck" value="overheadChargeCheck" /></div>
+                            <label class="chox-form-check-label">Overhead and Margin Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">

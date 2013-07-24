@@ -41,6 +41,8 @@
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnThursday" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnFriday" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.FlaggedForManualInvoiceReview" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.AcquisitionFeeChargeCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.OverheadFeeChargeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.AutomaticChargeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.AdditionalDriverChargeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.EstateChargeCheck"></bean>

@@ -215,6 +215,8 @@ public class ClaimFileReportData {
     private String invoiceDate;
     private String invoiceUploadedDate;
     private String penaltyStartDate;
+    private BigDecimal extrasAcquisitionFeeFee;
+    private BigDecimal extrasOverheadFee;
     private BigDecimal extrasMiscellaneousFee;
     private String extrasMiscellaneousTitle;
     private Integer extrasMiscellaneousQuantity;
@@ -654,6 +656,8 @@ public class ClaimFileReportData {
             if (invoice.getAutoPenaltyStart() != null) {
                 penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
             }
+            extrasAcquisitionFeeFee = invoice.getAcquisitionFee();
+            extrasOverheadFee = invoice.getOverheadFee();
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
@@ -1194,6 +1198,22 @@ public class ClaimFileReportData {
 
     public void setExtrasMiscellaneousFee(BigDecimal extrasMiscellaneousFee) {
         this.extrasMiscellaneousFee = extrasMiscellaneousFee;
+    }
+
+    public BigDecimal getExtrasAcquisitionFeeFee() {
+        return extrasAcquisitionFeeFee;
+    }
+
+    public void setExtrasAcquisitionFeeFee(BigDecimal extrasAcquisitionFeeFee) {
+        this.extrasAcquisitionFeeFee = extrasAcquisitionFeeFee;
+    }
+
+    public BigDecimal getExtrasOverheadFee() {
+        return extrasOverheadFee;
+    }
+
+    public void setExtrasOverheadFee(BigDecimal extrasOverheadFee) {
+        this.extrasOverheadFee = extrasOverheadFee;
     }
 
     public String getExtrasMiscellaneousTitle() {

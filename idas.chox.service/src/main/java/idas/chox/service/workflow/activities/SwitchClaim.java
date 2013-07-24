@@ -35,26 +35,30 @@ public class SwitchClaim extends BaseActivity {
             throw new AccessDeniedException("Cannot switch claim as no related insurer is defined.");
         }
         
+        Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
         if (ClaimType.isSubscriber(claim.getClaimType())) {
             // Make sure the new Insurer accepts subscriber claims
-            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
             if (!newInsurer.isAllowSubscriberClaims()) {
                 LOG.error("The selected Insurer '{}' does not allow Subscriber claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Subscriber claims.");
             }
         } else if (ClaimType.isFixedFee(claim.getClaimType())) {
             // Make sure the new Insurer accepts fixed fee claims
-            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
             if (!newInsurer.isAllowFixedFeeClaims()) {
                 LOG.error("The selected Insurer '{}' does not allow Fixed Fee claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow Fixed Fee claims.");
             }
         } else if (ClaimType.isTPI(claim.getClaimType())) {
             // Make sure the new Insurer accepts tpi claims
-            Insurer newInsurer = claim.getInsurer().getRelatedInsurer();
             if (!newInsurer.isThirdPartyInterventionActivated()) {
                 LOG.error("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow TPI claims.");
+            }
+        } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            // Make sure the new Insurer accepts Collaboration Protocol claims
+            if (!newInsurer.isAllowCollaborationProtocolClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Collaboration Protocol claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow Collaboration Protocol claims.");
             }
         }
         

@@ -11,10 +11,12 @@ public class NodeRuleModel {
     private String dataType;
     private int length;
     private boolean newClaimDataMandatory;
+    private boolean newCollaborationClaimDataMandatory;
     private boolean newSubscriberClaimDataMandatory;
     private boolean newFixedFeeClaimDataMandatory;
     private boolean insurerInvoiceDataMandatory;
     private boolean existingClaimDataMandatory;
+    private boolean existingCollaborationClaimDataMandatory;
     private boolean existingSubscriberClaimDataMandatory;
     private boolean existingFixedFeeClaimDataMandatory;
     private boolean newInvoiceDataMandatory;
@@ -70,6 +72,17 @@ public class NodeRuleModel {
         }
     }
 
+    public boolean isExistingCollaborationClaimDataMandatory() {
+        return existingCollaborationClaimDataMandatory;
+    }
+
+    public void setExistingCollaborationClaimDataMandatory(String existingCollaborationClaimDataMandatory) {
+        this.existingCollaborationClaimDataMandatory = false;
+        if (existingCollaborationClaimDataMandatory.trim().equalsIgnoreCase("t")) {
+            this.existingCollaborationClaimDataMandatory = true;
+        }
+    }
+
     public boolean isExistingSubscriberClaimDataMandatory() {
         return existingSubscriberClaimDataMandatory;
     }
@@ -121,6 +134,17 @@ public class NodeRuleModel {
         this.newClaimDataMandatory = false;
         if (newClaimDataMandatory.trim().equalsIgnoreCase("t")) {
             this.newClaimDataMandatory = true;
+        }
+    }
+
+    public boolean isNewCollaborationClaimDataMandatory() {
+        return newCollaborationClaimDataMandatory;
+    }
+
+    public void setNewCollaborationClaimDataMandatory(String newCollaborationClaimDataMandatory) {
+        this.newCollaborationClaimDataMandatory = false;
+        if (newCollaborationClaimDataMandatory.trim().equalsIgnoreCase("t")) {
+            this.newCollaborationClaimDataMandatory = true;
         }
     }
 

@@ -377,7 +377,7 @@ Ext.onReady(function(){
         autoHeight: true,
         labelWidth: 210,
         frame:true,
-<s:if test="isFixedFeeClaim || isSubscriberClaim || isInsurerVsInsurerClaim">
+<s:if test="isFixedFeeClaim || isSubscriberClaim || isInsurerVsInsurerClaim || isCollaborationProtocolClaim">
        title:'<div class="status-info">Please confirm that the below payment details are correct. If you need to modify the payment details you can do so by clicking on the \'Edit\' button.  Please note that the figures do not take into account the agreed liability %.</div>',
 </s:if>
 <s:else>

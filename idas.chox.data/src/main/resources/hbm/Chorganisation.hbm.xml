@@ -37,6 +37,7 @@
         <property column="max_allowed_sla_ext_for_fixed_fee" name="maxAllowedSlaExtForFixedFee" not-null="true"/>
         <property column="insurer_upload_only" name="insurerUploadOnly" not-null="true"/>
         <property column="enable_subscriber_claims" name="enableSubscriberClaims" not-null="true"/>
+        <property column="enable_collaboration_claims" name="enableCollaborationProtocolClaims" not-null="true"/>
         <property column="enable_fixedfee_claims" name="enableFixedFeeClaims" not-null="true"/>
         <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
         <property column="enable_ip_whitelist" name="enableIPWhitelist" not-null="true"/>

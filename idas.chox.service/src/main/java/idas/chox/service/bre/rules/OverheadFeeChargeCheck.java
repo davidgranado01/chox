@@ -9,7 +9,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 
-public class TowBarsChargeCheck implements IBusinessRule {
+public class OverheadFeeChargeCheck implements IBusinessRule {
 
     private String narrative = "";
 
@@ -17,7 +17,8 @@ public class TowBarsChargeCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+        if (ClaimType.isCollaborationProtocol(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                || ClaimType.isFixedFee(claim.getClaimType())) {
             res.setIsVisibleToCHO(true);
         } else {
             res.setIsVisibleToCHO(false);
@@ -25,14 +26,13 @@ public class TowBarsChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getBreBand().isTowBarsChargeCheck()) {
+        if (claim.getBreBand().isOverheadChargeCheck()) {
 
             boolean success = true;
 
-            if (claim.getInvoice().getTowBarsFee().compareTo(BigDecimal.ZERO) > 0) {
+            if (claim.getInvoice().getOverheadFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
-                narrative = "The CHO is charging a tow bar fee for the hire, please review need.";
+                narrative = "The CHO is charging an overhead and margin fee for the hire, please review need.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
@@ -54,12 +54,12 @@ public class TowBarsChargeCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "034";
+        return "080";
     }
 
     @Override
     public String getStatusAfterFailure(ClaimType claimType) {
-        if (ClaimType.isSubscriber(claimType)) {
+        if (ClaimType.isSubscriber(claimType) || ClaimType.isCollaborationProtocol(claimType)) {
             return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
         }
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;

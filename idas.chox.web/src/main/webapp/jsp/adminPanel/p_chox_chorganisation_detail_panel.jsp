@@ -145,7 +145,7 @@
     <s:if test="adjustDailyRateCharge" >
             $("#adjustDailyRateChargeOpt").val("true");
             $("#DailyRateChargeLimitDiv").show();
-            addValidationRuleDailyRateChargeLimit()
+            addValidationRuleDailyRateChargeLimit();
     </s:if><s:else >
             $("#adjustDailyRateChargeOpt").val("false");
             $("#DailyRateChargeLimitDiv").hide();
@@ -156,12 +156,12 @@
                 var response = eval('(' + responseText.trim() + ')');
                 if(response && response.isValid)
                 {
-                    if(response.resultType && response.resultType == 'New'){
+                    if(response.resultType && response.resultType === 'New'){
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('New CHO','A new CHO has been created.');
                         updateCHODetailPanel(parseInt(response.result));
                     }
-                    else if('<s:property value="id" />'!=''){
+                    else if('<s:property value="id" />'!==''){
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('Save Changes','Your changes have been saved.');
                         updateCHODetailPanel('<s:property value="id" />');
@@ -177,7 +177,7 @@
                 }
             });
             
-            if($('#CCDName').val() != "")
+            if($('#CCDName').val() !== "")
                 $('#nameField').hide();
             
         });
@@ -535,6 +535,16 @@
                                         <label class="chox-form-std-label">Enable Fixed Fee Claims</label>
                                         <s:checkbox name="enableFixedFeeClaims" value="enableFixedFeeClaims" />
                                     </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Collaboration Protocol Claims</label>
+                                        <s:checkbox name="enableCollaborationProtocolClaims" value="enableCollaborationProtocolClaims" />
+                                    </div>
+                                </td>
+                                <td>
                                 </td>
                             </tr>
                             <tr>

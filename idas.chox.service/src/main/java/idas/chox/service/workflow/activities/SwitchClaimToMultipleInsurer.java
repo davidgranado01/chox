@@ -94,6 +94,12 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
                 LOG.error("The selected Insurer '{}' does not allow TPI claims.", newInsurer.getName());
                 throw new Exception("The selected Insurer does not allow TPI claims.");
             }
+        } else if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            // Make sure the new Insurer accepts Collaboration Protocol claims
+            if (!newInsurer.isAllowCollaborationProtocolClaims()) {
+                LOG.error("The selected Insurer '{}' does not allow Collaboration Protocol claims.", newInsurer.getName());
+                throw new Exception("The selected Insurer does not allow Collaboration Protocol claims.");
+            }
         }
 
         if (insurerChorganisationService.getInsurerChorganisations(newInsurer.getId(), claim.getChorganisation().getId()).size() <= 0) {

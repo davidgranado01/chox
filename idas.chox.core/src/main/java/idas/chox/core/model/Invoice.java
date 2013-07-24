@@ -234,6 +234,10 @@ public class Invoice extends Entity implements Serializable {
     private int penaltyBand;
     private BigDecimal repairAdminFee;
     private BigDecimal repairAcquisitionFee;
+    private BigDecimal acquisitionFee;
+    private Integer acquisitionQty;
+    private BigDecimal overheadFee;
+    private Integer overheadQty;
 
     public BigDecimal getRepairAdminFee() {
         return repairAdminFee;
@@ -1501,6 +1505,39 @@ public class Invoice extends Entity implements Serializable {
         this.finalPayment = finalPayment;
     }
 
+    public BigDecimal getAcquisitionFee() {
+        return acquisitionFee;
+    }
+
+    public void setAcquisitionFee(BigDecimal acquisitionFee) {
+        this.acquisitionFee = acquisitionFee;
+    }
+
+    public Integer getAcquisitionQty() {
+        return acquisitionQty;
+    }
+
+    public void setAcquisitionQty(Integer acquisitionQty) {
+        this.acquisitionQty = acquisitionQty;
+    }
+
+    public BigDecimal getOverheadFee() {
+        return overheadFee;
+    }
+
+    public void setOverheadFee(BigDecimal overheadFee) {
+        this.overheadFee = overheadFee;
+    }
+
+    public Integer getOverheadQty() {
+        return overheadQty;
+    }
+
+    public void setOverheadQty(Integer overheadQty) {
+        this.overheadQty = overheadQty;
+    }
+
+    
     public String getRepairPenaltyPercentageApplied() {
         BigDecimal appliedRepairPenaltyPercentageValue = getRepairPenaltyPercentageAppliedValue();
         if (appliedRepairPenaltyPercentageValue != null) {

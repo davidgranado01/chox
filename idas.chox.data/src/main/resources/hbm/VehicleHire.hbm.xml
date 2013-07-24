@@ -19,6 +19,7 @@
     <property column="collection_reason" name="collectionReason" not-null="false"/>
     <property column="days" name="days"/>
     <property column="days_original" name="daysOriginal"/>
+<!--
     <property column="cdw_fee" name="miscellaneousFee" not-null="false"/>
     <property column="automatic_fee" name="automaticFee" not-null="false"/>
     <property column="sat_nav_fee" name="satNavFee" not-null="false"/>
@@ -30,6 +31,7 @@
     <property column="roof_rack_fee" name="roofRackFee" not-null="false"/>
     <property column="dual_control_fee" name="dualControlFee" not-null="false"/>
     <property column="delivery_collection_fee" name="deliveryCollectionFee" not-null="false"/>
+-->
     <property column="hpi_vehicle_manufacturer" name="hpiVehicleManufacturer"/>
     <property column="hpi_vehicle_model" name="hpiVehicleModel"/>
     <property column="hpi_first_registration" name="hpiFirstRegistration"/>

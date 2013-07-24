@@ -60,17 +60,17 @@
         
         fsets.click(function(){
             $(this).next().toggle();
-            if(document.getElementById('hideAndShow').value==1){
+            if(document.getElementById('hideAndShow').value===1){
                 ashow=true,bshow=true,cshow=true,dshow=true;
                 a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
-            if(document.getElementById('hideAndShow').value==0){
+            if(document.getElementById('hideAndShow').value===0){
                 ashow=false,bshow=false,cshow=false,dshow=false;
                 a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
-            if((++a)%2==0){
+            if((++a)%2===0){
                 ashow=true;
             }else{
                 ashow=false;
@@ -94,13 +94,13 @@
                 document.getElementById('hideAndShow').value=2;
             }
 
-            if(document.getElementById('hideAndShow').value==0){
+            if(document.getElementById('hideAndShow').value===0){
                 ashow=false,bshow=false,cshow=false,dshow=false;
                 a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
 
-            if((++b)%2==0){
+            if((++b)%2===0){
                 bshow=true;
             }else{
                 bshow=false;
@@ -121,18 +121,18 @@
         var fsets2 =  $('legend',form2);
         fsets2.click(function(){ $(this).next().toggle();
 
-            if(document.getElementById('hideAndShow').value==1){
+            if(document.getElementById('hideAndShow').value===1){
                 ashow=true,bshow=true,cshow=true,dshow=true;
                 a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
-            if(document.getElementById('hideAndShow').value==0){
+            if(document.getElementById('hideAndShow').value===0){
                 ashow=false,bshow=false,cshow=false,dshow=false;
                 a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
-            if((++c)%2==0){
+            if((++c)%2===0){
                 cshow=true;
             }else{
                 cshow=false;
@@ -151,18 +151,18 @@
         var fsets3 =  $('legend', form3);
         fsets3.click(function(){ $(this).next().toggle();
 
-            if(document.getElementById('hideAndShow').value==1){
+            if(document.getElementById('hideAndShow').value===1){
                 ashow=true,bshow=true,cshow=true,dshow=true;
                 a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
-            if(document.getElementById('hideAndShow').value==0){
+            if(document.getElementById('hideAndShow').value===0){
                 ashow=false,bshow=false,cshow=false,dshow=false;
                 a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
-            if((++d)%2==0){
+            if((++d)%2===0){
                 dshow=true;
             }else{
                 dshow=false;
@@ -318,6 +318,10 @@
                 excessAmountCollected :{required:"You must supply a value for 'Excess Amount Collected'", number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", dateITA:"Invalid date format for Date Invoiced"},
+<s:if test="isCollaborationProtocolClaim">
+                acquisitionFee :{required:"Please supply a valid value for 'Acquisition Fee'", number:"Please supply a valid value for 'Acquisition Fee'"},
+                overheadFee :{required:"Please supply a valid value for 'Overhead and Margin Fee'", number:"Please supply a valid value for 'Overhead and Margin Fee'"},
+</s:if>
 <s:if test="isSubscriberClaim">
                 miscellaneousFee :{required:"Please supply a valid value for 'Acquisition Fee'", number:"Please supply a valid value for 'Acquisition Fee'"},
 </s:if>
@@ -374,7 +378,7 @@
         createVehicleClassPriceHelpNote();
 
     <s:iterator value="allVehicleClassPriceMapper">
-            if(vehicleClassId=='<s:property value="name"/>'){
+            if(vehicleClassId==='<s:property value="name"/>'){
                 var price = parseFloat('<s:property value="price"/>');
                 document.getElementById("HireRate").value = price.toFixed(2);
             }
@@ -394,16 +398,16 @@
             var vehicleClassText = $('#vehicleClassComboId :selected').text();
             var vehicleClassId = $('#vehicleClassComboId :selected').val();
             var time = document.formUpdateInvoiceRecalculationForm.rentalStart.value + ' ' + rentalStartTimePicker.getValue();
-            if (document.getElementById("hireMonitorVehicleClassId") != null && document.getElementById("hireMonitorHireStartId") != null) {
+            if (document.getElementById("hireMonitorVehicleClassId") !== null && document.getElementById("hireMonitorHireStartId") !== null) {
                 document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassText;
                 document.getElementById("hireMonitorHireStartId").innerHTML = time;
-            } else if (document.getElementById("hireMonitoringVehiclevehicleClassMonitoringId") != null && document.getElementById("rentalStart") != null 
-                                                                                                        && document.getElementById("rentalStartTimePickerHMVId") != null) {
+            } else if (document.getElementById("hireMonitoringVehiclevehicleClassMonitoringId") !== null && document.getElementById("rentalStart") !== null 
+                                                                                                        && document.getElementById("rentalStartTimePickerHMVId") !== null) {
                 $("#hireMonitoringVehiclevehicleClassMonitoringId").val(vehicleClassId);
                 Ext.getCmp("rentalStart").setValue(document.formUpdateInvoiceRecalculationForm.rentalStart.value);
                 Ext.getCmp("rentalStartTimePickerHMVId").setValue(rentalStartTimePicker.getValue());
             }
-            if(randomNumber==20){
+            if(randomNumber===20){
                 $("#resultMessage").hide();
                 var vatCalculationText = '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
                     +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
@@ -419,13 +423,13 @@
             </s:if>
                 
                 if (hireInsurerDiscountApplied > 0) {
-                    vatCalculationText = vatCalculationText + 'Hire Insurer Discount: '+parseFloat(hireInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                    vatCalculationText = vatCalculationText + 'Hire Insurer Discount: '+parseFloat(hireInsurerDiscountApplied).toFixed(2)+'% <br/>';
                 }
                 if (repairInsurerDiscountApplied > 0) {
-                    vatCalculationText = vatCalculationText + 'Repair Insurer Discount: '+parseFloat(repairInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                    vatCalculationText = vatCalculationText + 'Repair Insurer Discount: '+parseFloat(repairInsurerDiscountApplied).toFixed(2)+'% <br/>';
                 }
                 if (totalInsurerDiscountApplied > 0) {
-                    vatCalculationText = vatCalculationText + 'Total Insurer Discount: '+parseFloat(totalInsurerDiscountApplied).toFixed(2)+'% <br/>'
+                    vatCalculationText = vatCalculationText + 'Total Insurer Discount: '+parseFloat(totalInsurerDiscountApplied).toFixed(2)+'% <br/>';
                 }
                 Ext.MessageBox.alert('VAT Rates Used', vatCalculationText);
             }else{$("#resultMessage").show();
@@ -533,15 +537,15 @@
             attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remark-table1'>";
             attachmentHtmlDesc += "<tr><th width='25%'><b>Vehicle<br/>Class&nbsp</b></th><th width='25%'><b>Price</b></th><th width='35%'><b>Vehicle<br/>Class&nbsp</b></th><th width='15%'><b>Price</b></th></tr>";
     <s:iterator value="allVehicleClassPriceMapper">
-            if(('<s:property value="name"/>'!="ACX") && ('<s:property value="name"/>'!="UNATTACHED"))
+            if(('<s:property value="name"/>'!=="ACX") && ('<s:property value="name"/>'!=="UNATTACHED"))
             {
-                if(<s:property value="price"/>!=0 && ++i%2==0)
+                if(<s:property value="price"/>!==0 && ++i%2===0)
                 {
                     attachmentHtmlDesc += '<tr>';
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                 }
-                else if(<s:property value="price"/>!=0){
+                else if(<s:property value="price"/>!==0){
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                     attachmentHtmlDesc += '</tr>';
@@ -1580,7 +1584,34 @@
                                 <div class="inv-form-container" id="extrasWId">
 
                                     <table>
-
+<s:if test="isCollaborationProtocolClaim">
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-form-std-label">Acquisition Fee<span class="mandatory">*</span></label>
+                                                    <input id="acquisitionFee" type="text" class="chox-ttnum" name="acquisitionFee" value="<s:property value="acquisitionFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="acquisitionFee!=acquisitionFeeOriginal&&(acquisitionFeeOriginal!=null)">(<s:property value="acquisitionFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-form-std-label">Overhead and Margin Fee<span class="mandatory">*</span></label>
+                                                    <input id="overheadFee" type="text" class="chox-ttnum" name="overheadFee" value="<s:property value="overheadFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="overheadFee!=overheadFeeOriginal&&(overheadFeeOriginal!=null)">(<s:property value="overheadFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+</s:if>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1595,13 +1626,9 @@
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
-
-
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="miscellaneousFee!=miscellaneousFeeOriginal&&(miscellaneousFeeOriginal!=null)">(<s:property value="miscellaneousFeeOriginal" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
-
                                                 </div>
                                             </td>
-
                                         </tr>
 
                                         <tr>
@@ -2079,13 +2106,13 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="button" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm()"/>
+                        <input type="button" style="width: 88px; margin-right:30px" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm();"/>
                     </td>
                     <td>
-                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>
+                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm();"/>
                     </td>
                     <td>
-                        <input type="submit" style="width: 88px; margin-left:30px" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm()"/>
+                        <input type="submit" style="width: 88px; margin-left:30px" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm();"/>
                     </td>
 
                 </tr>

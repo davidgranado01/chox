@@ -38,6 +38,8 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_COLLABORATION_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_COLLABORATION_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_SUBSCRIBER_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.EXIST_FIXEDFEE_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)

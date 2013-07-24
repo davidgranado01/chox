@@ -25,7 +25,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         res.setClaimType(claim.getClaimType());
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
             LOG.debug("Engineer Report: {}", claim.getEngineerReport());
             LOG.debug("Total loss: {}", claim.getVehicleHire().getIsTotalLoss());
             if (!claim.getVehicleHire().getIsTotalLoss() && (claim.getEngineerReport() == null || claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1)) {

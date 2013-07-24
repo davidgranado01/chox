@@ -32,8 +32,8 @@ public class HasCorrectAdminFee implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType()) && claim.getBreBand().isCorrentAdminFee()) {
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getBreBand().isCorrentAdminFee()) {
           try {
             boolean success = true;
             Date hireStart;

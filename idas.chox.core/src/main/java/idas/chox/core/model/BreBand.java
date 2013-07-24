@@ -27,6 +27,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private String name;
     private String claimUploadNote;
     private VehicleClassCeiling vehicleClassCeiling;
+    private boolean acquisitionChargeCheck;
+    private boolean overheadChargeCheck;
     private boolean automaticChargeCheck;
     private boolean automaticChargeCheckHpiLookup;
     private boolean additionalDriverChargeCheck;
@@ -102,6 +104,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean allowGTAPenaltyCharges = true;
     private boolean allowSubscriberPenaltyCharges = true;
     private boolean allowFixedFeePenaltyCharges = true;
+    private boolean allowCollaborationProtocolPenaltyCharges = true;
     private boolean allowTPIPenaltyCharges = true;
     private boolean allowInsurervsInsurerPenaltyCharges = true;
     private boolean allowManualInvoicePenaltyCharges = true;
@@ -158,6 +161,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         if ((ClaimType.isGTA(claimType) && isAllowGTAPenaltyCharges())
                 || (ClaimType.isSubscriber(claimType) && isAllowSubscriberPenaltyCharges())
                 || (ClaimType.isFixedFee(claimType) && isAllowFixedFeePenaltyCharges())
+                || (ClaimType.isCollaborationProtocol(claimType) && isAllowCollaborationProtocolPenaltyCharges())
                 || (ClaimType.isInsurerVsInsurer(claimType) && isAllowInsurervsInsurerPenaltyCharges())
                 || (ClaimType.isInsurerUpload(claimType) && isAllowManualInvoicePenaltyCharges())
                 || (ClaimType.isTPI(claimType) && isAllowTPIPenaltyCharges())) {
@@ -188,6 +192,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setAllowFixedFeePenaltyCharges(boolean allowFixedFeePenaltyCharges) {
         this.allowFixedFeePenaltyCharges = allowFixedFeePenaltyCharges;
+    }
+
+    public boolean isAllowCollaborationProtocolPenaltyCharges() {
+        return allowCollaborationProtocolPenaltyCharges;
+    }
+
+    public void setAllowCollaborationProtocolPenaltyCharges(boolean allowCollaborationProtocolPenaltyCharges) {
+        this.allowCollaborationProtocolPenaltyCharges = allowCollaborationProtocolPenaltyCharges;
     }
 
     public boolean isAllowTPIPenaltyCharges() {
@@ -441,6 +453,22 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         }
 
         return maxHireNetCeiling;
+    }
+
+    public boolean isAcquisitionChargeCheck() {
+        return acquisitionChargeCheck;
+    }
+
+    public void setAcquisitionChargeCheck(boolean acquisitionChargeCheck) {
+        this.acquisitionChargeCheck = acquisitionChargeCheck;
+    }
+
+    public boolean isOverheadChargeCheck() {
+        return overheadChargeCheck;
+    }
+
+    public void setOverheadChargeCheck(boolean overheadChargeCheck) {
+        this.overheadChargeCheck = overheadChargeCheck;
     }
 
     public boolean isAutomaticChargeCheck() {

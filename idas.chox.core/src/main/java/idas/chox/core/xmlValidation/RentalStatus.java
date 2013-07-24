@@ -14,7 +14,8 @@ public enum RentalStatus {
     INVOICEONLY("invoiceonly"),
     INSURERUPLOAD("insurerupload"),
     SUBSCRIBER("subscriber"),
-    FIXEDFEE("fixedfee");
+    FIXEDFEE("fixedfee"),
+    COLLABORATION("collaborationprotocol");
 
     private String description;
     
@@ -102,6 +103,14 @@ public enum RentalStatus {
 
     public static boolean isFixedFeeRentalStatus(String rentalStatus) {
         if (RentalStatus.FIXEDFEE.getDescription().equals(rentalStatus)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isCollaborationProtocolRentalStatus(String rentalStatus) {
+        if (RentalStatus.COLLABORATION.getDescription().equals(rentalStatus)) {
             return true;
         }
 

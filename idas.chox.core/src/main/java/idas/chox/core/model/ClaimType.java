@@ -27,8 +27,11 @@ public enum ClaimType {
     FIXED_FEE_SUPPLEMENTARY_INVOICE             (13, "Fixed Fee (Supp. Invoice)"),
     INSURER_CLAIM                               (14, "Insurer Claim"),
     INSURER_ORIGINAL_INVOICE                    (15, "Insurer Claim (Orig. Invoice)"),
-    INSURER_SUPPLEMENTARY_INVOICE               (16, "Insurer Claim (Supp. Invoice)"),
-    INSURER_UPLOAD                              (17, "Insurer Upload");
+    INSURER_SUPPLEMENTARY_INVOICE               (16, "Insurer Claim  (Orig. Invoice)"),
+    INSURER_UPLOAD                              (17, "Insurer Upload"),
+    COLLABORATION_PROTOCOL                      (18, "Collaboration Protocol"),
+    COLLABORATION_PROTOCOL_ORIGINAL_INVOICE     (19, "Collaboration Protocol (Orig. Invoice)"),
+    COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE (20, "Collaboration Protocol (Supp. Invoice)");
 
     private final String description;
     private final int claimTypeValue;
@@ -66,7 +69,7 @@ public enum ClaimType {
     }
 
     public static boolean allowAutomaticPenaltyCharges(ClaimType claimType) {
-        if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType)) {
+        if (isGTA(claimType) || isSubscriber(claimType) || isFixedFee(claimType) || isCollaborationProtocol(claimType)) {
             return true;
         }
 
@@ -112,6 +115,16 @@ public enum ClaimType {
         return false;
     }
 
+    public static boolean isCollaborationProtocol(ClaimType claimType) {
+        if (claimType == ClaimType.COLLABORATION_PROTOCOL
+                ||  claimType == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE) {
+            return true;
+        }
+        
+        return false;
+    }
+
     public static boolean isSupplementaryInvoice(ClaimType claimType) {
         if (claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE
@@ -119,6 +132,8 @@ public enum ClaimType {
                 ||  claimType == ClaimType.GTA_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.FIXED_FEE_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
                 ||  claimType == ClaimType.INSURER_ORIGINAL_INVOICE
@@ -134,6 +149,7 @@ public enum ClaimType {
                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
                                 ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE,
+                                ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE,
                                 ClaimType.INSURER_SUPPLEMENTARY_INVOICE};
     }
     
@@ -142,6 +158,7 @@ public enum ClaimType {
                    + ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.INSURER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
+                   + ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ","
                    + ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE.getClaimTypeValue() + ")";
     }
     
@@ -158,6 +175,7 @@ public enum ClaimType {
                                 ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
                                 ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_ORIGINAL_INVOICE,
+                                ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE,
                                 ClaimType.FIXED_FEE_ORIGINAL_INVOICE};
     }
     
@@ -166,10 +184,12 @@ public enum ClaimType {
                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
                                 ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE,
+                                ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE,
                                 ClaimType.GTA_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
                                 ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
                                 ClaimType.FIXED_FEE_ORIGINAL_INVOICE,
+                                ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_ORIGINAL_INVOICE,
                                 ClaimType.INSURER_SUPPLEMENTARY_INVOICE};
     }
@@ -178,6 +198,7 @@ public enum ClaimType {
         if (claimType == ClaimType.GTA_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.FIXED_FEE_ORIGINAL_INVOICE
+                ||  claimType == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.INSURER_ORIGINAL_INVOICE
                 ||  claimType == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
             return true;

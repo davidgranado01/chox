@@ -1413,7 +1413,7 @@ div.admin-bre-band-detail-section div.section-name{
     padding-bottom:20px;
 }
 
-div#section-heading{
+div.admin-bre-band-detail-section div.section-heading{
     color:#15428B;
     font-family:tahoma,arial,helvetica,sans-serif;
     font-size:14px;

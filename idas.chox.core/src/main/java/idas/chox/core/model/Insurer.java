@@ -49,12 +49,14 @@ public class Insurer extends Entity implements Serializable {
     private String gtaRegexExpression;
     private String subscriberRegexExpression;
     private String fixedFeeRegexExpression;
+    private String collaborationProtocolRegexExpression;
     private String insurerVsInsurerRegexExpression;
     private String insurerManualRegexExpression;
     private boolean tpiAutoRoutingEnable;
     private boolean gtaAutoRoutingEnable;
     private boolean subscriberAutoRoutingEnable;
     private boolean fixedFeeAutoRoutingEnable;
+    private boolean colaborationProtocolAutoRoutingEnable;
     private boolean insurerVsInsurerAutoRoutingEnable;
     private boolean insurerManualAutoRoutingEnable;
     private int forcePasswordChange;
@@ -65,6 +67,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean claimUploadEnabled;
     private boolean allowSubscriberClaims;
     private boolean allowFixedFeeClaims;
+    private boolean allowCollaborationProtocolClaims;
     private Integer timesInStatusContested;
     private Integer daysBeforeEscalated;
     private boolean enableIPWhitelist;
@@ -84,7 +87,7 @@ public class Insurer extends Entity implements Serializable {
     public void setBlockedMessage(String blockedMessage) {
         this.blockedMessage = blockedMessage;
     }
-    
+
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
     }
@@ -514,23 +517,31 @@ public class Insurer extends Entity implements Serializable {
         this.allowFixedFeeClaims = allowFixedFeeClaims;
     }
 
-	public Integer getTimesInStatusContested() {
-		return timesInStatusContested;
-	}
+    public boolean isAllowCollaborationProtocolClaims() {
+        return allowCollaborationProtocolClaims;
+    }
 
-	public void setTimesInStatusContested(Integer timesInStatusContested) {
-		this.timesInStatusContested = timesInStatusContested;
-	}
+    public void setAllowCollaborationProtocolClaims(boolean allowCollaborationProtocolClaims) {
+        this.allowCollaborationProtocolClaims = allowCollaborationProtocolClaims;
+    }
 
-	public Integer getDaysBeforeEscalated() {
-		return daysBeforeEscalated;
-	}
+    public Integer getTimesInStatusContested() {
+        return timesInStatusContested;
+    }
 
-	public void setDaysBeforeEscalated(Integer daysBeforeEscalated) {
-		this.daysBeforeEscalated = daysBeforeEscalated;
-	}
+    public void setTimesInStatusContested(Integer timesInStatusContested) {
+        this.timesInStatusContested = timesInStatusContested;
+    }
 
-	public boolean isEnableIPWhitelist() {
+    public Integer getDaysBeforeEscalated() {
+        return daysBeforeEscalated;
+    }
+
+    public void setDaysBeforeEscalated(Integer daysBeforeEscalated) {
+        this.daysBeforeEscalated = daysBeforeEscalated;
+    }
+
+    public boolean isEnableIPWhitelist() {
         return enableIPWhitelist;
     }
 
@@ -561,7 +572,7 @@ public class Insurer extends Entity implements Serializable {
     public void setMaxLoginAttempts(int maxLoginAttempts) {
         this.maxLoginAttempts = maxLoginAttempts;
     }
-    
+
     public boolean isDisablePrivateNotes() {
         return disablePrivateNotes;
     }
@@ -569,7 +580,7 @@ public class Insurer extends Entity implements Serializable {
     public void setDisablePrivateNotes(boolean disablePrivateNotes) {
         this.disablePrivateNotes = disablePrivateNotes;
     }
-    
+
     public Integer getEcdIncreaseTriggerPercentage() {
         return ecdIncreaseTriggerPercentage;
     }
@@ -627,6 +638,14 @@ public class Insurer extends Entity implements Serializable {
         this.fixedFeeRegexExpression = fixedFeeRegexExpression;
     }
 
+    public String getCollaborationProtocolRegexExpression() {
+        return collaborationProtocolRegexExpression;
+    }
+
+    public void setCollaborationProtocolRegexExpression(String collaborationProtocolRegexExpression) {
+        this.collaborationProtocolRegexExpression = collaborationProtocolRegexExpression;
+    }
+
     public String getInsurerVsInsurerRegexExpression() {
         return insurerVsInsurerRegexExpression;
     }
@@ -676,6 +695,14 @@ public class Insurer extends Entity implements Serializable {
         this.fixedFeeAutoRoutingEnable = fixedFeeAutoRoutingEnable;
     }
 
+    public boolean isColaborationProtocolAutoRoutingEnable() {
+        return colaborationProtocolAutoRoutingEnable;
+    }
+
+    public void setColaborationProtocolAutoRoutingEnable(boolean colaborationProtocolAutoRoutingEnable) {
+        this.colaborationProtocolAutoRoutingEnable = colaborationProtocolAutoRoutingEnable;
+    }
+
     public boolean isInsurerVsInsurerAutoRoutingEnable() {
         return insurerVsInsurerAutoRoutingEnable;
     }
@@ -693,5 +720,4 @@ public class Insurer extends Entity implements Serializable {
             boolean insurerManualAutoRoutingEnable) {
         this.insurerManualAutoRoutingEnable = insurerManualAutoRoutingEnable;
     }
-
 }

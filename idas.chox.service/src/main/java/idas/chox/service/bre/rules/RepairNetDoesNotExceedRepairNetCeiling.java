@@ -24,7 +24,7 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isRepairNetDoesNotExceedBandRepairNetCeiling()) {
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();

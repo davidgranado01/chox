@@ -51,7 +51,7 @@ public class WorkgroupRouting extends BaseActivity {
         }
 
         if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()) {
-            LOG.debug("Trying to rout claim...");
+            LOG.debug("Trying to route claim...");
             if (autoWorkgroupRouting(claim)) {
                 LOG.debug("Claim has been auto-routed - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);

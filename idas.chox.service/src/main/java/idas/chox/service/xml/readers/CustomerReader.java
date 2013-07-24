@@ -30,6 +30,7 @@ public class CustomerReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_COLLABORATION_CLAIM)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
                 || (claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE) && claimResult.getClaim().getClaimType() == ClaimType.INSURER_INVOICE)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)

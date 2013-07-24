@@ -1,0 +1,38 @@
+---------------------------------------------
+--   7.5.1 Ai Collaboration Protocol       --
+---------------------------------------------
+ALTER TABLE bre_band ADD COLUMN allow_collaboration_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN acquisition_charge_check BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE bre_band ADD COLUMN overhead_charge_check BOOLEAN NOT NULL DEFAULT TRUE;
+
+ALTER TABLE chorganisation ADD COLUMN enable_collaboration_claims BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE insurer ADD COLUMN collaboration_regex_expression character varying(128);
+ALTER TABLE insurer ADD COLUMN is_collaboration_auto_routing_enable BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE insurer ADD COLUMN allow_collaboration_claims BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE invoice ADD COLUMN acquisition_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN acquisition_qty smallint NOT NULL DEFAULT 0;
+ALTER TABLE invoice ADD COLUMN overhead_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN overhead_qty smallint NOT NULL DEFAULT 0;
+
+ALTER TABLE invoice_original ADD COLUMN acquisition_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN acquisition_qty smallint NOT NULL DEFAULT 0;
+ALTER TABLE invoice_original ADD COLUMN overhead_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice_original ADD COLUMN overhead_qty smallint NOT NULL DEFAULT 0;
+
+ALTER TABLE vehicle_hire DROP COLUMN cdw_fee;
+ALTER TABLE vehicle_hire DROP COLUMN automatic_fee;
+ALTER TABLE vehicle_hire DROP COLUMN sat_nav_fee;
+ALTER TABLE vehicle_hire DROP COLUMN estate_fee;
+ALTER TABLE vehicle_hire DROP COLUMN baby_seat_fee;
+ALTER TABLE vehicle_hire DROP COLUMN tow_bars_fee;
+ALTER TABLE vehicle_hire DROP COLUMN non_standard_insurance_premium_fee;
+ALTER TABLE vehicle_hire DROP COLUMN admin_fee;
+ALTER TABLE vehicle_hire DROP COLUMN roof_rack_fee;
+ALTER TABLE vehicle_hire DROP COLUMN dual_control_fee;
+ALTER TABLE vehicle_hire DROP COLUMN delivery_collection_fee;
+
+------------------------
+-- END of 7.5.1       --
+------------------------

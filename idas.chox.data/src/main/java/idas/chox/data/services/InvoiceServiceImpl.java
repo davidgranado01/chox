@@ -59,6 +59,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
             InvoiceOriginal invOriginal = new InvoiceOriginal();
             invOriginal.setDateInvoicedOriginal(inv.getDateInvoiced());
+            invOriginal.setAcquisitionQtyOriginal(inv.getAcquisitionQty());
+            invOriginal.setOverheadQtyOriginal(inv.getOverheadQty());
             invOriginal.setMiscellaneousQtyOriginal(inv.getMiscellaneousQty());
             invOriginal.setAutomaticQtyOriginal(inv.getAutomaticQty());
             invOriginal.setSatNavQtyOriginal(inv.getSatNavQty());
@@ -89,6 +91,8 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             invOriginal.setDeductionForClaimsHandlingFeeOriginal(inv.getDeductionForClaimsHandlingFee());
             invOriginal.setDiscountOriginal(inv.getDiscount());
             invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay());
+            invOriginal.setAcquisitionFeeOriginal(inv.getAcquisitionFee());
+            invOriginal.setOverheadFeeOriginal(inv.getOverheadFee());
             invOriginal.setMiscellaneousFeeOriginal(inv.getMiscellaneousFee());
             invOriginal.setAutomaticFeeOriginal(inv.getAutomaticFee());
             invOriginal.setSatNavFeeOriginal(inv.getSatNavFee());

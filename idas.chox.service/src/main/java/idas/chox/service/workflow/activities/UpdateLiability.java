@@ -79,7 +79,7 @@ public class UpdateLiability extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        LOG.debug("claim status " + claim.getLiabilityStatus());
+        LOG.debug("claim status='{}'", claim.getLiabilityStatus());
         if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL
                 && !ClaimType.isInsurerVsInsurer(claim.getClaimType())
                 && !ClaimType.isSubscriber(claim.getClaimType())

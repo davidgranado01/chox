@@ -74,12 +74,20 @@ public class DataValidationParameter {
                 ruleModel.setNewClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newClaim"));
             }
             
+            if (fieldElement.getElementsByTagName("data-mandatory-newCollaborationClaim") != null) {
+                ruleModel.setNewCollaborationClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newCollaborationClaim"));
+            }
+            
             if (fieldElement.getElementsByTagName("data-mandatory-newInsurerInvoice") != null) {
                 ruleModel.setInsurerInvoiceDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-newInsurerInvoice"));
             }
             
             if (fieldElement.getElementsByTagName("data-mandatory-existingClaim") != null) {
                 ruleModel.setExistingClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingClaim"));
+            }
+            
+            if (fieldElement.getElementsByTagName("data-mandatory-existingCollaborationClaim") != null) {
+                ruleModel.setExistingCollaborationClaimDataMandatory(XmlHelper.getNodeValue(fieldElement, "data-mandatory-existingCollaborationClaim"));
             }
             
             if (fieldElement.getElementsByTagName("data-mandatory-newInvoice") != null) {
