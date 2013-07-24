@@ -22,7 +22,7 @@ function generateReport(queryString)
                             
             }
         });
-        if(reportName=='ClaimFileReport-Excel'){
+        if(reportName==='ClaimFileReport-Excel'){
             Ext.MessageBox.show({
                 title        : 'Generating Report...', 
                 buttons      :  Ext.Msg.CANCEL,
@@ -50,7 +50,7 @@ function generateReport(queryString)
 }
     
 function cancelReportGeneration(btn){
-    if (btn == 'cancel'){
+    if (btn === 'cancel'){
         Ext.MessageBox.hide();
         reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
         Ext.Ajax.request({
@@ -110,7 +110,7 @@ var loadLiveReportGenerationStatus = function updateExportedClaim(){
         }
     });
                 
-}
+};
 
 
 function generateReport1(queryString,reportName)
@@ -137,15 +137,14 @@ function generateReport1(queryString,reportName)
 
 }
 
-function find_MSIE_version()
-{
-    var ua = window.navigator.userAgent
-    var msie = ua.indexOf ( "MSIE " )
+function find_MSIE_version(){
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf ( "MSIE " );
 
     if ( msie > 0 )      // If Internet Explorer, return version number
-        return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )))
+        return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
     else                 // If another browser, return 0
-        return 0
+        return 0;
 
 }
 

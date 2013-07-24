@@ -19,6 +19,7 @@
     <property column="benefit_share" name="benefitShare"/>
     <property column="fixed_transaction_fee" name="fixedTransactionFee"/>
     <property column="fixed_transaction" name="fixedTransaction"/>
+    <property column="manual_claims_only" name="manualClaimsOnly"/>
     <property column="manual" name="manual"/>
     <property column="reconciled" name="reconciled"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" lazy="false" name="createdBy"/>

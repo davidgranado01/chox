@@ -97,10 +97,10 @@ public class BillingInsurerReport implements Report {
                 sb.append("and cr.id = cm.customer_id ");
                 sb.append("and tp.id = cm.third_party_id ");
                 sb.append("and cm.id = at.claim_id ");
-                sb.append("and at.reverted=false and at.new_status='PaymentReceived' ");
+                sb.append("and at.reverted=false and (at.new_status='PaymentReceived' or at.new_status='ManualInvoicePaid')");
                 sb.append("and cm.chorganisation_id = cho.id ");
                 sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id ");
-                sb.append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date < at.update_date)");
+                sb.append("and not exists (select * from audit_trail a where a.reverted=false and a.claim_id=at.claim_id and (a.new_status='PaymentReceived' or a.new_status='ManualInvoicePaid') and a.update_date < at.update_date)");
 
             
 

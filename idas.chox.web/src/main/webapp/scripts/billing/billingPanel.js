@@ -55,7 +55,7 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
 
     // private
     initComponent : function(){
-        if(this.statusAlign=='right'){
+        if(this.statusAlign==='right'){
             this.cls += ' x-status-right';
         }
         Ext.StatusBar.superclass.initComponent.call(this);
@@ -69,7 +69,7 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
     setStatus : function(o){
         o = o || {};
 
-        if(typeof o == 'string'){
+        if(typeof o === 'string'){
             o = {
                 text:o
             };
@@ -89,15 +89,15 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
                 anim: true
             };
 
-            if(typeof c == 'object'){
+            if(typeof c === 'object'){
                 c = Ext.applyIf(c, defaults);
                 if(c.wait){
                     wait = c.wait;
                 }
-            }else if(typeof c == 'number'){
+            }else if(typeof c === 'number'){
                 wait = c;
                 c = defaults;
-            }else if(typeof c == 'boolean'){
+            }else if(typeof c === 'boolean'){
                 c = defaults;
             }
 
@@ -183,7 +183,7 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
 
 
     showBusy : function(o){
-        if(typeof o == 'string'){
+        if(typeof o === 'string'){
             o = {
                 text:o
             };
@@ -207,7 +207,7 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
             if(!this.autoCreate){
                 this.autoCreate = {
                     cls: this.toolbarCls + ' x-small-editor'
-                }
+                };
             }
             this.el = ct.createChild(Ext.apply({
                 id: this.id
@@ -222,9 +222,9 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
 
 
         if( !this.tr ){
-            this.tr = this.getLayout().leftTr
+            this.tr = this.getLayout().leftTr;
 
-            var right = this.statusAlign=='right',
+            var right = this.statusAlign==='right';
             td = Ext.get(this.nextBlock());
             if(right){
                 this.getLayout().rightTr.appendChild(td.dom);
@@ -268,6 +268,10 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             id : 'billingTypeId',
             name : 'billingType'
         }, {
+            xtype : 'hidden',
+            id : 'billingNonceId',
+            name : 'nonce'
+        }, {
             xtype : 'combo',
             name : 'choName',
             typeAhead : false,
@@ -300,14 +304,10 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
         }, {
             xtype : 'checkbox',
             name : 'omitSupplementaryInvoice',
-            fieldLabel : 'Omit Supplementary Invoices?'
-        },{
-            xtype : 'hidden',
-            id : 'billingNonceId',
-            name : 'nonce'
+            fieldLabel : 'Omit Supplementary Invoices'
         }];
-        if ( Chox.billing.billingmode == 'insurer'){
-            this.items[1] = {
+        if ( Chox.billing.billingmode === 'insurer'){
+            this.items[2] = {
                 xtype : 'combo',
                 name : 'insurerName',
                 typeAhead : false,
@@ -320,13 +320,17 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
                 allowBlank: false,
                 triggerAction : 'all'
             };
+            this.items[7] = {
+                xtype : 'checkbox',
+                name : 'manualClaimsOnly',
+                fieldLabel : 'Manual Claims Only'
+            };
         }
         
         Chox.billing.BillingForm.superclass.initComponent.call(this);
     },
     frame : true,
     bodyStyle : 'padding:10px',
-    // url : Chox.appname + '/prv/p/addBill.action',
     buttons : [ {
         text : 'Save',
         handler : function() {
@@ -469,7 +473,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     } ],
     listeners:{
         render:function(frm){
-            if ( cb.schSel.getSelected().get('manual') == false){
+            if ( cb.schSel.getSelected().get('manual') === false){
                 cb.paymentFormObj.getComponent(3).setDisabled(true);
             }
         }
@@ -597,7 +601,7 @@ cb.searchWindowObj = new Chox.billing.SearchWindow();
 
 Chox.billing.BillingStore = function(){
     Chox.billing.BillingStore.superclass.constructor.apply(this, arguments);
-}
+};
 
 Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     url: Chox.appname + '/prv/p/listBillingGridData.action',
@@ -634,6 +638,10 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     {
         name : 'manual',
         type : 'boolean'
+    },
+    {
+        name : 'manualClaimsOnly',
+        type : 'boolean'
     }
     ]
     ),
@@ -661,10 +669,10 @@ cb.bstore = new Chox.billing.BillingStore({
     baseParams:{
         billingType:Chox.billing.billingmode
     }
-})
+});
 
 function deleteSchedule(btn) {
-    if (btn == 'yes')    {
+    if (btn === 'yes')    {
         var selected = cb.schSel.getSelected();
         if( selected ){
             var box = Ext.MessageBox.wait('Deleting Bills','Please wait..');
@@ -704,7 +712,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 handler : function(){
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-                        if(cb.schSel.getSelected().get('reconciled')==true){
+                        if(cb.schSel.getSelected().get('reconciled')===true){
                             Ext.MessageBox.show({
                                 title: '',
                                 msg: 'Reconciled record can not be deleted.',
@@ -733,7 +741,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                     var selected = cb.schSel.getSelected();
                     if( selected ){
                         var rptName;
-                        if ( Chox.billing.billingmode =='insurer'){
+                        if ( Chox.billing.billingmode ==='insurer'){
                             rptName = 'BillingInsurerReport-Excel';
                         }else{
                             rptName = 'BillingChoReport-Excel';
@@ -787,7 +795,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                     if ( selected ){
                         // cb.paymentWindowObj.show();
                         cb.paymentFormObj.getForm().loadRecord(selected);
-                        if (selected.get('reconciled')==true){
+                        if (selected.get('reconciled')===true){
                             Ext.MessageBox.alert('', 'The payment has been made already.');
                         // cb.paymentFormObj.setDisabled(true);
                         }else{
@@ -813,6 +821,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         });
         this.bbar = new Ext.StatusBar();
         Chox.billing.BillingGrid.superclass.initComponent.call(this);
+        
     },
     store: cb.bstore,
     height: 240,
@@ -855,6 +864,10 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         header : 'Manual',
         dataIndex : 'manual',
         width : 80
+    },{
+        header : 'Manual Invoices Only',
+        dataIndex : 'manualClaimsOnly',
+        width : 80
     }],
 
     sm : cb.schSel,
@@ -867,7 +880,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 Chox.billing.BillingDetailStore = function(){
     this.billingId = 0;
     Chox.billing.BillingDetailStore.superclass.constructor.apply(this, arguments);
-}
+};
 
 Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
     
@@ -1058,11 +1071,11 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     }],
     listeners:{
         headerclick: function ( grid, columnIndex, e ) {
-            if (columnIndex == 4 ){
+            if (columnIndex === 4 ){
                 if (grid.store.find('reconciled','false') > -1 ) {
                     grid.store.each(function(){
                         //this.beginEdit();
-                        if ( this.get('reconciled') == false) {
+                        if ( this.get('reconciled') === false) {
                             setReconciled(this);
                         }
                     });
@@ -1070,7 +1083,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     if (grid.store.find('reconciled','true') > -1 ) {
                         grid.store.each(function() {
                             //this.beginEdit();
-                            if ( this.get('reconciled') == true) {
+                            if ( this.get('reconciled') === true) {
                                 setNotReconciled(this);
                             }
                         });
@@ -1087,9 +1100,9 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             //                return false;
             //            }
 
-            if (columnIndex == 4 ) {
+            if (columnIndex === 4 ) {
 
-                if ( rec.get('reconciled') == false ){
+                if ( rec.get('reconciled') === false ){
                     setReconciled(rec);
                 } else {
                     setNotReconciled(rec);
@@ -1100,8 +1113,8 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                      */
                 }
             }
-            if (columnIndex == 5 ) {
-                if(rec.get('reconciled') == true){
+            if (columnIndex === 5 ) {
+                if(rec.get('reconciled') === true){
                     Ext.MessageBox.show({
                         title: '',
                         msg: 'Comment can not be added to reconciled record.',
