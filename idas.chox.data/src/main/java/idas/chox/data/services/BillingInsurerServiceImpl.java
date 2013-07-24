@@ -40,7 +40,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
      * @see idas.chox.data.services.BillingInsurerService#checkObject(java.lang.String, java.util.Date, java.util.Date)
      */
     @Override
-    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId) {
+    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId, boolean manualClaims) {
         Map checks = new HashMap();
         DetachedCriteria dc1 = DetachedCriteria.forClass(BillingInsurer.class).add(Restrictions.eq("scheduleName", scheduleName));
         List result1 = getHibernateTemplate().findByCriteria(dc1);
@@ -48,7 +48,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             checks.put("scheduleName", "Schedule name already exists.");
         }
 
-        checkScheduleOverlap(checks, dateFrom, dateTo, insurerId);
+        checkScheduleOverlap(checks, dateFrom, dateTo, insurerId, manualClaims);
         return checks;
     }
 
@@ -57,7 +57,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         return overlap_literal_format.format(date);
     }
 
-    public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int insurerId) {
+    public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int insurerId, boolean manualClaims) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select distinct");
@@ -71,6 +71,11 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         sb.append("from billing_insurer ");
         sb.append("where insurer_id = ");
         sb.append(insurerId);
+        sb.append(" and manual_claims_only = ");
+        if (manualClaims)
+            sb.append("true");
+        else
+            sb.append("false");
 
         String query = sb.toString();
         LOG.debug(query);
@@ -176,7 +181,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
      * @see idas.chox.data.services.BillingInsurerService#deteteObject(idas.chox.core.model.BillingInsurer)
      */
     @Override
-    public void deteteObject(BillingInsurer object) {
+    public void deleteObject(BillingInsurer object) {
         try {
             delete(object);
             LOG.debug("deteteObject successful: {} ", object.getScheduleName());
@@ -188,17 +193,28 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     }
 
     @Override
-    public List<Claim> findClaimsforSchedule(Date from, Date to, Insurer insurer, boolean excludeSupplmntInv) {
-        DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+    public List<Claim> findClaimsforSchedule(Date from, Date to, Insurer insurer,
+                        boolean excludeSupplmntInv, boolean manualInvoicesOnly) {
+        DetachedCriteria criteria;
+        DetachedCriteria auditCriteria;
+        
+        if (manualInvoicesOnly) {
+            auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+                .add(Restrictions.between("updateDate", from, to))
+                .add(Restrictions.eq("newStatus", ClaimStatus.MANUAL_INVOICE_PAID))
+                .add(Restrictions.eq("reverted", Boolean.FALSE))
+                .setProjection(Property.forName("claim.id"));
+        } else {
+            auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
                 .add(Restrictions.eq("reverted", Boolean.FALSE))
                 .setProjection(Property.forName("claim.id"));
+        }
 
         DetachedCriteria billingInsurerDetailCriteria = DetachedCriteria.forClass(BillingInsurerDetail.class)
                 .setProjection(Property.forName("claim.id"));
         
-        DetachedCriteria criteria = null;
         if(excludeSupplmntInv) {
              criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
@@ -224,7 +240,6 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         LOG.debug("Found {} claim IDs matching schedule.", claimIds.size());
         if (!claimIds.isEmpty()) {
             DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class).add(Property.forName("id").in(claimIds));
-
             return findByCriteria(criteria2);
         } else {
             return new ArrayList<Claim>();

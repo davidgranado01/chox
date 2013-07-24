@@ -161,23 +161,24 @@ public class BillingService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo, boolean excludeSupplmntInv) throws Exception {
+    public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo,
+                        boolean excludeSupplmntInv, boolean manualInvoicesOnly) throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
         if (type.equals(INSURER)) {
-            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv);
+            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv, manualInvoicesOnly);
         } else {
             return addChoBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv);
         }
     }
 
-    Map validateInsurerBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo) {
+    Map validateInsurerBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo, boolean manualClaimsOnly) {
         Map hm = new HashMap();
 
-        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo, insurerId);
+        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo, insurerId, manualClaimsOnly);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -187,14 +188,15 @@ public class BillingService {
         return hm;
     }
 
-    public Map addInsurerBill(String scheduleName, int orgId, Date dateFrom, Date dateTo, boolean excludeSupplmntInv) throws Exception {
-        Map hm = validateInsurerBill(scheduleName, orgId, dateFrom, dateTo);
+    public Map addInsurerBill(String scheduleName, int orgId, Date dateFrom, Date dateTo,
+            boolean excludeSupplmntInv, boolean manualInvoicesOnly) throws Exception {
+        Map hm = validateInsurerBill(scheduleName, orgId, dateFrom, dateTo, manualInvoicesOnly);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
         LOG.debug(scheduleName + orgId + dateFrom + dateTo);
         Insurer insurer = insurerService.getInsurer(orgId);
-        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer,excludeSupplmntInv);
+        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer, excludeSupplmntInv, manualInvoicesOnly);
         LOG.debug("no of claims: {}", claimsInDate.size());
         if (claimsInDate.isEmpty()) {
             hm.remove("success");
@@ -224,6 +226,7 @@ public class BillingService {
         bi.setScheduleName(scheduleName);
         bi.setDateFrom(dateFrom);
         bi.setDateTo(dateTo);
+        bi.setManualClaimsOnly(manualInvoicesOnly);
         try {
             Set detailSet = bi.getBillingDetails();
             for (Claim claim : claimsInDate) {
@@ -366,7 +369,7 @@ public class BillingService {
         Map hm = new HashMap();
         try {
             BillingInsurer bi = billingInsurerService.getObject(billingId);
-            billingInsurerService.deteteObject(bi);
+            billingInsurerService.deleteObject(bi);
         } catch (RuntimeException re) {
             LOG.error("Error thrown in deleteInsurerBill: {}", re.getMessage());
             throw re;

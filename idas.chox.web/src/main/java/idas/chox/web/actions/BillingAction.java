@@ -42,6 +42,8 @@ public class BillingAction extends BaseAction {
     private BillingService billingService;
     private boolean excludeSupplmntInv;
     private String omitSupplementaryInvoice;
+    private boolean manualClaims;
+    private String manualClaimsOnly;
 
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -107,7 +109,7 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
-            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), isExcludeSupplmntInv());
+            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), excludeSupplmntInv, manualClaims);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Returning json string: '{}'", jsonObject.toString());
@@ -339,14 +341,6 @@ public class BillingAction extends BaseAction {
         this.claimNumber = claimNumber;
     }
 
-    public boolean isExcludeSupplmntInv() {
-        return excludeSupplmntInv;
-    }
-
-    public void setExcludeSupplmntInv(boolean excludeSupplmntInv) {
-        this.excludeSupplmntInv = excludeSupplmntInv;
-    }
-
     public String getOmitSupplementaryInvoice() {
         return omitSupplementaryInvoice;
     }
@@ -354,6 +348,20 @@ public class BillingAction extends BaseAction {
     public void setOmitSupplementaryInvoice(String omitSupplementaryInvoice) {
         if (omitSupplementaryInvoice != null && omitSupplementaryInvoice.equalsIgnoreCase("on")){
             this.excludeSupplmntInv = true;
+        }
+    }
+    
+
+    public String getManualClaimsOnly() {
+        return manualClaimsOnly;
+    }
+
+    public void setManualClaimsOnly(String manualClaimsOnly) {
+        if (manualClaimsOnly != null && manualClaimsOnly.equalsIgnoreCase("on")){
+            this.manualClaims = true;
+            this.manualClaimsOnly = "true";
+        } else {
+            this.manualClaimsOnly = "false";
         }
     }
 }
