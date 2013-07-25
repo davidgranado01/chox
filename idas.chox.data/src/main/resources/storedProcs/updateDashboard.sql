@@ -36,7 +36,7 @@ update tmp_dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumWeek
 from claim c
-where created_date >= SqlGetDayOfWeek() and (claim_type not in (2,6,9,10,14,15,16,17))
+where created_date >= SqlGetDayOfWeek() and (claim_type not in (2,6,9,10,14,15,16,17,20))
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id ) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -52,7 +52,7 @@ update tmp_dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as claimSubNumMon
 from claim c 
-where created_date >= SqlGetDayOfMonth() and (claim_type not in (2,6,9,10,14,15,16,17))
+where created_date >= SqlGetDayOfMonth() and (claim_type not in (2,6,9,10,14,15,16,17,20))
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
@@ -67,7 +67,7 @@ update tmp_dashboard
    set num_claims_submitted_c = t1.claimSubNumCum
 from (select c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id, count(*) as claimSubNumCum
 from claim c
-where claim_type not in (2,6,9,10,14,15,16,17)
+where claim_type not in (2,6,9,10,14,15,16,17,20)
 group by  c.insurer_id, c.chorganisation_id, c.workgroup_id, c.claim_owner_id, c.cho_claim_owner_id) t1 
 where t1.insurer_id = tmp_dashboard.insurer_id
   and t1.chorganisation_id = tmp_dashboard.chorganisation_id
