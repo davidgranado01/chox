@@ -305,11 +305,13 @@
         if (isFixedTransactionalFee) {
             $("#fixedTransactionalFeeOpt").val("true");
             $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDFixedTransactionalFeeManualValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else {
             $("#fixedTransactionalFeeOpt").val("false");
             $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDFixedTransactionalFeeManualValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
@@ -557,10 +559,12 @@
     function chargeMethodSelected(fixedTransactionalFee) {
         if (fixedTransactionalFee === 'true') {
             $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDFixedTransactionalFeeManualValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else if (fixedTransactionalFee === 'false') {
             $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDFixedTransactionalFeeManualValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
@@ -1031,6 +1035,10 @@
                                 <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                             </div>
     
+                            <div class="chox-form-item" id="CCDFixedTransactionalFeeManualValue">
+                                <label class="chox-form-std-label">Manual Fixed Transactional Fee (£)</label>
+                                <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="fixedTransactionalFeeManualValue" value="<s:property value="fixedTransactionalFeeManualValue" />"/>
+                            </div>
                             <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
                                 <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
                                 <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>

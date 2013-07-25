@@ -25,6 +25,7 @@
     <property column="cho_agreed_benefit_value" name="choAgreedBenefitValue"/>
     <property column="scs_agreed_benefit_share_value" name="scsAgreedBenefitShareValue"/>
     <property column="fixed_transactional_fee_value" name="fixedTransactionalFeeValue"/>
+    <property column="fixed_transactional_fee_manual_value" name="fixedTransactionalFeeManualValue"/>
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_workgroup_enable" name="workgroupEnable"/>
