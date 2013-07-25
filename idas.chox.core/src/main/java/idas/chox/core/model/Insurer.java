@@ -16,6 +16,7 @@ public class Insurer extends Entity implements Serializable {
     private BigDecimal choAgreedBenefitValue;
     private BigDecimal scsAgreedBenefitShareValue;
     private BigDecimal fixedTransactionalFeeValue;
+    private BigDecimal fixedTransactionalFeeManualValue;
     private boolean status;
     private String address1;
     private String address2;
@@ -191,6 +192,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setFixedTransactionalFeeValue(BigDecimal fixedTransactionalFeeValue) {
         this.fixedTransactionalFeeValue = fixedTransactionalFeeValue;
+    }
+
+    public BigDecimal getFixedTransactionalFeeManualValue() {
+        return fixedTransactionalFeeManualValue;
+    }
+
+    public void setFixedTransactionalFeeManualValue(BigDecimal fixedTransactionalFeeManualValue) {
+        this.fixedTransactionalFeeManualValue = fixedTransactionalFeeManualValue;
     }
 
     public BigDecimal getAdminHandlingCharge() {
