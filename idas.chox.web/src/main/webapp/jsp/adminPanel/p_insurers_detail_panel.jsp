@@ -87,10 +87,9 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
-                forceSelection : true,
                 listeners: {
                     select:function() {
-                        if(this.getRawValue() == "") {
+                        if(this.getRawValue() === "") {
                             this.clearValue();
                             this.reset();
                             workgroupId = -1;
@@ -137,10 +136,9 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '<s:property value="claimOwnerIdFieldName"/>',
-            forceSelection : true,
             listeners: {
                 select: function () {
-                    if(this.getRawValue() == "") {
+                    if(this.getRawValue() === "") {
                         this.clearValue();
                         this.reset();
                         claimOwnerId = -1;
@@ -156,11 +154,11 @@
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
        
         $("#formUpdateInsurerDetail").submit(function(){
-            if($("[name='claimOwnerIdField']").val() == ""){
-                $("[name='claimOwnerIdField']").val(-1)
+            if($("[name='claimOwnerIdField']").val() === ""){
+                $("[name='claimOwnerIdField']").val(-1);
                 }
-            if($("[name='workgroupIdField']").val() == ""){
-                $("[name='workgroupIdField']").val(-1)
+            if($("[name='workgroupIdField']").val() === ""){
+                $("[name='workgroupIdField']").val(-1);
                 }
         });
 
@@ -320,11 +318,13 @@
         if (isFixedTransactionalFee) {
             $("#fixedTransactionalFeeOpt").val("true");
             $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDFixedTransactionalFeeManualValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else {
             $("#fixedTransactionalFeeOpt").val("false");
             $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDFixedTransactionalFeeManualValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
@@ -343,7 +343,7 @@
             "checkGtaRegexField",
             function(value, element) {
                     if ($('form#formUpdateInsurerDetail input[id="gtaAutoRoutingEnable"]:checked').val()
-                            && $('#gtaExclusionId').val() == ""){
+                            && $('#gtaExclusionId').val() === ""){
                         return false;
                     }
                 return true;
@@ -354,7 +354,7 @@
                 "checkTpiRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="tpiAutoRoutingEnable"]:checked').val()
-                                && $('#tpiExclusionId').val() == ""){
+                                && $('#tpiExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -365,7 +365,7 @@
                 "checkInsurerManualRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="insurerManualAutoRoutingEnable"]:checked').val()
-                                && $('#insurerManualExclusionId').val() == ""){
+                                && $('#insurerManualExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -376,7 +376,7 @@
                 "checkInsurerVsInsurerRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="insurerVsInsurerAutoRoutingEnable"]:checked').val()
-                                && $('#insurerVsInsurerExclusionId').val() == ""){
+                                && $('#insurerVsInsurerExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -387,7 +387,7 @@
                 "checkSubscriberRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="subscriberAutoRoutingEnable"]:checked').val()
-                                && $('#subscriberExclusionId').val() == ""){
+                                && $('#subscriberExclusionId').val() === ""){
                             return false;
                         }
                     return true;
@@ -398,14 +398,14 @@
                 "checkFixedFeeRegexField",
                 function(value, element) {
                         if ($('form#formUpdateInsurerDetail input[id="fixedFeeAutoRoutingEnable"]:checked').val()
-                                && $('#fixedFeeExclusionId').val() == ""){
+                                && $('#fixedFeeExclusionId').val() === ""){
                             return false;
                         }
                     return true;
                     }
             );
       
-        if($('#CCDName').val() != "")
+        if($('#CCDName').val() !== "")
             $('#nameField').hide();
     });
     
@@ -432,7 +432,7 @@
     }
     
     function getInsurerAdminTabIndex(){
-        if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
+        if($("#tabIndex").val()!==null && $("#tabIndex").val()!==''){
             insDetailAdminTabIndex = $("#tabIndex").val();
         }
     }
@@ -556,10 +556,12 @@
     function chargeMethodSelected(fixedTransactionalFee) {
         if (fixedTransactionalFee === 'true') {
             $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDFixedTransactionalFeeManualValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else if (fixedTransactionalFee === 'false') {
             $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDFixedTransactionalFeeManualValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
@@ -571,7 +573,7 @@
   
         if(response && response.isValid)
         {
-            if(response.resultType && response.resultType == 'New'){
+            if(response.resultType && response.resultType === 'New'){
 
                 Ext.Msg.minWidth = 300;
                 Ext.Msg.alert('New Insurer Created','A new Insurer has been created.');
@@ -614,7 +616,7 @@
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
 <div id="chox-admin-holder" >
-    <div id="chox-admin-col-div" style="width:780">
+    <div id="chox-admin-col-div" style="width:780px">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -1011,6 +1013,10 @@
                                 <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                             </div>
     
+                            <div class="chox-form-item" id="CCDFixedTransactionalFeeManualValue">
+                                <label class="chox-form-std-label">Manual Fixed Transactional Fee (£)</label>
+                                <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="fixedTransactionalFeeManualValue" value="<s:property value="fixedTransactionalFeeManualValue" />"/>
+                            </div>
                             <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
                                 <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
                                 <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>

@@ -207,10 +207,15 @@ public class BillingService {
             return hm;
         }
         BillingInsurer bi = new BillingInsurer();
+        bi.setManualClaimsOnly(manualInvoicesOnly);
         BigDecimal billAmountNet;
         if (insurer.isFixedTransactionalFee()) {
             bi.setFixedTransaction(true);
-            bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
+            if (manualInvoicesOnly) {
+                bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeManualValue());
+            } else {
+                bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
+            }
             billAmountNet = bi.getFixedTransactionFee();
         } else {
             bi.setFixedTransaction(false);
@@ -226,7 +231,6 @@ public class BillingService {
         bi.setScheduleName(scheduleName);
         bi.setDateFrom(dateFrom);
         bi.setDateTo(dateTo);
-        bi.setManualClaimsOnly(manualInvoicesOnly);
         try {
             Set detailSet = bi.getBillingDetails();
             for (Claim claim : claimsInDate) {
