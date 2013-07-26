@@ -86,7 +86,7 @@ select '01. Uploaded claims' as row_title ,
     where (c.insurer_id = params.insurerId or params.insurerId = -1)
         and c.chorganisation_id = cho.id 
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date) as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -164,7 +164,7 @@ select '02. Accepted claims %' as row_title ,
         and c.chorganisation_id = cho.id
         and (c.chorganisation_id = ANY(params.chorgId))
         and a.claim_id=c.id and a.new_status='AwaitingCarHireInfo' and a.reverted=false
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)
      /  NULLIF((select count(*) from claim c, chorganisation cho
     where (c.insurer_id = params.insurerId or params.insurerId = -1)
@@ -177,7 +177,7 @@ select '02. Accepted claims %' as row_title ,
                         where cm.claim_id = c.id and cm.comment ilike 'Claim switched % to GTA.'
                           and a2.claim_id=c.id and a2.new_status='ClaimRejected' and a2.reverted=false
                           and c.reason_of_rejection_id = ror.id and ror.name ilike '%Not Our Policyholder%')
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date), 0))::numeric(5,2)::varchar)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -220,7 +220,7 @@ select '03. Average Time To Accept ' as row_title ,
         and c.chorganisation_id = cho.id
         and a.claim_id = c.id and a.new_status='AwaitingCarHireInfo' and a.reverted=false
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -267,7 +267,7 @@ select '04. Rejected Claims To GTA' as row_title ,
         and cm.claim_id = c.id and cm.comment ilike 'Claim switched % to GTA.'
         and a.claim_id=c.id and a.new_status in ('ClaimRejected','SubscriberClaimRejected') and a.reverted=false
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -318,7 +318,7 @@ select '05. Average Time To Reject GTA claims' as row_title ,
         and a.claim_id=c.id and a.new_status in ('ClaimRejected','SubscriberClaimRejected') and a.reverted=false
         and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status in ('ClaimRejected','SubscriberClaimRejected') and a2.reverted=false and a2.created_date < a.created_date)
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -361,7 +361,7 @@ select '06. Rejected Claims To Claim Rejection Accepted' as row_title ,
         and c.chorganisation_id = cho.id
         and a.claim_id=c.id and a.new_status = 'ClaimRejectionAccepted' and a.reverted=false
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -413,7 +413,7 @@ select '07. Average Time To Reject Claim Closed' as row_title ,
         and exists(select * from audit_trail a2 where a2.claim_id=c.id and a2.reverted=false and a2.new_status='ClaimRejectionAccepted')
         and not exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status in ('ClaimRejected','SubscriberClaimRejected') and a2.reverted=false and a2.created_date < a.created_date)
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -463,7 +463,7 @@ select '08. Volume Rejected - Reason: Indemnity and Liability Issues' as row_tit
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -513,7 +513,7 @@ select '09. Time to Reject - Reason: Indemnity and Liability Issues' as row_titl
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -563,7 +563,7 @@ select '10. Volume Rejected - Reason: Indemnity Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -613,7 +613,7 @@ select '11. Time to Reject - Reason: Indemnity Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -663,7 +663,7 @@ select '12. Volume Rejected - Reason: Insurer vs Insurer' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -713,7 +713,7 @@ select '13. Time to Reject - Reason: Insurer vs Insurer' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -763,7 +763,7 @@ select '14. Volume Rejected - Reason: Intervention' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -813,7 +813,7 @@ select '15. Time to Reject - Reason: Intervention' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -863,7 +863,7 @@ select '16. Volume Rejected - Reason: Liability Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -913,7 +913,7 @@ select '17. Time to Reject - Reason: Liability Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -963,7 +963,7 @@ select '18. Volume Rejected - Reason: Not our Policyholder' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1013,7 +1013,7 @@ select '19. Time to Reject - Reason: Not our Policyholder' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1063,7 +1063,7 @@ select '20. Volume Rejected - Reason: Other' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1113,7 +1113,7 @@ select '21. Time to Reject - Reason: Other' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1163,7 +1163,7 @@ select '22. Volume Rejected - Reason: Out of Scope' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1213,7 +1213,7 @@ select '23. Time to Reject - Reason: Out of Scope' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1263,7 +1263,7 @@ select '24. Volume Rejected - Reason: Out Of Scope - Channel Islands' as row_tit
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1313,7 +1313,7 @@ select '25. Time to Reject - Reason: Out Of Scope - Channel Islands' as row_titl
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1363,7 +1363,7 @@ select '26. Volume Rejected - Reason: Out Of Scope - Foreign' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1413,7 +1413,7 @@ select '27. Time to Reject - Reason: Out Of Scope - Foreign' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1463,7 +1463,7 @@ select '28. Volume Rejected - Reason: Out Of Scope - Isle Of Man' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1513,7 +1513,7 @@ select '29. Time to Reject - Reason: Out Of Scope - Isle Of Man' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1563,7 +1563,7 @@ select '30. Volume Rejected - Reason: Out Of Scope - MIB' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1613,7 +1613,7 @@ select '31. Time to Reject - Reason: Out Of Scope - MIB' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1663,7 +1663,7 @@ select '32. Volume Rejected - Reason: Out Of Scope - Schemes' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1713,7 +1713,7 @@ select '33. Time to Reject - Reason: Out Of Scope - Schemes' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1763,7 +1763,7 @@ select '34. Volume Rejected - Reason: Out Of Scope - Self Insured' as row_title 
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1813,7 +1813,7 @@ select '35. Time to Reject - Reason: Out Of Scope - Self Insured' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1863,7 +1863,7 @@ select '36. Volume Rejected - Reason: Out Of Scope - Tower' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1913,7 +1913,7 @@ select '37. Time to Reject - Reason: Out Of Scope - Tower' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -1963,7 +1963,7 @@ select '38. Volume Rejected - Reason: Quantum' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2013,7 +2013,7 @@ select '39. Time to Reject - Reason: Quantum' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2063,7 +2063,7 @@ select '40. Volume Rejected - Reason: Subscriber Bank Holiday Weekend' as row_ti
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2113,7 +2113,7 @@ select '41. Time to Reject - Reason: Subscriber Bank Holiday Weekend' as row_tit
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2163,7 +2163,7 @@ select '42. Volume Rejected - Reason: Subscriber - Fraud Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2213,7 +2213,7 @@ select '43. Time to Reject - Reason: Subscriber - Fraud Issues' as row_title ,
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2263,7 +2263,7 @@ select '44. Volume Rejected - Reason: Subscriber - Indemnity Issues' as row_titl
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2313,7 +2313,7 @@ select '45. Time to Reject - Reason: Subscriber - Indemnity Issues' as row_title
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2363,7 +2363,7 @@ select '46. Volume Rejected - Reason: Subscriber - Liability Issues' as row_titl
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
@@ -2413,7 +2413,7 @@ select '47. Time to Reject - Reason: Subscriber - Liability Issues' as row_title
         and (   (exists (select * from audit_trail a2 where a2.claim_id=c.id and a2.new_status = 'ClaimRejectionAccepted' and a2.reverted=false and a2.created_date > a.created_date ))
              or (exists (select * from comment where comment.claim_id = c.id and comment like 'Claim switched % to GTA.')))
         and (c.chorganisation_id = ANY(params.chorgId))
-        and c.workgroup_id != ANY(allSupergroups)
+        and c.workgroup_id != ALL(allSupergroups)
         and c.created_date between to_date('01-01-' || to_char(params.endDate - interval '1 day', 'yyyy'), 'mm-dd-yyyy') and end_date)   as other
 
 from (select end_date as endDate, choid as chorgId, insId as insurerId) params
