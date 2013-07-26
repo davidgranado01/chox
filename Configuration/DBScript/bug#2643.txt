@@ -1,7 +1,7 @@
 ALTER TABLE billing_insurer ADD COLUMN manual_claims_only BOOLEAN NOT NULL DEFAULT false;
 
 insert into billing_insurer(insurer_id, schedule_name, date_from, date_to, manual, reconciled, fixed_transaction, fixed_transaction_fee, manual_claims_only, invoice_amount, created_by, created_date, last_modified_by, last_modified_date)
-select 6, 'DLG Manual Claims (retrofit)', '2013-01-01', '2013-07-24', false, false, true,15.00, true, 20592.00, 5, now(), 5, now();
+select 6, 'DLG Manual Claims (retrofit)', '2013-01-01', '2013-06-30', false, false, true,15.00, true, 20592.00, 5, now(), 5, now();
 
 insert into billing_insurer_detail(billing_insurer_id, claim_reference_id, net_claim_cost, amount_received, reconciled, vat_claim_cost, gross_claim_cost, created_by, created_date, last_modified_by, last_modified_date)
 select bi.id, c.id, 15.00, 0.00, false, 24.00, 18.0, 5, now(), 5, now()
