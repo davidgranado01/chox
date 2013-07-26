@@ -14,15 +14,15 @@ import net.sf.json.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.text.MessageFormat;
 
 public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<ReasonOfRejection>, Preparable {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ReasonsOfRejectionAction.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(ReasonsOfRejectionAction.class);
 
     private int insurerId = -1;
     private String activeType;
@@ -51,7 +51,8 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     
     public String getInsurersReasonsOfRejection() {
         try {
-            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasonsOfRejection(this.insurerId, null, null, null, null);
+            List<ReasonOfRejection> reasonsOfRejection = reasonOfRejectionService.getInsurerReasonsOfRejection(
+                                                                this.insurerId, null, null, null, null);
             for (ReasonOfRejection ror : reasonsOfRejection) {
                 reasonOfRejectionViewData.add(new ReasonOfRejectionViewData(ror));
             }
@@ -65,10 +66,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateReasonOfRejection() {
         try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
             ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
             ror.setLastModifiedBy(getAuthenticatedUser());
@@ -87,10 +84,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String addReasonOfRejection() {
         try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to add a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to add a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
             ReasonOfRejection ror = new ReasonOfRejection();
             ror.setInsurer(adminInsurerService.getInsurer(insurerId));
             ror.setLastModifiedDate(DateHelper.getCurrentDate());
@@ -100,6 +93,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
             ror.setRestricted(restricted);
             ror.setType(type);
             ror.setGtaActive(model.isGtaActive());
+            ror.setCollaborationActive(model.isCollaborationActive());
             ror.setSubscriberActive(model.isSubscriberActive());
             ror.setFixedFeeActive(model.isFixedFeeActive());
             ror.setInsurerUploadActive(model.isInsurerUploadActive());
@@ -119,11 +113,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String deleteReasonOfRejection() throws Exception {
         try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to delete a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to delete a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
-            
             if (this.reasonOfRejectionId > 0) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 ActionResponse response;
@@ -140,15 +129,13 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateReasonOfRejectionActive() throws Exception {
         try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
-            
             if (this.reasonOfRejectionId > 0 && activeType != null) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 if(activeType.equals("gtaActive")) {
                     ror.setGtaActive(!ror.isGtaActive());
+                }
+                else if(activeType.equals("collaborationActive")) {
+                    ror.setCollaborationActive(!ror.isCollaborationActive());
                 }
                 else if(activeType.equals("insurerVsInsurerActive")) {
                     ror.setInsurerVsInsurerActive(!ror.isInsurerVsInsurerActive());
@@ -178,12 +165,7 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     
     @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateReasonOfRejectionRestricted() throws Exception {
-        try {
-            if (!getIsChoxAdmin()) {
-                LOG.error("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT): {}");
-                throw new AccessDeniedException("Trying to update a Reason Of Rejection for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
-            }
-            
+        try {            
             if (this.reasonOfRejectionId > 0) {
                 ReasonOfRejection ror = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 ror.setRestricted(!ror.isRestricted());
@@ -200,7 +182,8 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
     
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.getReasonOfRejectionViewData());
-        return "{totalCount:" + this.getReasonOfRejectionViewData().size() + ",results:" + jObject.toString() + "}";
+
+        return MessageFormat.format("'{'totalCount:{0},results:{1}'}'", String.valueOf(this.getReasonOfRejectionViewData().size()), jObject.toString());
     }
 
     public int getInsurerId() {
@@ -214,11 +197,6 @@ public class ReasonsOfRejectionAction extends BaseAction implements ModelDriven<
 
     public List<ReasonOfRejectionViewData> getReasonOfRejectionViewData() {
         return reasonOfRejectionViewData;
-    }
-
-    public void setReasonOfRejectionViewData(
-            List<ReasonOfRejectionViewData> reasonOfRejectionViewData) {
-        this.reasonOfRejectionViewData = reasonOfRejectionViewData;
     }
 
     public ReasonOfRejectionService getReasonOfRejectionService() {

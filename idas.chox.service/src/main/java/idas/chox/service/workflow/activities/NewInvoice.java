@@ -13,6 +13,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.xml.util.NodeHelper;
+import java.text.MessageFormat;
 
 public class NewInvoice extends BaseActivity {
 
@@ -116,7 +117,7 @@ public class NewInvoice extends BaseActivity {
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
         for (History history : History.New(response)) {
-            LOG.debug("Adding BRE history to claim '{}': {} - " + history.getNarrative(), claim.getChoReference(), history.getRuleId());
+            LOG.debug("Adding BRE history to claim '{}': {} - {}", new Object[]{claim.getChoReference(), history.getRuleId(), history.getNarrative()});
             claim.addHistory(history);
         }
 
@@ -207,7 +208,7 @@ public class NewInvoice extends BaseActivity {
             }
             allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
             BigDecimal dailyHireRateCharged = cCalc.getDailyHireRateCharged();
-            LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={} for claim " + claim.getChoReference(), dailyHireRateCharged, allowedDailyRate);
+            LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={} for claim {}", new Object[]{dailyHireRateCharged, allowedDailyRate, claim.getChoReference()});
             if (dailyHireRateCharged.compareTo(allowedDailyRate) > 0) {
                 LOG.debug("Allowed Daily Rate rule would fail for claim '{}'", claim.getChoReference());
                 LOG.debug("Comparing daily hire rate difference of {} to daily rate charge limit of {}", dailyHireRateCharged.subtract(allowedDailyRate), new BigDecimal(claim.getChorganisation().getDailyRateChargeLimit()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
@@ -241,11 +242,17 @@ public class NewInvoice extends BaseActivity {
                     invoice.setTotalGross(invoice.getTotalGross().subtract(hireNetDifference).subtract(hireVatDifference));
                     LOG.debug("Changing Full Total To Pay from {} to {}", invoice.getFullTotalToPay(), invoice.getFullTotalToPay().subtract(hireNetDifference).subtract(hireVatDifference));
                     invoice.setFullTotalToPay(invoice.getFullTotalToPay().subtract(hireNetDifference).subtract(hireVatDifference));
-                    LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                    invoice.setTotalToPay(invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                    LOG.debug("Hire Rate Charged per Day changed  from {} to {}", invoice.getHireRateChargedPerDay(), allowedDailyRate);
+                    if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) 
+                            || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType()) ) {
+                        LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay());
+                        invoice.setTotalToPay(invoice.getFullTotalToPay());
+                    } else {
+                        LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                        invoice.setTotalToPay(invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                    }
+                        LOG.debug("Hire Rate Charged per Day changed  from {} to {}", invoice.getHireRateChargedPerDay(), allowedDailyRate);
                     invoice.setHireRateChargedPerDay(allowedDailyRate);
-                    Comment comment = Comment.newComment(2, "Hire rate adjusted from " + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " to " + allowedDailyRate);
+                    Comment comment = Comment.newComment(2, MessageFormat.format("Hire rate adjusted from {0} to {1}", dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP).toString(), allowedDailyRate.toString()));
                     comment.setClaim(claim);
                     claim.addComment(comment);
                 } else {

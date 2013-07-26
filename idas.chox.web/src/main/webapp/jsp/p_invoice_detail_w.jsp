@@ -40,10 +40,10 @@
         });
         window.onbeforeunload = function(){
 
-            if(randomNumber==20){
+            if(randomNumber===20){
                 isFormChanged=true;
             }
-            if((randomNumber==20) && formChange>=1){
+            if((randomNumber===20) && formChange>=1){
                 Ext.get('claimDetailScreenDiv').unmask();
                 return msg;
             }
@@ -88,7 +88,7 @@
         fsets1.click(function(){
             $(this).next().toggle();
 
-            if(document.getElementById('hideAndShow').value==1){
+            if(document.getElementById('hideAndShow').value===1){
                 ashow=true,bshow=true,cshow=true,dshow=true;
                 a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
@@ -177,8 +177,6 @@
             }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
-//        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
-//        ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
         
         var rentalStartDatePicker = new Ext.form.DateField({
                 name: 'rentalStart',
@@ -256,16 +254,18 @@
                 storageRecoveryNet :{required:true, number:true, min:0},
                 storageRecoveryVat :{required:true, number:true, min:0},
                 storageRecoveryGross :{required:true, number:true, min:0},
-                totalNet :{required:true, number:true, min:0},
-                totalVat :{required:true, number:true, min:0},
-                totalGross :{required:true, number:true, min:0},
-                claimsHandlingInvoiceAmount :{required:true, number:true, min:0},
-                deductionForClaimsHandlingFee :{required:true, number:true, max:0},
-                discount :{required:true, number:true, max:0},
-                fullTotalToPay :{required:true, number:true, min:0},
-                excessAmountCollected :{required:true, number:true, min:0},
-                vatAmountCollected :{required:true, number:true, min:0},
-                dateInvoiced :{required:true, dateITA:true},
+                totalNet:{required:true, number:true, min:0},
+                totalVat:{required:true, number:true, min:0},
+                totalGross:{required:true, number:true, min:0},
+                claimsHandlingInvoiceAmount:{required:true, number:true, min:0},
+                deductionForClaimsHandlingFee:{required:true, number:true, max:0},
+                discount:{required:true, number:true, max:0},
+                fullTotalToPay:{required:true, number:true, min:0},
+                excessAmountCollected:{required:true, number:true, min:0},
+                vatAmountCollected:{required:true, number:true, min:0},
+                dateInvoiced:{required:true, dateITA:true},
+                acquisitionFee:{required:true, number:true},
+                overheadFee:{required:true, number:true},
                 miscellaneousFee:{required:true, number:true},
                 automaticFee:{required:true, number:true},
                 automaticQty:{required:true, digits:true},
@@ -495,7 +495,7 @@
             }
 
             randomNumber=20;
-            if(formChange==1){
+            if(formChange===1){
                 document.getElementById('submitFormAction1').value=formChange;
             }
             document.getElementById('invoiceSubmitAction').value=20;

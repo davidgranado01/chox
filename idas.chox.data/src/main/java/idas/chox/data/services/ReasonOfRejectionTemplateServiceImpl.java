@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -20,12 +19,15 @@ public class ReasonOfRejectionTemplateServiceImpl extends SecureDataService impl
     @Override
     public List<ReasonOfRejectionTemplate> getAllReasonOfRejectionTemplate(String type, Boolean status, Boolean restricted) {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejectionTemplate.class);
-        if(type != null)
-        	criteria.add(Restrictions.eq("type", type));
-        if(status != null)
-        	criteria.add(Restrictions.eq("status", status));
-        if(restricted != null)
-        	criteria.add(Restrictions.eq("restricted", restricted));
+        if (type != null) {
+            criteria.add(Restrictions.eq("type", type));
+        }
+        if (status != null) {
+            criteria.add(Restrictions.eq("status", status));
+        }
+        if (restricted != null) {
+            criteria.add(Restrictions.eq("restricted", restricted));
+        }
         criteria.addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
@@ -40,12 +42,9 @@ public class ReasonOfRejectionTemplateServiceImpl extends SecureDataService impl
 
     @Override
     public List<ReasonOfRejectionTemplate> getReasonOfRejectionTemplates() {
-        List<ReasonOfRejectionTemplate> reasonOfRejectionTemplates = new ArrayList<ReasonOfRejectionTemplate>();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejectionTemplate.class);
         criteria.addOrder(Order.asc("name"));
-        reasonOfRejectionTemplates = findByCriteria(criteria);
-
-        return reasonOfRejectionTemplates;
+        return findByCriteria(criteria);
     }
 }

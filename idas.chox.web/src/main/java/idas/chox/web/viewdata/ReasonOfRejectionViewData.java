@@ -11,6 +11,7 @@ public class ReasonOfRejectionViewData {
     private String description;
     private String type;
     private boolean gtaActive;
+    private boolean collaborationActive;
     private boolean insurerVsInsurerActive;
     private boolean subscriberActive;
     private boolean fixedFeeActive;
@@ -26,6 +27,7 @@ public class ReasonOfRejectionViewData {
         this.type = object.getType();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.gtaActive = object.isGtaActive();
+        this.collaborationActive = object.isCollaborationActive();
         this.insurerVsInsurerActive = object.isInsurerVsInsurerActive();
         this.subscriberActive = object.isSubscriberActive();
         this.fixedFeeActive = object.isFixedFeeActive();
@@ -75,6 +77,14 @@ public class ReasonOfRejectionViewData {
     public void setGtaActive(boolean gtaActive) {
         this.gtaActive = gtaActive;
     }
+
+    public boolean isCollaborationActive() {
+        return collaborationActive;
+    }
+    public void setCollaborationActive(boolean collaborationActive) {
+        this.collaborationActive = collaborationActive;
+    }
+
     public boolean isInsurerVsInsurerActive() {
         return insurerVsInsurerActive;
     }

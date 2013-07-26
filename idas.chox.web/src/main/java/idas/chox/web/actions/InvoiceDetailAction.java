@@ -490,6 +490,14 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getMiscellaneousFeeOriginal();
     }
 
+    public java.math.BigDecimal getAcquisitionFeeOriginal() {
+        return invoiceOriginal.getAcquisitionFeeOriginal();
+    }
+
+    public java.math.BigDecimal getOverheadFeeOriginal() {
+        return invoiceOriginal.getOverheadFeeOriginal();
+    }
+
     public java.math.BigDecimal getAutomaticFeeOriginal() {
         return invoiceOriginal.getAutomaticFeeOriginal();
     }
@@ -2560,6 +2568,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         totalExtras = totalExtras.add(getEstateFee());
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
+        if (ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+            totalExtras = totalExtras.add(getAcquisitionFee());
+            totalExtras = totalExtras.add(getOverheadFee());
+        }
         if (!ClaimType.isTPI(claim.getClaimType())) {
             totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
         } else {

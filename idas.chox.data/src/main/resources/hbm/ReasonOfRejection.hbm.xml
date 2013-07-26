@@ -18,7 +18,8 @@
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="description" name="description"/>
-    <property column="gta_active" name="gtaActive" not-null="true" />
+    <property column="gta_active" name="gtaActive" not-null="true"/>
+    <property column="collaboration_active" name="collaborationActive" not-null="true"/>
     <property column="insurer_vs_insurer_active" name="insurerVsInsurerActive" not-null="true"/>
     <property column="subscriber_active" name="subscriberActive" not-null="true"/>
     <property column="fixed_fee_active" name="fixedFeeActive" not-null="true"/>

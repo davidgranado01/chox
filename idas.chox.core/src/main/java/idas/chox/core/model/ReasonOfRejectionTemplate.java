@@ -9,6 +9,7 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
     private String description;
     private boolean restricted;
     private boolean gtaActive;
+    private boolean collaborationActive;
     private boolean insurerVsInsurerActive;
     private boolean subscriberActive;
     private boolean fixedFeeActive;
@@ -56,6 +57,14 @@ public class ReasonOfRejectionTemplate extends Entity implements Serializable {
 
     public void setGtaActive(boolean gtaActive) {
         this.gtaActive = gtaActive;
+    }
+
+    public boolean isCollaborationActive() {
+        return collaborationActive;
+    }
+
+    public void setCollaborationActive(boolean collaborationActive) {
+        this.collaborationActive = collaborationActive;
     }
 
     public boolean isInsurerVsInsurerActive() {

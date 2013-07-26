@@ -67,6 +67,7 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
             reasonOfRejection.setRestricted(ror.isRestricted());
             reasonOfRejection.setType(ror.getType());
             reasonOfRejection.setGtaActive(ror.isGtaActive());
+            reasonOfRejection.setCollaborationActive(ror.isCollaborationActive());
             reasonOfRejection.setTpiActive(ror.isTpiActive());
             reasonOfRejection.setSubscriberActive(ror.isSubscriberActive());
             reasonOfRejection.setFixedFeeActive(ror.isFixedFeeActive());
@@ -107,6 +108,9 @@ public class ReasonOfRejectionServiceImpl  extends SecureDataService implements 
     private String activeReasonOfRejectionClaimType(ClaimType ct){
         if(ClaimType.isGTA(ct)) {
             return "gtaActive";
+        }
+        else if(ClaimType.isCollaborationProtocol(ct)) {
+            return "collaborationActive";
         }
         else if(ClaimType.isInsurerUpload(ct)) {
             return "insurerUploadActive";

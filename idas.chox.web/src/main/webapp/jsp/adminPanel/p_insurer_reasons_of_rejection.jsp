@@ -37,6 +37,7 @@ $(function(){
              {name:'description'},
              {name:'type'},
              {name:'gtaActive'},
+             {name:'collaborationActive'},
              {name:'insurerVsInsurerActive'},
              {name:'subscriberActive'},
              {name:'fixedFeeActive'},
@@ -68,7 +69,7 @@ $(function(){
         viewConfig:{forceFit:true},
         columns: [
             {header: "Rejection Reason", width: 110, dataIndex: 'rorName', sortable: true, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='high-light-item'>"+value+"</a>" }},
+                    return "<a href='#' class='high-light-item'>"+value+"</a>"; }},
             {header: "Supporting Rejection Note", width: 110, dataIndex: 'description', sortable: true, resizable: true},
             {header: "Type", width: 40, dataIndex: 'type', sortable: true, resizable: true},
             {header: "GTA Active", width: 40, dataIndex: 'gtaActive', sortable: true, resizable: true, 
@@ -83,10 +84,12 @@ $(function(){
                 renderer: booleanLink},
             {header: "TPI Active", width: 40, dataIndex: 'tpiActive', sortable: true, resizable: true, 
                 renderer: booleanLink},
+            {header: "Collaboration Active", width: 40, dataIndex: 'collaborationActive', sortable: true, resizable: true, 
+                renderer: booleanLink},
             {header: "Visible Before Assigned", width: 40, dataIndex: 'restricted', sortable: true, resizable: true,
                 renderer:booleanLink},                    
             {header: "", width: 40, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='high-light-item'>Remove</a>"}}
+                    return "<a href='#' class='high-light-item'>Remove</a>";}}
         ],
         height:155,
         width: 760
@@ -98,10 +101,10 @@ $(function(){
         }else{
             value = "No";
         }
-        return "<a href='#' class='high-light-item'>" + value + "</a>"
+        return "<a href='#' class='high-light-item'>" + value + "</a>";
     }
     
-    if(!rorEditPopWindow || rorEditPopWindow==null)
+    if(!rorEditPopWindow || rorEditPopWindow===null)
     {
         rorEditPopWindow =  new Ext.Window({
             applyTo:'rorEditWindow',
@@ -182,13 +185,12 @@ $(function(){
         hiddenName: 'type',
         width: 150,
         selectOnFocus: true,
-        mode: 'local',
         editable: false,
         allowBlank: false,
         forceSelection: true,
         listeners: {
             select: function() {
-                   if(this.getValue() == 'Claim'){
+                   if(this.getValue() === 'Claim'){
                        $("#restrictedDivId").slideDown();
                        $("form#rorForm input#restricted").attr('checked',false);
                    } else {
@@ -209,20 +211,20 @@ function closeWindowAndRefresh(){
 function editReasonOfRejection(grid, rowIndex, columnIndex, e){
     var gridView = rorGridView.getStore().getAt(rowIndex);
     
-    if(columnIndex==0){
+    if(columnIndex===0){
         showEditReasonOfRejection(gridView);
-    }else if(columnIndex >= 3 && columnIndex <= 8){
+    }else if(columnIndex >= 3 && columnIndex <= 9){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionActive.action";
         var selectedColumn = rorGridView.getColumnModel().getColumnAt(columnIndex).dataIndex;
         var param = {"reasonOfRejectionId":rorId, "activeType": selectedColumn};
         ajax.loadHtml2(url, param, onSubmitHandler);
-    }else if(columnIndex==9){
+    }else if(columnIndex===10){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/updateReasonOfRejectionRestricted.action";
         var param = {"reasonOfRejectionId":rorId};
         ajax.loadHtml2(url, param, onSubmitHandler);
-    } else if(columnIndex==10){
+    } else if(columnIndex===11){
         var rorId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/deleteReasonOfRejection.action";
         var param = {"reasonOfRejectionId":rorId};
@@ -261,6 +263,7 @@ function refreshForm(){
     $("#rorDescTextId").val("");
     $("form#rorForm input#restricted").attr('checked',false);
     $("form#rorForm input#gtaActiveId").attr('checked',false);
+    $("form#rorForm input#collaborationActiveId").attr('checked',false);
     $("form#rorForm input#subscriberActiveId").attr('checked',false);
     $("form#rorForm input#fixedFeeActiveId").attr('checked',false);
     $("form#rorForm input#tpiActiveId").attr('checked',false);
@@ -371,6 +374,18 @@ function showEditReasonOfRejection(gridView){
                                                         <s:checkbox id="fixedFeeActiveId" name="fixedFeeActive" />
                                                     </div>
                                                 </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 50%; height: 15px;">
+                                                <div style="position:relative;width:239px;">
+                                                    <div style="position:absolute;right:0;">
+                                                        <label >Collaboration Protocol Active</label>
+                                                        <s:checkbox id="collaborationActiveId" name="collaborationActive"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%; height: 15px;">
                                             </td>
                                         </tr>
                                         <tr>

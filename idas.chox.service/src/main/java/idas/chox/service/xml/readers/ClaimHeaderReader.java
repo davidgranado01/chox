@@ -256,6 +256,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.debug("TPI Claim found");
                 LOG.debug("TPI is activated for this CHO");
 
+                
                 processTpiInvoice(claimResult, claim);  
             } else {
                 LOG.warn("Invalid hire-state found: {}", hireState);
@@ -265,13 +266,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
                     if (securityInfoProvider.getCurrentUser().isCHO()
                             && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
-                        message = MessageFormat.format("{0}, \u2018Subscriber\u2019", message);
+                        message = MessageFormat.format("{0}, ''Subscriber''", message);
                     }
                     if (securityInfoProvider.getCurrentUser().isCHO()
                             && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
-                        message = MessageFormat.format("{0}, \u2018Fixed Fee\u2019", message);
+                        message = MessageFormat.format("{0}, ''Fixed Fee''", message);
                     }
-                    message = MessageFormat.format("{0} or 'Insurer vs Insurer\u2019.", message);
+                    message = MessageFormat.format("{0} or ''Insurer vs Insurer''.", message);
                     claimResult.getMessage().add(message);
                 } else {
                     claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring' or 'Invoice Only'.");
@@ -355,13 +356,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
             String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
             if (securityInfoProvider.getCurrentUser().isCHO()
                     && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
-                message = MessageFormat.format("{0}, \u2018Subscriber\u2019", message);
+                message = MessageFormat.format("{0}, ''Subscriber''", message);
             }
             if (securityInfoProvider.getCurrentUser().isCHO()
                     && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
-                message = MessageFormat.format("{0}, \u2018Fixed Fee\u2019", message);
+                message = MessageFormat.format("{0}, ''Fixed Fee''", message);
             }
-            message = MessageFormat.format("{0} or 'Insurer vs Insurer\u2019. Alternatively if this is a TPI claim, it must be '{1}'  against this Insurer.",
+            message = MessageFormat.format("{0} or ''Insurer vs Insurer''. Alternatively if this is a TPI claim, it must be ''{1}''  against this Insurer.",
                     message, getTPIidentificationStringForInsurer(insurerAliasNames));
             
             claimResult.getMessage().add(message);
@@ -608,7 +609,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO is attempting to upload a Subscriber claim to an Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.SUBSCRIBER_NOT_ACCEPTED_BY_INSURER);
             claimResult.setValid(false);
-            claimResult.getMessage().add(MessageFormat.format("The Insurer '{0}' does not accept Subscriber claims. Please contact CHOX support.", insurerName));
+            claimResult.getMessage().add(MessageFormat.format("The Insurer ''{0}'' does not accept Subscriber claims. Please contact CHOX support.", insurerName));
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -674,7 +675,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO is attempting to upload a Fixed Fee claim to an Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.FIXEDFEE_NOT_ACCEPTED_BY_INSURER);
             claimResult.setValid(false);
-            claimResult.getMessage().add(MessageFormat.format("The Insurer '{0}' does not accept Fixed Fee claims. Please contact CHOX support.", insurerName));
+            claimResult.getMessage().add(MessageFormat.format("The Insurer ''{0}'' does not accept Fixed Fee claims. Please contact CHOX support.", insurerName));
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -842,7 +843,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(MessageFormat.format("{0} claims found with the same customer claim number (with supplier reference {1}). Please mark one of the claims to identify the original invoice using the 'More Actions' menu to allow a Supplementary Invoice upload for this claim.", claimsWithSameCusClaimRef.size(), sb.toString()));
+                            claimResult.getMessage().add(MessageFormat.format("{0} claims found with the same customer claim number (with supplier reference {1}). Please mark one of the claims to identify the original invoice using the ''More Actions'' menu to allow a Supplementary Invoice upload for this claim.", claimsWithSameCusClaimRef.size(), sb.toString()));
                             claim.setChoReference(choReferenceNumber);
                         } else {
                             LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already have invoice attached.", hireState);

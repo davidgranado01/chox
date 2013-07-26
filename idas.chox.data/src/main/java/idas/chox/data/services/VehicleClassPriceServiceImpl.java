@@ -94,7 +94,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
             if (vehicleClassPrices == null || vehicleClassPrices.isEmpty()) {
                 LOG.warn("No rate found for vehicle class '{}' with start date '{}' and insurerId={}, choId={}",
                         new Object[] {vehicleClass.getName(), startDate, insId, choId});
-                throw new Exception(MessageFormat.format("No rate found for vehicle class '{0}' at age {1}", vehicleClass.getName(), age.setScale(2, BigDecimal.ROUND_HALF_UP)));
+                throw new Exception(MessageFormat.format("No rate found for vehicle class ''{0}'' at age {1}", vehicleClass.getName(), age.setScale(2, BigDecimal.ROUND_HALF_UP)));
             }
             BigDecimal price = ((VehicleClassPrice) vehicleClassPrices.get(0)).getPrice();
             

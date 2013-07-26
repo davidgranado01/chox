@@ -871,13 +871,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.disjunction()
                     .add(Restrictions.sqlRestriction(MessageFormat.format("(current_date - iv1_.created_date::Date) >= {0}",
                             getCurrentUser().getInsurer().getDaysBeforeEscalated())))
-                    .add(Restrictions.sqlRestriction(MessageFormat.format("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = {alias}.id and a.new_status = 'ContestedInvoiceReferredToInsurer' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
+                    .add(Restrictions.sqlRestriction(MessageFormat.format("'{'alias'}'.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = '{'alias'}'.id and a.new_status = ''ContestedInvoiceReferredToInsurer'' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
                             getCurrentUser().getInsurer().getTimesInStatusContested()))));
             } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
                 criteria.add(Restrictions.sqlRestriction(MessageFormat.format("(current_date - iv1_.created_date::Date) >= {0}",
                             getCurrentUser().getInsurer().getDaysBeforeEscalated())));
             } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
-                criteria.add(Restrictions.sqlRestriction(MessageFormat.format("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = {alias}.id and a.new_status = 'ContestedInvoiceReferredToInsurer' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
+                criteria.add(Restrictions.sqlRestriction(MessageFormat.format("'{'alias'}'.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = '{'alias'}'.id and a.new_status = ''ContestedInvoiceReferredToInsurer'' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
                             getCurrentUser().getInsurer().getTimesInStatusContested())));
             } else {
                 // Supervisor activated but no details given - therefore queue should be empty
@@ -1309,7 +1309,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (newClaim == null) {
                 try {
                     claim.setChoReference(newReference);
-                    claim.addComment(Comment.newComment(0, MessageFormat.format("Supplier Reference updated from '{0}' to '{1}'.", oldReference, newReference)));
+                    claim.addComment(Comment.newComment(0, MessageFormat.format("Supplier Reference updated from ''{0}'' to ''{1}''.", oldReference, newReference)));
                     updateClaim(claim);
                     LOG.debug("Claim with reference number {} updated with new Cho reference number: {}", oldReference, newReference);
                     return 0;
@@ -1410,13 +1410,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (!ClaimType.isInsurerVsInsurer(claimType) 
                     && !ClaimType.isSubscriber(claimType)
                     && !ClaimType.isFixedFee(claimType) 
+                    && !ClaimType.isCollaborationProtocol(claimType) 
                     && liabilityStatus != null 
                     && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                             || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = invoice.getFullTotalToPay();
                 BigDecimal insper = claim.getPercentageLiabilityAccepted();
                 invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                LOG.debug("liability updated " + invoice.getTotalToPay());
+                LOG.debug("liability updated {}", invoice.getTotalToPay());
             } else if (!ClaimType.isInsurerVsInsurer(claimType) 
                     && !ClaimType.isSubscriber(claimType)
                     && !ClaimType.isFixedFee(claimType) 
