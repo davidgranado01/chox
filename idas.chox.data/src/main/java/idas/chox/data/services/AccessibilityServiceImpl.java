@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.AccessibilityService;
+import java.text.MessageFormat;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
     private static final Logger LOG = LoggerFactory.getLogger(AccessibilityServiceImpl.class);
@@ -72,7 +73,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
             this.evict(a);
             if (a.getClaimType() == null) {
                 // Valid for all claim types
-                key = a.getName() + "." + ClaimType.GTA.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.GTA.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
@@ -80,35 +81,42 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                     // Accessibility has been used - we now need to duplicate
                     a = new Accessibility(a);
                 }
-                key = a.getName() + "." + ClaimType.SUBSCRIBER.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.COLLABORATION_PROTOCOL.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
                     a = new Accessibility(a);
                 }
-                key = a.getName() + "." + ClaimType.FIXED_FEE.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.SUBSCRIBER.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
                     a = new Accessibility(a);
                 }
-                key = a.getName() + "." + ClaimType.INSURER_VS_INSURER.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.FIXED_FEE.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
                     a = new Accessibility(a);
                 }
-                key = a.getName() + "." + ClaimType.TPI.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.INSURER_VS_INSURER.name());
+                if (map.containsKey(key)) {
+                    addRolesToAccessibility(map.get(key), a);                    
+                } else {
+                    map.put(key, a);
+                    a = new Accessibility(a);
+                }
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.TPI.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
                     map.put(key, a);
                     a = new Accessibility(a);
                }
-                key = a.getName() + "." + ClaimType.INSURER_UPLOAD.name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), ClaimType.INSURER_UPLOAD.name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);                    
                 } else {
@@ -116,7 +124,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
                     a = new Accessibility(a);
                 }
             } else {
-                key = a.getName() + "." + a.getClaimType().name();
+                key = MessageFormat.format("{0}.{1}", a.getName(), a.getClaimType().name());
                 if (map.containsKey(key)) {
                     addRolesToAccessibility(map.get(key), a);
                 } else {

@@ -50,7 +50,7 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
-import java.util.Map;
+import java.text.MessageFormat;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -845,6 +845,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                                 .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
                                 .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
                             .add(Restrictions.conjunction()
+                                .add(Restrictions.eq("breband.allowCollaborationProtocolPenaltyCharges", Boolean.FALSE))
+                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                            .add(Restrictions.conjunction()
                                 .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
                                 .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
                             .add(Restrictions.conjunction()
@@ -866,20 +869,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             
             if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null && getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
                 criteria.add(Restrictions.disjunction()
-                    .add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()))
-                    .add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
-                    "where a.claim_id = {alias}.id " +
-                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
-                    "and a.reverted = false " +
-                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" )));
+                    .add(Restrictions.sqlRestriction(MessageFormat.format("(current_date - iv1_.created_date::Date) >= {0}",
+                            getCurrentUser().getInsurer().getDaysBeforeEscalated())))
+                    .add(Restrictions.sqlRestriction(MessageFormat.format("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = {alias}.id and a.new_status = 'ContestedInvoiceReferredToInsurer' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
+                            getCurrentUser().getInsurer().getTimesInStatusContested()))));
             } else if (getCurrentUser().getInsurer().getDaysBeforeEscalated() != null) {
-                criteria.add(Restrictions.sqlRestriction("(current_date - iv1_.created_date::Date) >= " + getCurrentUser().getInsurer().getDaysBeforeEscalated()));
+                criteria.add(Restrictions.sqlRestriction(MessageFormat.format("(current_date - iv1_.created_date::Date) >= {0}",
+                            getCurrentUser().getInsurer().getDaysBeforeEscalated())));
             } else if (getCurrentUser().getInsurer().getTimesInStatusContested() != null) {
-                criteria.add(Restrictions.sqlRestriction("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a " +
-                    "where a.claim_id = {alias}.id " +
-                    "and a.new_status = 'ContestedInvoiceReferredToInsurer' " +
-                    "and a.reverted = false " +
-                    "group by a.claim_id ) as temp where nr >= " + getCurrentUser().getInsurer().getTimesInStatusContested() + ")" ));
+                criteria.add(Restrictions.sqlRestriction(MessageFormat.format("{alias}.id in (select temp.id from (select count(a.claim_id) as nr, a.claim_id as id from audit_trail a where a.claim_id = {alias}.id and a.new_status = 'ContestedInvoiceReferredToInsurer' and a.reverted = false group by a.claim_id ) as temp where nr >= {0})",
+                            getCurrentUser().getInsurer().getTimesInStatusContested())));
             } else {
                 // Supervisor activated but no details given - therefore queue should be empty
                 criteria.add(Restrictions.eq("status", "NoSuchStatus"));
@@ -936,6 +935,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.FIXED_FEE)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.FIXED_FEE,ClaimType.FIXED_FEE_ORIGINAL_INVOICE,ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE));
+            } 
+            if (searchCriteria.getClaimTypes().contains(ClaimType.COLLABORATION_PROTOCOL)) {
+                ClaimTypes.addAll(Arrays.asList(ClaimType.COLLABORATION_PROTOCOL,ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE,ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE));
             } 
             if (searchCriteria.getClaimTypes().contains(ClaimType.TPI)) {
                 ClaimTypes.addAll(Arrays.asList(ClaimType.TPI));
@@ -1116,17 +1118,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (days >= 1.0) {
             if (days < 2.0) {
-                time = Integer.toString((int) days) + " day ";
+                time = MessageFormat.format("{0} day ", Integer.toString((int) days));
             } else {
-                time = Integer.toString((int) days) + " days ";
+                time = MessageFormat.format("{0} days ", Integer.toString((int) days));
             }
             days -= (int) days;
         }
         int hours = (int) (days * 24.0);
         if (hours > 1) {
-            time += Integer.toString(hours) + " hours";
+            time += MessageFormat.format("{0} hours", Integer.toString(hours));
         } else if (hours > 0) {
-            time += Integer.toString(hours) + " hour";
+            time += MessageFormat.format("{0} hour", Integer.toString(hours));
         }
 
         if (time.length() == 0) {
@@ -1185,9 +1187,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.");
+                Comment comment = Comment.newComment(0, MessageFormat.format("{0} failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.", claim.getInsurer().getName()));
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Subscriber route.");
+                    comment = Comment.newComment(0, MessageFormat.format("{0} failed to respond to the Subscriber notification within the 5 day SLA + {1} day extension, claim taken down Subscriber route.", claim.getInsurer().getName(), claim.getSlaExtDays()));
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1222,9 +1224,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 }
             }
             if (addComment) {
-                Comment comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.");
+                Comment comment = Comment.newComment(0, MessageFormat.format("{0} failed to respond to the Fixed Fee notification within the 14 day SLA, claim taken down Fixed Fee route.", claim.getInsurer().getName()));
                 if (claim.getSlaExtDays() > 0) {
-                    comment = Comment.newComment(0, claim.getInsurer().getName() + " failed to respond to the Fixed Fee notification within the 14 day SLA + "+claim.getSlaExtDays()+" day extension, claim taken down Fixed Fee route.");
+                    comment = Comment.newComment(0, MessageFormat.format("{0} failed to respond to the Fixed Fee notification within the 14 day SLA + {1} day extension, claim taken down Fixed Fee route.", claim.getInsurer().getName(), claim.getSlaExtDays()));
                 }
                 comment.setRaisedBy(userService.getWebUser(999));
                 claim.addComment(comment);
@@ -1307,12 +1309,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (newClaim == null) {
                 try {
                     claim.setChoReference(newReference);
-                    claim.addComment(Comment.newComment(0, "Supplier Reference updated from '" + oldReference + "' to '" + newReference + "'."));
+                    claim.addComment(Comment.newComment(0, MessageFormat.format("Supplier Reference updated from '{0}' to '{1}'.", oldReference, newReference)));
                     updateClaim(claim);
-                    LOG.debug("Claim with reference number " + oldReference + " updated with new Cho reference number: " + newReference);
+                    LOG.debug("Claim with reference number {} updated with new Cho reference number: {}", oldReference, newReference);
                     return 0;
                 } catch (Exception ex) {
-                    LOG.error("Cannot update claim with reference number " + oldReference + " to new Cho reference number: " + newReference, ex);
+                    LOG.error("Cannot update claim with reference number {} to new Cho reference number: {}", new Object[]{oldReference, newReference, ex});
                     return 9;
                 }
             } else {

@@ -33,6 +33,320 @@ ALTER TABLE vehicle_hire DROP COLUMN roof_rack_fee;
 ALTER TABLE vehicle_hire DROP COLUMN dual_control_fee;
 ALTER TABLE vehicle_hire DROP COLUMN delivery_collection_fee;
 
+ALTER TABLE reason_of_rejection ADD collaboration_active boolean NOT NULL DEFAULT TRUE;
+ALTER TABLE reason_of_rejection_template ADD collaboration_active boolean NOT NULL DEFAULT TRUE;
+
+UPDATE reason_of_rejection SET collaboration_active = gta_active;
+UPDATE reason_of_rejection_template SET collaboration_active = gta_active;
+
+--
+-- Accessibility entries
+--
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.AssignOwner.ClaimUnacknowledgedUnassigned', 18, true, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 2, id from accessibility where name='activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, id from accessibility where name='activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, id from accessibility where name='activity.AssignOwner.ClaimUnacknowledgedUnassigned' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimPending', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimPending' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimRejectionContested', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimRejectionContested' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimUnacknowledgedRouted', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedRouted' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimUnacknowledgedUnassigned', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnassigned' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimUnacknowledgedUnrouted', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimUnacknowledgedUnrouted' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejection.ClaimUpdatedByEngineer', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.ClaimRejection.ClaimUpdatedByEngineer' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.ClaimRejectionAccept.ClaimRejected', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.ClaimRejectionAccept.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='activity.ClaimRejectionAccept.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='activity.ClaimRejectionAccept.ClaimRejected' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.RevertClaim.AwaitingCarHireInfo', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.RevertClaim.AwaitingCarHireInfo' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='activity.RevertClaim.AwaitingCarHireInfo' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='activity.RevertClaim.AwaitingCarHireInfo' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.RevertClaim.ClaimRejected', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.RevertClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.RevertClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.RevertClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.RevertClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.RevertClaim.ClaimRejected' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimClosed', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimClosed' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimPending', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimPending' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimReferredToEngineer', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToEngineer' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimReferredToFNOL', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimReferredToFNOL' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimRejected', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejected' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimRejectionAccepted', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionAccepted' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimRejectionContested', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimRejectionContested' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimUnacknowledgedRouted', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedRouted' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimUnacknowledgedUnassigned', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnassigned' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimUnacknowledgedUnrouted', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimUnacknowledgedUnrouted' and claim_type=18;
+
+insert into accessibility(name, claim_type, is_workgroup_check, is_ownership_check)
+select 'activity.SwitchClaim.ClaimUpdatedByEngineer', 18, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CR', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_FNOL', 1, id from accessibility where name='activity.SwitchClaim.ClaimUpdatedByEngineer' and claim_type=18;
+
+
 
 --
 -- Update of applyAutoPenaltyCharge stored procedure

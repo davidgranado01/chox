@@ -31,8 +31,10 @@ import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.xmlValidation.RentalStatus;
+import static idas.chox.core.xmlValidation.RentalStatus.COLLABORATION;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.util.NodeHelper;
+import java.text.MessageFormat;
 
 public class ClaimHeaderReader extends BaseEntityReader {
 
@@ -150,9 +152,18 @@ public class ClaimHeaderReader extends BaseEntityReader {
         try {
             RentalStatus rentalStatus = RentalStatus.fromString(hireState);
             switch(rentalStatus) {
+                case COLLABORATION:
+                    if (!securityInfoProvider.getCurrentUser().getChorganisation().isEnableCollaborationProtocolClaims()) {
+                        claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
+                        claimResult.setValid(false);
+                        claimResult.getMessage().add("Collaboration Protocol claims have not been activated. Please contact CHOX support if you wish to upload Collaboration Protocol claims.");
+                        claim.setChoReference(choReferenceNumber);
+                        claimResult.setClaim(claim);
+                        break;
+                    }
+                    claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL);
                 case INPROGRESS:
                 case COMPLETE:
-                case COLLABORATION:
                     LOG.debug("PROCESSING Normal Chox Claim");
                     processNormalChoxClaim(claimResult, claim);
                     break;
@@ -254,13 +265,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
                     if (securityInfoProvider.getCurrentUser().isCHO()
                             && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
-                        message = message + ", ‘Subscriber’";
+                        message = MessageFormat.format("{0}, \u2018Subscriber\u2019", message);
                     }
                     if (securityInfoProvider.getCurrentUser().isCHO()
                             && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
-                        message = message + ", ‘Fixed Fee’";
+                        message = MessageFormat.format("{0}, \u2018Fixed Fee\u2019", message);
                     }
-                    message = message + " or 'Insurer vs Insurer’.";
+                    message = MessageFormat.format("{0} or 'Insurer vs Insurer\u2019.", message);
                     claimResult.getMessage().add(message);
                 } else {
                     claimResult.getMessage().add("The value provided for the 'hire state' is incorrect. Valid values are: 'InProgress', 'Complete', 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring' or 'Invoice Only'.");
@@ -344,14 +355,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
             String message = "The value provided for the ‘hire state’ is incorrect. Valid values are: ‘InProgress’, ‘Complete’, ‘Off Hired’, ‘Supplementary Invoice’, ‘Hire Monitoring’";
             if (securityInfoProvider.getCurrentUser().isCHO()
                     && securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
-                message = message + ", ‘Subscriber’";
+                message = MessageFormat.format("{0}, \u2018Subscriber\u2019", message);
             }
             if (securityInfoProvider.getCurrentUser().isCHO()
                     && securityInfoProvider.getCurrentUser().getChorganisation().isEnableFixedFeeClaims()) {
-                message = message + ", ‘Fixed Fee’";
+                message = MessageFormat.format("{0}, \u2018Fixed Fee\u2019", message);
             }
-            message = message + " or 'Insurer vs Insurer’. Alternatively if this is a TPI claim, it must be '"
-                              + getTPIidentificationStringForInsurer(insurerAliasNames) + "'  against this Insurer.";
+            message = MessageFormat.format("{0} or 'Insurer vs Insurer\u2019. Alternatively if this is a TPI claim, it must be '{1}'  against this Insurer.",
+                    message, getTPIidentificationStringForInsurer(insurerAliasNames));
             
             claimResult.getMessage().add(message);
             claim.setChoReference(choReferenceNumber);
@@ -460,7 +471,23 @@ public class ClaimHeaderReader extends BaseEntityReader {
         BreBandService breBandService = getBordereauReaderContext().getBreBandService();
 
         int choId = chorganisation == null ? -1 : chorganisation.getId();
-        if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
+        /*
+         * getting insurer from xml to check TPI is Activated
+         */
+        String insurerAliasNames = null;
+        if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL) {
+            Element rootElements = claimResult.getElement();
+            Element claimElements = XMLUtils.getElement(rootElements, "claim");
+            Element elements = XMLUtils.getElement(claimElements, "third-party");
+            insurerAliasNames= XmlHelper.getNodeValue(elements, "name");
+        }
+
+        if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL && !checkCollaborationProtocolActivatedForInsurer(insurerAliasNames)) {
+            claimResult.setClaimParseStatus(ClaimParseStatus.COLLABORATION_NOT_ACCEPTED_BY_INSURER);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("This Insurer does not accept claims under the Collaboration Protocol. Please contact CHOX support.");
+            claim.setChoReference(choReferenceNumber);
+        } else if (isInsurerUpload && !securityInfoProvider.getCurrentUser().getInsurer().isClaimUploadEnabled()) {
             LOG.warn("Invalid new claim rental status: '{}' - Insurer does not have Claim upload enabled", hireState);
             claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_HIRE_STATE);
             claimResult.setValid(false);
@@ -531,7 +558,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         LOG.debug("CHO not found");
                         claimResult.setClaimParseStatus(ClaimParseStatus.INVALID_SCHEMA);
                         claimResult.setValid(false);
-                        claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "' does not allow Insurer uploaded claims. Please contact CHOX Admin.");
+                        claimResult.getMessage().add(MessageFormat.format(
+                                "The CHO '{0}' does not allow Insurer uploaded claims. Please contact CHOX Admin.", chorganisation.getName()));
                     }
                 } else {
                     LOG.debug("SupplierAliasName is null or empty ");
@@ -580,7 +608,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO is attempting to upload a Subscriber claim to an Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.SUBSCRIBER_NOT_ACCEPTED_BY_INSURER);
             claimResult.setValid(false);
-            claimResult.getMessage().add("The Insurer '" + insurerName + "' does not accept Subscriber claims. Please contact CHOX support.");
+            claimResult.getMessage().add(MessageFormat.format("The Insurer '{0}' does not accept Subscriber claims. Please contact CHOX support.", insurerName));
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -646,7 +674,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO is attempting to upload a Fixed Fee claim to an Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.FIXEDFEE_NOT_ACCEPTED_BY_INSURER);
             claimResult.setValid(false);
-            claimResult.getMessage().add("The Insurer '" + insurerName + "' does not accept Fixed Fee claims. Please contact CHOX support.");
+            claimResult.getMessage().add(MessageFormat.format("The Insurer '{0}' does not accept Fixed Fee claims. Please contact CHOX support.", insurerName));
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -814,7 +842,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the 'More Actions' menu to allow a Supplementary Invoice upload for this claim.");
+                            claimResult.getMessage().add(MessageFormat.format("{0} claims found with the same customer claim number (with supplier reference {1}). Please mark one of the claims to identify the original invoice using the 'More Actions' menu to allow a Supplementary Invoice upload for this claim.", claimsWithSameCusClaimRef.size(), sb.toString()));
                             claim.setChoReference(choReferenceNumber);
                         } else {
                             LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For 'supplementary invoice' invoices to be uploaded the original claim must already have invoice attached.", hireState);
@@ -1061,5 +1089,25 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         return insurer.isAllowFixedFeeClaims();
+    }
+    private boolean checkCollaborationProtocolActivatedForInsurer(String insurerAliasName) {
+        Insurer insurer;
+
+        if (insurerAliasName != null && insurerAliasName.length() > 0) {
+            InsurerAlias alias = getBordereauReaderContext().getInsurerAliasService().getInsurerByAliasName(insurerAliasName);
+            if (alias == null) {
+                LOG.warn("No insurer found with alias name '{}'", insurerAliasName);
+                return false;
+            }
+            insurer = alias.getInsurer();
+            if (insurer == null) {
+                return false;
+            }
+        } else {
+            LOG.debug("No insurer name provided.");
+            return false;
+        }
+
+        return insurer.isAllowCollaborationProtocolClaims();
     }
 }
