@@ -21,6 +21,8 @@ public class ExcelInvoice {
     private String claimnumber;
     private Date createdDate;
     private Date autoPenaltyStart;
+    private BigDecimal acquisitionFee;
+    private BigDecimal overheadFee;
     private BigDecimal miscellaneousFee;
     private BigDecimal automaticFee;
     private Short automaticQty;
@@ -106,6 +108,8 @@ public class ExcelInvoice {
         claimnumber = (String) data.get("claimnumber");
         createdDate = (Date) data.get("createddate");
         autoPenaltyStart = (Date) data.get("autopenaltystart");
+        acquisitionFee = (BigDecimal) data.get("acquisitionfee");
+        overheadFee = (BigDecimal) data.get("overheadfee");
         miscellaneousFee = (BigDecimal) data.get("miscellaneousfee");
         automaticFee = (BigDecimal) data.get("automaticfee");
         automaticQty = (Short) data.get("automaticqty");
@@ -405,6 +409,18 @@ public class ExcelInvoice {
 
     public BigDecimal getInterimPaymentReceived() {
         return interimPaymentReceived;
+    }
+
+    public BigDecimal getAcquisitionFee() {
+        return acquisitionFee;
+    }
+
+    public BigDecimal getOverheadFee() {
+        return overheadFee;
+    }
+
+    public Boolean getCoverNoteRequired() {
+        return coverNoteRequired;
     }
 
     public BigDecimal getMiscellaneousFee() {

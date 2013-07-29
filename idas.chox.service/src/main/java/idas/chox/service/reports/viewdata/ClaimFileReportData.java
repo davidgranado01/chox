@@ -215,7 +215,7 @@ public class ClaimFileReportData {
     private String invoiceDate;
     private String invoiceUploadedDate;
     private String penaltyStartDate;
-    private BigDecimal extrasAcquisitionFeeFee;
+    private BigDecimal extrasAcquisitionFee;
     private BigDecimal extrasOverheadFee;
     private BigDecimal extrasMiscellaneousFee;
     private String extrasMiscellaneousTitle;
@@ -283,11 +283,13 @@ public class ClaimFileReportData {
     private BigDecimal extrasRepairAdminFee;
     private BigDecimal extrasRepairAcquisitionFee;
     private boolean subscriberClaim;
+    private boolean collaborationClaim;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
       try {
         claimType = claim.getClaimType().toString();
         subscriberClaim = ClaimType.isSubscriber(claim.getClaimType());
+        collaborationClaim = ClaimType.isCollaborationProtocol(claim.getClaimType());
         if (claim.getChorganisation() != null) {
             choName = claim.getChorganisation().getName();
         }
@@ -656,7 +658,7 @@ public class ClaimFileReportData {
             if (invoice.getAutoPenaltyStart() != null) {
                 penaltyStartDate = DateHelper.getLocalDateTimeFormat().format(invoice.getAutoPenaltyStart());
             }
-            extrasAcquisitionFeeFee = invoice.getAcquisitionFee();
+            extrasAcquisitionFee = invoice.getAcquisitionFee();
             extrasOverheadFee = invoice.getOverheadFee();
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
@@ -1200,12 +1202,12 @@ public class ClaimFileReportData {
         this.extrasMiscellaneousFee = extrasMiscellaneousFee;
     }
 
-    public BigDecimal getExtrasAcquisitionFeeFee() {
-        return extrasAcquisitionFeeFee;
+    public BigDecimal getExtrasAcquisitionFee() {
+        return extrasAcquisitionFee;
     }
 
-    public void setExtrasAcquisitionFeeFee(BigDecimal extrasAcquisitionFeeFee) {
-        this.extrasAcquisitionFeeFee = extrasAcquisitionFeeFee;
+    public void setExtrasAcquisitionFee(BigDecimal extrasAcquisitionFee) {
+        this.extrasAcquisitionFee = extrasAcquisitionFee;
     }
 
     public BigDecimal getExtrasOverheadFee() {
@@ -2750,6 +2752,10 @@ public class ClaimFileReportData {
 
     public boolean isSubscriberClaim() {
         return subscriberClaim;
+    }
+
+    public boolean isCollaborationClaim() {
+        return collaborationClaim;
     }
 
 }
