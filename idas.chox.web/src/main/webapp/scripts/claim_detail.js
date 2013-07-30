@@ -1,6 +1,8 @@
 var switchClaimWindow;
+var closeClaimWindow;
 var mappedInsurersStore;
 var switchClaimToMulInsForm;
+var closeClaimForm;
 var daysArray = [];
 var slaExtensionWindow;
 var availableSlaExtensionDays = availableSlaExtensionDays;
@@ -229,11 +231,110 @@ Ext.onReady(function(){
         slaExtensionForm
         ]
     });
+
+    var closeClaimReasonData = [
+            ['Accepted Interim Payment As Full & Final'],
+            ['No Longer Pursuing Claim'],
+            ['Incorrect At-Fault Insurer'],
+            ['Litigating'],
+            ['Other'],
+            ['Out Of Scope'],
+            ['Payment Received In Full'],
+            ['Pursued Outside Of CHOX'],
+            ['Write Off - Liability'],
+            ['Write Off - Indemnity'],
+            ['Write Off - Claim Validation']
+    ];
+
+
+    closeClaimForm = new Ext.FormPanel({
+        id: 'closeClaimForm-form',
+//        height : 150,
+        frame:true,
+        //        buttonAlign : 'center',
+        items : [
+        {
+            xtype : 'combo',
+            name : 'closeReason',
+            id : 'closeReasonComboId',
+//            width : 180,
+            typeAhead : false,
+            fieldLabel : 'Reason',
+            labelStyle: 'text-align:right;',
+            mode : 'local',
+            blankText: 'Please select a reason',
+            store : new Ext.data.SimpleStore({
+                            id:0,
+                            fields:
+                                [
+                                    'reasonText'
+                                ],
+                            data:closeClaimReasonData
+            }),
+            hiddenName : 'closeReason',
+            displayField : 'reasonText',
+            valueField : 'reasonText',
+            allowBlank: false,
+            triggerAction : 'all',
+            editable : false
+        },{
+            xtype : 'hidden',
+            id : 'nameId',
+            name : 'name',
+            value : 'closeClaim'
+        },{
+            xtype : 'hidden',
+            id : 'closeNonceId',
+            name : 'nonce'
+        }
+        ],
+        buttons:[{
+            text:'Close Claim',
+            handler:function(){
+                if(closeClaimForm.getForm().isValid()){
+                    closeClaimForm.getEl().mask();
+                    var url = contextPath + "/prv/processClaim.action";
+                    var form = $('<form action="' + url + '" method="post">' +
+//                        '<s:hidden name="name" value="closeClaim" />' +
+//                        '<s:hidden name="closeReason" value="I can not be arsed with this" />' +
+                        '<input type="hidden" name="name" value="closeClaim"/>' +
+                        '<input type="hidden" name="closeReason" value="'+ Ext.getCmp('closeReasonComboId').getValue() +'"/>' +
+                        '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
+                        '</form>');
+                    $('body').append(form);
+                    $(form).submit();
+                }
+            }
+        },{
+            text:'Cancel',
+            handler:function(){
+                closeClaimForm.getForm().reset();
+                closeClaimWindow.hide();
+            }
+        }]
+    });
+
+    closeClaimWindow = new Ext.Window({
+        layout:'fit',
+        width:320,
+        height : 100,
+        closable:false,
+        resizable : false,
+        items : [
+            closeClaimForm
+        ]
+    });
     
+
 });
 
 function switchClaimToMultipleInsurer(){
     switchClaimWindow.show(document.body);
+}
+
+function closeClaimStatus(){
+//    closeClaimForm.getForm().setValues([{id : 'closeNonceId', value : nonce}]);
+    closeClaimWindow.show(document.body);
 }
 
 function setSlaExtension() {
