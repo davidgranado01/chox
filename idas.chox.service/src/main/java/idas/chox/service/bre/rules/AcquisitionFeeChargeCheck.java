@@ -17,16 +17,11 @@ public class AcquisitionFeeChargeCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        if (ClaimType.isCollaborationProtocol(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
-                || ClaimType.isFixedFee(claim.getClaimType())) {
-            res.setIsVisibleToCHO(true);
-        } else {
-            res.setIsVisibleToCHO(false);
-        }
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (claim.getBreBand().isAcquisitionChargeCheck()) {
+        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getBreBand().isAcquisitionChargeCheck()) {
 
             boolean success = true;
 
@@ -59,10 +54,7 @@ public class AcquisitionFeeChargeCheck implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(ClaimType claimType) {
-        if (ClaimType.isSubscriber(claimType) || ClaimType.isCollaborationProtocol(claimType)) {
-            return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
-        }
-        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }
 
