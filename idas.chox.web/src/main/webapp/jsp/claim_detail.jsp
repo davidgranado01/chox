@@ -17,14 +17,14 @@
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
-    var claimDetailsDisabled = claimDetailTabAccessibility == 0;
-    var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
-    var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
-    var paymentPackDisabled = paymentPackTabAccessibility == 0;
-    var historyDetailsDisabled = historyTabAccessibility == 0;
-    var commentsDisabled = notesTabAccessibility == 0;
-    var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
-    var auditTrailDisabled = auditTrailTabAccessibility == 0;
+    var claimDetailsDisabled = claimDetailTabAccessibility === 0;
+    var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  === 0;
+    var invoiceDetailsDisabled = invoiceDetailTabAccessibility === 0;
+    var paymentPackDisabled = paymentPackTabAccessibility === 0;
+    var historyDetailsDisabled = historyTabAccessibility === 0;
+    var commentsDisabled = notesTabAccessibility === 0;
+    var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility === 0);
+    var auditTrailDisabled = auditTrailTabAccessibility === 0;
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
     var availableSlaExtensionDays = <s:property value="availableSlaExtensionDays" />;
     var appliedSlaExtDays = <s:property value="slaExtDays" />;
@@ -51,10 +51,10 @@
         // mappedInsurersStore and switchClaimToMulInsForm are declared in claim_detail.js file.
         <s:if test="isInsurer != true">
             var mappedInsurersJsonString = '<s:property value="insurersJsonString" escape="false"/>';
-            if (mappedInsurersJsonString != '') {
+            if (mappedInsurersJsonString !== '') {
                 mappedInsurersStore.loadData(Ext.util.JSON.decode(mappedInsurersJsonString));
             }
-            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : nonce}])
+            switchClaimToMulInsForm.getForm().setValues([{id : 'policyNumberId', value : '<s:property value="policyNumber" />'},{id : 'nonceId', value : nonce}]);
         </s:if>
 
         tabPanel1= new Ext.TabPanel({
@@ -187,25 +187,6 @@
     }
 
     /***********************************************************************************
-     * CLOSE OR OPEN CLAIM
-     ***********************************************************************************/
-    function closeClaimStatus(){
-        
-      Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this claim?',function(btn){  
-        if(btn=='yes'){
-            Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
-            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
-            var form = $('<form action="' + url + '" method="post">' +
-                '<s:hidden name="name" value="closeClaim" />' +
-                '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
-                '</form>');
-            $('body').append(form);
-            $(form).submit();
-         }
-        });
-    }
-
-    /***********************************************************************************
      * GENERATE CLAIM REPORT FILE
      ***********************************************************************************/
     function claimReport(){
@@ -225,7 +206,7 @@
             warningMessage = 'This Claim has an Invoice. If you revert the status of this Claim, the Invoice will be deleted. Are you sure you want to continue?';
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 var url = "<%= request.getContextPath()%>/prv/processClaim.action";
                 var form = $('<form action="' + url + '" method="post">' +
@@ -240,7 +221,7 @@
 
     function reopenClaimStatus(){
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to re-open this claim?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
                 var url = "<%= request.getContextPath()%>/prv/processClaim.action";
                 var form = $('<form action="' + url + '" method="post">' +
@@ -296,7 +277,7 @@
 
         Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?', 
             function ChangeOver(btn){ 
-                if(btn=='yes') {
+                if(btn==='yes') {
                      Ext.Ajax.request({
                      url: '<%= request.getContextPath()%>/prv/p/switchClaim.action',
                      params: {
@@ -350,13 +331,13 @@
         var selectedAction = $("div#claim-detail-extra #extraAction").val();
         $(target).html("");
 
-        if(selectedAction!="" && selectedAction!=null){
+        if(selectedAction!=="" && selectedAction!==null){
             
-            if(selectedAction=='markSupplementaryInvoicedClaim'){
+            if(selectedAction==='markSupplementaryInvoicedClaim'){
                 
                 Ext.MessageBox.confirm('Confirm', 'Are you sure you want to mark this as the original claim for Supplementary Invoices as this claim shares the same Customer Claim Number as another claim?',doMarkSupplementaryInvoiced);
                 function doMarkSupplementaryInvoiced(btn){
-                    if(btn=='yes') {
+                    if(btn==='yes') {
                         var url = "<%= request.getContextPath()%>/prv/"+selectedAction+".action";
                         var param = {"id":<s:property value="id" />};
                         ajax.loadHtml2(url, param, pageRefresh);
@@ -374,8 +355,8 @@
                 });
                 
                 //in case we already have the interim payment div on page we remove the bottom div
-                if(selectedAction == 'updateInterimPayment' && $('#interimPaymentDiv').size() != 0)
-                	$('#interimPaymentDiv').remove()
+                if(selectedAction === 'updateInterimPayment' && $('#interimPaymentDiv').size() !== 0)
+                	$('#interimPaymentDiv').remove();
             }
         }
 
@@ -667,9 +648,9 @@
                 $("#hireMonitoringWId").css("display", "inline");
                 $("#hireMonitoringRId").css("display", "inline");
                 $("#newRevisedECDWId").css("display", "inline");
-                if (document.getElementById("hireMonitoringVehicleDetailRId") != null)
+                if (document.getElementById("hireMonitoringVehicleDetailRId") !== null)
                     $("#hireMonitoringVehicleDetailRId").css("display", "inline");
-                if (document.getElementById("hireMonitoringVehicleDetailWId") != null)
+                if (document.getElementById("hireMonitoringVehicleDetailWId") !== null)
                     $("#hireMonitoringVehicleDetailWId").css("display", "inline");
             } else {
                 document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(true);};
@@ -678,9 +659,9 @@
                 $("#hireMonitoringWId").css("display", "none");
                 $("#hireMonitoringRId").css("display", "none");
                 $("#newRevisedECDWId").css("display", "none");
-                if (document.getElementById("hireMonitoringVehicleDetailRId") != null)
+                if (document.getElementById("hireMonitoringVehicleDetailRId") !== null)
                     $("#hireMonitoringVehicleDetailRId").css("display", "none");
-                if (document.getElementById("hireMonitoringVehicleDetailWId") != null)
+                if (document.getElementById("hireMonitoringVehicleDetailWId") !== null)
                     $("#hireMonitoringVehicleDetailWId").css("display", "none");
             }
         }
@@ -797,9 +778,9 @@
                         if(errorMessageList.length>0){
                             for(var i=0;i<errorMessageList.length;i++){
                                 if(i>0){
-                                    if(errorMessageList[i].charAt(0)=="'") {
+                                    if(errorMessageList[i].charAt(0)==="'") {
                                         messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
-                                    }else if( errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)=="," ){
+                                    }else if( errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)==="," ){
                                         messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
                                     }else{
                                         messageerrorHTML+=('<p>' + errorMessageList[i]);}
@@ -809,9 +790,9 @@
                         
                                 var errorMesgeLength=errorMessageList[i].length;
 
-                                if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!=","&&errorMessageList[i].charAt(errorMesgeLength-1)!=" "){
+                                if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!==","&&errorMessageList[i].charAt(errorMesgeLength-1)!==" "){
                                     messageerrorHTML+='.</p>';
-                                } else  if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)==" "){
+                                } else  if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)===" "){
                                                              
                                     messageerrorHTML+='</p>';
                                 }
