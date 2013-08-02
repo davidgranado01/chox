@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import com.sun.xml.wss.util.DateUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,13 +24,16 @@ import net.sf.jxls.transformer.XLSTransformer;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.Task;
+import idas.chox.core.model.TaskType;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.WebUserUserRoleService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
@@ -73,6 +77,8 @@ public class TasksAction extends BaseAction {
     private boolean writingToFile;
     private boolean exceptionThrown;
     private boolean tooManyRows;
+    private String paymentMethod;
+    private Date paymentDate;
 
     public String getSort() {
         return sort;
@@ -151,6 +157,14 @@ public class TasksAction extends BaseAction {
         this.visibilityRole = visibilityRole;
     }
 
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     @Override
     public String execute() throws Exception {
         return SUCCESS;
@@ -158,7 +172,7 @@ public class TasksAction extends BaseAction {
 
     public String getJsonArrayData() {
         if (jObject != null) {
-            String jsonString = "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
+            String jsonString = new StringBuilder().append("{totalCount:").append(totalCount).append(",results:").append(jObject.toString()).append("}").toString();
             return jsonString;
         }
         return "";
@@ -295,6 +309,13 @@ public class TasksAction extends BaseAction {
     public String createNewTask() {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
+        if (linkToClaim && taskType.equals(TaskType.TOTAL_LOSS_PAYMENT.getDescription())) {
+            if (getIsInsurer()) {
+                taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).append(". Payment Date - ").append(DateHelper.getLocalDateFormat().format(paymentDate)).toString();
+            } else {
+                taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).toString();
+           }
+        }
         task.setDescription(taskDescription);
         task.setDueDate(dueDate);
         task.setType(taskType);
@@ -310,7 +331,7 @@ public class TasksAction extends BaseAction {
                 throw new Exception("The due date for a task must be later than today.");
             }
             if (linkToClaim) {
-                Claim taskClaim = null;
+                Claim taskClaim;
                 if (claimId > 0) {// Must be in Claim Detail task panel
                     LOG.debug("Getting claim with id: {}", claimId);
                     taskClaim = claimService.getClaim(claimId);
@@ -319,7 +340,7 @@ public class TasksAction extends BaseAction {
                     taskClaim = claimService.getClaimByCHOReferenceNumber(choReference.toUpperCase());
                 }
                 if (taskClaim == null) {
-                    throw new Exception("No such claim with Supplier Reference '" + choReference + "'.");
+                    throw new Exception(String.format("No such claim with Supplier Reference %s.", choReference));
                 }
                 task.setClaim(taskClaim);
             }
@@ -327,7 +348,7 @@ public class TasksAction extends BaseAction {
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         } catch (Exception ex) {
             LOG.debug("Error creating new task: {}", ex.getMessage());
-            getActionResponse().AssignMessageResult("Error creating new task: " + ex.getMessage());
+            getActionResponse().AssignMessageResult(String.format("Error creating new task: %s", ex.getMessage()));
         }
 
         return SUCCESS;
@@ -338,7 +359,7 @@ public class TasksAction extends BaseAction {
             taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         } catch (Exception ex) {
-            getActionResponse().AssignMessageResult("Error marking task as completed: " + ex.getMessage());
+            getActionResponse().AssignMessageResult(String.format("Error marking task as completed: %s", ex.getMessage()));
         }
 
         return SUCCESS;
@@ -651,7 +672,7 @@ public class TasksAction extends BaseAction {
     }
 
     public String getJsonData() {
-        return "{exportedTaskCount:" + exportedTaskCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + ",exceptionThrown:" + exceptionThrown + ",tooManyRows:" + tooManyRows + "}";
+        return String.format("{exportedTaskCount:%s,isExportProcessFinished:%s,exportCancelled:%s,writingToFile:%s,exceptionThrown:%s,tooManyRows:%s}", exportedTaskCount, exportFinished, exportCanceled, writingToFile, exceptionThrown, tooManyRows);
     }
 
     public void setExportedTaskCount(int exportedTaskCount) {
@@ -739,7 +760,7 @@ public class TasksAction extends BaseAction {
     }
 
     private String getReportTemplatePath(String reportTemplateName) {
-        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/classes/reports/" + reportTemplateName);
+        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath(new StringBuilder().append("/WEB-INF/classes/reports/").append(reportTemplateName).toString());
 
         return reportDefinationFilePath;
     }

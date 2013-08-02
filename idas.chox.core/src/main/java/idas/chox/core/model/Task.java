@@ -137,5 +137,5 @@ public class Task extends Entity implements Serializable {
 
     public void setRelatedTask(Task relatedTask) {
         this.relatedTask = relatedTask;
-    }
+    }    
 }

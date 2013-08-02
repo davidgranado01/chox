@@ -1,9 +1,10 @@
 package idas.chox.core.model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public enum TaskType {
 	CLIENT_ALLEGATIONS  ("Client Allegations"),
@@ -13,6 +14,7 @@ public enum TaskType {
 	REPAIR_DOCS         ("Repair Documentation"),
 	TELEPHONE_CALL      ("Telephone Call"),
 	TOTAL_LOSS_PACK     ("Total Loss Pack"),
+        TOTAL_LOSS_PAYMENT  ("Total Loss Payment"),
 	WITNESS_STATEMENT   ("Witness Statement(s)"),
 	UNDEFINED_TASK      ("Other") {
             @Override

@@ -22,8 +22,7 @@
                 // Store not loaded yet? Set value when it *is* loaded.
                 // Defer the setValue call until after the next load.
                 if (this.store.getCount() == 0) {
-                    this.store.on('load',
-                    this.setValue.createDelegate(this, [v]), null, {single: true});
+                    this.store.on('load', this.setValue.createDelegate(this, [v]), null, {single: true});
                     return;
                 }
                 //end patch
@@ -79,7 +78,6 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
-            forceSelection : true,
             listeners: {
                 blur: function () {
                     if(this.getRawValue() == "") {
