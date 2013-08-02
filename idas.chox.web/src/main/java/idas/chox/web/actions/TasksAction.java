@@ -309,7 +309,7 @@ public class TasksAction extends BaseAction {
     public String createNewTask() {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
-        if (linkToClaim && taskType.equals(TaskType.TOTAL_LOSS_PAYMENT.getDescription())) {
+        if (taskType.equals(TaskType.TOTAL_LOSS_PAYMENT.getDescription())) {
             if (getIsInsurer()) {
                 taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).append(". Payment Date - ").append(DateHelper.getLocalDateFormat().format(paymentDate)).toString();
             } else {

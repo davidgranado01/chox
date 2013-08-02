@@ -17,7 +17,7 @@
     var taskPanelRecordPerPage=20;
 
     Ext.onReady(function(){
-        var createNewTaskWindowHeight = 280;
+        var createNewTaskWindowHeight = 310;
 
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
         // LOAD RECORDS
@@ -72,7 +72,7 @@
                 }, this);
             },
             onMouseDown : function(e, t){
-                if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
+                if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) !== -1){
                     e.stopEvent();
                     var index = this.grid.getView().findRowIndex(t);
                     var record = this.grid.store.getAt(index);
@@ -161,19 +161,17 @@
                  ]
         });
         
-        
+       
    if (document.getElementById('tasksGridId')) {
 
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
-            // id: 'tasksGridId',
             renderTo:'tasksGridId',
             enableHdMenu:false,
             enableColumnMove: false,
             autoScroll: true,
             layout:'fit',
-            //            bofyBorder: false,
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
             bbar: pagingBar,
@@ -182,23 +180,16 @@
             loadMask: true,
             columns: [
                 checkBoxSelMod,
-                //                checkColumn,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
                     renderer:function(value,p,r){
-                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
-                //                {header: "Supp. Ref.", width: 70, dataIndex: 'choReference', sortable: true, resizable: true},
+                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>';}},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
-                //                {header: "Completed Date", width: 75, dataIndex: 'completedDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
             width:630,
-            //            minHeight: 200,
-            //            autoHeight: true
-            //            maxHeight: 200
-            //            autoWidth: true,
             height:220
         });
 
@@ -242,7 +233,6 @@
             emptyText: 'Please select a task type...'
         });
 
-        //        taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
 
         var visibilityOptions = [
             [1, 'Private'],
@@ -270,7 +260,59 @@
             }
         });
 
+        var paymentMethodData = [
+            ['BACS'],
+            ['CHAPS'],
+            ['Cheque']
+        ];
+
+        var paymentMethodStore = new Ext.data.SimpleStore({
+            id: 0,
+            fields: ['paymentMethodValue'],
+            data: paymentMethodData
+        });
+
+        var paymentMethodCombo = new Ext.form.ComboBox({
+            store: paymentMethodStore,
+            width: 100,
+<s:if test="isCHO">
+            fieldLabel: 'Requested Payment Method',
+</s:if>
+<s:else>
+            fieldLabel: 'Actual Payment Method',
+</s:else>
+            valueField: 'paymentMethodValue',
+            id: 'paymentMethodComboId',
+            hiddenName: 'paymentMethod',
+            displayField: 'paymentMethodValue',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 100,
+            selectOnFocus: true,
+            forceSelection: true,
+            triggerAction: 'all',
+            editable: false,
+            allowBlank: false,
+            emptyText: 'Please Select'
+        });
+
         isCHO = <s:property value="isCHO" />;
+        taskTypeCombo.on('select', function(box, record, index) {
+            var selection = box.getValue();
+            if (selection === 'Total Loss Payment') {
+                if (!isCHO) {
+                     Ext.getCmp('paymentDateId').show();
+                }
+                Ext.getCmp('paymentMethodComboId').show();
+            } else {
+                Ext.getCmp('paymentMethodComboId').hide();
+                if (!isCHO) {
+                     Ext.getCmp('paymentDateId').hide();
+                }
+            }
+        });
+        
+
         var visibilityRoleCombo;
         if (!isCHO) {
             var visibilityRoleReader = new Ext.data.JsonReader({
@@ -300,7 +342,6 @@
             // Create the visibility role combo used for insurer internal tasks only
             visibilityRoleCombo = new Ext.form.ComboBox({
                 fieldLabel: 'Visibility Role',
-                //                    hideLabel: true,
                 hiddenName: 'visibilityRoleCombo',
                 id: 'visibilityRoleComboId',
                 mode: 'local',
@@ -316,7 +357,7 @@
                 displayField:'webUserroleName',
                 width: 170
             });
-            createNewTaskWindowHeight = 300;
+            createNewTaskWindowHeight = 360;
         }
 
         visibilityCombo = new Ext.form.ComboBox({
@@ -359,12 +400,12 @@
                         if (this.value == 3) {
                             // ToDo: claim option ticked and disabled, supp ref box displayed
                             Ext.getCmp('linkToClaimToggleId').setValue(true);
-                            Ext.getCmp('linkToClaimToggleId').disable()
+                            Ext.getCmp('linkToClaimToggleId').disable();
                         }
                         else {
                             // ToDo: claim option ticked and enabled, supp ref box displayed
                             Ext.getCmp('linkToClaimToggleId').setValue(true);
-                            Ext.getCmp('linkToClaimToggleId').enable()
+                            Ext.getCmp('linkToClaimToggleId').enable();
                         }
                         // Note: maybe we should also pass the visibility role?
                         // If so, need to add a listener to the visibilityRole combo
@@ -376,7 +417,6 @@
 
         });
 
-        //        visibilityCombo.setValue(visibilityOptions[0][1]);
         if (!isCHO) {
             createNewTaskForm = new Ext.FormPanel({
                 monitorValid: true,
@@ -385,8 +425,6 @@
                 bodyStyle:'padding:5px 5px 0',
                 labelWidth: 110, // label settings here cascade unless overridden
                 labelAlign: 'right',
-                //            width: 450,
-                //            height: 600,
                 defaults: {width: 230},
                 defaultType: 'textfield',
                 items: [
@@ -402,6 +440,16 @@
                     visibilityCombo,
                     visibilityRoleCombo,
                     taskTypeCombo,
+                    paymentMethodCombo,
+                    new Ext.form.DateField({
+                        fieldLabel: 'Payment Date',
+                        name: 'paymentDate',
+                        id: 'paymentDateId',
+                        allowBlank: false,
+                        format: 'd/m/Y',
+                        minValue: new Date(),
+                        width: 90
+                    }),                    
                     {
                         fieldLabel: 'Description',
                         name: 'description',
@@ -432,6 +480,8 @@
                             var visRole = Ext.getCmp('visibilityRoleComboId').getValue();
                             var description = Ext.getCmp('descriptionId').getValue();
                             var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
+                            var pDate =  dateRenderer(Ext.getCmp('paymentDateId').getValue());
+                            var pMethod = Ext.getCmp('paymentMethodComboId').getValue();
                             var tType =  Ext.getCmp('taskTypeComboId').getValue();
                             var vis = Ext.getCmp('visibilityComboId').getValue();
                             var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
@@ -444,17 +494,18 @@
                                 visibility: vis,
                                 visibilityRole: visRole,
                                 linkToClaim: linkToClaim,
+                                paymentMethod: pMethod,
+                                paymentDate: pDate,
                                 choReference: choRef
                             };
 
                             ajax.loadJson2(url, param, function(data){
-                                if(data.resultType=='YesNo'){
-                                    if(data.result=='yes'){
+                                if(data.resultType==='YesNo'){
+                                    if(data.result==='yes'){
                                         createNewTaskWindow.hide();
-//                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
                                         loadTasks();
                                     }
-                                }else if(data.resultType=='Message'){
+                                }else if(data.resultType==='Message'){
                                     Ext.Msg.alert('Error creating new task',data.result);
                                 }
                             });
@@ -475,9 +526,6 @@
                 bodyStyle:'padding:5px 5px 0',
                 labelWidth: 110, // label settings here cascade unless overridden
                 labelAlign: 'right',
-                //            width: 350,
-                //            height: 400,
-                //            defaults: {width: 230},
                 defaultType: 'textfield',
                 items: [
                     new Ext.form.DateField({
@@ -491,6 +539,7 @@
                     }),
                     visibilityCombo,
                     taskTypeCombo,
+                    paymentMethodCombo,
                     {
                         fieldLabel: 'Description',
                         name: 'description',
@@ -521,6 +570,7 @@
                             var description = Ext.getCmp('descriptionId').getValue();
                             var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
                             var tType =  Ext.getCmp('taskTypeComboId').getValue();
+                            var pMethod = Ext.getCmp('paymentMethodComboId').getValue();
                             var vis = Ext.getCmp('visibilityComboId').getValue();
                             var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
                             var choRef = Ext.getCmp('supplierRefId').getValue();
@@ -529,19 +579,19 @@
                                 taskDescription: description,
                                 dueDate: dDate,
                                 taskType: tType,
+                                paymentMethod: pMethod,
                                 visibility: vis,
                                 linkToClaim: linkToClaim,
                                 choReference: choRef
                             };
 
                             ajax.loadJson2(url, param, function(data){
-                                if(data.resultType=='YesNo'){
-                                    if(data.result=='yes'){
+                                if(data.resultType==='YesNo'){
+                                    if(data.result==='yes'){
                                         createNewTaskWindow.hide();
-//                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
                                         loadTasks();
                                     }
-                                }else if(data.resultType=='Message'){
+                                }else if(data.resultType==='Message'){
                                     Ext.Msg.alert('Error creating new task',data.result);
                                 }
                             });
@@ -560,26 +610,19 @@
             hidden: true,
             closable:false,
             resizable: true,
-            //            constrain: true,
             layout: 'fit',
             width: 420,
             height: createNewTaskWindowHeight,
-            //            plain:true,
             items  : [createNewTaskForm]
         });
 
         taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
         loadTasks();
-        // This is a hack!!! The scroll bars are not dispayed in the
-        // task grid until the grid is visible and has been refreshed,
-        // so we'll add a timer to do this.'
-        // ToDo: sort out scroll-bar problem and remove this timer
-//        setTimeout("gridRefresh()", 100);
       }
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 4) {
+        if (columnIndex === 4) {
             var task = tasksGrid.getStore().getAt(rowIndex);
             var title="Task";
             var msg = "<b>Due Date</b>: " + dateRenderer(task.get("dueDate"));
@@ -599,7 +642,7 @@
     }
 
     function loadTasks(){
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}
+        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
     }
 
@@ -614,14 +657,13 @@
             };
 
             ajax.loadJson2(url, param, function(data){
-                if(data.resultType=='Message'){
+                if(data.resultType==='Message'){
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
             setTimeout("loadTasks()", 100);
         } else {
             Ext.MessageBox.show({
-//                title: 'Error',
                 msg: 'No task selected. Please select a task.',
                 width:300,
                 buttons: Ext.MessageBox.OK,
@@ -634,9 +676,18 @@
     
         taskTypeStore.load({params:{visibility: 1}});
         
-        Ext.getCmp('linkToClaimToggleId').enable()
+        Ext.getCmp('linkToClaimToggleId').enable();
         createNewTaskWindow.show();
         Ext.getCmp('createNewTaskFormId').getForm().reset();
+        // Hide the Total Loss Payment fields
+        var paymentMethodCombo = Ext.getCmp('paymentMethodComboId');
+        if (paymentMethodCombo){
+            paymentMethodCombo.hide();
+        }
+        var paymentDate = Ext.getCmp('paymentDateId');
+        if (paymentDate){
+            paymentDate.hide();
+        }
         // Hide the visibility role combo (and label)
         if (Ext.getCmp('visibilityRoleComboId')) {
             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
