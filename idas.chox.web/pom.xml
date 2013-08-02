@@ -197,13 +197,14 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId> 
-				<version>1.10</version>
+		<version>1.10</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>wsimport</goal> 
                         </goals>
                         <configuration>
+                            <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
                             <wsdlFiles>
                                 <wsdlFile>chox-webservices.wsdl</wsdlFile> 
                             </wsdlFiles>
@@ -229,6 +230,7 @@
                 </configuration>
             </plugin>
 -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
