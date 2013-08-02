@@ -182,6 +182,8 @@
                     <xsd:enumeration value="Roof Rack"/>
                     <xsd:enumeration value="Sat Nav"/>
                     <xsd:enumeration value="Tow Bars"/>
+                    <xsd:enumeration value="Acquisition"/>
+                    <xsd:enumeration value="Overhead and Margin"/>
                 </xsd:restriction>
             </xsd:simpleType>
             
@@ -713,6 +715,9 @@
                     <xsd:enumeration value="Insurer Invoice Already Exists"/>
                     <xsd:enumeration value="New Insurer Supplementary Invoice"/>
                     <xsd:enumeration value="Claim Already Exists But As A Different Claim Type"/>
+                    <xsd:enumeration value="New Collaboration Protocol Claim"/>
+                    <xsd:enumeration value="Claim Already Exists (Collaboration Protocol)"/>
+                    <xsd:enumeration value="Insurer is not accepting Collaboration Protocol Claims"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -885,7 +890,7 @@
 
     <wsdl:service name="UploadService">
         <wsdl:port binding="tns:UploadServiceSOAP" name="UploadServiceSOAP">
-            <!--soap:address location="http://localhost:8080/services/UploadService" /-->
+            <!--soap:address location="http://localhost:8443/services/UploadService" /-->
             <!--soap:address location="https://test.idaschox.com:8443/services/UploadService" /-->
             <soap:address location="https://www.idaschox.com:8443/services/UploadService" />
         </wsdl:port>

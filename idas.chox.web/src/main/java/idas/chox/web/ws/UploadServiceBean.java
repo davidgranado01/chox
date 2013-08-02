@@ -191,6 +191,15 @@ public class UploadServiceBean {
             else if (uploadResult.getRemark().equals("Error")) {
                 result.setUploadStatus(ClaimUploadStatus.ERROR);
             }
+            else if (uploadResult.getRemark().equals("New Claim (Collaboration Protocol)")) {
+                result.setUploadStatus(ClaimUploadStatus.NEW_COLLABORATION_PROTOCOL_CLAIM);
+            }
+            else if (uploadResult.getRemark().equals("Claim Already Exists (Collaboration Protocol)")) {
+                result.setUploadStatus(ClaimUploadStatus.CLAIM_ALREADY_EXISTS_COLLABORATION_PROTOCOL);
+            }
+            else if (uploadResult.getRemark().equals("Insurer is not accepting Collaboration Protocol Claims")) {
+                result.setUploadStatus(ClaimUploadStatus.INSURER_IS_NOT_ACCEPTING_COLLABORATION_PROTOCOL_CLAIMS);
+            }
             else {
                 LOG.error("Unknown remark found in upload result: '{}'", uploadResult.getRemark());
                 result.setUploadStatus(ClaimUploadStatus.ERROR);
@@ -445,7 +454,7 @@ public class UploadServiceBean {
             claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
             if (claim == null) {
                 result.setStatus(false);
-                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+                result.setErrorMessage(new StringBuilder().append("Claim with supplier reference number '").append(supplierReference).append("' does not exist.").toString());
             } 
             else {
                 activity.process(claim);
@@ -453,13 +462,13 @@ public class UploadServiceBean {
             }
         } catch (InvalidClaimStatusException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
+            result.setErrorMessage(new StringBuilder().append("Claim is not in correct status to reopen. Current status is: ").append(claim.getStatus()).toString());
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+            result.setErrorMessage(new StringBuilder().append("Access Denied processing request: ").append(ex.getMessage()).toString());
         } catch (Exception ex) {
             result.setStatus(false);
-            result.setErrorMessage("Error processing request: " +ex.getMessage());
+            result.setErrorMessage(new StringBuilder().append("Error processing request: ").append(ex.getMessage()).toString());
         }
 
         return result;
@@ -495,10 +504,10 @@ public class UploadServiceBean {
             result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
         } catch (AccessDeniedException ex) {
             result.setStatus(false);
-            result.setErrorMessage("Access Denied processing request: " + ex.getMessage());
+            result.setErrorMessage(new StringBuilder().append("Access Denied processing request: ").append(ex.getMessage()).toString());
         } catch (Exception ex) {
             result.setStatus(false);
-            result.setErrorMessage("Error processing request: " + ex.getMessage());
+            result.setErrorMessage(new StringBuilder().append("Error processing request: ").append(ex.getMessage()).toString());
         }
 
         return result;
