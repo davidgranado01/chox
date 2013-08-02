@@ -1157,18 +1157,22 @@
         </action>
         <action name="getInsurerWorkgroups" class="idas.chox.web.actions.InsurerWorkgroupAction" method="getInsurerWorkgroups">
             <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="error">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="removeInsurerWorkgroup">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="addNewInsurerWorkgroup">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="triggerInsurerWorkgroupStatus" class="idas.chox.web.actions.InsurerWorkgroupAction" method="triggerInsurerWorkgroupStatus">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End INSURER WORKGROUP -->
         <!-- START INSURER V.S CHORGANISATION -->
