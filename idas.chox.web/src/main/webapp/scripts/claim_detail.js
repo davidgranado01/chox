@@ -34,14 +34,14 @@ Ext.onReady(function(){
     }
         
     var slaExtStore = new Ext.data.SimpleStore({
-        fields: ['field1', 'field2'],
+        fields : ['field1', 'field2'],
         data : daysArray
     });
         
     var slaExtensionForm = new Ext.FormPanel({
-        id: 'slaExtensionForm-form',
+        id : 'slaExtensionForm-form',
         height : 150,
-        frame:true,
+        frame : true,
         buttonAlign : 'center',
         labelAlign : 'right',
         labelWidth : 200,
@@ -50,19 +50,18 @@ Ext.onReady(function(){
         items : [
         {
             xtype : 'combo',
-            store: slaExtStore,
-            width: 40,
+            store : slaExtStore,
+            width : 40,
             fieldLabel : 'How many days extension do you wish to offer to the Insurer?',
-            valueField: 'field1',
+            valueField : 'field1',
             value : 1,
-            id: 'maxAllowedSlaExtComboId',
-//            hiddenName: 'slaExtDays',
-            displayField:'field2',
-            mode: 'local',
-            triggerAction: 'all',
-            forceSelection: true,
-            listWidth: 40,
-            selectOnFocus: true,
+            id : 'maxAllowedSlaExtComboId',
+            displayField : 'field2',
+            mode : 'local',
+            triggerAction : 'all',
+            forceSelection : true,
+            listWidth : 40,
+            selectOnFocus : true,
             editable : false
         }],
         buttons:[{
@@ -89,11 +88,11 @@ Ext.onReady(function(){
                                 msg = a.result.errors;
                             }
                             Ext.MessageBox.show({
-                                title: 'Error',
-                                msg: msg,
-                                width:300,
+                                title : 'Error',
+                                msg : msg,
+                                width : 300,
                                 closable : false,
-                                buttons: Ext.MessageBox.OK,
+                                buttons : Ext.MessageBox.OK,
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     slaExtensionWindow.hide();
@@ -114,10 +113,10 @@ Ext.onReady(function(){
     });
     
     switchClaimToMulInsForm = new Ext.FormPanel({
-        id: 'switchClaimForm-form',
+        id : 'switchClaimForm-form',
         height : 150,
-        frame:true,
-        //        buttonAlign : 'center',
+        frame : true,
+        buttonAlign : 'center',
         items : [
         {
             xtype : 'combo',
@@ -125,25 +124,26 @@ Ext.onReady(function(){
             width : 180,
             typeAhead : false,
             fieldLabel : 'Insurer',
-            labelStyle: 'text-align:right;',
+            labelStyle : 'text-align:right;',
             mode : 'local',
-            blankText: 'Please select an Insurer',
+            blankText : 'Please Select an Insurer',
+            emptyText : 'Please Select an Insurer',
             store : mappedInsurersStore,
             hiddenName : 'insId',
             displayField : 'value',
             valueField : 'text',
-            allowBlank: false,
+            allowBlank : false,
             triggerAction : 'all',
             editable : false
         },{
             xtype : 'textfield',
-            fieldLabel: 'Policy Number',
+            fieldLabel : 'Policy Number',
             width : 180,
-            labelStyle: 'text-align:right;',
+            labelStyle : 'text-align:right;',
             id : 'policyNumberId',
-            name: 'policyNumber',
-            allowBlank: false,
-            blankText: 'Please enter a Policy Number'
+            name : 'policyNumber',
+            allowBlank : false,
+            blankText : 'Please Enter a Policy Number'
         },{
             xtype : 'hidden',
             id : 'nameId',
@@ -171,8 +171,8 @@ Ext.onReady(function(){
                                 Ext.MessageBox.show({
                                     title: 'Success',
                                     msg: 'Claim Switched Successfully',
-                                    width:300,
-                                    buttons: Ext.MessageBox.OK,
+                                    width : 300,
+                                    buttons : Ext.MessageBox.OK,
                                     fn : function(){
                                         switchClaimWindow.hide();
                                         window.location = contextPath+"/prv/openClaimDetail.action" ;  
@@ -186,11 +186,11 @@ Ext.onReady(function(){
                                 msg = a.result.errors;
                             }
                             Ext.MessageBox.show({
-                                title: 'Error',
-                                msg: msg,
-                                width:300,
+                                title : 'Error',
+                                msg : msg,
+                                width : 300,
                                 closable : false,
-                                buttons: Ext.MessageBox.OK,
+                                buttons : Ext.MessageBox.OK,
                                 icon : Ext.MessageBox.ERROR,
                                 fn : function(){
                                     switchClaimWindow.hide();
@@ -212,9 +212,10 @@ Ext.onReady(function(){
     
     switchClaimWindow = new Ext.Window({
         layout:'fit',
-        width:360,
+        width : 400,
         height : 150,
-        closable:false,
+        closable :false,
+        modal : true,
         resizable : false,
         items : [
         switchClaimToMulInsForm
@@ -222,10 +223,10 @@ Ext.onReady(function(){
     });
     
     slaExtensionWindow = new Ext.Window({
-        layout:'fit',
-        width:300,
+        layout : 'fit',
+        width : 300,
         height : 100,
-        closable:false,
+        closable : false,
         resizable : false,
         items : [
         slaExtensionForm
@@ -249,20 +250,23 @@ Ext.onReady(function(){
 
     closeClaimForm = new Ext.FormPanel({
         id: 'closeClaimForm-form',
-//        height : 150,
+        height : 100,
+        width : 400,
         frame:true,
-        //        buttonAlign : 'center',
+        buttonAlign : 'center',
         items : [
         {
             xtype : 'combo',
             name : 'closeReason',
             id : 'closeReasonComboId',
-//            width : 180,
+            width : 250,
+            listWidth : 250,
             typeAhead : false,
             fieldLabel : 'Reason',
-            labelStyle: 'text-align:right;',
+            labelStyle : 'text-align:right;',
             mode : 'local',
-            blankText: 'Please select a reason',
+            emptyText : 'Please Select a Reason',
+            blankText : 'Please Select a Reason',
             store : new Ext.data.SimpleStore({
                             id:0,
                             fields:
@@ -274,7 +278,7 @@ Ext.onReady(function(){
             hiddenName : 'closeReason',
             displayField : 'reasonText',
             valueField : 'reasonText',
-            allowBlank: false,
+            allowBlank : false,
             triggerAction : 'all',
             editable : false
         },{
@@ -295,8 +299,6 @@ Ext.onReady(function(){
                     closeClaimForm.getEl().mask();
                     var url = contextPath + "/prv/processClaim.action";
                     var form = $('<form action="' + url + '" method="post">' +
-//                        '<s:hidden name="name" value="closeClaim" />' +
-//                        '<s:hidden name="closeReason" value="I can not be arsed with this" />' +
                         '<input type="hidden" name="name" value="closeClaim"/>' +
                         '<input type="hidden" name="closeReason" value="'+ Ext.getCmp('closeReasonComboId').getValue() +'"/>' +
                         '<input type="hidden" name="nonce" value="'+nonce+'"/>' +
@@ -315,10 +317,11 @@ Ext.onReady(function(){
     });
 
     closeClaimWindow = new Ext.Window({
-        layout:'fit',
-        width:320,
+        layout : 'fit',
+        width : 400,
         height : 100,
-        closable:false,
+        modal : true,
+        closable : false,
         resizable : false,
         items : [
             closeClaimForm
