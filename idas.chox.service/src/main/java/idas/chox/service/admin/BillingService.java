@@ -223,7 +223,7 @@ public class BillingService {
             bi.setBenefitValue(insurer.getChoAgreedBenefitValue());
             billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
         }
-        LOG.debug("Net billing amount value: {}", billAmountNet.toString());
+        LOG.debug("Net billing amount value: {}", billAmountNet);
         BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal billAmountGross = billAmountNet.add(billAmountVat);
         BigDecimal inv = new BigDecimal(0.0);
