@@ -23,7 +23,6 @@ public class AcknowledgeClaim extends BaseActivity {
     private String claimNumber;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
-    private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private String supportingLiabilityNotes;
@@ -49,10 +48,6 @@ public class AcknowledgeClaim extends BaseActivity {
 
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
-    }
-
-    public void setIsQuantumDispute(boolean isQuantumDispute) {
-        this.isQuantumDispute = isQuantumDispute;
     }
 
     public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
@@ -91,15 +86,15 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        LOG.debug("percentageLiabilityAccepted " + percentageLiabilityAccepted);
-        LOG.debug("percentageLiabilityCho " + percentageLiabilityCho);
+        LOG.debug("percentageLiabilityAccepted: {}", percentageLiabilityAccepted);
+        LOG.debug("percentageLiabilityCho: {}", percentageLiabilityCho);
         if (!claim.getLiabilityStatus().equals(liabilityStatus)) {
 
             String note;
             if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                note = "Liability status changed to '" + liabilityStatus + "'";
+                note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
             } else {
-                note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
+                note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
             }
             claim.setLiabilityStatus(liabilityStatus);
             Comment comment = Comment.newComment(0, note);
@@ -110,7 +105,6 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
-        claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);

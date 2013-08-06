@@ -857,12 +857,6 @@
                                         <fieldset class="x-fieldset">
                                             <legend>Claim Reviews</legend>
                                             <div style="display:none" class="form-container" id="claimReviewsId">
-                                                <!--
-                                                <div class="chox-form-item">
-                                                    <label class="std-label-ro">Quantum</label>
-                                                    <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
-                                                </div>
-                                                -->
                                                 <table class="chox-table-form">
                                                     <tr>
                                                         <td><label class="std-label-ro">Invoice Review Required</label></td>

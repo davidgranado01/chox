@@ -2115,19 +2115,55 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
 
     public BigDecimal getPaymentDetailsCHODiscount() {
-        return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        if (claim.getInvoice() != null) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                return claim.getInvoice().getDiscount();
+            } else {
+                return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getPaymentDetailsClaimHandInvAmt() {
-        return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        if (claim.getInvoice() != null) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                return claim.getInvoice().getClaimsHandlingInvoiceAmount();
+            } else {
+                return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
-        return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        if (claim.getInvoice() != null) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                return claim.getInvoice().getDeductionForClaimsHandlingFee();
+            } else {
+                return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getPaymentDetailsInsurerDiscount() {
-        return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        if (claim.getInvoice() != null) {
+            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                    || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
+                return claim.getInvoice().getInsurerDiscount();
+            } else {
+                return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            }
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
     public boolean isPenaltyChargeApplied() {

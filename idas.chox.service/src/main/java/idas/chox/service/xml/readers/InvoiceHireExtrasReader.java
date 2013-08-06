@@ -1,5 +1,7 @@
 package idas.chox.service.xml.readers;
 
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -50,13 +52,23 @@ public class InvoiceHireExtrasReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
             for (Element ee : elements) {
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
-                String strExtraFee = strExtraName + " Fee";
-                String strExtraQty = strExtraName + " Quantity";
+                String strExtraFee = new StringBuilder().append(strExtraName).append(" Fee").toString();
+                String strExtraQty = new StringBuilder().append(strExtraName).append(" Quantity").toString();
                 
                 NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
                 NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
                 NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
                 
+                /*
+                 * Hard-coded check on Acquisition Fee and Overhead & Margin Fee charges for non-collaboration protocol claims
+                 */
+                BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
+                if (!ClaimType.isCollaborationProtocol(claimResult.getClaim().getClaimType())
+                        && (strExtraName.equals("Acquisition") || strExtraName.equals("Overhead and Margin"))
+                        && BigDecimal.ZERO.compareTo(dIntemCost) != 0) {
+                    claimResult.setCheckDataValid(false);
+                    claimResult.getMessage().add(String.format("An '%s' fee is being charged. This charge is only accepted on Collaboration Protocol claims. Please remove and re-submit without this charge.", strExtraName, sectionName));
+                }
             }
 
             if (!claimResult.isCheckDataValid()) {
