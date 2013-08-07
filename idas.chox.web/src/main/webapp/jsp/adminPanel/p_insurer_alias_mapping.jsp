@@ -41,7 +41,7 @@
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>Remove</a>"}},
+                        return "<a href='#' class='high-light-item'>Remove</a>";}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -60,7 +60,7 @@
 
     function alias_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = alias_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==2){
+        if(columnIndex===2){
             alias_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -69,7 +69,7 @@
 
         var insurerAliasName = $("#insurerAliasName").val();
 
-        if(insurerAliasName!=null && insurerAliasName!=""){
+        if(insurerAliasName!==null && insurerAliasName!==""){
 
             var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerAlias.action";
             var param = {"insurerId":<s:property value="insurerId" />,"insurerAliasName":insurerAliasName};
@@ -95,18 +95,8 @@
             triggerCss("div#CDInsurerAliasMessageBox", false);
 
             if(response.isValid){
-
                 outputDiv.addClass("chox-form-submit-result");
-
-                if(response.resultType && response.resultType == 'Message')
-                {
-                    insurerAlias_doRefreshPage();
-                }
-                else
-                {
-                    insurerAlias_doRefreshPage();
-                }
-
+                alias_loadGridViewList();
             }
             else
             {
@@ -145,7 +135,7 @@
 
         function alias_triggerStatusRemoveRecord(gridView){
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this alias?',function(btn){
-            if(btn=='yes'){
+            if(btn==='yes'){
                 var insurerAliasId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
                 var param = {"insurerAliasId":insurerAliasId};
