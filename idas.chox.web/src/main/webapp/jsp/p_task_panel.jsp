@@ -302,12 +302,20 @@
             if (selection === 'Total Loss Payment') {
                 if (!isCHO) {
                      Ext.getCmp('paymentDateId').show();
+                     Ext.getCmp('paymentDateId').allowBlank = false;
+                     Ext.getCmp('paymentDateId').validate();
                 }
                 Ext.getCmp('paymentMethodComboId').show();
+                Ext.getCmp('paymentMethodComboId').allowBlank = false;
+                Ext.getCmp('paymentMethodComboId').validate();
             } else {
                 Ext.getCmp('paymentMethodComboId').hide();
+                Ext.getCmp('paymentMethodComboId').allowBlank = true;
+                Ext.getCmp('paymentMethodComboId').validate();
                 if (!isCHO) {
                      Ext.getCmp('paymentDateId').hide();
+                    Ext.getCmp('paymentDateId').allowBlank = true;
+                    Ext.getCmp('paymentDateId').validate();
                 }
             }
         });
@@ -683,10 +691,14 @@
         var paymentMethodCombo = Ext.getCmp('paymentMethodComboId');
         if (paymentMethodCombo){
             paymentMethodCombo.hide();
+            paymentMethodCombo.allowBlank = true;
+            paymentMethodCombo.validate();
         }
         var paymentDate = Ext.getCmp('paymentDateId');
         if (paymentDate){
             paymentDate.hide();
+            paymentDate.allowBlank = true;
+            paymentDate.validate();
         }
         // Hide the visibility role combo (and label)
         if (Ext.getCmp('visibilityRoleComboId')) {
