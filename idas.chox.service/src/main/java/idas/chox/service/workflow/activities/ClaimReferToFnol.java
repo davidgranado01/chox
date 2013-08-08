@@ -153,22 +153,17 @@ public class ClaimReferToFnol extends BaseActivity {
                 getDataService().save(claim);
                 getDataService().flush();
                 logTransaction(claim);
-                setCurrentStatus(claim.getStatus());
-//                claim.setStatusModifiedDate(new Date());
-                
-                
+                setCurrentStatus(claim.getStatus());                
             }
 
-
-            
         } else {
             if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
                 String note;
                 if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
-                    note = "Liability status changed to '" + liabilityStatus + "'";
+                    note = new StringBuilder().append("Liability status changed to '").append(liabilityStatus).append("'").toString();
                 } else {
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
+                    note = new StringBuilder().append("Liability status changed from '").append(claim.getLiabilityStatus()).append("' to '").append(liabilityStatus).append("'").toString();
                 }
                 claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.newComment(0, note);
@@ -196,7 +191,7 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, new StringBuilder().append("Supporting Liability Notes: ").append(supportingLiabilityNotes).toString()));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
