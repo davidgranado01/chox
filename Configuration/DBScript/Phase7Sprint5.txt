@@ -2,8 +2,6 @@
 --   7.5.1 Ai Collaboration Protocol       --
 ---------------------------------------------
 ALTER TABLE bre_band ADD COLUMN allow_collaboration_penalty_charges BOOLEAN NOT NULL DEFAULT TRUE;
-ALTER TABLE bre_band ADD COLUMN acquisition_charge_check BOOLEAN NOT NULL DEFAULT TRUE;
-ALTER TABLE bre_band ADD COLUMN overhead_charge_check BOOLEAN NOT NULL DEFAULT TRUE;
 
 ALTER TABLE chorganisation ADD COLUMN enable_collaboration_claims BOOLEAN NOT NULL DEFAULT FALSE;
 

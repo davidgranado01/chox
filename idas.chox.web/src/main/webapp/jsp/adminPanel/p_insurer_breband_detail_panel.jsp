@@ -1094,16 +1094,6 @@
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="acquisitionChargeCheck" value="acquisitionChargeCheck" /></div>
-                            <label class="chox-form-check-label">Acquisition Charge Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="overheadChargeCheck" value="overheadChargeCheck" /></div>
-                            <label class="chox-form-check-label">Overhead and Margin Charge Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="satelliteNavigationChargeCheck" value="satelliteNavigationChargeCheck" /></div>
                             <label class="chox-form-check-label">Satellite Navigation Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>

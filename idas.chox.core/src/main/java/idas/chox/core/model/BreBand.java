@@ -27,8 +27,6 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private String name;
     private String claimUploadNote;
     private VehicleClassCeiling vehicleClassCeiling;
-    private boolean acquisitionChargeCheck;
-    private boolean overheadChargeCheck;
     private boolean automaticChargeCheck;
     private boolean automaticChargeCheckHpiLookup;
     private boolean additionalDriverChargeCheck;
@@ -453,22 +451,6 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         }
 
         return maxHireNetCeiling;
-    }
-
-    public boolean isAcquisitionChargeCheck() {
-        return acquisitionChargeCheck;
-    }
-
-    public void setAcquisitionChargeCheck(boolean acquisitionChargeCheck) {
-        this.acquisitionChargeCheck = acquisitionChargeCheck;
-    }
-
-    public boolean isOverheadChargeCheck() {
-        return overheadChargeCheck;
-    }
-
-    public void setOverheadChargeCheck(boolean overheadChargeCheck) {
-        this.overheadChargeCheck = overheadChargeCheck;
     }
 
     public boolean isAutomaticChargeCheck() {
