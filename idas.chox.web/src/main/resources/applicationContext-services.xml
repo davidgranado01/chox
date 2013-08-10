@@ -321,4 +321,6 @@
     <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    
+    <bean id="choxEventService" class="idas.chox.web.ChoxEvent" scope="singleton"/>
 </beans>

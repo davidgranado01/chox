@@ -21,6 +21,8 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.web.ChoxEvent;
+import java.util.Date;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -36,6 +38,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private boolean showMessage = false;
     private String message = null;
     private ApplicationAccessibility applicationAccessibility;
+    private ChoxEvent choxEventService;
     
     @Override
     public Activity getModel() {
@@ -60,6 +63,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public boolean isShowMessage() {
         return showMessage;
+    }
+
+    public void setChoxEventService(ChoxEvent choxEventService) {
+        this.choxEventService = choxEventService;
     }
 
     @Override
@@ -136,6 +143,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                             throw new AccessDeniedException("Attempt to access a claim that you do not own.");
                         }
                         activity.process(claim);
+                        choxEventService.send("Activity " + activityName + " processed at " + new Date().toString());
                     }
                 }
 
