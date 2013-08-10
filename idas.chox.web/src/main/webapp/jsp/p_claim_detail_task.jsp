@@ -21,7 +21,6 @@
             name: 'dueDate',
             id: 'claimDueDateId',
             renderTo: 'dueDateDivId',
-            allowBlank: false,
             minValue: new Date(),
             format: 'd/m/Y',
             width: 90
@@ -32,7 +31,6 @@
             name: 'paymentDate',
             id: 'claimPaymentDateId',
             renderTo: 'paymentDateDivId',
-            allowBlank: false,
             minValue: new Date(),
             format: 'd/m/Y',
             width: 90
@@ -124,6 +122,11 @@
                 $("#paymentMethodLabelId").show();
                 $("#paymentMethodComboId").show();
                 $("#paymentMethodDivId").show();
+                if (visibilityRoleCombo){
+                    // Not repositioned properly in IE6, so redraw (hack!)
+                    visibilityRoleCombo.hide();
+                    visibilityRoleCombo.show();
+                }
             } else {
                 $("#paymentMethodLabelId").hide();
                 $("#paymentMethodDivId").hide();
@@ -131,6 +134,11 @@
                 $("#paymentDateLabelId").hide();
                 $("#paymentDateDivId").hide();
                 $("form#claimTaskForm #claimPaymentDateId").rules("remove");
+                if (visibilityRoleCombo){
+                    // Not repositioned properly in IE6, so redraw (hack!)
+                    visibilityRoleCombo.hide();
+                    visibilityRoleCombo.show();
+                }
             }
         });
 
@@ -489,7 +497,7 @@
                 <legend>Add New Task</legend>
                 <table width="100%" border="0" cellspacing="0" cellpadding="5">
                     <tr>
-                        <td width="40%">
+                        <td width="35%">
                             <!-- Table on left side -->
                             <table width="100%" border="0" cellspacing="0" cellpadding="1">
                                 <tr>
@@ -518,7 +526,7 @@
                             </table>
 
                         </td>
-                        <td width="60%">
+                        <td width="65%">
                             <!-- Table on right side -->
                             <table width="100%" border="0" cellspacing="0" cellpadding="1">
                                 <tr>
