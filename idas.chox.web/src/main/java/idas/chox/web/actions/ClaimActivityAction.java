@@ -23,6 +23,8 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.web.ChoxEvent;
 import java.util.Date;
+import java.util.logging.Level;
+import javax.jms.JMSException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -154,6 +156,8 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
             } catch (AccessDeniedException ex) {
                 throw (ex);
+            } catch (JMSException ex) {
+                LOG.error("JMS error sending event: ", ex.getMessage());
             } catch (Exception ex) {
                 LOG.error("Error processing batch update. Error on cho-ref: {} : ", claim.getChoReference(), ex);
                 handleException(ex);
@@ -175,8 +179,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
                 setMessage(activity.getMessage());
+                choxEventService.send("Activity " + name + " processed at " + new Date().toString());
             } catch (AccessDeniedException ex) {
                 throw (ex);
+            } catch (JMSException ex) {
+                LOG.error("JMS error sending event: ", ex.getMessage());
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity: {}", ex.getMessage());
                 jsonObject.put("success", Boolean.FALSE);

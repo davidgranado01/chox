@@ -46,6 +46,7 @@ public class ChoxEvent {
     }
 
     public void send(String message) throws JMSException {
+        LOG.info("CHOX Event send request received: '{}'", message);
 
         MessageProducer producer;
         try {
@@ -73,6 +74,6 @@ public class ChoxEvent {
             LOG.error("Error sending message: {}", ex.getMessage(), ex);
             throw ex;
         }
-
+        LOG.info("CHOX Event sent ok: '{}'", message);
     }
 }
