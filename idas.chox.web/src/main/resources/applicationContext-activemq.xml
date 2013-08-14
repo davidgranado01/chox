@@ -9,9 +9,11 @@
     
     <!-- local broker with embedded Jms to Jms bridge -->
     <bean id="localBroker" class="org.apache.activemq.broker.BrokerService"
-          init-method="start" destroy-method="stop">
+          init-method="start">
         <property name="brokerName" value="localBroker"/>
-        <property name="persistent" value="true"/>
+        <property name="useJmx" value="false"/>
+        <property name="persistent" value="false"/>
+        <property name="useShutdownHook" value="true"/>
         <property name="transportConnectorURIs"> 
             <list>
                 <value>vm://localhost:7001</value>
@@ -26,8 +28,10 @@
 
     <!-- JMS ConnectionFactory to use local broker (the one with the bridge) -->
     <bean id="localBrokerConnectionFactory"
-      class="org.apache.activemq.ActiveMQConnectionFactory"
-      p:brokerURL="vm://localhost:7001" />
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" 
+                  value="vm://localhost:7001" />
+    </bean>
 
     <!--JmsTopicConnector - the Jms bridge -->
     <bean id="jmsConnector" class="org.apache.activemq.network.jms.JmsQueueConnector">
@@ -43,14 +47,14 @@
     
     <bean id="remoteFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" 
-                  value="failover:(tcp://localhost:61616)?maxReconnectDelay=10" />
+                  value="failover:(tcp://localhost:61616)?maxReconnectDelay=60000" />
     </bean>
 
 
     <bean id="cachingBrokerConnectionFactory"
-      class="org.springframework.jms.connection.CachingConnectionFactory"
-      p:targetConnectionFactory-ref="localBrokerConnectionFactory"
-      p:sessionCacheSize="10" />
+          class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="localBrokerConnectionFactory"
+          p:sessionCacheSize="10" />
 
     <bean id="queue1destination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="jms/queue/foo" />
@@ -58,8 +62,8 @@
 
 
     <bean id="queue1JMSTemplate"
-      class="org.springframework.jms.core.JmsTemplate"
-      p:connectionFactory-ref="cachingBrokerConnectionFactory"
-      p:defaultDestination-ref="queue1destination" />
+          class="org.springframework.jms.core.JmsTemplate"
+          p:connectionFactory-ref="cachingBrokerConnectionFactory"
+          p:defaultDestination-ref="queue1destination" />
 
 </beans>

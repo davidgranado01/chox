@@ -470,12 +470,12 @@
             <version>5.7.0</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-console</artifactId>
             <version>5.7.0</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-jaas</artifactId>

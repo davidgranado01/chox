@@ -204,7 +204,7 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="org.apache.activemq" level="INFO" additivity="false">
+    <logger name="org.apache.activemq" level="DEBU?G" additivity="false">
         <appender-ref ref="MQ"/>
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
