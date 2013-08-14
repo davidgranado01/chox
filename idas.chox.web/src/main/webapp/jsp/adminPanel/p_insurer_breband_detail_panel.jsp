@@ -412,7 +412,7 @@
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Fixed Fee invoices.</div>
                             </s:if>
                             <s:if test="collaborationProtocolClaimsEnabled">
-                                <div class="chox-form-checkbox"><s:checkbox name="allowCollaborationProtocolPenaltyCharges" value="allowCollaboration ProtocolPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
+                                <div class="chox-form-checkbox"><s:checkbox name="allowCollaborationProtocolPenaltyCharges" value="allowCollaborationProtocolPenaltyCharges" /></div><label class="chox-form-std-label"><b>Allow Penalty Charges on Collaboration Protocol Invoices</b></label>
                                 <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check to allow the CHO to apply penalty charges to overdue Collaboration Protocol invoices.</div>
                             </s:if>
                             <s:if test="tpiClaimsEnabled">
