@@ -21,7 +21,7 @@ public class ClaimReferToEng extends BaseActivity {
     private String claimNumber;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
-    private boolean isQuantumDispute;
+//    private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private String supportingLiabilityNotes;
@@ -77,7 +77,7 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
-        claim.setIsQuantumDispute(isQuantumDispute);
+//        claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);

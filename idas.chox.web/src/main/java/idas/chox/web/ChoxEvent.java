@@ -4,6 +4,7 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
@@ -12,19 +13,29 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 /**
  *
  * @author John
  */
 public class ChoxEvent {
-
     private static final Logger LOG = LoggerFactory.getLogger(ChoxEvent.class);
+    @Autowired
+    protected JmsTemplate queue1JMSTemplate;
     Destination destination;
     Session session;
 
+    public void setQueue1JMSTemplate(JmsTemplate queue1JMSTemplate) {
+        this.queue1JMSTemplate = queue1JMSTemplate;
+    }
+
+    
     public ChoxEvent() throws NamingException, JMSException {
-        InitialContext initCtx;
+/*
+        ßInitialContext initCtx;
         try {
             initCtx = new InitialContext();
         } catch (NamingException ex) {
@@ -43,9 +54,34 @@ public class ChoxEvent {
         }
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         destination = session.createQueue("jms/queue/foo");
+ */
     }
 
-    public void send(String message) throws JMSException {
+    public void send(final String messageText) {
+        LOG.info("Sending JMS message '{}' with template {}", messageText, queue1JMSTemplate);
+        try {
+            queue1JMSTemplate.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    LOG.info("Creating message with session '{}'", session);
+                    Message message;
+                    try {
+                        message = session.createTextMessage(messageText);
+                    } catch (JMSException ex) {
+                        LOG.error("Error creating message: {}", ex.getMessage());
+                        throw ex;
+                    }
+                    LOG.info("Done creating message");
+                    return message;
+                }
+            });
+        } catch (Exception ex) {
+            LOG.error("Error sending message: {}", ex.getMessage());
+//            throw new JMSException(ex);
+        }
+    }
+
+    public void sendMessage(final String message) throws JMSException {
         LOG.info("CHOX Event send request received: '{}'", message);
 
         MessageProducer producer;
