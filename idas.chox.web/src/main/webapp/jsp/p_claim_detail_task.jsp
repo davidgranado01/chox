@@ -31,7 +31,6 @@
             name: 'paymentDate',
             id: 'claimPaymentDateId',
             renderTo: 'paymentDateDivId',
-            minValue: new Date(),
             format: 'd/m/Y',
             width: 90
         });
