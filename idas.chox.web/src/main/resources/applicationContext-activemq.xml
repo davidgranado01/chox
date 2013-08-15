@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:amq="http://activemq.apache.org/schema/core"
        xmlns:jms="http://www.springframework.org/schema/jms"
-       default-autowire="byName">
- 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jms 
+                           http://www.springframework.org/schema/jms/spring-jms.xsd
+                           http://activemq.apache.org/schema/core 
+                           http://activemq.apache.org/schema/core/activemq-core.xsd">
+<!--        default-autowire="byName" -->
+
+    <!--context:component-scan base-package="org.springbyexample.jms" /-->
     
     <!-- local broker with embedded Jms to Jms bridge -->
-    <bean id="localBroker" class="org.apache.activemq.broker.BrokerService"
+    <!--bean id="localBroker" class="org.apache.activemq.broker.BrokerService"
           init-method="start">
         <property name="brokerName" value="localBroker"/>
         <property name="useJmx" value="false"/>
@@ -24,17 +34,31 @@
                 <ref bean="jmsConnector"/>
             </list>
         </property>
-    </bean>
+    </bean-->
+    <!--bean id="localBroker" class="org.apache.activemq.xbean.BrokerFactoryBean">
+        <property name="config" value="classpath:activemq.xml" />
+        <property name="start" value="true" />
+    </bean-->
+    <!--  Embedded ActiveMQ Broker -->
+    <!--amq:broker id="choxLocalBroker" useJmx="false" persistent="false">
+        <amq:transportConnectors>
+            <amq:transportConnector uri="tcp://localhost:61612" />
+        </amq:transportConnectors>
+    </amq:broker-->
+
+    <!-- JMS ConnectionFactory to use, configuring the embedded broker using XML -->
+    <!--amq:connectionFactory id="localBrokerConnectionFactory" brokerURL="tcp://localhost:61612" /-->
+    <!--amq:connectionFactory id="remoteBrokerConnectionFactory" brokerURL="tcp://localhost:61616" /-->
 
     <!-- JMS ConnectionFactory to use local broker (the one with the bridge) -->
-    <bean id="localBrokerConnectionFactory"
+    <!--bean id="localBrokerConnectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" 
-                  value="vm://localhost:7001" />
-    </bean>
+                  value="tcp://localhost:61612" />
+    </bean-->
 
     <!--JmsTopicConnector - the Jms bridge -->
-    <bean id="jmsConnector" class="org.apache.activemq.network.jms.JmsQueueConnector">
+    <!--bean id="jmsConnector" class="org.apache.activemq.network.jms.JmsQueueConnector">
         <property name="outboundQueueConnectionFactory" ref="remoteFactory"/>
         <property name="outboundQueueBridges">
             <list>
@@ -48,22 +72,48 @@
     <bean id="remoteFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" 
                   value="failover:(tcp://localhost:61616)?maxReconnectDelay=60000" />
+    </bean-->
+
+
+    <!--bean id="cachingBrokerConnectionFactory"
+          class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="remoteBrokerConnectionFactory"
+          p:sessionCacheSize="10" /-->
+
+
+
+    <amq:broker useJmx="false" persistent="false" brokerName="localBroker">
+        <amq:jmsBridgeConnectors>
+            <amq:jmsQueueConnector outboundQueueConnectionFactory="#localBrokerConnectionFactory">
+                <amq:inboundQueueBridges>
+                    <amq:inboundQueueBridge
+                            inboundQueueName = "queue.choxEvents"
+                            localQueueName   = "queue.incomingMsgs.choxEvents"/>
+                </amq:inboundQueueBridges>
+                <amq:outboundQueueBridges>
+                    <amq:outboundQueueBridge
+                            localQueueName    = "queue.incomingMsgs.choxEvents"
+                            outboundQueueName = "queue.choxEventLog"/>
+                </amq:outboundQueueBridges>
+            </amq:jmsQueueConnector>
+        </amq:jmsBridgeConnectors>
+    </amq:broker>
+ 
+    <!-- JMS ConnectionFactory to use for local bridging -->
+    <bean id="localBrokerConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="vm://localhost:7001" />
     </bean>
-
-
     <bean id="cachingBrokerConnectionFactory"
           class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="localBrokerConnectionFactory"
           p:sessionCacheSize="10" />
-
-    <bean id="queue1destination" class="org.apache.activemq.command.ActiveMQQueue">
+    <!--  ActiveMQ Destination  -->
+    <amq:queue id="queuedestination" physicalName="queue.choxEvents" />
+    <!--bean id="queuedestination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="jms/queue/foo" />
-    </bean>
-
-
+    </bean-->
     <bean id="queue1JMSTemplate"
           class="org.springframework.jms.core.JmsTemplate"
           p:connectionFactory-ref="cachingBrokerConnectionFactory"
-          p:defaultDestination-ref="queue1destination" />
-
+          p:defaultDestination-ref="queuedestination"/>
 </beans>
