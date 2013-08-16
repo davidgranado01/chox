@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:amq="http://activemq.apache.org/schema/core"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:amq="http://activemq.apache.org/schema/core"
-       xmlns:jms="http://www.springframework.org/schema/jms"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://www.springframework.org/schema/context 
-                           http://www.springframework.org/schema/context/spring-context.xsd
-                           http://www.springframework.org/schema/jms 
-                           http://www.springframework.org/schema/jms/spring-jms.xsd
-                           http://activemq.apache.org/schema/core 
+                           http://activemq.apache.org/schema/core
                            http://activemq.apache.org/schema/core/activemq-core.xsd">
 <!--        default-autowire="byName" -->
 
@@ -80,40 +74,50 @@
           p:targetConnectionFactory-ref="remoteBrokerConnectionFactory"
           p:sessionCacheSize="10" /-->
 
+    <!-- Alllow us to use system properties -->
+    <!--bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/-->
 
+    <broker id="localBrokerId" xmlns="http://activemq.apache.org/schema/core" useJmx="false" persistent="false" brokerName="localBroker">
+        <networkConnectors>
+            <networkConnector
+                    uri="static:(failover:tcp://localhost:61616)?maxReconnectDelay=60000"
+                    networkTTL="3" 
+                    dynamicOnly="true"
+                    staticBridge="true">
+                <staticallyIncludedDestinations>
+                    <topic physicalName="topic.choxEvents"/>
+                </staticallyIncludedDestinations>
+            </networkConnector>
+        </networkConnectors>
+        
+<!--        <persistenceAdapter>
+            <memoryPersistenceAdapter/>
+            kahaDB directory="${activemq.base}/data/kahadb"
+        </persistenceAdapter>-->
+        
+        <transportConnectors>
+            <transportConnector uri="vm://localhost:7001"/>
+        </transportConnectors>
 
-    <amq:broker useJmx="false" persistent="false" brokerName="localBroker">
-        <amq:jmsBridgeConnectors>
-            <amq:jmsQueueConnector outboundQueueConnectionFactory="#localBrokerConnectionFactory">
-                <amq:inboundQueueBridges>
-                    <amq:inboundQueueBridge
-                            inboundQueueName = "queue.choxEvents"
-                            localQueueName   = "queue.incomingMsgs.choxEvents"/>
-                </amq:inboundQueueBridges>
-                <amq:outboundQueueBridges>
-                    <amq:outboundQueueBridge
-                            localQueueName    = "queue.incomingMsgs.choxEvents"
-                            outboundQueueName = "queue.choxEventLog"/>
-                </amq:outboundQueueBridges>
-            </amq:jmsQueueConnector>
-        </amq:jmsBridgeConnectors>
-    </amq:broker>
+    </broker>
  
     <!-- JMS ConnectionFactory to use for local bridging -->
-    <bean id="localBrokerConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <bean id="localBrokerConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" depends-on="localBrokerId">
         <property name="brokerURL" value="vm://localhost:7001" />
     </bean>
     <bean id="cachingBrokerConnectionFactory"
           class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="localBrokerConnectionFactory"
           p:sessionCacheSize="10" />
+    
     <!--  ActiveMQ Destination  -->
-    <amq:queue id="queuedestination" physicalName="queue.choxEvents" />
+    <!--queue xmlns="http://activemq.apache.org/schema/core" id="choxEventsQueue" physicalName="queue.choxEvents" /-->
+    <topic xmlns="http://activemq.apache.org/schema/core" id="choxEventsTopic" physicalName="topic.choxEvents" />
     <!--bean id="queuedestination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="jms/queue/foo" />
     </bean-->
     <bean id="queue1JMSTemplate"
           class="org.springframework.jms.core.JmsTemplate"
           p:connectionFactory-ref="cachingBrokerConnectionFactory"
-          p:defaultDestination-ref="queuedestination"/>
+          p:defaultDestination-ref="choxEventsTopic" />
 </beans>
