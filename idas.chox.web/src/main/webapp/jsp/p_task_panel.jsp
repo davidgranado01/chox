@@ -455,7 +455,6 @@
                         id: 'paymentDateId',
                         allowBlank: false,
                         format: 'd/m/Y',
-                        minValue: new Date(),
                         width: 90
                     }),                    
                     {
