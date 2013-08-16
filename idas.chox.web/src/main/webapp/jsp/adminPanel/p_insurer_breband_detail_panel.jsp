@@ -232,25 +232,7 @@
             var response = eval('(' + responseText.trim() + ')');
             if(response) {
                 if(response.isValid) {
-                   var tabIndex = 1;
-                    var target = "#admin_param_panel";
-                    var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-                    var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-                    <s:if test="isChoxAdmin">
-                        tabIndex = 4;
-                        url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-                        param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-                    </s:if>
-
-                    ajax.loadHtml2(url,param,function(data){
-                        $(target).html(data);
-                        <s:if test="isChoxAdmin">
-                            insAdminTabs.activate(tabIndex); 
-                        </s:if><s:else >
-                            InsurerMainPanelTabs.activate(tabIndex);
-                        </s:else>
-                    }); 
+                    doInsurerBreBandBack();
                 } else {
                     Ext.Msg.show({
                         title: 'Error',
@@ -259,7 +241,7 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-                    refereshBreBandDetailPanel();
+//                    doInsurerBreBandBack();
                 }
             } 
         }
@@ -279,7 +261,7 @@
                         //                    var target = "div#insurerBreDetailTab";
                         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                         var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-                        ajax.loadHtml2(url, param, doNewBreBandSaveResultResponse);
+                        ajax.loadHtml2(url, param, doInsurerBreBandBack);
                         //                    ajax.loadHtml(url,param,function(data){
                         //                        $(target).html(data);
                         //                    });
@@ -294,7 +276,7 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-                    refereshBreBandDetailPanel();
+//                    doInsurerBreBandBack();
                 }
 
             }
@@ -309,31 +291,7 @@
                 });
         }
 
-        function doNewBreBandSaveResultResponse() {
-            var tabIndex = 1;
-            var target = "#admin_param_panel";
-            var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-            var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-    <s:if test="isChoxAdmin">
-            tabIndex = 4;
-            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-    </s:if>
-
-
-            ajax.loadHtml2(url,param,function(data){
-                $(target).html(data);
-    <s:if test="isChoxAdmin">
-                insAdminTabs.activate(tabIndex); 
-    </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-    </s:else>
-            
-            });
-
-        }
-        
+    
         function fadeOutMessage(){
         	  $("#formUpdateInsurerBreBandDetail").submit();
         	  $("#CDInsurerBreBandmessageBox").show().fadeOut(10000);

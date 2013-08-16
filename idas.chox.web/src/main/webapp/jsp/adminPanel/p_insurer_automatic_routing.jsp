@@ -15,28 +15,73 @@
     var routing_gridviewDataPrice;
 
     var automaticRoutingEditSelectionDlg;
+    var autoRoutingWorkgroupStore;
+    var autoRoutingWorkgroupCombo;
 
      var workEnable = '<s:property value="workgroupEnableFlg"/>';
      var auto = '<s:property value="autoRoutingEnableFlg"/>';
      var price = '<s:property value="autoRoutingPriceFlg"/>';
 
-    $(function(){
+    Ext.onReady(function(){
 
+        var autoRoutingWorkgroupJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+            {name: 'text'},
+            {name: 'value'}
+                ]
+        });
+
+        autoRoutingWorkgroupStore = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy
+                    ({url: "<%= request.getContextPath()%>/prv/p/getAvailableAutoRoutingWorkgroups.action", method: 'GET', params: {insurerId : <s:property value="insurerId" />}}),
+            reader: autoRoutingWorkgroupJsonReader
+        });
+
+        autoRoutingWorkgroupCombo = new Ext.form.ComboBox({
+            store: autoRoutingWorkgroupStore,
+            width: 220,
+            renderTo: 'autoRoutingWorkgroupDiv',
+            valueField: 'text',
+            id: 'autoRoutingWorkgroupComboId',
+            displayField: 'value',
+            hiddenName:'workgroupId',
+            typeAhead: true,
+            autoWidth: true,
+            mode: 'local',
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            forceSelection: true
+        });
         
-
-       if(auto=="true"){
-
-           var form = $("form#formAutomaticRoutingDetail");
+        autoRoutingWorkgroupStore.load({ params : {insurerId : <s:property value="insurerId" />}});
+        
+        $.validator.addMethod("autoRoutingWorkgroupSelection",
+            function(value) {
+                if(value === "" || value < 1) {
+                    return false;
+                }
+                return true;
+            }
+        );
+        
+       if(auto==="true"){
+            
+            var form = $("form#formAutomaticRoutingDetail");
+          
             form.validate(
             {
+                ignore: [], // This is added to include validation on hidden fields. Extjs combo rendered as hidden field.
                 errorLabelContainer: "#CDAutomaticRoutingMessageBox",
                 rules: {
-                    workgroupId:{required:true},
-                    expression:{required:true}
+                    workgroupId : {autoRoutingWorkgroupSelection : true},
+                    expression : {required:true}
                 },
                 messages: {
-                    workgroupId:{required:"You must supply a value for 'Workgroup'"},
-                    expression:{required:"You must supply a value for 'Regular Expression'"}
+                    workgroupId : {autoRoutingWorkgroupSelection :"You must supply a value for 'Workgroup'"},
+                    expression : {required:"You must supply a value for 'Regular Expression'"}
                 }
             });
 
@@ -75,6 +120,7 @@
                 enableHdMenu:false,
                 enableColumnMove: false,
                 layout:'fit',
+                loadMask : true,
                 viewConfig:{forceFit:true},
                 columns: [
                     {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
@@ -115,12 +161,24 @@
                                     timeout: 3000,
                                     error: ui.onSubmitError
                                 };
-
-                                $("form#editAutoRoutingDetail").ajaxSubmit(op);
-
+                                $("form#editAutoRoutingDetail").validate(
+                                    {
+                                        ignore: [], // This is added to include validation on hidden fields. Extjs combo rendered as hidden field.
+                                        errorLabelContainer: "#CDAutomaticRoutingEditScreenMessageBox",
+                                        rules: {
+                                            expression : {required:true}
+                                        },
+                                        messages: {
+                                            expression : {required:"You must supply a value for 'Regular Expression'"}
+                                        }
+                                    });
+                                    if ($("form#editAutoRoutingDetail").valid()) {
+                                        $("form#editAutoRoutingDetail").ajaxSubmit(op);
+                                    }
                             }
                         },{
                             text: 'Close', handler: function(){
+                                $("div#CDAutomaticRoutingEditScreenMessageBox").empty();
                                 automaticRoutingEditSelectionDlg.hide();
                             }
                         }]
@@ -132,19 +190,20 @@
   
             routing_loadGridViewList();
         }
-        if(price=="true"){
+        if(price==="true"){
 
 
             var form = $("form#formAutomaticRoutingDetail");
             form.validate(
-            {
+            {   
+                ignore: [],// This is added to include validation on hidden fields. Extjs combo rendered as hidden field.
                 errorLabelContainer: "#CDAutomaticRoutingMessageBox",
                 rules: {
-                    workgroupId:{required:true},
+                    workgroupId :{autoRoutingWorkgroupSelection : true},
                     price:{required:true, number:true, max:99999999.99}
                 },
                 messages: {
-                    workgroupId:{required:"You must supply a value for 'Workgroup'"},
+                    workgroupId :{autoRoutingWorkgroupSelection :"You must supply a value for 'Workgroup'"},
                     price:{required:"You must supply a value for 'Price'"}
                 }
             });
@@ -184,6 +243,7 @@
                 enableHdMenu:false,
                 enableColumnMove: false,
                 layout:'fit',
+                loadMask : true,
                 viewConfig:{forceFit:true},
                 columns: [
                     {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
@@ -232,27 +292,34 @@
         }
     }
 
-     function doAutoRoutingPageRefreshPrice(){
-
-        var tabIndex = 0;
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-        <s:if test="isChoxAdmin">
-            tabIndex = 7;
-            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        </s:if>
-
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
-                insAdminTabs.activate(tabIndex); 
-            </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
+     function doAutoRoutingPageRefreshPrice(responseText, statusText){
+        
+        var response = eval('(' + responseText.trim() + ')');
+       
+       if(response)
+        {
+            if(!response.isValid){
+                $.each(response.errors, function() {
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: this.toString(),
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                });
+            } else {    
+                
+                autoRoutingWorkgroupCombo.clearValue();
+                autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
+                if(auto==="true"){
+                    $("form#formAutomaticRoutingDetail input[name$='expression']").val('');
+                } else if(price==="true"){
+                    $("form#formAutomaticRoutingDetail input[name$='price']").val('');
+                }
+            }
+        }
+        routing_loadGridViewListPrice();
 
     }
 
@@ -304,38 +371,25 @@
                         icon : Ext.MessageBox.ERROR
                     });
                 });
-            } 
+            } else {
+                if(auto==="true"){
+                    autoRoutingWorkgroupCombo.clearValue();
+                    autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
+                    $("form#formAutomaticRoutingDetail input[name$='expression']").val('');
+                } else if(price==="true"){
+                    autoRoutingWorkgroupCombo.clearValue();
+                    autoRoutingWorkgroupStore.reload({ params : { insurerId:<s:property value="insurerId" /> } });
+                }
+            }
         }
-        refereshAutomaticRoutingGrid();
-        automaticRoutingEditSelectionDlg.hide();
-        automaticRoutingEditSelectionDlg = null;
-
-        
+        routing_loadGridViewList();
+        if(automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg !== null) {
+            automaticRoutingEditSelectionDlg.hide();
+//            automaticRoutingEditSelectionDlg = null;
+        }
 
     }
     
-    function refereshAutomaticRoutingGrid() {
-        var tabIndex = 0;
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-        <s:if test="isChoxAdmin">
-            tabIndex = 8;
-            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        </s:if>
-
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
-                insAdminTabs.activate(tabIndex); 
-            </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
-    }
-
 </script>
 
 
@@ -354,18 +408,9 @@
                             <div class="form-container">
                                 <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetailByPrice.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
-                                    <div class="chox-form-item">
+                                    <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Workgroup</label>
-                                        <s:select
-                                            id="workgroupId"
-                                            name="workgroupId"
-                                            list="availableWorkgroups"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey=""
-                                            headerValue="--- ALL ---"
-                                            emptyOption="false">
-                                        </s:select>
+                                        <div id = "autoRoutingWorkgroupDiv"></div>
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Vehicle Class Price</label>
@@ -404,22 +449,13 @@
                             <div class="form-container">
                                 <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetail.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
-                                    <div class="chox-form-item">
+                                    <div class="chox-form-item" style="padding-bottom: 2px">
                                         <label class="chox-form-std-label">Workgroup</label>
-                                        <s:select
-                                            id="workgroupId"
-                                            name="workgroupId"
-                                            list="availableWorkgroups"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey="-1"
-                                            headerValue="--- ALL ---"
-                                            emptyOption="false">
-                                        </s:select>
+                                        <div id="autoRoutingWorkgroupDiv"></div>
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Regular Expression</label>
-                                        <input id="expression" name="expression" value="<s:property value="expression" />"/>
+                                        <input id="expression" name="expression" style="width: 220px" value="<s:property value="expression" />"/>
                                     </div>
                                     <div class="chox-form-button">
                                         <input type="submit" value="Add New Regular Expression"/>
@@ -454,6 +490,7 @@
                         <input id="expression" name="expression"/>
                     </div>
                     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                    <div id="CDAutomaticRoutingEditScreenMessageBox" class="action-error-msg"></div>
                     <!--s:token/-->
                 </form>
             </div>
