@@ -1,10 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.BreBand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.PenaltyChargeService;
 import idas.chox.core.services.TaskService;
@@ -14,7 +16,12 @@ public class ReopenClaim extends BaseActivity {
     private TaskService taskService;
     private ClaimService claimService;
     private PenaltyChargeService penaltyChargeService;
+    private BreBandService breBandService;
 
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+    
     public void setPenaltyChargeService(PenaltyChargeService penaltyChargeService) {
         this.penaltyChargeService = penaltyChargeService;
     }
@@ -35,10 +42,16 @@ public class ReopenClaim extends BaseActivity {
             LOG.info("Claim re-opened for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
             // Re-open automatically closed tasks on a re-opened claim
             if (!ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
-                    && ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
-                    && ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {
+                    || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
+                    || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {  
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             }
+            
+            if (claim.getBreBand() == null) {
+                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                claim.setBreBand(choBand);
+            }
+                        
             if (claim.getInvoice() != null && claim.getBreBand().isAllowPenaltyCharges(claim.getClaimType()) 
                     && claim.getInvoice().getInvoicedDays() > penaltyChargeService.getFirstPenaltyBand(claim) && getWorkflowContext().getSecurityInfoProvider().getIsCHO()
                     && (
