@@ -41,9 +41,9 @@ public class ReopenClaim extends BaseActivity {
         if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim re-opened for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
             // Re-open automatically closed tasks on a re-opened claim
-            if (!ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
+            if (!(ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
                     || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
-                    || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus())) {  
+                    || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus()))) {  
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
             }
             
