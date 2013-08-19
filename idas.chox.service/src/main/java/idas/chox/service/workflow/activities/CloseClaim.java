@@ -36,7 +36,7 @@ public class CloseClaim extends BaseActivity {
         claim.setStatus(ClaimStatus.CLAIM_CLOSED);
         // Close open tasks on claim
         taskService.autoCompleteTasksForClaim(claim.getId());
-        if (closeReason != null || !closeReason.isEmpty()) {
+        if (closeReason != null && !closeReason.isEmpty()) {
             claim.addComment(Comment.newComment(0, String.format("Claim Closed: %s", closeReason)));
         }
     }
