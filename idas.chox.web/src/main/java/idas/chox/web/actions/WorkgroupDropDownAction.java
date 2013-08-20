@@ -5,14 +5,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
+import static com.opensymphony.xwork2.Action.SUCCESS;
 
 import net.sf.json.JSONArray;
 
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.WorkgroupService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WorkgroupDropDownAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupDropDownAction.class);
@@ -21,6 +26,8 @@ public class WorkgroupDropDownAction extends BaseAction {
     private Set<Integer> orgId = new HashSet<Integer>();
     private LookupService service;
     private int claimId;
+    private WorkgroupService workgroupService;
+    private int insurerId = -1;
 
     public int getClaimId() {
         return claimId;
@@ -114,6 +121,18 @@ public class WorkgroupDropDownAction extends BaseAction {
         } 
         return SUCCESS;
     }
+    
+    public String getAvailableAutoRoutingWorkgroups() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
+        try {
+            workgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId);
+        } catch (Exception ex) {
+            LOG.error("Exception occured while getting availableWorkgroups: ", ex);
+        }
+        return SUCCESS;
+    }
 
     @Override
     public String execute() throws Exception {
@@ -127,5 +146,17 @@ public class WorkgroupDropDownAction extends BaseAction {
             workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
         }
         return SUCCESS;
+    }
+    
+    public void setWorkgroupService(WorkgroupService workgroupService) {
+        this.workgroupService = workgroupService;
+    }
+    
+    public int getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
     }
 }

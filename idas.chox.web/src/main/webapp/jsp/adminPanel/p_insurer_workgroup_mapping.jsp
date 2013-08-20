@@ -40,6 +40,7 @@
             enableHdMenu:false,
             enableColumnMove: false,
             layout:'fit',
+            loadMask : true,
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
@@ -141,12 +142,14 @@
                         width:300,
                         buttons: Ext.MessageBox.OK
                     });
-                    insurerWorkgroup_doRefreshPage();
+                    workgroup_loadGridViewList();
+                    clearFormValues();
                 }
                 else
                 {
                     //                    alert("Your Changes Have Been Saved");
-                    insurerWorkgroup_doRefreshPage();
+                    workgroup_loadGridViewList();
+                    clearFormValues();
                 }
 
             }
@@ -164,7 +167,7 @@
                     });
                     //                    outputDiv.append(this.toString());
                 });
-                insurerWorkgroup_doRefreshPage();
+                workgroup_loadGridViewList();
             }
         }
         else
@@ -174,31 +177,13 @@
         }
 
     }
-
-    function insurerWorkgroup_doRefreshPage(){
-
-        var tabIndex = 0;
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-    <s:if test="isChoxAdmin">
-            tabIndex = 2;
-            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-    </s:if>
-
-            ajax.loadHtml2(url,param,function(data){
-                $(target).html(data);
-    <s:if test="isChoxAdmin">
-                insAdminTabs.activate(tabIndex); 
-    </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-    </s:else>
-            });
-
-        }
-
+    
+    function clearFormValues() {
+        $("#workgroupName").val('');
+        $("#workgroupTeam").val('');
+        $("#workgroupSite").val('');
+    }
+    
 </script>
 <div class="sub-admin-tab-css">
 
