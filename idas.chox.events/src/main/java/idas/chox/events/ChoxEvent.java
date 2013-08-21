@@ -1,4 +1,4 @@
-package idas.chox.web;
+package idas.chox.events;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -15,7 +15,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import idas.chox.core.model.Claim;
-import javax.jms.DeliveryMode;
 
 /**
  *
@@ -85,7 +84,7 @@ public class ChoxEvent {
         }
     }
 
-    public void sendMessage(final String message) throws JMSException {
+    public void sendMessage(final String message) throws Exception {
         LOG.info("CHOX Event send request received: '{}'", message);
 
         MessageProducer producer;
@@ -93,26 +92,26 @@ public class ChoxEvent {
             producer = session.createProducer(destination);
         } catch (JMSException ex) {
             LOG.error("Error creating producer: {}", ex.getMessage(), ex);
-            throw ex;
+            throw new Exception("JMS Exception creating producer: " + ex.getMessage(), ex);
         }
         TextMessage msg;
         try {
             msg = session.createTextMessage();
         } catch (JMSException ex) {
             LOG.error("Error creating TextMessage: {}", ex.getMessage(), ex);
-            throw ex;
+            throw new Exception("JMS Exception creating TextMessage: " + ex.getMessage(), ex);
         }
         try {
             msg.setText(message);
         } catch (JMSException ex) {
             LOG.error("Error setting message text: {}", ex.getMessage(), ex);
-            throw ex;
+            throw new Exception("JMS Exception setting message text: " + ex.getMessage(), ex);
         }
         try {
             producer.send(msg);
         } catch (JMSException ex) {
             LOG.error("Error sending message: {}", ex.getMessage(), ex);
-            throw ex;
+            throw new Exception("JMS Exception sending message: " + ex.getMessage(), ex);
         }
         LOG.info("CHOX Event sent ok: '{}'", message);
     }

@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <chox.core.version>2.0</chox.core.version>
         <chox.data.version>2.0</chox.data.version>
+        <chox.events.version>1.0</chox.events.version>
         <chox.service.version>2.0</chox.service.version>
         <chox.web.version>2.0</chox.web.version>
         
@@ -95,6 +96,7 @@
     <modules>
         <module>idas.chox.core</module>
         <module>idas.chox.data</module>
+        <module>idas.chox.events</module>
         <module>idas.chox.service</module>
         <module>idas.chox.web</module>
         <module>idas.chox.jmsClient</module>
