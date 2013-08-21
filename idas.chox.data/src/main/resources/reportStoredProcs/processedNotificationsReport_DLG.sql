@@ -80,7 +80,7 @@ SELECT ''::varchar as "AX Unique Ref",
        ''::varchar as "Injury",
        vh.rental_start as "Hire Commenced On (If applicable)",
        tp.insurer_brand as "RBS Insurance Brand",
-       getLiabilityStatus(c.liability_status) as "Liability status",
+       getLiabilityStatusAx(c.liability_status) as "Liability status",
        (select comment from comment where claim_id=c.id and comment like 'Supporting Liability Notes%' order by id desc limit 1) as "If wrong insurer, please provide correct info",
        case when exists (select * from audit_trail at where at.claim_id=c.id and at.created_date >= DATE_FROM and at.created_date < DATE_TO
               and new_status = 'ClaimRejected' and reverted=false) then ror.name else ''::varchar end as "Fraud - Reason For Rejection",
