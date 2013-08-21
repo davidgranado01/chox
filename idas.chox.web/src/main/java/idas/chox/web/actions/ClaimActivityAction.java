@@ -3,6 +3,8 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
+import javax.jms.JMSException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +24,6 @@ import idas.chox.core.workflow.Activity;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.web.ChoxEvent;
-import java.util.Date;
-import java.util.logging.Level;
-import javax.jms.JMSException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -145,7 +144,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                             throw new AccessDeniedException("Attempt to access a claim that you do not own.");
                         }
                         activity.process(claim);
-                        choxEventService.send("Activity " + activityName + " processed at " + new Date().toString());
+                        choxEventService.send(claim, activityName, "Activity " + activityName + " processed at " + new Date().toString());
                     }
                 }
 
@@ -179,7 +178,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 activity.process(claim);
                 updateModelInSession(Arrays.asList(claim));
                 setMessage(activity.getMessage());
-                choxEventService.send("Activity " + name + " processed at " + new Date().toString());
+                choxEventService.send(claim, name, "Activity " + name + " processed at " + new Date().toString());
             } catch (AccessDeniedException ex) {
                 throw (ex);
             } catch (JMSException ex) {

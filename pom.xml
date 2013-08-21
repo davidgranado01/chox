@@ -97,6 +97,7 @@
         <module>idas.chox.data</module>
         <module>idas.chox.service</module>
         <module>idas.chox.web</module>
+        <module>idas.chox.jmsClient</module>
     </modules>
 
 </project>

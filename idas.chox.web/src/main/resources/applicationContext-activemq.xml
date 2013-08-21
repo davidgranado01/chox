@@ -70,9 +70,9 @@
 
 
     <!--bean id="cachingBrokerConnectionFactory"
-          class="org.springframework.jms.connection.CachingConnectionFactory"
-          p:targetConnectionFactory-ref="remoteBrokerConnectionFactory"
-          p:sessionCacheSize="10" /-->
+    class="org.springframework.jms.connection.CachingConnectionFactory"
+    p:targetConnectionFactory-ref="remoteBrokerConnectionFactory"
+    p:sessionCacheSize="10" /-->
 
     <!-- Alllow us to use system properties -->
     <!--bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/-->
@@ -80,17 +80,17 @@
     <broker id="localBrokerId" xmlns="http://activemq.apache.org/schema/core" useJmx="false" persistent="false" brokerName="localBroker">
         <networkConnectors>
             <networkConnector
-                    uri="static:(failover:tcp://localhost:61616)?maxReconnectDelay=60000"
-                    networkTTL="3" 
-                    dynamicOnly="true"
-                    staticBridge="true">
+                uri="static:(failover:tcp://localhost:61616)?maxReconnectDelay=60000"
+                networkTTL="3" 
+                dynamicOnly="true"
+                staticBridge="true">
                 <staticallyIncludedDestinations>
-                    <topic physicalName="topic.choxEvents"/>
+                    <topic physicalName="CHOX.Events"/>
                 </staticallyIncludedDestinations>
             </networkConnector>
         </networkConnectors>
         
-<!--        <persistenceAdapter>
+        <!--        <persistenceAdapter>
             <memoryPersistenceAdapter/>
             kahaDB directory="${activemq.base}/data/kahadb"
         </persistenceAdapter>-->
@@ -98,7 +98,15 @@
         <transportConnectors>
             <transportConnector uri="vm://localhost:7001"/>
         </transportConnectors>
-
+        <plugins>
+            <!-- lets enable detailed logging in the broker including ConnectionEvents -->
+            <loggingBrokerPlugin logAll="true" logConnectionEvents="true"/>
+       
+            <timeStampingBrokerPlugin zeroExpirationOverride="1000" ttlCeiling="60000" futureOnly="true"/>
+       
+            <traceBrokerPathPlugin/>
+       
+        </plugins>
     </broker>
  
     <!-- JMS ConnectionFactory to use for local bridging -->
@@ -112,12 +120,13 @@
     
     <!--  ActiveMQ Destination  -->
     <!--queue xmlns="http://activemq.apache.org/schema/core" id="choxEventsQueue" physicalName="queue.choxEvents" /-->
-    <topic xmlns="http://activemq.apache.org/schema/core" id="choxEventsTopic" physicalName="topic.choxEvents" />
+    <topic xmlns="http://activemq.apache.org/schema/core" id="choxEventsTopic" physicalName="CHOX.Events" />
     <!--bean id="queuedestination" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="jms/queue/foo" />
     </bean-->
     <bean id="queue1JMSTemplate"
           class="org.springframework.jms.core.JmsTemplate"
           p:connectionFactory-ref="cachingBrokerConnectionFactory"
+          p:timeToLive="691200000"
           p:defaultDestination-ref="choxEventsTopic" />
 </beans>

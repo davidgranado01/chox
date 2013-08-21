@@ -1,21 +1,21 @@
 package idas.chox.web;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+
+import idas.chox.core.model.Claim;
+import javax.jms.DeliveryMode;
 
 /**
  *
@@ -57,7 +57,7 @@ public class ChoxEvent {
  */
     }
 
-    public void send(final String messageText) {
+    public void send(final Claim claim, final String event, final String messageText) {
         LOG.info("Sending JMS message '{}' with template {}", messageText, queue1JMSTemplate);
         try {
             queue1JMSTemplate.send(new MessageCreator() {
@@ -67,6 +67,10 @@ public class ChoxEvent {
                     Message message;
                     try {
                         message = session.createTextMessage(messageText);
+//                        message.setJMSDeliveryMode(DeliveryMode.PERSISTENT); -- set on producer, not message
+                        message.setIntProperty("choId", claim.getChorganisation().getId().intValue());
+                        message.setIntProperty("insurerId", claim.getInsurer().getId().intValue());
+                        message.setStringProperty("choxEvent", event);
                     } catch (JMSException ex) {
                         LOG.error("Error creating message: {}", ex.getMessage());
                         throw ex;
