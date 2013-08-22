@@ -518,4 +518,5 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
     }
+
 }

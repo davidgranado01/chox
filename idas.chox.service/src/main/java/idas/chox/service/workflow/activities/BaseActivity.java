@@ -22,11 +22,13 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
+import idas.chox.events.ChoxEventRegister;
+import idas.chox.events.EventRegister;
 import idas.chox.service.security.ApplicationAccessibility;
 
 
 
-public abstract class BaseActivity implements Activity {
+public abstract class BaseActivity implements Activity, EventRegister {
     private static final Logger LOG = LoggerFactory.getLogger(BaseActivity.class);
     private WorkflowContext processContext;
     private Activity chainActivity;
@@ -36,6 +38,8 @@ public abstract class BaseActivity implements Activity {
     private UserWorkgroupService userWorkgroupService;
     @Autowired
     private ApplicationAccessibility applicationAccessibility;
+    @Autowired
+    private EventRegister choxEventRegister;
 
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
@@ -117,6 +121,7 @@ public abstract class BaseActivity implements Activity {
             LOG.debug("Claim doProcessed.");
             afterProcess(claim);
             LOG.debug("Claim afterProcessed.");
+            sendEvents();
         }
     }
 
@@ -289,6 +294,51 @@ public abstract class BaseActivity implements Activity {
             auditTrail.setPreviousTotalToPay(claim.getInvoice().getTotalToPay());
             claim.getInvoice().setTotalToPay(BigDecimal.ZERO.setScale(2));
         }
+    }
+
+    public void setChoxEventRegister(ChoxEventRegister choxEventRegister) {
+        this.choxEventRegister = choxEventRegister;
+    }
+
+    @Override
+    public void startEvent(String name, int insurerId, int choId, int claimId, int claimType) throws Exception {
+        choxEventRegister.startEvent(name, insurerId, choId, claimId, claimType);
+    }
+
+    // Utility function
+    public void startEvent(Claim claim, String name) throws Exception {
+        int claimId = -1;
+        if (claim.getId() != null) {
+            claimId = claim.getId().intValue();
+        }
+        startEvent(name, claim.getInsurer().getId().intValue(), claim.getChorganisation().getId().intValue(), claimId, claim.getClaimType().ordinal());
+        addParameter("insurerName", claim.getInsurer().getName());
+        addParameter("choName", claim.getChorganisation().getName());
+        addParameter("choReference", claim.getChoReference());
+        addParameter("claimNumber", claim.getClaimNumber());
+        addParameter("initialClaimType", claim.getClaimType().toString());
+        addParameter("initialClaimStatus", claim.getStatus());
+    }
+
+    public void completeEvent(Claim claim) throws Exception {
+        addParameter("claimStatus", claim.getStatus());
+        addParameter("claimType", claim.getClaimType().toString());
+        completeEvent();
+    }
+
+    @Override
+    public void addParameter(String paramName, Object paramValue) {
+        choxEventRegister.addParameter(paramName, paramValue);
+    }
+
+    @Override
+    public void completeEvent() throws Exception {
+        choxEventRegister.completeEvent();
+    }
+
+    @Override
+    public void sendEvents() throws Exception {
+        choxEventRegister.sendEvents();
     }
 
 }

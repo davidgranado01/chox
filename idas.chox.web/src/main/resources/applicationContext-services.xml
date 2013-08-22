@@ -322,5 +322,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <bean id="choxEventService" class="idas.chox.events.ChoxEvent" scope="singleton"/>
+    <bean id="choxJmsEventSender" class="idas.chox.events.ChoxJmsEventSender" scope="singleton"/>
+    <bean id="choxEventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
+        <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
+    </bean>
 </beans>

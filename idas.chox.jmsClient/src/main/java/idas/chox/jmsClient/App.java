@@ -1,6 +1,5 @@
 package idas.chox.jmsClient;
 
-import java.io.InputStream;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -9,15 +8,15 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+
+import idas.chox.events.Event;
 
 public class App implements MessageListener {
 
@@ -47,21 +46,6 @@ public class App implements MessageListener {
     }
 
     public void run() {
-/*****
-        try {
-            LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(lc);
-            lc.reset();
-            InputStream verboseConfigFile = Thread.currentThread().getContextClassLoader().getResourceAsStream("logback-verbose.xml");
-            configurator.doConfigure(verboseConfigFile);
-        } catch (JoranException je) {
-            LOG.error("Error activating verbose messaging: {}", je.getMessage());
-            if (je.getCause() != null) {
-                LOG.error("Caused by: {}", je.getCause().getMessage());
-            }
-        }
-******/
         try {
             factory = new ActiveMQConnectionFactory(brokerURL);
             connection = factory.createConnection();
@@ -82,13 +66,17 @@ public class App implements MessageListener {
     public void onMessage(Message message) {
         LOG.debug("on/message fired!!");
         try {
-            if (message instanceof TextMessage) {
-                TextMessage txtMessage = (TextMessage) message;
-                LOG.info("Message received: {}", txtMessage.getText());
+            if (message instanceof ActiveMQTextMessage) {
+                ActiveMQTextMessage txtMessage = (ActiveMQTextMessage) message;
+                String jsonString = txtMessage.getText();
+                LOG.debug("Text Message received: {}", jsonString);
                 // Do Something
+                Gson gson = new Gson();
+                Event ev = gson.fromJson(jsonString, Event.class);
+                LOG.info("Received {}", ev);
                 txtMessage.acknowledge();
-            } else {
-                LOG.error("Invalid message received.");
+            }  else {
+                LOG.error("Invalid message type received: {}", message.getClass());
             }
         } catch (JMSException e) {
             LOG.error("Exception Caught: {}", e.getMessage(), e);
