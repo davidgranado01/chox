@@ -41,6 +41,7 @@ public class InvoiceRejectionAccept extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
+        activityEvents.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

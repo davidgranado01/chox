@@ -18,6 +18,20 @@ public class AssignOwner extends BaseActivity {
     private Workgroup workgroup;
     private boolean workgroupsEnabled;
 
+    // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
+    public WebUser getClaimOwner() {
+        return claimOwner;
+
+    }
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
+    public boolean isWorkgroupsEnabled() {
+        return workgroupsEnabled;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);

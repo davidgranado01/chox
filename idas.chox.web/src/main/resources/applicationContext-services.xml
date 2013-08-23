@@ -326,4 +326,7 @@
     <bean id="choxEventRegister" class="idas.chox.events.ChoxEventRegister" scope="prototype">
         <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
     </bean>
+    <bean id="activityEvents" class="idas.chox.service.workflow.activities.ActivityEvents" scope="prototype">
+        <property name="choxEventRegister" ref="choxEventRegister"/>
+    </bean>
 </beans>

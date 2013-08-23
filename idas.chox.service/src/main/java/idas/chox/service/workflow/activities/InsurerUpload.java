@@ -26,6 +26,10 @@ public class InsurerUpload extends BaseActivity {
         this.breBandService = breBandService;
     }
 
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
+    }
+
     @Override
     protected void beforeProcess(Claim claim) {
         if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {

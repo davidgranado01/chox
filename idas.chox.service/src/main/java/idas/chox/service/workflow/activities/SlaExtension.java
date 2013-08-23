@@ -12,6 +12,10 @@ public class SlaExtension extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(SlaExtension.class);
     private int slaExtDays;
 
+    public int getSlaExtDays() {
+        return slaExtDays;
+    }
+
 
     @Override
     protected void doProcess(Claim claim) throws Exception {

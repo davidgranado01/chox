@@ -95,7 +95,51 @@ public class ClaimRejection extends BaseActivity {
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
+
     // </editor-fold>
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsQuantumDispute() {
+        return isQuantumDispute;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
 
     @Override
     public boolean needsClaimLockedCheck() {
@@ -235,6 +279,7 @@ public class ClaimRejection extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
+        activityEvents.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

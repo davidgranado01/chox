@@ -21,6 +21,10 @@ public class InvoiceRejection extends BaseActivity {
         return true;
     }
 
+    public String getRejectionDescription() {
+        return rejectionDescription;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -56,6 +60,7 @@ public class InvoiceRejection extends BaseActivity {
 
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
+        activityEvents.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().setWorkflowContext(getProcessContext());

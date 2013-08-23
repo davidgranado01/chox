@@ -23,6 +23,10 @@ public class AssignSupplierOwner extends BaseActivity {
         return supplierClaimOwnerId;
     }
 
+    public WebUser getSupplierClaimOwner() {
+        return supplierClaimOwner;
+    }
+
     public void setSupplierClaimOwnerId(int supplierClaimOwnerId) {
         this.supplierClaimOwnerId = supplierClaimOwnerId;
     }

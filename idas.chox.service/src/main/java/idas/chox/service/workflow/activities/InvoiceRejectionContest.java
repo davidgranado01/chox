@@ -64,6 +64,7 @@ public class InvoiceRejectionContest extends BaseActivity {
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
         LOG.debug("Claim saved and transaction logged.");
+        activityEvents.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing chained activity...");
             getChainActivity().setWorkflowContext(getProcessContext());

@@ -38,6 +38,10 @@ public class PaymentNotReceived extends BaseActivity {
         this.amountReceived = amountReceived;
     }
 
+    public BigDecimal getAmountReceived() {
+        return amountReceived;
+    }
+
 
     @Override
     protected void doProcess(Claim claim) {
@@ -102,6 +106,7 @@ public class PaymentNotReceived extends BaseActivity {
      */
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        activityEvents.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

@@ -14,6 +14,10 @@ public class InvoiceResubmit extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceResubmit.class);
     private boolean autoRoutedInvoice = false;
 
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
+    }
+
     @Override
     protected void beforeProcess(Claim claim) {
 
@@ -109,6 +113,7 @@ public class InvoiceResubmit extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
+        activityEvents.generate(claim, this);
     }
 
 }

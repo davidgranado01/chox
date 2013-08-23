@@ -17,6 +17,10 @@ public class CloseClaim extends BaseActivity {
         this.closeReason = closeReason;
     }
 
+    public String getCloseReason() {
+        return closeReason;
+    }
+
 
     @Override
     protected void validate(Claim claim) throws Exception {

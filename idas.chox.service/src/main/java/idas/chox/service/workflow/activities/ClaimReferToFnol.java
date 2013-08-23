@@ -38,6 +38,54 @@ public class ClaimReferToFnol extends BaseActivity {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
 
+    public WebUser getClaimOwner() {
+        return claimOwner;
+    }
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsQuantumDispute() {
+        return isQuantumDispute;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
     public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
         this.liabilityAgreedDate = liabilityAgreedDate;
     }

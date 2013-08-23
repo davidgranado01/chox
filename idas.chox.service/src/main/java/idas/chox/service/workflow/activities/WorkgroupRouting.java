@@ -83,6 +83,7 @@ public class WorkgroupRouting extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
         getDataService().save(claim);
         logTransaction(claim);
+        activityEvents.generate(claim, this);
 
         if (getChainActivity() != null) {
             getChainActivity().processInBatch(claim);

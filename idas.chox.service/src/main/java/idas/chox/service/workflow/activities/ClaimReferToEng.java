@@ -37,6 +37,38 @@ public class ClaimReferToEng extends BaseActivity {
         this.claimNumber = claimNumber;
     }
 
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
     @Override
     public boolean needsClaimLockedCheck() {
         return true;

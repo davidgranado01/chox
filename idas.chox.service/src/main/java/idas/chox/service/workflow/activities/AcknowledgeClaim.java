@@ -45,7 +45,7 @@ public class AcknowledgeClaim extends BaseActivity {
             this.claimNumber = claimNumber;
         }
     }
-
+    // <editor-fold defaultstate="collapsed" desc="Parameter Getters">
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
@@ -62,6 +62,39 @@ public class AcknowledgeClaim extends BaseActivity {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
     // </editor-fold>
+
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
 
     @Override
     public boolean needsClaimLockedCheck() {

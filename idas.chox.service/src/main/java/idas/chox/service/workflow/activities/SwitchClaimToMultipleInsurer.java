@@ -33,6 +33,10 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
     private Insurer newInsurer;
     private InsurerChorganisationService insurerChorganisationService;
 
+    public Insurer getNewInsurer() {
+        return newInsurer;
+    }
+
     public String getPolicyNumber() {
         return policyNumber;
     }
@@ -160,6 +164,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
+        activityEvents.generate(claim, this);
         /*
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged

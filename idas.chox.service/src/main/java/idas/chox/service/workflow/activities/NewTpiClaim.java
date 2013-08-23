@@ -19,6 +19,10 @@ public class NewTpiClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
     private boolean autoRoutedInvoice = false;
 
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
+    }
+
     @Override
     public boolean needsOwnershipCheck() {
         return false;
@@ -144,6 +148,7 @@ public class NewTpiClaim extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);            
         }
+        activityEvents.generate(claim, this);
     }
 
     @Override

@@ -31,7 +31,11 @@ public class ResolveLiability extends BaseActivity {
     public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
         this.engineerClaimReviewNotes = engineerClaimReviewNotes;
     }
+
     // </editor-fold>
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
     
     @Override
     public boolean needsClaimLockedCheck() {

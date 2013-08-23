@@ -7,13 +7,16 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Workgroup;
-import idas.chox.events.ChoxEventRegister;
 
 public class AssignWorkgroup extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(AssignWorkgroup.class);
 
     private int workgroupId;
     private Workgroup workgroup;
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -50,9 +53,6 @@ public class AssignWorkgroup extends BaseActivity {
             LOG.error("Exception thrown: {}", e.getMessage());
             throw e;
         }
-        startEvent(claim, ChoxEventRegister.CLAIM_ROUTED_EVENT);
-        this.addParameter("insurerWorkgroupName", workgroup.getName());
-        this.addParameter("insurerWorkgroupId", workgroup.getId().intValue());
     }
 
     @Override
@@ -70,7 +70,6 @@ public class AssignWorkgroup extends BaseActivity {
                 throw e;
             }
         } 
-        this.completeEvent(claim);
 
     }
 

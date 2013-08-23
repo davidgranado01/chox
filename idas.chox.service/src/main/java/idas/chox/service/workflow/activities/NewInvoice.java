@@ -24,6 +24,10 @@ public class NewInvoice extends BaseActivity {
     private UserService userService;
     private boolean autoRoutedInvoice = false;
 
+    public boolean isAutoRoutedInvoice() {
+        return autoRoutedInvoice;
+    }
+
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
     }
@@ -174,6 +178,7 @@ public class NewInvoice extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
+        activityEvents.generate(claim, this);
     }
 
 
