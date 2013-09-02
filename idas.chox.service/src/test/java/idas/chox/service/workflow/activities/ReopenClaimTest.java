@@ -30,6 +30,7 @@ public class ReopenClaimTest extends BaseTest{
         Claim claim = new Claim();
         Insurer insurer = insurerService.getInsurer(3);
         claim.setInsurer(insurer);
+        claim.setBreBand(breBandService.getBreBand(101));
         claim.setStatus(ClaimStatus.CLAIM_CLOSED);
         claim.setPreviousStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);

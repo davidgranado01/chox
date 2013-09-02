@@ -289,7 +289,8 @@ public class MockObjects {
         invoice.setTotalLossFeeVat(new BigDecimal(0));
         invoice.setTotalLossFeeGross(new BigDecimal(0));
 
-
+        invoice.setAcquisitionFee(BigDecimal.ZERO);
+        invoice.setOverheadFee(BigDecimal.ZERO);
 
         invoice.setAdditionalDriverFee(BigDecimal.ZERO);
 
@@ -349,6 +350,8 @@ public class MockObjects {
         extra.setTowBarsQty(0);
         extra.setNonStandardInsurancePremiumFee(new BigDecimal(0));
         extra.setNonStandardInsurancePremiumQty(0);
+        extra.setAcquisitionFee(BigDecimal.ZERO);
+        extra.setOverheadFee(BigDecimal.ZERO);
 
         return extra;
     }
