@@ -129,7 +129,22 @@
     function doInsurerChorganisationPageRefresh(responseText, statusText){
        var response = eval('(' + responseText.trim() + ')');
        
-       if(response){
+       if(response){ 
+            
+           if(response.isValid){
+              if(response.resultType && response.resultType === 'Message')
+                {
+                    Ext.MessageBox.show({
+                    title: '',
+                    msg: response.result,
+                    width: 300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                    });
+                    return;
+                }
+            }
+            
             if(!response.isValid){
                $.each(response.errors, function() {
                     Ext.MessageBox.show({
