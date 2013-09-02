@@ -174,7 +174,9 @@ function validateComboBox(){
 
 function assignManualInvoiceSubmit(){
     $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner");
-    $('form#updateManualInvoicePaymentForm input[id="oasWorkgroupHiddenId"]').val(workgroupCombo.getValue());
+    if(isWorkgroupEnable) {
+        $('form#updateManualInvoicePaymentForm input[id="oasWorkgroupHiddenId"]').val(workgroupCombo.getValue());
+    }
     if (validateComboBox()) {
         Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");
 //        $("#updateManualInvoicePaymentForm").submit();
