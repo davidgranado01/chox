@@ -99,14 +99,14 @@
 
                                 </td>
                                 <td>
-                                    <input type="text"  class="chox-ttxt-readonly" readonly name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text"  class="chox-ttxt-readonly" readonly name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt-readonly" readonly name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
                             </tr>
                             <tr>

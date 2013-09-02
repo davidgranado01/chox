@@ -42,13 +42,13 @@
                                     <label>Liability Percentage Agreed (<b>Insurer</b>)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
                                 <td>
                                     <label>Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />" onkeyup="extractNumber(this,2,false);"/>
                                 </td>
                             </tr>
                             <tr>
