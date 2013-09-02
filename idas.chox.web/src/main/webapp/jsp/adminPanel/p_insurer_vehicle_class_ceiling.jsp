@@ -103,7 +103,7 @@
 
         }
 
-        vehicleClassCeiling_JsonReader = new Ext.data.JsonReader({
+        var vehicleClassCeiling_JsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:

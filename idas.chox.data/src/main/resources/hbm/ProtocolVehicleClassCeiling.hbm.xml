@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.ProtocolVehicleClassCeiling" table="protocol_vehicle_class_ceiling">
+    <cache usage="read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">protocol_vehicle_class_ceiling_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <many-to-one class="idas.chox.core.model.BreBand" column="bre_band_id" name="breBand"/>
+    <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
+    <property column="hire_net_ceiling" name="hireNetCeiling" not-null="true"/>
+    <property column="repair_net_ceiling" name="repairNetCeiling" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
+</hibernate-mapping>
