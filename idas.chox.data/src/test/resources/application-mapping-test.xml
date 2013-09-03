@@ -67,6 +67,7 @@
                 <value>hbm/WebUserWorkgroup.hbm.xml</value>
                 <value>hbm/Notification.hbm.xml</value>
                 <value>hbm/VehicleClassCeiling.hbm.xml</value>
+                <value>hbm/ProtocolVehicleClassCeiling.hbm.xml</value>
                 <value>hbm/AutomaticRouting.hbm.xml</value>
                 <value>hbm/AutomaticRoutingPrice.hbm.xml</value>
                 <value>hbm/BillingCho.hbm.xml</value>

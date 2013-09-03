@@ -1252,13 +1252,21 @@
         <action name="VehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction">
             <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
         </action>
+        <action name="protocolVehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction" method="getAvailableVehicleClassByBreBand">
+            <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
+        </action>
         <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="removeVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getSelectedInsurerVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="getSelectedInsurerVehicleClassCeiling">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getSelectedBreBandProtocolVehicleClassCeiling" class="idas.chox.web.actions.BreBandProtocolVehicleClassCeilingAction" method="getSelectedBreBandProtocolVehicleClassCeiling">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="addNewVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
@@ -1266,7 +1274,8 @@
         </action>
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="updateVehicleClassCeiling">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
 
         <!-- START INSURER AUTOMATIC ROUTING -->

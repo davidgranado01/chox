@@ -150,4 +150,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
+    <bean id="protocolVehicleClassCeilingService" class="idas.chox.data.services.ProtocolVehicleClassCeilingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 </beans>

@@ -52,6 +52,8 @@ public abstract class BaseTest {
     @Autowired
     protected VehicleClassService vehicleClassService;
     @Autowired
+    protected ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
+    @Autowired
     protected BordereauReader bordereauReader;
     @Autowired
     protected ActivityFactory activityFactory;
