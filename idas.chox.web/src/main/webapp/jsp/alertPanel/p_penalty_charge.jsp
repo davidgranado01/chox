@@ -129,7 +129,7 @@
                     required:true,
                     min:0,
                     number:true,
-                    max:99999999
+                    max:9999999
                 }
             },
             messages: {
