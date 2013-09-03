@@ -122,24 +122,28 @@
                 hirePenaltyChargeAmount:{
                     required:true,
                     min:0,
-                    number:true
+                    number:true,
+                    max:9999999
                 },
                 repairPenaltyChargeAmount:{
                     required:true,
                     min:0,
-                    number:true
+                    number:true,
+                    max:99999999
                 }
             },
             messages: {
                 repairPenaltyChargeAmount:{
                     required:"You must supply a value for 'Repair Penalty Charge Amount'",
                     min:"'Repair Penalty Charge Amount' must be larger than 0",
-                    number:"You must supply a numeric value for 'Repair Penalty Charge Amount'"
+                    number:"You must supply a numeric value for 'Repair Penalty Charge Amount'",
+                    max:"'Repair Penalty Charge Amount' must be Less Than Or Equal To 9999999."
                 },
                 hirePenaltyChargeAmount:{
                     required:"You must supply a value for 'Hire Penalty Charge Amount'",
                     min:"'Hire Penalty Charge Amount' must be larger than 0",
-                    number:"You must supply a numeric value for 'Hire Penalty Charge Amount'"
+                    number:"You must supply a numeric value for 'Hire Penalty Charge Amount'",
+                    max:"'Hire Penalty Charge Amount' must be Less Than Or Equal To 9999999."
                 }
             }
         });

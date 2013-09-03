@@ -9,12 +9,24 @@
         {
             errorLabelContainer: "#formClaimReviewByEngActionMessageBox",
             rules: {
+                percentageLiabilityAccepted:{
+                    max : 100
+                },
+                percentageLiabilityCho:{
+                    max : 100
+                },
                 indemnityAmount: {
                     required:true,
                     number:true
                 }
             },
             messages: {
+                percentageLiabilityAccepted:{
+                    max :"'Liability Percentage Agreed (Insurer)' Must Be Less Than Or Equal To 100."
+                },
+                percentageLiabilityCho:{
+                    max :"'Liability Percentage Agreed (CHO)' Must Be Less Than Or Equal To 100."
+                },
                 indemnityAmount: {
                     required:"You Must Supply A Valid 'Indemnity Value'",
                     number:"You Must Supply A Numeric Value For 'Indemnity Value'"
