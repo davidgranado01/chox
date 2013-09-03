@@ -37,10 +37,10 @@ public abstract class BaseActivity implements Activity {
     @Autowired
     private ApplicationAccessibility applicationAccessibility;
     @Autowired
-    protected ActivityEvents activityEvents;
+    protected ActivityEventGenerator eventGenerator;
 
-    public void setActivityEvents(ActivityEvents activityEvents) {
-        this.activityEvents = activityEvents;
+    public void setEventGenerator(ActivityEventGenerator eventGenerator) {
+        this.eventGenerator = eventGenerator;
     }
 
     /*
@@ -181,7 +181,7 @@ public abstract class BaseActivity implements Activity {
         logTransaction(claim);
         LOG.debug("Claim saved & transaction logged.");
 
-        activityEvents.generate(claim, this);
+        eventGenerator.generate(claim, this);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
             getChainActivity().setWorkflowContext(getProcessContext());

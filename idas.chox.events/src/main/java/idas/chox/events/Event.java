@@ -12,6 +12,7 @@ import com.rits.cloning.Cloner;
  */
 public final class Event implements Serializable {
     final private String name;
+    final private int id;
     final private int insurerId;
     final private int choId;
     final private int claimId;
@@ -33,6 +34,10 @@ public final class Event implements Serializable {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -50,8 +55,8 @@ public final class Event implements Serializable {
     }
  
     
-    public Event (final String name, final int insurerId, final int choId, final int claimId, int claimType) {
-        this.name = name; this.insurerId = insurerId; this.choId = choId; this.claimId = claimId; this.claimType = claimType;
+    public Event (final String name, final int id, final int insurerId, final int choId, final int claimId, int claimType) {
+        this.name = name; this.id = id; this.insurerId = insurerId; this.choId = choId; this.claimId = claimId; this.claimType = claimType;
         parameters = new HashMap<String, Object>(10);
     }
     
@@ -62,7 +67,8 @@ public final class Event implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Event ").append(name).append(" between insId=").append(insurerId).append(" & choId=").append(choId)
+        sb.append("Event ").append(name).append("[id=").append(String.valueOf(id))
+                .append("]  between insId=").append(insurerId).append(" & choId=").append(choId)
                 .append(", claimId=").append(claimId).append(", type=").append(claimType);
         sb.append("\n Parameters are: \n");
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {

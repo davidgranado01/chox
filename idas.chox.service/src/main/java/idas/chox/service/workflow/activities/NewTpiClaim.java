@@ -148,7 +148,7 @@ public class NewTpiClaim extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim, super.getCurrentStatus(), claim.getStatus(), 1);            
         }
-        activityEvents.generate(claim, this);
+        eventGenerator.generate(claim, this);
     }
 
     @Override

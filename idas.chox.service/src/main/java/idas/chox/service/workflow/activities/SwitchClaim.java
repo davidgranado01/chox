@@ -117,7 +117,7 @@ public class SwitchClaim extends BaseActivity {
          * Rather than calling super.afterProcess(), we'll process the next activity (NewClaim) ourselves.
          * This prevents the claim being saved and the transaction logged
          */
-        activityEvents.generate(claim, this);
+        eventGenerator.generate(claim, this);
         claim.setStatus(null);
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");

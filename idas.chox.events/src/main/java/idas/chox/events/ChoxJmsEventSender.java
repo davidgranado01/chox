@@ -43,6 +43,7 @@ public class ChoxJmsEventSender {
                         message.setIntProperty("choId", event.getChoId());
                         message.setIntProperty("insurerId", event.getInsurerId());
                         message.setStringProperty("choxEvent", event.getName());
+                        message.setIntProperty("eventId", event.getId());
                         message.setIntProperty("claimType", event.getClaimType());
                         message.setIntProperty("claimId", event.getClaimId());
                     } catch (JMSException ex) {

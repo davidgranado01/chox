@@ -113,7 +113,7 @@ public class InvoiceResubmit extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim);
         }
-        activityEvents.generate(claim, this);
+        eventGenerator.generate(claim, this);
     }
 
 }
