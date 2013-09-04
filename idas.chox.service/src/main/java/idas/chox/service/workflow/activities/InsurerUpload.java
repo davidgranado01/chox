@@ -156,12 +156,15 @@ public class InsurerUpload extends BaseActivity {
 
         } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && !isEnableManualInvoiceWorkgroupOwnership) {
             claim.setManualInvoiceApproved(true);
+            super.setCurrentStatus("");
             claim.setStatus(ClaimStatus.MANUAL_INVOICE_APPROVED);
         } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE && ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
             claim.setManualInvoiceApproved(true);
+            super.setCurrentStatus("");
             claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
         } else if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
             claim.setManualInvoiceApproved(false);
+            super.setCurrentStatus("");
             if (isEnableManualInvoiceWorkgroupOwnership) {
                 claim.setStatus(ClaimStatus.MANUAL_INVOICE_UNASSIGNED);
             } else {
@@ -181,8 +184,4 @@ public class InsurerUpload extends BaseActivity {
 
     }
 
-    @Override
-    protected String getCurrentStatus() {
-        return "";
-    }
 }

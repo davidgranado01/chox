@@ -712,6 +712,11 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 	FROM accessibility
 	WHERE name = 'activity.RevertClaim.ManualInvoiceBREApproved' and claim_type=17;
 
+UPDATE audit_trail
+   set original_status = 'AwaitingInvoiceData'
+where (original_status is null or original_status = '')
+  and (new_status = 'ManualInvoiceBREApproved' or new_status = 'ManualInvoiceBRERejected');
+
 ---------------------------------------------------
 --- END of bug#2682                         -------
 ---------------------------------------------------
