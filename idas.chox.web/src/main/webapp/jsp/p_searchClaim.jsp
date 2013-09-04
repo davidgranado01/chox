@@ -24,6 +24,7 @@
     
     var statusSearchScreenCombo;
     var liabilityStatusSearchScreenCombo;
+    var hireAndRepairSearchParamCombo;
     
     Ext.onReady(function(){
 
@@ -959,7 +960,67 @@
             });
             liabilityStatusSearchScreenCombo.render('searchScreenLiabilityDropDownDiv');
 
-        
+            var hireAndRepairSearchParamData = [['Hire Only', 1],['Repair Only', 2], ['Hire and Repair', 3]];
+            
+            var hireAndRepairSearchParamStore = new Ext.data.ArrayStore({
+                    fields: [
+                       {name: 'text', type: 'string'},
+                       {name: 'value', type: 'int'}
+                    ]
+            });
+            
+            hireAndRepairSearchParamStore.loadData(hireAndRepairSearchParamData);
+            // below variable is hack to stop superBoxSelect call searchClaim Function multiple times when all recored cleard at once.
+            var hireAndRepairSearchComboNumberOfSelectedRecord = 0;
+            
+            hireAndRepairSearchParamCombo = new Ext.ux.form.SuperBoxSelect({
+                store : hireAndRepairSearchParamStore,
+                width: 220,
+                valueField : 'value',
+                id : 'hireAndRepairSearchParamComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText: '--- ALL ---',
+                removeValuesFromStore : false,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
+                    specialkey:function (el, e) {
+                        if(e.keyCode === e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        if ('<s:property value="HireAndRepairSearchParamAsString"/>') {
+                            this.setValue('<s:property value="HireAndRepairSearchParamAsString"/>');
+                            hireAndRepairSearchComboNumberOfSelectedRecord = '<s:property value="HireAndRepairSearchParamAsString"/>'.split(',').length;
+                        }
+                    },
+                    select : function(){
+                        hireAndRepairSearchComboNumberOfSelectedRecord ++;
+                        statusChange();
+                        searchClaim(true);
+                    },
+                    removeitem : function() {
+                        if (!this.getValue() && hireAndRepairSearchComboNumberOfSelectedRecord >=1) {
+                            hireAndRepairSearchComboNumberOfSelectedRecord = 0;
+                            this.reset();
+                            this.clearValue();
+                            statusChange();
+                            searchClaim(true);
+                        } else if (hireAndRepairSearchComboNumberOfSelectedRecord >= 1){
+                            hireAndRepairSearchComboNumberOfSelectedRecord --;
+                            statusChange();
+                            searchClaim(true); 
+                        }
+                         
+                    }
+                }
+            });
+            hireAndRepairSearchParamCombo.render('hireAndRepairSearchParamDropDownDiv');
+            
             // Add claim type drop-down menu
             var claimTypesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -1172,6 +1233,8 @@
             });
             claimTypesSearchScreenCombo.reset();
             claimTypesSearchScreenCombo.clearValue();
+            hireAndRepairSearchParamCombo.reset();
+            hireAndRepairSearchParamCombo.clearValue();
             statusSearchScreenCombo.reset();
             statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.reset();
@@ -1380,6 +1443,12 @@
                     <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
+                <tr>
+                    <td nowrap><label>Hire & Repair Management Status</label></td>
+                    <td><div id="hireAndRepairSearchParamDropDownDiv"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
             </s:if>
             <s:elseif test="isInsurer && (insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled)">
                 <tr>
@@ -1393,6 +1462,12 @@
                     <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
                     <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Hire & Repair Management Status</label></td>
+                    <td><div id="hireAndRepairSearchParamDropDownDiv"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
             </s:elseif>
             <s:elseif test="isInsurer && (!insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled)">
@@ -1408,21 +1483,26 @@
                     <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
+                <tr>
+                    <td nowrap><label>Hire & Repair Management Status</label></td>
+                    <td><div id="hireAndRepairSearchParamDropDownDiv"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
             </s:elseif>
             <s:else>
+                <tr>
+                    <td nowrap><label>Claim Type</label></td>
+                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
+                    <td nowrap><label>Hire & Repair Management Status</label></td>
+                    <td><div id="hireAndRepairSearchParamDropDownDiv"></div></td>
+                </tr>
                 <tr>
                     <td nowrap><label>Show Claims With Penalty Charges Only</label></td>
                     <td><div id="showPenaltyChargesAppliedFieldId"></div></td>
                     <td nowrap><label>Show Claims With Supp. Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
-                <tr>
-                    <td nowrap><label>Claim Type</label></td>
-                    <td><div id="searchScreenClaimTypeDropDownDiv"></div></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-
             </s:else>
         </table>
         <table>

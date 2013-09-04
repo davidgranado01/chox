@@ -2,18 +2,22 @@ package idas.chox.data.services;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -21,10 +25,6 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.AuditTrail;
@@ -40,7 +40,6 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.QueuedTicket;
-import idas.chox.data.notifications.NotificationType;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -50,7 +49,10 @@ import idas.chox.core.services.NotificationService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
-import java.util.Map;
+import idas.chox.data.notifications.NotificationType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     public static final String PENDING = "Pending";
@@ -731,6 +733,78 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getHireAndRepairSearchParamIds() != null && !searchCriteria.getHireAndRepairSearchParamIds().isEmpty()) {
+
+            /* The SQL Query for the below criteria is:
+                OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = false) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = false))) OR (iv.id is not null AND (iv.hire_net > 0 and iv.repair_net = 0)))
+                OR ((iv.id is null AND hmd.id is not null and and hmd.is_repair_only_check = true) OR (iv.id is not null AND (iv.repair_net > 0 and iv.hire_net <= 37)))
+                OR ((iv.id is null AND ((hmd.id is null and c.managing_repair = true) OR (hmd.id is not null and hmd.is_repair_only_check = false and c.managing_repair = true))) OR (iv.id is not null AND (iv.hire_net > 37 and iv.repair_net > 0)))
+             */
+
+            Criterion hireOnlyClaims = Restrictions.eq("id", -1);
+            Criterion repairOnlyClaims = Restrictions.eq("id", -1);
+            Criterion hireAndRepairOnlyClaims = Restrictions.eq("id", -1);
+
+            for (Integer restrictionId : searchCriteria.getHireAndRepairSearchParamIds()) {
+                if (restrictionId == 1) {
+
+                    hireOnlyClaims = Restrictions.disjunction()
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.isNull("iv.id"))
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.isNull("hmd.id"))
+                                                                .add(Restrictions.eq("this.managingRepair", false)))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.isNotNull("hmd.id"))
+                                                                .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                                .add(Restrictions.eq("this.managingRepair", false)))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.isNotNull("iv.id"))
+                                                .add(Restrictions.conjunction()
+                                                        .add(Restrictions.gt("iv.hireNet", BigDecimal.ZERO))
+                                                        .add(Restrictions.eq("iv.repairNet", BigDecimal.ZERO))));
+
+                } else if (restrictionId == 2) {
+                    
+                    repairOnlyClaims = Restrictions.disjunction()
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.isNull("iv.id"))
+                                                .add(Restrictions.isNotNull("hmd.id"))
+                                                .add(Restrictions.eq("hmd.isRepairOnlyCheck", true)))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.isNotNull("iv.id"))
+                                                .add(Restrictions.conjunction()
+                                                        .add(Restrictions.le("iv.hireNet", new BigDecimal(37)))
+                                                        .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+                    
+                } else if (restrictionId == 3) {
+                    
+                    hireAndRepairOnlyClaims = Restrictions.disjunction()
+                                                .add(Restrictions.conjunction()
+                                                        .add(Restrictions.isNull("iv.id"))
+                                                        .add(Restrictions.disjunction()
+                                                               .add(Restrictions.conjunction()
+                                                                       .add(Restrictions.isNull("hmd.id"))
+                                                                       .add(Restrictions.eq("this.managingRepair", true)))
+                                                               .add(Restrictions.conjunction()
+                                                                       .add(Restrictions.isNotNull("hmd.id"))
+                                                                       .add(Restrictions.eq("hmd.isRepairOnlyCheck", false))
+                                                                       .add(Restrictions.eq("this.managingRepair", true)))))
+                                                .add(Restrictions.conjunction()
+                                                        .add(Restrictions.isNotNull("iv.id"))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.gt("iv.hireNet", new BigDecimal(37)))
+                                                                .add(Restrictions.gt("iv.repairNet", BigDecimal.ZERO))));
+                    
+                }
+            }
+            criteria.add(Restrictions.disjunction()
+                    .add(hireOnlyClaims)
+                    .add(repairOnlyClaims)
+                    .add(hireAndRepairOnlyClaims));
+        }
+        
         if (searchCriteria.getClaimOwnerIds() != null && !searchCriteria.getClaimOwnerIds().isEmpty()) {
             ArrayList<Integer> ClaimOwnerIds = new ArrayList<Integer>();
 
