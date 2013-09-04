@@ -687,3 +687,36 @@ $BODY$
 ------------------------
 -- END of 7.5.1       --
 ------------------------
+
+
+------------------------------------------------------------------------------------------------
+-- bug#2682 - Production - Add Revert status for manual claims                                --
+------------------------------------------------------------------------------------------------
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.RevertClaim.ManualInvoiceBRERejected', false, false, false, false, false, 17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.RevertClaim.ManualInvoiceBRERejected' and claim_type=17;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check,
+                          check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,
+                          check_fnol_enabled, claim_type)
+	SELECT 'activity.RevertClaim.ManualInvoiceBREApproved', false, false, false, false, false, 17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+	SELECT id, 'ROLE_CHOX_ADMIN', 1
+	FROM accessibility
+	WHERE name = 'activity.RevertClaim.ManualInvoiceBREApproved' and claim_type=17;
+
+UPDATE audit_trail
+   set original_status = 'AwaitingInvoiceData'
+where (original_status is null or original_status = '')
+  and (new_status = 'ManualInvoiceBREApproved' or new_status = 'ManualInvoiceBRERejected');
+
+---------------------------------------------------
+--- END of bug#2682                         -------
+---------------------------------------------------

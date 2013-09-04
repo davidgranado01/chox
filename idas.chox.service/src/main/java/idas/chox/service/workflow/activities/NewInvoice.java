@@ -127,7 +127,13 @@ public class NewInvoice extends BaseActivity {
          * activated in the BRE Band
          */
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
-        if (claim.getBreBand().isAllowManagingRepairAutomatedTasks()
+        if (claim.getBreBand().isAllowManagingRepairAutomatedTasks() && claim.getManagingRepair()
+                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
+            if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
+                LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");
+            }
+        }
+        else if (claim.getBreBand().isAllowNotManagingRepairAutomatedTasks() && !claim.getManagingRepair()
                 && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.warn("New task creation failed - automatic 'Upload Repair Documentation' task.");

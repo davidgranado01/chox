@@ -93,8 +93,13 @@
         <property name="taskService" ref="taskService" />
         <property name="notificationService" ref="notificationService" />
     </bean>
+    <bean id="slaExtensionDaysUpdate" class="idas.chox.service.workflow.activities.SlaExtension" scope="prototype">
+    </bean>
     <bean id="supplementaryInvoice" class="idas.chox.service.workflow.activities.NewSupplementaryInvoice" scope="prototype">
         <property name="chainActivity" ref="newInvoice" />
+    </bean>
+    <bean id="supplementaryInsurerInvoice" class="idas.chox.service.workflow.activities.NewSupplementaryInvoice" scope="prototype">
+        <property name="chainActivity" ref="insurerUpload" />
     </bean>
     <bean id="updateInterimPaymentFullAndFinal" class="idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal" scope="prototype">
         <property name="chainActivity" ref="invoicePaymentReceived" />
@@ -110,6 +115,10 @@
     <bean id="makeInterimPayment" class="idas.chox.service.workflow.activities.MakeInterimPayment" scope="prototype"/>
     <bean id="fullPaymentNotReceived" class="idas.chox.service.workflow.activities.FullPaymentNotReceived" scope="prototype">
         <property name="chainActivity" ref="revertClaim" />
+    </bean>
+    <bean id="ecdUpdate" class="idas.chox.service.workflow.activities.EcdUpdate" scope="prototype">
+        <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
+        <property name="reasonOfDelayService" ref="reasonOfDelayService" />
     </bean>
     
 </beans>
