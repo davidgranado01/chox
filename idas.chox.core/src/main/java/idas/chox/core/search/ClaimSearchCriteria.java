@@ -26,6 +26,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Set<String> statuses;
     private Set<String> statusExcludeList;
     private Set<Integer> insurerIds;
+    private Set<Integer> hireAndRepairSearchParamIds;
     private String thirdPartyVrn;
     private String customerVrn;
     private String invoiceNumber;
@@ -79,6 +80,9 @@ public class ClaimSearchCriteria implements Serializable {
         }
         if (insurerIds != null) {
             sb.append("insurerIds=").append(Arrays.toString(insurerIds.toArray())).append("\n");
+        }
+        if (hireAndRepairSearchParamIds != null) {
+            sb.append("hireAndRepairSearchParamIds=").append(Arrays.toString(hireAndRepairSearchParamIds.toArray())).append("\n");
         }
         sb.append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
                 .append("customerVrn=").append(customerVrn).append("\n")
@@ -547,5 +551,17 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setFinalReviewIns(Boolean finalReviewIns) {
         this.finalReviewIns = finalReviewIns;
+    }
+
+    public Set<Integer> getHireAndRepairSearchParamIds() {
+        return hireAndRepairSearchParamIds;
+    }
+
+    public void setHireAndRepairSearchParamIds(Set<Integer> hireAndRepairSearchParamIds) {
+        if (hireAndRepairSearchParamIds.contains(null) || hireAndRepairSearchParamIds.contains(0)) {
+            this.hireAndRepairSearchParamIds = null;
+        } else {
+            this.hireAndRepairSearchParamIds = hireAndRepairSearchParamIds;
+        }
     }
 }

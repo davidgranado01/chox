@@ -243,6 +243,7 @@
                 var penaltyChargesAppliedOnly = Ext.query('*[name$=penaltyChargesAppliedOnly]')[0].checked;
                 var liabilityStatuses = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue().split(",");
                 var claimTypes = Ext.getCmp('claimTypesSearchScreenComboId').getValue().split(",");
+                var hireAndRepairSearchScreen = Ext.getCmp('hireAndRepairSearchParamComboId').getValue().split(",");
 
                 ds.baseParams = {
                     /*
@@ -276,7 +277,8 @@
                     penaltyChargesAppliedOnly : penaltyChargesAppliedOnly,
                     liabilityStatuses : liabilityStatuses,
                     claimTypes : claimTypes,
-                    isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
+                    isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly,
+                    hireAndRepairSearchParamIds : hireAndRepairSearchScreen
                 };
                 if(canSearchForData){
                     Ext.state.Manager.set("grid_baseParams",ds.baseParams);

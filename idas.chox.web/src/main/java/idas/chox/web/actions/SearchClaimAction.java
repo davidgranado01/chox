@@ -163,7 +163,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     /*
-     * Please note this method will return only Liability value from the
+     * Please note this method will return only claim types from the
      * loaded(model) claimSearchCriteria and not from available LiabilityStatus.
      */
     public String getClaimTypesValueAsString() {
@@ -172,6 +172,22 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             StringBuilder returnString = new StringBuilder();
             for (ClaimType c : claimSearchCriteria.getClaimTypes()) {
                 returnString.append(c.getClaimTypeValue()).append(",");
+            }
+            return returnString.toString().substring(0, returnString.length() - 1);
+        }
+        return null;
+    }
+    
+    /*
+     * Please note this method will return only hire and repair search param from the
+     * loaded(model) claimSearchCriteria and not from available hire and repair search param.
+     */
+    public String getHireAndRepairSearchParamAsString() {
+
+        if (claimSearchCriteria.getHireAndRepairSearchParamIds()!= null) {
+            StringBuilder returnString = new StringBuilder();
+            for (Integer i : claimSearchCriteria.getHireAndRepairSearchParamIds()) {
+                returnString.append(i.toString()).append(",");
             }
             return returnString.toString().substring(0, returnString.length() - 1);
         }
