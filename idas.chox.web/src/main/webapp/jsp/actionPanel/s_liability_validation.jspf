@@ -229,6 +229,9 @@
                 percentageLiabilityCho:{
                     max : 100
                 },
+                indemnityAmount: {
+                    number:true
+                },
                 liabilityAgreedDate:{
                     checkAcceptedDate:true,
                     checkDateFormat: true,
@@ -253,6 +256,9 @@
                 },
                 percentageLiabilityCho:{
                     max :"'Liability Percentage Agreed (CHO)' Must Be Less Than Or Equal To 100."
+                },
+                indemnityAmount: {
+                    number:"You Must Supply A Numeric Value For 'Indemnity Value'"
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
