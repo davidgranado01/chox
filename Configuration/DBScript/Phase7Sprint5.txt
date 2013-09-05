@@ -684,6 +684,16 @@ END;
 $BODY$
   LANGUAGE plpgsql;
   GRANT EXECUTE ON FUNCTION applyAutoPenaltyCharge(integer, integer) TO chox_user;
+
+
+INSERT INTO claim_type(claim_type, claim_type_string, penalty_type)
+    SELECT 18, 'Collaboration Protocol', 'DEFAULT';
+INSERT INTO claim_type(claim_type, claim_type_string, penalty_type)
+    SELECT 19, 'Collaboration Protocol (Orig. Invoice)', 'DEFAULT';
+INSERT INTO claim_type(claim_type, claim_type_string, penalty_type)
+    SELECT 20, 'Collaboration Protocol (Supp. Invoice)', 'DEFAULT';
+
+
 ------------------------
 -- END of 7.5.1       --
 ------------------------

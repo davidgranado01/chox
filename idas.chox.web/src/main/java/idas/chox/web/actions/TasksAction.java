@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-import com.sun.xml.wss.util.DateUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,7 +23,6 @@ import net.sf.jxls.transformer.XLSTransformer;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.Comment;
 import idas.chox.core.model.Task;
 import idas.chox.core.model.TaskType;
 import idas.chox.core.model.WebUserRole;
@@ -313,7 +311,7 @@ public class TasksAction extends BaseAction {
             if (getIsInsurer()) {
                 taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).append(". Payment Date - ").append(DateHelper.getLocalDateFormat().format(paymentDate)).toString();
             } else {
-                taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).toString();
+                taskDescription = new StringBuilder().append(taskDescription).append("\nRequested Payment Method - ").append(paymentMethod).toString();
            }
         }
         task.setDescription(taskDescription);
