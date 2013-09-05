@@ -79,11 +79,11 @@ public class ProtocolVehicleClassCeilingServiceImpl extends SecureDataService im
     
     @Override
     public ProtocolVehicleClassCeiling getProtocolVechileClassCeilingForClaim(Claim claim) {
-        LOG.debug("Getting protocol vehicle class ceilinf for claim '{}' with vehicle class '{}'", claim.getChoReference(), claim.getVehicleHire().getVehicleClass());
+        LOG.debug("Getting protocol vehicle class ceilinf for claim '{}' with vehicle class '{}'", claim.getChoReference(), claim.getCustomer().getVehicleClass());
         ProtocolVehicleClassCeiling protocolVehicleClassCeiling = null;
         DetachedCriteria criteria = DetachedCriteria.forClass(ProtocolVehicleClassCeiling.class);
         criteria.add(Restrictions.eq("breBand", claim.getBreBand()));
-        criteria.add(Restrictions.eq("vehicleClass", claim.getVehicleHire().getVehicleClass()));
+        criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
         protocolVehicleClassCeiling = (ProtocolVehicleClassCeiling) getByCriteria(criteria);
         return protocolVehicleClassCeiling;
     }

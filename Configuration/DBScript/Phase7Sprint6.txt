@@ -35,6 +35,29 @@ GRANT SELECT, UPDATE ON TABLE protocol_vehicle_class_ceiling_id_seq TO chox_user
 ALTER TABLE bre_band ADD COLUMN hire_net_does_not_exceed_protocol_vc_hire_net_ceiling boolean NOT NULL DEFAULT false;
 ALTER TABLE bre_band ADD COLUMN repair_net_does_not_exceed_protocol_vc_repair_net_ceiling boolean NOT NULL DEFAULT false;
 
+INSERT INTO 
+    protocol_vehicle_class_ceiling 
+    (bre_band_id, vehicle_class_id, created_by, created_date, last_modified_by, last_modified_date, hire_net_ceiling, repair_net_ceiling, version) 
+SELECT  
+    bre.id,
+    vh.id,
+    999,
+    now(),
+    999,
+    now(),
+    vhc.hire_net_ceiling,
+    vhc.repair_net_ceiling,
+    0
+FROM
+    bre_band bre,
+    vehicle_class vh,
+    vehicle_class_ceiling vhc,
+    insurer ins
+WHERE
+    ins.id = vhc.insurer_id
+    AND vhc.vehicle_class_id = vh.id
+    AND bre.insurer_id = ins.id;
+
 ------------------------
 -- END of 7.6.2       --
 ------------------------

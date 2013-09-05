@@ -1107,7 +1107,7 @@
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Protocol Vehicle Class Ceilings</div>
                         <div class="status-info">
-                            The maximum ceiling limits for both the Hire Net and Repair Net for the specific vehicle classes is managed here.  If a CHO submits an invoice where the Hire Net or Repair Net value(s) exceed the values held in the below table for the specific vehicle class in question, (non-fault vehicle's vehicle class) then the rule will fail.
+                            The maximum protocol ceiling limits for both the Hire Net and Repair Net for the specific vehicle classes is managed here. If a CHO submits an invoice where the Hire Net or Repair Net value(s) exceed the values held in the below table for the specific vehicle class in question, (non-fault vehicle's vehicle class) then the rule will fail.
                         </div>
                         <div id="protocolVehicleClassCeilingorganisationGird">
                             <div class="grid-view-header">
@@ -1580,12 +1580,12 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" value="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" /></div>
                             <label class="chox-form-check-label">Protocol Vehicle Class Hire Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific replacement hire vehicle's vehicle class.</div>
+                            <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" /></div>
                             <label class="chox-form-check-label">Protocol Vehicle Class Repair Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the Repair Net billed by the CHO does not exceed the agreed protocol cost for the specific replacement hire vehicle's vehicle class.</div>
+                            <div class="chox-form-check-description">Check to ensure that the Repair Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

@@ -20,7 +20,7 @@ public class RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling implemen
     private static final Logger LOG = LoggerFactory.getLogger(RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling.class);
 
     String narrative = "";
-    String narrativeTemplate = "The CHO are charging a total repair cost (net) of %s for the replacement vehicle class %s, the agreed protocol cost for this vehicle class is %s.";
+    String narrativeTemplate = "The Repair Net billed %s exceeds the Protocol Repair Net ceiling of %s for vehicle class %s.";
     DecimalFormat moneyFormat = new DecimalFormat("£0.00");
     private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
 
@@ -58,8 +58,8 @@ public class RepairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling implemen
 
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(repairNet.doubleValue()),
-                        replacementVehicleClassName,
-                        moneyFormat.format(protocolRepairNetCeiling.doubleValue()));
+                        moneyFormat.format(protocolRepairNetCeiling.doubleValue()),
+                        replacementVehicleClassName);
             }
 
         } else {
