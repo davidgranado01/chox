@@ -992,6 +992,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.setClaimType(ClaimType.FIXED_FEE_ORIGINAL_INVOICE);
                     } else if (claim.getClaimType() == ClaimType.INSURER_CLAIM || claim.getClaimType() == ClaimType.INSURER_ORIGINAL_INVOICE) {
                         claim.setClaimType(ClaimType.INSURER_ORIGINAL_INVOICE);
+                    } else if (claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL || claim.getClaimType() == ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE);
                     } else {
                         LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
                     }
