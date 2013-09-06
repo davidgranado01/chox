@@ -63,6 +63,7 @@ public class Claim extends Entity implements Serializable {
     private List<Comment> comments;
     private int slaExtDays;
     private int noAttachments;
+    private Date managingRepairLastModified;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -618,5 +619,13 @@ public class Claim extends Entity implements Serializable {
 
     public void setFinalReviewDateIns(Date finalReviewDateIns) {
         this.finalReviewDateIns = finalReviewDateIns;
+    }
+
+    public Date getManagingRepairLastModified() {
+        return managingRepairLastModified;
+    }
+
+    public void setManagingRepairLastModified(Date managingRepairLastModified) {
+        this.managingRepairLastModified = managingRepairLastModified;
     }
 }
