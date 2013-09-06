@@ -88,9 +88,9 @@ public class ImapMailReceiver {
                                 return true;
                             }
                         } catch (MessagingException ex) {
-                            LOG.error("Cannot match mails with given search term.", ex);
+                            LOG.warn("Cannot match mails with given search term.", ex);
                         } catch (Exception ex) {
-                            LOG.error("Exception thrown matching email by subject '{}': ", emailSubject, ex);
+                            LOG.warn("Exception thrown matching email by subject '{}': ", emailSubject, ex);
                         }
                     }
                     return false;
@@ -105,11 +105,11 @@ public class ImapMailReceiver {
             LOG.debug("Found {} unseen messages with an attachment with subject '{}'", listOfMails.size(), emailSubject);
 
         } catch (NoSuchProviderException e) {
-            LOG.error("Given mail properties are not correct: {}\n", e.getMessage(), e);
+            LOG.warn("Given mail properties are not correct: {}\n", e.getMessage(), e);
         } catch (MessagingException e) {
-            LOG.error("Cannot make connecection to the given host: {}\n", e.getMessage(), e);
+            LOG.warn("Cannot make connecection to the given host: {}\n", e.getMessage(), e);
         } catch (Exception e) {
-            LOG.error("Cannot retrieve attachments: {}\n", e.getMessage(), e);
+            LOG.warn("Cannot retrieve attachments: {}\n", e.getMessage(), e);
         }
         return listOfMails == null ? new ArrayList<Message>() : listOfMails;
     }
@@ -143,10 +143,10 @@ public class ImapMailReceiver {
                 }
             }
         } catch (MessagingException e) {
-            LOG.error("Error fetching attachment - cannot make connection to the given host: {} ",
+            LOG.warn("Error fetching attachment - cannot make connection to the given host: {} ",
                     e.getMessage(), e);
         } catch (IOException e) {
-            LOG.error("Error fetching attachment - cannot retrive attachemnt: {} ", e.getMessage(), e);
+            LOG.warn("Error fetching attachment - cannot retrive attachemnt: {} ", e.getMessage(), e);
         }
         return listOfAttachements;
     }
@@ -160,7 +160,7 @@ public class ImapMailReceiver {
                 store.close();
             }
         } catch (MessagingException e) {
-            LOG.error("Cannot close the mail folder: {} ", e.getMessage(), e);
+            LOG.warn("Cannot close the mail folder: {} ", e.getMessage(), e);
         }
 
     }
